@@ -286,10 +286,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//③ゲーム全体の終了処理
 	// ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
-	
 
-	//コンソールへの文字出力
-	OutputDebugStringA("Hello,DirectX!!\n");
 #pragma endregion WindowsAPI後始末
 	return 0;
 
