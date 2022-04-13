@@ -7,6 +7,11 @@
 #include <DirectXMath.h>
 using namespace DirectX;
 #include <d3dcompiler.h>
+#define DIRECTINPUT_VERSION 0x0800 //DirectInputのバージョン指定
+#include <dinput.h>
+
+#pragma comment(lib,"dinput8.lib")
+#pragma comment(lib,"dxguid.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
@@ -207,7 +212,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ID3D12Fence* fence = nullptr;
 	UINT64 fenceVal = 0;
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+
+	//DirectInputの初期化
+	IDirectInput8* directInput = nullptr;
+	result = DirectInput8Create(
+		w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
+	assert(SUCCEEDED(result));
+
+	//キーボードのデバイスの生成
+	IDirectInputDevice8* keyboard = nullptr;
+	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
+	assert(SUCCEEDED(result));
 	 
+	//入力データ形式のセット
+	result = keyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
+	assert(SUCCEEDED(result));
+
+	//排他制御レベルのセット
+	result = keyboard->SetCooperativeLevel(
+		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+	assert(SUCCEEDED(result));
+
 	//DirectX初期化処理 ここまで
 #pragma endregion DirectX初期化処理
 
@@ -401,6 +426,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion ウインドウメッセージ処理
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理 ここから
+	 
+		//前キーの入力状態を取得する
+		keyboard->Acquire();
+		BYTE key[256] = {};
+		keyboard->GetDeviceState(sizeof(key), key);
+
+		//数字の0キーが押されていたら
+		if (key[DIK_SPACE])
+		{
+			OutputDebugStringA("Hit 0\n");  //出力ウインドウに「Hit 0」と表示
+		}
+
+		
+		 
 		 // バックバッファの番号を取得(2つなので0番か1番)
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
 		// 1.リソースバリアで書き込み可能に変更
@@ -418,6 +457,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		 
 		// 3.画面クリア R G B A
 		FLOAT clearColor[] = { 0.1f,0.25f, 0.5f,0.0f }; // 青っぽい色
+
+		//スペースキーが押されていたら
+		if (key[DIK_SPACE])
+		{
+			//画面クリアカラーの数値を書き換える
+			clearColor[1] = 1.0f;
+		}
+		
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 #pragma region グラフィックコマンド
 		// 4.描画コマンドここから
