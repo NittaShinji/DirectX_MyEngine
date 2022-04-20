@@ -243,6 +243,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{ -0.5f, -0.5f, 0.0f }, // 左下
 	{ -0.5f, +0.5f, 0.0f }, // 左上
 	{ +0.5f, -0.5f, 0.0f }, // 右下
+	{ 0.0f, 0.0f, 0.0f }, // 右上
+	{ 0.0f, 0.0f, 0.0f }, // 右下
+	{ 0.0f, 0.0f, 0.0f }, // 左上
+
 	};
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
@@ -344,7 +348,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
 	{
-	"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+	"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
 	D3D12_APPEND_ALIGNED_ELEMENT,
 	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 	}, // (1行で書いたほうが見やすい)
@@ -437,7 +441,49 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			OutputDebugStringA("Hit 0\n");  //出力ウインドウに「Hit 0」と表示
 		}
-		 
+
+		if (key[DIK_1])
+		{
+			vertices[3] = { +0.5f, +0.5f, 0.0f };
+			vertices[4] = { +0.5f, -0.5f, 0.0f };
+			vertices[5] = { -0.5f, +0.5f, 0.0f };
+			// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
+			XMFLOAT3* vertMap = nullptr;
+			result = vertBuff->Map(0, nullptr, (void**)&vertMap);
+			assert(SUCCEEDED(result));
+			// 全頂点に対して
+			for (int i = 0; i < _countof(vertices); i++) {
+				vertMap[i] = vertices[i]; // 座標をコピー
+			}
+			// 繋がりを解除
+			vertBuff->Unmap(0, nullptr);
+		}
+
+		if (key[DIK_2])
+		{
+			int WiREFRAMEFlag = 1;
+			WiREFRAMEFlag--;
+			if (WiREFRAMEFlag <= 0)
+			{
+				if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_WIREFRAME)
+				{
+					pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+					WiREFRAMEFlag = 20;
+					result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+					assert(SUCCEEDED(result));
+				}
+
+				else if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_SOLID)
+				{
+					pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+					WiREFRAMEFlag = 20;
+					result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+					assert(SUCCEEDED(result));
+				}
+			}
+			
+		}
+
 		 // バックバッファの番号を取得(2つなので0番か1番)
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
 		// 1.リソースバリアで書き込み可能に変更
@@ -460,25 +506,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (key[DIK_SPACE])
 		{
 			//画面クリアカラーの数値を書き換える
-			clearColor[1] = 1.0f;
+			clearColor[0] = 1.0f;
+			clearColor[1] = 0.1f;
 		}
+
+		
 		
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 #pragma region グラフィックコマンド
 		// 4.描画コマンドここから
 		 // ビューポート設定コマンド
-		D3D12_VIEWPORT viewport{};
-		viewport.Width = window_width;
-		viewport.Height = window_height;
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = 0;
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
+		D3D12_VIEWPORT viewport;
+
+		//1個目のビューポートを設定 左上
+		viewport.Width = window_width / 2;      //横幅
+		viewport.Height = window_height / 2;	//縦幅
+		viewport.TopLeftX = 0;					//左上X
+		viewport.TopLeftY = 0;					//左上Y
+		viewport.MinDepth = 0.0f;				//最大深度
+		viewport.MaxDepth = 1.0f;				//最小深度
+
 		// ビューポート設定コマンドを、コマンドリストに積む
 		commandList->RSSetViewports(1, &viewport);
 
 		// シザー矩形
-		D3D12_RECT scissorRect{};
+		D3D12_RECT scissorRect;
 		scissorRect.left = 0; // 切り抜き座標左
 		scissorRect.right = scissorRect.left + window_width; // 切り抜き座標右
 		scissorRect.top = 0; // 切り抜き座標上
@@ -496,9 +548,54 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// 頂点バッファビューの設定コマンド
 		commandList->IASetVertexBuffers(0, 1, &vbView);
-
+ 
 		// 描画コマンド
 		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+		
+		//2個目のビューポートを設定　右上
+		viewport.Width = window_width / 2;
+		viewport.Height = window_height / 2;
+		viewport.TopLeftX = window_width / 2;
+		viewport.TopLeftY = 0;
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+
+		// ビューポート設定コマンドを、コマンドリストに積む
+		commandList->RSSetViewports(1, &viewport);
+		
+		// 描画コマンド
+		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+
+		//3個目のビューポートを設定　左下
+		viewport.Width = window_width / 2;
+		viewport.Height = window_height / 2;
+		viewport.TopLeftX = 0;
+		viewport.TopLeftY = window_height / 2;
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+
+		// ビューポート設定コマンドを、コマンドリストに積む
+		commandList->RSSetViewports(1, &viewport);
+		
+		// 描画コマンド
+		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+
+		//4個目のビューポートを設定　右下
+		viewport.Width = window_width / 2;
+		viewport.Height = window_height / 2;
+		viewport.TopLeftX = window_width / 2;
+		viewport.TopLeftY = window_height / 2;
+		viewport.MinDepth = 0.0f;
+		viewport.MaxDepth = 1.0f;
+
+		// ビューポート設定コマンドを、コマンドリストに積む
+		commandList->RSSetViewports(1, &viewport);
+		
+		// 描画コマンド
+		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+
+
+
 #pragma endregion グラフィックコマンド
 		// 4.描画コマンドここまで
 
