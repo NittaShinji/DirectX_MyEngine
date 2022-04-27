@@ -9,6 +9,7 @@ using namespace DirectX;
 #include <d3dcompiler.h>
 #define DIRECTINPUT_VERSION 0x0800 //DirectInputのバージョン指定
 #include <dinput.h>
+#include "DirectInput.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -219,11 +220,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 
+	//キー入力クラスの作成
+	KeyInput* keyInput = new KeyInput();
+
 	//キーボードのデバイスの生成
 	IDirectInputDevice8* keyboard = nullptr;
 	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
 	assert(SUCCEEDED(result));
-	 
+
 	//入力データ形式のセット
 	result = keyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
 	assert(SUCCEEDED(result));
@@ -431,22 +435,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理 ここから
 	 
-		//前キーの入力状態を取得する
+		//全キーの入力状態を取得する
 		keyboard->Acquire();
-		BYTE key[256] = {};
-		keyboard->GetDeviceState(sizeof(key), key);
+		
+		for (int i = 0; i < 256; i++)
+		{
+			oldkeys[i] = keys[i];
+		}
 
+		keyboard->GetDeviceState(sizeof(keys), keys);
+
+		//bool IsHitKey(uint8_t &key)
+		
 		//数字の0キーが押されていたら
-		if (key[DIK_SPACE])
+		if (keys[DIK_SPACE])
 		{
 			OutputDebugStringA("Hit 0\n");  //出力ウインドウに「Hit 0」と表示
 		}
 
-		if (key[DIK_1])
+		if (keys[DIK_1] != 0 && oldkeys[DIK_1] == 0)
 		{
 			vertices[3] = { +0.5f, +0.5f, 0.0f };
 			vertices[4] = { +0.5f, -0.5f, 0.0f };
 			vertices[5] = { -0.5f, +0.5f, 0.0f };
+
 			// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 			XMFLOAT3* vertMap = nullptr;
 			result = vertBuff->Map(0, nullptr, (void**)&vertMap);
@@ -459,7 +471,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			vertBuff->Unmap(0, nullptr);
 		}
 
-		if (key[DIK_2])
+		if (keys[DIK_2])
 		{
 			int WiREFRAMEFlag = 1;
 			WiREFRAMEFlag--;
@@ -503,15 +515,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		FLOAT clearColor[] = { 0.1f,0.25f, 0.5f,0.0f }; // 青っぽい色
 
 		//スペースキーが押されていたら
-		if (key[DIK_SPACE])
+		if (keys[DIK_SPACE])
 		{
 			//画面クリアカラーの数値を書き換える
 			clearColor[0] = 1.0f;
 			clearColor[1] = 0.1f;
 		}
 
-		
-		
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 #pragma region グラフィックコマンド
 		// 4.描画コマンドここから
@@ -641,7 +651,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
 
+	delete keyInput;
+
 #pragma endregion WindowsAPI後始末
 	return 0;
 
 }
+
