@@ -9,7 +9,7 @@ using namespace DirectX;
 #include <d3dcompiler.h>
 #define DIRECTINPUT_VERSION 0x0800 //DirectInputのバージョン指定
 #include <dinput.h>
-#include "DirectInput.h"
+#include "KeyInput.h"
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -23,18 +23,16 @@ LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	//メッセージに応じてゲーム固有の処理を行う
 	switch (msg)
 	{
-	//ウインドウが破棄された
+		//ウインドウが破棄された
 	case WM_DESTROY:
-			//OSに対して、アプリの終了を伝える
-			PostQuitMessage(0);
-			return 0;
+		//OSに対して、アプリの終了を伝える
+		PostQuitMessage(0);
+		return 0;
 	}
 
 	//標準のメッセージ処理を行う
 	return DefWindowProc(hwnd, msg, wparam, lparam);
-
 }
-
 
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -80,13 +78,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region DirectX初期化処理
 	//DirectX初期化処理 ここから
 
-	#ifdef _DEBUG
-	//デバッグレイヤーをオンに
+#ifdef _DEBUG
+//デバッグレイヤーをオンに
 	ID3D12Debug* debugController;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
 		debugController->EnableDebugLayer();
 	}
-	#endif
+#endif
 
 	HRESULT result;
 	ID3D12Device* device = nullptr;
@@ -177,8 +175,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 	// スワップチェーンの生成
 	result = dxgiFactory->CreateSwapChainForHwnd(
-	commandQueue, hwnd, &swapChainDesc, nullptr, nullptr,
-	(IDXGISwapChain1**)&swapChain);
+		commandQueue, hwnd, &swapChainDesc, nullptr, nullptr,
+		(IDXGISwapChain1**)&swapChain);
 	assert(SUCCEEDED(result));
 
 	// デスクリプタヒープの設定
@@ -214,33 +212,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UINT64 fenceVal = 0;
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
-	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
-	result = DirectInput8Create(
-		w.hInstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
-	assert(SUCCEEDED(result));
 
 	//キー入力クラスの作成
 	KeyInput* keyInput = new KeyInput();
 
-	//キーボードのデバイスの生成
-	IDirectInputDevice8* keyboard = nullptr;
-	result = directInput->CreateDevice(GUID_SysKeyboard, &keyboard, NULL);
-	assert(SUCCEEDED(result));
-
-	//入力データ形式のセット
-	result = keyboard->SetDataFormat(&c_dfDIKeyboard);//標準形式
-	assert(SUCCEEDED(result));
-
-	//排他制御レベルのセット
-	result = keyboard->SetCooperativeLevel(
-		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
-	assert(SUCCEEDED(result));
+	keyInput->Initialize(w.hInstance, hwnd);
 
 	//DirectX初期化処理 ここまで
 #pragma endregion DirectX初期化処理
 
 #pragma region 描画初期化処理
+
+	// 図形の形状変化フラグ
+	bool formchange = 0;
 
 	// 頂点データ
 	XMFLOAT3 vertices[] = {
@@ -250,7 +234,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{ 0.0f, 0.0f, 0.0f }, // 右上
 	{ 0.0f, 0.0f, 0.0f }, // 右下
 	{ 0.0f, 0.0f, 0.0f }, // 左上
-
 	};
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
@@ -386,7 +369,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// 図形の形状設定
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
+	
 	// その他の設定
 	pipelineDesc.NumRenderTargets = 1; // 描画対象は1つ
 	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
@@ -434,31 +417,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion ウインドウメッセージ処理
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理 ここから
-	 
-		//全キーの入力状態を取得する
-		keyboard->Acquire();
-		
-		for (int i = 0; i < 256; i++)
+
+		keyInput->SaveFrameKey();
+
+		if (keyInput->HasPushedKey(DIK_1))
 		{
-			oldkeys[i] = keys[i];
-		}
-
-		keyboard->GetDeviceState(sizeof(keys), keys);
-
-		//bool IsHitKey(uint8_t &key)
-		
-		//数字の0キーが押されていたら
-		if (keys[DIK_SPACE])
-		{
-			OutputDebugStringA("Hit 0\n");  //出力ウインドウに「Hit 0」と表示
-		}
-
-		if (keys[DIK_1] != 0 && oldkeys[DIK_1] == 0)
-		{
-			vertices[3] = { +0.5f, +0.5f, 0.0f };
-			vertices[4] = { +0.5f, -0.5f, 0.0f };
-			vertices[5] = { -0.5f, +0.5f, 0.0f };
-
+			if (formchange == 0)
+			{
+				vertices[3] = { +0.5f, +0.5f, 0.0f };
+				vertices[4] = { +0.5f, -0.5f, 0.0f };
+				vertices[5] = { -0.5f, +0.5f, 0.0f };
+				if (keyInput->ReleasedKeyMoment(DIK_1))
+				{
+					formchange = 1;
+				}
+			}
+			else
+			{
+				vertices[3] = { -0.5f, -0.5f, 0.0f };
+				vertices[4] = { -0.5f, +0.5f, 0.0f };
+				vertices[5] = { +0.5f, -0.5f, 0.0f };
+				if (keyInput->ReleasedKeyMoment(DIK_1))
+				{
+					formchange = 0;
+				}
+			}
 			// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 			XMFLOAT3* vertMap = nullptr;
 			result = vertBuff->Map(0, nullptr, (void**)&vertMap);
@@ -471,7 +454,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			vertBuff->Unmap(0, nullptr);
 		}
 
-		if (keys[DIK_2])
+		if (keyInput->PushedKeyMoment(DIK_2))
 		{
 			int WiREFRAMEFlag = 1;
 			WiREFRAMEFlag--;
@@ -493,10 +476,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 					assert(SUCCEEDED(result));
 				}
 			}
-			
+
 		}
 
-		 // バックバッファの番号を取得(2つなので0番か1番)
+		// バックバッファの番号を取得(2つなので0番か1番)
 		UINT bbIndex = swapChain->GetCurrentBackBufferIndex();
 		// 1.リソースバリアで書き込み可能に変更
 		D3D12_RESOURCE_BARRIER barrierDesc{};
@@ -510,12 +493,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
 		rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
 		commandList->OMSetRenderTargets(1, &rtvHandle, false, nullptr);
-		 
+
 		// 3.画面クリア R G B A
 		FLOAT clearColor[] = { 0.1f,0.25f, 0.5f,0.0f }; // 青っぽい色
 
-		//スペースキーが押されていたら
-		if (keys[DIK_SPACE])
+		//背景色を変更
+		//keyInput->ChangeColor(clearColor);
+		if (keyInput->HasPushedKey(DIK_SPACE))
 		{
 			//画面クリアカラーの数値を書き換える
 			clearColor[0] = 1.0f;
@@ -558,10 +542,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// 頂点バッファビューの設定コマンド
 		commandList->IASetVertexBuffers(0, 1, &vbView);
- 
+
 		// 描画コマンド
 		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
-		
+
 		//2個目のビューポートを設定　右上
 		viewport.Width = window_width / 2;
 		viewport.Height = window_height / 2;
@@ -572,7 +556,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// ビューポート設定コマンドを、コマンドリストに積む
 		commandList->RSSetViewports(1, &viewport);
-		
+
 		// 描画コマンド
 		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
 
@@ -586,7 +570,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// ビューポート設定コマンドを、コマンドリストに積む
 		commandList->RSSetViewports(1, &viewport);
-		
+
 		// 描画コマンド
 		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
 
@@ -600,11 +584,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		// ビューポート設定コマンドを、コマンドリストに積む
 		commandList->RSSetViewports(1, &viewport);
-		
+
 		// 描画コマンド
 		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
-
-
 
 #pragma endregion グラフィックコマンド
 		// 4.描画コマンドここまで
@@ -616,6 +598,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// DirectX毎フレーム処理 ここまで
 
 #pragma endregion  DirectX毎フレーム処理
+
+
 
 #pragma region 画面入れ替え
 
@@ -643,7 +627,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		result = commandList->Reset(commandAllocator, nullptr);
 		assert(SUCCEEDED(result));
 #pragma endregion 画面入れ替え
-		
+
 	}
 
 #pragma region WindowsAPI後始末
