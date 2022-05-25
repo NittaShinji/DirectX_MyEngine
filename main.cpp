@@ -270,19 +270,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// 頂点データ
 	XMFLOAT3 vertices[] = {
-	{ -0.5f, -0.5f, 0.0f }, // 左下
-	{ +0.5f, -0.5f, 0.0f }, // 右下
-	{ -0.5f, 0.0f, 0.0f }, // 左中
-	{ +0.5f, 0.0f, 0.0f }, // 右中
-	{ -0.5f, +0.5f, 0.0f }, // 左上
-	{ +0.5f, +0.5f, 0.0f }, // 右上
+	{ -0.5f, -0.5f, 0.0f }, // 左下 インデックス0
+	{ -0.5f, +0.5f, 0.0f }, // 左上 インデックス1
+	{ +0.5f, -0.5f, 0.0f }, // 右下 インデックス2
+	{ +0.5f, +0.5f, 0.0f }, // 右上 インデックス3
+	//{ -0.5f, 0.0f, 0.0f }, // 左中
+	//{ +0.5f, 0.0f, 0.0f }, // 右中
 	};
+
+	uint16_t indices[] =
+	{
+		0,1,2, //三角形1つ目
+		1,2,3, //三角形2つ目
+	};
+
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
+
 	// リソース設定
 	D3D12_RESOURCE_DESC resDesc{};
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
@@ -312,8 +320,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	for (int i = 0; i < _countof(vertices); i++) {
 		vertMap[i] = vertices[i]; // 座標をコピー
 	}
+
 	// 繋がりを解除
 	vertBuff->Unmap(0, nullptr);
+
+	//インデックスデータ全体のサイズ
+	UINT sizeIB = static_cast<UINT>(sizeof(uint16_t) * _countof(indices));
+
+	//リソース設定
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc.Width = sizeIB;	//　インデックス情報が入る分のサイズ
+	resDesc.Height = 1;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.MipLevels = 1;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	//インデックスバッファの設定
+	ID3D12Resource* indexBuff = nullptr;
+	result = device->CreateCommittedResource(
+		&heapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&indexBuff)
+	);
+
+	//インデックスバッファをマッピング
+	uint16_t* indexMap = nullptr;
+	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	//全インデックスに対して
+	for (int i = 0; i < _countof(indices); i++)
+	{
+		indexMap[i] = indices[i];	//インデックスをコピー
+	}
+	
+	//マッピング解除
+	indexBuff->Unmap(0, nullptr);
+	
 
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
@@ -323,6 +368,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	vbView.SizeInBytes = sizeVB;
 	// 頂点1つ分のデータサイズ
 	vbView.StrideInBytes = sizeof(XMFLOAT3);
+
+	//インデックスバッファビューの作成
+	D3D12_INDEX_BUFFER_VIEW ibView{};
+	ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
+	ibView.Format = DXGI_FORMAT_R16_UINT;
+	ibView.SizeInBytes = sizeIB;
 
 	ID3DBlob* vsBlob = nullptr; // 頂点シェーダオブジェクト
 	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
@@ -383,6 +434,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}, // (1行で書いたほうが見やすい)
 		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
 	};
+
+
+
 
 	// グラフィックスパイプライン設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
@@ -517,7 +571,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (keyInput->HasPushedKey(DIK_1))
 		{
-			if (formchange == 0)
+			/*if (formchange == 0)
 			{
 				vertices[3] = { +0.5f, +0.5f, 0.0f };
 				vertices[4] = { +0.5f, -0.5f, 0.0f };
@@ -536,7 +590,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				{
 					formchange = 0;
 				}
-			}
+			}*/
 			// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 			XMFLOAT3* vertMap = nullptr;
 			result = vertBuff->Map(0, nullptr, (void**)&vertMap);
@@ -604,12 +658,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 #pragma region グラフィックコマンド
 		// 4.描画コマンドここから
-		 // ビューポート設定コマンド
+		
+		// ビューポート設定コマンド
 		D3D12_VIEWPORT viewport;
 
 		//1個目のビューポートを設定 左上
-		viewport.Width = window_width / 2;      //横幅
-		viewport.Height = window_height / 2;	//縦幅
+		viewport.Width = window_width ;      //横幅
+		viewport.Height = window_height ;	//縦幅
 		viewport.TopLeftX = 0;					//左上X
 		viewport.TopLeftY = 0;					//左上Y
 		viewport.MinDepth = 0.0f;				//最大深度
@@ -635,8 +690,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//定数バッファビュー(CBV)の設定コマンド
 		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 
+		//インデックスバッファビューの設定コマンド
+		commandList->IASetIndexBuffer(&ibView);
+
 		//描画コマンド
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0);
+		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
 		// プリミティブ形状の設定コマンド
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
@@ -645,49 +703,49 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->IASetVertexBuffers(0, 1, &vbView);
 
 		// 描画コマンド
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
 
-		//2個目のビューポートを設定　右上
-		viewport.Width = window_width / 2;
-		viewport.Height = window_height / 2;
-		viewport.TopLeftX = window_width / 2;
-		viewport.TopLeftY = 0;
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
+		////2個目のビューポートを設定　右上
+		//viewport.Width = window_width / 2;
+		//viewport.Height = window_height / 2;
+		//viewport.TopLeftX = window_width / 2;
+		//viewport.TopLeftY = 0;
+		//viewport.MinDepth = 0.0f;
+		//viewport.MaxDepth = 1.0f;
 
-		// ビューポート設定コマンドを、コマンドリストに積む
-		commandList->RSSetViewports(1, &viewport);
+		//// ビューポート設定コマンドを、コマンドリストに積む
+		//commandList->RSSetViewports(1, &viewport);
+
+		//// 描画コマンド
+		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
+
+		////3個目のビューポートを設定　左下
+		//viewport.Width = window_width / 2;
+		//viewport.Height = window_height / 2;
+		//viewport.TopLeftX = 0;
+		//viewport.TopLeftY = window_height / 2;
+		//viewport.MinDepth = 0.0f;
+		//viewport.MaxDepth = 1.0f;
+
+		//// ビューポート設定コマンドを、コマンドリストに積む
+		//commandList->RSSetViewports(1, &viewport);
+
+		//// 描画コマンド
+		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
+
+		////4個目のビューポートを設定　右下
+		//viewport.Width = window_width / 2;
+		//viewport.Height = window_height / 2;
+		//viewport.TopLeftX = window_width / 2;
+		//viewport.TopLeftY = window_height / 2;
+		//viewport.MinDepth = 0.0f;
+		//viewport.MaxDepth = 1.0f;
+
+		//// ビューポート設定コマンドを、コマンドリストに積む
+		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
 
 		// 描画コマンド
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
-
-		//3個目のビューポートを設定　左下
-		viewport.Width = window_width / 2;
-		viewport.Height = window_height / 2;
-		viewport.TopLeftX = 0;
-		viewport.TopLeftY = window_height / 2;
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-
-		// ビューポート設定コマンドを、コマンドリストに積む
-		commandList->RSSetViewports(1, &viewport);
-
-		// 描画コマンド
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
-
-		//4個目のビューポートを設定　右下
-		viewport.Width = window_width / 2;
-		viewport.Height = window_height / 2;
-		viewport.TopLeftX = window_width / 2;
-		viewport.TopLeftY = window_height / 2;
-		viewport.MinDepth = 0.0f;
-		viewport.MaxDepth = 1.0f;
-
-		// ビューポート設定コマンドを、コマンドリストに積む
-		commandList->RSSetViewports(1, &viewport);
-
-		// 描画コマンド
-		commandList->DrawInstanced(_countof(vertices), 1, 0, 0); // 全ての頂点を使って描画
+		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0); // 全ての頂点を使って描画
 
 #pragma endregion グラフィックコマンド
 		// 4.描画コマンドここまで
