@@ -259,8 +259,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	assert(SUCCEEDED(result));
 
 	float colorR = 1.0f;
-	float colorG = 0.0f;
-	float colorB = 0.0f;
+	float colorG = 1.0f;
+	float colorB = 1.0f;
 
 	//値を書き込むと自動的に転送される
 	constMapMaterial->color = XMFLOAT4(1, 0, 0, 0.5f);	//RGBAで半透明の赤
@@ -271,11 +271,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 頂点データ
 	XMFLOAT3 vertices[] = {
 	{ -0.5f, -0.5f, 0.0f }, // 左下
-	{ -0.5f, +0.5f, 0.0f }, // 左上
 	{ +0.5f, -0.5f, 0.0f }, // 右下
-	{ 0.0f, 0.0f, 0.0f }, // 右上
-	{ 0.0f, 0.0f, 0.0f }, // 右下
-	{ 0.0f, 0.0f, 0.0f }, // 左上
+	{ -0.5f, 0.0f, 0.0f }, // 左中
+	{ +0.5f, 0.0f, 0.0f }, // 右中
+	{ -0.5f, +0.5f, 0.0f }, // 左上
+	{ +0.5f, +0.5f, 0.0f }, // 右上
 	};
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
@@ -503,7 +503,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//チャレンジ問題(毎フレーム処理)
 		constMapMaterial->color = XMFLOAT4(colorR, colorG, colorB, 0.5f);	//RGBAで半透明の赤
-		if (colorR != 0)
+		/*if (colorR != 0)
 		{
 			colorR -= 0.005;
 		}
@@ -511,7 +511,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		if (colorG != 1)
 		{
 			colorG += 0.005;
-		}
+		}*/
 		
 		keyInput->SaveFrameKey();
 
