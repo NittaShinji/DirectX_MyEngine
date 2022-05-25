@@ -359,7 +359,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//マッピング解除
 	indexBuff->Unmap(0, nullptr);
 	
-
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 	// GPU仮想アドレス
@@ -435,9 +434,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
 	};
 
-
-
-
 	// グラフィックスパイプライン設定
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
@@ -491,7 +487,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 頂点レイアウトの設定
 	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
 	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-
 	
 	// 図形の形状設定
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
@@ -690,62 +685,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//定数バッファビュー(CBV)の設定コマンド
 		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 
-		//インデックスバッファビューの設定コマンド
-		commandList->IASetIndexBuffer(&ibView);
-
-		//描画コマンド
-		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-
 		// プリミティブ形状の設定コマンド
 		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
 
 		// 頂点バッファビューの設定コマンド
 		commandList->IASetVertexBuffers(0, 1, &vbView);
 
+		//インデックスバッファビューの設定コマンド
+		commandList->IASetIndexBuffer(&ibView);
+
 		// 描画コマンド
 		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
-
-		////2個目のビューポートを設定　右上
-		//viewport.Width = window_width / 2;
-		//viewport.Height = window_height / 2;
-		//viewport.TopLeftX = window_width / 2;
-		//viewport.TopLeftY = 0;
-		//viewport.MinDepth = 0.0f;
-		//viewport.MaxDepth = 1.0f;
-
-		//// ビューポート設定コマンドを、コマンドリストに積む
-		//commandList->RSSetViewports(1, &viewport);
-
-		//// 描画コマンド
-		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
-
-		////3個目のビューポートを設定　左下
-		//viewport.Width = window_width / 2;
-		//viewport.Height = window_height / 2;
-		//viewport.TopLeftX = 0;
-		//viewport.TopLeftY = window_height / 2;
-		//viewport.MinDepth = 0.0f;
-		//viewport.MaxDepth = 1.0f;
-
-		//// ビューポート設定コマンドを、コマンドリストに積む
-		//commandList->RSSetViewports(1, &viewport);
-
-		//// 描画コマンド
-		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
-
-		////4個目のビューポートを設定　右下
-		//viewport.Width = window_width / 2;
-		//viewport.Height = window_height / 2;
-		//viewport.TopLeftX = window_width / 2;
-		//viewport.TopLeftY = window_height / 2;
-		//viewport.MinDepth = 0.0f;
-		//viewport.MaxDepth = 1.0f;
-
-		//// ビューポート設定コマンドを、コマンドリストに積む
-		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
-
-		// 描画コマンド
-		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0); // 全ての頂点を使って描画
 
 #pragma endregion グラフィックコマンド
 		// 4.描画コマンドここまで
