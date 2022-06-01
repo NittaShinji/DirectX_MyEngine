@@ -159,6 +159,9 @@
   <ItemGroup>
     <ClInclude Include="KeyInput.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Basic.hlsli" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

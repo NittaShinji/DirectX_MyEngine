@@ -31,4 +31,7 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Basic.hlsli" />
+  </ItemGroup>
 </Project>

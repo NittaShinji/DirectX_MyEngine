@@ -212,7 +212,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UINT64 fenceVal = 0;
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 
-
 	//キー入力クラスの作成
 	KeyInput* keyInput = new KeyInput();
 
@@ -268,14 +267,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 図形の形状変化フラグ
 	bool formchange = 0;
 
+	//頂点データ構造体
+	struct Vertex
+	{
+		XMFLOAT3 pos; // xyz座標
+		XMFLOAT2 uv; // xyz座標
+	};
+
 	// 頂点データ
-	XMFLOAT3 vertices[] = {
-	{ -0.5f, -0.5f, 0.0f }, // 左下 インデックス0
-	{ -0.5f, +0.5f, 0.0f }, // 左上 インデックス1
-	{ +0.5f, -0.5f, 0.0f }, // 右下 インデックス2
-	{ +0.5f, +0.5f, 0.0f }, // 右上 インデックス3
-	//{ -0.5f, 0.0f, 0.0f }, // 左中
-	//{ +0.5f, 0.0f, 0.0f }, // 右中
+	Vertex vertices[] = {
+		//	x		y	 z			u	v
+		{{ -0.4f, -0.7f, 0.0f }, {0.0f,1.0f}},// 左下 
+		{{ -0.4f, +0.7f, 0.0f }, {0.0f,0.0f}},// 左上 
+		{{ +0.4f, -0.7f, 0.0f }, {1.0f,1.0f}},// 右下 
+		{{ +0.4f, +0.7f, 0.0f }, {1.0f,0.0f}},// 右上 
 	};
 
 	uint16_t indices[] =
@@ -285,7 +290,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	};
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -313,7 +318,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	assert(SUCCEEDED(result));
 
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
-	XMFLOAT3* vertMap = nullptr;
+	Vertex* vertMap = nullptr;
 	result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
@@ -355,18 +360,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		indexMap[i] = indices[i];	//インデックスをコピー
 	}
-	
+
 	//マッピング解除
 	indexBuff->Unmap(0, nullptr);
-	
+
 	// 頂点バッファビューの作成
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
+
+
 	// GPU仮想アドレス
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	// 頂点バッファのサイズ
 	vbView.SizeInBytes = sizeVB;
 	// 頂点1つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(XMFLOAT3);
+	vbView.StrideInBytes = sizeof(vertices[0]);
 
 	//インデックスバッファビューの作成
 	D3D12_INDEX_BUFFER_VIEW ibView{};
@@ -425,12 +432,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 	// 頂点レイアウト
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
+	D3D12_INPUT_ELEMENT_DESC inputLayout[] = 
 	{
-	"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
-	D3D12_APPEND_ALIGNED_ELEMENT,
-	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-	}, // (1行で書いたほうが見やすい)
+		{
+			//xyz座標
+		"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
+		D3D12_APPEND_ALIGNED_ELEMENT,
+		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		}, // uv座標
+		{
+			"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
 		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
 	};
 
@@ -487,10 +501,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 頂点レイアウトの設定
 	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
 	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-	
+
 	// 図形の形状設定
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	
+
 	// その他の設定
 	pipelineDesc.NumRenderTargets = 1; // 描画対象は1つ
 	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
@@ -556,12 +570,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			colorR -= 0.005;
 		}
-		
+
 		if (colorG != 1)
 		{
 			colorG += 0.005;
 		}*/
-		
+
 		keyInput->SaveFrameKey();
 
 		if (keyInput->HasPushedKey(DIK_1))
@@ -587,7 +601,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 				}
 			}*/
 			// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
-			XMFLOAT3* vertMap = nullptr;
+			Vertex* vertMap = nullptr;
 			result = vertBuff->Map(0, nullptr, (void**)&vertMap);
 			assert(SUCCEEDED(result));
 			// 全頂点に対して
@@ -653,13 +667,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 #pragma region グラフィックコマンド
 		// 4.描画コマンドここから
-		
+
 		// ビューポート設定コマンド
 		D3D12_VIEWPORT viewport;
 
 		//1個目のビューポートを設定 左上
-		viewport.Width = window_width ;      //横幅
-		viewport.Height = window_height ;	//縦幅
+		viewport.Width = window_width;      //横幅
+		viewport.Height = window_height;	//縦幅
 		viewport.TopLeftX = 0;					//左上X
 		viewport.TopLeftY = 0;					//左上Y
 		viewport.MinDepth = 0.0f;				//最大深度
