@@ -6,6 +6,7 @@
 #include <string>
 #include <random>
 #include <DirectXMath.h>
+#include <DirectXTex.h>
 using namespace DirectX;
 #include <d3dcompiler.h>
 #define DIRECTINPUT_VERSION 0x0800 //DirectInputのバージョン指定
@@ -263,7 +264,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float colorB = 1.0f;
 
 	//値を書き込むと自動的に転送される
-	constMapMaterial->color = XMFLOAT4(1, 0, 0, 0.5f);	//RGBAで半透明の赤
+	constMapMaterial->color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);	//RGBAで半透明の赤
 
 	// 図形の形状変化フラグ
 	bool formchange = 0;
@@ -449,16 +450,39 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
 	};
 
+	//画像ファイルの用意
+	TexMetadata metadata{};
+	ScratchImage scratchImg{};
+	// WICテクスチャのロード
+	result = LoadFromWICFile(
+		L"Resources/dan.jpg",	//「Resources」フォルダの「dan.jpg」
+		WIC_FLAGS_NONE,
+		&metadata, scratchImg);
+
+	ScratchImage mipChain{};
+	//ミニマップ生成
+	result = GenerateMipMaps(
+		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
+		TEX_FILTER_DEFAULT, 0, mipChain);
+	if (SUCCEEDED(result))
+	{
+		scratchImg = std::move(mipChain);
+		metadata = scratchImg.GetMetadata();
+	}
+
+	//読み込んだディフューズテクスチャをSRGBとして扱う
+	metadata.format = MakeSRGB(metadata.format);
+
 	//画像イメージデータの作成
 
-	//横方向ピクセル数
-	const size_t textureWidth = 256;
-	//縦方向ピクセル数
-	const size_t textureHeight = 256;
-	//配列の要素数
-	const size_t imageDateCount = textureWidth * textureHeight;
-	//　画像イメージデータ配列
-	XMFLOAT4* imageDate = new XMFLOAT4[imageDateCount];
+	////横方向ピクセル数
+	//const size_t textureWidth = 256;
+	////縦方向ピクセル数
+	//const size_t textureHeight = 256;
+	////配列の要素数
+	//const size_t imageDateCount = textureWidth * textureHeight;
+	////　画像イメージデータ配列
+	//XMFLOAT4* imageDate = new XMFLOAT4[imageDateCount];
 
 	//チャレンジ問題1用の変数
 	/*int countNumber = 0;
@@ -472,63 +496,63 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//乱数範囲の指定
 	std::uniform_real_distribution<float> dist(0, 1);
 
-	//全ピクセルの色を初期化
-	for (size_t i = 0; i < imageDateCount; i++)
-	{
-		//実行結果
-		//imageDate[i].x = 1.0f; // R
-		//imageDate[i].y = 0.0f; // G
-		//imageDate[i].z = 0.0f; // B
-		//imageDate[i].w = 1.0f; // A
+	////全ピクセルの色を初期化
+	//for (size_t i = 0; i < imageDateCount; i++)
+	//{
+	//	//実行結果
+	//	//imageDate[i].x = 1.0f; // R
+	//	//imageDate[i].y = 0.0f; // G
+	//	//imageDate[i].z = 0.0f; // B
+	//	//imageDate[i].w = 1.0f; // A
 
-		//練習問題
-		//imageDate[i].x = 0.0f; // R
-		//imageDate[i].y = 1.0f; // G
-		//imageDate[i].z = 0.0f; // B
-		//imageDate[i].w = 1.0f; // A
+	//	//練習問題
+	//	//imageDate[i].x = 0.0f; // R
+	//	//imageDate[i].y = 1.0f; // G
+	//	//imageDate[i].z = 0.0f; // B
+	//	//imageDate[i].w = 1.0f; // A
 
-		//チャレンジ問題1
-		//if (countNumber < 10)
-		//{
-		//	countNumber++;
-		//}
+	//	//チャレンジ問題1
+	//	//if (countNumber < 10)
+	//	//{
+	//	//	countNumber++;
+	//	//}
 
-		//if (countNumber >= 10)
-		//{
-		//	if (changeColor == 0)
-		//	{
-		//		changeColor = 1;
-		//	}
-		//	else if (changeColor == 1)
-		//	{
-		//		changeColor = 0;
-		//	}
+	//	//if (countNumber >= 10)
+	//	//{
+	//	//	if (changeColor == 0)
+	//	//	{
+	//	//		changeColor = 1;
+	//	//	}
+	//	//	else if (changeColor == 1)
+	//	//	{
+	//	//		changeColor = 0;
+	//	//	}
 
-		//	countNumber = 0;
-		//}
+	//	//	countNumber = 0;
+	//	//}
 
-		//if (changeColor == 0)
-		//{
-		//	imageDate[i].x = 1.0f; // R
-		//	imageDate[i].y = 0.0f; // G
-		//	imageDate[i].z = 0.0f; // B
-		//	imageDate[i].w = 1.0f; // A
-		//}
-		//else if(changeColor == 1)
-		//{
-		//	imageDate[i].x = 0.0f; // R
-		//	imageDate[i].y = 0.0f; // G
-		//	imageDate[i].z = 1.0f; // B
-		//	imageDate[i].w = 0.0f; // A
-		//}
+	//	//if (changeColor == 0)
+	//	//{
+	//	//	imageDate[i].x = 1.0f; // R
+	//	//	imageDate[i].y = 0.0f; // G
+	//	//	imageDate[i].z = 0.0f; // B
+	//	//	imageDate[i].w = 1.0f; // A
+	//	//}
+	//	//else if(changeColor == 1)
+	//	//{
+	//	//	imageDate[i].x = 0.0f; // R
+	//	//	imageDate[i].y = 0.0f; // G
+	//	//	imageDate[i].z = 1.0f; // B
+	//	//	imageDate[i].w = 0.0f; // A
+	//	//}
 
-		//チャレンジ問題2
-		imageDate[i].x = dist(engine); // R
-		imageDate[i].y = dist(engine); // G
-		imageDate[i].z = dist(engine); // B
-		imageDate[i].w = 1.0f; // A
-		
-	}
+	//	//チャレンジ問題2
+	//	imageDate[i].x = dist(engine); // R
+	//	imageDate[i].y = dist(engine); // G
+	//	imageDate[i].z = dist(engine); // B
+	//	imageDate[i].w = 1.0f; // A
+	//	
+	//}
 
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES textureHeapProp{};
@@ -539,11 +563,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//リソース設定
 	D3D12_RESOURCE_DESC textureResourceDesc{};
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	textureResourceDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-	textureResourceDesc.Width = textureWidth; // 幅
-	textureResourceDesc.Height = textureWidth; // 幅
-	textureResourceDesc.DepthOrArraySize = 1;
-	textureResourceDesc.MipLevels = 1;
+	textureResourceDesc.Format = metadata.format;
+	textureResourceDesc.Width = metadata.width; // 幅
+	textureResourceDesc.Height = (UINT)metadata.height; // 幅
+	textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
+	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	//テクスチャバッファの生成
@@ -556,16 +580,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		nullptr,
 		IID_PPV_ARGS(&texBuff));
 
-	//テクスチャバッファにデータ転送
-	result = texBuff->WriteToSubresource(
-		0,
-		nullptr,	//全領域へコピー
-		imageDate,	//元データアドレス
-		sizeof(XMFLOAT4) * textureWidth,	// 1ラインサイズ
-		sizeof(XMFLOAT4) * imageDateCount	//　全サイズ
-	);
+	//全ミニマップについて
+	for (size_t i = 0; i < metadata.mipLevels; i++)
+	{
+		//ミニマップレベルを指定してイメージを取得
+		const Image* img = scratchImg.GetImage(i, 0, 0);
+		//テクスチャバッファにデータ転送
+		result = texBuff->WriteToSubresource(
+			(UINT)i,
+			nullptr,
+			img->pixels,
+			(UINT)img->rowPitch,
+			(UINT)img->slicePitch
+		);
+		assert(SUCCEEDED(result));
+	}
 
-	delete[] imageDate;
+	//result = texBuff->WriteToSubresource(
+	//	0,
+	//	nullptr,	//全領域へコピー
+	//	imageDate,	//元データアドレス
+	//	sizeof(XMFLOAT4) * textureWidth,	// 1ラインサイズ
+	//	sizeof(XMFLOAT4) * imageDateCount	//　全サイズ
+	//);
+
+	//delete[] imageDate;
 
 	//SRVの最大個数
 	const size_t kMaxSRVCount = 2056;
@@ -586,11 +625,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//シェーダーリソースビューの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-	srvDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;//RGBA float
+	srvDesc.Format = resDesc.Format;//RGBA float
 	srvDesc.Shader4ComponentMapping =
 		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = 1;
+	srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	device->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
@@ -663,7 +702,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRange.BaseShaderRegister = 0;
 	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
 
 	//ルートパラメータの設定
 	D3D12_ROOT_PARAMETER rootParams[2] = {};
@@ -739,7 +777,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// DirectX毎フレーム処理 ここから
 
 		//チャレンジ問題(毎フレーム処理)
-		constMapMaterial->color = XMFLOAT4(colorR, colorG, colorB, 0.5f);	//RGBAで半透明の赤
+		//constMapMaterial->color = XMFLOAT4(colorR, colorG, colorB, 1.0f);	//RGBAで半透明の赤
 		/*if (colorR != 0)
 		{
 			colorR -= 0.005;
