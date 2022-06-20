@@ -141,6 +141,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConstantBuffer.cpp" />
     <ClCompile Include="KeyInput.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -159,6 +160,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="KeyInput.h" />
   </ItemGroup>
   <ItemGroup>

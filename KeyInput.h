@@ -37,8 +37,8 @@ public:
 
 private:
 
-	BYTE keys[256];
-	BYTE oldKeys[256];
+	BYTE keys[256] = {};
+	BYTE oldKeys[256] = {};
 
 	IDirectInputDevice8* keyboard;
 };

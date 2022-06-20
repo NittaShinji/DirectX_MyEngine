@@ -114,7 +114,4 @@ bool KeyInput::ReleasedKeyMoment(int keyNumber)
 }
 
 void KeyInput::KeyAssert()
-{
-	assert(SUCCEEDED(keys != nullptr));
-	assert(SUCCEEDED(oldKeys != nullptr));
-}
+{}
