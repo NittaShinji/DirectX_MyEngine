@@ -316,7 +316,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	float colorB = 1.0f;
 
 	//値を書き込むと自動的に転送される
-	constMapMaterial->color = XMFLOAT4(1.0f, 0.0f, 0.0f, 1.0f);	//RGBAで半透明の赤
+	constMapMaterial->color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 
 #pragma endregion
 	// 図形の形状変化フラグ
@@ -363,13 +363,38 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//単位行列を代入
 	constMapTransform->mat = XMMatrixIdentity();
-	constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window_width;		//ウインドウ横幅
-	constMapTransform->mat.r[1].m128_f32[1] = -2.0f	/ window_height;	//ウインドウ縦幅
-	//画面半分の平行移動(05_02_P32)
-	constMapTransform->mat.r[3].m128_f32[0] = -1.0f;	
-	constMapTransform->mat.r[3].m128_f32[1] = 1.0f;	
+	////前回の式で計算した行列
+	//constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window_width;		//ウインドウ横幅
+	//constMapTransform->mat.r[1].m128_f32[1] = -2.0f	/ window_height;	//ウインドウ縦幅
+	////画面半分の平行移動(05_02_P32)
+	//constMapTransform->mat.r[3].m128_f32[0] = -1.0f;	
+	//constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
 
+	//平行投影変換
+	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
 
+	//射影変換行列
+	XMMATRIX matProjection =
+		XMMatrixPerspectiveFovLH(
+			XMConvertToRadians(45.0f),				//上下画角45度
+			(float)window_width / window_height,	//アスペクト比(画面横幅/画面縦幅)
+			0.1f, 1000.0f							//前端,奥端
+		);
+
+	//次回、ここでビュー行列を計算
+
+	constMapTransform->mat = matProjection;
+
+	//前回の式で計算した行列
+	//XMMATRIX oldVer = XMMatrixIdentity();
+	//oldVer.r[0].m128_f32[0] = 2.0f / window_width;		//ウインドウ横幅
+	//oldVer.r[1].m128_f32[1] = -2.0f	/ window_height;	//ウインドウ縦幅
+	////画面半分の平行移動(05_02_P32)
+	//oldVer.r[3].m128_f32[0] = -1.0f;
+	//oldVer.r[3].m128_f32[1] = 1.0f;
+	////今回の関数で計算した行列
+	//XMMATRIX newVer = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
+	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
 
 #pragma endregion
 
@@ -385,10 +410,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// 頂点データ
 	Vertex vertices[] = {
 		//	x		y	 z			u	v
-		{{ 0.0f, 100.0f, 0.0f }, {0.0f,1.0f}},// 左下 
-		{{ 0.0f, 0.0f, 0.0f }, {0.0f,0.0f}},// 左上 
-		{{ 100.0f, 100.0f, 0.0f }, {1.0f,1.0f}},// 右下 
-		{{ 100.0f, 0.0f, 0.0f }, {1.0f,0.0f}},// 右上 
+		{{ -50.0f, -50.0f, 50.0f }, {0.0f,1.0f}},// 左下 
+		{{ -50.0f, 50.0f, 50.0f }, {0.0f,0.0f}},// 左上 
+		{{ 50.0f, -50.0f, 50.0f }, {1.0f,1.0f}},// 右下 
+		{{ 50.0f, 50.0f, 50.0f }, {1.0f,0.0f}},// 右上 
 	};
 
 	uint16_t indices[] =
@@ -512,7 +537,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 #pragma region 頂点シェーダファイルの読み込みとコンパイル(P02_01)
-	
+
 	ID3DBlob* vsBlob = nullptr; // 頂点シェーダオブジェクト
 	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
 	ID3DBlob* errorBlob = nullptr; // エラーオブジェクト
@@ -1099,7 +1124,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region SRV設定コマンド
 
-		
+
 		//SRVヒープの設定コマンド
 		commandList->SetDescriptorHeaps(1, &srvHeap);
 		// SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
