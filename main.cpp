@@ -262,6 +262,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region 描画初期化処理
 
 #pragma region 定数バッファ用データ構造体を宣言
+
+#pragma region キャラクター用データ構造体
+
 	//定数バッファ用データ構造体(マテリアル)
 	struct ConstBufferDataMaterial
 	{
@@ -273,6 +276,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		XMMATRIX mat;	// 3D変換行列
 	};
+
+#pragma endregion
+
+#pragma region 背景用データ構造体
+
+	//定数バッファ用データ構造体(マテリアル)
+	struct ConstBufferDataMaterial
+	{
+		XMFLOAT4 backColor;	//色(RGBA)
+	};
+
+	//定数バッファ用データ構造体(3D変換行列)
+	struct ConstBufferDataTransform
+	{
+		XMMATRIX backMat;	// 3D変換行列
+	};
+
+#pragma endregion
 
 #pragma endregion
 
@@ -363,16 +384,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//単位行列を代入
 	constMapTransform->mat = XMMatrixIdentity();
-	////前回の式で計算した行列
-	//constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window_width;		//ウインドウ横幅
-	//constMapTransform->mat.r[1].m128_f32[1] = -2.0f	/ window_height;	//ウインドウ縦幅
-	////画面半分の平行移動(05_02_P32)
-	//constMapTransform->mat.r[3].m128_f32[0] = -1.0f;	
-	//constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
-
+	
 	//平行投影変換
 	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
-
 	
 	//ビュー変換行列
 	XMMATRIX matView;
@@ -382,8 +396,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	float angle = 0.0f;	//カメラの回転角
 
-	//射影変換行列
+	//射影変換行列(キャラクター用)
 	XMMATRIX matProjection =
+		XMMatrixPerspectiveFovLH(
+			XMConvertToRadians(45.0f),				//上下画角45度
+			(float)window_width / window_height,	//アスペクト比(画面横幅/画面縦幅)
+			0.1f, 1000.0f							//前端,奥端
+		);
+
+	//射影変換行列(背景用)
+	XMMATRIX matBackProjection = 
 		XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),				//上下画角45度
 			(float)window_width / window_height,	//アスペクト比(画面横幅/画面縦幅)
@@ -400,17 +422,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	scale = { 1.0f,1.0f,1.0f };
 	rotation = { 0.0f,0.0f,0.0f };
 	position = { 0.0f,0.0f,0.0f };
-
-	//前回の式で計算した行列
-	//XMMATRIX oldVer = XMMatrixIdentity();
-	//oldVer.r[0].m128_f32[0] = 2.0f / window_width;		//ウインドウ横幅
-	//oldVer.r[1].m128_f32[1] = -2.0f	/ window_height;	//ウインドウ縦幅
-	////画面半分の平行移動(05_02_P32)
-	//oldVer.r[3].m128_f32[0] = -1.0f;
-	//oldVer.r[3].m128_f32[1] = 1.0f;
-	////今回の関数で計算した行列
-	//XMMATRIX newVer = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
-	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
 
 #pragma endregion
 
@@ -431,6 +442,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{{ 50.0f, -50.0f, 0.0f }, {1.0f,1.0f}},// 右下 
 		{{ 50.0f, 50.0f, 0.0f }, {1.0f,0.0f}},// 右上 
 	};
+
+	//Vertex vertices2[] = {
+	//	//	x		y	 z			u	v
+	//	{{ -50.0f, -50.0f, 0.0f }, {0.0f,1.0f}},// 左下 
+	//	{{ -50.0f, 50.0f, 0.0f }, {0.0f,0.0f}},// 左上 
+	//	{{ 50.0f, -50.0f, 0.0f }, {1.0f,1.0f}},// 右下 
+	//	{{ 50.0f, 50.0f, 0.0f }, {1.0f,0.0f}},// 右上 
+	//};
+
+
 
 	uint16_t indices[] =
 	{
