@@ -373,15 +373,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//平行投影変換
 	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
 
-	//射影変換行列
-	XMMATRIX matProjection =
-		XMMatrixPerspectiveFovLH(
-			XMConvertToRadians(45.0f),				//上下画角45度
-			(float)window_width / window_height,	//アスペクト比(画面横幅/画面縦幅)
-			0.1f, 1000.0f							//前端,奥端
-		);
-
-	//次回、ここでビュー行列を計算
+	
 	//ビュー変換行列
 	XMMATRIX matView;
 	XMFLOAT3 eye(0, 0, -100);	//視点座標
@@ -390,6 +382,25 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 	float angle = 0.0f;	//カメラの回転角
+
+	//射影変換行列
+	XMMATRIX matProjection =
+		XMMatrixPerspectiveFovLH(
+			XMConvertToRadians(45.0f),				//上下画角45度
+			(float)window_width / window_height,	//アスペクト比(画面横幅/画面縦幅)
+			0.1f, 1000.0f							//前端,奥端
+		);
+
+	//スケーリング倍率
+	XMFLOAT3 scale;
+	//回転角
+	XMFLOAT3 rotation;
+	//座標
+	XMFLOAT3 position;
+
+	scale = { 1.0f,1.0f,1.0f };
+	rotation = { 0.0f,0.0f,0.0f };
+	position = { 0.0f,0.0f,0.0f };
 
 	//前回の式で計算した行列
 	//XMMATRIX oldVer = XMMatrixIdentity();
@@ -1023,7 +1034,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region ターゲットの周りをまわるカメラ(P05_04)
 		if (keyInput->HasPushedKey(DIK_D) || keyInput->HasPushedKey(DIK_A))
 		{
-			if(keyInput->HasPushedKey(DIK_D)) { angle += XMConvertToRadians(1.0f); }
+			if (keyInput->HasPushedKey(DIK_D)) { angle += XMConvertToRadians(1.0f); }
 			else if (keyInput->HasPushedKey(DIK_A)) { angle -= XMConvertToRadians(1.0f); }
 
 			//angleラジアンだけY軸まわりに回転。半径は-100
@@ -1035,8 +1046,43 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		}
 
+#pragma endregion
+
+#pragma region 図形を連続して動かす
+
+		//いずれかのキーを押していたら
+		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
+			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
+		{
+			//座標を移動する処理(Z座標)
+			if (keyInput->HasPushedKey(DIK_UP)) { position.z += 1.0f; }
+			else if (keyInput->HasPushedKey(DIK_DOWN)) { position.z -= 1.0f; }
+			if (keyInput->HasPushedKey(DIK_RIGHT)) { position.x += 1.0f; }
+			else if (keyInput->HasPushedKey(DIK_LEFT)) { position.x -= 1.0f; }
+		}
+
+		//ワールド変換行列
+		XMMATRIX matWorld;
+
+		XMMATRIX matScale;	//スケーリング行列
+		matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+		
+		XMMATRIX matRot;	//回転行列
+		matRot = XMMatrixIdentity();
+		matRot *= XMMatrixRotationZ((rotation.z));	//Z軸周りに45度回転
+		matRot *= XMMatrixRotationX((rotation.x));	//X軸周りに15度回転
+		matRot *= XMMatrixRotationY((rotation.y));	//Y軸周りに30度回転
+		
+		XMMATRIX matTrans;	//平行移動行列
+		matTrans = XMMatrixTranslation(position.x, position.y, position.z);	//(-50,0,0)平行移動
+
+		matWorld = XMMatrixIdentity();	//単位行列を代入して変形をリセット
+		matWorld *= matScale;	//ワールド行列にスケーリングを反映
+		matWorld *= matRot;		//ワールド行列に回転を反映
+		matWorld *= matTrans;	//ワールド行列に平行移動を反映
+
 		//定数バッファにデータ転送
-		constMapTransform->mat = matView * matProjection;
+		constMapTransform->mat = matWorld * matView * matProjection;
 
 #pragma endregion
 
