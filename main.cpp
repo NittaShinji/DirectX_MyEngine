@@ -379,8 +379,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMFLOAT3 eye(0, 0, -100);	//視点座標
 	XMFLOAT3 target(0, 0, 0);	//注視点座標
 	XMFLOAT3 up(0, 1, 0);		//上方向ベクトル
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
+	
 	float angle = 0.0f;	//カメラの回転角
 
 	//射影変換行列
@@ -1043,24 +1042,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			//ビュー変換行列を再編成
 			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
 		}
+
+		eye.z -= 0.5f;
+
+		matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
 
 #pragma endregion
 
-#pragma region 図形を連続して動かす
+#pragma region 図形が自動回転
 
+		rotation.y += 0.01f;
+
+#pragma endregion
+
+#pragma region 図形をキー入力で平行移動
 		//いずれかのキーを押していたら
 		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
 			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
 		{
 			//座標を移動する処理(Z座標)
-			if (keyInput->HasPushedKey(DIK_UP)) { position.z += 1.0f; }
-			else if (keyInput->HasPushedKey(DIK_DOWN)) { position.z -= 1.0f; }
+			if (keyInput->HasPushedKey(DIK_UP)) { position.y += 1.0f; }
+			else if (keyInput->HasPushedKey(DIK_DOWN)) { position.y -= 1.0f; }
 			if (keyInput->HasPushedKey(DIK_RIGHT)) { position.x += 1.0f; }
 			else if (keyInput->HasPushedKey(DIK_LEFT)) { position.x -= 1.0f; }
 		}
+#pragma endregion
 
+#pragma region 行列計算
 		//ワールド変換行列
 		XMMATRIX matWorld;
 
