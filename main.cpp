@@ -419,7 +419,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//平行投影変換
 	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
 
-	
+
 	//ビュー変換行列
 	XMMATRIX matView;
 	XMFLOAT3 eye(0, 0, -100);	//視点座標
@@ -524,7 +524,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//後(前の面に4加算)
 		6,5,4,		//三角形3つ目
 		6,7,5,		//三角形4つ目
-		
+
 		//左
 		10,9,8,		//三角形5つ目
 		10,11,9,	//三角形6つ目
@@ -571,6 +571,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		nullptr,
 		IID_PPV_ARGS(&vertBuff));
 	assert(SUCCEEDED(result));
+
+#pragma endregion 
+
+#pragma region 法線の計算
+
+	for (int i = 0; i < _countof(indices) / 3; i++)
+	{
+		//三角形1つごとに計算していく
+		//三角形のインデックスを取り出して、一時的な変数に入れる
+		unsigned short indices0 = indices[i * 3 + 0];
+		unsigned short indices1 = indices[i * 3 + 1];
+		unsigned short indices2 = indices[i * 3 + 2];
+		//三角形を構成する頂点座標をベクトルに代入
+		XMVECTOR p0 = XMLoadFloat3(&vertices[indices0].pos);
+		XMVECTOR p1 = XMLoadFloat3(&vertices[indices1].pos);
+		XMVECTOR p2 = XMLoadFloat3(&vertices[indices2].pos);
+		//p0→p1ベクトル、p0→p2ベクトルを計算(ベクトルの減算)
+		XMVECTOR v1 = XMVectorSubtract(p1, p0);
+		XMVECTOR v2 = XMVectorSubtract(p2, p0);
+		//外積は両方から垂直なベクトル
+		XMVECTOR normal = XMVector3Cross(v1, v2);
+		//正規化(長さを1にする)
+		normal = XMVector3Normalize(normal);
+		//求めた法線を頂点データに代入
+		XMStoreFloat3(&vertices[indices0].normal, normal);
+		XMStoreFloat3(&vertices[indices1].normal, normal);
+		XMStoreFloat3(&vertices[indices2].normal, normal);
+	}
 
 #pragma endregion 
 
@@ -720,7 +748,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
 		D3D12_APPEND_ALIGNED_ELEMENT,
 		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		}, 
+		},
 
 		{
 			//法線ベクトル(1行で書いたほう見やすい)
@@ -728,7 +756,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
 		},
-		
+
 		// uv座標
 		{
 			"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
@@ -1139,33 +1167,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// DirectX毎フレーム処理 ここから
 		keyInput->SaveFrameKey();
 
-#pragma region 法線の計算
 
-		for (int  i = 0; i < _countof(indices) / 3; i++)
-		{
-			//三角形1つごとに計算していく
-			//三角形のインデックスを取り出して、一時的な変数に入れる
-			unsigned short indices0 = indices[i * 3 + 0];
-			unsigned short indices1 = indices[i * 3 + 1];
-			unsigned short indices2 = indices[i * 3 + 2];
-			//三角形を構成する頂点座標をベクトルに代入
-			XMVECTOR p0 = XMLoadFloat3(&vertices[indices0].pos);
-			XMVECTOR p1 = XMLoadFloat3(&vertices[indices1].pos);
-			XMVECTOR p2 = XMLoadFloat3(&vertices[indices2].pos);
-			//p0→p1ベクトル、p0→p2ベクトルを計算(ベクトルの減算)
-			XMVECTOR v1 = XMVectorSubtract(p1, p0);
-			XMVECTOR v2 = XMVectorSubtract(p2, p0);
-			//外積は両方から垂直なベクトル
-			XMVECTOR normal = XMVector3Cross(v1, v2);
-			//正規化(長さを1にする)
-			normal = XMVector3Normalize(normal);
-			//求めた法線を頂点データに代入
-			XMStoreFloat3(&vertices[indices0].normal, normal);
-			XMStoreFloat3(&vertices[indices1].normal, normal);
-			XMStoreFloat3(&vertices[indices2].normal, normal);
-		}
-
-#pragma endregion 
 
 #pragma region 頂点バッファへのデータ転送 (P02_01)
 		if (keyInput->HasPushedKey(DIK_1))
@@ -1238,13 +1240,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		XMMATRIX matScale;	//スケーリング行列
 		matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-		
+
 		XMMATRIX matRot;	//回転行列
 		matRot = XMMatrixIdentity();
 		matRot *= XMMatrixRotationZ((rotation.z));	//Z軸周りに45度回転
 		matRot *= XMMatrixRotationX((rotation.x));	//X軸周りに15度回転
 		matRot *= XMMatrixRotationY((rotation.y));	//Y軸周りに30度回転
-		
+
 		XMMATRIX matTrans;	//平行移動行列
 		matTrans = XMMatrixTranslation(position.x, position.y, position.z);	//(-50,0,0)平行移動
 
@@ -1306,7 +1308,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
 		//深度ステンシルビュー用のデスクリプタヒープのハンドルを取得
 		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
-		commandList->OMSetRenderTargets(1, &rtvHandle, false,&dsvHandle);
+		commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
 
 #pragma endregion
 

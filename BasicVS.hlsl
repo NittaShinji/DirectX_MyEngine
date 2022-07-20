@@ -14,6 +14,11 @@ VSOutput main(float4 pos : POSITION, float3 normal : NORMAL,float2 uv : TEXCOORD
 	return output;
 }
 
+//float4 main() : SV_TARGET
+//{
+//	return float4(1.0f,1.0f,1.0f,1.0f);
+//}
+
 //float4 main( float4 pos : POSITION ) : SV_POSITION
 //{
 //	return pos + float4( 0,0,1,1);
