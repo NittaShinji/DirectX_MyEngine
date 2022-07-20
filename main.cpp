@@ -7,11 +7,15 @@
 #include <random>
 #include <DirectXMath.h>
 #include <DirectXTex.h>
+#include <wrl.h>
 using namespace DirectX;
+using namespace Microsoft::WRL;
 #include <d3dcompiler.h>
 #define DIRECTINPUT_VERSION 0x0800 //DirectInputのバージョン指定
 #include <dinput.h>
 #include "KeyInput.h"
+
+
 
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
@@ -96,15 +100,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		debugController->EnableDebugLayer();
 		debugController->SetEnableSynchronizedCommandQueueValidation(TRUE);
 	}
-
-	/*ComPtr<ID3D12InfoQueue> infoQuence;
-	if (SUCCEEDED)(device_->QueryInterface(IID_PPV_ARGS(&ID3D12InfoQueue))))
-	{
-		infoQueue->
-	}*/
-
-
-
 #endif
 
 	HRESULT result;
@@ -172,6 +167,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 #pragma endregion 
+
+
+#ifdef _DEBUG
+	ComPtr<ID3D12InfoQueue> infoQueue;
+	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue))))
+	{
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true); 
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);		
+	}
+#endif
+
 #pragma region コマンドリストをGPUにまとめて命令を送るため (P01_02)
 
 	// コマンドアロケータを生成
@@ -371,9 +377,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region 三次元用の定数バッファの初期化(P05_02)
 
 	//定数バッファのGPUリソースのポインタ
-	ID3D12Resource* constBuffTransform = nullptr;
+	ID3D12Resource* constBuffTransform0 = nullptr;
 	//定数バッファのマッピング用ポインタ
-	ConstBufferDataTransform* constMapTransform = nullptr;
+	ConstBufferDataTransform* constMapTransform0 = nullptr;
 
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp2{};				//GPUへの転送用
@@ -395,7 +401,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		&cbResourceDesc2,//リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffTransform));
+		IID_PPV_ARGS(&constBuffTransform0));
 	assert(SUCCEEDED(result));
 
 #pragma endregion
@@ -404,11 +410,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//定数バッファのマッピング
 	//ConstBufferDataTransform* constMapTransform = nullptr;
-	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
+	result = constBuffTransform0->Map(0, nullptr, (void**)&constMapTransform0);//マッピング
 	assert(SUCCEEDED(result));
 
 	//単位行列を代入
-	constMapTransform->mat = XMMatrixIdentity();
+	constMapTransform0->mat = XMMatrixIdentity();
 	////前回の式で計算した行列
 	//constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window_width;		//ウインドウ横幅
 	//constMapTransform->mat.r[1].m128_f32[1] = -2.0f	/ window_height;	//ウインドウ縦幅
@@ -458,6 +464,42 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	////今回の関数で計算した行列
 	//XMMATRIX newVer = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
 	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
+
+#pragma endregion
+
+#pragma region 二個目のオブジェクト用の定数バッファ
+
+	//定数バッファのGPUリソースのポインタ
+	ID3D12Resource* constBuffTransform1 = nullptr;
+	//定数バッファのマッピング用ポインタ
+	ConstBufferDataTransform* constMapTransform1 = nullptr;
+
+	//定数バッファの生成
+	result = device->CreateCommittedResource(
+		&cbHeapProp2,//ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc2,//リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuffTransform1));
+	assert(SUCCEEDED(result));
+
+	//定数バッファのマッピング
+	result = constBuffTransform1->Map(0, nullptr, (void**)&constMapTransform1);//マッピング
+	assert(SUCCEEDED(result));
+
+	//スケーリング倍率
+	XMFLOAT3 scale1;
+	//回転角
+	XMFLOAT3 rotation1;
+	//座標
+	XMFLOAT3 position1;
+
+	scale1 = { 1.0f,1.0f,1.0f };
+	rotation1 = { 0.0f,0.0f,0.0f };
+	position1 = { 0.0f,0.0f,0.0f };
+
+
 
 #pragma endregion
 
@@ -1229,11 +1271,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
 		{
 			//座標を移動する処理(Z座標)
-			if (keyInput->HasPushedKey(DIK_UP)) { position.y += 1.0f; }
-			else if (keyInput->HasPushedKey(DIK_DOWN)) { position.y -= 1.0f; }
-			if (keyInput->HasPushedKey(DIK_RIGHT)) { position.x += 1.0f; }
-			else if (keyInput->HasPushedKey(DIK_LEFT)) { position.x -= 1.0f; }
+			if (keyInput->HasPushedKey(DIK_UP)) 
+			{ 
+				position.y += 1.0f; 
+				position1.y += 2.0f; 
+
+			}
+			else if (keyInput->HasPushedKey(DIK_DOWN)) 
+			{ 
+				position.y -= 1.0f; 
+				position1.y -= 2.0f; 
+
+			}
+			if (keyInput->HasPushedKey(DIK_RIGHT)) 
+			{
+				 
+				position1.x += 2.0f; 
+			}
+			else if (keyInput->HasPushedKey(DIK_LEFT)) 
+			{ 
+				
+				position1.x -= 2.0f;
+
+			}
 		}
+
+#pragma endregion
+
+#pragma region ワールド変換行列 
+
+#pragma region 一つ目のオブジェクトのワールド変換行列
 
 		//ワールド変換行列
 		XMMATRIX matWorld;
@@ -1256,9 +1323,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		matWorld *= matTrans;	//ワールド行列に平行移動を反映
 
 		//定数バッファにデータ転送
-		constMapTransform->mat = matWorld * matView * matProjection;
+		constMapTransform0->mat = matWorld * matView * matProjection;
 
 #pragma endregion
+
+#pragma region 二つ目のオブジェクトのワールド変換行列
+
+		//ワールド変換行列
+		XMMATRIX matWorld1;
+		matWorld1 = XMMatrixIdentity();
+
+		//スケーリング行列
+		XMMATRIX matScale1 = XMMatrixScaling(1.0f,1.0f,1.0f);
+		XMMATRIX matRot1 = XMMatrixRotationY(XM_PI/4.0f);
+		XMMATRIX matTrans1 = XMMatrixTranslation(position1.x, position1.y, position1.z);
+
+		//ワールド行列を合成
+		matWorld1 = matScale1 * matRot1 * matTrans1;	
+		
+		//定数バッファにデータ転送
+		constMapTransform1->mat = matWorld1 * matView * matProjection;
+
+
+#pragma endregion
+
+#pragma endregion
+
+
 
 #pragma region チャレンジ問題
 
@@ -1396,11 +1487,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//定数バッファビュー(CBV)の設定コマンド
 		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
-		//定数バッファビュー(CBV)の設定コマンド
-		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
-
+		//0番定数バッファビュー(CBV)の設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
 		// 描画コマンド
 		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
+
+		//1番定数バッファビュー(CBV)の設定コマンド
+		commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
+		// 描画コマンド
+		commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
+
+
+		
 #pragma endregion 
 #pragma endregion グラフィックコマンド
 		// 4.描画コマンドここまで
