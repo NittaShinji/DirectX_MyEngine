@@ -925,6 +925,34 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 
+#pragma region 画像読み込み三枚目
+
+	//2枚目用に別の変数を用意しておく
+	TexMetadata metadata3{};
+	ScratchImage scratchImg3{};
+	// WICテクスチャのロード
+	result = LoadFromWICFile(
+		L"Resources/tomas.png",
+		WIC_FLAGS_NONE,
+		&metadata3, scratchImg3);
+
+	ScratchImage mipChain3{};
+	//ミニマップ生成
+	result = GenerateMipMaps(
+		scratchImg3.GetImages(), scratchImg3.GetImageCount(), scratchImg3.GetMetadata(),
+		TEX_FILTER_DEFAULT, 0, mipChain3);
+	if (SUCCEEDED(result))
+	{
+		scratchImg3 = std::move(mipChain3);
+		metadata3 = scratchImg3.GetMetadata();
+	}
+
+	//読み込んだディフューズテクスチャをSRGBとして扱う
+	metadata3.format = MakeSRGB(metadata3.format);
+
+
+#pragma endregion
+
 #pragma region 画像イメージデータの作成(自分で)
 
 
@@ -1045,6 +1073,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 
+#pragma region 三枚目のテクスチャバッファの設定(P04_02)
+
+	//リソース設定
+	D3D12_RESOURCE_DESC textureResourceDesc3{};
+	textureResourceDesc3.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	textureResourceDesc3.Format = metadata3.format;
+	textureResourceDesc3.Width = metadata3.width; // 幅
+	textureResourceDesc3.Height = (UINT)metadata3.height; // 幅
+	textureResourceDesc3.DepthOrArraySize = (UINT16)metadata3.arraySize;
+	textureResourceDesc3.MipLevels = (UINT16)metadata3.mipLevels;
+	textureResourceDesc3.SampleDesc.Count = 1;
+
+#pragma endregion
+
 
 
 #pragma region テクスチャバッファの生成(P04_02)
@@ -1071,6 +1113,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		IID_PPV_ARGS(&texBuff2));
 #pragma endregion
 
+#pragma region 三枚目のテクスチャバッファの生成(P04_02)
+	//テクスチャバッファの生成
+	ID3D12Resource* texBuff3 = nullptr;
+	result = device->CreateCommittedResource(
+		&textureHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&textureResourceDesc3,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&texBuff3));
+#pragma endregion
+
+
+
 
 #pragma region テクスチャバッファにデータ転送(P04_03_27)
 
@@ -1090,7 +1146,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(result));
 	}
 
-	//全ミニマップについて
+	//二枚目の全ミニマップについて
 	for (size_t i = 0; i < metadata2.mipLevels; i++)
 	{
 		//ミニマップレベルを指定してイメージを取得
@@ -1106,7 +1162,21 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(result));
 	}
 
-
+	//三枚目の全ミニマップについて
+	for (size_t i = 0; i < metadata3.mipLevels; i++)
+	{
+		//ミニマップレベルを指定してイメージを取得
+		const Image* img3 = scratchImg3.GetImage(i, 0, 0);
+		//テクスチャバッファにデータ転送
+		result = texBuff3->WriteToSubresource(
+			(UINT)i,
+			nullptr,
+			img3->pixels,
+			(UINT)img3->rowPitch,
+			(UINT)img3->slicePitch
+		);
+		assert(SUCCEEDED(result));
+	}
 
 	//result = texBuff->WriteToSubresource(
 	//	0,
@@ -1170,7 +1240,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//シェーダーリソースビューの設定
 
 	//画像切替用のフラグ
-	int changeImage = 0;
+	int changeImage = 1;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
 	srvDesc.Format = textureResourceDesc.Format;//RGBA float
@@ -1202,6 +1272,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	device->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
 
 #pragma endregion
+
+#pragma region 三枚目の画像用シェーダーリソースビュー設定(P06_06)
+
+	//デスクリプタのサイズを取得
+	UINT incrementSize2 = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//取得したサイズを使用してハンドルを進める
+	srvHandle.ptr += incrementSize2;
+	
+	//シェーダーリソースビューの設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc3{}; //設定構造体
+	srvDesc3.Format = textureResourceDesc3.Format;//RGBA float
+	srvDesc3.Shader4ComponentMapping =
+		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc3.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc3.Texture2D.MipLevels = textureResourceDesc3.MipLevels;
+
+	//ハンドルの指す位置にシェーダーリソースビュー作成
+	device->CreateShaderResourceView(texBuff3, &srvDesc3, srvHandle);
+
+#pragma endregion
+
+
 
 
 #pragma region グラフィックスパイプライン設定(P02_02_P04)
@@ -1470,14 +1562,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			else if (keyInput->HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
 		}
 
-		if (keyInput->HasPushedKey(DIK_SPACE))
+		if (keyInput->HasPushedKey(DIK_1) || keyInput->PushedKeyMoment(DIK_1))
 		{
-			changeImage += 1;
+			changeImage = 1;
 		}
-		else if (keyInput->HasReleasedKey(DIK_SPACE))
+		else if (keyInput->HasPushedKey(DIK_2) || keyInput->PushedKeyMoment(DIK_2))
 		{
-			changeImage = 0;
+			changeImage = 2;
 		}
+		else if (keyInput->HasPushedKey(DIK_3) || keyInput->PushedKeyMoment(DIK_3))
+		{
+			changeImage = 3;
+		}
+		
 
 #pragma endregion
 
@@ -1541,30 +1638,30 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region チャレンジ問題
 
-		if (keyInput->PushedKeyMoment(DIK_2))
-		{
-			int WiREFRAMEFlag = 1;
-			WiREFRAMEFlag--;
-			if (WiREFRAMEFlag <= 0)
-			{
-				if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_WIREFRAME)
-				{
-					pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-					WiREFRAMEFlag = 20;
-					result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
-					assert(SUCCEEDED(result));
-				}
+		//if (keyInput->PushedKeyMoment(DIK_2))
+		//{
+		//	int WiREFRAMEFlag = 1;
+		//	WiREFRAMEFlag--;
+		//	if (WiREFRAMEFlag <= 0)
+		//	{
+		//		if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_WIREFRAME)
+		//		{
+		//			pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+		//			WiREFRAMEFlag = 20;
+		//			result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+		//			assert(SUCCEEDED(result));
+		//		}
 
-				else if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_SOLID)
-				{
-					pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
-					WiREFRAMEFlag = 20;
-					result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
-					assert(SUCCEEDED(result));
-				}
-			}
+		//		else if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_SOLID)
+		//		{
+		//			pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+		//			WiREFRAMEFlag = 20;
+		//			result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+		//			assert(SUCCEEDED(result));
+		//		}
+		//	}
 
-		}
+		//}
 
 #pragma endregion
 
@@ -1663,7 +1760,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (changeImage == 1)
 		{
+			srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+		}
+		else if (changeImage == 2)
+		{
 			srvGpuHandle.ptr += incrementSize;
+		}
+		else if (changeImage == 3)
+		{	
+			srvGpuHandle.ptr += (incrementSize + incrementSize2);
 		}
 		
 		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
