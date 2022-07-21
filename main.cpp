@@ -59,6 +59,9 @@ struct Object3d
 };
 
 void InitializeObject3d(Object3d* object, ID3D12Device* device);
+void UpdateObject3d(Object3d* object, XMMATRIX& matview, XMMATRIX& matProjection);
+void DrawObject3d(Object3d* object, ID3D12GraphicsCommandList* commandList, D3D12_VERTEX_BUFFER_VIEW& vbView,
+	D3D12_INDEX_BUFFER_VIEW& ibView, UINT numIndices);
 
 //ウィンドウプロシージャ
 LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
@@ -539,17 +542,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//先頭以外なら
 		if (i > 0)
 		{
-			//一つ前のオブジェクトを親オブジェクトとする
-			object3ds[i].parent = &object3ds[i - 1];
-			//親オブジェクトの9割の大きさ
-			object3ds[i].scale = { 0.9f,0.9f,0.9f };
-			//親オブジェクトに対してZ軸まわりに30度回転
-			object3ds[i].rotation = { 0.0f,0.0f,XMConvertToRadians(30.0f) };
-
+			//親オブジェクトの設定
+			object3ds[i].parent = &object3ds[0];
+			//親オブジェクトに対する大きさ
+			object3ds[i].scale = { 1.0f,1.0f,1.0f };
+			//親オブジェクトに対する回転
+			object3ds[i].rotation = { 0.0f,0.0f,0.0f };
 			//親オブジェクトに対してZ方向-8.0ずらす
-			object3ds[i].position = { 0.0f,0.0f,-8.0f };
+			//object3ds[i].position = { 0.0f,0.0f,-8.0f };
 		}
 
+		object3ds[1].position = { 10.0f,0.0f,0.0f };
+		object3ds[2].position = { 20.0f,0.0f,0.0f };
+		object3ds[3].position = { -10.0f,0.0f,0.0f };
+		object3ds[4].position = { -20.0f,0.0f,0.0f };
+		object3ds[5].position = { 0.0f,10.0f,0.0f };
+		object3ds[6].position = { 0.0f,-10.0f,0.0f };
+		object3ds[7].position = { 0.0f,-20.0f,0.0f };
+		object3ds[8].position = { 10.0f,-30.0f,0.0f };
+		object3ds[9].position = { 10.0f,-40.0f,0.0f };
+		object3ds[10].position = { -10.0f,-30.0f,0.0f };
+		object3ds[11].position = { -10.0f,-40.0f,0.0f };
 	}
 
 #pragma	region 頂点データ(P02_01)
@@ -1345,9 +1358,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 		}
 
+		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) || 
+			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
+		{
+			if (keyInput->HasPushedKey(DIK_UP)) { object3ds[0].position.y += 1.0f; }
+			else if (keyInput->HasPushedKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
+			if (keyInput->HasPushedKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
+			else if (keyInput->HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
+		}
+
 #pragma endregion
 
 #pragma region ワールド変換行列 
+
+		for (size_t i = 0; i < _countof(object3ds); i++)
+		{
+			UpdateObject3d(&object3ds[i], matView, matProjection);
+		}
 
 #pragma region 一つ目のオブジェクトのワールド変換行列
 
@@ -1536,6 +1563,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//定数バッファビュー(CBV)の設定コマンド
 		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+
+		//全オブジェクトについて処理
+		for (int i = 0; i < _countof(object3ds); i++)
+		{
+			DrawObject3d(&object3ds[i], commandList, vbView, ibView, _countof(indices));
+		}
+
 		////0番定数バッファビュー(CBV)の設定コマンド
 		//commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
 		//// 描画コマンド
@@ -1638,6 +1672,48 @@ void InitializeObject3d(Object3d* object, ID3D12Device* device)
 	//定数バッファのマッピング
 	result = object->constBuffTransform->Map(0, nullptr, (void**)&object->constMapTransform);
 	assert(SUCCEEDED(result));
+}
+
+void UpdateObject3d(Object3d* object, XMMATRIX& matview, XMMATRIX& matProjection)
+{
+	XMMATRIX matScale, matRot, matTrans;
+
+	//スケール、回転、平行移動の計算
+	matScale = XMMatrixScaling(object->scale.x, object->scale.y, object->scale.z);
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ(object->rotation.z);
+	matRot *= XMMatrixRotationX(object->rotation.x);
+	matRot *= XMMatrixRotationY(object->rotation.y);
+	matTrans = XMMatrixTranslation(object->position.x, object->position.y, object->position.z);
+
+	object->matworld = XMMatrixIdentity();
+	object->matworld *= matScale;
+	object->matworld *= matRot;
+	object->matworld *= matTrans;
+
+	//親オブジェクトがあれば
+	if (object->parent != nullptr)
+	{
+		//親オブジェクトのワールド行列を掛ける
+		object->matworld *= object->parent->matworld;
+	}
+
+	//定数バッファへデータ転送
+	object->constMapTransform->mat = object->matworld * matview * matProjection;
+}
+
+void DrawObject3d(Object3d* object, ID3D12GraphicsCommandList* commandList, D3D12_VERTEX_BUFFER_VIEW& vbView,
+	D3D12_INDEX_BUFFER_VIEW& ibView, UINT numIndices)
+{
+	//頂点バッファの設定
+	commandList->IASetVertexBuffers(0, 1, &vbView);
+	//インデックスバッファの設定
+	commandList->IASetIndexBuffer(&ibView);
+	//定数バッファビュー(CBV)の設定コマンド
+	commandList->SetGraphicsRootConstantBufferView(2, object->constBuffTransform->GetGPUVirtualAddress());
+
+	//描画コマンド
+	commandList->DrawIndexedInstanced(numIndices, 1, 0, 0, 0);
 }
 
 //定数バッファの生成
