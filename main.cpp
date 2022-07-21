@@ -209,8 +209,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ComPtr<ID3D12InfoQueue> infoQueue;
 	if (SUCCEEDED(device->QueryInterface(IID_PPV_ARGS(&infoQueue))))
 	{
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true); 
-		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);		
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
+		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
 	}
 #endif
 
@@ -350,7 +350,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region 描画初期化処理
 
 #pragma region 定数バッファ用データ構造体を宣言
-	
+
 #pragma endregion
 	// 3Dオブジェクトの数
 	const size_t kObjectCount = 50;
@@ -896,6 +896,35 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	metadata.format = MakeSRGB(metadata.format);
 
 #pragma endregion
+
+#pragma region 画像読み込み二枚目
+
+	//2枚目用に別の変数を用意しておく
+	TexMetadata metadata2{};
+	ScratchImage scratchImg2{};
+	// WICテクスチャのロード
+	result = LoadFromWICFile(
+		L"Resources/reimu.png",
+		WIC_FLAGS_NONE,
+		&metadata2, scratchImg2);
+
+	ScratchImage mipChain2{};
+	//ミニマップ生成
+	result = GenerateMipMaps(
+		scratchImg2.GetImages(), scratchImg2.GetImageCount(), scratchImg2.GetMetadata(),
+		TEX_FILTER_DEFAULT, 0, mipChain2);
+	if (SUCCEEDED(result))
+	{
+		scratchImg2 = std::move(mipChain2);
+		metadata2 = scratchImg2.GetMetadata();
+	}
+
+	//読み込んだディフューズテクスチャをSRGBとして扱う
+	metadata2.format = MakeSRGB(metadata2.format);
+
+
+#pragma endregion
+
 #pragma region 画像イメージデータの作成(自分で)
 
 
@@ -1001,6 +1030,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	textureResourceDesc.SampleDesc.Count = 1;
 
 #pragma endregion
+
+#pragma region 二枚目のテクスチャバッファの設定(P04_02)
+
+	//リソース設定
+	D3D12_RESOURCE_DESC textureResourceDesc2{};
+	textureResourceDesc2.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	textureResourceDesc2.Format = metadata2.format;
+	textureResourceDesc2.Width = metadata2.width; // 幅
+	textureResourceDesc2.Height = (UINT)metadata2.height; // 幅
+	textureResourceDesc2.DepthOrArraySize = (UINT16)metadata2.arraySize;
+	textureResourceDesc2.MipLevels = (UINT16)metadata2.mipLevels;
+	textureResourceDesc2.SampleDesc.Count = 1;
+
+#pragma endregion
+
+
+
 #pragma region テクスチャバッファの生成(P04_02)
 	//テクスチャバッファの生成
 	ID3D12Resource* texBuff = nullptr;
@@ -1012,6 +1058,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		nullptr,
 		IID_PPV_ARGS(&texBuff));
 #pragma endregion
+
+#pragma region 二枚目のテクスチャバッファの生成(P04_02)
+	//テクスチャバッファの生成
+	ID3D12Resource* texBuff2 = nullptr;
+	result = device->CreateCommittedResource(
+		&textureHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&textureResourceDesc2,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&texBuff2));
+#pragma endregion
+
+
 #pragma region テクスチャバッファにデータ転送(P04_03_27)
 
 	//全ミニマップについて
@@ -1029,6 +1089,24 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		);
 		assert(SUCCEEDED(result));
 	}
+
+	//全ミニマップについて
+	for (size_t i = 0; i < metadata2.mipLevels; i++)
+	{
+		//ミニマップレベルを指定してイメージを取得
+		const Image* img2 = scratchImg2.GetImage(i, 0, 0);
+		//テクスチャバッファにデータ転送
+		result = texBuff2->WriteToSubresource(
+			(UINT)i,
+			nullptr,
+			img2->pixels,
+			(UINT)img2->rowPitch,
+			(UINT)img2->slicePitch
+		);
+		assert(SUCCEEDED(result));
+	}
+
+
 
 	//result = texBuff->WriteToSubresource(
 	//	0,
@@ -1090,16 +1168,41 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region シェーダーリソースビュー設定(P04_03)
 	//シェーダーリソースビューの設定
+
+	//画像切替用のフラグ
+	int changeImage = 0;
+
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-	srvDesc.Format = resDesc.Format;//RGBA float
+	srvDesc.Format = textureResourceDesc.Format;//RGBA float
 	srvDesc.Shader4ComponentMapping =
 		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
+	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	device->CreateShaderResourceView(texBuff, &srvDesc, srvHandle);
 #pragma endregion
+
+#pragma region 二枚目の画像用シェーダーリソースビュー設定(P06_06)
+
+	//デスクリプタのサイズを取得
+	UINT incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//取得したサイズを使用してハンドルを進める
+	srvHandle.ptr += incrementSize;
+	
+	//シェーダーリソースビューの設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc2{}; //設定構造体
+	srvDesc2.Format = textureResourceDesc2.Format;//RGBA float
+	srvDesc2.Shader4ComponentMapping =
+		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc2.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc2.Texture2D.MipLevels = textureResourceDesc2.MipLevels;
+
+	//ハンドルの指す位置にシェーダーリソースビュー作成
+	device->CreateShaderResourceView(texBuff2, &srvDesc2, srvHandle);
+
+#pragma endregion
+
 
 #pragma region グラフィックスパイプライン設定(P02_02_P04)
 
@@ -1333,38 +1436,47 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
 		{
 			//座標を移動する処理(Z座標)
-			if (keyInput->HasPushedKey(DIK_UP)) 
-			{ 
-				position.y += 1.0f; 
-				position1.y += 2.0f; 
-
-			}
-			else if (keyInput->HasPushedKey(DIK_DOWN)) 
-			{ 
-				position.y -= 1.0f; 
-				position1.y -= 2.0f; 
-
-			}
-			if (keyInput->HasPushedKey(DIK_RIGHT)) 
+			if (keyInput->HasPushedKey(DIK_UP))
 			{
-				 
-				position1.x += 2.0f; 
+				position.y += 1.0f;
+				position1.y += 2.0f;
+
 			}
-			else if (keyInput->HasPushedKey(DIK_LEFT)) 
-			{ 
-				
+			else if (keyInput->HasPushedKey(DIK_DOWN))
+			{
+				position.y -= 1.0f;
+				position1.y -= 2.0f;
+
+			}
+			if (keyInput->HasPushedKey(DIK_RIGHT))
+			{
+
+				position1.x += 2.0f;
+			}
+			else if (keyInput->HasPushedKey(DIK_LEFT))
+			{
+
 				position1.x -= 2.0f;
 
 			}
 		}
 
-		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) || 
+		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
 			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
 		{
 			if (keyInput->HasPushedKey(DIK_UP)) { object3ds[0].position.y += 1.0f; }
 			else if (keyInput->HasPushedKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
 			if (keyInput->HasPushedKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
 			else if (keyInput->HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
+		}
+
+		if (keyInput->HasPushedKey(DIK_SPACE))
+		{
+			changeImage += 1;
+		}
+		else if (keyInput->HasReleasedKey(DIK_SPACE))
+		{
+			changeImage = 0;
 		}
 
 #pragma endregion
@@ -1473,6 +1585,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// レンダーターゲットビューのハンドルを取得
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
 		rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
+
+		
 		//深度ステンシルビュー用のデスクリプタヒープのハンドルを取得
 		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
 		commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
@@ -1486,12 +1600,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//背景色を変更
 		//keyInput->ChangeColor(clearColor);
-		if (keyInput->HasPushedKey(DIK_SPACE))
-		{
-			//画面クリアカラーの数値を書き換える
-			clearColor[0] = 1.0f;
-			clearColor[1] = 0.1f;
-		}
+		//if (keyInput->HasPushedKey(DIK_SPACE))
+		//{
+		//	//画面クリアカラーの数値を書き換える
+		//	clearColor[0] = 1.0f;
+		//	clearColor[1] = 0.1f;
+		//}
 
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 		commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -1546,6 +1660,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 		// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
+
+		if (changeImage == 1)
+		{
+			srvGpuHandle.ptr += incrementSize;
+		}
+		
 		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 #pragma endregion 
@@ -1581,7 +1701,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
 
 
-		
+
 #pragma endregion 
 #pragma endregion グラフィックコマンド
 		// 4.描画コマンドここまで
