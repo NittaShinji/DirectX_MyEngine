@@ -403,9 +403,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
 	assert(SUCCEEDED(result));
 
+	//color
+	int changeColor = 1;
 	float colorR = 1.0f;
-	float colorG = 1.0f;
-	float colorB = 1.0f;
+	float colorG = 0.0f;
+	float colorB = 0.0f;
+	//透明度
+	float alpha = 1.0f;
 
 	//値を書き込むと自動的に転送される
 	constMapMaterial->color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -858,9 +862,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	{
 		{
 			//xyz座標
-		"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
-		D3D12_APPEND_ALIGNED_ELEMENT,
-		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 
 		{
@@ -1511,11 +1515,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 #pragma endregion
 
-#pragma region ターゲットの周りをまわるカメラ(P05_04)
-		if (keyInput->HasPushedKey(DIK_D) || keyInput->HasPushedKey(DIK_A))
+#pragma region カメラ操作(加点要素)
+
+		if (keyInput->HasPushedKey(DIK_D) == 1 || keyInput->HasPushedKey(DIK_A) == 1)
 		{
-			if (keyInput->HasPushedKey(DIK_D)) { angle += XMConvertToRadians(1.0f); }
-			else if (keyInput->HasPushedKey(DIK_A)) { angle -= XMConvertToRadians(1.0f); }
+			if (keyInput->HasPushedKey(DIK_D) == 1) { angle += XMConvertToRadians(1.0f); }
+			else if (keyInput->HasPushedKey(DIK_A) == 1) { angle -= XMConvertToRadians(1.0f); }
 
 			//angleラジアンだけY軸まわりに回転。半径は-100
 			eye.x = -100 * sinf(angle);
@@ -1527,64 +1532,46 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 
-#pragma region 図形を連続して動かす
+#pragma region 図形の移動と回転(加点要素)
 
-		//いずれかのキーを押していたら
-		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
-			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
+		//移動
+		if (keyInput->HasPushedKey(DIK_UP) == 1) 
 		{
-			//座標を移動する処理(Z座標)
-			if (keyInput->HasPushedKey(DIK_UP))
-			{
-				position.y += 1.0f;
-				position1.y += 2.0f;
-
-			}
-			else if (keyInput->HasPushedKey(DIK_DOWN))
-			{
-				position.y -= 1.0f;
-				position1.y -= 2.0f;
-
-			}
-			if (keyInput->HasPushedKey(DIK_RIGHT))
-			{
-
-				position1.x += 2.0f;
-			}
-			else if (keyInput->HasPushedKey(DIK_LEFT))
-			{
-
-				position1.x -= 2.0f;
-
-			}
+			object3ds[0].position.y += 1.0f; 
+		}
+		else if (keyInput->HasPushedKey(DIK_DOWN) == 1)
+		{ 
+			object3ds[0].position.y -= 1.0f; 
+		}
+		if (keyInput->HasPushedKey(DIK_RIGHT) == 1) 
+		{ 
+			object3ds[0].position.x += 1.0f; 
+		}
+		else if (keyInput->HasPushedKey(DIK_LEFT) == 1) 
+		{ 
+			object3ds[0].position.x -= 1.0f; 
 		}
 
-		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
-			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
-		{
-			if (keyInput->HasPushedKey(DIK_UP)) { object3ds[0].position.y += 1.0f; }
-			else if (keyInput->HasPushedKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
-			if (keyInput->HasPushedKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
-			else if (keyInput->HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
+		//回転
+		if (keyInput->HasPushedKey(DIK_E) == 1) { object3ds[0].rotation.z += 0.1f; }
+		else if (keyInput->HasPushedKey(DIK_Q) == 1) { object3ds[0].rotation.z -= 0.1f; }
 
-			if (keyInput->HasPushedKey(DIK_A)) { object3ds[0].rotation.z += 0.1f; }
-			else if (keyInput->HasPushedKey(DIK_D)) { object3ds[0].rotation.z -= 0.1f; }
-		}
+#pragma endregion
 
-		if (keyInput->HasPushedKey(DIK_1) || keyInput->PushedKeyMoment(DIK_1))
+#pragma region ボタンで画像切替
+		//画像切替
+		if (keyInput->HasPushedKey(DIK_1) == 1 || keyInput->PushedKeyMoment(DIK_1) == 1)
 		{
 			changeImage = 1;
 		}
-		else if (keyInput->HasPushedKey(DIK_2) || keyInput->PushedKeyMoment(DIK_2))
+		else if (keyInput->HasPushedKey(DIK_2) == 1 || keyInput->PushedKeyMoment(DIK_2) == 1)
 		{
 			changeImage = 2;
 		}
-		else if (keyInput->HasPushedKey(DIK_3) || keyInput->PushedKeyMoment(DIK_3))
+		else if (keyInput->HasPushedKey(DIK_3) == 1 || keyInput->PushedKeyMoment(DIK_3) == 1)
 		{
 			changeImage = 3;
 		}
-
-
 #pragma endregion
 
 #pragma region ワールド変換行列 
@@ -1593,59 +1580,83 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			UpdateObject3d(&object3ds[i], matView, matProjection);
 		}
+#pragma endregion
 
-#pragma region 一つ目のオブジェクトのワールド変換行列
+#pragma region だんだんと色が変わる(必須課題)
 
-		////ワールド変換行列
-		//XMMATRIX matWorld;
+		constMapMaterial->color = XMFLOAT4(colorR, colorG, colorB, alpha);	//RGBA
 
-		//XMMATRIX matScale;	//スケーリング行列
-		//matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+		if (keyInput->PushedKeyMoment(DIK_SPACE) == 1)
+		{
+			if (changeColor == 1)
+			{
+				changeColor = 0;
+			}
+			else if (changeColor == 0)
+			{
+				changeColor = 1;
+			}
+		}
 
-		//XMMATRIX matRot;	//回転行列
-		//matRot = XMMatrixIdentity();
-		//matRot *= XMMatrixRotationZ((rotation.z));	//Z軸周りに45度回転
-		//matRot *= XMMatrixRotationX((rotation.x));	//X軸周りに15度回転
-		//matRot *= XMMatrixRotationY((rotation.y));	//Y軸周りに30度回転
+		if (changeColor == 1)
+		{
+			if (colorR != 0.0f)
+			{
+				colorR += 0.005;
+				if (colorR > 1.0)
+				{
+					colorR = 0.0f;
+				}
+			}
 
-		//XMMATRIX matTrans;	//平行移動行列
-		//matTrans = XMMatrixTranslation(position.x, position.y, position.z);	//(-50,0,0)平行移動
+			if (colorB != 1.0f)
+			{
+				colorB += 0.005;
+				if (colorB > 1.0f)
+				{
+					colorB = 0.0f;
+				}
+			}
 
-		//matWorld = XMMatrixIdentity();	//単位行列を代入して変形をリセット
-		//matWorld *= matScale;	//ワールド行列にスケーリングを反映
-		//matWorld *= matRot;		//ワールド行列に回転を反映
-		//matWorld *= matTrans;	//ワールド行列に平行移動を反映
+			if (colorG != 1.0f)
+			{
+				colorG -= 0.005;
+				if (colorG < 0.0f)
+				{
+					colorG = 1.0f;
+				}
+			}
 
-		////定数バッファにデータ転送
-		//constMapTransform0->mat = matWorld * matView * matProjection;
+		}
+		else if(changeColor == 0)
+		{
+			colorR = 1.0f;
+			colorB = 1.0f;
+			colorG = 1.0f;
+		}
+
+#pragma region αブレンド(加点要素)
+
+		//αブレンド
+		if (keyInput->HasPushedKey(DIK_4))
+		{
+			alpha -= 0.005f;
+			if (alpha < 0.0f)
+			{
+				alpha = 1.0f;
+			}
+		}
 
 #pragma endregion
 
-#pragma region 二つ目のオブジェクトのワールド変換行列
+		/*colorR += 0.1f;
+		colorG += 0.1f;
+		colorB += 0.1f;
 
-		////ワールド変換行列
-		//XMMATRIX matWorld1;
-		//matWorld1 = XMMatrixIdentity();
-
-		////スケーリング行列
-		//XMMATRIX matScale1 = XMMatrixScaling(1.0f,1.0f,1.0f);
-		//XMMATRIX matRot1 = XMMatrixRotationY(XM_PI/4.0f);
-		//XMMATRIX matTrans1 = XMMatrixTranslation(position1.x, position1.y, position1.z);
-
-		////ワールド行列を合成
-		//matWorld1 = matScale1 * matRot1 * matTrans1;	
-		//
-		////定数バッファにデータ転送
-		//constMapTransform1->mat = matWorld1 * matView * matProjection;
-
-
-#pragma endregion
-
-#pragma endregion
-
-
-
-#pragma region チャレンジ問題
+		if (colorR > 1.0f)
+		{
+			colorR = 0.0f;
+		}*/
 
 		//if (keyInput->PushedKeyMoment(DIK_2))
 		//{
@@ -1669,7 +1680,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//			assert(SUCCEEDED(result));
 		//		}
 		//	}
-
 		//}
 
 #pragma endregion
@@ -1918,6 +1928,7 @@ void UpdateObject3d(Object3d* object, XMMATRIX& matview, XMMATRIX& matProjection
 	matRot *= XMMatrixRotationZ(object->rotation.z);
 	matRot *= XMMatrixRotationX(object->rotation.x);
 	matRot *= XMMatrixRotationY(object->rotation.y);
+	matTrans = XMMatrixIdentity();
 	matTrans = XMMatrixTranslation(object->position.x, object->position.y, object->position.z);
 
 	object->matworld = XMMatrixIdentity();
@@ -1949,37 +1960,3 @@ void DrawObject3d(Object3d* object, ID3D12GraphicsCommandList* commandList, D3D1
 	//描画コマンド
 	commandList->DrawIndexedInstanced(numIndices, 1, 0, 0, 0);
 }
-
-//定数バッファの生成
-//long ConstantBufferResult(long& result, ID3D12Device* device, D3D12_HEAP_PROPERTIES& cbHeapProp,
-//	D3D12_RESOURCE_DESC& cbResourceDesc, ID3D12Resource* constBuffTransform)
-//{
-//
-//	assert(device != nullptr && constBuffTransform != nullptr);
-//
-//	return result = device->CreateCommittedResource(
-//		&cbHeapProp,//ヒープ設定
-//		D3D12_HEAP_FLAG_NONE,
-//		&cbResourceDesc,//リソース設定
-//		D3D12_RESOURCE_STATE_GENERIC_READ,
-//		nullptr,
-//		IID_PPV_ARGS(&constBuffTransform));
-//	assert(SUCCEEDED(result));
-//}
-
-//void CreateConstantBuffer(ID3D12Resource* constBuffMaterial)
-//{
-//	if(constBuffMaterial == nullptr)
-//	//ヒープ設定
-//	D3D12_HEAP_PROPERTIES cbHeapProp{};
-//	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-//	//リソース設定
-//	D3D12_RESOURCE_DESC cbResourceDesc{};
-//	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-//	cbResourceDesc.Width = (sizeof(ConstBufferDataTransform) + 0xff) & ~0xff;	//256バイトアラインメント
-//	cbResourceDesc.Height = 1;
-//	cbResourceDesc.DepthOrArraySize = 1;
-//	cbResourceDesc.MipLevels = 1;
-//	cbResourceDesc.SampleDesc.Count = 1;
-//	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-//}
