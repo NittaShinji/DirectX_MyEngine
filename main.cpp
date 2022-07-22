@@ -26,8 +26,6 @@ void CreateConstantBuffer();
 long ConstantBufferResult(long result, ID3D12Device* device, D3D12_HEAP_PROPERTIES cbHeapProp,
 	D3D12_RESOURCE_DESC cbResourceDesc, ID3D12Resource* constBuffTransform);
 
-
-
 //定数バッファ用データ構造体(マテリアル)
 struct ConstBufferDataMaterial
 {
@@ -1259,7 +1257,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UINT incrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//取得したサイズを使用してハンドルを進める
 	srvHandle.ptr += incrementSize;
-	
+
 	//シェーダーリソースビューの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc2{}; //設定構造体
 	srvDesc2.Format = textureResourceDesc2.Format;//RGBA float
@@ -1279,7 +1277,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	UINT incrementSize2 = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//取得したサイズを使用してハンドルを進める
 	srvHandle.ptr += incrementSize2;
-	
+
 	//シェーダーリソースビューの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc3{}; //設定構造体
 	srvDesc3.Format = textureResourceDesc3.Format;//RGBA float
@@ -1560,7 +1558,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			if (keyInput->HasPushedKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
 			else if (keyInput->HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
 
-			if(keyInput->HasPushedKey(DIK_A)) { object3ds[0].rotation.z += 0.1f; }
+			if (keyInput->HasPushedKey(DIK_A)) { object3ds[0].rotation.z += 0.1f; }
 			else if (keyInput->HasPushedKey(DIK_D)) { object3ds[0].rotation.z -= 0.1f; }
 		}
 
@@ -1576,7 +1574,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			changeImage = 3;
 		}
-		
+
 
 #pragma endregion
 
@@ -1685,7 +1683,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
 		rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
 
-		
+
 		//深度ステンシルビュー用のデスクリプタヒープのハンドルを取得
 		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
 		commandList->OMSetRenderTargets(1, &rtvHandle, false, &dsvHandle);
@@ -1769,10 +1767,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			srvGpuHandle.ptr += incrementSize;
 		}
 		else if (changeImage == 3)
-		{	
+		{
 			srvGpuHandle.ptr += (incrementSize + incrementSize2);
 		}
-		
+
 		commandList->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 #pragma endregion 
