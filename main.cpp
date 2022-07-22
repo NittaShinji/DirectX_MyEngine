@@ -1502,7 +1502,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 #pragma endregion
 
-#pragma region ターゲットの周りをまわるカメラ(P05_04)
+#pragma region カメラの操作(加点要素)
 		if (keyInput->HasPushedKey(DIK_D) || keyInput->HasPushedKey(DIK_A))
 		{
 			if (keyInput->HasPushedKey(DIK_D)) { angle += XMConvertToRadians(1.0f); }
@@ -1518,38 +1518,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 
-#pragma region 図形を連続して動かす
+#pragma region 図形の回転と移動(加点要素)
 
-		//いずれかのキーを押していたら
-		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
-			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
-		{
-			//座標を移動する処理(Z座標)
-			if (keyInput->HasPushedKey(DIK_UP))
-			{
-				position.y += 1.0f;
-				position1.y += 2.0f;
-
-			}
-			else if (keyInput->HasPushedKey(DIK_DOWN))
-			{
-				position.y -= 1.0f;
-				position1.y -= 2.0f;
-
-			}
-			if (keyInput->HasPushedKey(DIK_RIGHT))
-			{
-
-				position1.x += 2.0f;
-			}
-			else if (keyInput->HasPushedKey(DIK_LEFT))
-			{
-
-				position1.x -= 2.0f;
-
-			}
-		}
-
+		//移動
 		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
 			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
 		{
@@ -1557,11 +1528,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			else if (keyInput->HasPushedKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
 			if (keyInput->HasPushedKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
 			else if (keyInput->HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
-
-			if(keyInput->HasPushedKey(DIK_A)) { object3ds[0].rotation.z += 0.1f; }
-			else if (keyInput->HasPushedKey(DIK_D)) { object3ds[0].rotation.z -= 0.1f; }
 		}
+		//回転
+		if (keyInput->HasPushedKey(DIK_R)) { object3ds[0].rotation.z += 0.1f; }
+		else if (keyInput->HasPushedKey(DIK_Q)) { object3ds[0].rotation.z -= 0.1f; }
 
+		//画像切替
 		if (keyInput->HasPushedKey(DIK_1) || keyInput->PushedKeyMoment(DIK_1))
 		{
 			changeImage = 1;
