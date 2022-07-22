@@ -1516,7 +1516,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 			//ƒrƒ…[•ÏŠ·s—ñ‚ðÄ•Ò¬
 			matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
 		}
 
 #pragma endregion
@@ -1560,6 +1559,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			else if (keyInput->HasPushedKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
 			if (keyInput->HasPushedKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
 			else if (keyInput->HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
+
+			if(keyInput->HasPushedKey(DIK_A)) { object3ds[0].rotation.z += 0.1f; }
+			else if (keyInput->HasPushedKey(DIK_D)) { object3ds[0].rotation.z -= 0.1f; }
 		}
 
 		if (keyInput->HasPushedKey(DIK_1) || keyInput->PushedKeyMoment(DIK_1))
