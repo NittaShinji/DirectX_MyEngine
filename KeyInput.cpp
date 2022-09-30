@@ -6,15 +6,7 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
-
-//コンストラクタ
-KeyInput::KeyInput()
-	:keyboard(nullptr)
-{}
-
-//デストラクタ
-KeyInput::~KeyInput()
-{}
+KeyInput* KeyInput::instance = nullptr;
 
 //アクセッサ
 BYTE KeyInput::GetKeys(uint8_t keyNumber)
@@ -66,7 +58,11 @@ void KeyInput::SaveFrameKey()
 
 	//全てのキーの入力情報を取得する
 	keyboard->GetDeviceState(sizeof(keys), keys);
+}
 
+void KeyInput::KeyUpdate()
+{
+	//HasPushedKey;
 }
 
 //キーを押した状態か

@@ -6,11 +6,40 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
-class KeyInput 
+class KeyInput
 {
 public:
-	KeyInput();
-	~KeyInput();
+	
+	//コピーコンストラクタ
+	KeyInput(const KeyInput&) = delete;
+	//コピー代入演算子
+	KeyInput& operator=(const KeyInput&) = delete;
+	//ムーブコンストラクタ
+	KeyInput(KeyInput&&) = delete;
+	//ムーブ代入演算子
+	KeyInput& operator = (KeyInput&&) = delete;
+
+	//インスタンスを参照
+	static KeyInput* GetInstance()
+	{
+		return instance;
+	}
+
+	//インスタンスの生成
+	static void Create()
+	{
+		if (!instance)
+		{
+			instance = new KeyInput;
+		}
+	}
+
+	//インスタンスの破棄
+	static void destroy()
+	{
+		delete instance;
+		instance = nullptr;
+	}
 
 	//アクセッサ
 	BYTE GetKeys(uint8_t keynumber);
@@ -35,11 +64,24 @@ public:
 	//キーを離した瞬間か
 	bool ReleasedKeyMoment(int keyNumber);
 
+	//キーボードの更新
+	void KeyUpdate();
+
 private:
 
+	//コンストラクタ
+	KeyInput() = default;
+	//デストラクタ
+	~KeyInput() = default;
+	//インスタンス
+	static KeyInput* instance;
+
+	//各種キーの保存用変数
 	BYTE keys[256] = {};
 	BYTE oldKeys[256] = {};
 
-	IDirectInputDevice8* keyboard;
+	//キーボードデバイス
+	IDirectInputDevice8* keyboard = nullptr;
 };
 
+//KeyInput* KeyInput::instance = nullptr;

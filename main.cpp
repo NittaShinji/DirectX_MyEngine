@@ -365,9 +365,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region キー入力 (P02_03)
 
 	//キー入力クラスの作成
-	KeyInput* keyInput = new KeyInput();
+	//KeyInput* keyInput = new KeyInput();
+	//変更前
+	/*KeyInput* keyInput = new KeyInput();
+	keyInput->Initialize(w.hInstance, hwnd);*/
 
+	//シングルトンインスタンス
+	//KeyInput::GetInstance().Initialize(w.hInstance, hwnd);
+	//唯一のインスタンスを作成
+	KeyInput::Create();
+	KeyInput* keyInput = KeyInput::GetInstance();
+
+	//作成したインスタンスを初期化
 	keyInput->Initialize(w.hInstance, hwnd);
+
 #pragma endregion
 
 	//DirectX初期化処理 ここまで
@@ -1491,9 +1502,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理 ここから
 		keyInput->SaveFrameKey();
-
-
-
+		
 #pragma region 頂点バッファへのデータ転送 (P02_01)
 		if (keyInput->HasPushedKey(DIK_1))
 		{
@@ -1892,7 +1901,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
 
-	delete keyInput;
+	keyInput->destroy();
+	//KeyInput::destroy();
+	//delete keyInput;
 
 	/*delete &scratchImg;
 	delete &scratchImg2;
