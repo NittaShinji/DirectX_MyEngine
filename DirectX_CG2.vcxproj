@@ -162,6 +162,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="blend.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="KeyInput.h" />
   </ItemGroup>

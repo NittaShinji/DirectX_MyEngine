@@ -21,7 +21,6 @@ using namespace Microsoft::WRL;
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
-
 void CreateConstantBuffer();
 long ConstantBufferResult(long result, ID3D12Device* device, D3D12_HEAP_PROPERTIES cbHeapProp,
 	D3D12_RESOURCE_DESC cbResourceDesc, ID3D12Resource* constBuffTransform);
@@ -50,7 +49,13 @@ struct Object3d
 	XMFLOAT3 rotation = { 0,0,0 };
 	XMFLOAT3 position = { 0,0,0 };
 	//ワールド変換行列
-	XMMATRIX matworld;
+	XMMATRIX matworld =
+	{
+		0.0f,0.0f,0.0f,0.0f,
+		0.0f,0.0f,0.0f,0.0f,
+		0.0f,0.0f,0.0f,0.0f,
+		0.0f,0.0f,0.0f,0.0f
+	};
 	//親オブジェクトのポインタ
 	Object3d* parent = nullptr;
 
@@ -107,7 +112,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region ウインドウの生成 (P01_01)
 	// ウィンドウオブジェクトの生成
 	HWND hwnd = CreateWindow(w.lpszClassName, // クラス名
-		L"DirectXGame", // タイトルバーの文字
+		L"DirectX_CG2_評価課題2_最低要素と加点要素", // タイトルバーの文字
 		WS_OVERLAPPEDWINDOW, // 標準的なウィンドウスタイル
 		CW_USEDEFAULT, // 表示X座標(OSに任せる)
 		CW_USEDEFAULT, // 表示Y座標(OSに任せる)
@@ -133,6 +138,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
 		debugController->EnableDebugLayer();
 		debugController->SetEnableSynchronizedCommandQueueValidation(TRUE);
+		debugController->SetEnableGPUBasedValidation(TRUE);
 	}
 #endif
 
@@ -438,37 +444,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	cbResourceDesc2.SampleDesc.Count = 1;
 	cbResourceDesc2.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-	//定数バッファの生成
-	//result = device->CreateCommittedResource(
-	//	&cbHeapProp2,//ヒープ設定
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&cbResourceDesc2,//リソース設定
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&constBuffTransform0));
-	//assert(SUCCEEDED(result));
-
 #pragma endregion
 
 #pragma region 三次元用の定数バッファの転送(P05_02)
-
-	//定数バッファのマッピング
-	//ConstBufferDataTransform* constMapTransform = nullptr;
-	//result = constBuffTransform0->Map(0, nullptr, (void**)&constMapTransform0);//マッピング
-	//assert(SUCCEEDED(result));
-
-	//単位行列を代入
-	//constMapTransform0->mat = XMMatrixIdentity();
-	////前回の式で計算した行列
-	//constMapTransform->mat.r[0].m128_f32[0] = 2.0f / window_width;		//ウインドウ横幅
-	//constMapTransform->mat.r[1].m128_f32[1] = -2.0f	/ window_height;	//ウインドウ縦幅
-	////画面半分の平行移動(05_02_P32)
-	//constMapTransform->mat.r[3].m128_f32[0] = -1.0f;	
-	//constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
-
-	//平行投影変換
-	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
-
 
 	//ビュー変換行列
 	XMMATRIX matView;
@@ -498,17 +476,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	rotation = { 0.0f,0.0f,0.0f };
 	position = { 0.0f,0.0f,0.0f };
 
-	//前回の式で計算した行列
-	//XMMATRIX oldVer = XMMatrixIdentity();
-	//oldVer.r[0].m128_f32[0] = 2.0f / window_width;		//ウインドウ横幅
-	//oldVer.r[1].m128_f32[1] = -2.0f	/ window_height;	//ウインドウ縦幅
-	////画面半分の平行移動(05_02_P32)
-	//oldVer.r[3].m128_f32[0] = -1.0f;
-	//oldVer.r[3].m128_f32[1] = 1.0f;
-	////今回の関数で計算した行列
-	//XMMATRIX newVer = XMMatrixOrthographicOffCenterLH(0.0f, window_width, window_height, 0.0f, 0.0f, 1.0f);
-	//constMapTransform->mat = XMMatrixOrthographicOffCenterLH(0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f);
-
 #pragma endregion
 
 #pragma region 二個目のオブジェクト用の定数バッファ
@@ -517,20 +484,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ComPtr<ID3D12Resource> constBuffTransform1;
 	//定数バッファのマッピング用ポインタ
 	ConstBufferDataTransform* constMapTransform1 = nullptr;
-
-	//定数バッファの生成
-	//result = device->CreateCommittedResource(
-	//	&cbHeapProp2,//ヒープ設定
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&cbResourceDesc2,//リソース設定
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&constBuffTransform1));
-	//assert(SUCCEEDED(result));
-
-	//定数バッファのマッピング
-	//result = constBuffTransform1->Map(0, nullptr, (void**)&constMapTransform1);//マッピング
-	//assert(SUCCEEDED(result));
 
 	//スケーリング倍率
 	XMFLOAT3 scale1;
@@ -553,7 +506,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		//親構造のサンプル
 		//先頭以外なら
-		if (i > 0)
+		if (i > 0 && i != 12)
 		{
 			//親オブジェクトの設定
 			object3ds[i].parent = &object3ds[0];
@@ -564,7 +517,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			//親オブジェクトに対してZ方向-8.0ずらす
 			//object3ds[i].position = { 0.0f,0.0f,-8.0f };
 		}
+		else if (i == 12)
+		{
+			//比較用のブロック
+			object3ds[12].scale = { 2.0f,2.0f,2.0f };
+			object3ds[12].rotation = { 0.0f,0.0f,0.0f };
+			object3ds[12].position = { -50.0f,0.0f,0.0f };
+		}
 
+		//体のパーツ
 		object3ds[1].position = { 10.0f,0.0f,0.0f };
 		object3ds[2].position = { 20.0f,0.0f,0.0f };
 		object3ds[3].position = { -10.0f,0.0f,0.0f };
@@ -586,44 +547,45 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		XMFLOAT3 pos;		//xyz座標
 		XMFLOAT3 normal;	//法線ベクトル
 		XMFLOAT2 uv;		//画像内のxyz座標
+		XMFLOAT4 RGBA;		//RGBA
 	};
 
 	// 頂点データ
 	Vertex vertices[] = {
-		//	x		y	 z			u	v
+		//	x		y	 z			 u	 v			R   G    B     A
 		// 前
-		{{ -5.0f, -5.0f, -5.0f },{}, {0.0f,1.0f}},// 左下 
-		{{ -5.0f, 5.0f, -5.0f }, {}, {0.0f,0.0f}},// 左上 
-		{{ 5.0f, -5.0f, -5.0f }, {}, {1.0f,1.0f}},// 右下 
-		{{ 5.0f, 5.0f, -5.0f }, {}, {1.0f,0.0f}},// 右上 
+		{{ -5.0f, -5.0f, -5.0f },{}, {0.0f,1.0f},{1.0f,0.0f,0.0f,1.0f}},// 左下 
+		{{ -5.0f, 5.0f, -5.0f }, {}, {0.0f,0.0f},{0.0f,1.0f,0.0f,1.0f}},// 左上 
+		{{ 5.0f, -5.0f, -5.0f }, {}, {1.0f,1.0f},{0.0f,0.0f,1.0f,1.0f}},// 右下 
+		{{ 5.0f, 5.0f, -5.0f }, {}, {1.0f,0.0f},{1.0f,0.0f,0.0f,1.0f}},// 右上 
 		// 後(前面とZ座標の符号が逆)
-		{{ -5.0f, -5.0f, 5.0f }, {}, {0.0f,1.0f}},// 左下 
-		{{ -5.0f, 5.0f, 5.0f }, {}, {0.0f,0.0f}},// 左上 
-		{{ 5.0f, -5.0f, 5.0f }, {}, {1.0f,1.0f}},// 右下 
-		{{ 5.0f, 5.0f, 5.0f }, {}, {1.0f,0.0f}},// 右上 
+		{{ -5.0f, -5.0f, 5.0f }, {}, {0.0f,1.0f},{1.0f,0.0f,0.0f,1.0f}},// 左下 
+		{{ -5.0f, 5.0f, 5.0f }, {}, {0.0f,0.0f},{0.0f,1.0f,0.0f,1.0f}},// 左上 
+		{{ 5.0f, -5.0f, 5.0f }, {}, {1.0f,1.0f},{0.0f,0.0f,1.0f,1.0f}},// 右下 
+		{{ 5.0f, 5.0f, 5.0f }, {}, {1.0f,0.0f},{1.0f,0.0f,0.0f,1.0f}},// 右上 
 
 		// 左
-		{{ -5.0f, -5.0f, -5.0f },{}, {0.0f,1.0f}},// 左下 
-		{{ -5.0f, 5.0f, -5.0f },{}, {0.0f,0.0f}},// 左上 
-		{{ -5.0f, -5.0f, 5.0f },{}, {1.0f,1.0f}},// 右下 
-		{{ -5.0f, 5.0f, 5.0f }, {},{1.0f,0.0f}},// 右上 
+		{{ -5.0f, -5.0f, -5.0f },{}, {0.0f,1.0f},{1.0f,0.0f,0.0f,1.0f}},// 左下 
+		{{ -5.0f, 5.0f, -5.0f },{}, {0.0f,0.0f},{0.0f,1.0f,0.0f,1.0f}},// 左上 
+		{{ -5.0f, -5.0f, 5.0f },{}, {1.0f,1.0f},{0.0f,0.0f,1.0f,1.0f}},// 右下 
+		{{ -5.0f, 5.0f, 5.0f }, {},{1.0f,0.0f},{1.0f,0.0f,0.0f,1.0f}},// 右上 
 
 		// 右(左面とX座標の符号が逆)
-		{{ 5.0f, -5.0f, -5.0f },{}, {0.0f,1.0f}},// 左下 
-		{{ 5.0f, 5.0f, -5.0f },{}, {0.0f,0.0f}},// 左上 
-		{{ 5.0f, -5.0f, 5.0f },{}, {1.0f,1.0f}},// 右下 
-		{{ 5.0f, 5.0f, 5.0f }, {},{1.0f,0.0f}},// 右上 
+		{{ 5.0f, -5.0f, -5.0f },{}, {0.0f,1.0f},{1.0f,0.0f,0.0f,1.0f}},// 左下 
+		{{ 5.0f, 5.0f, -5.0f },{}, {0.0f,0.0f},{0.0f,1.0f,0.0f,1.0f}},// 左上 
+		{{ 5.0f, -5.0f, 5.0f },{}, {1.0f,1.0f},{0.0f,0.0f,1.0f,1.0f}},// 右下 
+		{{ 5.0f, 5.0f, 5.0f }, {},{1.0f,0.0f},{1.0f,0.0f,0.0f,1.0f}},// 右上 
 
 		// 下
-		{{ -5.0f, -5.0f, -5.0f },{}, {0.0f,1.0f}},// 左下 
-		{{ -5.0f, -5.0f, 5.0f },{}, {0.0f,0.0f}},// 左上 
-		{{ 5.0f, -5.0f, -5.0f },{}, {1.0f,1.0f}},// 右下 
-		{{ 5.0f, -5.0f, 5.0f },{}, {1.0f,0.0f}},// 右上 
+		{{ -5.0f, -5.0f, -5.0f },{}, {0.0f,1.0f},{1.0f,0.0f,0.0f,1.0f}},// 左下 
+		{{ -5.0f, -5.0f, 5.0f },{}, {0.0f,0.0f},{0.0f,1.0f,0.0f,1.0f}},// 左上 
+		{{ 5.0f, -5.0f, -5.0f },{}, {1.0f,1.0f},{0.0f,0.0f,1.0f,1.0f}},// 右下 
+		{{ 5.0f, -5.0f, 5.0f },{}, {1.0f,0.0f},{1.0f,0.0f,0.0f,1.0f}},// 右上 
 		// 上(下面とY座標の符号が逆)
-		{{ -5.0f, 5.0f, -5.0f },{}, {0.0f,1.0f}},// 左下 
-		{{ -5.0f, 5.0f, 5.0f },{},{0.0f,0.0f}},// 左上 
-		{{ 5.0f, 5.0f, -5.0f },{}, {1.0f,1.0f}},// 右下 
-		{{ 5.0f, 5.0f, 5.0f },{}, {1.0f,0.0f}},// 右上 
+		{{ -5.0f, 5.0f, -5.0f },{}, {0.0f,1.0f},{1.0f,0.0f,0.0f,1.0f}},// 左下 
+		{{ -5.0f, 5.0f, 5.0f },{},{0.0f,0.0f},{0.0f,1.0f,0.0f,1.0f}},// 左上 
+		{{ 5.0f, 5.0f, -5.0f },{}, {1.0f,1.0f},{0.0f,0.0f,1.0f,1.0f}},// 右下 
+		{{ 5.0f, 5.0f, 5.0f },{}, {1.0f,0.0f},{1.0f,0.0f,0.0f,1.0f}},// 右上 
 
 	};
 
@@ -657,6 +619,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		22,21,23,	//三角形8つ目
 	};
 
+	const float topHeight = 10.0f;	//天井の高さ
+
+	
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * _countof(vertices));
 
@@ -881,6 +846,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
 		},
 		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
+		{
+			"RGBA",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
+
 	};
 #pragma endregion
 
@@ -890,7 +861,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ScratchImage scratchImg{};
 	// WICテクスチャのロード
 	result = LoadFromWICFile(
-		L"Resources/dan.jpg",	//「Resources」フォルダの「dan.jpg」
+		L"Resources/reimu.png",	
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 
@@ -917,7 +888,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ScratchImage scratchImg2{};
 	// WICテクスチャのロード
 	result = LoadFromWICFile(
-		L"Resources/reimu.png",
+		L"Resources/dan.jpg",
 		WIC_FLAGS_NONE,
 		&metadata2, scratchImg2);
 
@@ -968,22 +939,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region 画像イメージデータの作成(自分で)
 
-
-	//画像イメージデータの作成
-
-	////横方向ピクセル数
-	//const size_t textureWidth = 256;
-	////縦方向ピクセル数
-	//const size_t textureHeight = 256;
-	////配列の要素数
-	//const size_t imageDateCount = textureWidth * textureHeight;
-	////　画像イメージデータ配列
-	//XMFLOAT4* imageDate = new XMFLOAT4[imageDateCount];
-
-	//チャレンジ問題1用の変数
-	/*int countNumber = 0;
-	int changeColor = 0;*/
-
 	//チャレンジ問題2
 	//乱数シード生成器
 	std::random_device seed_gen;
@@ -991,64 +946,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	std::mt19937_64 engine(seed_gen());
 	//乱数範囲の指定
 	std::uniform_real_distribution<float> dist(0, 1);
-
-	////全ピクセルの色を初期化
-	//for (size_t i = 0; i < imageDateCount; i++)
-	//{
-	//	//実行結果
-	//	//imageDate[i].x = 1.0f; // R
-	//	//imageDate[i].y = 0.0f; // G
-	//	//imageDate[i].z = 0.0f; // B
-	//	//imageDate[i].w = 1.0f; // A
-
-	//	//練習問題
-	//	//imageDate[i].x = 0.0f; // R
-	//	//imageDate[i].y = 1.0f; // G
-	//	//imageDate[i].z = 0.0f; // B
-	//	//imageDate[i].w = 1.0f; // A
-
-	//	//チャレンジ問題1
-	//	//if (countNumber < 10)
-	//	//{
-	//	//	countNumber++;
-	//	//}
-
-	//	//if (countNumber >= 10)
-	//	//{
-	//	//	if (changeColor == 0)
-	//	//	{
-	//	//		changeColor = 1;
-	//	//	}
-	//	//	else if (changeColor == 1)
-	//	//	{
-	//	//		changeColor = 0;
-	//	//	}
-
-	//	//	countNumber = 0;
-	//	//}
-
-	//	//if (changeColor == 0)
-	//	//{
-	//	//	imageDate[i].x = 1.0f; // R
-	//	//	imageDate[i].y = 0.0f; // G
-	//	//	imageDate[i].z = 0.0f; // B
-	//	//	imageDate[i].w = 1.0f; // A
-	//	//}
-	//	//else if(changeColor == 1)
-	//	//{
-	//	//	imageDate[i].x = 0.0f; // R
-	//	//	imageDate[i].y = 0.0f; // G
-	//	//	imageDate[i].z = 1.0f; // B
-	//	//	imageDate[i].w = 0.0f; // A
-	//	//}
-
-	//	//チャレンジ問題2
-	//	imageDate[i].x = dist(engine); // R
-	//	imageDate[i].y = dist(engine); // G
-	//	imageDate[i].z = dist(engine); // B
-	//	imageDate[i].w = 1.0f; // A
-	//	
-	//}
 
 #pragma endregion 
 
@@ -1136,9 +1033,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		IID_PPV_ARGS(&texBuff3));
 #pragma endregion
 
-
-
-
 #pragma region テクスチャバッファにデータ転送(P04_03_27)
 
 	//全ミニマップについて
@@ -1189,16 +1083,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		assert(SUCCEEDED(result));
 	}
 
-	//result = texBuff->WriteToSubresource(
-	//	0,
-	//	nullptr,	//全領域へコピー
-	//	imageDate,	//元データアドレス
-	//	sizeof(XMFLOAT4) * textureWidth,	// 1ラインサイズ
-	//	sizeof(XMFLOAT4) * imageDateCount	//　全サイズ
-	//);
-
-	//delete[] imageDate;
-
 #pragma endregion
 
 #pragma region デスクリプタヒープ生成(04_02)
@@ -1213,7 +1097,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	srvHeapDesc.NumDescriptors = kMaxSRVCount;
 
 	//設定を本にSRV用デスクリプタヒープを生成
-	ID3D12DescriptorHeap* srvHeap = nullptr;
+	ComPtr<ID3D12DescriptorHeap> srvHeap = nullptr;
 	result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 	assert(SUCCEEDED(result));
 #pragma endregion
@@ -1228,7 +1112,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
 	dsvHeapDesc.NumDescriptors = 1;	//深度ビューは1つ
 	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;	//デプスステンシルビュー
-	ID3D12DescriptorHeap* dsvHeap = nullptr;
+	ComPtr<ID3D12DescriptorHeap> dsvHeap = nullptr;
 	// デスクリプタヒープの作成
 	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
 
@@ -1251,7 +1135,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//シェーダーリソースビューの設定
 
 	//画像切替用のフラグ
-	int changeImage = 1;
+	int changeImage = 0;
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
 	srvDesc.Format = textureResourceDesc.Format;//RGBA float
@@ -1304,9 +1188,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 
-
-
-
 #pragma region グラフィックスパイプライン設定(P02_02_P04)
 
 	// グラフィックスパイプライン設定
@@ -1326,10 +1207,16 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
 	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
 
+	//ワイヤーフレーム表示の切り替えフラグ
+	int WiREFRAMEFlag = 1;
+
 #pragma region ブレンド設定(03_01)
 	// ブレンドステート
 	//pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
 	//	= D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
+	// 
+	int blendMode = 1;
+	
 	//レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
@@ -1339,26 +1226,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;	//加算
 	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;		//ソースの値を100%使う(今から描画しようとしている色)
 	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;	//デストの値を  0%使う(既に描かれている色)
-
-	//RGB値の計算式の設定(加算合成)
-	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;	//加算
-	//blenddesc.SrcBlend = D3D12_BLEND_ONE;	//ソースの値を100%使う
-	//blenddesc.DestBlend = D3D12_BLEND_ONE;	//デストの値を100%使う
-
-	//減算合成
-	//blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;	//デストからソースを減算
-	//blenddesc.SrcBlend = D3D12_BLEND_ONE;				//ソースの値を100%使う
-	//blenddesc.DestBlend = D3D12_BLEND_ONE;			//デストの値を100%使う
-
-	//色反転
-	//blenddesc.BlendOp = D3D12_BLEND_OP_ADD;			//加算
-	//blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;	//1.0f - デストカラーの値
-	//blenddesc.DestBlend = D3D12_BLEND_ZERO;			//使わない
-
-	//半透明合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
 
 #pragma endregion 
 
@@ -1455,7 +1322,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
-
 #pragma endregion 
 	// ゲームループ
 	while (true) {
@@ -1477,31 +1343,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// DirectX毎フレーム処理 ここから
 		keyInput->SaveFrameKey();
 
-
-
+		
 #pragma region 頂点バッファへのデータ転送 (P02_01)
 		if (keyInput->HasPushedKey(DIK_1))
 		{
-			/*if (formchange == 0)
-			{
-				vertices[3] = { +0.5f, +0.5f, 0.0f };
-				vertices[4] = { +0.5f, -0.5f, 0.0f };
-				vertices[5] = { -0.5f, +0.5f, 0.0f };
-				if (keyInput->ReleasedKeyMoment(DIK_1))
-				{
-					formchange = 1;
-				}
-			}
-			else
-			{
-				vertices[3] = { -0.5f, -0.5f, 0.0f };
-				vertices[4] = { -0.5f, +0.5f, 0.0f };
-				vertices[5] = { +0.5f, -0.5f, 0.0f };
-				if (keyInput->ReleasedKeyMoment(DIK_1))
-				{
-					formchange = 0;
-				}
-			}*/
 			// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 			Vertex* vertMap = nullptr;
 			result = vertBuff->Map(0, nullptr, (void**)&vertMap);
@@ -1517,10 +1362,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region カメラ操作(加点要素)
 
-		if (keyInput->HasPushedKey(DIK_D) == 1 || keyInput->HasPushedKey(DIK_A) == 1)
+		//原点を中心に回転
+		if (keyInput->HasPushedKey(DIK_RIGHT) == 1 || keyInput->HasPushedKey(DIK_LEFT) == 1)
 		{
-			if (keyInput->HasPushedKey(DIK_D) == 1) { angle += XMConvertToRadians(1.0f); }
-			else if (keyInput->HasPushedKey(DIK_A) == 1) { angle -= XMConvertToRadians(1.0f); }
+			if (keyInput->HasPushedKey(DIK_RIGHT) == 1) { angle += XMConvertToRadians(1.0f); }
+			else if (keyInput->HasPushedKey(DIK_LEFT) == 1) { angle -= XMConvertToRadians(1.0f); }
 
 			//angleラジアンだけY軸まわりに回転。半径は-100
 			eye.x = -100 * sinf(angle);
@@ -1534,27 +1380,33 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region 図形の移動と回転(加点要素)
 
-		//移動
-		if (keyInput->HasPushedKey(DIK_UP) == 1) 
+		//WADS移動
+		if (keyInput->HasPushedKey(DIK_W) == 1) 
 		{
 			object3ds[0].position.y += 1.0f; 
 		}
-		else if (keyInput->HasPushedKey(DIK_DOWN) == 1)
+		else if (keyInput->HasPushedKey(DIK_S) == 1)
 		{ 
 			object3ds[0].position.y -= 1.0f; 
 		}
-		if (keyInput->HasPushedKey(DIK_RIGHT) == 1) 
+		if (keyInput->HasPushedKey(DIK_D) == 1) 
 		{ 
 			object3ds[0].position.x += 1.0f; 
 		}
-		else if (keyInput->HasPushedKey(DIK_LEFT) == 1) 
+		else if (keyInput->HasPushedKey(DIK_A) == 1) 
 		{ 
 			object3ds[0].position.x -= 1.0f; 
 		}
 
-		//回転
-		if (keyInput->HasPushedKey(DIK_E) == 1) { object3ds[0].rotation.z += 0.1f; }
-		else if (keyInput->HasPushedKey(DIK_Q) == 1) { object3ds[0].rotation.z -= 0.1f; }
+		//Z軸回転
+		if (keyInput->HasPushedKey(DIK_C) == 1) { object3ds[0].rotation.z += 0.01f; }
+		else if (keyInput->HasPushedKey(DIK_Z) == 1) { object3ds[0].rotation.z -= 0.01f; }
+		//X軸回転
+		if (keyInput->HasPushedKey(DIK_R) == 1) { object3ds[0].rotation.x += 0.01f; }
+		else if (keyInput->HasPushedKey(DIK_V) == 1) { object3ds[0].rotation.x -= 0.01f; }
+		//Y軸回転
+		if (keyInput->HasPushedKey(DIK_Q) == 1) { object3ds[0].rotation.y += 0.01f; }
+		else if (keyInput->HasPushedKey(DIK_E) == 1) { object3ds[0].rotation.y -= 0.01f; }
 
 #pragma endregion
 
@@ -1600,45 +1452,36 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		if (changeColor == 1)
 		{
-			if (colorR != 0.0f)
+			
+			colorR += 0.005f;
+			if (colorR > 1.0f)
 			{
-				colorR += 0.005;
-				if (colorR > 1.0)
-				{
-					colorR = 0.0f;
-				}
+				colorR = 0.0f;
 			}
 
-			if (colorB != 1.0f)
+			colorB += 0.005f;
+			if (colorB > 1.0f)
 			{
-				colorB += 0.005;
-				if (colorB > 1.0f)
-				{
-					colorB = 0.0f;
-				}
+				colorB = 0.0f;
 			}
-
-			if (colorG != 1.0f)
+			
+			colorG -= 0.005f;
+			if (colorG < 0.0f)
 			{
-				colorG -= 0.005;
-				if (colorG < 0.0f)
-				{
-					colorG = 1.0f;
-				}
+				colorG = 1.0f;
 			}
-
 		}
 		else if(changeColor == 0)
 		{
-			colorR = 1.0f;
-			colorB = 1.0f;
-			colorG = 1.0f;
+			colorR = 0.6f;
+			colorB = 0.6f;
+			colorG = 0.6f;
 		}
 
 #pragma region αブレンド(加点要素)
 
 		//αブレンド
-		if (keyInput->HasPushedKey(DIK_4))
+		if (keyInput->HasPushedKey(DIK_4) == 1)
 		{
 			alpha -= 0.005f;
 			if (alpha < 0.0f)
@@ -1649,38 +1492,104 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 
-		/*colorR += 0.1f;
-		colorG += 0.1f;
-		colorB += 0.1f;
+#pragma region ブレンド各種(加点要素)
 
-		if (colorR > 1.0f)
+		if (keyInput->HasPushedKey(DIK_5) == 1)
 		{
-			colorR = 0.0f;
-		}*/
+			if (blendMode != 2)
+			{
+				blendMode = 2;//加算合成;
+			}
+				
+		}
+		else if (keyInput->HasPushedKey(DIK_6) == 1)
+		{
+			if (blendMode != 3)
+			{
+				blendMode = 3;//減算合成;
+			}	
+		}
+		else if (keyInput->HasPushedKey(DIK_7) == 1)
+		{
 
-		//if (keyInput->PushedKeyMoment(DIK_2))
-		//{
-		//	int WiREFRAMEFlag = 1;
-		//	WiREFRAMEFlag--;
-		//	if (WiREFRAMEFlag <= 0)
-		//	{
-		//		if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_WIREFRAME)
-		//		{
-		//			pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
-		//			WiREFRAMEFlag = 20;
-		//			result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
-		//			assert(SUCCEEDED(result));
-		//		}
+			if (blendMode != 4)
+			{
+				blendMode = 4;//色反転;
+			}
+		}
+		else if (keyInput->HasPushedKey(DIK_8) == 1)
+		{
+			if (blendMode != 1)
+			{
+				blendMode = 1;//半透明合成
+			}
+		}
 
-		//		else if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_SOLID)
-		//		{
-		//			pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
-		//			WiREFRAMEFlag = 20;
-		//			result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
-		//			assert(SUCCEEDED(result));
-		//		}
-		//	}
-		//}
+		
+		if (blendMode == 2)
+		{
+			//RGB値の計算式の設定(加算合成)
+			blenddesc.BlendOp = D3D12_BLEND_OP_ADD;	//加算
+			blenddesc.SrcBlend = D3D12_BLEND_ONE;	//ソースの値を100%使う
+			blenddesc.DestBlend = D3D12_BLEND_ONE;	//デストの値を100%使う
+			result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+			assert(SUCCEEDED(result));
+		}
+
+		else if (blendMode == 3)
+		{
+			//減算合成
+			blenddesc.BlendOp = D3D12_BLEND_OP_REV_SUBTRACT;	//デストからソースを減算
+			blenddesc.SrcBlend = D3D12_BLEND_ONE;				//ソースの値を100%使う
+			blenddesc.DestBlend = D3D12_BLEND_ONE;			//デストの値を100%使う
+			result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+			assert(SUCCEEDED(result));
+		}
+
+		else if (blendMode == 4)
+		{
+			//色反転
+			blenddesc.BlendOp = D3D12_BLEND_OP_ADD;			//加算
+			blenddesc.SrcBlend = D3D12_BLEND_INV_DEST_COLOR;	//1.0f - デストカラーの値
+			blenddesc.DestBlend = D3D12_BLEND_ZERO;			//使わない
+			result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+			assert(SUCCEEDED(result));
+		}
+
+		else if (blendMode == 1)
+		{
+			//半透明合成
+			blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
+			blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
+			blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
+			result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+			assert(SUCCEEDED(result));
+		}
+
+#pragma endregion
+
+		if (keyInput->PushedKeyMoment(DIK_9) == 1)
+		{
+			WiREFRAMEFlag--;
+			if (WiREFRAMEFlag <= 0)
+			{
+				if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_WIREFRAME)
+				{
+					pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID;
+					WiREFRAMEFlag = 1;
+					result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+					assert(SUCCEEDED(result));
+				}
+
+				else if (pipelineDesc.RasterizerState.FillMode == D3D12_FILL_MODE_SOLID)
+				{
+					pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_WIREFRAME;
+					WiREFRAMEFlag = 1;
+					result = device->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+					assert(SUCCEEDED(result));
+				}
+			}
+		}
 
 #pragma endregion
 
@@ -1715,13 +1624,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f }; // 青っぽい色
 
 		//背景色を変更
-		//keyInput->ChangeColor(clearColor);
-		//if (keyInput->HasPushedKey(DIK_SPACE))
-		//{
-		//	//画面クリアカラーの数値を書き換える
-		//	clearColor[0] = 1.0f;
-		//	clearColor[1] = 0.1f;
-		//}
+		if (keyInput->HasPushedKey(DIK_RETURN) ==  1)
+		{
+			//画面クリアカラーの数値を書き換える
+			clearColor[0] = 1.0f;
+			clearColor[1] = 0.1f;
+		}
 
 		commandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 		commandList->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
@@ -1770,9 +1678,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region SRV設定コマンド
 
-
 		//SRVヒープの設定コマンド
-		commandList->SetDescriptorHeaps(1, &srvHeap);
+		//デスクリプタヒープの配列
+		ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get() };
+		commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+
 		// SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 		// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
@@ -1797,13 +1707,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region その他の設定コマンド
 
 		// プリミティブ形状の設定コマンド
-		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST); // 三角形リスト
-
-		//// 頂点バッファビューの設定コマンド
-		//commandList->IASetVertexBuffers(0, 1, &vbView);
-
-		////インデックスバッファビューの設定コマンド
-		//commandList->IASetIndexBuffer(&ibView);
+		commandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
 		//定数バッファビュー(CBV)の設定コマンド
 		commandList->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
@@ -1813,18 +1717,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		{
 			DrawObject3d(&object3ds[i], commandList, vbView, ibView, _countof(indices));
 		}
-
-		////0番定数バッファビュー(CBV)の設定コマンド
-		//commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform0->GetGPUVirtualAddress());
-		//// 描画コマンド
-		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
-
-		////1番定数バッファビュー(CBV)の設定コマンド
-		//commandList->SetGraphicsRootConstantBufferView(2, constBuffTransform1->GetGPUVirtualAddress());
-		//// 描画コマンド
-		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
-
-
 
 #pragma endregion 
 #pragma endregion グラフィックコマンド
