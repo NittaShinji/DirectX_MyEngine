@@ -359,8 +359,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//KeyInput::GetInstance().Initialize(w.hInstance, hwnd);
 	//唯一のインスタンスを作成
 	KeyInput::Create();
+	KeyInput* keyInput = KeyInput::GetInstance();
+
 	//作成したインスタンスを初期化
-	KeyInput::GetInstance().Initialize(w.hInstance, hwnd);
+	keyInput->Initialize(w.hInstance, hwnd);
 
 #pragma endregion
 
@@ -1480,10 +1482,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion ウインドウメッセージ処理
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理 ここから
-		KeyInput::GetInstance().SaveFrameKey();
+		keyInput->SaveFrameKey();
 		
 #pragma region 頂点バッファへのデータ転送 (P02_01)
-		if (KeyInput::GetInstance().HasPushedKey(DIK_1))
+		if (keyInput->HasPushedKey(DIK_1))
 		{
 			/*if (formchange == 0)
 			{
@@ -1519,10 +1521,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion
 
 #pragma region ターゲットの周りをまわるカメラ(P05_04)
-		if (KeyInput::GetInstance().HasPushedKey(DIK_D) || KeyInput::GetInstance().HasPushedKey(DIK_A))
+		if (keyInput->HasPushedKey(DIK_D) || keyInput->HasPushedKey(DIK_A))
 		{
-			if (KeyInput::GetInstance().HasPushedKey(DIK_D)) { angle += XMConvertToRadians(1.0f); }
-			else if (KeyInput::GetInstance().HasPushedKey(DIK_A)) { angle -= XMConvertToRadians(1.0f); }
+			if (keyInput->HasPushedKey(DIK_D)) { angle += XMConvertToRadians(1.0f); }
+			else if (keyInput->HasPushedKey(DIK_A)) { angle -= XMConvertToRadians(1.0f); }
 
 			//angleラジアンだけY軸まわりに回転。半径は-100
 			eye.x = -100 * sinf(angle);
@@ -1537,28 +1539,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region 図形を連続して動かす
 
 		//いずれかのキーを押していたら
-		if (KeyInput::GetInstance().HasPushedKey(DIK_UP) || KeyInput::GetInstance().HasPushedKey(DIK_DOWN) ||
-			KeyInput::GetInstance().HasPushedKey(DIK_RIGHT) || KeyInput::GetInstance().HasPushedKey(DIK_LEFT))
+		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
+			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
 		{
 			//座標を移動する処理(Z座標)
-			if (KeyInput::GetInstance().HasPushedKey(DIK_UP))
+			if (keyInput->HasPushedKey(DIK_UP))
 			{
 				position.y += 1.0f;
 				position1.y += 2.0f;
 
 			}
-			else if (KeyInput::GetInstance().HasPushedKey(DIK_DOWN))
+			else if (keyInput->HasPushedKey(DIK_DOWN))
 			{
 				position.y -= 1.0f;
 				position1.y -= 2.0f;
 
 			}
-			if (KeyInput::GetInstance().HasPushedKey(DIK_RIGHT))
+			if (keyInput->HasPushedKey(DIK_RIGHT))
 			{
 
 				position1.x += 2.0f;
 			}
-			else if (KeyInput::GetInstance().HasPushedKey(DIK_LEFT))
+			else if (keyInput->HasPushedKey(DIK_LEFT))
 			{
 
 				position1.x -= 2.0f;
@@ -1566,27 +1568,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 			}
 		}
 
-		if (KeyInput::GetInstance().HasPushedKey(DIK_UP) || KeyInput::GetInstance().HasPushedKey(DIK_DOWN) ||
-			KeyInput::GetInstance().HasPushedKey(DIK_RIGHT) || KeyInput::GetInstance().HasPushedKey(DIK_LEFT))
+		if (keyInput->HasPushedKey(DIK_UP) || keyInput->HasPushedKey(DIK_DOWN) ||
+			keyInput->HasPushedKey(DIK_RIGHT) || keyInput->HasPushedKey(DIK_LEFT))
 		{
-			if (KeyInput::GetInstance().HasPushedKey(DIK_UP)) { object3ds[0].position.y += 1.0f; }
-			else if (KeyInput::GetInstance().HasPushedKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
-			if (KeyInput::GetInstance().HasPushedKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
-			else if (KeyInput::GetInstance().HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
+			if (keyInput->HasPushedKey(DIK_UP)) { object3ds[0].position.y += 1.0f; }
+			else if (keyInput->HasPushedKey(DIK_DOWN)) { object3ds[0].position.y -= 1.0f; }
+			if (keyInput->HasPushedKey(DIK_RIGHT)) { object3ds[0].position.x += 1.0f; }
+			else if (keyInput->HasPushedKey(DIK_LEFT)) { object3ds[0].position.x -= 1.0f; }
 
-			if (KeyInput::GetInstance().HasPushedKey(DIK_A)) { object3ds[0].rotation.z += 0.1f; }
-			else if (KeyInput::GetInstance().HasPushedKey(DIK_D)) { object3ds[0].rotation.z -= 0.1f; }
+			if (keyInput->HasPushedKey(DIK_A)) { object3ds[0].rotation.z += 0.1f; }
+			else if (keyInput->HasPushedKey(DIK_D)) { object3ds[0].rotation.z -= 0.1f; }
 		}
 
-		if (KeyInput::GetInstance().HasPushedKey(DIK_1) || KeyInput::GetInstance().PushedKeyMoment(DIK_1))
+		if (keyInput->HasPushedKey(DIK_1) || keyInput->PushedKeyMoment(DIK_1))
 		{
 			changeImage = 1;
 		}
-		else if (KeyInput::GetInstance().HasPushedKey(DIK_2) || KeyInput::GetInstance().PushedKeyMoment(DIK_2))
+		else if (keyInput->HasPushedKey(DIK_2) || keyInput->PushedKeyMoment(DIK_2))
 		{
 			changeImage = 2;
 		}
-		else if (KeyInput::GetInstance().HasPushedKey(DIK_3) || KeyInput::GetInstance().PushedKeyMoment(DIK_3))
+		else if (keyInput->HasPushedKey(DIK_3) || keyInput->PushedKeyMoment(DIK_3))
 		{
 			changeImage = 3;
 		}
@@ -1876,7 +1878,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
 
-	KeyInput::destroy();
+	keyInput->destroy();
+	//KeyInput::destroy();
 	//delete keyInput;
 
 #pragma endregion WindowsAPI後始末

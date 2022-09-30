@@ -20,10 +20,11 @@ public:
 	KeyInput& operator = (KeyInput&&) = delete;
 
 	//インスタンスを参照
-	static KeyInput& GetInstance()
+	static KeyInput* GetInstance()
 	{
-		return *instance;
+		return instance;
 	}
+
 	//インスタンスの生成
 	static void Create()
 	{
@@ -32,6 +33,7 @@ public:
 			instance = new KeyInput;
 		}
 	}
+
 	//インスタンスの破棄
 	static void destroy()
 	{
@@ -62,6 +64,9 @@ public:
 	//キーを離した瞬間か
 	bool ReleasedKeyMoment(int keyNumber);
 
+	//キーボードの更新
+	void KeyUpdate();
+
 private:
 
 	//コンストラクタ
@@ -78,3 +83,5 @@ private:
 	//キーボードデバイス
 	IDirectInputDevice8* keyboard = nullptr;
 };
+
+//KeyInput* KeyInput::instance = nullptr;

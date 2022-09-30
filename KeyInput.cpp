@@ -58,7 +58,11 @@ void KeyInput::SaveFrameKey()
 
 	//全てのキーの入力情報を取得する
 	keyboard->GetDeviceState(sizeof(keys), keys);
+}
 
+void KeyInput::KeyUpdate()
+{
+	//HasPushedKey;
 }
 
 //キーを押した状態か
