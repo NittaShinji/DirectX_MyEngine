@@ -22,10 +22,10 @@ using namespace Microsoft::WRL;
 #pragma comment(lib, "dxgi.lib")
 
 
-void CreateConstantBuffer();
-long ConstantBufferResult(long result, ID3D12Device* device, D3D12_HEAP_PROPERTIES cbHeapProp,
-	D3D12_RESOURCE_DESC cbResourceDesc, ID3D12Resource* constBuffTransform);
-
+//void CreateConstantBuffer();
+//long ConstantBufferResult(long result, ID3D12Device* device, D3D12_HEAP_PROPERTIES cbHeapProp,
+//	D3D12_RESOURCE_DESC cbResourceDesc, ID3D12Resource* constBuffTransform);
+//
 //定数バッファ用データ構造体(マテリアル)
 struct ConstBufferDataMaterial
 {
@@ -134,6 +134,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		debugController->EnableDebugLayer();
 		debugController->SetEnableSynchronizedCommandQueueValidation(TRUE);
 	}
+
 #endif
 
 	HRESULT result;
@@ -144,9 +145,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	ComPtr<ID3D12CommandAllocator> commandAllocator;
 	//ComPtr<ID3D12GraphicsCommandList> commandList;
 	ComPtr<ID3D12CommandQueue> commandQueue;
+	//ID3D12DescriptorHeap* rtvHeap;
 	ComPtr<ID3D12DescriptorHeap> rtvHeap;
+	
+	ComPtr<ID3D12GraphicsCommandList> commandList;
 
-	ID3D12GraphicsCommandList* commandList = nullptr;
+	//ID3D12GraphicsCommandList* commandList = nullptr;
 
 #pragma region アダプタの列挙(P01_02)
 
@@ -214,6 +218,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
 	}
+	
+	
+	
 #endif
 
 #pragma region コマンドリストをGPUにまとめて命令を送るため (P01_02)
@@ -280,6 +287,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	// バックバッファ
 	std::vector<ComPtr<ID3D12Resource>> backBuffers;
 
+	//std::vector<ID3D12Resource*> backBuffers;
+
 	backBuffers.resize(swapChainDesc.BufferCount);
 #pragma endregion 
 #pragma region レンダーターゲートビュー(RTV)の生成 (P01_02)
@@ -299,6 +308,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 		// レンダーターゲットビューの生成
 		device->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
+		//device->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
+
 	}
 
 #pragma endregion 
@@ -306,6 +317,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region	深度バッファのリソース設定
 
 	D3D12_RESOURCE_DESC depthResourceDesc{};
+
 	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	depthResourceDesc.Width = window_width;								//レンダーターゲットに合わせる
 	depthResourceDesc.Height = window_height;							//レンダーターゲットに合わせる
@@ -327,6 +339,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region 深度バッファのリソース設定
 
 	ComPtr<ID3D12Resource> depthBuff;
+
 	//ID3D12Resource* depthBuff = nullptr;
 	
 	result = device->CreateCommittedResource(
@@ -337,15 +350,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		&depthClearValue,
 		IID_PPV_ARGS(&depthBuff)
 	);
-
 #pragma endregion 
 
 #pragma region フェンス (P01_02)
 
 	// フェンスの生成
 	ComPtr<ID3D12Fence> fence;
+	//ID3D12Fence* fence;
+
 	UINT64 fenceVal = 0;
 	result = device->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+
 #pragma endregion 
 #pragma region キー入力 (P02_03)
 
@@ -1209,7 +1224,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	srvHeapDesc.NumDescriptors = kMaxSRVCount;
 
 	//設定を本にSRV用デスクリプタヒープを生成
-	ID3D12DescriptorHeap* srvHeap = nullptr;
+	ComPtr<ID3D12DescriptorHeap> srvHeap;
+	
+	//ID3D12DescriptorHeap* srvHeap = nullptr;
+	
 	result = device->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 	assert(SUCCEEDED(result));
 #pragma endregion
@@ -1224,7 +1242,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
 	dsvHeapDesc.NumDescriptors = 1;	//深度ビューは1つ
 	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;	//デプスステンシルビュー
-	ID3D12DescriptorHeap* dsvHeap = nullptr;
+	//ID3D12DescriptorHeap* dsvHeap = nullptr;
+	ComPtr<ID3D12DescriptorHeap> dsvHeap;
 	// デスクリプタヒープの作成
 	result = device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap));
 
@@ -1680,6 +1699,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// 1.リソースバリアで書き込み可能に変更
 		D3D12_RESOURCE_BARRIER barrierDesc{};
 		barrierDesc.Transition.pResource = backBuffers[bbIndex].Get(); // バックバッファを指定
+		//barrierDesc.Transition.pResource = backBuffers[bbIndex].Get(); // バックバッファを指定
+
 		barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT; // 表示状態から
 		barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
 		commandList->ResourceBarrier(1, &barrierDesc);
@@ -1691,7 +1712,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// レンダーターゲットビューのハンドルを取得
 		D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap->GetCPUDescriptorHandleForHeapStart();
 		rtvHandle.ptr += bbIndex * device->GetDescriptorHandleIncrementSize(rtvHeapDesc.Type);
-
 
 		//深度ステンシルビュー用のデスクリプタヒープのハンドルを取得
 		D3D12_CPU_DESCRIPTOR_HANDLE dsvHandle = dsvHeap->GetCPUDescriptorHandleForHeapStart();
@@ -1760,9 +1780,10 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region SRV設定コマンド
 
-
 		//SRVヒープの設定コマンド
-		commandList->SetDescriptorHeaps(1, &srvHeap);
+		/*ID3D12DescriptorHeap* ppHeaps[] = { srvHeap.Get()};
+		commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);*/
+		commandList->SetDescriptorHeaps(1, srvHeap.GetAddressOf());
 		// SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 		D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 		// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
@@ -1801,7 +1822,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//全オブジェクトについて処理
 		for (int i = 0; i < _countof(object3ds); i++)
 		{
-			DrawObject3d(&object3ds[i], commandList, vbView, ibView, _countof(indices));
+			DrawObject3d(&object3ds[i], commandList.Get(), vbView, ibView, _countof(indices));
 		}
 
 		////0番定数バッファビュー(CBV)の設定コマンド
@@ -1836,7 +1857,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		result = commandList->Close();
 		assert(SUCCEEDED(result));
 		// コマンドリストの実行
-		ID3D12CommandList* commandLists[] = { commandList};
+		ID3D12CommandList* commandLists[] = { commandList.Get()};
 		commandQueue->ExecuteCommandLists(1, commandLists);
 		// 画面に表示するバッファをフリップ(裏表の入替え)
 		result = swapChain->Present(1, 0);
@@ -1846,6 +1867,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma region コマンド完了待ち(P01_03)
 		// コマンドの実行完了を待つ
 		commandQueue->Signal(fence.Get(), ++fenceVal);
+
 		if (fence->GetCompletedValue() != fenceVal) {
 			HANDLE event = CreateEvent(nullptr, false, false, nullptr);
 			fence->SetEventOnCompletion(fenceVal, event);
@@ -1864,12 +1886,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	}
 
+	
 #pragma region WindowsAPI後始末
 	//③ゲーム全体の終了処理
 	// ウィンドウクラスを登録解除
 	UnregisterClass(w.lpszClassName, w.hInstance);
 
 	delete keyInput;
+
+	/*delete &scratchImg;
+	delete &scratchImg2;
+	delete &scratchImg3;
+
+	delete &metadata;
+	delete &metadata2;
+	delete &metadata3;*/
+
+	//ComPtr<ID3D12DebugDevice> debugInterface;
+	/*ID3D12DebugDevice* debugInterface;
+
+	if (SUCCEEDED(device.Get()->QueryInterface(&debugInterface)))
+	{
+		debugInterface->ReportLiveDeviceObjects(D3D12_RLDO_DETAIL | D3D12_RLDO_IGNORE_INTERNAL);
+		debugInterface->Release();
+	}*/
+
 
 #pragma endregion WindowsAPI後始末
 	return 0;
