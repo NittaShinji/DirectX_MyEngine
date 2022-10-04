@@ -2,6 +2,7 @@
 #define DIRECTINPUT_VERSION  0x0800
 #include <dinput.h>
 #include <cstdint>
+#include <wrl.h>
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
@@ -9,6 +10,8 @@ class KeyInput
 {
 public:
 	
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 	//コピーコンストラクタ
 	KeyInput(const KeyInput&) = delete;
 	//コピー代入演算子
@@ -47,25 +50,24 @@ public:
 	//DirectInputの初期化
 	void Initialize(HINSTANCE windowHinstance, HWND hwnd);
 
-	//前フレームを保存する関数
-	void SaveFrameKey();
-
 	//警告関数
 	void KeyAssert();
 
+	//キーボードの更新
+	void KeyUpdate(BYTE keyNumber);
+	//前フレームを保存する関数
+	void SaveFrameKey();
+
 	//トリガー処理関数
 	//キーを押した状態か
-	bool HasPushedKey(int keyNumber);
+	bool HasPushedKey(BYTE keyNumber);
 	//キーを離した状態か
-	bool HasReleasedKey(int keyNumber);
+	bool HasReleasedKey(BYTE keyNumber);
 	//キーを押した瞬間か
-	bool PushedKeyMoment(int keyNumber);
+	bool PushedKeyMoment(BYTE keyNumber);
 	//キーを離した瞬間か
-	bool ReleasedKeyMoment(int keyNumber);
-
-	//キーボードの更新
-	void KeyUpdate();
-
+	bool ReleasedKeyMoment(BYTE keyNumber);
+	
 private:
 
 	//コンストラクタ
@@ -79,5 +81,8 @@ private:
 	BYTE keys[256] = {};
 	BYTE oldKeys[256] = {};
 
-	//IDirectInputDevice8* keyboard = nullptr;
+	//インスタンス
+	ComPtr<IDirectInput8> directInput = nullptr;
+	//キーボードデバイス
+	ComPtr<IDirectInputDevice8> keyboard = nullptr;
 };

@@ -2,17 +2,13 @@
 #include"KeyInput.h"
 #include <cstdint>
 #include <cassert>
-#include <wrl.h>
+//#include <wrl.h>
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
 KeyInput* KeyInput::instance = nullptr;
 
-template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-//インスタンス
-ComPtr<IDirectInput8> directInput = nullptr;
-//キーボードデバイス
-ComPtr<IDirectInputDevice8> keyboard = nullptr;
+//template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 //アクセッサ
 BYTE KeyInput::GetKeys(uint8_t keyNumber)
@@ -48,12 +44,19 @@ void KeyInput::Initialize(HINSTANCE windowHinstance,HWND hwnd )
 	assert(SUCCEEDED(result));
 }
 
+void KeyInput::KeyUpdate(BYTE keyNumber)
+{
+	/*KeyAssert();
+	SaveFrameKey();
+	HasPushedKey(keyNumber);
+	HasReleasedKey(keyNumber);
+	PushedKeyMoment(keyNumber);
+	ReleasedKeyMoment(keyNumber);*/
+}
+
 void KeyInput::SaveFrameKey()
 {
 	KeyAssert();
-
-	//キーボード情報の取得開始
-	keyboard->Acquire();
 
 	//1フレーム前の情報を保存する
 	for (int i = 0; i < 256; i++)
@@ -61,58 +64,68 @@ void KeyInput::SaveFrameKey()
 		oldKeys[i] = keys[i];
 	}
 
+	//キーボード情報の取得開始
+	keyboard->Acquire();
 	//全てのキーの入力情報を取得する
 	keyboard->GetDeviceState(sizeof(keys), keys);
 }
 
-void KeyInput::KeyUpdate()
-{
-	//HasPushedKey;
-}
+#pragma region トリガー処理関数
 
 //キーを押した状態か
-bool KeyInput::HasPushedKey(int keyNumber)
+bool KeyInput::HasPushedKey(BYTE keyNumber)
 {
 	KeyAssert();
 
 	if (keys[keyNumber] != 0 && oldKeys[keyNumber] != 0)
 	{
-		return TRUE;
+		return true;
 	}
+	return false;
 }
 
 //キーを離した状態か
-bool KeyInput::HasReleasedKey(int keyNumber)
+bool KeyInput::HasReleasedKey(BYTE keyNumber)
 {
 	KeyAssert();
 
 	if (keys[keyNumber] == 0 && oldKeys[keyNumber] == 0)
 	{
-		return TRUE;
+		return true;
 	}
+	return false;
 }
 
 //キーを押した瞬間か
-bool KeyInput::PushedKeyMoment(int keyNumber)
+bool KeyInput::PushedKeyMoment(BYTE keyNumber)
 {
 	KeyAssert();
 
 	if (keys[keyNumber] != 0 && oldKeys[keyNumber] == 0)
 	{
-		return TRUE;
+		return true;
 	}
+	return false;
 }
 
 //キーを離した瞬間か
-bool KeyInput::ReleasedKeyMoment(int keyNumber)
+bool KeyInput::ReleasedKeyMoment(BYTE keyNumber)
 {
 	KeyAssert();
 
 	if (keys[keyNumber] == 0 && oldKeys[keyNumber] != 0)
 	{
-		return TRUE;
+		return true;
 	}
+	return false;
 }
 
-void KeyInput::KeyAssert()
-{}
+#pragma endregion 
+
+void KeyInput::KeyAssert(){
+	for (int i = 0; i < 255; i++)
+	{
+		assert(SUCCEEDED(keys[i]));
+		assert(SUCCEEDED(oldKeys[i]));
+	}
+}
