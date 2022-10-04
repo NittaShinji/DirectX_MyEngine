@@ -2,11 +2,17 @@
 #include"KeyInput.h"
 #include <cstdint>
 #include <cassert>
-
+#include <wrl.h>
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
 KeyInput* KeyInput::instance = nullptr;
+
+template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+//インスタンス
+ComPtr<IDirectInput8> directInput = nullptr;
+//キーボードデバイス
+ComPtr<IDirectInputDevice8> keyboard = nullptr;
 
 //アクセッサ
 BYTE KeyInput::GetKeys(uint8_t keyNumber)
@@ -24,7 +30,6 @@ void KeyInput::Initialize(HINSTANCE windowHinstance,HWND hwnd )
 	HRESULT result;
 
 	//DirectInputの初期化
-	IDirectInput8* directInput = nullptr;
 	result = DirectInput8Create(
 		windowHinstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));

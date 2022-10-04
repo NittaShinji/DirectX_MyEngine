@@ -2,7 +2,6 @@
 #define DIRECTINPUT_VERSION  0x0800
 #include <dinput.h>
 #include <cstdint>
-
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
@@ -80,8 +79,5 @@ private:
 	BYTE keys[256] = {};
 	BYTE oldKeys[256] = {};
 
-	//キーボードデバイス
-	IDirectInputDevice8* keyboard = nullptr;
+	//IDirectInputDevice8* keyboard = nullptr;
 };
-
-//KeyInput* KeyInput::instance = nullptr;
