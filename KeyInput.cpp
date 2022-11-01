@@ -1,14 +1,13 @@
 #define DIRECTINPUT_VERSION  0x0800
+#include "Input.h"
 #include"KeyInput.h"
 #include <cstdint>
 #include <cassert>
-//#include <wrl.h>
+
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
 KeyInput* KeyInput::instance = nullptr;
-
-//template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 //アクセッサ
 BYTE KeyInput::GetKeys(uint8_t keyNumber)
@@ -21,13 +20,13 @@ BYTE KeyInput::GetOldKeys(uint8_t oldKeyNumber)
 	return oldKeys[oldKeyNumber];
 }
 
-void KeyInput::Initialize(HINSTANCE windowHinstance,HWND hwnd )
+void KeyInput::Initialize(WindowsAPI* winApi)
 {
 	HRESULT result;
 
 	//DirectInputの初期化
 	result = DirectInput8Create(
-		windowHinstance, DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
+		winApi->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput, nullptr);
 	assert(SUCCEEDED(result));
 
 	//キーボードのデバイスの生成
@@ -40,15 +39,18 @@ void KeyInput::Initialize(HINSTANCE windowHinstance,HWND hwnd )
 
 	//排他制御レベルのセット
 	result = keyboard->SetCooperativeLevel(
-		hwnd, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
+		winApi->GetHwndClass(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
 }
 
 void KeyInput::KeyUpdate(BYTE keyNumber)
 {
-	/*KeyAssert();
+	KeyAssert();
+
+	/*GetKeys(keyNumber);
+	GetOldKeys(keyNumber);*/
 	SaveFrameKey();
-	HasPushedKey(keyNumber);
+	/*HasPushedKey(keyNumber);
 	HasReleasedKey(keyNumber);
 	PushedKeyMoment(keyNumber);
 	ReleasedKeyMoment(keyNumber);*/

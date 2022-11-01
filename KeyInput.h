@@ -48,8 +48,8 @@ public:
 	BYTE GetOldKeys(uint8_t oldKeyNumber);
 
 	//DirectInput‚Ì‰Šú‰»
-	void Initialize(HINSTANCE windowHinstance, HWND hwnd);
-
+	void Initialize(WindowsAPI* winApi);
+	
 	//ŒxŠÖ”
 	void KeyAssert();
 

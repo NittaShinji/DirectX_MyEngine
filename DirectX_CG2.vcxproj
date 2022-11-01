@@ -142,12 +142,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyInput.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="WindowsAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="DirectXBasic.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="KeyInput.h" />
     <ClInclude Include="WindowsAPI.h" />
   </ItemGroup>

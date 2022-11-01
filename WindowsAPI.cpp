@@ -1,6 +1,5 @@
 #include "WindowsAPI.h"
 
-
 //ウィンドウプロシージャ
 LRESULT WindowsAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -66,4 +65,10 @@ bool WindowsAPI::ProcessMessage()
 	}
 
 	return false;
+}
+
+void WindowsAPI::Finalize()
+{
+	// ウィンドウクラスを登録解除
+	UnregisterClass(w.lpszClassName,w.hInstance);
 }

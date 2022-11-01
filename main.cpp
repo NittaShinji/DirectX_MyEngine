@@ -12,8 +12,7 @@ using namespace DirectX;
 using namespace Microsoft::WRL;
 #include <d3dcompiler.h>
 #define DIRECTINPUT_VERSION 0x0800 //DirectInputのバージョン指定
-#include <dinput.h>
-#include "KeyInput.h"
+#include "Input.h"
 #include "WindowsAPI.h"
 #include <memory>
 
@@ -62,69 +61,20 @@ void InitializeObject3d(Object3d* object, ID3D12Device* device);
 void UpdateObject3d(Object3d* object, XMMATRIX& matview, XMMATRIX& matProjection);
 void DrawObject3d(Object3d* object, ID3D12GraphicsCommandList* commandList, D3D12_VERTEX_BUFFER_VIEW& vbView,
 	D3D12_INDEX_BUFFER_VIEW& ibView, UINT numIndices);
-//
-////ウィンドウプロシージャ
-//LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
-//{
-//	//メッセージに応じてゲーム固有の処理を行う
-//	switch (msg)
-//	{
-//		//ウインドウが破棄された
-//	case WM_DESTROY:
-//		//OSに対して、アプリの終了を伝える
-//		PostQuitMessage(0);
-//		return 0;
-//	}
-//
-//	//標準のメッセージ処理を行う
-//	return DefWindowProc(hwnd, msg, wparam, lparam);
-//}
 
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
-	std::unique_ptr<WindowsAPI> winApi_ = std::make_unique<WindowsAPI>();
+	//std::unique_ptr<WindowsAPI> winApi = std::make_unique<WindowsAPI>();
+	WindowsAPI* winApi = nullptr;
+	winApi = new WindowsAPI();
+	winApi->Initialize();
 
-	winApi_->Initialize();
+	std::unique_ptr<Input> input = std::make_unique<Input>();
 
 #pragma region WindowsAPI初期化処理
 #pragma region ウインドウの設定 (P01_01)
-//	//①ゲーム全体の初期化
-//	//ウインドウサイズ
-//	const int window_width = 1280; //横幅
-//	const int window_height = 720; //縦幅
-//
-//	// ウィンドウクラスの設定
-//	WNDCLASSEX w{};
-//	w.cbSize = sizeof(WNDCLASSEX);
-//	w.lpfnWndProc = (WNDPROC)WindowProc; // ウィンドウプロシージャを設定
-//	w.lpszClassName = L"DirectXGame"; // ウィンドウクラス名
-//	w.hInstance = GetModuleHandle(nullptr); // ウィンドウハンドル
-//	w.hCursor = LoadCursor(NULL, IDC_ARROW); // カーソル指定
-//
-//	//　ウインドウクラスをOSに登録する
-//	RegisterClassEx(&w);
-//	// ウインドウサイズ{X座標　Y座標　横幅　縦幅}
-//	RECT wrc = { 0,0,window_width,window_height };
-//	//自動でサイズを補正する
-//	AdjustWindowRect(&wrc, WS_OVERLAPPEDWINDOW, false);
-//#pragma endregion 
-//
-//#pragma region ウインドウの生成 (P01_01)
-//	// ウィンドウオブジェクトの生成
-//	HWND hwnd = CreateWindow(w.lpszClassName, // クラス名
-//		L"DirectXGame", // タイトルバーの文字
-//		WS_OVERLAPPEDWINDOW, // 標準的なウィンドウスタイル
-//		CW_USEDEFAULT, // 表示X座標(OSに任せる)
-//		CW_USEDEFAULT, // 表示Y座標(OSに任せる)
-//		wrc.right - wrc.left, // ウィンドウ横幅
-//		wrc.bottom - wrc.top, // ウィンドウ縦幅
-//		nullptr, // 親ウィンドウハンドル
-//		nullptr, // メニューハンドル
-//		w.hInstance, // 呼び出しアプリケーションハンドル
-//		nullptr); // オプション
-//		// ウィンドウを表示状態にする
-//	ShowWindow(hwnd, SW_SHOW);
+//	//ゲーム全体の初期化
 
 #pragma endregion 
 
@@ -270,7 +220,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	// スワップチェーンの生成
 	result = dxgiFactory->CreateSwapChainForHwnd(
-		commandQueue.Get(), winApi_->GetHwndClass(), &swapChainDesc, nullptr, nullptr, &swapChain1);
+		commandQueue.Get(), winApi->GetHwndClass(), &swapChainDesc, nullptr, nullptr, &swapChain1);
 	assert(SUCCEEDED(result));
 
 	//生成したIDXGISwapChain1のオブジェクトをIDXGISwapChain4に変換する
@@ -323,8 +273,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	D3D12_RESOURCE_DESC depthResourceDesc{};
 
 	depthResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	depthResourceDesc.Width = winApi_->GetWinWidth();								//レンダーターゲットに合わせる
-	depthResourceDesc.Height = winApi_->GetWinHeight();							//レンダーターゲットに合わせる
+	depthResourceDesc.Width = winApi->GetWinWidth();								//レンダーターゲットに合わせる
+	depthResourceDesc.Height = winApi->GetWinHeight();							//レンダーターゲットに合わせる
 	depthResourceDesc.DepthOrArraySize = 1;
 	depthResourceDesc.Format = DXGI_FORMAT_D32_FLOAT;					//深度値フォーマット
 	depthResourceDesc.SampleDesc.Count = 1;
@@ -374,15 +324,22 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	/*KeyInput* keyInput = new KeyInput();
 	keyInput->Initialize(w.hInstance, hwnd);*/
 
-	//シングルトンインスタンス
-	//KeyInput::GetInstance().Initialize(w.hInstance, hwnd);
-	//唯一のインスタンスを作成
+	//シングルトンインスタンスを作成
 	KeyInput::Create();
 	KeyInput* keyInput = KeyInput::GetInstance();
 
+	//シングルトンインスタンス
+	//KeyInput::GetInstance().Initialize(w.hInstance, hwnd);
+	//唯一のインスタンスを作成
+	/*Input::Create();
+	Input* input = Input::GetInstance();*/
+	////std::unique_ptr<KeyInput> keyInput = KeyInput::GetInstance();
+	//KeyInput* keyInput = KeyInput::GetInstance();
+
 	//作成したインスタンスを初期化
 	//keyInput->Initialize(w.hInstance, hwnd);
-	keyInput->Initialize(winApi_->GetWindosClass().hInstance, winApi_->GetHwndClass());
+	//keyInput->Initialize(winApi_->GetWindosClass().hInstance, winApi_->GetHwndClass());
+	input->Initialize(winApi);
 
 #pragma endregion
 
@@ -510,7 +467,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	XMMATRIX matProjection =
 		XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),				//上下画角45度
-			(float)winApi_->GetWinWidth() / winApi_->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
+			(float)winApi->GetWinWidth() / winApi->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
 			0.1f, 1000.0f							//前端,奥端
 		);
 
@@ -1497,7 +1454,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// メッセージがある?
 
 		//windowsメッセージ処理
-		if (winApi_->ProcessMessage())
+		if (winApi->ProcessMessage())
 		{
 			//終了メッセージが来たらゲームループを抜ける
 			break;
@@ -1514,7 +1471,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion ウインドウメッセージ処理
 #pragma region DirectX毎フレーム処理
 		// DirectX毎フレーム処理 ここから
-		keyInput->SaveFrameKey();
+		input->Update();
+		//keyInput->SaveFrameKey();
 		
 #pragma region 頂点バッファへのデータ転送 (P02_01)
 		if (keyInput->HasPushedKey(DIK_1))
@@ -1767,8 +1725,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		D3D12_VIEWPORT viewport;
 
 		//1個目のビューポートを設定 左上
-		viewport.Width = winApi_->GetWinWidth();      //横幅
-		viewport.Height = winApi_->GetWinHeight();	//縦幅
+		viewport.Width = winApi->GetWinWidth();      //横幅
+		viewport.Height = winApi->GetWinHeight();	//縦幅
 		viewport.TopLeftX = 0;					//左上X
 		viewport.TopLeftY = 0;					//左上Y
 		viewport.MinDepth = 0.0f;				//最大深度
@@ -1783,9 +1741,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// シザー矩形
 		D3D12_RECT scissorRect;
 		scissorRect.left = 0; // 切り抜き座標左
-		scissorRect.right = scissorRect.left + winApi_->GetWinWidth(); // 切り抜き座標右
+		scissorRect.right = scissorRect.left + winApi->GetWinWidth(); // 切り抜き座標右
 		scissorRect.top = 0; // 切り抜き座標上
-		scissorRect.bottom = scissorRect.top + winApi_->GetWinHeight(); // 切り抜き座標下
+		scissorRect.bottom = scissorRect.top + winApi->GetWinHeight(); // 切り抜き座標下
 
 		// シザー矩形設定コマンドを、コマンドリストに積む
 		commandList->RSSetScissorRects(1, &scissorRect);
@@ -1857,8 +1815,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//// 描画コマンド
 		//commandList->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);; // 全ての頂点を使って描画
 
-
-
 #pragma endregion 
 #pragma endregion グラフィックコマンド
 		// 4.描画コマンドここまで
@@ -1907,17 +1863,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion 画面入れ替え
 
 	}
-
-	
 #pragma region WindowsAPI後始末
-	//③ゲーム全体の終了処理
-	// ウィンドウクラスを登録解除
-	//UnregisterClass(w.lpszClassName, w.hInstance);
-	UnregisterClass(winApi_->GetWindosClass().lpszClassName, winApi_->GetWindosClass().hInstance);
-
-	keyInput->destroy();
+	//ゲーム全体の終了処理
+	
+	input->Delete();
 	//KeyInput::destroy();
 	//delete keyInput;
+	//delete winApi;
 
 	/*delete &scratchImg;
 	delete &scratchImg2;
@@ -1937,8 +1889,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}*/
 
 #pragma endregion WindowsAPI後始末
-	winApi_ = nullptr;
-	keyInput = nullptr;
+	winApi = nullptr;
+	input = nullptr;
 	return 0;
 }
 
