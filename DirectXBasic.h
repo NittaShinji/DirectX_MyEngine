@@ -5,6 +5,7 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <chrono>
 #include "WindowsAPI.h"
 
 //DirectXŠî”Õ
@@ -36,6 +37,14 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() const { return device_; };
 	
 private:
+
+	//FPSŒÅ’è‰Šú‰»
+	void InitializeFixFPS();
+
+	//FPSŒÅ’èXV
+	void UpdateFixFPS();
+
+	std::chrono::steady_clock::time_point reference_;
 
 	
 	WindowsAPI* winApi_ = nullptr;

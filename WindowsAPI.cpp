@@ -1,5 +1,7 @@
 #include "WindowsAPI.h"
 
+#pragma comment(lib,"winmm.lib")
+
 //ウィンドウプロシージャ
 LRESULT WindowsAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -19,6 +21,9 @@ LRESULT WindowsAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam
 
 void WindowsAPI::Initialize()
 {
+	//システムタイマーの分解能を上げる
+	timeBeginPeriod(1);
+
 	w.cbSize = sizeof(WNDCLASSEX);
 	w.lpfnWndProc = (WNDPROC)WindowProc; // ウィンドウプロシージャを設定
 	w.lpszClassName = L"DirectXGame"; // ウィンドウクラス名

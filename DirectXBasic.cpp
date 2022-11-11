@@ -2,6 +2,7 @@
 #include <cassert>
 #include <vector>
 #include <string>
+#include <thread>
 #pragma comment(lib, "d3d12.lib")
 #pragma comment(lib, "dxgi.lib")
 
@@ -17,6 +18,9 @@ void DirectXBasic::Initialize(WindowsAPI* winApi)
 
 	//メンバ変数にコピー
 	this->winApi_ = winApi;
+
+	//FPS固定
+	InitializeFixFPS();
 
 	//デバイス
 	InitializeDevice();
@@ -169,6 +173,9 @@ void DirectXBasic::AfterDraw()
 		result_ = commandList_->Reset(commandAllocator_.Get(), nullptr);
 		assert(SUCCEEDED(result_));
 
+
+		//FPS固定
+		UpdateFixFPS();
 }
 
 void DirectXBasic::InitializeDevice()
@@ -401,5 +408,35 @@ void DirectXBasic::InitializeFence()
 	// フェンスの生成
 	
 	result_ = device_->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+
+}
+
+void DirectXBasic::InitializeFixFPS()
+{
+	reference_ = std::chrono::steady_clock::now();
+}
+
+void DirectXBasic::UpdateFixFPS()
+{
+	const std::chrono::microseconds kMinTime(uint64_t(1000000.0f / 60.0f));
+
+	const std::chrono::microseconds kMinCheckTime(uint64_t(1000000.0f / 65.0f));
+	//現在時間を取得
+	std::chrono::steady_clock::time_point now = std::chrono::steady_clock::now();
+	//前回記録からの経過時間を記録
+	std::chrono::microseconds elapsed =
+		std::chrono::duration_cast<std::chrono::microseconds>(now - reference_);
+
+	//1/60秒経っていない場合
+	if (elapsed < kMinCheckTime)
+	{
+		while (std::chrono::steady_clock::now() - reference_ < kMinTime)
+		{
+			std::this_thread::sleep_for(std::chrono::microseconds(1));
+		}
+	}
+
+	//現在時間を記録する
+	reference_ = std::chrono::steady_clock::now();
 
 }
