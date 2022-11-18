@@ -18,15 +18,10 @@ public:
 	//‰Šú‰»
 	void Initialize(WindowsAPI* winApi);
 	
-	/*DirectXBasic();
-	~DirectXBasic();*/
-
 	//•`‰æ‘Oˆ—
 	void BeforeDraw();
 	//•`‰æŒãˆ—
 	void AfterDraw();
-
-
 
 	HRESULT GetResult() { return result_; };
 
@@ -91,6 +86,7 @@ private:
 
 	UINT64 fenceVal = 0;
 
+	//‰Šú‰»ŠÖ”
 	void InitializeDevice();
 	void InitializeCommand();
 	void InitializeSwapChain();
