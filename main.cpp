@@ -15,6 +15,8 @@ using namespace Microsoft::WRL;
 #include "Input.h"
 #include "WindowsAPI.h"
 #include "DirectXBasic.h"
+#include "Sprite.h"
+#include "SpriteCommon.h"
 #include <memory>
 
 #pragma comment(lib,"dinput8.lib")
@@ -67,15 +69,19 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	winApi->Initialize();
 
 	std::unique_ptr<Input> input = std::make_unique<Input>();
-	DirectXBasic* directBasic_ = nullptr;
-	directBasic_ = new DirectXBasic();
-	directBasic_->Initialize(winApi);
-
-	HRESULT result = directBasic_->GetResult();
-
 	//std::unique_ptr<DirectXBasic> directBasic_ = std::make_unique<DirectXBasic>();
+	DirectXBasic* directXBasic_ = nullptr;
+	directXBasic_ = new DirectXBasic();
+	directXBasic_->Initialize(winApi);
+
+	SpriteCommon* spriteCommon = nullptr;
+	//スプライト共通部分
+	spriteCommon = new SpriteCommon;
+	spriteCommon->Initialize(directXBasic_);
 
 	//ゲーム全体の初期化
+	Sprite* sprite = new Sprite;
+	sprite->Initialize(spriteCommon);
  
 #pragma region キー入力 (P02_03)
 
@@ -259,7 +265,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 
-		directBasic_->BeforeDraw();
+		directXBasic_->BeforeDraw();
 
 #pragma region パイプラインステートとルートシグネチャの設定コマンド(P02_01)
 
@@ -272,7 +278,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region その他の設定コマンド
 
-		directBasic_->AfterDraw();
+		directXBasic_->AfterDraw();
 	}
 
 #pragma endregion
@@ -284,12 +290,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//KeyInput::destroy();
 	//delete keyInput;
 	delete winApi;
-	delete directBasic_;
-
+	delete directXBasic_;
+	delete spriteCommon;
+	//delete sprite;
 #pragma endregion WindowsAPI後始末
 
 	winApi = nullptr;
-	directBasic_ = nullptr;
+	directXBasic_ = nullptr;
 	//input = nullptr;
 	return 0;
 }
