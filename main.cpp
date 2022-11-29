@@ -55,11 +55,6 @@ struct Object3d
 
 };
 
-void InitializeObject3d(Object3d* object, ID3D12Device* device);
-void UpdateObject3d(Object3d* object, XMMATRIX& matview, XMMATRIX& matProjection);
-void DrawObject3d(Object3d* object, ID3D12GraphicsCommandList* commandList, D3D12_VERTEX_BUFFER_VIEW& vbView,
-	D3D12_INDEX_BUFFER_VIEW& ibView, UINT numIndices);
-
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 {
@@ -70,19 +65,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	std::unique_ptr<Input> input = std::make_unique<Input>();
 	//std::unique_ptr<DirectXBasic> directBasic_ = std::make_unique<DirectXBasic>();
-	DirectXBasic* directXBasic_ = nullptr;
-	directXBasic_ = new DirectXBasic();
-	directXBasic_->Initialize(winApi);
+	DirectXBasic* directXBasic = nullptr;
+	directXBasic = new DirectXBasic();
+	directXBasic->Initialize(winApi);
 
 	SpriteCommon* spriteCommon = nullptr;
 	//スプライト共通部分
 	spriteCommon = new SpriteCommon;
-	spriteCommon->Initialize(directXBasic_);
+	spriteCommon->Initialize(directXBasic);
 
 	//ゲーム全体の初期化
-	Sprite* sprite = new Sprite;
+	Sprite* sprite = nullptr;
+	sprite = new Sprite;
 	sprite->Initialize(spriteCommon);
- 
+	
 #pragma region キー入力 (P02_03)
 
 	//シングルトンインスタンスを作成
@@ -265,7 +261,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma endregion
 
-		directXBasic_->BeforeDraw();
+		directXBasic->BeforeDraw();
 
 #pragma region パイプラインステートとルートシグネチャの設定コマンド(P02_01)
 
@@ -276,9 +272,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		
 #pragma endregion 
 
+		spriteCommon->Update();
+		sprite->Update();
+		
 #pragma region その他の設定コマンド
 
-		directXBasic_->AfterDraw();
+		directXBasic->AfterDraw();
 	}
 
 #pragma endregion
@@ -290,13 +289,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//KeyInput::destroy();
 	//delete keyInput;
 	delete winApi;
-	delete directXBasic_;
+	delete directXBasic;
 	delete spriteCommon;
-	//delete sprite;
+	//delete playerSprite;
+	delete sprite;
 #pragma endregion WindowsAPI後始末
 
 	winApi = nullptr;
-	directXBasic_ = nullptr;
+	directXBasic = nullptr;
 	//input = nullptr;
 	return 0;
 }

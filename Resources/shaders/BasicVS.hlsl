@@ -1,4 +1,4 @@
-#include"Basic.hlsli"
+//#include"Basic.hlsli"
 
 //P04_01_P25
 //VSOutput main(float4 pos : POSITION, float3 normal : NORMAL,float2 uv : TEXCOORD)

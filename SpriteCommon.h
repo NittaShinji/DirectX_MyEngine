@@ -12,6 +12,8 @@ public:
 	
 	//初期化
 	void Initialize(DirectXBasic* directXBasic);
+	//更新
+	void Update();
 
 	//ゲッター
 	DirectXBasic* GetDirectXBasic(){ return directXBasic_; };
@@ -23,5 +25,12 @@ private:
 	//// 頂点データ全体のサイズ
 	//UINT sizeVB;
 
+	ID3DBlob* vsBlob = nullptr; // 頂点シェーダオブジェクト
+	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
+	ID3DBlob* errorBlob = nullptr; // エラーオブジェクト
+
+	HRESULT result_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
 };
