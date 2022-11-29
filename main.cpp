@@ -73,7 +73,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//スプライト共通部分
 	spriteCommon = new SpriteCommon;
 	spriteCommon->Initialize(directXBasic);
-
+	spriteCommon->SemiTransparent();
+	
 	//ゲーム全体の初期化
 	Sprite* sprite = nullptr;
 	sprite = new Sprite;
