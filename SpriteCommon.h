@@ -27,10 +27,13 @@ public:
 	//色反転
 	void InvertColor();
 
-	//ゲッター
-	DirectXBasic* GetDirectXBasic(){ return directXBasic_; };
-
 private:
+
+	//定数バッファ用データ構造体(マテリアル)
+	struct ConstBufferDataMaterial
+	{
+		XMFLOAT4 color;	//色(RGBA)
+	};
 
 	//頂点の数
 	static const int layoutCount = 3;
@@ -47,4 +50,15 @@ private:
 	HRESULT result_;
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
+	//ID3D12Resource* constBuffMaterial = nullptr;
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
+
+public:
+
+	//ゲッター
+	DirectXBasic* GetDirectXBasic() { return directXBasic_; };
+	Microsoft::WRL::ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
+	ConstBufferDataMaterial* GetConstBufferDataMaterial() { return constMapMaterial; };
+
 };

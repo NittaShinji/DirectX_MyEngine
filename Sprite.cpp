@@ -22,10 +22,12 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 		{ +0.5f, -0.5f, 0.0f },//右下
 	};
 
-
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
 	UINT sizeVB = static_cast<UINT>(sizeof(VertexPos) * vertices.size());
+
+	//カラー
+	spriteCommon_->GetConstBufferDataMaterial()->color = XMFLOAT4(0, 1, 0, 0.5f);
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -81,9 +83,10 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 
 void Sprite::Update()
 {
-	//ここで例外スローされる
-
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+
+	//定数バッファビューの設定コマンド
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, spriteCommon_->GetConstBuffMaterial()->GetGPUVirtualAddress());
 
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
 	directXBasic_->GetCommandList()->DrawInstanced(vertices.size(), 1, 0, 0);

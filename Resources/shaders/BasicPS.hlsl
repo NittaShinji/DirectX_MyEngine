@@ -17,9 +17,13 @@
 //	//return float4(tex.Sample(smp,input.uv)) * color;
 //	//return float4(1,1,1,1);
 //}
-
-float4 main() : SV_Target
+cbuffer ConstBufferDataMaterial : register(b0)
 {
-    return float4(1.0f, 1.0f, 1.0f, 0.5f);
+    float4 color;   //F(RGBA)
+}
+
+float4 main() : SV_TARGET
+{
+    return color;
 
 }

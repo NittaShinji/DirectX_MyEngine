@@ -25,12 +25,6 @@ using namespace Microsoft::WRL;
 //#pragma comment(lib, "d3d12.lib")
 //#pragma comment(lib, "dxgi.lib")
 
-//定数バッファ用データ構造体(マテリアル)
-struct ConstBufferDataMaterial
-{
-	XMFLOAT4 color;	//色(RGBA)
-};
-
 //定数バッファ用データ構造体(3D変換行列)
 struct ConstBufferDataTransform
 {
