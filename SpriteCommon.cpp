@@ -47,7 +47,7 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 	
 	// 頂点シェーダの読み込みとコンパイル
 	result_ = D3DCompileFromFile(
-		L"Resources/shaders/BasicVS.hlsl", // シェーダファイル名
+		L"Resources/shaders/SpriteVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -72,7 +72,7 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 #pragma region ピクセルシェーダーの読み込み
 	// ピクセルシェーダの読み込みとコンパイル
 	result_ = D3DCompileFromFile(
-		L"Resources/shaders/BasicPS.hlsl", // シェーダファイル名
+		L"Resources/shaders/SpritePS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
