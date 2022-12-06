@@ -17,6 +17,8 @@ public:
 	
 	void Update();
 
+	void ImageDateSet();
+
 	void PointListUpdate();
 	void LineListUpdate();
 
@@ -62,8 +64,10 @@ private:
 	HRESULT result_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 	//ComPtr<ID3D12Resource> vertBuff_ = nullptr;
-	ID3D12PipelineState* pipelineState = nullptr;
-	ID3D12RootSignature* rootSignature;
+	
+	
+
+
 
 public:
 

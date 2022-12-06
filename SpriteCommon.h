@@ -24,6 +24,8 @@ public:
 	//ルートシグネチャ設定
 	void RootSignatureSet();
 
+	void TexBuffSet();
+
 	//半透明合成
 	void SemiTransparent();
 	//加算合成
@@ -65,6 +67,22 @@ private:
 	//グラフィックスパイプライン
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
+
+	//横方向ピクセル数
+	const size_t textureWidth = 256;
+	//縦方向ピクセル数
+	const size_t textureHeight = 256;
+	//配列の要素数
+	const size_t imageDateCount = textureWidth * textureHeight;
+	//　画像イメージデータ配列
+	XMFLOAT4* imageDate;
+
+	//シェーダーリソースビュー
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
+
+	//シェーダーリソース用のデスクリプタヒープ
+	ID3D12DescriptorHeap* srvHeap = nullptr;
+
 
 public:
 
