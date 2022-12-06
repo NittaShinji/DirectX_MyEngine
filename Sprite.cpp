@@ -9,22 +9,34 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	spriteCommon_ = spriteCommon;
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 
-	// 頂点データ
-
 	//頂点データ
+	//vertices.at(0) = {
+	//	{ -0.5f, -0.5f, 0.0f },//左下
+	//};
+	//vertices.at(1) = {
+	//	{ -0.5f, +0.5f, 0.0f },//左上
+	//};
+	//vertices.at(2) = {
+	//	{ +0.5f, -0.5f, 0.0f },//右下
+	//};
+	
+	//スプライトの座標
 	vertices.at(0) = {
-		{ -0.5f, -0.5f, 0.0f },//左下
+		{ -0.4f, -0.7f, 0.0f },{0.0f,1.0f}//左下
 	};
 	vertices.at(1) = {
-		{ -0.5f, +0.5f, 0.0f },//左上
+		{ +0.4f, -0.7f, 0.0f },{1.0f,1.0f}//右下
 	};
 	vertices.at(2) = {
-		{ +0.5f, -0.5f, 0.0f },//右下
+		{ -0.4f, +0.7f, 0.0f },{0.0f,0.0f}//左上
+	};
+	vertices.at(3) = {
+		{ +0.4f, +0.7f, 0.0f },{1.0f,0.0f}//右上
 	};
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
-	UINT sizeVB = static_cast<UINT>(sizeof(VertexPos) * vertices.size());
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertices.size());
 
 	//カラー
 	spriteCommon_->GetConstBufferDataMaterial()->color = XMFLOAT4(0, 1, 0, 0.5f);
@@ -57,7 +69,7 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	//Vertex* vertMap = nullptr;
-	VertexPos* vertMap = nullptr;
+	Vertex* vertMap = nullptr;
 	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
@@ -76,7 +88,8 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	vbView.SizeInBytes = sizeVB;
 	// 頂点1つ分のデータサイズ
 	//vbView.StrideInBytes = sizeof(vertices[0]);
-	vbView.StrideInBytes = sizeof(XMFLOAT3);
+	//vbView.StrideInBytes = sizeof(XMFLOAT3);
+	vbView.StrideInBytes = sizeof(vertices[0]);
 
 #pragma endregion
 }

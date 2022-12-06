@@ -17,6 +17,10 @@ public:
 	
 	void Update();
 
+	void PointListUpdate();
+	void LineListUpdate();
+
+
 private:
 
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -29,18 +33,25 @@ private:
 	//	XMFLOAT2 uv;		//画像内のxyz座標
 	//};
 
-	struct VertexPos
+	/*enum VertexName
 	{
-		XMFLOAT3 pos;
+		LEFTDOWN,
+		LEFTCENTER,
+		LEFTUP,
+		RIGHT
+	};*/
+
+	struct Vertex
+	{
+		XMFLOAT3 pos;// xyz座標
+		XMFLOAT2 uv; // uv座標
 	};
 
 	//頂点の数
-	static const int vertexCount = 3;
-	//画像枚数
-	static const int imageCount = 2;
-
+	static const int vertexCount = 4;
+	
 	//頂点配列
-	std::array<VertexPos, vertexCount> vertices{};
+	std::array<Vertex, vertexCount> vertices{};
 	
 	// 頂点バッファビューの作成
 	//std::array <D3D12_VERTEX_BUFFER_VIEW, imageCount> vbView{};
@@ -56,6 +67,6 @@ private:
 
 public:
 
-	std::array <VertexPos, vertexCount> GetterVertex() { return vertices; };
+	std::array <Vertex, vertexCount> GetterVertex() { return vertices; };
 
 };

@@ -20,4 +20,7 @@ struct VSOutput
     float3 normal : NORMAL;
 	//uv’l
     float2 uv : TEXCOORD;
+    
+    
+    
 };

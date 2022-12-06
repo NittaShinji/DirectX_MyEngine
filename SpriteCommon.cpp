@@ -100,53 +100,11 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 
 void SpriteCommon::SemiTransparent()
 {
+	//頂点レイアウトの設定
+	VertexLayoutSet();
 
-#pragma region 頂点レイアウト(P02_01)
-	// 頂点レイアウト
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
-	{
-		{
-			//xyz座標
-			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
-
-		//{
-		//	//法線ベクトル(1行で書いたほう見やすい)
-		//	"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
-
-		//// uv座標
-		//{
-		//	"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
-		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
-	};
-#pragma endregion
-
-#pragma region グラフィックスパイプライン設定(P02_02_P04)
-
-	// グラフィックスパイプライン設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-
-	// シェーダーの設定
-	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
-
-	// サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
-
-	// ラスタライザの設定
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; // 背面をカリング
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
+	//グラフィックスパイプライン設定
+	PipelineSet();
 
 #pragma region ブレンド設定(03_01)
 	// ブレンドステート
@@ -169,46 +127,8 @@ void SpriteCommon::SemiTransparent()
 
 #pragma endregion
 
-	// 頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-
-	// 図形の形状設定
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
-	// その他の設定
-	pipelineDesc.NumRenderTargets = 1; // 描画対象は1つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
-	pipelineDesc.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
+	RootSignatureSet();
 	
-	//ルートパラメータの設定
-	D3D12_ROOT_PARAMETER rootParam = {};
-	rootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
-	rootParam.Descriptor.ShaderRegister = 0;					//定数バッファ番号
-	rootParam.Descriptor.RegisterSpace = 0;						//デフォルト値
-	rootParam.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
-
-
-	// ルートシグネチャの設定
-	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	//rootSignatureDesc.pParameters = rootParams;						//ルートパラメータの先頭アドレス
-	//rootSignatureDesc.NumParameters = _countof(rootParams);			//ルートパラメーター数
-	rootSignatureDesc.pParameters = &rootParam;						//ルートパラメータの先頭アドレス
-	rootSignatureDesc.NumParameters = 1;			//ルートパラメーター数
-	 
-	
-	//rootSignatureDesc.pStaticSamplers = &samplerDesc;
-	//rootSignatureDesc.NumStaticSamplers = 1;
-
-	// ルートシグネチャのシリアライズ
-	ComPtr<ID3DBlob> rootSigBlob;
-	result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-		&rootSigBlob, &errorBlob);
-	assert(SUCCEEDED(result_));
-	result_ = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature));
-	assert(SUCCEEDED(result_));
 	// パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
 
@@ -217,59 +137,15 @@ void SpriteCommon::SemiTransparent()
 	result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result_));
 
-#pragma endregion
-
 }
 
 void SpriteCommon::Add()
 {
+	//頂点レイアウトの設定
+	VertexLayoutSet();
 
-#pragma region 頂点レイアウト(P02_01)
-	// 頂点レイアウト
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
-	{
-		{
-			//xyz座標
-			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
-
-		//{
-		//	//法線ベクトル(1行で書いたほう見やすい)
-		//	"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
-
-		//// uv座標
-		//{
-		//	"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
-		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
-	};
-#pragma endregion
-
-#pragma region グラフィックスパイプライン設定(P02_02_P04)
-
-	// グラフィックスパイプライン設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-
-	// シェーダーの設定
-	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
-
-	// サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
-
-	// ラスタライザの設定
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; // 背面をカリング
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
+	//グラフィックスパイプライン設定
+	PipelineSet();
 
 #pragma region ブレンド設定(03_01)
 	// ブレンドステート
@@ -292,36 +168,9 @@ void SpriteCommon::Add()
 
 #pragma endregion
 
-	// 頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
+	RootSignatureSet();
 
-	// 図形の形状設定
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
-	// その他の設定
-	pipelineDesc.NumRenderTargets = 1; // 描画対象は1つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
-	pipelineDesc.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
-
-	// ルートシグネチャの設定
-	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	//rootSignatureDesc.pParameters = rootParams;						//ルートパラメータの先頭アドレス
-	//rootSignatureDesc.NumParameters = _countof(rootParams);			//ルートパラメーター数
-	//rootSignatureDesc.pStaticSamplers = &samplerDesc;
-	//rootSignatureDesc.NumStaticSamplers = 1;
-
-	// ルートシグネチャのシリアライズ
-	ComPtr<ID3DBlob> rootSigBlob;
-	result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-		&rootSigBlob, &errorBlob);
-	assert(SUCCEEDED(result_));
-	result_ = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature));
-	assert(SUCCEEDED(result_));
 	// パイプラインにルートシグネチャをセット
-	//pipelineDesc.pRootSignature = rootSignature.Get();
 	pipelineDesc.pRootSignature = rootSignature.Get();
 
 	// パイプランステートの生成
@@ -329,59 +178,15 @@ void SpriteCommon::Add()
 	result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result_));
 
-#pragma endregion
-
 }
 
 void SpriteCommon::Sub()
 {
+	//頂点レイアウトの設定
+	VertexLayoutSet();
 
-#pragma region 頂点レイアウト(P02_01)
-	// 頂点レイアウト
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
-	{
-		{
-			//xyz座標
-			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
-
-		//{
-		//	//法線ベクトル(1行で書いたほう見やすい)
-		//	"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
-
-		//// uv座標
-		//{
-		//	"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
-		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
-	};
-#pragma endregion
-
-#pragma region グラフィックスパイプライン設定(P02_02_P04)
-
-	// グラフィックスパイプライン設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-
-	// シェーダーの設定
-	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
-
-	// サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
-
-	// ラスタライザの設定
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; // 背面をカリング
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
+	//グラフィックスパイプライン設定
+	PipelineSet();
 
 #pragma region ブレンド設定(03_01)
 	// ブレンドステート
@@ -402,37 +207,10 @@ void SpriteCommon::Sub()
 	blenddesc.SrcBlend = D3D12_BLEND_ONE;				//ソースの値を100%使う
 	blenddesc.DestBlend = D3D12_BLEND_ONE;			//デストの値を100%使う
 
-	
 #pragma endregion
 
-	// 頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
+	RootSignatureSet();
 
-	// 図形の形状設定
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-
-	// その他の設定
-	pipelineDesc.NumRenderTargets = 1; // 描画対象は1つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
-	pipelineDesc.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
-
-	// ルートシグネチャの設定
-	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	//rootSignatureDesc.pParameters = rootParams;						//ルートパラメータの先頭アドレス
-	//rootSignatureDesc.NumParameters = _countof(rootParams);			//ルートパラメーター数
-	//rootSignatureDesc.pStaticSamplers = &samplerDesc;
-	//rootSignatureDesc.NumStaticSamplers = 1;
-
-	// ルートシグネチャのシリアライズ
-	ComPtr<ID3DBlob> rootSigBlob;
-	result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-		&rootSigBlob, &errorBlob);
-	assert(SUCCEEDED(result_));
-	result_ = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature));
-	assert(SUCCEEDED(result_));
 	// パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
 
@@ -440,60 +218,15 @@ void SpriteCommon::Sub()
 	//ID3D12PipelineState *pipelineState = nullptr;
 	result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result_));
-
-#pragma endregion
-
 }
 
 void SpriteCommon::InvertColor()
 {
+	//頂点レイアウトの設定
+	VertexLayoutSet();
 
-#pragma region 頂点レイアウト(P02_01)
-	// 頂点レイアウト
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
-	{
-		{
-			//xyz座標
-			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
-
-		//{
-		//	//法線ベクトル(1行で書いたほう見やすい)
-		//	"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
-
-		//// uv座標
-		//{
-		//	"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
-		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
-	};
-#pragma endregion
-
-#pragma region グラフィックスパイプライン設定(P02_02_P04)
-
-	// グラフィックスパイプライン設定
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-
-	// シェーダーの設定
-	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
-
-	// サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
-
-	// ラスタライザの設定
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_BACK; // 背面をカリング
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
+	//グラフィックスパイプライン設定
+	PipelineSet();
 
 #pragma region ブレンド設定(03_01)
 	// ブレンドステート
@@ -516,9 +249,75 @@ void SpriteCommon::InvertColor()
 
 #pragma endregion
 
+	RootSignatureSet();
+
+	// パイプラインにルートシグネチャをセット
+	pipelineDesc.pRootSignature = rootSignature.Get();
+
+	// パイプランステートの生成
+	//ID3D12PipelineState *pipelineState = nullptr;
+	result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	assert(SUCCEEDED(result_));
+}
+
+void SpriteCommon::Update()
+{
+	directXBasic_->GetCommandList()->SetPipelineState(pipelineState.Get());
+	directXBasic_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+}
+
+void SpriteCommon::VertexLayoutSet()
+{
+	// 頂点レイアウト
+	inputLayout =
+	{
+		{
+			//xyz座標
+			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+
+		//{
+		//	//法線ベクトル(1行で書いたほう見やすい)
+		//	"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
+		//	D3D12_APPEND_ALIGNED_ELEMENT,
+		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		//},
+
+		// uv座標
+		{
+			"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
+		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
+	};
+}
+
+void SpriteCommon::PipelineSet()
+{
+	// シェーダーの設定
+	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
+	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
+	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
+	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
+
+	// サンプルマスクの設定
+	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
+
+	// ラスタライザの設定
+	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE; // 背面をカリング
+	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
+	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
+
+#pragma region ブレンド設定(03_01)
+	
 	// 頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
+	pipelineDesc.InputLayout.pInputElementDescs = &inputLayout.at(0);
+	//pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
+	pipelineDesc.InputLayout.NumElements = inputLayout.size();
 
 	// 図形の形状設定
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
@@ -528,11 +327,26 @@ void SpriteCommon::InvertColor()
 	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
 	pipelineDesc.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
+}
+
+void SpriteCommon::RootSignatureSet()
+{
+	//ルートパラメータの設定
+	D3D12_ROOT_PARAMETER rootParam = {};
+	rootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+	rootParam.Descriptor.ShaderRegister = 0;					//定数バッファ番号
+	rootParam.Descriptor.RegisterSpace = 0;						//デフォルト値
+	rootParam.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
+
+
 	// ルートシグネチャの設定
 	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	//rootSignatureDesc.pParameters = rootParams;						//ルートパラメータの先頭アドレス
 	//rootSignatureDesc.NumParameters = _countof(rootParams);			//ルートパラメーター数
+	rootSignatureDesc.pParameters = &rootParam;						//ルートパラメータの先頭アドレス
+	rootSignatureDesc.NumParameters = 1;			//ルートパラメーター数
+
 	//rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	//rootSignatureDesc.NumStaticSamplers = 1;
 
@@ -544,21 +358,4 @@ void SpriteCommon::InvertColor()
 	result_ = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result_));
-	// パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature.Get();
-
-	// パイプランステートの生成
-	//ID3D12PipelineState *pipelineState = nullptr;
-	result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
-	assert(SUCCEEDED(result_));
-
-#pragma endregion
-
-}
-
-void SpriteCommon::Update()
-{
-	directXBasic_->GetCommandList()->SetPipelineState(pipelineState.Get());
-	directXBasic_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
-	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }

@@ -2,6 +2,7 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
+#include <vector>
 #include <DirectXMath.h>
 #include "DirectXBasic.h"
 using namespace DirectX;
@@ -17,6 +18,11 @@ public:
 
 	//頂点レイアウト設定
 	void VertexLayoutSet();
+	
+	//パイプライン設定
+	void PipelineSet();
+	//ルートシグネチャ設定
+	void RootSignatureSet();
 
 	//半透明合成
 	void SemiTransparent();
@@ -36,7 +42,7 @@ private:
 	};
 
 	//頂点の数
-	static const int layoutCount = 3;
+	//static const int layoutCount = 6;
 
 	// 頂点レイアウト
 	//std::array<D3D12_INPUT_ELEMENT_DESC,layoutCount> inputLayout{};
@@ -52,6 +58,12 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
 	//ID3D12Resource* constBuffMaterial = nullptr;
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
+
+	//頂点レイアウト
+	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout{};
+
+	//グラフィックスパイプライン
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
 
 public:
