@@ -5,6 +5,7 @@
 #include <DirectXMath.h>
 #include <array>
 #include "SpriteCommon.h"
+#include <DirectXTex.h>
 using namespace DirectX;
 
 //スプライト
@@ -18,9 +19,13 @@ public:
 	void Update();
 
 	void ImageDateSet();
+	void ImageDateSRVSet();
 
-	void PointListUpdate();
-	void LineListUpdate();
+	void TexMapping();
+	void TexMappingSRVSet();
+
+	/*void PointListUpdate();
+	void LineListUpdate();*/
 
 
 private:
@@ -54,6 +59,8 @@ private:
 	
 	//頂点配列
 	std::array<Vertex, vertexCount> vertices{};
+
+
 	
 	// 頂点バッファビューの作成
 	//std::array <D3D12_VERTEX_BUFFER_VIEW, imageCount> vbView{};
@@ -65,12 +72,33 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 	//ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 	
-	
+	//横方向ピクセル数
+	const size_t textureWidth = 256;
+	//縦方向ピクセル数
+	const size_t textureHeight = 256;
+	//配列の要素数
+	const size_t imageDateCount = textureWidth * textureHeight;
 
+	//画像イメージデータ配列
+	XMFLOAT4* imageDate;
 
+	//テクスチャバッファ
+	ID3D12Resource* texBuff = nullptr;
+
+	//テクスチャリソースデスク
+	D3D12_RESOURCE_DESC textureResourceDesc{};
+
+	D3D12_RESOURCE_DESC resDesc{};
+
+	//シェーダーリソースビュー
+	ID3D12DescriptorHeap* srvHeap = nullptr;
 
 public:
 
 	std::array <Vertex, vertexCount> GetterVertex() { return vertices; };
 
+	//ゲッター
+	ID3D12Resource* GetTexBuff() { return texBuff; };
+
+	//ID3D12DescriptorHeap* GetSRVheap() { return srvHeap; };
 };

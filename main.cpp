@@ -61,20 +61,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//std::unique_ptr<DirectXBasic> directBasic_ = std::make_unique<DirectXBasic>();
 	DirectXBasic* directXBasic = nullptr;
 	directXBasic = new DirectXBasic();
-	directXBasic->Initialize(winApi);
 
-	SpriteCommon* spriteCommon = nullptr;
-	//スプライト共通部分
-	spriteCommon = new SpriteCommon;
-	spriteCommon->Initialize(directXBasic);
-	spriteCommon->SemiTransparent();
-	
-	//ゲーム全体の初期化
-	Sprite* sprite = nullptr;
-	sprite = new Sprite;
-	sprite->Initialize(spriteCommon);
-	
-#pragma region キー入力 (P02_03)
+	//DirectX初期化処理
+	directXBasic->Initialize(winApi);
 
 	//シングルトンインスタンスを作成
 	KeyInput::Create();
@@ -82,6 +71,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	input->Initialize(winApi);
 
+	//スプライト初期化処理
+	Sprite* sprite = nullptr;
+	sprite = new Sprite;
+	SpriteCommon* spriteCommon = nullptr;
+	spriteCommon = new SpriteCommon;
+
+	spriteCommon->Initialize(directXBasic);
+	sprite->Initialize(spriteCommon);
+	spriteCommon->ShaderLoad();
+	/*sprite->TexMapping();
+	sprite->TexMappingSRVSet();*/
+	sprite->ImageDateSet();
+	sprite->ImageDateSRVSet();
+
+	
+	spriteCommon->SemiTransparent();
+	
+	
+#pragma region キー入力 (P02_03)
+
+	
 #pragma endregion
 
 #pragma region マテリアル用の定数バッファの初期化(P03_02)
@@ -266,7 +276,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		
 #pragma endregion 
-
+		//spriteCommon->SetSRVheap(sprite->GetSRVheap());
 		spriteCommon->Update();
 		sprite->Update();
 		

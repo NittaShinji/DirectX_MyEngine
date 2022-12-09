@@ -24,7 +24,10 @@ public:
 	//ルートシグネチャ設定
 	void RootSignatureSet();
 
-	void TexBuffSet();
+	void TexMappingSet();
+	void TexMappingSRVSet();
+
+	void ShaderLoad();
 
 	//半透明合成
 	void SemiTransparent();
@@ -74,14 +77,17 @@ private:
 	const size_t textureHeight = 256;
 	//配列の要素数
 	const size_t imageDateCount = textureWidth * textureHeight;
-	//　画像イメージデータ配列
+	//画像イメージデータ配列
 	XMFLOAT4* imageDate;
 
 	//シェーダーリソースビュー
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
 
 	//シェーダーリソース用のデスクリプタヒープ
-	ID3D12DescriptorHeap* srvHeap = nullptr;
+	ID3D12DescriptorHeap* srvHeap_ = nullptr;
+
+	//テクスチャバッファ
+	ID3D12Resource* texBuff = nullptr;
 
 
 public:
@@ -90,5 +96,8 @@ public:
 	DirectXBasic* GetDirectXBasic() { return directXBasic_; };
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
 	ConstBufferDataMaterial* GetConstBufferDataMaterial() { return constMapMaterial; };
+
+	//セッター
+	//void SetSRVheap(ID3D12DescriptorHeap* srvHeap) { srvHeap_ = srvHeap; };
 
 };
