@@ -30,6 +30,9 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetDepthBuff() { return depthBuff_; };
 
 	Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() const { return device_; };
+
+	int GetWinWidth() const { return winApi_->GetWinWidth(); }
+	int GetWinHeight() const { return winApi_->GetWinHeight(); }
 	
 private:
 

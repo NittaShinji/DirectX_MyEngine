@@ -22,16 +22,16 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	
 	//スプライトの座標
 	vertices.at(0) = {
-		{ -0.4f, -0.7f, 0.0f },{0.0f,1.0f}//左下
+		{ 0.0f, 100.0f, 0.0f }, {0.0f,1.0f}//左下
 	};
 	vertices.at(1) = {
-		{ +0.4f, -0.7f, 0.0f },{1.0f,1.0f}//右下
+		{ 0.0f, 0.0f, 0.0f }, {0.0f,0.0f}//右下
 	};
 	vertices.at(2) = {
-		{ -0.4f, +0.7f, 0.0f },{0.0f,0.0f}//左上
+		{ 100.0f, 100.0f, 0.0f }, {1.0f,1.0f}//左上
 	};
 	vertices.at(3) = {
-		{ +0.4f, +0.7f, 0.0f },{1.0f,0.0f}//右上
+		{ 100.0f, 0.0f, 0.0f }, {1.0f,0.0f}//右上
 	};
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
@@ -95,18 +95,17 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 
 void Sprite::Update()
 {
-	//定数バッファビューの設定コマンド
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, spriteCommon_->GetConstBuffMaterial()->GetGPUVirtualAddress());
-
-	//SRVヒープの設定コマンド
-	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
-	// SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
-	// SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
-	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
-
 	//頂点バッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+	//SRVヒープの設定コマンド
+	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
+	//SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+	//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
+	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
+
+	//定数バッファビュー(CBV)の設定コマンド
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, spriteCommon_->GetConstBuffTransform()->GetGPUVirtualAddress());
 
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
 	directXBasic_->GetCommandList()->DrawInstanced(vertices.size(), 1, 0, 0);
@@ -337,7 +336,6 @@ void Sprite::TexMappingSRVSet()
 	srvHeapDesc.NumDescriptors = kMaxSRVCount;
 
 	//設定を本にSRV用デスクリプタヒープを生成
-	/*ID3D12DescriptorHeap* srvHeap = nullptr;*/
 	result_ = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
 	assert(SUCCEEDED(result_));
 

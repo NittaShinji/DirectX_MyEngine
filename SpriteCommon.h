@@ -18,16 +18,12 @@ public:
 
 	//頂点レイアウト設定
 	void VertexLayoutSet();
-	
+	//シェーダーの読み込み
+	void ShaderLoad();
 	//パイプライン設定
 	void PipelineSet();
 	//ルートシグネチャ設定
 	void RootSignatureSet();
-
-	void TexMappingSet();
-	void TexMappingSRVSet();
-
-	void ShaderLoad();
 
 	//半透明合成
 	void SemiTransparent();
@@ -45,6 +41,11 @@ private:
 	{
 		XMFLOAT4 color;	//色(RGBA)
 	};
+	struct ConstBufferDataTransform
+	{
+		XMMATRIX mat;	//色(RGBA)
+	};
+
 
 	//頂点の数
 	//static const int layoutCount = 6;
@@ -61,15 +62,22 @@ private:
 	HRESULT result_;
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
-	//ID3D12Resource* constBuffMaterial = nullptr;
-	ConstBufferDataMaterial* constMapMaterial = nullptr;
-
+	
 	//頂点レイアウト
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout{};
 
+	//色用の定数バッファ
+	//Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
+	ID3D12Resource* constBuffMaterial = nullptr;
+
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
+	//座標用の定数バッファ
+	//Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
+	ID3D12Resource* constBuffTransform = nullptr;
+	ConstBufferDataTransform* constMapTransform = nullptr;
+
 	//グラフィックスパイプライン
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
 
 	//横方向ピクセル数
 	const size_t textureWidth = 256;
@@ -96,6 +104,10 @@ public:
 	DirectXBasic* GetDirectXBasic() { return directXBasic_; };
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
 	ConstBufferDataMaterial* GetConstBufferDataMaterial() { return constMapMaterial; };
+	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform; };
+
+	//定数バッファの生成
+	void CreateConstantBuffer(ID3D12Resource* constBuff);
 
 	//セッター
 	//void SetSRVheap(ID3D12DescriptorHeap* srvHeap) { srvHeap_ = srvHeap; };
