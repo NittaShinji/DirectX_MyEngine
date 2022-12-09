@@ -73,7 +73,7 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 		constMapTransform->mat = XMMatrixIdentity();
 		constMapTransform->mat.r[0].m128_f32[0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
 		constMapTransform->mat.r[1].m128_f32[1] = -2.0f / directXBasic_->GetWinHeight();	//ウインドウ縦幅
-		//画面半分の平行移動(05_02_P32)
+		//画面半分の平行移動
 		constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
 		constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
 

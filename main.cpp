@@ -264,6 +264,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region ƒ[ƒ‹ƒh•ÏŠ·s—ñ 
 
+		sprite->matUpdate();
+
 #pragma endregion
 
 		directXBasic->BeforeDraw();

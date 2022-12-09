@@ -6,6 +6,7 @@
 #include <array>
 #include "SpriteCommon.h"
 #include <DirectXTex.h>
+#include "Input.h"
 using namespace DirectX;
 
 //スプライト
@@ -16,6 +17,7 @@ public:
 	//初期化
 	void Initialize(SpriteCommon* spriteCommon);
 	
+	void matUpdate();
 	void Update();
 
 	void ImageDateSet();
@@ -32,6 +34,7 @@ private:
 
 	SpriteCommon* spriteCommon_ = nullptr;
 	DirectXBasic* directXBasic_ = nullptr;
+	KeyInput* keys_ = nullptr;
 
 	//struct Vertex
 	//{
@@ -53,6 +56,16 @@ private:
 		XMFLOAT3 pos;// xyz座標
 		XMFLOAT2 uv; // uv座標
 	};
+
+	//射影変換行列
+	XMMATRIX matProjection;
+
+	//スケーリング倍率
+	XMFLOAT3 scale;
+	//回転角
+	float rotationZ;
+	//座標
+	XMFLOAT3 position;
 
 	//頂点の数
 	static const int vertexCount = 4;

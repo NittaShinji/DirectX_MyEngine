@@ -105,7 +105,8 @@ public:
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
 	ConstBufferDataMaterial* GetConstBufferDataMaterial() { return constMapMaterial; };
 	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform; };
-
+	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
+	
 	//定数バッファの生成
 	void CreateConstantBuffer(ID3D12Resource* constBuff);
 

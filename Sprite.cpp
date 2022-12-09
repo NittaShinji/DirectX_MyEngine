@@ -8,6 +8,7 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 {
 	spriteCommon_ = spriteCommon;
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
+	keys_ = KeyInput::GetInstance();
 
 	//頂点データ
 	//vertices.at(0) = {
@@ -19,7 +20,20 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	//vertices.at(2) = {
 	//	{ +0.5f, -0.5f, 0.0f },//右下
 	//};
-	
+
+	//射影変換行列
+	//matProjection =
+	//	XMMatrixPerspectiveFovLH(
+	//		XMConvertToRadians(45.0f),				//上下画角45度
+	//		(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
+	//		0.1f, 1000.0f							//前端,奥端
+	//	);
+
+	scale = { 10.0f,10.0f,10.0f };
+	rotationZ = { 0.0f };
+	position = { 0.0f,0.0f,0.0f };
+
+
 	//スプライトの座標
 	vertices.at(0) = {
 		{ 0.0f, 100.0f, 0.0f }, {0.0f,1.0f}//左下
@@ -33,6 +47,21 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	vertices.at(3) = {
 		{ 100.0f, 0.0f, 0.0f }, {1.0f,0.0f}//右上
 	};
+
+	//vertices.at(0) = {
+	//	{ -50.0f, -50.0f, 0.0f }, {0.0f,1.0f}//左下
+	//};
+	//vertices.at(1) = {
+	//	{ -50.0f, 50.0f, 0.0f }, {0.0f,0.0f}//右下
+	//};
+	//vertices.at(2) = {
+	//	{ 50.0f, -50.0f, 0.0f }, {1.0f,1.0f}//左上
+	//};
+	//vertices.at(3) = {
+	//	{ 50.0f, 50.0f, 0.0f }, {1.0f,0.0f}//右上
+	//};
+
+
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
@@ -80,7 +109,7 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	vertBuff_->Unmap(0, nullptr);
 
 #pragma region 頂点バッファビューの作成
-	
+
 	// GPU仮想アドレス
 	vbView.BufferLocation = vertBuff_->GetGPUVirtualAddress();
 	// 頂点バッファのサイズ
@@ -91,6 +120,58 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	vbView.StrideInBytes = sizeof(vertices[0]);
 
 #pragma endregion
+}
+
+void Sprite::matUpdate()
+{
+	//いずれかのキーを押していたら
+
+
+		//座標を移動する処理(Z座標)
+	if (keys_->HasPushedKey(DIK_UP)) { position.y -= 0.1f; }
+	else if (keys_->HasPushedKey(DIK_DOWN)) { position.y += 0.1f; }
+	else
+	{
+		position.y = 0.0f;
+	}
+	if (keys_->HasPushedKey(DIK_RIGHT)) { position.x += 0.1f; }
+	else if (keys_->HasPushedKey(DIK_LEFT)) { position.x -= 0.1f; }
+	else
+	{
+		position.x = 0.0f;
+	}
+
+	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
+	Vertex* vertMap = nullptr;
+	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result_));
+	// 全頂点に対して
+	for (int i = 0; i < vertices.size(); i++) {
+		vertMap[i] = vertices[i]; // 座標をコピー
+	}
+	// 繋がりを解除
+	vertBuff_->Unmap(0, nullptr);
+
+	//ワールド変換行列
+	XMMATRIX matWorld;
+
+	XMMATRIX matScale;	//スケーリング行列
+	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+	//matScale = XMMatrixScaling(100.0f, 0.5f, 100.0f);
+
+	XMMATRIX matRot;	//回転行列
+	matRot = XMMatrixIdentity();
+	matRot *= XMMatrixRotationZ((rotationZ));	//Z軸周りに回転
+
+	XMMATRIX matTrans;	//平行移動行列
+	matTrans = XMMatrixTranslation(position.x, position.y, position.z);	//平行移動
+
+	matWorld = XMMatrixIdentity();	//単位行列を代入して変形をリセット
+	//matWorld *= matScale;	//ワールド行列にスケーリングを反映
+	matWorld *= matRot;		//ワールド行列に回転を反映
+	matWorld *= matTrans;	//ワールド行列に平行移動を反映
+	//定数バッファにデータ転送
+	spriteCommon_->GetConstMapTransform()->mat = matWorld * spriteCommon_->GetConstMapTransform()->mat;
 }
 
 void Sprite::Update()
