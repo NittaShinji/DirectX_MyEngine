@@ -51,11 +51,23 @@ private:
 		RIGHT
 	};*/
 
+	enum VertexNumber
+	{
+		LB,//右上
+		LT,//左上
+		RB,//右下
+		RT,//右上
+	};
+
 	struct Vertex
 	{
 		XMFLOAT3 pos;// xyz座標
 		XMFLOAT2 uv; // uv座標
 	};
+
+	//ウインドウの長さ
+	float winWide;
+	float winHeight;
 
 	//射影変換行列
 	XMMATRIX matProjection;
@@ -63,18 +75,35 @@ private:
 	//スケーリング倍率
 	XMFLOAT3 scale;
 	//回転角
-	float rotationZ;
+	float rotation_;
 	//座標
-	XMFLOAT3 position;
+	//XMFLOAT3 position;
+	XMFLOAT2 position_;
+	//色(RGBA)
+	XMFLOAT4 color_ = { 1,1,1,1 };
+	//表示サイズ
+	XMFLOAT2 size_ = { 100.0f,100.0f };
+
+	//左右フリップ
+	bool isFlipX_ = false;
+	//上下フリップ
+	bool isFlipY_ = false;
 
 	//頂点の数
 	static const int vertexCount = 4;
+
+	//アンカーポイント
+	XMFLOAT2 anchorPoint_ = { 0.0f,0.0f };
+
+	//非表示フラグ
+	bool isInvisible_ = true;
 	
+	//初期ポジション
+	XMFLOAT2 initPosition_;
+
 	//頂点配列
-	std::array<Vertex, vertexCount> vertices{};
+	std::array<Vertex, vertexCount> vertices_{};
 
-
-	
 	// 頂点バッファビューの作成
 	//std::array <D3D12_VERTEX_BUFFER_VIEW, imageCount> vbView{};
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
@@ -108,10 +137,32 @@ private:
 
 public:
 
-	std::array <Vertex, vertexCount> GetterVertex() { return vertices; };
+	std::array <Vertex, vertexCount> GetterVertex() { return vertices_; };
 
 	//ゲッター
 	ID3D12Resource* GetTexBuff() { return texBuff; };
+	const XMFLOAT2& GetPosition() const { return position_; };
+	float GetRotation() const { return rotation_; };
+	const XMFLOAT4 GetColor() const { return color_; };
+	const XMFLOAT2 GetSize() const { return size_; };
+	const XMFLOAT2 GetAnchorPoint() const { return anchorPoint_; };
+	const XMFLOAT2 GetInitPosition() const { return initPosition_; };
+	bool GetIsFlipX() const { return isFlipX_; };
+	bool GetIsFlipY() const { return isFlipY_; };
+	bool GetIsInvisible() const { return isInvisible_; };
 
+
+	//セッター
+	void SetPosition(const DirectX::XMFLOAT2& position) { position_ = position; };
+	void SetRotation(float rotation) { rotation_ = rotation; };
+	void SetColor(const DirectX::XMFLOAT4 color) { color_ = color; };
 	//ID3D12DescriptorHeap* GetSRVheap() { return srvHeap; };
+	void SetSize(const DirectX::XMFLOAT2 size) { size_ = size; };
+	void SetAnchorPoint(const DirectX::XMFLOAT2 anchorPoint) { anchorPoint_ = anchorPoint; }
+	void SetInitPosition(const DirectX::XMFLOAT2 initPosition) { initPosition_ = initPosition; }
+	void SetIsFlipX(bool isFlipX) { isFlipX_ = isFlipX; };
+	void SetIsFlipY(bool isFlipY) { isFlipY_ = isFlipY; };
+	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
+
+
 };

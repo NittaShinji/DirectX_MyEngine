@@ -103,7 +103,7 @@ public:
 	//ÉQÉbÉ^Å[
 	DirectXBasic* GetDirectXBasic() { return directXBasic_; };
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
-	ConstBufferDataMaterial* GetConstBufferDataMaterial() { return constMapMaterial; };
+	ConstBufferDataMaterial* GetConstMapMaterial() { return constMapMaterial; };
 	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform; };
 	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
 	

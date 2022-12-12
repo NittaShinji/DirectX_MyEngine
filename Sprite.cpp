@@ -10,17 +10,6 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 	keys_ = KeyInput::GetInstance();
 
-	//頂点データ
-	//vertices.at(0) = {
-	//	{ -0.5f, -0.5f, 0.0f },//左下
-	//};
-	//vertices.at(1) = {
-	//	{ -0.5f, +0.5f, 0.0f },//左上
-	//};
-	//vertices.at(2) = {
-	//	{ +0.5f, -0.5f, 0.0f },//右下
-	//};
-
 	//射影変換行列
 	//matProjection =
 	//	XMMatrixPerspectiveFovLH(
@@ -29,46 +18,69 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	//		0.1f, 1000.0f							//前端,奥端
 	//	);
 
+	winWide = directXBasic_->GetWinWidth();
+	winHeight = directXBasic_->GetWinHeight();
+
 	scale = { 10.0f,10.0f,10.0f };
-	rotationZ = { 0.0f };
-	position = { 0.0f,0.0f,0.0f };
+	rotation_ = { 0.0f };
+	position_ = { 0.0f,0.0f };
+
+	//position_ = { float(winWide / 2),float(winHeight / 2)};
+
+	//ウインドウの中心に表示
+	initPosition_ = { float(winWide / 2),float(winHeight / 2) };
 
 
-	//スプライトの座標
-	vertices.at(0) = {
-		{ 0.0f, 100.0f, 0.0f }, {0.0f,1.0f}//左下
+	////スプライトの座標
+	vertices_.at(LB) = {
+		{ initPosition_.x , initPosition_.y + size_.y, 0.0f }, {0.0f,1.0f}//左下
 	};
-	vertices.at(1) = {
-		{ 0.0f, 0.0f, 0.0f }, {0.0f,0.0f}//右下
+	vertices_.at(LT) = {
+		{ initPosition_.x ,initPosition_.y, 0.0f }, {0.0f,0.0f}//左上
 	};
-	vertices.at(2) = {
-		{ 100.0f, 100.0f, 0.0f }, {1.0f,1.0f}//左上
+	vertices_.at(RB) = {
+		{ initPosition_.x + size_.x, initPosition_.y + size_.y, 0.0f }, {1.0f,1.0f}//右下
 	};
-	vertices.at(3) = {
-		{ 100.0f, 0.0f, 0.0f }, {1.0f,0.0f}//右上
+	vertices_.at(RT) = {
+		{ initPosition_.x + size_.x, initPosition_.y, 0.0f }, {1.0f,0.0f}//右上
 	};
 
-	//vertices.at(0) = {
-	//	{ -50.0f, -50.0f, 0.0f }, {0.0f,1.0f}//左下
+	////スプライトの座標
+	//vertices_.at(LB) = {
+	//	{ 0.0f , 0.0f + size_.y, 0.0f }, {0.0f,1.0f}//左下
 	//};
-	//vertices.at(1) = {
-	//	{ -50.0f, 50.0f, 0.0f }, {0.0f,0.0f}//右下
+	//vertices_.at(LT) = {
+	//	{ 0.0f ,0.0f, 0.0f }, {0.0f,0.0f}//左上
 	//};
-	//vertices.at(2) = {
-	//	{ 50.0f, -50.0f, 0.0f }, {1.0f,1.0f}//左上
+	//vertices_.at(RB) = {
+	//	{ 0.0f + size_.x, 0.0f + size_.y, 0.0f }, {1.0f,1.0f}//右下
 	//};
-	//vertices.at(3) = {
-	//	{ 50.0f, 50.0f, 0.0f }, {1.0f,0.0f}//右上
+	//vertices_.at(RT) = {
+	//	{ 0.0f + size_.x, 0.0f, 0.0f }, {1.0f,0.0f}//右上
+	//};
+
+
+	//vertices_.at(LB) = {
+	//	{ 0.0f, 100.0f, 0.0f }, {0.0f,1.0f}//左下
+	//};
+	//vertices_.at(LT) = {
+	//	{ 0.0f, 0.0f, 0.0f }, {0.0f,0.0f}//左上
+	//};
+	//vertices_.at(RB) = {
+	//	{ 100.0f, 100.0f, 0.0f }, {1.0f,1.0f}//右下
+	//};
+	//vertices_.at(RT) = {
+	//	{ 100.0f, 0.0f, 0.0f }, {1.0f,0.0f}//右上
 	//};
 
 
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices[0]) * vertices.size());
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
 
 	//カラーの書き込みと転送
-	spriteCommon_->GetConstBufferDataMaterial()->color = XMFLOAT4(0, 1, 0, 0.5f);
+	spriteCommon_->GetConstMapMaterial()->color = XMFLOAT4(0, 1, 0, 0.5f);
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -101,8 +113,8 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
-	for (int i = 0; i < vertices.size(); i++) {
-		vertMap[i] = vertices[i]; // 座標をコピー
+	for (int i = 0; i < vertices_.size(); i++) {
+		vertMap[i] = vertices_[i]; // 座標をコピー
 	}
 
 	// 繋がりを解除
@@ -117,37 +129,109 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	// 頂点1つ分のデータサイズ
 	//vbView.StrideInBytes = sizeof(vertices[0]);
 	//vbView.StrideInBytes = sizeof(XMFLOAT3);
-	vbView.StrideInBytes = sizeof(vertices[0]);
+	vbView.StrideInBytes = sizeof(vertices_[0]);
 
 #pragma endregion
 }
 
 void Sprite::matUpdate()
 {
+	float left = (0.0f - anchorPoint_.x) * size_.x;
+	float right = (1.0f - anchorPoint_.x) * size_.x;
+	float top = (0.0f - anchorPoint_.y) * size_.y;
+	float bottom = (1.0f - anchorPoint_.y) * size_.y;
+
+	isFlipX_ = true;
+	isFlipY_ = true;
+
+	//左右反転
+	if (isFlipX_)
+	{
+		left = -left;
+		right = -right;
+	}
+	//上下反転
+	if (isFlipY_)
+	{
+		top = -top;
+		bottom = -bottom;
+	}
+
+	/*float left = (0.0f, - anchorPoint_.x) * initPosition_.x;
+	float right = (1.0f, - anchorPoint_.x) * initPosition_.x;
+	float top = (0.0f, - anchorPoint_.y) * initPosition_.y;
+	float bottom = (1.0f, - anchorPoint_.y) * initPosition_.y;*/
+
+	////頂点データ
+	vertices_[LB].pos = { initPosition_.x + left,initPosition_.y + bottom,0.0f };
+	vertices_[LT].pos = { initPosition_.x + left,initPosition_.y + top,0.0f };
+	vertices_[RB].pos = { initPosition_.x + right,initPosition_.y + bottom,0.0f };
+	vertices_[RT].pos = { initPosition_.x + right,initPosition_.y + top,0.0f };
+
+	/*vertices_[LB].pos = { left, bottom,0.0f };
+	vertices_[LT].pos = { left,top,0.0f };
+	vertices_[RB].pos = { right,bottom,0.0f };
+	vertices_[RT].pos = { right,top,0.0f };*/
+
 	//いずれかのキーを押していたら
-
-
-		//座標を移動する処理(Z座標)
-	if (keys_->HasPushedKey(DIK_UP)) { position.y -= 0.1f; }
-	else if (keys_->HasPushedKey(DIK_DOWN)) { position.y += 0.1f; }
+	//座標を移動する処理(Z座標)
+	/*if (keys_->HasPushedKey(DIK_UP)) { position_.y -= 0.1f; }
+	else if (keys_->HasPushedKey(DIK_DOWN)) { position_.y += 0.1f; }
 	else
 	{
-		position.y = 0.0f;
+		position_.y = 0.0f;
 	}
-	if (keys_->HasPushedKey(DIK_RIGHT)) { position.x += 0.1f; }
-	else if (keys_->HasPushedKey(DIK_LEFT)) { position.x -= 0.1f; }
+	if (keys_->HasPushedKey(DIK_RIGHT)) { position_.x += 0.1f; }
+	else if (keys_->HasPushedKey(DIK_LEFT)) { position_.x -= 0.1f; }
 	else
 	{
-		position.x = 0.0f;
-	}
+		position_.x = 0.0f;
+	}*/
+
+	/*vertices_[LB].pos = { 0.0f, size_.y, 0.0f };
+	vertices_[LT].pos = { 0.0f, 0.0f, 0.0f };
+	vertices_[RB].pos = { size_.x, size_.y, 0.0f };
+	vertices_[RT].pos = { size_.x, 0.0f, 0.0f };*/
+
+	//vertices_.at(LB) = {
+	//	{ initPosition_.x , initPosition_.y + size_.y, 0.0f }, {0.0f,1.0f}//左下
+	//};
+	//vertices_.at(LT) = {
+	//	{ initPosition_.x ,initPosition_.y, 0.0f }, {0.0f,0.0f}//左上
+	//};
+	//vertices_.at(RB) = {
+	//	{ initPosition_.x + size_.x, initPosition_.y + size_.y, 0.0f }, {1.0f,1.0f}//右下
+	//};
+	//vertices_.at(RT) = {
+	//	{ initPosition_.x + size_.x, initPosition_.y, 0.0f }, {1.0f,0.0f}//右上
+	//};
+
+	//size_.x += 0.1f;
+	
+	//回転
+	//rotation_ += 0.01f;
+
+	//vertices_.at(LB) = {
+	//	{ 0.0f, size_.y, 0.0f }, {0.0f,1.0f}//左下 
+	//};
+	//vertices_.at(LT) = {
+	//	{ 0.0f, 0.0f, 0.0f }, {0.0f,0.0f}//左上
+	//};
+	//vertices_.at(RB) = {
+	//	{ size_.x, size_.y, 0.0f }, {1.0f,1.0f}//右下
+	//};
+	//vertices_.at(RT) = {
+	//	{ size_.x, 0.0f, 0.0f }, {1.0f,0.0f}//右上
+	//};
+
 
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
 	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
-	for (int i = 0; i < vertices.size(); i++) {
-		vertMap[i] = vertices[i]; // 座標をコピー
+	for (int i = 0; i < vertices_.size(); i++) {
+		vertMap[i] = vertices_[i]; // 座標をコピー
 	}
 	// 繋がりを解除
 	vertBuff_->Unmap(0, nullptr);
@@ -161,10 +245,13 @@ void Sprite::matUpdate()
 
 	XMMATRIX matRot;	//回転行列
 	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ((rotationZ));	//Z軸周りに回転
+	matRot *= XMMatrixRotationZ((rotation_));	//Z軸周りに回転
 
 	XMMATRIX matTrans;	//平行移動行列
-	matTrans = XMMatrixTranslation(position.x, position.y, position.z);	//平行移動
+	matTrans = XMMatrixTranslation(position_.x, position_.y, 0.0f);	//平行移動
+	//matTrans = XMMatrixTranslation(initPosition_.x, initPosition_.y, 0.0f);	//平行移動
+	//matTrans = XMMatrixTranslation(100.0f, 100.0f, 0.0f);	//平行移動
+
 
 	matWorld = XMMatrixIdentity();	//単位行列を代入して変形をリセット
 	//matWorld *= matScale;	//ワールド行列にスケーリングを反映
@@ -172,6 +259,8 @@ void Sprite::matUpdate()
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映
 	//定数バッファにデータ転送
 	spriteCommon_->GetConstMapTransform()->mat = matWorld * spriteCommon_->GetConstMapTransform()->mat;
+	spriteCommon_->GetConstMapMaterial()->color = color_;
+	
 }
 
 void Sprite::Update()
@@ -188,8 +277,12 @@ void Sprite::Update()
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, spriteCommon_->GetConstBuffTransform()->GetGPUVirtualAddress());
 
+	if (isInvisible_)
+	{
+		return;
+	}
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
-	directXBasic_->GetCommandList()->DrawInstanced(vertices.size(), 1, 0, 0);
+	directXBasic_->GetCommandList()->DrawInstanced(vertices_.size(), 1, 0, 0);
 
 }
 //

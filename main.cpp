@@ -88,6 +88,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	spriteCommon->SemiTransparent();
 	
+
 	
 #pragma region キー入力 (P02_03)
 
@@ -263,6 +264,27 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion
 
 #pragma region ワールド変換行列 
+
+		//XMFLOAT2 position = sprite->GetPosition();
+		////座標を変更する
+		//position.x += 0.1f;
+		////変更を反映
+		//sprite->SetPosition(position);
+
+		//float rotation = sprite->GetRotation();
+		////角度を変更する
+		//rotation += 0.001f;
+		////変更を反映
+		//sprite->SetRotation(rotation);
+
+		//XMFLOAT4 color = sprite->GetColor();
+		//color = { 0,0,1,1 };
+		//sprite->SetColor(color);
+
+		XMFLOAT2 anchorPoint = sprite->GetAnchorPoint();
+		anchorPoint = { 1.0f,1.0f };
+		sprite->SetAnchorPoint(anchorPoint);
+
 
 		sprite->matUpdate();
 
