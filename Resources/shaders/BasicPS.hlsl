@@ -1,4 +1,4 @@
-//#include"Basic.hlsli"
+#include"Basic.hlsli"
 
 //Texture2D<float4> tex : register(t0);
 //SamplerState smp : register(s0);
@@ -24,6 +24,6 @@ cbuffer ConstBufferDataMaterial : register(b0)
 
 float4 main() : SV_TARGET
 {
-    return color;
-
+    //return color;
+    return float4(1, 1, 1, 1);
 }

@@ -1,4 +1,4 @@
-//#include"Basic.hlsli"
+#include"Basic.hlsli"
 
 //P04_01_P25
 //VSOutput main(float4 pos : POSITION, float3 normal : NORMAL,float2 uv : TEXCOORD)
@@ -19,7 +19,12 @@
 //	return float4(1.0f,1.0f,1.0f,1.0f);
 //}
 
-float4 main(float4 pos : POSITION) : SV_POSITION
+VSOutput main(float4 pos : POSITION, float2 uv : TEXCOORD, float3 normal : NORMAL)
 {
-    return pos;
+    //return pos;
+    VSOutput output; //ピクセルシェーダーに渡す値
+    output.svpos = mul(mat, pos);
+    output.normal = normal;
+    output.uv = uv;
+    return output;
 }

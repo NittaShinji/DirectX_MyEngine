@@ -17,6 +17,7 @@ using namespace Microsoft::WRL;
 #include "DirectXBasic.h"
 #include "Sprite.h"
 #include "SpriteCommon.h"
+#include "Object3d.h"
 #include <memory>
 
 #pragma comment(lib,"dinput8.lib")
@@ -30,24 +31,24 @@ struct ConstBufferDataTransform
 {
 	XMMATRIX mat;	// 3D変換行列
 };
-
-struct Object3d
-{
-	//定数バッファ(行列用)
-	ComPtr<ID3D12Resource> constBuffTransform;
-	//定数バッファマップ(行列用)
-	ConstBufferDataTransform* constMapTransform;
-
-	//アフィン変換情報
-	XMFLOAT3 scale = { 1,1,1 };
-	XMFLOAT3 rotation = { 0,0,0 };
-	XMFLOAT3 position = { 0,0,0 };
-	//ワールド変換行列
-	XMMATRIX matworld;
-	//親オブジェクトのポインタ
-	Object3d* parent = nullptr;
-
-};
+//
+//struct Object3d
+//{
+//	//定数バッファ(行列用)
+//	ComPtr<ID3D12Resource> constBuffTransform;
+//	//定数バッファマップ(行列用)
+//	ConstBufferDataTransform* constMapTransform;
+//
+//	//アフィン変換情報
+//	XMFLOAT3 scale = { 1,1,1 };
+//	XMFLOAT3 rotation = { 0,0,0 };
+//	XMFLOAT3 position = { 0,0,0 };
+//	//ワールド変換行列
+//	XMMATRIX matworld;
+//	//親オブジェクトのポインタ
+//	Object3d* parent = nullptr;
+//
+//};
 
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -70,6 +71,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	KeyInput* keyInput = KeyInput::GetInstance();
 
 	input->Initialize(winApi);
+
+	//3Dオブジェクト静的初期化
+	//Object3d::StaticInitialize(directXBasic->GetDevice(), directXBasic->GetWinWidth(), directXBasic->GetWinHeight());
+	//3Dオブジェクト生成
+	Object3d* object3d = nullptr;
+	object3d = new Object3d;
+
+	object3d->InitializeObject3d(directXBasic);
+	object3d->CreateModel();
 
 	//スプライト初期化処理
 	Sprite* sprite = nullptr;
@@ -285,17 +295,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//color = { 0,0,1,1 };
 		//sprite->SetColor(color);
 
-		XMFLOAT2 anchorPoint = sprite->GetAnchorPoint();
-		anchorPoint = { 1.0f,1.0f };
-		sprite->SetAnchorPoint(anchorPoint);
+		//XMFLOAT2 anchorPoint = sprite->GetAnchorPoint();
+		//anchorPoint = { 1.0f,1.0f };
+		//sprite->SetAnchorPoint(anchorPoint);
 
 
-		sprite->matUpdate();
-		testSprite->matUpdate();
+		//sprite->matUpdate();
+		//testSprite->matUpdate();
 
 #pragma endregion
 
-		directXBasic->BeforeDraw();
+		//directXBasic->BeforeDraw();
 
 #pragma region パイプラインステートとルートシグネチャの設定コマンド(P02_01)
 
@@ -303,19 +313,20 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region SRV設定コマンド
 
-		
+		object3d->Draw();
+
 #pragma endregion 
 		//spriteCommon->SetSRVheap(sprite->GetSRVheap());
 		/*spriteCommon->Update();*/
 
 		//スプライト描画開始
-		spriteCommon->BeforeDraw();
+		//spriteCommon->BeforeDraw();
 
-		sprite->Draw();
-		testSprite->Draw();
+		//sprite->Draw();
+		//testSprite->Draw();
 
 		//スプライト描画終了
-		spriteCommon->AfterDraw();
+		//spriteCommon->AfterDraw();
 		
 #pragma region その他の設定コマンド
 
@@ -336,6 +347,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete playerSprite;
 	delete sprite;
 	delete testSprite;
+	delete object3d;
 #pragma endregion WindowsAPI後始末
 
 	winApi = nullptr;

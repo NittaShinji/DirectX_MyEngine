@@ -1,8 +1,8 @@
-cbuffer ConstBufferDateMaterial : register(b0)
-{
-	//F(RGBA)
-	float4 color;
-};
+//cbuffer ConstBufferDateMaterial : register(b0)
+//{
+//	//F(RGBA)
+//	float4 color;
+//};
 
 //3D•ÏŠ·s—ñ
 cbuffer ConstBufferDataTransform : register(b1)
