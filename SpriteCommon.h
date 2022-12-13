@@ -24,6 +24,8 @@ public:
 	void PipelineSet();
 	//ルートシグネチャ設定
 	void RootSignatureSet();
+	//デスクリプタヒープの設定
+	void DescriptorHeapSet();
 
 	//半透明合成
 	void SemiTransparent();

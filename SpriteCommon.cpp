@@ -5,6 +5,8 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
+
+
 //”¼“§–¾‡¬‚Ì‰Šú‰»
 void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 {
@@ -433,6 +435,11 @@ void SpriteCommon::RootSignatureSet()
 	result_ = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result_));
+}
+
+void SpriteCommon::DescriptorHeapSet()
+{
+
 }
 //
 //void SpriteCommon::CreateConstantBuffer(ID3D12Resource* constBuff)

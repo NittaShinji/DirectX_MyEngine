@@ -74,22 +74,26 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//スプライト初期化処理
 	Sprite* sprite = nullptr;
 	sprite = new Sprite;
+	Sprite* testSprite = nullptr;
+	testSprite = new Sprite;
+
 	SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
 
 	spriteCommon->Initialize(directXBasic);
 	sprite->Initialize(spriteCommon);
+	testSprite->Initialize(spriteCommon);
 	spriteCommon->ShaderLoad();
 	/*sprite->TexMapping();
 	sprite->TexMappingSRVSet();*/
-	sprite->ImageDateSet();
-	sprite->ImageDateSRVSet();
-
-	
+	/*sprite->ImageDateSet();
+	sprite->ImageDateSRVSet();*/
+	//sprite->LoadTexture(0,"reimu.png");
+	//sprite->LoadTexture(0,"tomas.png");
+	sprite->LoadTexture(0,"tomas.png");
+	testSprite->LoadTexture(1, "reimu.png");
 	spriteCommon->SemiTransparent();
-	
 
-	
 #pragma region キー入力 (P02_03)
 
 	
@@ -287,6 +291,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 		sprite->matUpdate();
+		testSprite->matUpdate();
 
 #pragma endregion
 
@@ -301,8 +306,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		
 #pragma endregion 
 		//spriteCommon->SetSRVheap(sprite->GetSRVheap());
-		spriteCommon->Update();
+		/*spriteCommon->Update();*/
 		sprite->Update();
+		testSprite->Update();
 		
 #pragma region その他の設定コマンド
 
@@ -322,6 +328,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	delete spriteCommon;
 	//delete playerSprite;
 	delete sprite;
+	delete testSprite;
 #pragma endregion WindowsAPI後始末
 
 	winApi = nullptr;

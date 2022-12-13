@@ -23,8 +23,10 @@ public:
 	void ImageDateSet();
 	void ImageDateSRVSet();
 
-	void TexMapping();
-	void TexMappingSRVSet();
+	void LoadTexture(uint32_t index, const std::string& fileName);
+
+	/*void TexMapping();
+	void TexMappingSRVSet();*/
 
 	/*void PointListUpdate();
 	void LineListUpdate();*/
@@ -96,7 +98,7 @@ private:
 	XMFLOAT2 anchorPoint_ = { 0.0f,0.0f };
 
 	//非表示フラグ
-	bool isInvisible_ = true;
+	bool isInvisible_ = false;
 	
 	//初期ポジション
 	XMFLOAT2 initPosition_;
@@ -124,8 +126,12 @@ private:
 	//画像イメージデータ配列
 	XMFLOAT4* imageDate;
 
+	//SRVの最大個数
+	static const size_t kMaxSRVCount = 2056;
+
 	//テクスチャバッファ
-	ID3D12Resource* texBuff = nullptr;
+	//ID3D12Resource* texBuff = nullptr;
+	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 
 	//テクスチャリソースデスク
 	D3D12_RESOURCE_DESC textureResourceDesc{};
@@ -135,12 +141,20 @@ private:
 	//シェーダーリソースビュー
 	ID3D12DescriptorHeap* srvHeap = nullptr;
 
+	//テクスチャ番号
+	uint32_t textureIndex_;
+
+	//デフォルトテクスチャ格納ディレクトリ
+	static std::string kDefaultTextureDirectoryPath_;
+
+	//デスクリプタハンドルのサイズ
+	//UINT incrementSize;
 public:
 
 	std::array <Vertex, vertexCount> GetterVertex() { return vertices_; };
 
 	//ゲッター
-	ID3D12Resource* GetTexBuff() { return texBuff; };
+	//ID3D12Resource* GetTexBuff() { return texBuff; };
 	const XMFLOAT2& GetPosition() const { return position_; };
 	float GetRotation() const { return rotation_; };
 	const XMFLOAT4 GetColor() const { return color_; };
@@ -150,6 +164,7 @@ public:
 	bool GetIsFlipX() const { return isFlipX_; };
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
+	uint32_t GetTextureIndex() const { return textureIndex_; };
 
 
 	//セッター
@@ -163,6 +178,6 @@ public:
 	void SetIsFlipX(bool isFlipX) { isFlipX_ = isFlipX; };
 	void SetIsFlipY(bool isFlipY) { isFlipY_ = isFlipY; };
 	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
-
+	void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 
 };
