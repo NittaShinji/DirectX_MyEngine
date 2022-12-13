@@ -304,10 +304,6 @@ void SpriteCommon::InvertColor()
 
 void SpriteCommon::Update()
 {
-	directXBasic_->GetCommandList()->SetPipelineState(pipelineState.Get());
-	directXBasic_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
-	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
@@ -441,6 +437,23 @@ void SpriteCommon::DescriptorHeapSet()
 {
 
 }
+
+void SpriteCommon::BeforeDraw()
+{
+	//パイプラインのセット
+	directXBasic_->GetCommandList()->SetPipelineState(pipelineState.Get());
+	//ルートシグネチャのセット
+	directXBasic_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+	//プリミティブトポロジーのセット
+	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+}
+
+void SpriteCommon::AfterDraw()
+{
+
+}
+
+
 //
 //void SpriteCommon::CreateConstantBuffer(ID3D12Resource* constBuff)
 //{

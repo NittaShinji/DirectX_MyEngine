@@ -18,7 +18,9 @@ public:
 	void Initialize(SpriteCommon* spriteCommon);
 	
 	void matUpdate();
-	void Update();
+	void Draw();
+
+	void BeforeDraw();
 
 	void ImageDateSet();
 	void ImageDateSRVSet();

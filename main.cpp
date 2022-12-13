@@ -307,8 +307,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 #pragma endregion 
 		//spriteCommon->SetSRVheap(sprite->GetSRVheap());
 		/*spriteCommon->Update();*/
-		sprite->Update();
-		testSprite->Update();
+
+		//スプライト描画開始
+		spriteCommon->BeforeDraw();
+
+		sprite->Draw();
+		testSprite->Draw();
+
+		//スプライト描画終了
+		spriteCommon->AfterDraw();
 		
 #pragma region その他の設定コマンド
 

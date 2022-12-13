@@ -27,6 +27,12 @@ public:
 	//デスクリプタヒープの設定
 	void DescriptorHeapSet();
 
+	//描画開始前
+	void BeforeDraw();
+	//描画終了後
+	void AfterDraw();
+
+
 	//半透明合成
 	void SemiTransparent();
 	//加算合成
