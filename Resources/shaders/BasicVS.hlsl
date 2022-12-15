@@ -36,7 +36,7 @@
 float4 main(float4 pos : POSITION) : SV_POSITION
 {
     
-    return pos;
+    return mul(mat, pos);
     //VSOutput output; //ピクセルシェーダーに渡す値
     //output.svpos = mul(mat, pos);
     //output.normal = normal;

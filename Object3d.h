@@ -9,6 +9,7 @@
 
 #include "Model.h"
 #include "Sprite.h"
+#include "Input.h"
 
 using namespace DirectX;
 
@@ -28,6 +29,7 @@ private:
 	DirectXBasic* directXBasic_ = nullptr;
 	Model model_;
 	Sprite* sprite_;
+	KeyInput* keys_ = nullptr;
 
 	//定数バッファ用データ構造体B1
 	//struct ConstBufferDateB1
