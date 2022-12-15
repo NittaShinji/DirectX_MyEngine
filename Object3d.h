@@ -16,12 +16,12 @@ class Object3d
 {
 public:
 
-	Object3d(const std::string& path, DirectXBasic* directXBasic, Sprite* sprite);
+	Object3d(const std::string& path, DirectXBasic* directXBasic);
 
 	void Update();
 	void BeforeDraw();
 	void AfterDraw();
-	void Draw(ID3D12DescriptorHeap* srvHeapHandle);
+	void Draw();
 
 private:
 
@@ -47,7 +47,7 @@ private:
 	};
 
 	//定数バッファ用データ構造体B0
-	struct ConstBufferDateB0
+	struct ConstBufferDateTransform
 	{
 		XMMATRIX mat;	//3D変換行列
 	};
@@ -59,11 +59,14 @@ private:
 		XMFLOAT2 uv;		// uv座標
 	};
 	
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB0;
-	//Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1;
+	//定数バッファ
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial;
 
+	
 	//定数バッファのマッピング用ポインタ
-	ConstBufferDateB0* constMap0 = nullptr;
+	ConstBufferDateTransform* constMapTransform = nullptr;
+	ConstBufferDataMaterial* constMapColor = nullptr;
 
 	XMFLOAT3 scale;
 	XMFLOAT3 rotation;

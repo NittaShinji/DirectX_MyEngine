@@ -4,7 +4,7 @@
 //	float4 color;
 //};
 
-cbuffer cbuff0 : register(b0)
+cbuffer ConstBufferDateTransform : register(b0)
 {
     matrix mat; //3D変換行列
 }
@@ -21,12 +21,22 @@ cbuffer cbuff0 : register(b0)
 
 //頂点シェーダーの出力構造体
 //(頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体)
+//struct VSOutput
+//{
+//	//システム用頂点座標
+//	float4 svpos : SV_POSITION;	
+//	//法線ベクトル
+//    float3 normal : NORMAL;
+//	//uv値
+//    float2 uv : TEXCOORD;
+//};
+	
 struct VSOutput
 {
 	//システム用頂点座標
 	float4 svpos : SV_POSITION;	
 	////法線ベクトル
-	//float3 normal : NORMAL;	
+ //   float3 normal : NORMAL;
 	////uv値
-	//float2 uv : TEXCOORD;	
+ //   float2 uv : TEXCOORD;
 };

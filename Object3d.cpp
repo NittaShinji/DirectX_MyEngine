@@ -2,10 +2,10 @@
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
-Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sprite)
+Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
-	sprite_ = sprite;
+	//sprite_ = sprite;
 
 	model_.Load(path, directXBasic);
 
@@ -15,7 +15,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 	//リソース設定
 	D3D12_RESOURCE_DESC cbResourceDesc{};
 	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(ConstBufferDateB0) + 0xff) & ~0xff;	//256バイトアラインメント
+	cbResourceDesc.Width = (sizeof(ConstBufferDateTransform) + 0xff) & ~0xff;	//256バイトアラインメント
 	cbResourceDesc.Height = 1;
 	cbResourceDesc.DepthOrArraySize = 1;
 	cbResourceDesc.MipLevels = 1;
@@ -29,13 +29,45 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 		&cbResourceDesc,//リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffB0));
+		IID_PPV_ARGS(&constBuffTransform));
 	assert(SUCCEEDED(result));
 
 	//定数バッファのマッピング
-	result = constBuffB0->Map(0, nullptr, (void**)&constMap0);//マッピング
+	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
 	assert(SUCCEEDED(result));
 
+	//単位行列を代入
+	constMapTransform->mat = XMMatrixIdentity();
+
+	////関数が作れるまでの応急処置
+	//{
+	//	//ヒープ設定
+	//	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
+	//	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//	//リソース設定
+	//	D3D12_RESOURCE_DESC cbResourceDesc{};
+	//	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	//	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
+	//	cbResourceDesc.Height = 1;
+	//	cbResourceDesc.DepthOrArraySize = 1;
+	//	cbResourceDesc.MipLevels = 1;
+	//	cbResourceDesc.SampleDesc.Count = 1;
+	//	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	//	//定数バッファの生成
+	//	HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
+	//		&cbHeapProp,//ヒープ設定
+	//		D3D12_HEAP_FLAG_NONE,
+	//		&cbResourceDesc,//リソース設定
+	//		D3D12_RESOURCE_STATE_GENERIC_READ,
+	//		nullptr,
+	//		IID_PPV_ARGS(&constBuffTransform));
+	//	assert(SUCCEEDED(result));
+
+	//	//定数バッファのマッピング
+	//	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
+	//	assert(SUCCEEDED(result));
+	//}
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC  inputLayout[] =
@@ -157,86 +189,86 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 #pragma region ブレンド設定
 	// ブレンドステート
 	
-	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
-	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
-
-	//アルファ値の計算式の設定
-	blenddesc.BlendEnable = true;					//ブレンドを有効にする
-	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;	//加算
-	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;		//ソースの値を100%使う(今から描画しようとしている色)
-	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;	//デストの値を  0%使う(既に描かれている色)
-
-	//半透明合成
-	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
-	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
-	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
-
-#pragma endregion
-
-	////デスクリプタレンジの設定
-	//D3D12_DESCRIPTOR_RANGE descriptorRange{};
-	//descriptorRange.NumDescriptors = 1;			//一度の描画に使うテクスチャが1枚なので1
-	//descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
-	//descriptorRange.BaseShaderRegister = 0;
-	//descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
-
-	////ルートパラメータの設定
-	//D3D12_ROOT_PARAMETER rootParams[3] = {};
-
-	///*rootParams[0].InitAsConstantBufferView(D3D12_SHADER_VISIBILITY_ALL);
-	//rootParams[1].InitAsConstantBufferView(D3D12_SHADER_VISIBILITY_ALL);
-	//rootParams[2].InitAsDescri*/
-
-	////定数バッファ0番
-	//rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
-	//rootParams[0].Descriptor.ShaderRegister = 0;					//定数バッファ番号
-	//rootParams[0].Descriptor.RegisterSpace = 0;						//デフォルト値
-	//rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
-
-	////定数バッファ1番
-	//rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
-	//rootParams[1].Descriptor.ShaderRegister = 1;					//定数バッファ番号
-	//rootParams[1].Descriptor.RegisterSpace = 0;						//デフォルト値
-	//rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
-
-	////テクスチャレジスタ0番
-	//rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;	//デスクリプタテーブル
-	//rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRange;			//デスクリプタレンジ
-	//rootParams[2].DescriptorTable.NumDescriptorRanges = 1;						//デスクリプタレンジ数
-	//rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;				//全てのシェーダーから見える
-
-	////テクスチャサンプラーの設定
-	//D3D12_STATIC_SAMPLER_DESC samplerDesc{};
-	//samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//横繰り返し(タイリング)
-	//samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//縦繰り返し(タイリング)
-	//samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//奥行繰り返し(タイリング)
-	//samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;	//ボーダーの時は黒
-	//samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;					//全てリニア補間
-	//samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;									//ミニマップ最大値
-	//samplerDesc.MinLOD = 0.0f;												//ミニマップ最小値
-	//samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
-	//samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;			//ピクセルシェーダーからのみ使用可能
-
-	//// ルートシグネチャの設定
-	//D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	//rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	//rootSignatureDesc.pParameters = rootParams;						//ルートパラメータの先頭アドレス
-	//rootSignatureDesc.NumParameters = _countof(rootParams);			//ルートパラメーター数
-	////rootSignatureDesc.pParameters = &rootParam;						//ルートパラメータの先頭アドレス
-	////rootSignatureDesc.NumParameters = 1;			//ルートパラメーター数
-	////サンプラーの設定をルートシグネチャに追加
-	//rootSignatureDesc.pStaticSamplers = &samplerDesc;
-	//rootSignatureDesc.NumStaticSamplers = 1;
-
-	//// ルートシグネチャのシリアライズ
-	//Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob;
-	//result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-	//	&rootSigBlob, &errorBlob);
-	//assert(SUCCEEDED(result));
-	//result = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-	//	IID_PPV_ARGS(&rootSignature));
-	//assert(SUCCEEDED(result));
+//	//レンダーターゲットのブレンド設定
+//	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
+//	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
+//
+//	//アルファ値の計算式の設定
+//	blenddesc.BlendEnable = true;					//ブレンドを有効にする
+//	blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;	//加算
+//	blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;		//ソースの値を100%使う(今から描画しようとしている色)
+//	blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;	//デストの値を  0%使う(既に描かれている色)
+//
+//	//半透明合成
+//	blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
+//	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
+//	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
+//
+//#pragma endregion
+//
+//	//デスクリプタレンジの設定
+//	D3D12_DESCRIPTOR_RANGE descriptorRange{};
+//	descriptorRange.NumDescriptors = 1;			//一度の描画に使うテクスチャが1枚なので1
+//	descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+//	descriptorRange.BaseShaderRegister = 0;
+//	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
+//
+//	//ルートパラメータの設定
+//	D3D12_ROOT_PARAMETER rootParams[3] = {};
+//
+//	/*rootParams[0].InitAsConstantBufferView(D3D12_SHADER_VISIBILITY_ALL);
+//	rootParams[1].InitAsConstantBufferView(D3D12_SHADER_VISIBILITY_ALL);
+//	rootParams[2].InitAsDescri*/
+//
+//	//定数バッファ0番
+//	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+//	rootParams[0].Descriptor.ShaderRegister = 0;					//定数バッファ番号
+//	rootParams[0].Descriptor.RegisterSpace = 0;						//デフォルト値
+//	rootParams[0].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
+//
+//	//定数バッファ1番
+//	rootParams[1].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+//	rootParams[1].Descriptor.ShaderRegister = 1;					//定数バッファ番号
+//	rootParams[1].Descriptor.RegisterSpace = 0;						//デフォルト値
+//	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
+//
+//	//テクスチャレジスタ0番
+//	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;	//デスクリプタテーブル
+//	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRange;			//デスクリプタレンジ
+//	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;						//デスクリプタレンジ数
+//	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;				//全てのシェーダーから見える
+//
+//	//テクスチャサンプラーの設定
+//	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
+//	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//横繰り返し(タイリング)
+//	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//縦繰り返し(タイリング)
+//	samplerDesc.AddressW = D3D12_TEXTURE_ADDRESS_MODE_WRAP;					//奥行繰り返し(タイリング)
+//	samplerDesc.BorderColor = D3D12_STATIC_BORDER_COLOR_TRANSPARENT_BLACK;	//ボーダーの時は黒
+//	samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;					//全てリニア補間
+//	samplerDesc.MaxLOD = D3D12_FLOAT32_MAX;									//ミニマップ最大値
+//	samplerDesc.MinLOD = 0.0f;												//ミニマップ最小値
+//	samplerDesc.ComparisonFunc = D3D12_COMPARISON_FUNC_NEVER;
+//	samplerDesc.ShaderVisibility = D3D12_SHADER_VISIBILITY_PIXEL;			//ピクセルシェーダーからのみ使用可能
+//
+//	// ルートシグネチャの設定
+//	D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
+//	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
+//	rootSignatureDesc.pParameters = rootParams;						//ルートパラメータの先頭アドレス
+//	rootSignatureDesc.NumParameters = _countof(rootParams);			//ルートパラメーター数
+//	//rootSignatureDesc.pParameters = &rootParam;						//ルートパラメータの先頭アドレス
+//	//rootSignatureDesc.NumParameters = 1;			//ルートパラメーター数
+//	//サンプラーの設定をルートシグネチャに追加
+//	rootSignatureDesc.pStaticSamplers = &samplerDesc;
+//	rootSignatureDesc.NumStaticSamplers = 1;
+//
+//	// ルートシグネチャのシリアライズ
+//	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob;
+//	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+//		&rootSigBlob, &errorBlob);
+//	assert(SUCCEEDED(result));
+//	result = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+//		IID_PPV_ARGS(&rootSignature));
+//	assert(SUCCEEDED(result));
 
 	//ルートパラメータの設定
 	D3D12_ROOT_PARAMETER rootParam = {};
@@ -251,7 +283,6 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = &rootParam;	//ルートパラメータの先頭アドレス
 	rootSignatureDesc.NumParameters = 1;	//ルートパラメーター数
-
 
 	// ルートシグネチャのシリアライズ
 	ID3DBlob* rootSigBlob = nullptr;
@@ -293,7 +324,7 @@ void Object3d::Update()
 			0.1f, 1000.0f							//前端,奥端
 		);
 
-	scale = { 1.0f,1.0f,1.0f };
+	scale = { 5.0f,5.0f,5.0f };
 	rotation = { 0.0f,0.0f,0.0f };
 	transform = { 0.0f,0.0f,0.0f };
 
@@ -329,10 +360,10 @@ void Object3d::Update()
 	model_.Update();
 	
 	//定数バッファへデータ転送
-	constMap0->mat = matWorld * matView * matProjection;
+	constMapTransform->mat = matWorld /** matView * matProjection*/;
 }
 
-void Object3d::Draw(ID3D12DescriptorHeap* srvHeapHandle)
+void Object3d::Draw()
 {
 	////頂点バッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &model_.GetInfomation()->vbView);
@@ -340,7 +371,9 @@ void Object3d::Draw(ID3D12DescriptorHeap* srvHeapHandle)
 	directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
 	//定数バッファビュー(CBV)の設定コマンド
 	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, infomation_.constBuffB0->GetGPUVirtualAddress());
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffB0->GetGPUVirtualAddress());
+	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
+	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
+
 	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, model_.GetInfomation()->constBuffB1->GetGPUVirtualAddress());
 
 	//srvHeap = srvHeapHandle;

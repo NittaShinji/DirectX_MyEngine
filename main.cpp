@@ -60,7 +60,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//3Dオブジェクト静的初期化
 	//Object3d::StaticInitialize(directXBasic->GetDevice(), directXBasic->GetWinWidth(), directXBasic->GetWinHeight());
 	//スプライト初期化処理
-	Sprite* sprite = nullptr;
+	/*Sprite* sprite = nullptr;
 	sprite = new Sprite;
 	SpriteCommon* spriteCommon = nullptr;
 	spriteCommon = new SpriteCommon;
@@ -70,12 +70,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	spriteCommon->ShaderLoad();
 
 	sprite->LoadTexture(0,"reimu.png");
-	sprite->LoadTexture(1,"tomas.png");
+	sprite->LoadTexture(1,"tomas.png");*/
 
 
 	//3Dオブジェクト生成
 	Object3d* object3d = nullptr;
-	object3d = new Object3d("Resources/triangle/triangle.obj",directXBasic,sprite);
+	object3d = new Object3d("Resources/triangle/triangle.obj",directXBasic);
 
 
 	//Sprite* testSprite = nullptr;
@@ -288,7 +288,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//anchorPoint = { 1.0f,1.0f };
 		//sprite->SetAnchorPoint(anchorPoint);
 
-		sprite->matUpdate();
+		//sprite->matUpdate();
 		//testSprite->matUpdate();
 
 		object3d->Update();
@@ -318,7 +318,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		object3d->BeforeDraw();
 
-		object3d->Draw(sprite->GetSRVHeap());
+		object3d->Draw();
 
 		object3d->AfterDraw();
 
@@ -339,9 +339,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//delete keyInput;
 	delete winApi;
 	delete directXBasic;
-	delete spriteCommon;
+	//delete spriteCommon;
 	//delete playerSprite;
-	delete sprite;
+	//delete sprite;
 	//delete testSprite;
 	delete object3d;
 #pragma endregion WindowsAPI後始末

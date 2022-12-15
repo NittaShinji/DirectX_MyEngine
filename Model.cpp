@@ -96,54 +96,57 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 				model.infomation_.indices_.emplace_back(indexPosition - 1);
 			}
 		}
-		//先頭文字列が"vt"ならテクスチャ
-		if (key == "vt")
-		{
-			//////UV成分読み込み
-			//XMFLOAT2 texcoord{};
-			//line_stream >> texcoord.x;
-			//line_stream >> texcoord.y;
-			////V方向反転
-			//texcoord.y = 1.0f - texcoord.y;
-			////テクスチャ座標データに追加
-			//texcoords.emplace_back(texcoord);
-		}
-		//先頭文字列が"vf"なら法線ベクトル
-		if (key == "vn")
-		{
-			//////X,Y,Z成分読み込み
-			//XMFLOAT3 normal{};
-			//line_stream >> normal.x;
-			//line_stream >> normal.y;
-			//line_stream >> normal.z;
-			////法線ベクトルデータに追加
-			//normals.emplace_back(normal);
-		}
-		//先頭文字列が"f"ならポリゴン(三角形)
-		if (key == "f")
-		{
-			//半角スペース区切りで行の続きを読み込む
-			string index_string;
-			while (getline(line_stream,index_string,' '))
-			{
-				//頂点インデックス１個分の文字列をストリームに変換して解析しやすくする
-				std::istringstream index_stream(index_string);
-				unsigned short indexPosition, indexNormal, indexTexcoord;
-				index_stream >> indexPosition;
-				index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
-				index_stream >> indexTexcoord;
-				index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
-				index_stream >> indexNormal;
-				//頂点データ追加
-				Vertex vertex{};
-				vertex.pos = positions[indexPosition - 1];
-				vertex.normal = normals[indexNormal - 1];
-				vertex.uv = texcoords[indexTexcoord - 1];
-				model.infomation_.vertices_.emplace_back(vertex);
-				//インデックスデータの追加
-				model.infomation_.indices_.emplace_back((unsigned short)model.infomation_.indices_.size());
-			}
-		}
+		
+		//
+		////先頭文字列が"vt"ならテクスチャ
+		//if (key == "vt")
+		//{
+		//	////UV成分読み込み
+		//	XMFLOAT2 texcoord{};
+		//	line_stream >> texcoord.x;
+		//	line_stream >> texcoord.y;
+		//	//V方向反転
+		//	texcoord.y = 1.0f - texcoord.y;
+		//	//テクスチャ座標データに追加
+		//	texcoords.emplace_back(texcoord);
+		//}
+		////先頭文字列が"vf"なら法線ベクトル
+		//if (key == "vn")
+		//{
+		//	////X,Y,Z成分読み込み
+		//	XMFLOAT3 normal{};
+		//	line_stream >> normal.x;
+		//	line_stream >> normal.y;
+		//	line_stream >> normal.z;
+		//	//法線ベクトルデータに追加
+		//	normals.emplace_back(normal);
+		//}
+
+		////先頭文字列が"f"ならポリゴン(三角形)
+		//if (key == "f")
+		//{
+		//	//半角スペース区切りで行の続きを読み込む
+		//	string index_string;
+		//	while (getline(line_stream,index_string,' '))
+		//	{
+		//		//頂点インデックス１個分の文字列をストリームに変換して解析しやすくする
+		//		std::istringstream index_stream(index_string);
+		//		unsigned short indexPosition, indexNormal, indexTexcoord;
+		//		index_stream >> indexPosition;
+		//		index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
+		//		index_stream >> indexTexcoord;
+		//		index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
+		//		index_stream >> indexNormal;
+		//		//頂点データ追加
+		//		Vertex vertex{};
+		//		vertex.pos = positions[indexPosition - 1];
+		//		vertex.normal = normals[indexNormal - 1];
+		//		vertex.uv = texcoords[indexTexcoord - 1];
+		//		model.infomation_.vertices_.emplace_back(vertex);
+		//		//インデックスデータの追加
+		//		model.infomation_.indices_.emplace_back((unsigned short)model.infomation_.indices_.size());
+		//	}
+		//}
 
 	}
 
@@ -189,17 +192,6 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 	// 繋がりを解除
 	model.infomation_.vertBuff_->Unmap(0, nullptr);
 
-#pragma region 頂点バッファビューの作成
-
-	// GPU仮想アドレス
-	model.infomation_.vbView.BufferLocation = model.infomation_.vertBuff_->GetGPUVirtualAddress();
-	// 頂点バッファのサイズ
-	model.infomation_.vbView.SizeInBytes = sizeVB;
-	// 頂点1つ分のデータサイズ
-	model.infomation_.vbView.StrideInBytes = sizeof(infomation_.vertices_[0]);
-
-#pragma endregion
-
 	//インデックスデータ全体のサイズ
 	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * model.infomation_.indices_.size());
 	
@@ -213,30 +205,40 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//インデックスバッファの設定
-	Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff;
 	result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&heapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&indexBuff)
+		IID_PPV_ARGS(&model.infomation_.indexBuff)
 	);
 
 	//インデックスバッファをマッピング
 	uint16_t* indexMap = nullptr;
-	result = indexBuff->Map(0, nullptr, (void**)&indexMap);
+	result = model.infomation_.indexBuff->Map(0, nullptr, (void**)&indexMap);
 	//全インデックスに対して
 	std::copy(model.infomation_.indices_.begin(), model.infomation_.indices_.end(), indexMap);
 
 	//マッピング解除
-	indexBuff->Unmap(0, nullptr);
+	model.infomation_.indexBuff->Unmap(0, nullptr);
+
+#pragma region 頂点バッファビューの作成
+
+	// GPU仮想アドレス
+	model.infomation_.vbView.BufferLocation = model.infomation_.vertBuff_->GetGPUVirtualAddress();
+	// 頂点バッファのサイズ
+	model.infomation_.vbView.SizeInBytes = sizeVB;
+	// 頂点1つ分のデータサイズ
+	model.infomation_.vbView.StrideInBytes = sizeof(infomation_.vertices_[0]);
+
+#pragma endregion
 
 #pragma region インデックスバッファビューの作成
 
 	//インデックスバッファビューの作成
 	//D3D12_INDEX_BUFFER_VIEW ibView{};
-	model.infomation_.ibView.BufferLocation = indexBuff->GetGPUVirtualAddress();
+	model.infomation_.ibView.BufferLocation = model.infomation_.indexBuff->GetGPUVirtualAddress();
 	model.infomation_.ibView.Format = DXGI_FORMAT_R16_UINT;
 	model.infomation_.ibView.SizeInBytes = sizeIB;
 
