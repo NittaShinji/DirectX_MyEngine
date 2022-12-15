@@ -24,7 +24,7 @@ cbuffer ConstBufferDateTransform : register(b0)
 //struct VSOutput
 //{
 //	//システム用頂点座標
-//	float4 svpos : SV_POSITION;	
+//    float4 svpos : SV_POSITION;
 //	//法線ベクトル
 //    float3 normal : NORMAL;
 //	//uv値
@@ -34,7 +34,7 @@ cbuffer ConstBufferDateTransform : register(b0)
 struct VSOutput
 {
 	//システム用頂点座標
-	float4 svpos : SV_POSITION;	
+    float4 svpos : SV_POSITION;
 	////法線ベクトル
  //   float3 normal : NORMAL;
 	////uv値
