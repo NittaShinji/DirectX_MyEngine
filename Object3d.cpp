@@ -68,7 +68,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/SpriteVS.hlsl", // シェーダファイル名
+		L"Resources/shaders/BasicVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -93,7 +93,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 #pragma region ピクセルシェーダーの読み込み
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/SpritePS.hlsl", // シェーダファイル名
+		L"Resources/shaders/BasicPS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -156,8 +156,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 
 #pragma region ブレンド設定
 	// ブレンドステート
-	//pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
-	//	= D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
+	
 	//レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
@@ -239,8 +238,6 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 	//	IID_PPV_ARGS(&rootSignature));
 	//assert(SUCCEEDED(result));
 
-
-
 	//ルートパラメータの設定
 	D3D12_ROOT_PARAMETER rootParam = {};
 	rootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
@@ -265,8 +262,6 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,Sprite* sp
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
 	rootSigBlob->Release();
-
-
 
 	// パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
