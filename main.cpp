@@ -88,10 +88,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	sprite->TexMappingSRVSet();*/
 	/*sprite->ImageDateSet();
 	sprite->ImageDateSRVSet();*/
-	//sprite->LoadTexture(0,"reimu.png");
-	//sprite->LoadTexture(0,"tomas.png");
 	sprite->LoadTexture(0,"tomas.png");
-	testSprite->LoadTexture(1, "reimu.png");
+	testSprite->LoadTexture(1, "block.png");
 	spriteCommon->SemiTransparent();
 
 #pragma region ƒL[“ü—Í (P02_03)

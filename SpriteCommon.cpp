@@ -5,8 +5,6 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-
-
 //”¼“§–¾‡¬‚Ì‰Šú‰»
 void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 {

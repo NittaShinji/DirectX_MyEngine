@@ -167,7 +167,7 @@ void Sprite::matUpdate()
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理(Z座標)
-	/*if (keys_->HasPushedKey(DIK_UP)) { position_.y -= 0.1f; }
+	if (keys_->HasPushedKey(DIK_UP)) { position_.y -= 0.1f; }
 	else if (keys_->HasPushedKey(DIK_DOWN)) { position_.y += 0.1f; }
 	else
 	{
@@ -178,7 +178,7 @@ void Sprite::matUpdate()
 	else
 	{
 		position_.x = 0.0f;
-	}*/
+	}
 
 	/*vertices_[LB].pos = { 0.0f, size_.y, 0.0f };
 	vertices_[LT].pos = { 0.0f, 0.0f, 0.0f };
