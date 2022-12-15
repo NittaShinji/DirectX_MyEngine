@@ -167,7 +167,7 @@ public:
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
 	uint32_t GetTextureIndex() const { return textureIndex_; };
-
+	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap; };
 
 	//セッター
 	void SetPosition(const DirectX::XMFLOAT2& position) { position_ = position; };

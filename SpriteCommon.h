@@ -81,7 +81,9 @@ private:
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
 	//座標用の定数バッファ
 	//Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
+	//定数バッファのGPUリソースのポインタ
 	ID3D12Resource* constBuffTransform = nullptr;
+	//定数バッファのマッピング用ポインタ
 	ConstBufferDataTransform* constMapTransform = nullptr;
 
 	//グラフィックスパイプライン

@@ -19,12 +19,16 @@
 //	return float4(1.0f,1.0f,1.0f,1.0f);
 //}
 
-VSOutput main(float4 pos : POSITION, float2 uv : TEXCOORD, float3 normal : NORMAL)
+float4 main(float4 pos : POSITION) : SV_POSITION
 {
-    //return pos;
-    VSOutput output; //ピクセルシェーダーに渡す値
-    output.svpos = mul(mat, pos);
-    output.normal = normal;
-    output.uv = uv;
-    return output;
+    
+    //////return pos;
+    //VSOutput output; //ピクセルシェーダーに渡す値
+    //output.svpos = mul(mat, pos);
+    ////output.normal = normal;
+    ////output.uv = uv;
+    //return output;
+    
+    return pos + float4(0, 0, 1, 1);
+    
 }

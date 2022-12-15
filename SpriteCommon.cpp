@@ -148,7 +148,7 @@ void SpriteCommon::SemiTransparent()
 	//グラフィックスパイプライン設定
 	PipelineSet();
 
-#pragma region ブレンド設定(03_01)
+#pragma region ブレンド設定
 	// ブレンドステート
 	//pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
 	//	= D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画

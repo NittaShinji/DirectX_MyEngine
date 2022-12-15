@@ -34,6 +34,7 @@ public:
 	int GetWinWidth() const { return winApi_->GetWinWidth(); }
 	int GetWinHeight() const { return winApi_->GetWinHeight(); }
 	
+
 private:
 
 	//FPSŒÅ’è‰Šú‰»
