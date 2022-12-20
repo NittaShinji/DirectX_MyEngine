@@ -2,13 +2,19 @@
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
-Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
+std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
+
+Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t textureIndex, const std::string& fileName)
 {
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
 	//sprite_ = sprite;
 
 	model_.Load(path, directXBasic);
+
+	scale = { 20.0f,20.0f,20.0f };
+	rotation = { 0.0f,0.0f,0.0f };
+	transform = { 0.0f,0.0f,0.0f };
 
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
@@ -62,12 +68,15 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
 			&cbResourceDesc,//リソース設定
 			D3D12_RESOURCE_STATE_GENERIC_READ,
 			nullptr,
-			IID_PPV_ARGS(&constBuffTransform));
+			IID_PPV_ARGS(&constBuffMaterial));
 		assert(SUCCEEDED(result));
 
 		//定数バッファのマッピング
-		result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
+		result = constBuffMaterial->Map(0, nullptr, (void**)&constMapColor);//マッピング
 		assert(SUCCEEDED(result));
+
+		constMapColor->color = { 1,1,0,1 };
+
 	}
 
 	// 頂点レイアウト
@@ -150,7 +159,6 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
 
 #pragma endregion
 
-
 	//グラフィックスパイプラインの設定
 	// シェーダーの設定
 	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
@@ -215,11 +223,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
 	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	//ルートパラメータの設定
-	D3D12_ROOT_PARAMETER rootParams[2] = {};
-
-	/*rootParams[0].InitAsConstantBufferView(D3D12_SHADER_VISIBILITY_ALL);
-	rootParams[1].InitAsConstantBufferView(D3D12_SHADER_VISIBILITY_ALL);
-	rootParams[2].InitAsDescri*/
+	D3D12_ROOT_PARAMETER rootParams[3] = {};
 
 	//定数バッファ0番
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
@@ -233,11 +237,11 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
 	rootParams[1].Descriptor.RegisterSpace = 0;						//デフォルト値
 	rootParams[1].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
 
-	////テクスチャレジスタ0番
-	//rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;	//デスクリプタテーブル
-	//rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRange;			//デスクリプタレンジ
-	//rootParams[2].DescriptorTable.NumDescriptorRanges = 1;						//デスクリプタレンジ数
-	//rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;				//全てのシェーダーから見える
+	//テクスチャレジスタ0番
+	rootParams[2].ParameterType = D3D12_ROOT_PARAMETER_TYPE_DESCRIPTOR_TABLE;	//デスクリプタテーブル
+	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRange;			//デスクリプタレンジ
+	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;						//デスクリプタレンジ数
+	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;				//全てのシェーダーから見える
 
 	//テクスチャサンプラーの設定
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
@@ -256,9 +260,6 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = rootParams;						//ルートパラメータの先頭アドレス
 	rootSignatureDesc.NumParameters = _countof(rootParams);			//ルートパラメーター数
-	//rootSignatureDesc.pParameters = &rootParam;						//ルートパラメータの先頭アドレス
-	//rootSignatureDesc.NumParameters = 1;			//ルートパラメーター数
-	//サンプラーの設定をルートシグネチャに追加
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
 
@@ -271,34 +272,6 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
 		IID_PPV_ARGS(&rootSignature));
 	assert(SUCCEEDED(result));
 
-	//-------------------
-
-	////ルートパラメータの設定
-	//D3D12_ROOT_PARAMETER rootParam = {};
-	//rootParam.ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
-	//rootParam.Descriptor.ShaderRegister = 0;					//定数バッファ番号
-	//rootParam.Descriptor.RegisterSpace = 0;						//デフォルト値
-	//rootParam.ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
-
-	//// ルートシグネチャ
-	//// ルートシグネチャの設定
-	//D3D12_ROOT_SIGNATURE_DESC rootSignatureDesc{};
-	//rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
-	//rootSignatureDesc.pParameters = &rootParam;	//ルートパラメータの先頭アドレス
-	//rootSignatureDesc.NumParameters = 1;	//ルートパラメーター数
-
-	//// ルートシグネチャのシリアライズ
-	//ID3DBlob* rootSigBlob = nullptr;
-	//result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-	//	&rootSigBlob, &errorBlob);
-	//assert(SUCCEEDED(result));
-	//result = directXBasic->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-	//	IID_PPV_ARGS(&rootSignature));
-	//assert(SUCCEEDED(result));
-	//rootSigBlob->Release();
-
-	//-------------------
-
 	// パイプラインにルートシグネチャをセット
 	pipelineDesc.pRootSignature = rootSignature.Get();
 
@@ -306,8 +279,15 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic)
 	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
+	LoadTexture(textureIndex, fileName);
+
 	model_.SetName(path);
 	model_.SetInfomation(*Model::GetMODELVALUE(path));
+}
+
+void Object3d::SemiTransParent()
+{
+
 }
 
 void Object3d::Update()
@@ -329,9 +309,17 @@ void Object3d::Update()
 			0.1f, 1000.0f							//前端,奥端
 		);
 
-	scale = { 20.0f,20.0f,20.0f };
-	rotation = { 0.0f,0.0f,0.0f };
-	transform = { 0.0f,0.0f,0.0f };
+	
+	XMFLOAT3 move = { 0,0,0 };
+
+	//いずれかのキーを押していたら
+	//座標を移動する処理
+	if (keys_->HasPushedKey(DIK_UP)) { transform.y += 0.4f; }
+	else if (keys_->HasPushedKey(DIK_DOWN)) { transform.y -= 0.4f; }
+	else{}
+	if (keys_->HasPushedKey(DIK_RIGHT)) { transform.x += 0.4f; }
+	else if (keys_->HasPushedKey(DIK_LEFT)) { transform.x -= 0.4f; }
+	else{}
 
 	XMMATRIX matScale, matRot, matTrans;
 
@@ -355,13 +343,6 @@ void Object3d::Update()
 	matWorld *= matRot;
 	matWorld *= matTrans;
 
-	////親オブジェクトがあれば
-	//if (parent != nullptr)
-	//{
-	//	//親オブジェクトのワールド行列を掛ける
-	//	matworld *= object->parent->matworld;
-	//}
-	// 
 	model_.Update();
 	
 	//定数バッファへデータ転送
@@ -370,27 +351,154 @@ void Object3d::Update()
 
 void Object3d::Draw()
 {
-	////頂点バッファビューの設定コマンド
+	//頂点バッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &model_.GetInfomation()->vbView);
-	////インデックスバッファビューの設定コマンド
+	//インデックスバッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
 	//定数バッファビュー(CBV)の設定コマンド
-	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, infomation_.constBuffB0->GetGPUVirtualAddress());
-	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
+	/*directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
 
-	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, model_.GetInfomation()->constBuffB1->GetGPUVirtualAddress());
+	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
+	directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);*/
+	////SRVヒープの設定コマンド
+	//directXBasic_->GetCommandList()->SetDescriptorHeaps(2, &srvHeap);
 
-	//srvHeap = srvHeapHandle;
-
-	////GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
+	////デスクリプタヒープの配列をセットするコマンド
+	//ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
+	//directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	// SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 
-	//シェーダーリソースビューの設定コマンド
+	////デスクリプタのサイズを取得
+	//UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	////取得したサイズを使用してハンドルを進める
+	//for (uint32_t i = 0; i < textureIndex_; i++)
+	//{
+	//	srvGpuHandle.ptr += incrementSize;
+	//}
+
+	//// SRVヒープの先頭にあるSRVをルートパラメータ2番に設定
 	//directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(model_.GetInfomation()->indices_.size(), 1, 0, 0, 0);
+}
+
+void Object3d::LoadTexture(uint32_t textureIndex, const std::string& fileName)
+{
+	textureIndex_ = textureIndex;
+
+	//ディレクトリパスとファイル名を連結しを得る
+	std::string fullPath = kDefaultTextureDirectoryPath_ + fileName;
+
+	//ワイド文字列に変換した際の文字列バッファサイズを計算
+	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, nullptr, 0);
+
+	//ワイド文字列に変換
+	std::vector<wchar_t> wfilePath(filePathBufferSize);
+	MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, wfilePath.data(), filePathBufferSize);
+
+	//画像ファイルの用意
+	TexMetadata metadata{};
+	ScratchImage scratchImg{};
+
+	HRESULT result = LoadFromWICFile(
+		wfilePath.data(),
+		WIC_FLAGS_NONE,
+		&metadata, scratchImg);
+
+	ScratchImage mipChain{};
+	//ミニマップ生成
+	result = GenerateMipMaps(
+		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
+		TEX_FILTER_DEFAULT, 0, mipChain);
+	if (SUCCEEDED(result))
+	{
+		scratchImg = std::move(mipChain);
+		metadata = scratchImg.GetMetadata();
+	}
+
+	//読み込んだディフューズテクスチャをSRGBとして扱う
+	metadata.format = MakeSRGB(metadata.format);
+
+	//ヒープ設定
+	D3D12_HEAP_PROPERTIES textureHeapProp{};
+	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
+	textureHeapProp.CPUPageProperty =
+		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+	//リソース設定
+	//D3D12_RESOURCE_DESC textureResourceDesc{};
+	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	textureResourceDesc.Format = metadata.format;
+	textureResourceDesc.Width = metadata.width; // 幅
+	textureResourceDesc.Height = (UINT)metadata.height; // 幅
+	textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
+	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
+	textureResourceDesc.SampleDesc.Count = 1;
+
+	//テクスチャバッファの生成
+	result = directXBasic_->GetDevice()->CreateCommittedResource(
+		&textureHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&textureResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
+
+
+	//全ミニマップについて
+	for (size_t i = 0; i < metadata.mipLevels; i++)
+	{
+		//ミニマップレベルを指定してイメージを取得
+		const Image* img = scratchImg.GetImage(i, 0, 0);
+
+		//テクスチャバッファにデータ転送
+
+		result = textureBuffers_[textureIndex_]->WriteToSubresource(
+			(UINT)i,
+			nullptr,
+			img->pixels,
+			(UINT)img->rowPitch,
+			(UINT)img->slicePitch
+		);
+
+		assert(SUCCEEDED(result));
+	}
+
+	//デスクリプタヒープの設定
+	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
+	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
+	srvHeapDesc.NumDescriptors = kMaxSRVCount;
+
+	//設定を本にSRV用デスクリプタヒープを生成
+	result = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
+	assert(SUCCEEDED(result));
+
+	//SRVヒープの先頭ハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
+
+	//デスクリプタのサイズを取得
+	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//取得したサイズを使用してハンドルを進める
+	for (uint32_t i = 0; i < textureIndex_; i++)
+	{
+		srvHandle.ptr += incrementSize;
+	}
+
+	//シェーダーリソースビューの設定
+	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
+	srvDesc.Format = textureResourceDesc.Format;//RGBA float
+	srvDesc.Shader4ComponentMapping =
+		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
+
+	//ハンドルの指す位置にシェーダーリソースビュー作成
+	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
+
 }
 
 void Object3d::BeforeDraw()
@@ -401,14 +509,10 @@ void Object3d::BeforeDraw()
 	directXBasic_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
 	//プリミティブトポロジーのセット
 	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-	////SRVヒープの設定コマンド
-	//directXBasic_->GetCommandList()->SetDescriptorHeaps(1, srvHeap.GetAddressOf());
-	//// SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
-	//directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 }
 
 void Object3d::AfterDraw()
 {
 
 }
+

@@ -9,35 +9,7 @@ using namespace DirectX;
 DirectXBasic* Model::directXBasic_ = nullptr;
 std::map<Model::MODELKEY, Model::MODELVALUE> Model::models_;
 
-Model::Model()
-{
-	////ヒープ設定
-	//D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-	//cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	////リソース設定
-	//D3D12_RESOURCE_DESC cbResourceDesc{};
-	//cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	//cbResourceDesc.Width = (sizeof(ConstBufferDateB1) + 0xff) & ~0xff;	//256バイトアラインメント
-	//cbResourceDesc.Height = 1;
-	//cbResourceDesc.DepthOrArraySize = 1;
-	//cbResourceDesc.MipLevels = 1;
-	//cbResourceDesc.SampleDesc.Count = 1;
-	//cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	////定数バッファの生成
-	//result_ = directXBasic_->GetDevice()->CreateCommittedResource(
-	//	&cbHeapProp,//ヒープ設定
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&cbResourceDesc,//リソース設定
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&infomation_.constBuffB1));
-	//assert(SUCCEEDED(result_));
-
-	////定数バッファのマッピング
-	//result_ = infomation_.constBuffB1->Map(0, nullptr, (void**)&infomation_.constMapTransform);//マッピング
-	//assert(SUCCEEDED(result_));
-}
+Model::Model(){}
 
 void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 {
@@ -47,7 +19,7 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 	//ファイルストリーム
 	std::ifstream file;
 	// .OBJファイルを開く
-	file.open("Resources/triangle/triangle.obj");
+	file.open("Resources/triangle_tex/triangle_tex.obj");
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
 
@@ -97,57 +69,55 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 			}
 		}
 		
-		//
-		////先頭文字列が"vt"ならテクスチャ
-		//if (key == "vt")
-		//{
-		//	////UV成分読み込み
-		//	XMFLOAT2 texcoord{};
-		//	line_stream >> texcoord.x;
-		//	line_stream >> texcoord.y;
-		//	//V方向反転
-		//	texcoord.y = 1.0f - texcoord.y;
-		//	//テクスチャ座標データに追加
-		//	texcoords.emplace_back(texcoord);
-		//}
-		////先頭文字列が"vf"なら法線ベクトル
-		//if (key == "vn")
-		//{
-		//	////X,Y,Z成分読み込み
-		//	XMFLOAT3 normal{};
-		//	line_stream >> normal.x;
-		//	line_stream >> normal.y;
-		//	line_stream >> normal.z;
-		//	//法線ベクトルデータに追加
-		//	normals.emplace_back(normal);
-		//}
+		//先頭文字列が"vt"ならテクスチャ
+		if (key == "vt")
+		{
+			////UV成分読み込み
+			XMFLOAT2 texcoord{};
+			line_stream >> texcoord.x;
+			line_stream >> texcoord.y;
+			//V方向反転
+			texcoord.y = 1.0f - texcoord.y;
+			//テクスチャ座標データに追加
+			texcoords.emplace_back(texcoord);
+		}
+		//先頭文字列が"vf"なら法線ベクトル
+		if (key == "vn")
+		{
+			////X,Y,Z成分読み込み
+			XMFLOAT3 normal{};
+			line_stream >> normal.x;
+			line_stream >> normal.y;
+			line_stream >> normal.z;
+			//法線ベクトルデータに追加
+			normals.emplace_back(normal);
+		}
 
-		////先頭文字列が"f"ならポリゴン(三角形)
-		//if (key == "f")
-		//{
-		//	//半角スペース区切りで行の続きを読み込む
-		//	string index_string;
-		//	while (getline(line_stream,index_string,' '))
-		//	{
-		//		//頂点インデックス１個分の文字列をストリームに変換して解析しやすくする
-		//		std::istringstream index_stream(index_string);
-		//		unsigned short indexPosition, indexNormal, indexTexcoord;
-		//		index_stream >> indexPosition;
-		//		index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
-		//		index_stream >> indexTexcoord;
-		//		index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
-		//		index_stream >> indexNormal;
-		//		//頂点データ追加
-		//		Vertex vertex{};
-		//		vertex.pos = positions[indexPosition - 1];
-		//		vertex.normal = normals[indexNormal - 1];
-		//		vertex.uv = texcoords[indexTexcoord - 1];
-		//		model.infomation_.vertices_.emplace_back(vertex);
-		//		//インデックスデータの追加
-		//		model.infomation_.indices_.emplace_back((unsigned short)model.infomation_.indices_.size());
-		//	}
-		//}
-
+		//先頭文字列が"f"ならポリゴン(三角形)
+		if (key == "f")
+		{
+			//半角スペース区切りで行の続きを読み込む
+			string index_string;
+			while (getline(line_stream,index_string,' '))
+			{
+				//頂点インデックス１個分の文字列をストリームに変換して解析しやすくする
+				std::istringstream index_stream(index_string);
+				unsigned short indexPosition, indexNormal, indexTexcoord;
+				index_stream >> indexPosition;
+				index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
+				index_stream >> indexTexcoord;
+				index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
+				index_stream >> indexNormal;
+				//頂点データ追加
+				Vertex vertex{};
+				vertex.pos = positions[indexPosition - 1];
+				vertex.normal = normals[indexNormal - 1];
+				vertex.uv = texcoords[indexTexcoord - 1];
+				model.infomation_.vertices_.emplace_back(vertex);
+				//インデックスデータの追加
+				model.infomation_.indices_.emplace_back((unsigned short)model.infomation_.indices_.size());
+			}
+		}
 	}
 
 	file.close();
@@ -179,7 +149,7 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 		&resDesc, // リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&model.infomation_.vertBuff_));
+		IID_PPV_ARGS(&model.infomation_.vertBuff_)); 
 	assert(SUCCEEDED(result));
 
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
@@ -244,59 +214,12 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 
 #pragma endregion
 
-	////デスクリプタヒープの設定
-	//D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-	//srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	//srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
-	//srvHeapDesc.NumDescriptors = kMaxSRVCount;
-
-	////設定を本にSRV用デスクリプタヒープを生成
-	//result = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
-	//assert(SUCCEEDED(result));
-
-	////SRVヒープの先頭ハンドルを取得
-	//D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
-
-	////デスクリプタのサイズを取得
-	//UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	////取得したサイズを使用してハンドルを進める
-	//for (uint32_t i = 0; i < textureIndex_; i++)
-	//{
-	//	srvHandle.ptr += incrementSize;
-	//}
-
-	////シェーダーリソースビューの設定
-	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-	//srvDesc.Format = resDesc.Format;//RGBA float
-	//srvDesc.Shader4ComponentMapping =
-	//	D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	//srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
-
-	////ハンドルの指す位置にシェーダーリソースビュー作成
-	//directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
-
-
-
 	models_.insert_or_assign(model.name_, model.infomation_);
 }
 
-void Model::Update()
-{
-	/*ConstBufferDateB1* constMap1 = nullptr;
-	
-	HRESULT result = infomation_.constBuffB1->Map(0, nullptr, (void**)&constMap1);
-	constMap1->ambient = infomation_.material_.ambient;
-	constMap1->diffuse = infomation_.material_.diffuse;
-	constMap1->specular= infomation_.material_.specular;
-	constMap1->alpha = infomation_.material_.alpha;
-	infomation_.constBuffB1->Unmap(0, nullptr);*/
-}
+void Model::Update(){}
 
-void Model::Draw(ID3D12DescriptorHeap* srvHeapHandle)
-{
-	
-}
+void Model::Draw(ID3D12DescriptorHeap* srvHeapHandle){}
 
 void Model::StaticInitialize(DirectXBasic* directXBasic)
 {

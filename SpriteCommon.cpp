@@ -12,8 +12,6 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
 
-	//CreateConstantBuffer(constBuffMaterial);
-
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
@@ -417,8 +415,6 @@ void SpriteCommon::RootSignatureSet()
 	rootSignatureDesc.Flags = D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT;
 	rootSignatureDesc.pParameters = rootParams;						//ルートパラメータの先頭アドレス
 	rootSignatureDesc.NumParameters = _countof(rootParams);			//ルートパラメーター数
-	//rootSignatureDesc.pParameters = &rootParam;						//ルートパラメータの先頭アドレス
-	//rootSignatureDesc.NumParameters = 1;			//ルートパラメーター数
 	//サンプラーの設定をルートシグネチャに追加
 	rootSignatureDesc.pStaticSamplers = &samplerDesc;
 	rootSignatureDesc.NumStaticSamplers = 1;
@@ -433,10 +429,7 @@ void SpriteCommon::RootSignatureSet()
 	assert(SUCCEEDED(result_));
 }
 
-void SpriteCommon::DescriptorHeapSet()
-{
-
-}
+void SpriteCommon::DescriptorHeapSet(){}
 
 void SpriteCommon::BeforeDraw()
 {
@@ -448,36 +441,5 @@ void SpriteCommon::BeforeDraw()
 	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 }
 
-void SpriteCommon::AfterDraw()
-{
+void SpriteCommon::AfterDraw(){}
 
-}
-
-
-//
-//void SpriteCommon::CreateConstantBuffer(ID3D12Resource* constBuff)
-//{
-//	//ヒープ設定
-//	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-//	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-//	//リソース設定
-//	D3D12_RESOURCE_DESC cbResourceDesc{};
-//	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-//	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
-//	cbResourceDesc.Height = 1;
-//	cbResourceDesc.DepthOrArraySize = 1;
-//	cbResourceDesc.MipLevels = 1;
-//	cbResourceDesc.SampleDesc.Count = 1;
-//	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-//
-//	//定数バッファの生成
-//	result_ = directXBasic_->GetDevice()->CreateCommittedResource(
-//		&cbHeapProp,//ヒープ設定
-//		D3D12_HEAP_FLAG_NONE,
-//		&cbResourceDesc,//リソース設定
-//		D3D12_RESOURCE_STATE_GENERIC_READ,
-//		nullptr,
-//		IID_PPV_ARGS(&constBuff));
-//	assert(SUCCEEDED(result_));
-//
-//}

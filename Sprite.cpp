@@ -37,36 +37,6 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 		{ initPosition_.x + size_.x, initPosition_.y, 0.0f }, {1.0f,0.0f}//右上
 	};
 
-	////スプライトの座標
-	//vertices_.at(LB) = {
-	//	{ 0.0f , 0.0f + size_.y, 0.0f }, {0.0f,1.0f}//左下
-	//};
-	//vertices_.at(LT) = {
-	//	{ 0.0f ,0.0f, 0.0f }, {0.0f,0.0f}//左上
-	//};
-	//vertices_.at(RB) = {
-	//	{ 0.0f + size_.x, 0.0f + size_.y, 0.0f }, {1.0f,1.0f}//右下
-	//};
-	//vertices_.at(RT) = {
-	//	{ 0.0f + size_.x, 0.0f, 0.0f }, {1.0f,0.0f}//右上
-	//};
-
-
-	//vertices_.at(LB) = {
-	//	{ 0.0f, 100.0f, 0.0f }, {0.0f,1.0f}//左下
-	//};
-	//vertices_.at(LT) = {
-	//	{ 0.0f, 0.0f, 0.0f }, {0.0f,0.0f}//左上
-	//};
-	//vertices_.at(RB) = {
-	//	{ 100.0f, 100.0f, 0.0f }, {1.0f,1.0f}//右下
-	//};
-	//vertices_.at(RT) = {
-	//	{ 100.0f, 0.0f, 0.0f }, {1.0f,0.0f}//右上
-	//};
-
-
-
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
@@ -119,8 +89,6 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 	// 頂点バッファのサイズ
 	vbView.SizeInBytes = sizeVB;
 	// 頂点1つ分のデータサイズ
-	//vbView.StrideInBytes = sizeof(vertices[0]);
-	//vbView.StrideInBytes = sizeof(XMFLOAT3);
 	vbView.StrideInBytes = sizeof(vertices_[0]);
 
 #pragma endregion
@@ -149,21 +117,11 @@ void Sprite::matUpdate()
 		bottom = -bottom;
 	}
 
-	/*float left = (0.0f, - anchorPoint_.x) * initPosition_.x;
-	float right = (1.0f, - anchorPoint_.x) * initPosition_.x;
-	float top = (0.0f, - anchorPoint_.y) * initPosition_.y;
-	float bottom = (1.0f, - anchorPoint_.y) * initPosition_.y;*/
-
-	////頂点データ
+	//頂点データ
 	vertices_[LB].pos = { initPosition_.x + left,initPosition_.y + bottom,0.0f };
 	vertices_[LT].pos = { initPosition_.x + left,initPosition_.y + top,0.0f };
 	vertices_[RB].pos = { initPosition_.x + right,initPosition_.y + bottom,0.0f };
 	vertices_[RT].pos = { initPosition_.x + right,initPosition_.y + top,0.0f };
-
-	/*vertices_[LB].pos = { left, bottom,0.0f };
-	vertices_[LT].pos = { left,top,0.0f };
-	vertices_[RB].pos = { right,bottom,0.0f };
-	vertices_[RT].pos = { right,top,0.0f };*/
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理(Z座標)
@@ -179,43 +137,6 @@ void Sprite::matUpdate()
 	{
 		position_.x = 0.0f;
 	}
-
-	/*vertices_[LB].pos = { 0.0f, size_.y, 0.0f };
-	vertices_[LT].pos = { 0.0f, 0.0f, 0.0f };
-	vertices_[RB].pos = { size_.x, size_.y, 0.0f };
-	vertices_[RT].pos = { size_.x, 0.0f, 0.0f };*/
-
-	//vertices_.at(LB) = {
-	//	{ initPosition_.x , initPosition_.y + size_.y, 0.0f }, {0.0f,1.0f}//左下
-	//};
-	//vertices_.at(LT) = {
-	//	{ initPosition_.x ,initPosition_.y, 0.0f }, {0.0f,0.0f}//左上
-	//};
-	//vertices_.at(RB) = {
-	//	{ initPosition_.x + size_.x, initPosition_.y + size_.y, 0.0f }, {1.0f,1.0f}//右下
-	//};
-	//vertices_.at(RT) = {
-	//	{ initPosition_.x + size_.x, initPosition_.y, 0.0f }, {1.0f,0.0f}//右上
-	//};
-
-	//size_.x += 0.1f;
-
-	//回転
-	//rotation_ += 0.01f;
-
-	//vertices_.at(LB) = {
-	//	{ 0.0f, size_.y, 0.0f }, {0.0f,1.0f}//左下 
-	//};
-	//vertices_.at(LT) = {
-	//	{ 0.0f, 0.0f, 0.0f }, {0.0f,0.0f}//左上
-	//};
-	//vertices_.at(RB) = {
-	//	{ size_.x, size_.y, 0.0f }, {1.0f,1.0f}//右下
-	//};
-	//vertices_.at(RT) = {
-	//	{ size_.x, 0.0f, 0.0f }, {1.0f,0.0f}//右上
-	//};
-
 
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
@@ -241,20 +162,15 @@ void Sprite::matUpdate()
 
 	XMMATRIX matTrans;	//平行移動行列
 	matTrans = XMMatrixTranslation(position_.x, position_.y, 0.0f);	//平行移動
-	//matTrans = XMMatrixTranslation(initPosition_.x, initPosition_.y, 0.0f);	//平行移動
-	//matTrans = XMMatrixTranslation(100.0f, 100.0f, 0.0f);	//平行移動
-
-
+	
 	matWorld = XMMatrixIdentity();	//単位行列を代入して変形をリセット
-	//matWorld *= matScale;	//ワールド行列にスケーリングを反映
+	
 	matWorld *= matRot;		//ワールド行列に回転を反映
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映
 	//定数バッファにデータ転送
 	spriteCommon_->GetConstMapTransform()->mat = matWorld * spriteCommon_->GetConstMapTransform()->mat;
 	spriteCommon_->GetConstMapMaterial()->color = color_;
-
 }
-
 
 void Sprite::Draw()
 {
@@ -400,8 +316,6 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	//テクスチャバッファの生成
-	//ID3D12Resource* texBuff = nullptr;
-
 	result_ = directXBasic_->GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
@@ -453,11 +367,18 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 	
 	//シェーダーリソースビューの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-	srvDesc.Format = resDesc.Format;//RGBA float
+	//srvDesc.Format = resDesc.Format;//RGBA float
+	//srvDesc.Shader4ComponentMapping =
+	//	D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	//srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
+
+
+	srvDesc.Format = textureResourceDesc.Format;//RGBA float
 	srvDesc.Shader4ComponentMapping =
 		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
 	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
+	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);

@@ -17,12 +17,14 @@ class Object3d
 {
 public:
 
-	Object3d(const std::string& path, DirectXBasic* directXBasic);
+	Object3d(const std::string& path, DirectXBasic* directXBasic, uint32_t textureIndex, const std::string& fileName);
 
 	void Update();
 	void BeforeDraw();
 	void AfterDraw();
 	void Draw();
+	void LoadTexture(uint32_t textureIndex, const std::string& fileName);
+	void SemiTransParent();
 
 private:
 
@@ -88,5 +90,28 @@ private:
 	//シェーダーリソースビュー
 	ID3D12DescriptorHeap* srvHeap = nullptr;
 
+	//SRVの最大個数
+	static const size_t kMaxSRVCount = 2056;
+
+	//テクスチャバッファ
+	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+
+	//テクスチャリソースデスク
+	D3D12_RESOURCE_DESC textureResourceDesc{};
+	D3D12_RESOURCE_DESC resDesc{};
+
+	//テクスチャ番号
+	uint32_t textureIndex_;
+
+	//デフォルトテクスチャ格納ディレクトリ
+	static std::string kDefaultTextureDirectoryPath_;
+
+public:
+
+	//ゲッター
+	uint32_t GetTextureIndex() const { return textureIndex_; };
+
+	//セッター
+	void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 
 };
