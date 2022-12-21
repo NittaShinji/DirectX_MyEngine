@@ -8,8 +8,12 @@ using namespace DirectX;
 
 DirectXBasic* Model::directXBasic_ = nullptr;
 std::map<Model::MODELKEY, Model::MODELVALUE> Model::models_;
+std::string Model::kDefaultTextureDirectoryPath_ = "Resources/";
 
-Model::Model(){}
+void Model::StaticInitialize(DirectXBasic* directXBasic)
+{
+	directXBasic_ = directXBasic;
+}
 
 void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 {
@@ -48,25 +52,6 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 			line_stream >> position.z;
 			//座標データに追加
 			positions.emplace_back(position);
-			//頂点データに追加
-			Vertex vertex{};
-			vertex.pos = position;
-			model.infomation_.vertices_.emplace_back(vertex);
-		}
-
-		//先頭文字列が"f"ならポリゴン(三角形)
-		if (key == "f")
-		{
-			//半角スペース区切りで行の続きを読み込む
-			string index_string;
-			while (getline(line_stream,index_string,' '))
-			{
-				std::istringstream index_stream(index_string);
-				unsigned short indexPosition;
-				index_stream >> indexPosition;
-				//頂点インデックスに追加
-				model.infomation_.indices_.emplace_back(indexPosition - 1);
-			}
 		}
 		
 		//先頭文字列が"vt"ならテクスチャ
@@ -221,10 +206,6 @@ void Model::Update(){}
 
 void Model::Draw(ID3D12DescriptorHeap* srvHeapHandle){}
 
-void Model::StaticInitialize(DirectXBasic* directXBasic)
-{
-	directXBasic_ = directXBasic;
-}
 
 const Model::MODELVALUE* Model::GetMODELVALUE(const MODELKEY path)
 {

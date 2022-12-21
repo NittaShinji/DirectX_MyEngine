@@ -1,7 +1,7 @@
 #include"Basic.hlsli"
 
-//Texture2D<float4> tex : register(t0); //0番スロットに設定されたテクスチャ
-//SamplerState smp : register(s0); //0番スロットに設定されたサンプラー
+Texture2D<float4> tex : register(t0); //0番スロットに設定されたテクスチャ
+SamplerState smp : register(s0); //0番スロットに設定されたサンプラー
 
 //float4 main(VSOutput input) : SV_TARGET
 //{
@@ -27,7 +27,8 @@
 float4 main(VSOutput input) : SV_TARGET
 {
     //return color;
-    return float4(0.1f, 0.1f, 0.1f, 1.0f);
+    //return float4(0.1f, 0.1f, 0.1f, 1.0f);
+    return float4(tex.Sample(smp, input.uv));
     //return float4(input.uv, 0, 1);
 
 }

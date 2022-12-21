@@ -12,6 +12,8 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t 
 
 	model_.Load(path, directXBasic);
 
+	LoadTexture(textureIndex, fileName);
+
 	scale = { 20.0f,20.0f,20.0f };
 	rotation = { 0.0f,0.0f,0.0f };
 	transform = { 0.0f,0.0f,0.0f };
@@ -279,8 +281,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t 
 	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
-	LoadTexture(textureIndex, fileName);
-
+	
 	model_.SetName(path);
 	model_.SetInfomation(*Model::GetMODELVALUE(path));
 }
@@ -357,29 +358,37 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
-	/*directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
 
-	ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
+	//デスクリプタヒープの配列をセットするコマンド
+	/*ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);*/
-	////SRVヒープの設定コマンド
-	//directXBasic_->GetCommandList()->SetDescriptorHeaps(2, &srvHeap);
+
+	//SRVヒープの設定コマンド
+	//directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
+
+
+	//SRVヒープの設定コマンド
+	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
 
 	////デスクリプタヒープの配列をセットするコマンド
 	//ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
 	//directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	// SRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
+	 
+	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 
-	////デスクリプタのサイズを取得
-	//UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	////取得したサイズを使用してハンドルを進める
-	//for (uint32_t i = 0; i < textureIndex_; i++)
-	//{
-	//	srvGpuHandle.ptr += incrementSize;
-	//}
+	//デスクリプタのサイズを取得
+	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	//// SRVヒープの先頭にあるSRVをルートパラメータ2番に設定
-	//directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
+	//取得したサイズを使用してハンドルを進める
+	for (uint32_t i = 0; i < textureIndex_; i++)
+	{
+		srvGpuHandle.ptr += incrementSize;
+	}
+
+	// SRVヒープの先頭にあるSRVをルートパラメータ2番のデスクリプタレンジに設定
+	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(model_.GetInfomation()->indices_.size(), 1, 0, 0, 0);
@@ -446,7 +455,6 @@ void Object3d::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
-
 
 	//全ミニマップについて
 	for (size_t i = 0; i < metadata.mipLevels; i++)

@@ -17,7 +17,6 @@ class Model
 
 public:
 
-	Model();
 	static void Load(const std::string& path, DirectXBasic* directXBasic);
 	void Update();
 	void Draw(ID3D12DescriptorHeap* srvHeapHandle);
@@ -73,6 +72,9 @@ private:
 	XMFLOAT3 scale;
 	XMFLOAT3 rotation;
 	XMFLOAT3 transform;
+
+	//デフォルトテクスチャ格納ディレクトリ
+	static std::string kDefaultTextureDirectoryPath_;
 
 public:
 

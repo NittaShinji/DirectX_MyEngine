@@ -51,7 +51,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//3Dオブジェクト生成
 	Object3d* object3d = nullptr;
-	object3d = new Object3d("Resources/triangle/triangle.obj",directXBasic,0, "tomas.png");
+	object3d = new Object3d("Resources/triangle_tex/triangle_tex.obj",directXBasic,0, "tomas.png");
 	//object3d->LoadTexture(0, "tomas.png");
 
 	// ゲームループ
