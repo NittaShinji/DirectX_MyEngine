@@ -135,11 +135,11 @@ private:
 	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 
 	HRESULT result_;
-	static uint32_t textureIndex_;
+	//static uint32_t textureIndex_;
 	//D3D12_RESOURCE_DESC textureResourceDesc_{};
 	MODELKEY name_;
 	MODELVALUE infomation_;
-	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle;
+	//static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle;
 	static std::map<MODELKEY, MODELVALUE> models_;
 
 public:
@@ -147,7 +147,7 @@ public:
 	//ゲッター
 	MODELKEY* GetName() { return &name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
-	const uint32_t GetTexIndex() { return textureIndex_; };
+	//const uint32_t GetTexIndex() { return textureIndex_; };
 	//セッター
 	void SetName(MODELKEY name) { name_ = name; };
 	void SetInfomation (MODELVALUE infomation) { infomation_ = infomation; };

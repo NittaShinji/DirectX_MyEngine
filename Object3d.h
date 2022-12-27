@@ -90,20 +90,20 @@ private:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
 	//シェーダーリソースビュー
-	//ID3D12DescriptorHeap* srvHeap = nullptr;
+	ID3D12DescriptorHeap* srvHeap = nullptr;
 
 	////SRVの最大個数
-	//static const size_t kMaxSRVCount = 2056;
+	static const size_t kMaxSRVCount = 2056;
 
 	////テクスチャバッファ
-	//std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 
 	//テクスチャリソースデスク
 	D3D12_RESOURCE_DESC textureResourceDesc{};
 	D3D12_RESOURCE_DESC resDesc{};
 
 	//テクスチャ番号
-	//uint32_t textureIndex_;
+	uint32_t textureIndex_;
 
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
