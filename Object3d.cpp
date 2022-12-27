@@ -73,11 +73,8 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t 
 			IID_PPV_ARGS(&constBuffMaterial));
 		assert(SUCCEEDED(result));
 
-		//定数バッファのマッピング
-		result = constBuffMaterial->Map(0, nullptr, (void**)&constMapColor);//マッピング
-		assert(SUCCEEDED(result));
-
-		constMapColor->color = { 1,1,0,1 };
+		
+		//constMapColor->color = { 1,1,0,1 };
 
 	}
 
@@ -112,7 +109,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t 
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/BasicVS.hlsl", // シェーダファイル名
+		L"Resources/shaders/Object3DVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -137,7 +134,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t 
 #pragma region ピクセルシェーダーの読み込み
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/BasicPS.hlsl", // シェーダファイル名
+		L"Resources/shaders/Object3DPS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -348,6 +345,18 @@ void Object3d::Update()
 	
 	//定数バッファへデータ転送
 	constMapTransform->mat = matWorld * matView * matProjection;
+
+	//定数バッファのマッピング
+	HRESULT result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
+	assert(SUCCEEDED(result));
+
+	constMapMaterial->ambient = model_.GetInfomation()->material_.ambient;
+	constMapMaterial->diffuse = model_.GetInfomation()->material_.diffuse;
+	constMapMaterial->specular = model_.GetInfomation()->material_.specular;
+	constMapMaterial->alpha = model_.GetInfomation()->material_.alpha;
+
+	constBuffMaterial->Unmap(0, nullptr);
+
 }
 
 void Object3d::Draw()

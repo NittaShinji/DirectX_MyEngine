@@ -23,7 +23,15 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 	//ファイルストリーム
 	std::ifstream file;
 	// .OBJファイルを開く
-	file.open("Resources/triangle_tex/triangle_tex.obj");
+	//file.open("Resources/triangle_tex/triangle_tex.obj");
+
+	const string modelName = "triangle_tex";
+	const string fileName = modelName + ".obj";
+	const string directoryPath = "Resources/" + modelName + "/";
+
+	file.open(directoryPath + fileName);
+	
+
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
 

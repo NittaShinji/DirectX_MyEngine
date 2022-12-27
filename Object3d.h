@@ -47,7 +47,13 @@ private:
 	//定数バッファ用データ構造体(マテリアル)
 	struct ConstBufferDataMaterial
 	{
-		XMFLOAT4 color;	//色(RGBA)
+		//XMFLOAT4 color;	//色(RGBA)
+		XMFLOAT3 ambient;	//アンビエント係数
+		float pad1;
+		XMFLOAT3 diffuse;
+		float pad2;
+		XMFLOAT3 specular;
+		float alpha;
 	};
 
 	//定数バッファ用データ構造体B0
@@ -70,7 +76,8 @@ private:
 	
 	//定数バッファのマッピング用ポインタ
 	ConstBufferDateTransform* constMapTransform = nullptr;
-	ConstBufferDataMaterial* constMapColor = nullptr;
+	//ConstBufferDataMaterial* constMapColor = nullptr;
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
 
 	XMFLOAT3 scale;
 	XMFLOAT3 rotation;
