@@ -6,6 +6,7 @@
 #include <wrl.h>
 #include <DirectXMath.h>
 #include <map>
+#include <array>
 #include "DirectXBasic.h"
 
 class Model
@@ -22,6 +23,17 @@ public:
 	void Draw(ID3D12DescriptorHeap* srvHeapHandle);
 	
 	static void StaticInitialize(DirectXBasic* directXBasic);
+
+	/// <summary>
+	/// マテリアル読み込み
+	/// </summary>
+	static void LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model);
+
+	/// <summary>
+	/// テクスチャ読み込み
+	/// </summary>
+	/// <returns>成否</returns>
+	static void LoadTexture(const std::string& directoryPath, const std::string& fileName, Model& model);
 
 private:
 
@@ -83,7 +95,6 @@ public:
 	//SRVの最大個数
 	static const size_t kMaxSRVCount = 2056;
 
-
 	struct MODELVALUE
 	{
 		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1;	//定数バッファ
@@ -106,6 +117,8 @@ public:
 		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 		//インデックスバッファ
 		Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
+		//SRV用のデスクリプタヒープ
+		ID3D12DescriptorHeap* srvHeap = nullptr;
 
 		// 頂点バッファビュー
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
@@ -118,9 +131,15 @@ public:
 
 private:
 
+	//テクスチャバッファ
+	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+
 	HRESULT result_;
+	static uint32_t textureIndex_;
+	//D3D12_RESOURCE_DESC textureResourceDesc_{};
 	MODELKEY name_;
 	MODELVALUE infomation_;
+	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle;
 	static std::map<MODELKEY, MODELVALUE> models_;
 
 public:
@@ -128,6 +147,7 @@ public:
 	//ゲッター
 	MODELKEY* GetName() { return &name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
+	const uint32_t GetTexIndex() { return textureIndex_; };
 	//セッター
 	void SetName(MODELKEY name) { name_ = name; };
 	void SetInfomation (MODELVALUE infomation) { infomation_ = infomation; };

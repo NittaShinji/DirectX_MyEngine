@@ -1,15 +1,10 @@
 #pragma once
 #include "DirectXBasic.h"
-#include <DirectXMath.h>
-#include <d3d12.h>
-#include <dxgi1_6.h>
-#include <wrl.h>
-#include <vector>
-#include <string>
-
 #include "Model.h"
 #include "Sprite.h"
 #include "Input.h"
+#include <vector>
+#include <string>
 
 using namespace DirectX;
 
@@ -95,20 +90,20 @@ private:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 
 	//シェーダーリソースビュー
-	ID3D12DescriptorHeap* srvHeap = nullptr;
+	//ID3D12DescriptorHeap* srvHeap = nullptr;
 
-	//SRVの最大個数
-	static const size_t kMaxSRVCount = 2056;
+	////SRVの最大個数
+	//static const size_t kMaxSRVCount = 2056;
 
-	//テクスチャバッファ
-	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	////テクスチャバッファ
+	//std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 
 	//テクスチャリソースデスク
 	D3D12_RESOURCE_DESC textureResourceDesc{};
 	D3D12_RESOURCE_DESC resDesc{};
 
 	//テクスチャ番号
-	uint32_t textureIndex_;
+	//uint32_t textureIndex_;
 
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
@@ -116,9 +111,9 @@ private:
 public:
 
 	//ゲッター
-	uint32_t GetTextureIndex() const { return textureIndex_; };
+	//uint32_t GetTextureIndex() const { return textureIndex_; };
 
 	//セッター
-	void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
+	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 
 };

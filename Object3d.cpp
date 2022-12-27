@@ -12,7 +12,7 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t 
 
 	model_.Load(path, directXBasic);
 
-	LoadTexture(textureIndex, fileName);
+	//LoadTexture(textureIndex, fileName);
 
 	scale = { 20.0f,20.0f,20.0f };
 	rotation = { 0.0f,0.0f,0.0f };
@@ -411,26 +411,26 @@ void Object3d::Draw()
 
 void Object3d::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 {
-	textureIndex_ = textureIndex;
+	//textureIndex_ = textureIndex;
 
-	//ディレクトリパスとファイル名を連結しを得る
-	std::string fullPath = kDefaultTextureDirectoryPath_ + fileName;
+	////ディレクトリパスとファイル名を連結しを得る
+	//std::string fullPath = kDefaultTextureDirectoryPath_ + fileName;
 
-	//ワイド文字列に変換した際の文字列バッファサイズを計算
-	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, nullptr, 0);
+	////ワイド文字列に変換した際の文字列バッファサイズを計算
+	//int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, nullptr, 0);
 
-	//ワイド文字列に変換
-	std::vector<wchar_t> wfilePath(filePathBufferSize);
-	MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, wfilePath.data(), filePathBufferSize);
+	////ワイド文字列に変換
+	//std::vector<wchar_t> wfilePath(filePathBufferSize);
+	//MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, wfilePath.data(), filePathBufferSize);
 
-	//画像ファイルの用意
-	TexMetadata metadata{};
-	ScratchImage scratchImg{};
+	////画像ファイルの用意
+	//TexMetadata metadata{};
+	//ScratchImage scratchImg{};
 
-	HRESULT result = LoadFromWICFile(
-		wfilePath.data(),
-		WIC_FLAGS_NONE,
-		&metadata, scratchImg);
+	//HRESULT result = LoadFromWICFile(
+	//	wfilePath.data(),
+	//	WIC_FLAGS_NONE,
+	//	&metadata, scratchImg);
 
 	/*HRESULT result = LoadFromWICFile(
 		wfilePath, WIC_FLAGS_NONE,
@@ -447,84 +447,84 @@ void Object3d::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 		metadata = scratchImg.GetMetadata();
 	}
 
-	//読み込んだディフューズテクスチャをSRGBとして扱う
-	metadata.format = MakeSRGB(metadata.format);
+	////読み込んだディフューズテクスチャをSRGBとして扱う
+	//metadata.format = MakeSRGB(metadata.format);
 
-	//ヒープ設定
-	D3D12_HEAP_PROPERTIES textureHeapProp{};
-	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
-	textureHeapProp.CPUPageProperty =
-		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
-	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-	//リソース設定
-	//D3D12_RESOURCE_DESC textureResourceDesc{};
-	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	textureResourceDesc.Format = metadata.format;
-	textureResourceDesc.Width = metadata.width; // 幅
-	textureResourceDesc.Height = (UINT)metadata.height; // 幅
-	textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
-	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
-	textureResourceDesc.SampleDesc.Count = 1;
+	////ヒープ設定
+	//D3D12_HEAP_PROPERTIES textureHeapProp{};
+	//textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
+	//textureHeapProp.CPUPageProperty =
+	//	D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
+	//textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+	////リソース設定
+	////D3D12_RESOURCE_DESC textureResourceDesc{};
+	//textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	//textureResourceDesc.Format = metadata.format;
+	//textureResourceDesc.Width = metadata.width; // 幅
+	//textureResourceDesc.Height = (UINT)metadata.height; // 幅
+	//textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
+	//textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
+	//textureResourceDesc.SampleDesc.Count = 1;
 
-	//テクスチャバッファの生成
-	result = directXBasic_->GetDevice()->CreateCommittedResource(
-		&textureHeapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&textureResourceDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
+	////テクスチャバッファの生成
+	//result = directXBasic_->GetDevice()->CreateCommittedResource(
+	//	&textureHeapProp,
+	//	D3D12_HEAP_FLAG_NONE,
+	//	&textureResourceDesc,
+	//	D3D12_RESOURCE_STATE_GENERIC_READ,
+	//	nullptr,
+	//	IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
 
-	//全ミニマップについて
-	for (size_t i = 0; i < metadata.mipLevels; i++)
-	{
-		//ミニマップレベルを指定してイメージを取得
-		const Image* img = scratchImg.GetImage(i, 0, 0);
+	////全ミニマップについて
+	//for (size_t i = 0; i < metadata.mipLevels; i++)
+	//{
+	//	//ミニマップレベルを指定してイメージを取得
+	//	const Image* img = scratchImg.GetImage(i, 0, 0);
 
-		//テクスチャバッファにデータ転送
+	//	//テクスチャバッファにデータ転送
 
-		result = textureBuffers_[textureIndex_]->WriteToSubresource(
-			(UINT)i,
-			nullptr,
-			img->pixels,
-			(UINT)img->rowPitch,
-			(UINT)img->slicePitch
-		);
+	//	result = textureBuffers_[textureIndex_]->WriteToSubresource(
+	//		(UINT)i,
+	//		nullptr,
+	//		img->pixels,
+	//		(UINT)img->rowPitch,
+	//		(UINT)img->slicePitch
+	//	);
 
-		assert(SUCCEEDED(result));
-	}
+	//	assert(SUCCEEDED(result));
+	//}
 
-	//デスクリプタヒープの設定
-	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
-	srvHeapDesc.NumDescriptors = kMaxSRVCount;
+	////デスクリプタヒープの設定
+	//D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
+	//srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	//srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
+	//srvHeapDesc.NumDescriptors = kMaxSRVCount;
 
-	//設定を本にSRV用デスクリプタヒープを生成
-	result = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
-	assert(SUCCEEDED(result));
+	////設定を本にSRV用デスクリプタヒープを生成
+	//result = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
+	//assert(SUCCEEDED(result));
 
-	//SRVヒープの先頭ハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
+	////SRVヒープの先頭ハンドルを取得
+	//D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
 
-	//デスクリプタのサイズを取得
-	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	//取得したサイズを使用してハンドルを進める
-	for (uint32_t i = 0; i < textureIndex_; i++)
-	{
-		srvHandle.ptr += incrementSize;
-	}
+	////デスクリプタのサイズを取得
+	//UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	////取得したサイズを使用してハンドルを進める
+	//for (uint32_t i = 0; i < textureIndex_; i++)
+	//{
+	//	srvHandle.ptr += incrementSize;
+	//}
 
-	//シェーダーリソースビューの設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-	srvDesc.Format = textureResourceDesc.Format;//RGBA float
-	srvDesc.Shader4ComponentMapping =
-		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
+	////シェーダーリソースビューの設定
+	//D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
+	//srvDesc.Format = textureResourceDesc.Format;//RGBA float
+	//srvDesc.Shader4ComponentMapping =
+	//	D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
+	//srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
-	//ハンドルの指す位置にシェーダーリソースビュー作成
-	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
+	////ハンドルの指す位置にシェーダーリソースビュー作成
+	//directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
 
 }
 
