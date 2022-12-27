@@ -370,15 +370,15 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
 
 	//デスクリプタヒープの配列をセットするコマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap };
-	directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	/*ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap };
+	directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);*/
 
 	//SRVヒープの設定コマンド
 	//directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
 
 
 	//SRVヒープの設定コマンド
-	//directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &model_.GetInfomation()->srvHeap);
+	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &model_.GetInfomation()->srvHeap);
 
 	////デスクリプタヒープの配列をセットするコマンド
 	//ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
