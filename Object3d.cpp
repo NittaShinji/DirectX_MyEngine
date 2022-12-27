@@ -369,32 +369,38 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
 
-	//デスクリプタヒープの配列をセットするコマンド
-	/*ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
-	directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);*/
-
 	//SRVヒープの設定コマンド
-	//directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
-
-
-	//SRVヒープの設定コマンド
+	//directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &model_.GetInfomation()->srvHeap);
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
+
+	//デスクリプタヒープの配列をセットするコマンド
+	/*ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap };
+	directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);*/
 
 	////デスクリプタヒープの配列をセットするコマンド
 	//ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
 	//directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	 
 	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
+	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = model_.GetInfomation()->srvHeap->GetGPUDescriptorHandleForHeapStart();
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
 
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
+	
 	//取得したサイズを使用してハンドルを進める
-	for (uint32_t i = 0; i < textureIndex_; i++)
+	/*for (uint32_t i = 0; i < model_.GetTexIndex(); i++)
 	{
 		srvGpuHandle.ptr += incrementSize;
-	}
+	}*/
+
+	/*for (uint32_t i = 0; i < model_.GetTexIndex(); i++)
+	{
+		srvGpuHandle.ptr += incrementSize;
+	}*/
+
+
 
 	// SRVヒープの先頭にあるSRVをルートパラメータ2番のデスクリプタレンジに設定
 	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
@@ -425,6 +431,10 @@ void Object3d::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 		wfilePath.data(),
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
+
+	/*HRESULT result = LoadFromWICFile(
+		wfilePath, WIC_FLAGS_NONE,
+		&metadata, scratchImg);*/
 
 	ScratchImage mipChain{};
 	//ミニマップ生成

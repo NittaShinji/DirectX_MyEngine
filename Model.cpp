@@ -31,7 +31,6 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 
 	file.open(directoryPath + fileName);
 	
-
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
 
