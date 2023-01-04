@@ -49,10 +49,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	input->Initialize(winApi);
 
+	XMFLOAT3 position = { 0,0,0 };
+	XMFLOAT3 position2 = { 30,0,0 };
+
+
 	//3Dオブジェクト生成
 	Object3d* object3d = nullptr;
-	object3d = new Object3d("Resources/triangle_tex/triangle_tex.obj",directXBasic,0, "tomas.png");
+	object3d = new Object3d("triangle_tex",directXBasic,position);
 	//object3d->LoadTexture(0, "tomas.png");
+
+	Object3d* nObject3d = nullptr;
+	nObject3d = new Object3d("triangle_tex2", directXBasic,position2);
 
 	// ゲームループ
 	while (true) {
@@ -67,12 +74,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		input->Update();
 
 		object3d->Update();
+		nObject3d->Update();
 
 		directXBasic->BeforeDraw();
+		//Object3d::BeforeDraw();
 		object3d->BeforeDraw();
 
 		object3d->Draw();
-
+		nObject3d->Draw();
+		
 		object3d->AfterDraw();
 		directXBasic->AfterDraw();
 	}

@@ -12,7 +12,7 @@ class Object3d
 {
 public:
 
-	Object3d(const std::string& path, DirectXBasic* directXBasic, uint32_t textureIndex, const std::string& fileName);
+	Object3d(const std::string& path, DirectXBasic* directXBasic,XMFLOAT3 position);
 
 	void Update();
 	void BeforeDraw();

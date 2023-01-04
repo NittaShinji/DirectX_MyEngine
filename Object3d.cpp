@@ -4,7 +4,7 @@
 
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 
-Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t textureIndex, const std::string& fileName)
+Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,XMFLOAT3 position)
 {
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
@@ -12,11 +12,9 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic, uint32_t 
 
 	model_.Load(path, directXBasic);
 
-	LoadTexture(textureIndex, fileName);
-
 	scale = { 20.0f,20.0f,20.0f };
 	rotation = { 0.0f,0.0f,0.0f };
-	transform = { 0.0f,0.0f,0.0f };
+	transform = position;
 
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
@@ -365,10 +363,7 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &model_.GetInfomation()->vbView);
 	//インデックスバッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
-	//定数バッファビュー(CBV)の設定コマンド
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
-
+	
 	//SRVヒープの設定コマンド
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &model_.GetInfomation()->srvHeap);
 	//directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap);
@@ -388,20 +383,25 @@ void Object3d::Draw()
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	
-	//取得したサイズを使用してハンドルを進める
-	/*for (uint32_t i = 0; i < model_.GetTexIndex(); i++)
-	{
-		srvGpuHandle.ptr += incrementSize;
-	}*/
+	//textureIndex_ = model_.GetTexIndex();
+	//
+	////取得したサイズを使用してハンドルを進める
+	//for (uint32_t i = 0; i < textureIndex_; i++)
+	//{
+	//	srvGpuHandle.ptr += incrementSize;
+	//}
 
-	/*for (uint32_t i = 0; i < model_.GetTexIndex(); i++)
+	for (uint32_t i = 0; i < model_.GetTexIndex(); i++)
 	{
 		srvGpuHandle.ptr += incrementSize;
-	}*/
+	}
 
 	// SRVヒープの先頭にあるSRVをルートパラメータ2番のデスクリプタレンジに設定
 	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
+
+	//定数バッファビュー(CBV)の設定コマンド
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(model_.GetInfomation()->indices_.size(), 1, 0, 0, 0);

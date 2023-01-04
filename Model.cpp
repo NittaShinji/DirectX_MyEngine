@@ -32,11 +32,14 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 	// .OBJファイルを開く
 	//file.open("Resources/triangle_tex/triangle_tex.obj");
 
-	const string modelName = "triangle_tex";
+	//const string modelName = "triangle_tex";
+	const string modelName = path;
 	const string fileName = modelName + ".obj";
 	const string directoryPath = "Resources/" + modelName + "/";
 
 	file.open(directoryPath + fileName);
+	//file.open(path);
+	
 	
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
@@ -356,7 +359,9 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 		&textureResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&textureBuffers_[0]));
+		//IID_PPV_ARGS(&textureBuffers_[0]));
+		IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
+
 
 	//全ミニマップについて
 	for (size_t i = 0; i < metadata.mipLevels; i++)
@@ -366,7 +371,9 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 
 		//テクスチャバッファにデータ転送
 
-		result = textureBuffers_[0]->WriteToSubresource(
+		result = textureBuffers_[textureIndex_]->WriteToSubresource(
+		//result = textureBuffers_[0]->WriteToSubresource(
+
 			(UINT)i,
 			nullptr,
 			img->pixels,
@@ -392,14 +399,11 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	////取得したサイズを使用してハンドルを進める
-	//for (uint32_t i = 0; i < textureIndex_; i++)
-	//{
-	//	srvHandle.ptr += incrementSize;
-	//}
-
-	//画像番号を進める
-	//textureIndex_++;
+	//取得したサイズを使用してハンドルを進める
+	for (uint32_t i = 0; i < textureIndex_; i++)
+	{
+		srvHandle.ptr += incrementSize;
+	}
 
 	//シェーダーリソースビューの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
@@ -410,8 +414,11 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	//directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
-	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[0].Get(), &srvDesc, srvHandle);
+	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
+	//directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[0].Get(), &srvDesc, srvHandle);
+
+	//画像番号を進める
+	//textureIndex_++;
 
 }
 
