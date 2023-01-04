@@ -18,7 +18,7 @@ class Model
 
 public:
 
-	static void Load(const std::string& path, DirectXBasic* directXBasic);
+	void Load(const std::string& path, DirectXBasic* directXBasic);
 	void Update();
 	void Draw(ID3D12DescriptorHeap* srvHeapHandle);
 	
@@ -27,13 +27,13 @@ public:
 	/// <summary>
 	/// マテリアル読み込み
 	/// </summary>
-	static void LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model);
+	void LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model);
 
 	/// <summary>
 	/// テクスチャ読み込み
 	/// </summary>
 	/// <returns>成否</returns>
-	static void LoadTexture(const std::string& directoryPath, const std::string& fileName, Model& model);
+	void LoadTexture(const std::string& directoryPath, const std::string& fileName, Model& model);
 
 private:
 
@@ -132,14 +132,14 @@ public:
 private:
 
 	//テクスチャバッファ
-	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 
 	HRESULT result_;
 	//static uint32_t textureIndex_;
 	//D3D12_RESOURCE_DESC textureResourceDesc_{};
 	MODELKEY name_;
 	MODELVALUE infomation_;
-	//static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle;
+	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle;
 	static std::map<MODELKEY, MODELVALUE> models_;
 
 public:
