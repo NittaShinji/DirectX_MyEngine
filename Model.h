@@ -18,7 +18,7 @@ class Model
 
 public:
 
-	void Load(const std::string& path);
+	static void Load(const std::string& path);
 	void Update();
 	void Draw(ID3D12DescriptorHeap* srvHeapHandle);
 	
@@ -27,13 +27,13 @@ public:
 	/// <summary>
 	/// マテリアル読み込み
 	/// </summary>
-	void LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model);
+	static void LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model);
 
 	/// <summary>
 	/// テクスチャ読み込み
 	/// </summary>
 	/// <returns>成否</returns>
-	void LoadTexture(const std::string& directoryPath, const std::string& fileName, Model& model);
+	static void LoadTexture(const std::string& directoryPath, const std::string& fileName, Model& model);
 
 private:
 
@@ -119,11 +119,15 @@ public:
 		Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
 		//SRV用のデスクリプタヒープ
 		ID3D12DescriptorHeap* srvHeap = nullptr;
-
+		
 		// 頂点バッファビュー
 		D3D12_VERTEX_BUFFER_VIEW vbView{};
 		//インデックスバッファビュー
 		D3D12_INDEX_BUFFER_VIEW ibView{};
+
+		//テクスチャバッファ
+		std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+		
 
 	};	
 
@@ -131,20 +135,22 @@ public:
 
 private:
 
-	//テクスチャバッファ
-	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	//デスクリプタヒープハンドル
+	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle;
+
+	//テクスチャ番号
+	static uint32_t textureIndex_;
 
 	HRESULT result_;
-	uint32_t textureIndex_ = 0;
 	//D3D12_RESOURCE_DESC textureResourceDesc_{};
 	MODELKEY name_;
 	MODELVALUE infomation_;
-	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle;
 	static std::map<MODELKEY, MODELVALUE> models_;
 
 public:
 
 	//ゲッター
+	//std::map<MODELKEY, MODELVALUE> GetModels() { return models_; };
 	MODELKEY* GetName() { return &name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
 	const uint32_t GetTexIndex() { return textureIndex_; };

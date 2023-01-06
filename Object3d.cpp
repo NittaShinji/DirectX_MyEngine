@@ -12,10 +12,10 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 	keys_ = KeyInput::GetInstance();
 }
 
-Object3d::Object3d(const std::string& path, XMFLOAT3 position,Model model)
+Object3d::Object3d(const std::string& path, XMFLOAT3 position)
 //Object3d::Object3d(DirectXBasic* directXBasic,XMFLOAT3 position)
 {
-	model_ = model;
+	/*model_ = model;*/
 	//model_.Load(path);
 
 	scale = { 20.0f,20.0f,20.0f };

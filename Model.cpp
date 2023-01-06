@@ -16,6 +16,8 @@ DirectXBasic* Model::directXBasic_ = nullptr;
 std::map<Model::MODELKEY, Model::MODELVALUE> Model::models_;
 std::string Model::kDefaultTextureDirectoryPath_ = "Resources/";
 //D3D12_CPU_DESCRIPTOR_HANDLE Model::srvHandle;
+uint32_t Model::textureIndex_ = 0;
+D3D12_CPU_DESCRIPTOR_HANDLE Model::srvHandle;
 
 void Model::StaticInitialize(DirectXBasic* directXBasic)
 {
@@ -361,7 +363,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		//IID_PPV_ARGS(&textureBuffers_[0]));
-		IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
+		IID_PPV_ARGS(&model.infomation_.textureBuffers_[textureIndex_]));
 
 
 	//全ミニマップについて
@@ -372,7 +374,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 
 		//テクスチャバッファにデータ転送
 
-		result = textureBuffers_[textureIndex_]->WriteToSubresource(
+		result = model.infomation_.textureBuffers_[textureIndex_]->WriteToSubresource(
 		//result = textureBuffers_[0]->WriteToSubresource(
 
 			(UINT)i,
@@ -415,14 +417,12 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
+	directXBasic_->GetDevice()->CreateShaderResourceView(model.infomation_.textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
 	//directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[0].Get(), &srvDesc, srvHandle);
 
 	//画像番号を進める
 	//textureIndex_++;
-
 }
-
 
 //検索キー(パス)から値を検索
 const Model::MODELVALUE* Model::GetMODELVALUE(const MODELKEY path)

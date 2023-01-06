@@ -23,31 +23,36 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 
 	//モデル読み込み
 	const string testModelName = "triangle_tex";
-	testModel.Load(testModelName);
+	const string testModelName2 = "triangle_tex2";
+
+	Model::Load(testModelName);
+	Model::Load(testModelName2);
+
+	//testModel.Load(testModelName);
 	
 	XMFLOAT3 position = { 0,0,0 };
 	XMFLOAT3 position2 = { 30,0,0 };
 
 	//3Dオブジェクト
+	object3d = new Object3d(testModelName, position);
+	nObject3d = new Object3d(testModelName2, position2);
+
 	//object3d->SetModel(testModelName);
-	object3d = new Object3d(testModelName, position,testModel);
 	/*testModel->SetName(testModelName);
 	testModel->SetInfomation(*Model::GetMODELVALUE(testModelName));*/
 
-	//nObject3d = new Object3d("triangle_tex2", directXBasic_, position2);
 
 }
 
 void GameScene::Update()
 {
 	object3d->Update();
-	//nObject3d->Update();
-
+	nObject3d->Update();
 }
 
 void GameScene::Draw()
 {
 	object3d->BeforeDraw();
 	object3d->Draw();
-	//nObject3d->Draw();
+	nObject3d->Draw();
 }
