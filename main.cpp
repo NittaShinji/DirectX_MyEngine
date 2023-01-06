@@ -19,6 +19,7 @@ using namespace Microsoft::WRL;
 #include "SpriteCommon.h"
 #include "Object3d.h"
 #include "Model.h"
+#include "GameScene.h"
 #include <memory>
 
 #pragma comment(lib,"dinput8.lib")
@@ -41,25 +42,15 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//DirectX初期化処理
 	directXBasic->Initialize(winApi);
 
-	Model::StaticInitialize(directXBasic);
-
 	//シングルトンインスタンスを作成
 	KeyInput::Create();
 	KeyInput* keyInput = KeyInput::GetInstance();
 
 	input->Initialize(winApi);
-
-	XMFLOAT3 position = { 0,0,0 };
-	XMFLOAT3 position2 = { 30,0,0 };
-
-
-	//3Dオブジェクト生成
-	Object3d* object3d = nullptr;
-	object3d = new Object3d("triangle_tex",directXBasic,position);
-	//object3d->LoadTexture(0, "tomas.png");
-
-	Object3d* nObject3d = nullptr;
-	nObject3d = new Object3d("triangle_tex2", directXBasic,position2);
+	
+	GameScene* gameScene = nullptr;
+	gameScene = new GameScene;
+	gameScene->Initialize(directXBasic);
 
 	// ゲームループ
 	while (true) {
@@ -73,17 +64,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		// DirectX毎フレーム処理 ここから
 		input->Update();
 
-		object3d->Update();
-		nObject3d->Update();
+		gameScene->Update();
 
+		//描画
 		directXBasic->BeforeDraw();
-		//Object3d::BeforeDraw();
-		object3d->BeforeDraw();
-
-		object3d->Draw();
-		nObject3d->Draw();
 		
-		object3d->AfterDraw();
+		gameScene->Draw();
+		
 		directXBasic->AfterDraw();
 	}
 
@@ -92,11 +79,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	delete winApi;
 	delete directXBasic;
-	delete object3d;
+	delete gameScene;
+	
 #pragma endregion WindowsAPI後始末
 
 	winApi = nullptr;
 	directXBasic = nullptr;
-	//input = nullptr;
+	
 	return 0;
 }

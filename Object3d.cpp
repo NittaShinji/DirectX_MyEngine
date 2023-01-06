@@ -3,14 +3,21 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
+DirectXBasic* Object3d::directXBasic_ = nullptr;
 
-Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,XMFLOAT3 position)
+void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
+}
+
+Object3d::Object3d(const std::string& path, XMFLOAT3 position)
+//Object3d::Object3d(DirectXBasic* directXBasic,XMFLOAT3 position)
+{
+	//directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
 	//sprite_ = sprite;
 
-	model_.Load(path, directXBasic);
+	model_.Load(path);
 
 	scale = { 20.0f,20.0f,20.0f };
 	rotation = { 0.0f,0.0f,0.0f };
@@ -276,14 +283,15 @@ Object3d::Object3d(const std::string& path,DirectXBasic* directXBasic,XMFLOAT3 p
 	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
 	assert(SUCCEEDED(result));
 
-	
 	model_.SetName(path);
 	model_.SetInfomation(*Model::GetMODELVALUE(path));
 }
 
-void Object3d::SemiTransParent()
+void Object3d::SetModel(const std::string& path)
 {
-
+	//検索キーからモデル情報を検索し、モデルを割り当てる
+	model_.SetName(path);
+	model_.SetInfomation(*Model::GetMODELVALUE(path));
 }
 
 void Object3d::Update()
@@ -382,14 +390,6 @@ void Object3d::Draw()
 
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-	//textureIndex_ = model_.GetTexIndex();
-	//
-	////取得したサイズを使用してハンドルを進める
-	//for (uint32_t i = 0; i < textureIndex_; i++)
-	//{
-	//	srvGpuHandle.ptr += incrementSize;
-	//}
 
 	for (uint32_t i = 0; i < model_.GetTexIndex(); i++)
 	{

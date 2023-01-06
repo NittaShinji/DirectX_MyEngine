@@ -12,18 +12,21 @@ class Object3d
 {
 public:
 
-	Object3d(const std::string& path, DirectXBasic* directXBasic,XMFLOAT3 position);
+	//Object3d(DirectXBasic* directXBasic,XMFLOAT3 position);
+	Object3d(const std::string& path,XMFLOAT3 position);
+
+	static void StaticInitialize(DirectXBasic* directXBasic);
 
 	void Update();
 	void BeforeDraw();
 	void AfterDraw();
 	void Draw();
 	void LoadTexture(uint32_t textureIndex, const std::string& fileName);
-	void SemiTransParent();
+	void SetModel(const std::string& path);
 
 private:
 
-	DirectXBasic* directXBasic_ = nullptr;
+	static DirectXBasic* directXBasic_;
 	Model model_;
 	Sprite* sprite_;
 	KeyInput* keys_ = nullptr;
@@ -74,12 +77,15 @@ private:
 	//ConstBufferDataMaterial* constMapColor = nullptr;
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
 
+	//スケール
 	XMFLOAT3 scale;
+	//回転角
 	XMFLOAT3 rotation;
+	//平行移動
 	XMFLOAT3 transform;
-	
-	std::vector<Vertex> vertex_;
 
+	//親オブジェクトのポインタ
+	
 	ID3DBlob* vsBlob = nullptr; // 頂点シェーダオブジェクト
 	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
 	ID3DBlob* errorBlob = nullptr; // エラーオブジェクト

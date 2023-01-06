@@ -18,7 +18,7 @@ class Model
 
 public:
 
-	void Load(const std::string& path, DirectXBasic* directXBasic);
+	void Load(const std::string& path);
 	void Update();
 	void Draw(ID3D12DescriptorHeap* srvHeapHandle);
 	

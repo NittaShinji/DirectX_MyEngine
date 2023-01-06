@@ -22,7 +22,7 @@ void Model::StaticInitialize(DirectXBasic* directXBasic)
 	directXBasic_ = directXBasic;
 }
 
-void Model::Load(const std::string& path, DirectXBasic* directXBasic)
+void Model::Load(const std::string& path)
 {
 	Model model;
 	model.name_ = path;
@@ -33,13 +33,13 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 	//file.open("Resources/triangle_tex/triangle_tex.obj");
 
 	//const string modelName = "triangle_tex";
-	const string modelName = path;
-	const string fileName = modelName + ".obj";
-	const string directoryPath = "Resources/" + modelName + "/";
+	//const string modelName = path;
+
+	const string fileName = model.name_ + ".obj";
+	const string directoryPath = "Resources/" + model.name_ + "/";
 
 	file.open(directoryPath + fileName);
 	//file.open(path);
-	
 	
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
@@ -224,7 +224,8 @@ void Model::Load(const std::string& path, DirectXBasic* directXBasic)
 	model.infomation_.ibView.SizeInBytes = sizeIB;
 
 #pragma endregion
-
+	
+	//モデルmapへの挿入
 	models_.insert_or_assign(model.name_, model.infomation_);
 }
 
@@ -423,6 +424,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 }
 
 
+//検索キー(パス)から値を検索
 const Model::MODELVALUE* Model::GetMODELVALUE(const MODELKEY path)
 {
 	return &models_.at(path);
