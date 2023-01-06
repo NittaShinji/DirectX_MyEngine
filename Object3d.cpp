@@ -4,19 +4,17 @@
 
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
+KeyInput* Object3d::keys_ = nullptr;
 
 void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
+	keys_ = KeyInput::GetInstance();
 }
 
 Object3d::Object3d(const std::string& path, XMFLOAT3 position)
 //Object3d::Object3d(DirectXBasic* directXBasic,XMFLOAT3 position)
 {
-	//directXBasic_ = directXBasic;
-	keys_ = KeyInput::GetInstance();
-	//sprite_ = sprite;
-
 	model_.Load(path);
 
 	scale = { 20.0f,20.0f,20.0f };
