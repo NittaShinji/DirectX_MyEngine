@@ -44,7 +44,7 @@ private:
 	Input* input_ = nullptr;
 
 	//モデル
-	Model* testModel = nullptr;
+	Model testModel;
 
 	//3Dオブジェクト
 	Object3d* object3d = nullptr;

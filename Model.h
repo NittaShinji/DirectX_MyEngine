@@ -148,9 +148,13 @@ public:
 	MODELKEY* GetName() { return &name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
 	const uint32_t GetTexIndex() { return textureIndex_; };
+
 	//セッター
 	void SetName(MODELKEY name) { name_ = name; };
 	void SetInfomation (MODELVALUE infomation) { infomation_ = infomation; };
+
+	/*void SetName(MODELKEY name) { name_ = name; };
+	void SetInfomation (MODELVALUE infomation) { infomation_ = infomation; };*/
 
 };
 

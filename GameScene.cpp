@@ -23,14 +23,14 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 
 	//モデル読み込み
 	const string testModelName = "triangle_tex";
-	//testModel->Load(testModelName);
+	testModel.Load(testModelName);
 	
 	XMFLOAT3 position = { 0,0,0 };
 	XMFLOAT3 position2 = { 30,0,0 };
 
 	//3Dオブジェクト
 	//object3d->SetModel(testModelName);
-	object3d = new Object3d(testModelName, position);
+	object3d = new Object3d(testModelName, position,testModel);
 	/*testModel->SetName(testModelName);
 	testModel->SetInfomation(*Model::GetMODELVALUE(testModelName));*/
 

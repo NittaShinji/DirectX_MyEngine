@@ -13,7 +13,7 @@ class Object3d
 public:
 
 	//Object3d(DirectXBasic* directXBasic,XMFLOAT3 position);
-	Object3d(const std::string& path,XMFLOAT3 position);
+	Object3d(const std::string& path,XMFLOAT3 position,Model model);
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
