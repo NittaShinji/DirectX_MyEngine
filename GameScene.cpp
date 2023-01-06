@@ -24,18 +24,21 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 	//モデル読み込み
 	const string testModelName = "triangle_tex";
 	const string testModelName2 = "triangle_tex2";
+	const string testModelName3 = "pillar";
 
 	Model::Load(testModelName);
 	Model::Load(testModelName2);
+	Model::Load(testModelName3);
 
-	//testModel.Load(testModelName);
-	
 	XMFLOAT3 position = { 0,0,0 };
 	XMFLOAT3 position2 = { 30,0,0 };
+	XMFLOAT3 position3 = { -30,0,0 };
+
 
 	//3Dオブジェクト
 	object3d = new Object3d(testModelName, position);
 	nObject3d = new Object3d(testModelName2, position2);
+	sObject3d = new Object3d(testModelName3, position);
 
 	//object3d->SetModel(testModelName);
 	/*testModel->SetName(testModelName);
@@ -48,11 +51,13 @@ void GameScene::Update()
 {
 	object3d->Update();
 	nObject3d->Update();
+	sObject3d->Update();
 }
 
 void GameScene::Draw()
 {
 	object3d->BeforeDraw();
-	object3d->Draw();
-	nObject3d->Draw();
+	//object3d->Draw();
+	//nObject3d->Draw();
+	sObject3d->Draw();
 }

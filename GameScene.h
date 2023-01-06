@@ -49,6 +49,8 @@ private:
 	//3Dオブジェクト
 	Object3d* object3d = nullptr;
 	Object3d* nObject3d = nullptr;
+	Object3d* sObject3d = nullptr;
+
 
 	//スプライト
 	
