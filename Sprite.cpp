@@ -9,6 +9,11 @@ DirectXBasic* Sprite::directXBasic_ = nullptr;
 KeyInput* Sprite::keys_ = nullptr;
 std::string Sprite::kDefaultTextureDirectoryPath_ = "Resources/";
 
+uint32_t Sprite::textureIndex_ = 0;
+const size_t kMaxSRVCount = 2056;
+std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> Sprite::textureBuffers_;
+ID3D12DescriptorHeap* Sprite::srvHeap = nullptr;
+
 void Sprite::StaticInitialize(SpriteCommon* spriteCommon)
 {
 	spriteCommon_ = spriteCommon;
@@ -16,10 +21,11 @@ void Sprite::StaticInitialize(SpriteCommon* spriteCommon)
 	keys_ = KeyInput::GetInstance();
 }
 
-void Sprite::Initialize(XMFLOAT2 position, XMFLOAT2 size)
+void Sprite::Initialize(XMFLOAT2 position, XMFLOAT2 size, uint32_t textureIndex)
 {
 	winWide = directXBasic_->GetWinWidth();
 	winHeight = directXBasic_->GetWinHeight();
+	textureIndex_ = textureIndex;
 
 	scale = { 10.0f,10.0f,10.0f };
 	rotation_ = { 0.0f };
@@ -315,7 +321,7 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 	
-	result_ = LoadFromWICFile(
+	HRESULT result_ = LoadFromWICFile(
 		wfilePath.data(),
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
@@ -341,7 +347,7 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
 	//ÉäÉ\Å[ÉXê›íË
-	//D3D12_RESOURCE_DESC textureResourceDesc{};
+	D3D12_RESOURCE_DESC textureResourceDesc{};
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	textureResourceDesc.Format = metadata.format;
 	textureResourceDesc.Width = metadata.width; // ïù

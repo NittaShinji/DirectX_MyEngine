@@ -17,7 +17,7 @@ public:
 	static void StaticInitialize(SpriteCommon* spriteCommon);
 
 	//初期化
-	void Initialize(XMFLOAT2 position, XMFLOAT2 size);
+	void Initialize(XMFLOAT2 position, XMFLOAT2 size, uint32_t textureIndex);
 	
 	void matUpdate();
 	void Draw();
@@ -27,7 +27,7 @@ public:
 	void ImageDateSet();
 	void ImageDateSRVSet();
 
-	void LoadTexture(uint32_t index, const std::string& fileName);
+	static void LoadTexture(uint32_t index, const std::string& fileName);
 
 	/*void TexMapping();
 	void TexMappingSRVSet();*/
@@ -137,7 +137,8 @@ private:
 
 	//テクスチャバッファ
 	//ID3D12Resource* texBuff = nullptr;
-	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	//std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 
 	//テクスチャリソースデスク
 	D3D12_RESOURCE_DESC textureResourceDesc{};
@@ -145,10 +146,12 @@ private:
 	D3D12_RESOURCE_DESC resDesc{};
 
 	//シェーダーリソースビュー
-	ID3D12DescriptorHeap* srvHeap = nullptr;
+	//ID3D12DescriptorHeap* srvHeap = nullptr;
+	static ID3D12DescriptorHeap* srvHeap;
 
 	//テクスチャ番号
-	uint32_t textureIndex_;
+	static uint32_t textureIndex_;
+	//uint32_t textureIndex_;
 
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
