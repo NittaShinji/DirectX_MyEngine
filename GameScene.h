@@ -44,16 +44,21 @@ private:
 	Input* input_ = nullptr;
 
 	//モデル
-	Model testModel;
+	Model testModel_;
 
 	//3Dオブジェクト
-	Object3d* object3d = nullptr;
-	Object3d* nObject3d = nullptr;
-	Object3d* sObject3d = nullptr;
+	Object3d* object3d_ = nullptr;
+	Object3d* nObject3d_ = nullptr;
+	Object3d* sObject3d_ = nullptr;
 
 
 	//スプライト
-	
+	Sprite* title_ = nullptr;
+
+	//スプライト共通部分
+	SpriteCommon* spriteCommon_ = nullptr;
+
+
 
 };
 

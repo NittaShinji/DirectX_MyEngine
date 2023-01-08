@@ -4,38 +4,65 @@
 
 using namespace Microsoft::WRL;
 
+SpriteCommon* Sprite::spriteCommon_ = nullptr;
+DirectXBasic* Sprite::directXBasic_ = nullptr;
+KeyInput* Sprite::keys_ = nullptr;
 std::string Sprite::kDefaultTextureDirectoryPath_ = "Resources/";
 
-void Sprite::Initialize(SpriteCommon* spriteCommon)
+void Sprite::StaticInitialize(SpriteCommon* spriteCommon)
 {
 	spriteCommon_ = spriteCommon;
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 	keys_ = KeyInput::GetInstance();
+}
 
+void Sprite::Initialize(XMFLOAT2 position, XMFLOAT2 size)
+{
 	winWide = directXBasic_->GetWinWidth();
 	winHeight = directXBasic_->GetWinHeight();
 
 	scale = { 10.0f,10.0f,10.0f };
 	rotation_ = { 0.0f };
-	position_ = { 0.0f,0.0f };
+	moveSpeed_ = { 0.0f,0.0f };
+	anchorPoint_ = { 0.0f,0.0f };
+
+	size_ = size;
 
 	//ウインドウの中心に表示
-	initPosition_ = { float(winWide / 2),float(winHeight / 2) };
-
+	//initPosition_ = { float(winWide / 2),float(winHeight / 2) };
+	position_ = position;
 
 	////スプライトの座標
+	//vertices_.at(LB) = {
+	//	{ initPosition_.x , initPosition_.y + size_.y, 0.0f }, {0.0f,1.0f}//左下
+	//};
+	//vertices_.at(LT) = {
+	//	{ initPosition_.x ,initPosition_.y, 0.0f }, {0.0f,0.0f}//左上
+	//};
+	//vertices_.at(RB) = {
+	//	{ initPosition_.x + size_.x, initPosition_.y + size_.y, 0.0f }, {1.0f,1.0f}//右下
+	//};
+	//vertices_.at(RT) = {
+	//	{ initPosition_.x + size_.x, initPosition_.y, 0.0f }, {1.0f,0.0f}//右上
+	//};
+	
 	vertices_.at(LB) = {
-		{ initPosition_.x , initPosition_.y + size_.y, 0.0f }, {0.0f,1.0f}//左下
+		{ 0.0f , size_.y, 0.0f }, {0.0f,1.0f}//左下
 	};
 	vertices_.at(LT) = {
-		{ initPosition_.x ,initPosition_.y, 0.0f }, {0.0f,0.0f}//左上
+		{ 0.0f ,0.0f, 0.0f }, {0.0f,0.0f}//左上
 	};
 	vertices_.at(RB) = {
-		{ initPosition_.x + size_.x, initPosition_.y + size_.y, 0.0f }, {1.0f,1.0f}//右下
+		{ size_.x, size_.y, 0.0f }, {1.0f,1.0f}//右下
 	};
 	vertices_.at(RT) = {
-		{ initPosition_.x + size_.x, initPosition_.y, 0.0f }, {1.0f,0.0f}//右上
+		{ size_.x, 0.0f, 0.0f }, {1.0f,0.0f}//右上
 	};
+
+	/*vertices_.at(LB).pos.y += initPosition.y;
+	vertices_.at(RB).pos.x += initPosition.x;
+	vertices_.at(RB).pos.y += initPosition.y;
+	vertices_.at(RT).pos.x += initPosition.x;*/
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
@@ -96,46 +123,53 @@ void Sprite::Initialize(SpriteCommon* spriteCommon)
 
 void Sprite::matUpdate()
 {
+	//アンカーポイントの設定
 	float left = (0.0f - anchorPoint_.x) * size_.x;
 	float right = (1.0f - anchorPoint_.x) * size_.x;
 	float top = (0.0f - anchorPoint_.y) * size_.y;
 	float bottom = (1.0f - anchorPoint_.y) * size_.y;
 
-	isFlipX_ = true;
-	isFlipY_ = true;
+	//反転処理　
+	//isFlipX_ = true;
+	//isFlipY_ = true;
 
 	//左右反転
-	if (isFlipX_)
+	if (isFlipX_ == true)
 	{
 		left = -left;
 		right = -right;
 	}
 	//上下反転
-	if (isFlipY_)
+	if (isFlipY_ == true)
 	{
 		top = -top;
 		bottom = -bottom;
 	}
 
 	//頂点データ
-	vertices_[LB].pos = { initPosition_.x + left,initPosition_.y + bottom,0.0f };
+	/*vertices_[LB].pos = { initPosition_.x + left,initPosition_.y + bottom,0.0f };
 	vertices_[LT].pos = { initPosition_.x + left,initPosition_.y + top,0.0f };
 	vertices_[RB].pos = { initPosition_.x + right,initPosition_.y + bottom,0.0f };
-	vertices_[RT].pos = { initPosition_.x + right,initPosition_.y + top,0.0f };
+	vertices_[RT].pos = { initPosition_.x + right,initPosition_.y + top,0.0f };*/
+
+	vertices_[LB].pos = { left + position_.x , bottom + position_.y,0.0f };
+	vertices_[LT].pos = { left + position_.x, top + position_.y,0.0f };
+	vertices_[RB].pos = { right + position_.x,bottom + position_.y,0.0f };
+	vertices_[RT].pos = { right + position_.x,top + position_.y,0.0f };
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理(Z座標)
-	if (keys_->HasPushedKey(DIK_UP)) { position_.y -= 0.1f; }
-	else if (keys_->HasPushedKey(DIK_DOWN)) { position_.y += 0.1f; }
+	if (keys_->HasPushedKey(DIK_UP)) { moveSpeed_.y -= 0.1f; }
+	else if (keys_->HasPushedKey(DIK_DOWN)) { moveSpeed_.y += 0.1f; }
 	else
 	{
-		position_.y = 0.0f;
+		moveSpeed_.y = 0.0f;
 	}
-	if (keys_->HasPushedKey(DIK_RIGHT)) { position_.x += 0.1f; }
-	else if (keys_->HasPushedKey(DIK_LEFT)) { position_.x -= 0.1f; }
+	if (keys_->HasPushedKey(DIK_RIGHT)) { moveSpeed_.x += 0.1f; }
+	else if (keys_->HasPushedKey(DIK_LEFT)) { moveSpeed_.x -= 0.1f; }
 	else
 	{
-		position_.x = 0.0f;
+		moveSpeed_.x = 0.0f;
 	}
 
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
@@ -161,7 +195,7 @@ void Sprite::matUpdate()
 	matRot *= XMMatrixRotationZ((rotation_));	//Z軸周りに回転
 
 	XMMATRIX matTrans;	//平行移動行列
-	matTrans = XMMatrixTranslation(position_.x, position_.y, 0.0f);	//平行移動
+	matTrans = XMMatrixTranslation(moveSpeed_.x, moveSpeed_.y, 0.0f);	//平行移動
 	
 	matWorld = XMMatrixIdentity();	//単位行列を代入して変形をリセット
 	
