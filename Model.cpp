@@ -14,7 +14,7 @@ DirectXBasic* Model::directXBasic_ = nullptr;
 //std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, Model::kMaxSRVCount> Model::textureBuffers_;
 //uint32_t Model::textureIndex_;
 std::map<Model::MODELKEY, Model::MODELVALUE> Model::models_;
-std::string Model::kDefaultTextureDirectoryPath_ = "Resources/";
+//std::string Model::kDefaultTextureDirectoryPath_ = "Resources/";
 //D3D12_CPU_DESCRIPTOR_HANDLE Model::srvHandle;
 uint32_t Model::textureIndex_ = 0;
 D3D12_CPU_DESCRIPTOR_HANDLE Model::srvHandle;

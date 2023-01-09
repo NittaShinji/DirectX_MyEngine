@@ -21,7 +21,7 @@ void Sprite::StaticInitialize(SpriteCommon* spriteCommon)
 	keys_ = KeyInput::GetInstance();
 }
 
-void Sprite::Initialize(XMFLOAT2 position, XMFLOAT2 size, uint32_t textureIndex)
+void Sprite::Initialize(uint32_t textureIndex, XMFLOAT2 position, XMFLOAT2 size)
 {
 	winWide = directXBasic_->GetWinWidth();
 	winHeight = directXBasic_->GetWinHeight();

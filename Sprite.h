@@ -17,7 +17,7 @@ public:
 	static void StaticInitialize(SpriteCommon* spriteCommon);
 
 	//èâä˙âª
-	void Initialize(XMFLOAT2 position, XMFLOAT2 size, uint32_t textureIndex);
+	void Initialize(uint32_t textureIndex,XMFLOAT2 position, XMFLOAT2 size);
 	
 	void matUpdate();
 	void Draw();

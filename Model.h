@@ -86,7 +86,7 @@ private:
 	XMFLOAT3 transform;
 
 	//デフォルトテクスチャ格納ディレクトリ
-	static std::string kDefaultTextureDirectoryPath_;
+	//static std::string kDefaultTextureDirectoryPath_;
 
 public:
 

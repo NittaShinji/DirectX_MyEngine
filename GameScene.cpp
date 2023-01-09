@@ -10,6 +10,8 @@ GameScene::GameScene()
 
 GameScene::~GameScene()
 {
+	sound->Finalize();
+	delete sound;
 	//画像
 	delete spriteCommon_;
 	delete title_;
@@ -23,6 +25,15 @@ GameScene::~GameScene()
 void GameScene::Initialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
+	//keys_ = KeyInput::GetInstance();
+
+	//------------サウンド----------
+
+	//Sound::StaticInitialize();
+	sound = new Sound;
+	sound->Initialize();
+	sound->LoadSoundWave("Alarm01.wav");
+	sound->PlaySoundWave("Alarm01.wav");
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
@@ -38,7 +49,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 	//個々の画像を初期化(指定した番号の画像を使用する)
 	XMFLOAT2 titlePosition = { 400,400 };
 	XMFLOAT2 titleSize = { 100,100 };
-	title_->Initialize(titlePosition, titleSize,1);
+	title_->Initialize(1,titlePosition, titleSize);
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();

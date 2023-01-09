@@ -6,6 +6,7 @@
 #include "SpriteCommon.h"
 #include "Object3d.h"
 #include "Model.h"
+#include "Sound.h"
 
 class GameScene
 {
@@ -41,7 +42,16 @@ public:
 private:
 
 	DirectXBasic* directXBasic_ = nullptr;
-	Input* input_ = nullptr;
+	//static KeyInput* keys_;
+
+	//サウンド
+	Sound* sound = nullptr;
+
+	//スプライト
+	Sprite* title_ = nullptr;
+
+	//スプライト共通部分
+	SpriteCommon* spriteCommon_ = nullptr;
 
 	//モデル
 	Model testModel_;
@@ -50,15 +60,6 @@ private:
 	Object3d* object3d_ = nullptr;
 	Object3d* nObject3d_ = nullptr;
 	Object3d* sObject3d_ = nullptr;
-
-
-	//スプライト
-	Sprite* title_ = nullptr;
-
-	//スプライト共通部分
-	SpriteCommon* spriteCommon_ = nullptr;
-
-
 
 };
 
