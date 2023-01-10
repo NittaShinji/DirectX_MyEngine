@@ -87,23 +87,13 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 	Camera::StaticInitialize(directXBasic_);
 	camera_ = new Camera;
 	testCamera_ = new Camera;
-	XMFLOAT3 cameraEye = { 0,0,-100 };
-	XMFLOAT3 cameraTarget = { 0,0,0 };
-	XMFLOAT3 cameraUp = { 0,1,0 };
+	Vector3 cameraEye = { 0,0,-50 };
+	Vector3 cameraTarget = { 0,0,0 };
+	Vector3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize({30,0,-50}, cameraTarget, cameraUp);
+	//testCamera_->Initialize({30,0,-50}, cameraTarget, cameraUp);
 
-	//--球の初期値を設定
-	//中心座標
-	sphere_.center = XMVectorSet(0, 2, 0, 1);
-	sphere_.radius = 1.0f;
-
-	//平面の初期値を設定
-	//法線ベクトル
-	plane_.normal = XMVectorSet(0, 1, 0, 0);
-	//原点(0,0,0)からの距離
-	plane_.distance = 0.0f;
 }
 
 void GameScene::Update()
@@ -120,33 +110,10 @@ void GameScene::Update()
 		testCamera_->Updata();
 
 		//球移動
+
+		////球と平面当たり判定
+		//bool hit = Collision::CheckSphere2Plane(sphere_, plane_);
 		
-		XMVECTOR moveY = XMVectorSet(0, 0.01f, 0, 0);
-		if (keys_->HasPushedKey(DIK_3)) { sphere_.center += moveY; }
-		else if (keys_->HasPushedKey(DIK_4)) { sphere_.center -= moveY; }
-
-		XMVECTOR moveX = XMVectorSet(0.01f,0, 0, 0);
-		if (keys_->HasPushedKey(DIK_1)) { sphere_.center += moveY; }
-		else if (keys_->HasPushedKey(DIK_2)) { sphere_.center -= moveY; }
-		
-
-		//stringstreamで変数の値を埋め込んで整形する
-		std::ostringstream sphertestr;
-		sphertestr << "Sphere:("
-			<< std::fixed << std::setprecision(2)
-			<< sphere_.center.m128_f32[0] << ","
-			<< sphere_.center.m128_f32[1] << ","
-			<< sphere_.center.m128_f32[2] << ")";
-
-		//球と平面当たり判定
-		bool hit = Collision::CheckSphere2Plane(sphere_, plane_);
-		/*if (hit)
-		{
-			sphertestr.str("");
-			sphertestr.clear();
-			sphertestr << "("
-				<< std::fixed << std::setprecision(2);
-		}*/
 
 		//カメラの切り替え
 		if (keys_->HasPushedKey(DIK_0))
@@ -162,6 +129,8 @@ void GameScene::Update()
 			nObject3d_->Update(camera_);
 			sObject3d_->Update(camera_);
 		}
+
+		
 		
 		//画像の更新処理
 		//アンカーポイントの設定
@@ -209,4 +178,16 @@ void GameScene::Draw()
 	default:
 		break;
 	}
+
+	
+}
+
+void GameScene::CheckAllCollision()
+{
+	//判定対象AとBの座標
+	//XMFLOAT3 posA, posB;
+
+	//AABBの当たり判定
+	//AABBisHit_ = Collision::CheckAABB();
+
 }

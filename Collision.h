@@ -16,11 +16,3 @@ public:
 private:
 
 };
-
-Collision::Collision()
-{
-}
-
-Collision::~Collision()
-{
-}

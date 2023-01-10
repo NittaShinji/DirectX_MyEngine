@@ -51,14 +51,6 @@ private:
 	//	XMFLOAT2 uv;		//画像内のxyz座標
 	//};
 
-	/*enum VertexName
-	{
-		LEFTDOWN,
-		LEFTCENTER,
-		LEFTUP,
-		RIGHT
-	};*/
-
 	enum VertexNumber
 	{
 		LB,//右上
@@ -117,7 +109,6 @@ private:
 	D3D12_VERTEX_BUFFER_VIEW vbView{};
 	
 	// 頂点データ全体のサイズ
-	
 	HRESULT result_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 	//ComPtr<ID3D12Resource> vertBuff_ = nullptr;
@@ -136,8 +127,6 @@ private:
 	static const size_t kMaxSRVCount = 2056;
 
 	//テクスチャバッファ
-	//ID3D12Resource* texBuff = nullptr;
-	//std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 
 	//テクスチャリソースデスク
@@ -146,13 +135,11 @@ private:
 	D3D12_RESOURCE_DESC resDesc{};
 
 	//シェーダーリソースビュー
-	//ID3D12DescriptorHeap* srvHeap = nullptr;
 	static ID3D12DescriptorHeap* srvHeap;
 
 	//テクスチャ番号
 	static uint32_t textureIndex_;
-	//uint32_t textureIndex_;
-
+	
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
 

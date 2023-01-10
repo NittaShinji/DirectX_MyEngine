@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "Input.h"
+#include "Matrix4.h"
 #include <vector>
 #include <string>
 
@@ -27,7 +28,6 @@ public:
 	void BeforeDraw();
 	void AfterDraw();
 	void Draw();
-	void LoadTexture(uint32_t textureIndex, const std::string& fileName);
 	void SetModel(const std::string& path);
 
 private:
@@ -37,17 +37,6 @@ private:
 	Model model_;
 	Sprite* sprite_;
 	Camera* camera_ = nullptr;
-
-	//定数バッファ用データ構造体B1
-	//struct ConstBufferDateB1
-	//{
-	//	XMFLOAT3 ambient;	//アンビエント係数
-	//	float pad1;
-	//	XMFLOAT3 diffuse;
-	//	float pad2;
-	//	XMFLOAT3 specular;
-	//	float alpha;
-	//};
 	
 	//定数バッファ用データ構造体(マテリアル)
 	struct ConstBufferDataMaterial
@@ -64,7 +53,7 @@ private:
 	//定数バッファ用データ構造体B0
 	struct ConstBufferDateTransform
 	{
-		XMMATRIX mat;	//3D変換行列
+		Matrix4 mat;	//3D変換行列
 	};
 
 	struct Vertex
@@ -91,10 +80,19 @@ private:
 	//平行移動
 	XMFLOAT3 transform;
 
+	//ワールド変換行列
+	Matrix4 matWorld_;
+
+	//ワールド変換行列の設定
+	Matrix4 matScale_;
+	Matrix4 matRot_;
+	Matrix4 matTrans_;
+
+
 	//ビュー行列
-	XMMATRIX matView_;
+	Matrix4 matView_;
 	//射影行列
-	XMMATRIX matProjection_;
+	Matrix4 matProjection_;
 
 	//親オブジェクトのポインタ
 	
@@ -129,10 +127,9 @@ private:
 public:
 
 	//ゲッター
-	//uint32_t GetTextureIndex() const { return textureIndex_; };
 	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform; };
+	//const XMFLOAT3 GetWorldPosition();
 
 	//セッター
-	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 
 };

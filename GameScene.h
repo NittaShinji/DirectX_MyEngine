@@ -12,6 +12,10 @@
 
 class GameScene
 {
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
 
@@ -39,6 +43,9 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
+
+	//当たり判定のチェック
+	void CheckAllCollision();
 
 
 private:
@@ -77,10 +84,8 @@ private:
 	//ゲームシーン
 	int scene_;
 
-	//当たり判定 球
-	Sphere sphere_;
-	//当たり判定 平面
-	Plane plane_;
+	//AABBの衝突判定フラグ
+	bool AABBisHit_;
 
 };
 
