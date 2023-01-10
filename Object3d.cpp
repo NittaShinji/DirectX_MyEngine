@@ -317,11 +317,14 @@ void Object3d::Update()
 
 	//‚¢‚¸‚ê‚©‚ÌƒL[‚ð‰Ÿ‚µ‚Ä‚¢‚½‚ç
 	//À•W‚ðˆÚ“®‚·‚éˆ—
-	if (keys_->HasPushedKey(DIK_UP)) { transform.y += 0.4f; }
-	else if (keys_->HasPushedKey(DIK_DOWN)) { transform.y -= 0.4f; }
+	if (keys_->HasPushedKey(DIK_UP)) { transform.z += 0.4f; }
+	else if (keys_->HasPushedKey(DIK_DOWN)) { transform.z -= 0.4f; }
 	else{}
 	if (keys_->HasPushedKey(DIK_RIGHT)) { transform.x += 0.4f; }
 	else if (keys_->HasPushedKey(DIK_LEFT)) { transform.x -= 0.4f; }
+	else{}
+	if (keys_->HasPushedKey(DIK_P)) { transform.y += 0.4f; }
+	else if (keys_->HasPushedKey(DIK_L)) { transform.y -= 0.4f; }
 	else{}
 
 	XMMATRIX matScale, matRot, matTrans;

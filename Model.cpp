@@ -32,17 +32,11 @@ void Model::Load(const std::string& path)
 	//ファイルストリーム
 	std::ifstream file;
 	// .OBJファイルを開く
-	//file.open("Resources/triangle_tex/triangle_tex.obj");
-
-	//const string modelName = "triangle_tex";
-	//const string modelName = path;
-
 	const string fileName = model.name_ + ".obj";
 	const string directoryPath = "Resources/" + model.name_ + "/";
 
 	file.open(directoryPath + fileName);
-	//file.open(path);
-	
+
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
 
@@ -375,7 +369,6 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 		//テクスチャバッファにデータ転送
 
 		result = model.infomation_.textureBuffers_[textureIndex_]->WriteToSubresource(
-		//result = textureBuffers_[0]->WriteToSubresource(
 
 			(UINT)i,
 			nullptr,
@@ -418,8 +411,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	directXBasic_->GetDevice()->CreateShaderResourceView(model.infomation_.textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
-	//directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[0].Get(), &srvDesc, srvHandle);
-
+	
 	//画像番号を進める
 	//textureIndex_++;
 }

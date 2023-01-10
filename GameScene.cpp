@@ -26,6 +26,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
 	//keys_ = KeyInput::GetInstance();
+	scene = GAME;
 
 	//------------サウンド----------
 
@@ -81,28 +82,64 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 
 void GameScene::Update()
 {
-	//モデルの更新処理
-	object3d_->Update();
-	nObject3d_->Update();
-	sObject3d_->Update();
+	switch (scene)
+	{
 
-	//画像の更新処理
-	//アンカーポイントの設定
-	XMFLOAT2 anchorPoint = { 0.0f,0.0f };
-	title_->SetAnchorPoint(anchorPoint);
-	title_->matUpdate();
+	case TITLE:
+
+		break;
+
+	case GAME:
+
+		//モデルの更新処理
+		object3d_->Update();
+		nObject3d_->Update();
+		sObject3d_->Update();
+
+		//画像の更新処理
+		//アンカーポイントの設定
+		XMFLOAT2 anchorPoint = { 0.0f,0.0f };
+		title_->SetAnchorPoint(anchorPoint);
+		title_->matUpdate();
+		break;
+
+	case END:
+
+		break;
+
+	default:
+		break;
+	}
 }
 
 void GameScene::Draw()
 {
-	//モデル描画
-	object3d_->BeforeDraw();
-	object3d_->Draw();
-	nObject3d_->Draw();
-	sObject3d_->Draw();
+	switch (scene)
+	{
 
-	//画像描画
-	spriteCommon_->BeforeDraw();
-	spriteCommon_->Update();
-	title_->Draw();
+	case TITLE:
+
+		break;
+
+	case GAME:
+
+		//モデル描画
+		object3d_->BeforeDraw();
+		object3d_->Draw();
+		nObject3d_->Draw();
+		sObject3d_->Draw();
+
+		//画像描画
+		spriteCommon_->BeforeDraw();
+		spriteCommon_->Update();
+		title_->Draw();
+
+		break;
+	case END:
+
+		break;
+
+	default:
+		break;
+	}
 }

@@ -41,6 +41,13 @@ public:
 
 private:
 
+	enum Game
+	{
+		TITLE,
+		GAME,
+		END,
+	};
+
 	DirectXBasic* directXBasic_ = nullptr;
 	//static KeyInput* keys_;
 
@@ -60,6 +67,9 @@ private:
 	Object3d* object3d_ = nullptr;
 	Object3d* nObject3d_ = nullptr;
 	Object3d* sObject3d_ = nullptr;
+
+	//ÉQÅ[ÉÄÉVÅ[Éì
+	int scene;
 
 };
 
