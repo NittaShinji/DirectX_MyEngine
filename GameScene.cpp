@@ -1,4 +1,7 @@
 #include "GameScene.h"
+#include "Collision.h"
+#include <sstream>
+#include <iomanip>
 #include <string>
 
 using namespace std;
@@ -27,7 +30,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
-	scene = GAME;
+	scene_ = GAME;
 
 	//------------サウンド----------
 
@@ -91,11 +94,21 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
 	testCamera_->Initialize({30,0,-50}, cameraTarget, cameraUp);
 
+	//--球の初期値を設定
+	//中心座標
+	sphere_.center = XMVectorSet(0, 2, 0, 1);
+	sphere_.radius = 1.0f;
+
+	//平面の初期値を設定
+	//法線ベクトル
+	plane_.normal = XMVectorSet(0, 1, 0, 0);
+	//原点(0,0,0)からの距離
+	plane_.distance = 0.0f;
 }
 
 void GameScene::Update()
 {
-	switch (scene)
+	switch (scene_)
 	{
 
 	case TITLE:
@@ -106,7 +119,37 @@ void GameScene::Update()
 		camera_->Updata();
 		testCamera_->Updata();
 
-		if (keys_->HasPushedKey(DIK_3))
+		//球移動
+		
+		XMVECTOR moveY = XMVectorSet(0, 0.01f, 0, 0);
+		if (keys_->HasPushedKey(DIK_3)) { sphere_.center += moveY; }
+		else if (keys_->HasPushedKey(DIK_4)) { sphere_.center -= moveY; }
+
+		XMVECTOR moveX = XMVectorSet(0.01f,0, 0, 0);
+		if (keys_->HasPushedKey(DIK_1)) { sphere_.center += moveY; }
+		else if (keys_->HasPushedKey(DIK_2)) { sphere_.center -= moveY; }
+		
+
+		//stringstreamで変数の値を埋め込んで整形する
+		std::ostringstream sphertestr;
+		sphertestr << "Sphere:("
+			<< std::fixed << std::setprecision(2)
+			<< sphere_.center.m128_f32[0] << ","
+			<< sphere_.center.m128_f32[1] << ","
+			<< sphere_.center.m128_f32[2] << ")";
+
+		//球と平面当たり判定
+		bool hit = Collision::CheckSphere2Plane(sphere_, plane_);
+		/*if (hit)
+		{
+			sphertestr.str("");
+			sphertestr.clear();
+			sphertestr << "("
+				<< std::fixed << std::setprecision(2);
+		}*/
+
+		//カメラの切り替え
+		if (keys_->HasPushedKey(DIK_0))
 		{
 			object3d_->Update(testCamera_);
 			nObject3d_->Update(testCamera_);
@@ -138,7 +181,7 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	switch (scene)
+	switch (scene_)
 	{
 
 	case TITLE:

@@ -8,6 +8,7 @@
 #include "Model.h"
 #include "Camera.h"
 #include "Sound.h"
+#include "CollisionPrimitive.h"
 
 class GameScene
 {
@@ -74,7 +75,12 @@ private:
 	Object3d* sObject3d_ = nullptr;
 
 	//ƒQ[ƒ€ƒV[ƒ“
-	int scene;
+	int scene_;
+
+	//“–‚½‚è”»’è ‹…
+	Sphere sphere_;
+	//“–‚½‚è”»’è •½–Ê
+	Plane plane_;
 
 };
 
