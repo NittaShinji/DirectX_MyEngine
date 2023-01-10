@@ -19,13 +19,14 @@ GameScene::~GameScene()
 	delete object3d_;
 	delete nObject3d_;
 	delete sObject3d_;
-
+	delete camera_;
+	delete testCamera_;
 }
 
 void GameScene::Initialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
-	//keys_ = KeyInput::GetInstance();
+	keys_ = KeyInput::GetInstance();
 	scene = GAME;
 
 	//------------サウンド----------
@@ -78,6 +79,18 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 	object3d_ = new Object3d(testModelName, position);
 	nObject3d_ = new Object3d(testModelName2, position2);
 	sObject3d_ = new Object3d(testModelName3, position3);
+
+	//------------カメラ----------
+	Camera::StaticInitialize(directXBasic_);
+	camera_ = new Camera;
+	testCamera_ = new Camera;
+	XMFLOAT3 cameraEye = { 0,0,-100 };
+	XMFLOAT3 cameraTarget = { 0,0,0 };
+	XMFLOAT3 cameraUp = { 0,1,0 };
+
+	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
+	testCamera_->Initialize({30,0,-50}, cameraTarget, cameraUp);
+
 }
 
 void GameScene::Update()
@@ -90,12 +103,23 @@ void GameScene::Update()
 		break;
 
 	case GAME:
+		camera_->Updata();
+		testCamera_->Updata();
 
-		//モデルの更新処理
-		object3d_->Update();
-		nObject3d_->Update();
-		sObject3d_->Update();
-
+		if (keys_->HasPushedKey(DIK_3))
+		{
+			object3d_->Update(testCamera_);
+			nObject3d_->Update(testCamera_);
+			sObject3d_->Update(testCamera_);
+		}
+		else
+		{
+			//モデルの更新処理
+			object3d_->Update(camera_);
+			nObject3d_->Update(camera_);
+			sObject3d_->Update(camera_);
+		}
+		
 		//画像の更新処理
 		//アンカーポイントの設定
 		XMFLOAT2 anchorPoint = { 0.0f,0.0f };

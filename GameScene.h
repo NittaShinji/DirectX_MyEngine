@@ -6,6 +6,7 @@
 #include "SpriteCommon.h"
 #include "Object3d.h"
 #include "Model.h"
+#include "Camera.h"
 #include "Sound.h"
 
 class GameScene
@@ -49,7 +50,11 @@ private:
 	};
 
 	DirectXBasic* directXBasic_ = nullptr;
-	//static KeyInput* keys_;
+	KeyInput* keys_;
+
+	//カメラ
+	Camera* camera_ = nullptr;
+	Camera* testCamera_ = nullptr;
 
 	//サウンド
 	Sound* sound = nullptr;

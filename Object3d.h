@@ -2,22 +2,28 @@
 #include "DirectXBasic.h"
 #include "Model.h"
 #include "Sprite.h"
+#include "Camera.h"
 #include "Input.h"
 #include <vector>
 #include <string>
 
-using namespace DirectX;
-
 class Object3d
 {
+	//エイリアステンプレート
+	using XMFLOAT = DirectX::XMFLOAT3;
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMMATRIX = DirectX::XMMATRIX;
+
 public:
 
 	//Object3d(DirectXBasic* directXBasic,XMFLOAT3 position);
 	Object3d(const std::string& path,XMFLOAT3 position);
+	~Object3d();
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
-	void Update();
+	void Update(Camera* camera);
 	void BeforeDraw();
 	void AfterDraw();
 	void Draw();
@@ -30,6 +36,7 @@ private:
 	static KeyInput* keys_;
 	Model model_;
 	Sprite* sprite_;
+	Camera* camera_ = nullptr;
 
 	//定数バッファ用データ構造体B1
 	//struct ConstBufferDateB1
@@ -84,6 +91,11 @@ private:
 	//平行移動
 	XMFLOAT3 transform;
 
+	//ビュー行列
+	XMMATRIX matView_;
+	//射影行列
+	XMMATRIX matProjection_;
+
 	//親オブジェクトのポインタ
 	
 	ID3DBlob* vsBlob = nullptr; // 頂点シェーダオブジェクト
@@ -118,6 +130,7 @@ public:
 
 	//ゲッター
 	//uint32_t GetTextureIndex() const { return textureIndex_; };
+	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform; };
 
 	//セッター
 	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };

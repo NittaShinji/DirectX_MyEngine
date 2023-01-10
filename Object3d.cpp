@@ -12,6 +12,11 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 	keys_ = KeyInput::GetInstance();
 }
 
+Object3d::~Object3d()
+{
+	delete sprite_;
+}
+
 Object3d::Object3d(const std::string& path, XMFLOAT3 position)
 //Object3d::Object3d(DirectXBasic* directXBasic,XMFLOAT3 position)
 {
@@ -293,24 +298,31 @@ void Object3d::SetModel(const std::string& path)
 	model_.SetInfomation(*Model::GetMODELVALUE(path));
 }
 
-void Object3d::Update()
+void Object3d::Update(Camera* camera)
 {
-	//ビュー変換行列
-	XMMATRIX matView;
-	XMFLOAT3 eye(0, 0, -100);	//視点座標
-	XMFLOAT3 target(0, 0, 0);	//注視点座標
-	XMFLOAT3 up(0, 1, 0);		//上方向ベクトル
-	matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+	//使用するカメラをセット
+	camera_ = camera;
 
-	float angle = 0.0f;	//カメラの回転角
+	//ビュー変換行列
+	matView_ = camera_->GetMatView();
+	//射影変換行列
+	matProjection_ = camera_->GetMatProjection();
+
+	//XMMATRIX matView;
+	//XMFLOAT3 eye(0, 0, -100);	//視点座標
+	//XMFLOAT3 target(0, 0, 0);	//注視点座標
+	//XMFLOAT3 up(0, 1, 0);		//上方向ベクトル
+	//matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
+
+	//float angle = 0.0f;	//カメラの回転角
 
 	//射影変換行列
-	XMMATRIX matProjection =
-		XMMatrixPerspectiveFovLH(
-			XMConvertToRadians(45.0f),				//上下画角45度
-			(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
-			0.1f, 1000.0f							//前端,奥端
-		);
+	//XMMATRIX matProjection =
+	//	XMMatrixPerspectiveFovLH(
+	//		XMConvertToRadians(45.0f),				//上下画角45度
+	//		(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
+	//		0.1f, 1000.0f							//前端,奥端
+	//	);
 
 	
 	XMFLOAT3 move = { 0,0,0 };
@@ -352,7 +364,7 @@ void Object3d::Update()
 	model_.Update();
 	
 	//定数バッファへデータ転送
-	constMapTransform->mat = matWorld * matView * matProjection;
+	constMapTransform->mat = matWorld * matView_ * matProjection_;
 
 	//定数バッファのマッピング
 	HRESULT result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
