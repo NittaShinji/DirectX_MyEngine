@@ -18,6 +18,7 @@ GameScene::~GameScene()
 	//画像
 	delete spriteCommon_;
 	delete title_;
+	delete test_;
 	//モデル
 	delete object3d_;
 	delete nObject3d_;
@@ -42,19 +43,25 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
+	test_ = new Sprite;
+
 	spriteCommon_ = new SpriteCommon;
 	//スプライト関係初期化
 	spriteCommon_->Initialize(directXBasic_);
 	Sprite::StaticInitialize(spriteCommon_);
 
 	//画像読み込み
-	Sprite::LoadTexture(0, "reimu.png");
 	Sprite::LoadTexture(1, "tomas.png");
+	Sprite::LoadTexture(2, "black.png");
 
 	//個々の画像を初期化(指定した番号の画像を使用する)
 	XMFLOAT2 titlePosition = { 400,400 };
-	XMFLOAT2 titleSize = { 100,100 };
+	XMFLOAT2 titleSize = { 400,400 };
 	title_->Initialize(1,titlePosition, titleSize);
+
+	/*XMFLOAT2 testPosition = { 400,400 };
+	XMFLOAT2 testSize = { 100,100 };
+	test_->Initialize(0, testPosition, testSize);*/
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();
@@ -119,35 +126,7 @@ void GameScene::Update()
 		camera_->Updata();
 		testCamera_->Updata();
 
-		//球移動
 		
-		XMVECTOR moveY = XMVectorSet(0, 0.01f, 0, 0);
-		if (keys_->HasPushedKey(DIK_3)) { sphere_.center += moveY; }
-		else if (keys_->HasPushedKey(DIK_4)) { sphere_.center -= moveY; }
-
-		XMVECTOR moveX = XMVectorSet(0.01f,0, 0, 0);
-		if (keys_->HasPushedKey(DIK_1)) { sphere_.center += moveY; }
-		else if (keys_->HasPushedKey(DIK_2)) { sphere_.center -= moveY; }
-		
-
-		//stringstreamで変数の値を埋め込んで整形する
-		std::ostringstream sphertestr;
-		sphertestr << "Sphere:("
-			<< std::fixed << std::setprecision(2)
-			<< sphere_.center.m128_f32[0] << ","
-			<< sphere_.center.m128_f32[1] << ","
-			<< sphere_.center.m128_f32[2] << ")";
-
-		//球と平面当たり判定
-		bool hit = Collision::CheckSphere2Plane(sphere_, plane_);
-		/*if (hit)
-		{
-			sphertestr.str("");
-			sphertestr.clear();
-			sphertestr << "("
-				<< std::fixed << std::setprecision(2);
-		}*/
-
 		//カメラの切り替え
 		if (keys_->HasPushedKey(DIK_0))
 		{
@@ -168,6 +147,11 @@ void GameScene::Update()
 		XMFLOAT2 anchorPoint = { 0.0f,0.0f };
 		title_->SetAnchorPoint(anchorPoint);
 		title_->matUpdate();
+
+		/*test_->SetAnchorPoint(anchorPoint);
+		test_->matUpdate();*/
+
+
 		break;
 
 	case END:
@@ -200,6 +184,7 @@ void GameScene::Draw()
 		spriteCommon_->BeforeDraw();
 		spriteCommon_->Update();
 		title_->Draw();
+		//test_->Draw();
 
 		break;
 	case END:

@@ -77,6 +77,10 @@ private:
 	float winWide;
 	float winHeight;
 
+	//スプライトの長さ
+	float wide_;
+	float height_;
+
 	//射影変換行列
 	XMMATRIX matProjection;
 
@@ -156,8 +160,13 @@ private:
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
 
+	//リソースデスク
+	//static D3D12_RESOURCE_DESC textureResourceDesc;
+
 	//デスクリプタハンドルのサイズ
 	//UINT incrementSize;
+
+
 public:
 
 	std::array <Vertex, vertexCount> GetterVertex() { return vertices_; };
@@ -188,5 +197,7 @@ public:
 	void SetIsFlipY(bool isFlipY) { isFlipY_ = isFlipY; };
 	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
 	void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
+	/*void SetWidth(size_t width) { wide_ = wide_; };
+	void SetHeight(size_t height) { height_ = height; };*/
 
 };

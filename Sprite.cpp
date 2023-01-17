@@ -13,12 +13,22 @@ uint32_t Sprite::textureIndex_ = 0;
 const size_t kMaxSRVCount = 2056;
 std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> Sprite::textureBuffers_;
 ID3D12DescriptorHeap* Sprite::srvHeap = nullptr;
+//D3D12_RESOURCE_DESC Sprite::textureResourceDesc{};
 
 void Sprite::StaticInitialize(SpriteCommon* spriteCommon)
 {
 	spriteCommon_ = spriteCommon;
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 	keys_ = KeyInput::GetInstance();
+	//デスクリプタヒープの設定
+	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
+	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
+	srvHeapDesc.NumDescriptors = kMaxSRVCount;
+
+	//設定を本にSRV用デスクリプタヒープを生成
+	HRESULT result_ = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
+	assert(SUCCEEDED(result_));
 }
 
 void Sprite::Initialize(uint32_t textureIndex, XMFLOAT2 position, XMFLOAT2 size)
@@ -365,6 +375,9 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 		nullptr,
 		IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
 
+	/*SetWidth(textureResourceDesc.Width);
+	SetHeight(textureResourceDesc.Height);*/
+
 
 	//全ミニマップについて
 	for (size_t i = 0; i < metadata.mipLevels; i++)
@@ -385,15 +398,7 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 		assert(SUCCEEDED(result_));
 	}
 
-	//デスクリプタヒープの設定
-	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
-	srvHeapDesc.NumDescriptors = kMaxSRVCount;
-
-	//設定を本にSRV用デスクリプタヒープを生成
-	result_ = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap));
-	assert(SUCCEEDED(result_));
+	
 
 	//SRVヒープの先頭ハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();

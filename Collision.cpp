@@ -2,6 +2,14 @@
 
 using namespace DirectX;
 
+Collision::Collision()
+{
+}
+
+Collision::~Collision()
+{
+}
+
 //‹…‚Æ•½–Ê‚Ì“–‚½‚è”»’è
 bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, DirectX::XMVECTOR* inter)
 {

@@ -62,6 +62,8 @@ private:
 
 	//スプライト
 	Sprite* title_ = nullptr;
+	Sprite* test_ = nullptr;
+
 
 	//スプライト共通部分
 	SpriteCommon* spriteCommon_ = nullptr;
