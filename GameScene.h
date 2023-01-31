@@ -53,17 +53,13 @@ private:
 	};
 
 	DirectXBasic* directXBasic_ = nullptr;
-	KeyInput* keys_;
+	static KeyInput* keys_;
 	ImGuiManager* imGuiManager_ = nullptr;
 
 	//デバッグテキスト用の変数
 	//ウインドウの表示フラグ
 	bool showEditWindow = true;
-	bool showAnotherWindow = false;
-	ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-	float color;
-
+	
 	//カメラ
 	Camera* camera_ = nullptr;
 	Camera* testCamera_ = nullptr;

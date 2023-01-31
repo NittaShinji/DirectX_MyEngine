@@ -1,4 +1,5 @@
 #include "DirectXBasic.h"
+#include "dxgidebug.h"
 #include <cassert>
 #include <vector>
 #include <string>
@@ -91,8 +92,8 @@ void DirectXBasic::BeforeDraw()
 	D3D12_VIEWPORT viewport;
 
 	//1個目のビューポートを設定 左上
-	viewport.Width = winApi_->GetWinWidth();      //横幅
-	viewport.Height = winApi_->GetWinHeight();	//縦幅
+	viewport.Width = (float)winApi_->GetWinWidth();      //横幅
+	viewport.Height = (float)winApi_->GetWinHeight();	//縦幅
 	viewport.TopLeftX = 0;					//左上X
 	viewport.TopLeftY = 0;					//左上Y
 	viewport.MinDepth = 0.0f;				//最大深度
@@ -141,6 +142,23 @@ void DirectXBasic::AfterDraw()
 	assert(SUCCEEDED(result_));
 #pragma endregion 
 
+#ifdef _DEBUG
+
+	if(FAILED(result_))
+	{
+		ComPtr<ID3D12DeviceRemovedExtendedData> dred;
+
+		result_ = device_->QueryInterface(IID_PPV_ARGS(&dred));
+		assert(SUCCEEDED(result_));
+
+		// 自動パンくず取得
+		D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT autoBreadcrumbsOutput{};
+		result_ = dred->GetAutoBreadcrumbsOutput(&autoBreadcrumbsOutput);
+		assert(SUCCEEDED(result_));
+	}
+
+#endif
+
 #pragma region コマンド完了待ち(P01_03)
 	// コマンドの実行完了を待つ
 	commandQueue_->Signal(fence.Get(), ++fenceVal);
@@ -169,12 +187,22 @@ void DirectXBasic::InitializeDevice()
 #pragma region アダプタの列挙(P01_02)
 
 #ifdef _DEBUG
+
 	//デバッグレイヤーをオンに
 	ComPtr<ID3D12Debug1> debugController;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController)))) {
 		debugController->EnableDebugLayer();
-		debugController->SetEnableGPUBasedValidation(TRUE);
+		//debugController->SetEnableGPUBasedValidation(TRUE);
 	}
+
+	// DREDレポートをオンに
+	ComPtr<ID3D12DeviceRemovedExtendedDataSettings> dredSettings;
+	if(SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&dredSettings))))
+	{
+		dredSettings->SetAutoBreadcrumbsEnablement(D3D12_DRED_ENABLEMENT_FORCED_ON);
+		dredSettings->SetPageFaultEnablement(D3D12_DRED_ENABLEMENT_FORCED_ON);
+	}
+	
 #endif
 
 	// DXGIファクトリーの生成
@@ -238,8 +266,26 @@ void DirectXBasic::InitializeDevice()
 	{
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_CORRUPTION, true);
 		infoQueue->SetBreakOnSeverity(D3D12_MESSAGE_SEVERITY_ERROR, true);
-		//infoQueue->Release();
+
+		 // 抑制するエラー
+		D3D12_MESSAGE_ID denyIds[] = {
+			/*
+			 * Windows11でのDXGIデバッグレイヤーとDX12デバッグレイヤーの相互作用バグによるエラーメッセージ
+			 * https://stackoverflow.com/questions/69805245/directx-12-application-is-crashing-in-windows-11
+			 */
+			D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE };
+		// 抑制する表示レベル
+		D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };
+		D3D12_INFO_QUEUE_FILTER filter{};
+		filter.DenyList.NumIDs = _countof(denyIds);
+		filter.DenyList.pIDList = denyIds;
+		filter.DenyList.NumSeverities = _countof(severities);
+		filter.DenyList.pSeverityList = severities;
+		// 指定したエラーの表示を抑制する
+		infoQueue->PushStorageFilter(&filter);
+
 	}
+
 #endif
 }
 
@@ -398,7 +444,7 @@ void DirectXBasic::InitializeDepthBuffer()
 
 void DirectXBasic::InitializeFence()
 {
-#pragma region フェンス (P01_02)
+#pragma region フェンス
 	// フェンスの生成
 	result_ = device_->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
 #pragma endregion 

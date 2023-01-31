@@ -7,12 +7,15 @@
 using namespace std;
 using namespace DirectX;
 
+KeyInput* GameScene::keys_ = nullptr;
+
 GameScene::GameScene()
 {
 }
 
 GameScene::~GameScene()
 {
+	//サウンド
 	sound->Finalize();
 	delete sound;
 	//画像
@@ -25,6 +28,17 @@ GameScene::~GameScene()
 	delete sObject3d_;
 	delete camera_;
 	delete testCamera_;
+	//delete directXBasic_;
+
+	sound = nullptr;
+	title_ = nullptr;
+	test_ = nullptr;
+	//モデル
+	object3d_ = nullptr;
+	nObject3d_ = nullptr;
+	sObject3d_ = nullptr;
+	camera_ = nullptr;
+	testCamera_ = nullptr;
 }
 
 void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager)

@@ -104,17 +104,23 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	}
 
 #pragma region WindowsAPI後始末
+
+	keyInput->destroy();
 	//ゲーム全体の終了処理
 	imGuiManager->Finalize();
+	winApi->Finalize();
+	delete gameScene;
 	delete imGuiManager;
 	delete winApi;
 	delete directXBasic;
-	delete gameScene;
 	
 #pragma endregion WindowsAPI後始末
 
+	keyInput = nullptr;
+	imGuiManager = nullptr;
 	winApi = nullptr;
 	directXBasic = nullptr;
+	gameScene = nullptr;
 	
 	return 0;
 }

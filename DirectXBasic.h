@@ -85,6 +85,7 @@ private:
 
 	UINT64 fenceVal = 0;
 
+
 	//‰Šú‰»ŠÖ”
 	void InitializeDevice();
 	void InitializeCommand();
