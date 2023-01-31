@@ -97,6 +97,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		gameScene->Update();
 
+		
+
 		imGuiManager->End();
 
 		//•`‰æ
