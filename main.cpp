@@ -65,9 +65,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//マスターボイスの生成
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	//音声読み込み
-	//SoundData testSound = SoundLoadWave("Resources/Alarm01.wav");
-
 	//シングルトンインスタンスを作成
 	KeyInput::Create();
 	KeyInput* keyInput = KeyInput::GetInstance();
@@ -76,9 +73,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	
 	GameScene* gameScene = nullptr;
 	gameScene = new GameScene;
-	gameScene->Initialize(directXBasic);
-
-	//SoundPlayWave(xAudio2.Get(), testSound);
+	gameScene->Initialize(directXBasic,imGuiManager);
 
 	// ゲームループ
 	while (true) {
@@ -96,8 +91,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		input->Update();
 
 		gameScene->Update();
-
-		
 
 		imGuiManager->End();
 

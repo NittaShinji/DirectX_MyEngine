@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Sound.h"
 #include "CollisionPrimitive.h"
+#include "ImGuiManager.h"
 
 class GameScene
 {
@@ -28,7 +29,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(DirectXBasic* directXBasic);
+	void Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -43,6 +44,7 @@ public:
 
 private:
 
+	//ゲーム中のシーン
 	enum Game
 	{
 		TITLE,
@@ -52,6 +54,15 @@ private:
 
 	DirectXBasic* directXBasic_ = nullptr;
 	KeyInput* keys_;
+	ImGuiManager* imGuiManager_ = nullptr;
+
+	//デバッグテキスト用の変数
+	//ウインドウの表示フラグ
+	bool showEditWindow = true;
+	bool showAnotherWindow = false;
+	ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+	float color;
 
 	//カメラ
 	Camera* camera_ = nullptr;

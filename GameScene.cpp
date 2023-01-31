@@ -27,10 +27,11 @@ GameScene::~GameScene()
 	delete testCamera_;
 }
 
-void GameScene::Initialize(DirectXBasic* directXBasic)
+void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager)
 {
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
+	imGuiManager_ = imGuiManager;
 	scene_ = GAME;
 
 	//------------サウンド----------
@@ -150,7 +151,22 @@ void GameScene::Update()
 
 		/*test_->SetAnchorPoint(anchorPoint);
 		test_->matUpdate();*/
+		
+		//スプライトの編集ウインドウの表示
+		{
+			static float pos[2] = { title_->GetPosition().x ,title_->GetPosition().x };
+			
+			ImGui::Begin("Edit");
+			ImGui::SetWindowPos("Edit", ImVec2(100, 100));
+			ImGui::SetWindowSize("Edit", ImVec2(500, 100));
+			ImGui::SliderFloat2("position", pos, 0.0f, 1000.0f);
+			title_->SetPosition(XMFLOAT2(pos));
 
+			if(ImGui::Button("Close Me"))
+				showEditWindow = false;
+
+			ImGui::End();
+		}
 
 		break;
 
