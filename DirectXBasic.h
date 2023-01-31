@@ -11,7 +11,11 @@
 //DirectX基盤
 class DirectXBasic
 {
+	
 public:
+
+	//エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	//template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -25,11 +29,13 @@ public:
 
 	HRESULT GetResult() { return result_; };
 
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return commandList_; };
+	ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return commandList_; };
 
-	Microsoft::WRL::ComPtr<ID3D12Resource> GetDepthBuff() { return depthBuff_; };
+	ComPtr<ID3D12Resource> GetDepthBuff() { return depthBuff_; };
 
-	Microsoft::WRL::ComPtr<ID3D12Device> GetDevice() const { return device_; };
+	ComPtr<ID3D12Device> GetDevice() const { return device_; };
+
+	size_t GetBackBuffersCount() const { return backBuffers_.size(); };
 
 	int GetWinWidth() const { return winApi_->GetWinWidth(); }
 	int GetWinHeight() const { return winApi_->GetWinHeight(); }
@@ -59,17 +65,9 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff_;
+
+	//フェンス
 	Microsoft::WRL::ComPtr<ID3D12Fence> fence;
-
-	/*ComPtr<ID3D12Device> device_;
-	ComPtr<IDXGIFactory7> dxgiFactory_;
-	ComPtr<IDXGISwapChain4> swapChain_;
-	ComPtr<ID3D12CommandAllocator> commandAllocator_;
-	ComPtr<ID3D12CommandQueue> commandQueue_;
-	ComPtr<ID3D12DescriptorHeap> rtvHeap;
-	ComPtr<ID3D12GraphicsCommandList> commandList_;*/
-
-	//ComPtr<ID3D12Resource> depthBuff_;
 
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
@@ -84,9 +82,6 @@ private:
 
 	//リソースバリア
 	D3D12_RESOURCE_BARRIER barrierDesc{};
-
-	//フェンス
-	//ComPtr<ID3D12Fence> fence;
 
 	UINT64 fenceVal = 0;
 

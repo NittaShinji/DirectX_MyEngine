@@ -170,6 +170,8 @@ void GameScene::Draw()
 
 	case TITLE:
 
+
+
 		break;
 
 	case GAME:

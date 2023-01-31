@@ -21,6 +21,7 @@ using namespace Microsoft::WRL;
 #include "Model.h"
 #include "GameScene.h"
 #include "xaudio2.h"
+#include "ImGuiManager.h"
 #include <memory>
 #include <fstream>
 
@@ -28,155 +29,6 @@ using namespace Microsoft::WRL;
 #pragma comment(lib,"dxguid.lib")
 #pragma comment(lib, "d3dcompiler.lib")
 #pragma comment(lib,"xaudio2.lib")
-
-////チャンクヘッダ
-//struct ChunkHeader
-//{
-//	char id[4];			//チャンク毎のID
-//	int32_t size;		//チャンクサイズ
-//};
-//
-////RIFFヘッダチャンク
-//struct RiffHeader
-//{
-//	ChunkHeader chunk;	//"RIFF"
-//	char type[4];		//"WAVE"
-//};
-//
-////FMTチャンク
-//struct FormatChunk
-//{
-//	ChunkHeader chunk;	//"FMT"
-//	WAVEFORMATEX fmt;	//波形フォーマット
-//};
-//
-////音楽データ
-//struct SoundData
-//{
-//	//波形フォーマット
-//	WAVEFORMATEX wfex;
-//	//バッファの先頭アドレス
-//	BYTE* pBuffer;
-//	//バッファのサイズ
-//	unsigned int bufferSize;
-//};
-//
-//SoundData SoundLoadWave(const char* fileName)
-//{
-//	HRESULT result;
-//
-//	//--ファイルオープン
-//
-//	//ファイル入力ストリームのインスタンス
-//	std::ifstream file;
-//	//.wavファイルをバイナリモードで開く
-//	file.open(fileName, std::ios_base::binary);
-//	//ファイルオープン失敗を検出する
-//	assert(file.is_open());
-//
-//	//--.wavデータ読み込み
-//	 
-//#pragma region RIFFチャンク読み込み
-//	//RIFFヘッダーの読み込み
-//	RiffHeader riff;
-//	file.read((char*)&riff, sizeof(riff));
-//	//ファイルがRIFFかチェック
-//	if (strncmp(riff.chunk.id, "RIFF", 4) != 0)
-//	{
-//		assert(0);
-//	}
-//	//タイプがWAVEかチェック
-//	if (strncmp(riff.type, "WAVE", 4) != 0)
-//	{
-//		assert(0);
-//	}
-//#pragma endregion
-//
-//#pragma region FORMATチャンク読み込み
-//	//FORMATチャンクの読み込み
-//	FormatChunk format = {};
-//	//チャンクヘッダーの確認
-//	file.read((char*)&format, sizeof(ChunkHeader));
-//	if (strncmp(format.chunk.id, "fmt ", 4) != 0)
-//	{
-//		assert(0);
-//	}
-//
-//	//チャンク本体の読み込み
-//	assert(format.chunk.size <= sizeof(format.fmt));
-//	file.read((char*)&format.fmt, format.chunk.size);
-//#pragma endregion
-//
-//#pragma region DATAチャンク読み込み
-//
-//	ChunkHeader data;
-//	file.read((char*)&data, sizeof(data));
-//	//JUNKチャンクを検出した場合
-//	if (strncmp(data.id, "JUNK", 4) == 0)
-//	{
-//		//読み取り位置をJUNKチャンクの終わりまで進める
-//		file.seekg(data.size, std::ios_base::cur);
-//		//再読み込み
-//		file.read((char*)&data, sizeof(data));
-//	}
-//	if (strncmp(data.id, "data", 4) != 0)
-//	{
-//		assert(0);
-//	}
-//
-//	//DATAチャンクのデータ部(波形データ)の読み込み
-//	char* pBuffer = new char[data.size];
-//	file.read(pBuffer, data.size);
-//
-//#pragma endregion
-//
-//	//--ファイルを閉じる
-//	file.close();
-//
-//	//--読み込んだ音声データをreturn
-//	
-//	//returnする為の音声データ
-//	SoundData soundData = {};
-//
-//	soundData.wfex = format.fmt;
-//	soundData.pBuffer = reinterpret_cast<BYTE*> (pBuffer);
-//	soundData.bufferSize = data.size;
-//
-//	return soundData;
-//}
-//
-////音声データ解放
-//void SoundUnload(SoundData* soundData)
-//{
-//	//バッファのメモリを解放
-//	delete[] soundData->pBuffer;
-//
-//	soundData->pBuffer = 0;
-//	soundData->bufferSize = 0;
-//	soundData->wfex = {};
-//}
-//
-////音声再生
-//void SoundPlayWave(IXAudio2* xAudio2, const SoundData& soundData)
-//{
-//	HRESULT result;
-//
-//	//波形フォーマットを元にSourceVoiceの生成
-//	IXAudio2SourceVoice* pSourceVoice = nullptr;
-//	result = xAudio2->CreateSourceVoice(&pSourceVoice, &soundData.wfex);
-//	assert(SUCCEEDED(result));
-//
-//	//再生する波形データの設定
-//	XAUDIO2_BUFFER buf{};
-//	buf.pAudioData = soundData.pBuffer;
-//	buf.AudioBytes = soundData.bufferSize;
-//	buf.Flags = XAUDIO2_END_OF_STREAM;
-//
-//	//波形データの再生
-//	result = pSourceVoice->SubmitSourceBuffer(&buf);
-//	result = pSourceVoice->Start();
-//
-//}
 
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
@@ -187,6 +39,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	winApi = new WindowsAPI();
 	winApi->Initialize();
 
+	
 	ComPtr<IXAudio2> xAudio2;
 	IXAudio2MasteringVoice* masterVoice;
 
@@ -197,6 +50,12 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 	//DirectX初期化処理
 	directXBasic->Initialize(winApi);
+
+	//ImGui初期化処理
+	ImGuiManager* imGuiManager = nullptr;
+	imGuiManager = new ImGuiManager();
+	imGuiManager->Initialize(winApi,directXBasic);
+
 
 	//------サウンド
 
@@ -231,21 +90,28 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		}
 
 		// DirectX毎フレーム処理 ここから
+
+		imGuiManager->Begin();
+
 		input->Update();
 
 		gameScene->Update();
+
+		imGuiManager->End();
 
 		//描画
 		directXBasic->BeforeDraw();
 		
 		gameScene->Draw();
+		imGuiManager->Draw();
 		
 		directXBasic->AfterDraw();
 	}
 
 #pragma region WindowsAPI後始末
 	//ゲーム全体の終了処理
-
+	imGuiManager->Finalize();
+	delete imGuiManager;
 	delete winApi;
 	delete directXBasic;
 	delete gameScene;

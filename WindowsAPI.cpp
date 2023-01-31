@@ -1,10 +1,19 @@
 #include "WindowsAPI.h"
+#include <imgui_impl_win32.h>
 
 #pragma comment(lib,"winmm.lib")
+
+extern IMGUI_IMPL_API LRESULT ImGui_ImpWin32_WndProcHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 //ウィンドウプロシージャ
 LRESULT WindowsAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
+	//ImGui用ウインドウプロシージャ呼び出し
+	if(ImGui_ImpWin32_WndProcHandler(hwnd, msg, wparam, lparam))
+	{
+		return true;
+	}
+
 	//メッセージに応じてゲーム固有の処理を行う
 	switch (msg)
 	{
