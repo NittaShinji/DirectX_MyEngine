@@ -14,20 +14,18 @@ class Sprite
 {
 public:
 
+	//静的初期化」
 	static void StaticInitialize(SpriteCommon* spriteCommon);
 
 	//初期化
 	void Initialize(uint32_t textureIndex,XMFLOAT2 position, XMFLOAT2 size);
-	
+	//行列更新
 	void matUpdate();
+	//描画
 	void Draw();
 
-	void BeforeDraw();
-
-	void ImageDateSet();
-	void ImageDateSRVSet();
-
-	static void LoadTexture(uint32_t index, const std::string& fileName);
+	//画像読み込み
+	static void LoadTexture(const std::string& fileName);
 
 	/*void TexMapping();
 	void TexMappingSRVSet();*/
@@ -40,8 +38,6 @@ private:
 
 	static SpriteCommon* spriteCommon_;
 	static DirectXBasic* directXBasic_;
-	
-	//KeyInput* keys_ = nullptr;
 	static KeyInput* keys_;
 
 	//struct Vertex
@@ -50,14 +46,6 @@ private:
 	//	XMFLOAT3 normal;	//法線ベクトル
 	//	XMFLOAT2 uv;		//画像内のxyz座標
 	//};
-
-	/*enum VertexName
-	{
-		LEFTDOWN,
-		LEFTCENTER,
-		LEFTUP,
-		RIGHT
-	};*/
 
 	enum VertexNumber
 	{
@@ -155,17 +143,11 @@ private:
 
 	//テクスチャ番号
 	static uint32_t textureIndex_;
-	//uint32_t textureIndex_;
-
+	//テクスチャメモリ用番号
+	uint32_t textureHandleIndex_;
+	
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
-
-	//リソースデスク
-	//static D3D12_RESOURCE_DESC textureResourceDesc;
-
-	//デスクリプタハンドルのサイズ
-	//UINT incrementSize;
-
 
 public:
 

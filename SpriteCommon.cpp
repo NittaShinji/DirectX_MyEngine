@@ -303,7 +303,6 @@ void SpriteCommon::Update()
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
 	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
-	
 }
 
 void SpriteCommon::VertexLayoutSet()

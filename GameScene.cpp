@@ -39,7 +39,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 	sound = new Sound;
 	sound->Initialize();
 	sound->LoadSoundWave("Alarm01.wav");
-	sound->PlaySoundWave("Alarm01.wav");
+	//sound->PlaySoundWave("Alarm01.wav");
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
@@ -51,17 +51,17 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 	Sprite::StaticInitialize(spriteCommon_);
 
 	//画像読み込み
-	Sprite::LoadTexture(1, "tomas.png");
-	Sprite::LoadTexture(2, "black.png");
+	Sprite::LoadTexture("tomas.png");
+	Sprite::LoadTexture("black.png");
 
 	//個々の画像を初期化(指定した番号の画像を使用する)
 	XMFLOAT2 titlePosition = { 400,400 };
 	XMFLOAT2 titleSize = { 400,400 };
 	title_->Initialize(1,titlePosition, titleSize);
 
-	/*XMFLOAT2 testPosition = { 400,400 };
+	XMFLOAT2 testPosition = { 400,400 };
 	XMFLOAT2 testSize = { 100,100 };
-	test_->Initialize(0, testPosition, testSize);*/
+	test_->Initialize(2, testPosition, testSize);
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();
@@ -74,7 +74,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic)
 
 	//モデル読み込み
 	const string testModelName = "triangle_tex";
-	const string testModelName2 = "triangle_tex2";
+	const string testModelName2 = "block2";
 	const string testModelName3 = "pillar";
 
 	Model::Load(testModelName);
@@ -176,7 +176,7 @@ void GameScene::Draw()
 
 		//モデル描画
 		object3d_->BeforeDraw();
-		object3d_->Draw();
+		//object3d_->Draw();
 		nObject3d_->Draw();
 		sObject3d_->Draw();
 
@@ -184,7 +184,7 @@ void GameScene::Draw()
 		spriteCommon_->BeforeDraw();
 		spriteCommon_->Update();
 		title_->Draw();
-		//test_->Draw();
+		test_->Draw();
 
 		break;
 	case END:

@@ -10,6 +10,7 @@ KeyInput* Sprite::keys_ = nullptr;
 std::string Sprite::kDefaultTextureDirectoryPath_ = "Resources/";
 
 uint32_t Sprite::textureIndex_ = 0;
+
 const size_t kMaxSRVCount = 2056;
 std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> Sprite::textureBuffers_;
 ID3D12DescriptorHeap* Sprite::srvHeap = nullptr;
@@ -35,7 +36,7 @@ void Sprite::Initialize(uint32_t textureIndex, XMFLOAT2 position, XMFLOAT2 size)
 {
 	winWide = directXBasic_->GetWinWidth();
 	winHeight = directXBasic_->GetWinHeight();
-	textureIndex_ = textureIndex;
+	textureHandleIndex_ = textureIndex;
 
 	scale = { 10.0f,10.0f,10.0f };
 	rotation_ = { 0.0f };
@@ -237,7 +238,7 @@ void Sprite::Draw()
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//取得したサイズを使用してハンドルを進める
-	for (uint32_t i = 0; i < textureIndex_; i++)
+	for (uint32_t i = 0; i < textureHandleIndex_; i++)
 	{
 		srvGpuHandle.ptr += incrementSize;
 	}
@@ -313,9 +314,10 @@ void Sprite::Draw()
 //	delete[] imageDate;
 //}
 
-void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
+void Sprite::LoadTexture(const std::string& fileName)
 {
-	textureIndex_ = textureIndex;
+	//画像番号
+	textureIndex_++;
 
 	//ディレクトリパスとファイル名を連結しを得る
 	std::string fullPath = kDefaultTextureDirectoryPath_ + fileName;
@@ -378,7 +380,6 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 	/*SetWidth(textureResourceDesc.Width);
 	SetHeight(textureResourceDesc.Height);*/
 
-
 	//全ミニマップについて
 	for (size_t i = 0; i < metadata.mipLevels; i++)
 	{
@@ -398,8 +399,6 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 		assert(SUCCEEDED(result_));
 	}
 
-	
-
 	//SRVヒープの先頭ハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
 
@@ -413,12 +412,6 @@ void Sprite::LoadTexture(uint32_t textureIndex, const std::string& fileName)
 	
 	//シェーダーリソースビューの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-	//srvDesc.Format = resDesc.Format;//RGBA float
-	//srvDesc.Shader4ComponentMapping =
-	//	D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	//srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	//srvDesc.Texture2D.MipLevels = resDesc.MipLevels;
-
 
 	srvDesc.Format = textureResourceDesc.Format;//RGBA float
 	srvDesc.Shader4ComponentMapping =
