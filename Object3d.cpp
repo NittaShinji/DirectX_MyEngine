@@ -17,13 +17,13 @@ Object3d::~Object3d()
 	delete sprite_;
 }
 
-Object3d::Object3d(const std::string& path, XMFLOAT3 position)
+Object3d::Object3d(const std::string& path, XMFLOAT3 position,XMFLOAT3 Modelscale)
 //Object3d::Object3d(DirectXBasic* directXBasic,XMFLOAT3 position)
 {
 	/*model_ = model;*/
 	//model_.Load(path);
 
-	scale = { 20.0f,20.0f,20.0f };
+	scale = Modelscale;
 	rotation = { 0.0f,0.0f,0.0f };
 	transform = position;
 

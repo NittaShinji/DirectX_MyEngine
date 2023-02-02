@@ -24,10 +24,11 @@ GameScene::~GameScene()
 	delete test_;
 	//モデル
 	delete object3d_;
-	delete nObject3d_;
-	delete sObject3d_;
 	delete camera_;
 	delete testCamera_;
+	delete sphere_;
+	delete ground_;
+
 	//delete directXBasic_;
 
 	sound = nullptr;
@@ -35,10 +36,10 @@ GameScene::~GameScene()
 	test_ = nullptr;
 	//モデル
 	object3d_ = nullptr;
-	nObject3d_ = nullptr;
-	sObject3d_ = nullptr;
 	camera_ = nullptr;
 	testCamera_ = nullptr;
+	sphere_ = nullptr;
+	ground_ = nullptr;
 }
 
 void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager)
@@ -91,19 +92,27 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 	const string testModelName = "triangle_tex";
 	const string testModelName2 = "block2";
 	const string testModelName3 = "pillar";
+	const string sphere = "sphere";
+	const string ground = "ground";
 
 	Model::Load(testModelName);
 	Model::Load(testModelName2);
 	Model::Load(testModelName3);
+	Model::Load(sphere);
+	Model::Load(ground);
+
 
 	//3Dオブジェクトの生成
 	XMFLOAT3 position = { 0,0,0 };
-	XMFLOAT3 position2 = { 30,0,0 };
-	XMFLOAT3 position3 = { -30,0,0 };
+	XMFLOAT3 spherePosition = { 0,0,0 };
+	XMFLOAT3 groundPosition = { 0,-10,0 };
 
-	object3d_ = new Object3d(testModelName, position);
-	nObject3d_ = new Object3d(testModelName2, position2);
-	sObject3d_ = new Object3d(testModelName3, position3);
+	XMFLOAT3 sphereScale = { 10,10,10 };
+	XMFLOAT3 groundScale = { 20,20,20 };
+
+	object3d_ = new Object3d(testModelName, position, sphereScale);
+	sphere_ = new Object3d(sphere, spherePosition, sphereScale);
+	ground_ = new Object3d(ground, groundPosition, groundScale);
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
@@ -118,14 +127,14 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 
 	//--球の初期値を設定
 	//中心座標
-	sphere_.center = XMVectorSet(0, 2, 0, 1);
-	sphere_.radius = 1.0f;
+	//sphere_.center = XMVectorSet(0, 2, 0, 1);
+	//sphere_.radius = 1.0f;
 
-	//平面の初期値を設定
-	//法線ベクトル
-	plane_.normal = XMVectorSet(0, 1, 0, 0);
-	//原点(0,0,0)からの距離
-	plane_.distance = 0.0f;
+	////平面の初期値を設定
+	////法線ベクトル
+	//plane_.normal = XMVectorSet(0, 1, 0, 0);
+	////原点(0,0,0)からの距離
+	//plane_.distance = 0.0f;
 }
 
 void GameScene::Update()
@@ -160,22 +169,23 @@ void GameScene::Update()
 		if (keys_->HasPushedKey(DIK_0))
 		{
 			object3d_->Update(testCamera_);
-			nObject3d_->Update(testCamera_);
-			sObject3d_->Update(testCamera_);
+			sphere_->Update(testCamera_);
+			ground_->Update(testCamera_);
 		}
 		else
 		{
 			//モデルの更新処理
 			object3d_->Update(camera_);
-			nObject3d_->Update(camera_);
-			sObject3d_->Update(camera_);
+			ground_->Update(camera_);
+
+			sphere_->Update(camera_);
 		}
 		
 		//画像の更新処理
 		//アンカーポイントの設定
 		XMFLOAT2 anchorPoint = { 0.0f,0.0f };
-		title_->SetAnchorPoint(anchorPoint);
-		title_->matUpdate();
+		/*title_->SetAnchorPoint(anchorPoint);
+		title_->matUpdate();*/
 
 		/*test_->SetAnchorPoint(anchorPoint);
 		test_->matUpdate();*/
@@ -251,14 +261,16 @@ void GameScene::Draw()
 		//モデル描画
 		object3d_->BeforeDraw();
 		//object3d_->Draw();
-		nObject3d_->Draw();
-		sObject3d_->Draw();
+		//nObject3d_->Draw();
+		//sObject3d_->Draw();
+		sphere_->Draw();
+		ground_->Draw();
 
 		//画像描画
-		spriteCommon_->BeforeDraw();
-		spriteCommon_->Update();
-		title_->Draw();
-		test_->Draw();
+		/*spriteCommon_->BeforeDraw();
+		spriteCommon_->Update();*/
+		//title_->Draw();
+		//test_->Draw();
 
 		break;
 	case END:

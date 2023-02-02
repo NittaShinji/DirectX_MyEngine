@@ -80,16 +80,17 @@ private:
 
 	//3Dオブジェクト
 	Object3d* object3d_ = nullptr;
-	Object3d* nObject3d_ = nullptr;
-	Object3d* sObject3d_ = nullptr;
-
+	
 	//ゲームシーン
 	int scene_;
 
 	//当たり判定 球
-	Sphere sphere_;
-	//当たり判定 平面
-	Plane plane_;
+	//Sphere sphere_;
+	////当たり判定 平面
+	//Plane plane_;
+
+	Object3d* sphere_;
+	Object3d* ground_;
 
 	//待ち時間
 	static const int waitTime = 60;
