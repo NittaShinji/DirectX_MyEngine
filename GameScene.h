@@ -85,9 +85,9 @@ private:
 	int scene_;
 
 	//“–‚½‚è”»’è ‹…
-	//Sphere sphere_;
+	Sphere sphereCollision;
 	////“–‚½‚è”»’è •½–Ê
-	//Plane plane_;
+	Plane planeCollision;
 
 	Object3d* sphere_;
 	Object3d* ground_;
@@ -97,6 +97,14 @@ private:
 	//ƒL[“ü—Í‚ÌŠÔŠÇ—
 	int keyTimer = 60;
 
+	int hit;
+
+	XMFLOAT3 move = { 0,0,0 };
+
+	const int actionTime = 60;
+	int moveTimer = actionTime;
+	bool isUp = false;
+	bool isDown = true;
 
 };
 

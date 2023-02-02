@@ -11,6 +11,8 @@ struct Sphere
 	DirectX::XMVECTOR center = { 0,0,0,1 };
 	//”¼Œa
 	float radius = 1.0f;
+
+	DirectX::XMFLOAT3 pos = { 0,0,0 };
 };
 
 ///<summary>
@@ -22,6 +24,7 @@ struct Plane
 	DirectX::XMVECTOR normal = { 0,1,0,0 };
 	//Œ´“_(0,0,0)‚©‚ç‚Ì‹——£
 	float distance = 0.0f;
+	DirectX::XMFLOAT3 pos = { 0,0,0 };
 };
 
 ///<summary>

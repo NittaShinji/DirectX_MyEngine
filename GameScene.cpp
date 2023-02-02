@@ -105,7 +105,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 	//3Dオブジェクトの生成
 	XMFLOAT3 position = { 0,0,0 };
 	XMFLOAT3 spherePosition = { 0,0,0 };
-	XMFLOAT3 groundPosition = { 0,-10,0 };
+	XMFLOAT3 groundPosition = { 0,-5,0 };
 
 	XMFLOAT3 sphereScale = { 10,10,10 };
 	XMFLOAT3 groundScale = { 20,20,20 };
@@ -127,14 +127,16 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 
 	//--球の初期値を設定
 	//中心座標
-	//sphere_.center = XMVectorSet(0, 2, 0, 1);
-	//sphere_.radius = 1.0f;
+	sphereCollision.pos = sphere_->GetWorldPos();
+	sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
+	sphereCollision.radius = 10.0f;
+	sphere_->SetTransform(sphereCollision.pos);
 
-	////平面の初期値を設定
-	////法線ベクトル
-	//plane_.normal = XMVectorSet(0, 1, 0, 0);
-	////原点(0,0,0)からの距離
-	//plane_.distance = 0.0f;
+	//平面の初期値を設定
+	//法線ベクトル
+	planeCollision.normal = XMVectorSet(0, 1, 0, 0);
+	//原点(0,0,0)からの距離
+	planeCollision.distance = -5.0f;
 }
 
 void GameScene::Update()
@@ -163,7 +165,6 @@ void GameScene::Update()
 	case GAME:
 		camera_->Updata();
 		testCamera_->Updata();
-
 		
 		//カメラの切り替え
 		if (keys_->HasPushedKey(DIK_0))
@@ -190,21 +191,84 @@ void GameScene::Update()
 		/*test_->SetAnchorPoint(anchorPoint);
 		test_->matUpdate();*/
 		
-		//スプライトの編集ウインドウの表示
+		if(moveTimer >= 0)
 		{
-			static float pos[2] = { title_->GetPosition().x ,title_->GetPosition().x };
-			
-			ImGui::Begin("Edit");
-			ImGui::SetWindowPos("Edit", ImVec2(100, 100));
-			ImGui::SetWindowSize("Edit", ImVec2(500, 100));
-			ImGui::SliderFloat2("position", pos, 0.0f, 1000.0f);
-			title_->SetPosition(XMFLOAT2(pos));
-
-			if(ImGui::Button("Close Me"))
-				showEditWindow = false;
-
-			ImGui::End();
+			moveTimer--;
 		}
+		else if(moveTimer < 0)
+		{
+			moveTimer = actionTime;
+		}
+
+		if(moveTimer >= 30)
+		{
+			isDown = false;
+			isUp = true;
+			move.y = 0;
+		}
+		else if(moveTimer <= 29)
+		{
+			isUp = false;
+			isDown = true;
+			move.y = 0;
+		}
+
+		if(isDown == true && isUp == false)
+		{
+			move.y -= 0.5f;
+		}
+		else if(isUp == true && isDown == false)
+		{
+			move.y += 0.5f;
+		}
+		
+		
+
+		sphereCollision.pos.y += move.y;
+		sphere_->SetTransform(sphereCollision.pos);
+		sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
+
+		////球移動
+		//if(keys_->HasPushedKey(DIK_UPARROW)) 
+		//{
+		//	Move.y += 0.7f;
+		//	sphereCollision.pos.y += Move.y;
+		//	sphere_->SetTransform(sphereCollision.pos);
+		//	sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
+		//}
+		//else
+		//{
+		//	Move.y = 0;
+		//}
+		//if(keys_->HasPushedKey(DIK_DOWNARROW)) 
+		//{
+		//	Move.y -= 0.7f;
+		//	sphereCollision.pos.y += Move.y;
+		//	sphere_->SetTransform(sphereCollision.pos);
+		//	sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
+		//}
+		//else
+		//{
+		//	Move.y = 0;
+		//}
+
+		
+
+		hit = Collision::CheckSphere2Plane(sphereCollision, planeCollision);
+
+		if(hit)
+		{
+			//スプライトの編集ウインドウの表示
+			{
+
+				ImGui::Begin("Collision");
+				ImGui::SetWindowSize("Collision", ImVec2(500, 100));
+				ImGui::InputInt("hit", &hit, 0.0f, 1000.0f);
+				ImGui::End();
+			}
+		}
+
+		
 
 		if(keyTimer < 0)
 		{

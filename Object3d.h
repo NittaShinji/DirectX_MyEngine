@@ -91,6 +91,11 @@ private:
 	//平行移動
 	XMFLOAT3 transform;
 
+	XMMATRIX matScale, matRot, matTrans;
+
+	//ワールド変換行列
+	XMMATRIX matWorld;
+
 	//ビュー行列
 	XMMATRIX matView_;
 	//射影行列
@@ -131,6 +136,11 @@ public:
 	//ゲッター
 	//uint32_t GetTextureIndex() const { return textureIndex_; };
 	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform; };
+
+	XMFLOAT3 GetWorldPos();
+	void SetTransform(XMFLOAT3 pos) { transform = pos; };
+
+
 
 	//セッター
 	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };

@@ -17,7 +17,7 @@ Object3d::~Object3d()
 	delete sprite_;
 }
 
-Object3d::Object3d(const std::string& path, XMFLOAT3 position,XMFLOAT3 Modelscale)
+Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale)
 //Object3d::Object3d(DirectXBasic* directXBasic,XMFLOAT3 position)
 {
 	/*model_ = model;*/
@@ -82,7 +82,7 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position,XMFLOAT3 Modelscal
 			IID_PPV_ARGS(&constBuffMaterial));
 		assert(SUCCEEDED(result));
 
-		
+
 		//constMapColor->color = { 1,1,0,1 };
 
 	}
@@ -126,7 +126,8 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position,XMFLOAT3 Modelscal
 		0,
 		&vsBlob, &errorBlob);
 	// エラーなら
-	if (FAILED(result)) {
+	if(FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string error;
 		error.resize(errorBlob->GetBufferSize());
@@ -152,7 +153,8 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position,XMFLOAT3 Modelscal
 		&psBlob, &errorBlob);
 
 	// エラーなら
-	if (FAILED(result)) {
+	if(FAILED(result))
+	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string error;
 		error.resize(errorBlob->GetBufferSize());
@@ -205,7 +207,7 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position,XMFLOAT3 Modelscal
 
 #pragma region ブレンド設定
 	// ブレンドステート
-	
+
 	//レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
@@ -221,9 +223,9 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position,XMFLOAT3 Modelscal
 	blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
 	blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
 
-//#pragma endregion
+	//#pragma endregion
 
-	//デスクリプタレンジの設定
+		//デスクリプタレンジの設定
 	D3D12_DESCRIPTOR_RANGE descriptorRange{};
 	descriptorRange.NumDescriptors = 1;			//一度の描画に使うテクスチャが1枚なので1
 	descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
@@ -324,25 +326,21 @@ void Object3d::Update(Camera* camera)
 	//		0.1f, 1000.0f							//前端,奥端
 	//	);
 
-	
+
 	XMFLOAT3 move = { 0,0,0 };
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理
-	if (keys_->HasPushedKey(DIK_UP)) { transform.z += 0.4f; }
-	else if (keys_->HasPushedKey(DIK_DOWN)) { transform.z -= 0.4f; }
-	else{}
-	if (keys_->HasPushedKey(DIK_RIGHT)) { transform.x += 0.4f; }
-	else if (keys_->HasPushedKey(DIK_LEFT)) { transform.x -= 0.4f; }
-	else{}
-	if (keys_->HasPushedKey(DIK_P)) { transform.y += 0.4f; }
-	else if (keys_->HasPushedKey(DIK_L)) { transform.y -= 0.4f; }
-	else{}
+	/*if(keys_->HasPushedKey(DIK_UP)) { transform.z += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_DOWN)) { transform.z -= 0.4f; }
+	else {}
+	if(keys_->HasPushedKey(DIK_RIGHT)) { transform.x += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_LEFT)) { transform.x -= 0.4f; }
+	else {}
+	if(keys_->HasPushedKey(DIK_P)) { transform.y += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_L)) { transform.y -= 0.4f; }
+	else {}*/
 
-	XMMATRIX matScale, matRot, matTrans;
-
-	//ワールド変換行列
-	XMMATRIX matWorld;
 	
 	matWorld = XMMatrixIdentity();
 
@@ -362,7 +360,7 @@ void Object3d::Update(Camera* camera)
 	matWorld *= matTrans;
 
 	model_.Update();
-	
+
 	//定数バッファへデータ転送
 	constMapTransform->mat = matWorld * matView_ * matProjection_;
 
@@ -386,10 +384,10 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &model_.GetInfomation()->vbView);
 	//インデックスバッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
-	
+
 	//SRVヒープの設定コマンド
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &model_.GetInfomation()->srvHeap);
-	
+
 	//デスクリプタヒープの配列をセットするコマンド
 	/*ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap };
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);*/
@@ -397,7 +395,7 @@ void Object3d::Draw()
 	////デスクリプタヒープの配列をセットするコマンド
 	//ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
 	//directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-	 
+
 	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = model_.GetInfomation()->srvHeap->GetGPUDescriptorHandleForHeapStart();
 	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
@@ -405,7 +403,7 @@ void Object3d::Draw()
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	for (uint32_t i = 0; i < model_.GetTexIndex(); i++)
+	for(uint32_t i = 0; i < model_.GetTexIndex(); i++)
 	{
 		srvGpuHandle.ptr += incrementSize;
 	}
@@ -440,3 +438,16 @@ void Object3d::AfterDraw()
 
 }
 
+XMFLOAT3 Object3d::GetWorldPos()
+{
+	//全ての壁の座標を渡す
+	XMFLOAT3 resutVec = { 0,0,0 };
+
+	//ワールド行列の平行移動成分を取得(ワールド座標)
+	resutVec.x = matWorld.r[3].m128_f32[0];
+	resutVec.y = matWorld.r[3].m128_f32[1];
+	resutVec.z = matWorld.r[3].m128_f32[2];
+
+	return resutVec;
+
+}
