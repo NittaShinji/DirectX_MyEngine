@@ -52,7 +52,6 @@ private:
 	//定数バッファ用データ構造体(マテリアル)
 	struct ConstBufferDataMaterial
 	{
-		//XMFLOAT4 color;	//色(RGBA)
 		XMFLOAT3 ambient;	//アンビエント係数
 		float pad1;
 		XMFLOAT3 diffuse;
@@ -65,6 +64,7 @@ private:
 	struct ConstBufferDateTransform
 	{
 		XMMATRIX mat;	//3D変換行列
+		XMFLOAT4 color;	//色(RGBA)
 	};
 
 	struct Vertex
@@ -131,6 +131,8 @@ private:
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
 
+	bool colorFlag_ = false;
+
 public:
 
 	//ゲッター
@@ -140,7 +142,7 @@ public:
 	XMFLOAT3 GetWorldPos();
 	void SetTransform(XMFLOAT3 pos) { transform = pos; };
 
-
+	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 
 	//セッター
 	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };

@@ -56,7 +56,7 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 
 	//単位行列を代入
 	constMapTransform->mat = XMMatrixIdentity();
-
+	
 	//関数が作れるまでの応急処置
 	{
 		//ヒープ設定
@@ -81,9 +81,6 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 			nullptr,
 			IID_PPV_ARGS(&constBuffMaterial));
 		assert(SUCCEEDED(result));
-
-
-		//constMapColor->color = { 1,1,0,1 };
 
 	}
 
@@ -361,9 +358,19 @@ void Object3d::Update(Camera* camera)
 
 	model_.Update();
 
+	if(colorFlag_ == true)
+	{
+		constMapTransform->color = { 1,0,0,1 };
+	}
+	else if(colorFlag_ == false)
+	{
+		constMapTransform->color = { 1,1,1,1 };
+	}
+	
+
 	//定数バッファへデータ転送
 	constMapTransform->mat = matWorld * matView_ * matProjection_;
-
+	
 	//定数バッファのマッピング
 	HRESULT result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
 	constBuffMaterial->SetName(L"constBuffMaterial");

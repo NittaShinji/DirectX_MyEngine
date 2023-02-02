@@ -3,17 +3,17 @@
 cbuffer ConstBufferDateTransform : register(b0)
 {
     matrix mat; //3D変換行列
+    //色(RGBA)
+    float4 color;
 }
+
 cbuffer ConstBufferDateMaterial : register(b1)
 {
-	//色(RGBA)
-    //float4 color;
-    
+	
     float3 m_ambient : packoffset(c0);  //アンビエント係数
     float3 m_diffuse : packoffset(c1);  //ディフューズ係数
     float3 m_specular : packoffset(c2); //スペキュラー係数
     float m_alpha : packoffset(c2.w);   //アルファ
-    
 };
 
 //3D変換行列
@@ -46,4 +46,5 @@ struct VSOutput
     float3 normal : NORMAL;
 	////uv値
     float2 uv : TEXCOORD;
+    
 };

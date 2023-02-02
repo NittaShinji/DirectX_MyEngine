@@ -93,7 +93,7 @@ private:
 	Object3d* ground_;
 
 	//‘Ò‚¿ŠÔ
-	static const int waitTime = 60;
+	static const int waitTime = 40;
 	//ƒL[“ü—Í‚ÌŠÔŠÇ—
 	int keyTimer = 60;
 

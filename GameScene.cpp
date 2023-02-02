@@ -42,12 +42,12 @@ GameScene::~GameScene()
 	ground_ = nullptr;
 }
 
-void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager)
+void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
 {
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
 	imGuiManager_ = imGuiManager;
-	scene_ = GAME;
+	scene_ = TITLE;
 
 	//------------サウンド----------
 
@@ -55,7 +55,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 	sound = new Sound;
 	sound->Initialize();
 	sound->LoadSoundWave("Alarm01.wav");
-	sound->PlaySoundWave("Alarm01.wav");
+	//sound->PlaySoundWave("Alarm01.wav");
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
@@ -69,11 +69,13 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 	//画像読み込み
 	Sprite::LoadTexture("tomas.png");
 	Sprite::LoadTexture("black.png");
+	Sprite::LoadTexture("title.png");
+
 
 	//個々の画像を初期化(指定した番号の画像を使用する)
-	XMFLOAT2 titlePosition = { 400,400 };
-	XMFLOAT2 titleSize = { 400,400 };
-	title_->Initialize(1,titlePosition, titleSize);
+	XMFLOAT2 titlePosition = { 0,0 };
+	XMFLOAT2 titleSize = { 1280,720 };
+	title_->Initialize(3, titlePosition, titleSize);
 
 	XMFLOAT2 testPosition = { 400,400 };
 	XMFLOAT2 testSize = { 100,100 };
@@ -123,7 +125,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize({30,0,-50}, cameraTarget, cameraUp);
+	testCamera_->Initialize({ 30,0,-50 }, cameraTarget, cameraUp);
 
 	//--球の初期値を設定
 	//中心座標
@@ -141,16 +143,22 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 
 void GameScene::Update()
 {
-	switch (scene_)
+	switch(scene_)
 	{
 
 	case TITLE:
+
+		//アンカーポイントの設定
+		XMFLOAT2 anchorPoint = { 0.0f,0.0f };
+		title_->SetAnchorPoint(anchorPoint);
+		title_->matUpdate();
+
 
 		if(keyTimer < 0)
 		{
 			if(keys_->HasPushedKey(DIK_SPACE))
 			{
-				
+
 				scene_ = GAME;
 				keyTimer = waitTime;
 			}
@@ -165,9 +173,9 @@ void GameScene::Update()
 	case GAME:
 		camera_->Updata();
 		testCamera_->Updata();
-		
+
 		//カメラの切り替え
-		if (keys_->HasPushedKey(DIK_0))
+		if(keys_->HasPushedKey(DIK_0))
 		{
 			object3d_->Update(testCamera_);
 			sphere_->Update(testCamera_);
@@ -181,16 +189,12 @@ void GameScene::Update()
 
 			sphere_->Update(camera_);
 		}
-		
+
 		//画像の更新処理
-		//アンカーポイントの設定
-		XMFLOAT2 anchorPoint = { 0.0f,0.0f };
-		/*title_->SetAnchorPoint(anchorPoint);
-		title_->matUpdate();*/
 
 		/*test_->SetAnchorPoint(anchorPoint);
 		test_->matUpdate();*/
-		
+
 		if(moveTimer >= 0)
 		{
 			moveTimer--;
@@ -221,61 +225,33 @@ void GameScene::Update()
 		{
 			move.y += 0.5f;
 		}
-		
-		
+
+
 
 		sphereCollision.pos.y += move.y;
 		sphere_->SetTransform(sphereCollision.pos);
 		sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
 
-		////球移動
-		//if(keys_->HasPushedKey(DIK_UPARROW)) 
-		//{
-		//	Move.y += 0.7f;
-		//	sphereCollision.pos.y += Move.y;
-		//	sphere_->SetTransform(sphereCollision.pos);
-		//	sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
-		//}
-		//else
-		//{
-		//	Move.y = 0;
-		//}
-		//if(keys_->HasPushedKey(DIK_DOWNARROW)) 
-		//{
-		//	Move.y -= 0.7f;
-		//	sphereCollision.pos.y += Move.y;
-		//	sphere_->SetTransform(sphereCollision.pos);
-		//	sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
-		//}
-		//else
-		//{
-		//	Move.y = 0;
-		//}
-
-		
-
 		hit = Collision::CheckSphere2Plane(sphereCollision, planeCollision);
+		sphere_->SetColorFlag(hit);
 
-		if(hit)
+
+		//スプライトの編集ウインドウの表示
 		{
-			//スプライトの編集ウインドウの表示
-			{
 
-				ImGui::Begin("Collision");
-				ImGui::SetWindowSize("Collision", ImVec2(500, 100));
-				ImGui::InputInt("hit", &hit, 0.0f, 1000.0f);
-				ImGui::End();
-			}
+			ImGui::Begin("Collision");
+			ImGui::SetWindowSize("Collision", ImVec2(500, 100));
+			ImGui::InputInt("hit", &hit, 0.0f, 1000.0f);
+			ImGui::End();
 		}
 
-		
 
 		if(keyTimer < 0)
 		{
 			if(keys_->HasPushedKey(DIK_SPACE))
 			{
 
-				scene_ = END;
+				scene_ = TITLE;
 				keyTimer = waitTime;
 			}
 		}
@@ -311,12 +287,15 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	switch (scene_)
+	switch(scene_)
 	{
 
 	case TITLE:
 
-
+		//画像描画
+		spriteCommon_->BeforeDraw();
+		spriteCommon_->Update();
+		title_->Draw();
 
 		break;
 
@@ -324,17 +303,8 @@ void GameScene::Draw()
 
 		//モデル描画
 		object3d_->BeforeDraw();
-		//object3d_->Draw();
-		//nObject3d_->Draw();
-		//sObject3d_->Draw();
 		sphere_->Draw();
 		ground_->Draw();
-
-		//画像描画
-		/*spriteCommon_->BeforeDraw();
-		spriteCommon_->Update();*/
-		//title_->Draw();
-		//test_->Draw();
 
 		break;
 	case END:
