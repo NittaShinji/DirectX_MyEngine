@@ -91,5 +91,11 @@ private:
 	//“–‚½‚è”»’è •½–Ê
 	Plane plane_;
 
+	//‘Ò‚¿ŠÔ
+	static const int waitTime = 60;
+	//ƒL[“ü—Í‚ÌŠÔŠÇ—
+	int keyTimer = 60;
+
+
 };
 

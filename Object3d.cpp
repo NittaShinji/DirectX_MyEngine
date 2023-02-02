@@ -368,6 +368,7 @@ void Object3d::Update(Camera* camera)
 
 	//定数バッファのマッピング
 	HRESULT result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
+	constBuffMaterial->SetName(L"constBuffMaterial");
 	assert(SUCCEEDED(result));
 
 	constMapMaterial->ambient = model_.GetInfomation()->material_.ambient;

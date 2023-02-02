@@ -54,7 +54,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager
 	sound = new Sound;
 	sound->Initialize();
 	sound->LoadSoundWave("Alarm01.wav");
-	//sound->PlaySoundWave("Alarm01.wav");
+	sound->PlaySoundWave("Alarm01.wav");
 
 	//------------âÊëúì«Ç›çûÇ›----------
 	title_ = new Sprite;
@@ -135,6 +135,20 @@ void GameScene::Update()
 
 	case TITLE:
 
+		if(keyTimer < 0)
+		{
+			if(keys_->HasPushedKey(DIK_SPACE))
+			{
+				
+				scene_ = GAME;
+				keyTimer = waitTime;
+			}
+		}
+		else
+		{
+			keyTimer--;
+		}
+
 		break;
 
 	case GAME:
@@ -182,9 +196,37 @@ void GameScene::Update()
 			ImGui::End();
 		}
 
+		if(keyTimer < 0)
+		{
+			if(keys_->HasPushedKey(DIK_SPACE))
+			{
+
+				scene_ = END;
+				keyTimer = waitTime;
+			}
+		}
+		else
+		{
+			keyTimer--;
+		}
+
 		break;
 
 	case END:
+
+		if(keyTimer < 0)
+		{
+			if(keys_->HasPushedKey(DIK_SPACE))
+			{
+
+				scene_ = TITLE;
+				keyTimer = waitTime;
+			}
+		}
+		else
+		{
+			keyTimer--;
+		}
 
 		break;
 
