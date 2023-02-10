@@ -21,9 +21,7 @@ GameScene::~GameScene()
 	//画像
 	delete spriteCommon_;
 	delete title_;
-	delete test_;
 	//モデル
-	delete object3d_;
 	delete camera_;
 	delete testCamera_;
 	delete sphere_;
@@ -47,7 +45,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
 	imGuiManager_ = imGuiManager;
-	scene_ = TITLE;
+	scene_ = GAME;
 
 	//------------サウンド----------
 
@@ -67,19 +65,12 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	Sprite::StaticInitialize(spriteCommon_);
 
 	//画像読み込み
-	Sprite::LoadTexture("tomas.png");
-	Sprite::LoadTexture("black.png");
 	Sprite::LoadTexture("title.png");
-
-
+	
 	//個々の画像を初期化(指定した番号の画像を使用する)
 	XMFLOAT2 titlePosition = { 0,0 };
 	XMFLOAT2 titleSize = { 1280,720 };
-	title_->Initialize(3, titlePosition, titleSize);
-
-	XMFLOAT2 testPosition = { 400,400 };
-	XMFLOAT2 testSize = { 100,100 };
-	test_->Initialize(2, testPosition, testSize);
+	title_->Initialize(1, titlePosition, titleSize);
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();
@@ -91,15 +82,10 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	Object3d::StaticInitialize(directXBasic_);
 
 	//モデル読み込み
-	const string testModelName = "triangle_tex";
-	const string testModelName2 = "block2";
-	const string testModelName3 = "pillar";
+	
 	const string sphere = "sphere";
 	const string ground = "ground";
 
-	Model::Load(testModelName);
-	Model::Load(testModelName2);
-	Model::Load(testModelName3);
 	Model::Load(sphere);
 	Model::Load(ground);
 
@@ -110,9 +96,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT3 groundPosition = { 0,-5,0 };
 
 	XMFLOAT3 sphereScale = { 10,10,10 };
-	XMFLOAT3 groundScale = { 20,20,20 };
+	XMFLOAT3 groundScale = { 20,5,20 };
 
-	object3d_ = new Object3d(testModelName, position, sphereScale);
 	sphere_ = new Object3d(sphere, spherePosition, sphereScale);
 	ground_ = new Object3d(ground, groundPosition, groundScale);
 
@@ -153,7 +138,6 @@ void GameScene::Update()
 		title_->SetAnchorPoint(anchorPoint);
 		title_->matUpdate();
 
-
 		if(keyTimer < 0)
 		{
 			if(keys_->HasPushedKey(DIK_SPACE))
@@ -177,17 +161,15 @@ void GameScene::Update()
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
 		{
-			object3d_->Update(testCamera_);
 			sphere_->Update(testCamera_);
 			ground_->Update(testCamera_);
 		}
 		else
 		{
 			//モデルの更新処理
-			object3d_->Update(camera_);
+			sphere_->Update(camera_);
 			ground_->Update(camera_);
 
-			sphere_->Update(camera_);
 		}
 
 		//画像の更新処理
@@ -219,14 +201,12 @@ void GameScene::Update()
 
 		if(isDown == true && isUp == false)
 		{
-			move.y -= 0.5f;
+			move.y -= 0.3f;
 		}
 		else if(isUp == true && isDown == false)
 		{
-			move.y += 0.5f;
+			move.y += 0.3f;
 		}
-
-
 
 		sphereCollision.pos.y += move.y;
 		sphere_->SetTransform(sphereCollision.pos);
@@ -293,16 +273,18 @@ void GameScene::Draw()
 	case TITLE:
 
 		//画像描画
-		spriteCommon_->BeforeDraw();
+		/*spriteCommon_->BeforeDraw();
 		spriteCommon_->Update();
-		title_->Draw();
+		title_->Draw();*/
 
 		break;
 
 	case GAME:
 
 		//モデル描画
-		object3d_->BeforeDraw();
+		sphere_->BeforeDraw();
+		ground_->BeforeDraw();
+
 		sphere_->Draw();
 		ground_->Draw();
 
