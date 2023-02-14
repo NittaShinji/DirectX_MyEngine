@@ -1,5 +1,6 @@
 #include "Sprite.h"
 #include <d3dcompiler.h>
+#include <D3dx12.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
@@ -14,6 +15,7 @@ uint32_t Sprite::textureIndex_ = 0;
 const size_t kMaxSRVCount = 2056;
 std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> Sprite::textureBuffers_;
 ID3D12DescriptorHeap* Sprite::srvHeap = nullptr;
+UINT64 Sprite::fenceCount;
 //D3D12_RESOURCE_DESC Sprite::textureResourceDesc{};
 
 void Sprite::StaticInitialize(SpriteCommon* spriteCommon)
@@ -381,7 +383,7 @@ void Sprite::LoadTexture(const std::string& fileName)
 	SetHeight(textureResourceDesc.Height);*/
 
 	//全ミニマップについて
-	for (size_t i = 0; i < metadata.mipLevels; i++)
+	for(size_t i = 0; i < metadata.mipLevels; i++)
 	{
 		//ミニマップレベルを指定してイメージを取得
 		const Image* img = scratchImg.GetImage(i, 0, 0);
@@ -399,9 +401,144 @@ void Sprite::LoadTexture(const std::string& fileName)
 		assert(SUCCEEDED(result_));
 	}
 
+
+	//----------------------------------
+
+	////ヒープ設定
+	//D3D12_HEAP_PROPERTIES textureHeapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+
+	////リソース設定
+	//D3D12_RESOURCE_DESC textureResourceDesc{};
+	//textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	//textureResourceDesc.Format = metadata.format;
+	//textureResourceDesc.Width = metadata.width; // 幅
+	//textureResourceDesc.Height = (UINT)metadata.height; // 幅
+	//textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
+	//textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
+	//textureResourceDesc.SampleDesc.Count = 1;
+
+	////テクスチャバッファの生成
+	//result_ = directXBasic_->GetDevice()->CreateCommittedResource(
+	//	&textureHeapProp,
+	//	D3D12_HEAP_FLAG_NONE,
+	//	&textureResourceDesc,
+	//	D3D12_RESOURCE_STATE_COPY_DEST,
+	//	nullptr,
+	//	IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
+
+	////レイアウト取得
+	//D3D12_PLACED_SUBRESOURCE_FOOTPRINT  footprint;
+	//UINT64  total_bytes = 0;
+	//directXBasic_->GetDevice()->GetCopyableFootprints(&textureResourceDesc, 0, 1, 0, &footprint, nullptr, nullptr, &total_bytes);
+
+	////転送用のバッファを作成
+	////転送用ヒープ設定
+	//D3D12_HEAP_PROPERTIES  uploadHeap = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+
+	////転送用リソース設定
+	//D3D12_RESOURCE_DESC  uploadDesc;
+	//memset(&uploadDesc, 0, sizeof(uploadDesc));
+	//uploadDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	//uploadDesc.Width = total_bytes; // 幅
+	//uploadDesc.Height = 1; // 幅
+	//uploadDesc.DepthOrArraySize = 1;
+	//uploadDesc.MipLevels = 1;
+	//uploadDesc.SampleDesc.Count = 1;
+	//uploadDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	////転送用テクスチャバッファの生成
+	//ID3D12Resource* uploadBuffer = nullptr;
+	//result_ = directXBasic_->GetDevice()->CreateCommittedResource(&uploadHeap,
+	//	D3D12_HEAP_FLAG_NONE, &uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuffer));
+
+	////転送用バッファへの書き込み
+	///*void* ptr = nullptr;
+	//uploadBuffer->Map(0, nullptr, &ptr);*/
+	////for(size_t i = 0; i < metadata.mipLevels; i++)
+	////{
+	////	//ミニマップレベルを指定してイメージを取得
+	////	//const Image* img = scratchImg.GetImage(i, 0, 0);
+	////	/*const uint8_t* pixel[] = { 0 };
+	////	pixel[i] = scratchImg.GetPixels();*/
+	////	const uint8_t* pixel = scratchImg.GetImage(i,0,0)->pixels;
+
+	////	/*uint8_t pixelData[];
+	////	size_t pixelDataSize = scratchImg.GetPixelsSize();*/
+
+	////	//memcpy(reinterpret_cast<unsigned char*>(ptr) + footprint.Offset, img->pixels, scratchImg.GetPixelsSize());
+	////	
+	////}
+	////全ミニマップについて
+	////for(size_t i = 0; i < metadata.mipLevels; i++)
+	////{
+	////	//ミニマップレベルを指定してイメージを取得
+	////	const Image* img = scratchImg.GetImage(i, 0, 0);
+
+	////	result_ = uploadBuffer->Map(
+	////				(UINT)i,
+	////				nullptr,
+	////				&ptr);
+
+	////	memcpy(reinterpret_cast<unsigned char*>(ptr) + footprint.Offset, img->pixels, sizeof(img->pixels));
+
+	////	//textureBuffers_[textureIndex_]->
+	////}
+
+	////全ミニマップについて
+	//for(size_t i = 0; i < metadata.mipLevels; i++)
+	//{
+	//	//ミニマップレベルを指定してイメージを取得
+	//	const Image* img = scratchImg.GetImage(i, 0, 0);
+
+	//	//テクスチャバッファにデータ転送
+
+	//	result_ = uploadBuffer->WriteToSubresource(
+	//		(UINT)i,
+	//		nullptr,
+	//		img->pixels,
+	//		(UINT)img->rowPitch,
+	//		(UINT)img->slicePitch
+	//	);
+
+	//	assert(SUCCEEDED(result_));
+	//}
+
+	//
+	////コピーコマンド作成
+	//D3D12_TEXTURE_COPY_LOCATION  dest;
+	//memset(&dest, 0, sizeof(dest));
+	//dest.pResource = textureBuffers_[textureIndex_].Get();
+	//dest.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
+	//dest.SubresourceIndex = 0;
+
+	//D3D12_TEXTURE_COPY_LOCATION  src;
+	//memset(&src, 0, sizeof(src));
+	//src.pResource = uploadBuffer;
+	//src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
+	//src.PlacedFootprint = footprint;
+
+	////転送コマンドを格納
+	//ID3D12GraphicsCommandList* iCommandList = directXBasic_->GetCommandList().Get();
+	//iCommandList->CopyTextureRegion(&dest, 0, 0, 0, &src, nullptr);
+
+	////コマンドキューとコマンドリストが描画用と共用なのでリソースバリアが必要
+	////リソースバリアの設定
+	//D3D12_RESOURCE_BARRIER  barrier;
+	//memset(&barrier, 0, sizeof(barrier));
+	//barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
+	//barrier.Transition.pResource = textureBuffers_[textureIndex_].Get();
+	//barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
+	//barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
+	//barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
+
+	////リソースバリアの生成
+	//iCommandList->ResourceBarrier(1, &barrier);
+
+	//----------------------------
+
 	//SRVヒープの先頭ハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap->GetCPUDescriptorHandleForHeapStart();
-
+	
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//取得したサイズを使用してハンドルを進める
@@ -412,7 +549,7 @@ void Sprite::LoadTexture(const std::string& fileName)
 	
 	//シェーダーリソースビューの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-
+	memset(&srvDesc, 0, sizeof(srvDesc));
 	srvDesc.Format = textureResourceDesc.Format;//RGBA float
 	srvDesc.Shader4ComponentMapping =
 		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;

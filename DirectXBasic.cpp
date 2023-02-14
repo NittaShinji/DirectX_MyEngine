@@ -269,10 +269,7 @@ void DirectXBasic::InitializeDevice()
 
 		 // 抑制するエラー
 		D3D12_MESSAGE_ID denyIds[] = {
-			/*
-			 * Windows11でのDXGIデバッグレイヤーとDX12デバッグレイヤーの相互作用バグによるエラーメッセージ
-			 * https://stackoverflow.com/questions/69805245/directx-12-application-is-crashing-in-windows-11
-			 */
+			
 			D3D12_MESSAGE_ID_RESOURCE_BARRIER_MISMATCHING_COMMAND_LIST_TYPE };
 		// 抑制する表示レベル
 		D3D12_MESSAGE_SEVERITY severities[] = { D3D12_MESSAGE_SEVERITY_INFO };

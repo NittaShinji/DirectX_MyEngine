@@ -5,6 +5,7 @@
 #include <vector>
 
 #include <DirectXTex.h>
+#include <D3dx12.h>
 
 using namespace std;
 using namespace DirectX;
@@ -339,6 +340,9 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	textureHeapProp.CPUPageProperty =
 		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
+
+	//CD3DX12_HEAP_PROPERTIES textureHeapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	
 	//リソース設定
 	D3D12_RESOURCE_DESC textureResourceDesc{};
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -359,6 +363,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 		//IID_PPV_ARGS(&textureBuffers_[0]));
 		IID_PPV_ARGS(&model.infomation_.textureBuffers_[textureIndex_]));
 
+	textureHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
 
 	//全ミニマップについて
 	for (size_t i = 0; i < metadata.mipLevels; i++)

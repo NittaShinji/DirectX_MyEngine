@@ -26,6 +26,7 @@ GameScene::~GameScene()
 	delete testCamera_;
 	delete sphere_;
 	delete ground_;
+	delete triangle_;
 
 	//delete directXBasic_;
 
@@ -38,6 +39,8 @@ GameScene::~GameScene()
 	testCamera_ = nullptr;
 	sphere_ = nullptr;
 	ground_ = nullptr;
+	triangle_ = nullptr;
+
 }
 
 void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
@@ -45,7 +48,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
 	imGuiManager_ = imGuiManager;
-	scene_ = GAME;
+	scene_ = TITLE;
 
 	//------------サウンド----------
 
@@ -85,21 +88,27 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	
 	const string sphere = "sphere";
 	const string ground = "ground";
+	const string testTriangle = "triangle_tex";
 
 	Model::Load(sphere);
 	Model::Load(ground);
-
+	Model::Load(testTriangle);
 
 	//3Dオブジェクトの生成
 	XMFLOAT3 position = { 0,0,0 };
 	XMFLOAT3 spherePosition = { 0,0,0 };
 	XMFLOAT3 groundPosition = { 0,-5,0 };
+	XMFLOAT3 trianglePosition = { 0,0,0 };
+
 
 	XMFLOAT3 sphereScale = { 10,10,10 };
 	XMFLOAT3 groundScale = { 20,5,20 };
+	XMFLOAT3 triangleScale = { 20,20,1 };
+
 
 	sphere_ = new Object3d(sphere, spherePosition, sphereScale);
 	ground_ = new Object3d(ground, groundPosition, groundScale);
+	triangle_ = new Object3d(testTriangle, trianglePosition, triangleScale);
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
@@ -110,13 +119,13 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize({ 30,0,-50 }, cameraTarget, cameraUp);
+	testCamera_->Initialize({ 50,0,10 }, cameraTarget, cameraUp);
 
 	//--球の初期値を設定
 	//中心座標
 	sphereCollision.pos = sphere_->GetWorldPos();
 	sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
-	sphereCollision.radius = 10.0f;
+	sphereCollision.radius = 5.0f;
 	sphere_->SetTransform(sphereCollision.pos);
 
 	//平面の初期値を設定
@@ -124,6 +133,18 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	planeCollision.normal = XMVectorSet(0, 1, 0, 0);
 	//原点(0,0,0)からの距離
 	planeCollision.distance = -5.0f;
+
+	//三角形の初期値を設定
+	//ラジアン90度　1.5708f　
+	//XMFLOAT3 triangleRotation = { 1.5708f,0.0f,0.0f };
+	//triangle_->SetRotation(triangleRotation);
+	XMFLOAT3 trianglePosition2 = triangle_->GetWorldPos();
+
+	triangleCollison.p0 = XMVectorSet(trianglePosition2.x - triangleScale.x - 5.0f, trianglePosition2.y -triangleScale.y - 5.0f, trianglePosition2.z, 1); //左手前
+	triangleCollison.p1 = XMVectorSet(trianglePosition2.x , trianglePosition2.y + triangleScale.y - 5.0f, trianglePosition2.z, 1); //奥
+	triangleCollison.p2 = XMVectorSet(trianglePosition2.x +  triangleScale.x + 5.0f, trianglePosition2.y - triangleScale.y - 5.0f, trianglePosition2.z, 1); //右手前
+	triangleCollison.normal = XMVectorSet(0.0f, 0.0f, 1.0f, 0); //上向き
+
 }
 
 void GameScene::Update()
@@ -163,13 +184,14 @@ void GameScene::Update()
 		{
 			sphere_->Update(testCamera_);
 			ground_->Update(testCamera_);
+			triangle_->Update(testCamera_);
 		}
 		else
 		{
 			//モデルの更新処理
 			sphere_->Update(camera_);
 			ground_->Update(camera_);
-
+			triangle_->Update(camera_);
 		}
 
 		//画像の更新処理
@@ -177,7 +199,7 @@ void GameScene::Update()
 		/*test_->SetAnchorPoint(anchorPoint);
 		test_->matUpdate();*/
 
-		if(moveTimer >= 0)
+		/*if(moveTimer >= 0)
 		{
 			moveTimer--;
 		}
@@ -206,14 +228,55 @@ void GameScene::Update()
 		else if(isUp == true && isDown == false)
 		{
 			move.y += 0.3f;
+		}*/
+
+		if(keys_->HasPushedKey(DIK_W))
+		{
+			move.z -= 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_W) != keys_->HasPushedKey(DIK_S))
+		{
+			move.z = 0;
+		}
+		else if(keys_->HasPushedKey(DIK_S))
+		{
+			move.z += 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_S)&& keys_->HasPushedKey(DIK_W))
+		{
+			move.z = 0;
 		}
 
+		if(keys_->HasPushedKey(DIK_A))
+		{
+			move.y -= 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_A) != keys_->HasPushedKey(DIK_D))
+		{
+			move.y = 0;
+		}
+		else if(keys_->HasPushedKey(DIK_D))
+		{
+			move.y += 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_D)&& keys_->HasPushedKey(DIK_A))
+		{
+			move.y = 0;
+		}
+
+
 		sphereCollision.pos.y += move.y;
+		sphereCollision.pos.z += move.z;
+
 		sphere_->SetTransform(sphereCollision.pos);
 		sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
 
-		hit = Collision::CheckSphere2Plane(sphereCollision, planeCollision);
-		sphere_->SetColorFlag(hit);
+		/*hit = Collision::CheckSphere2Plane(sphereCollision, planeCollision);
+		sphere_->SetColorFlag(hit);*/
+
+		//球と三角形の当たり判定
+		XMVECTOR inter;
+		hit = Collision::CheckSphere2Triangle(sphereCollision, triangleCollison, &inter);
 
 
 		//スプライトの編集ウインドウの表示
@@ -273,9 +336,9 @@ void GameScene::Draw()
 	case TITLE:
 
 		//画像描画
-		/*spriteCommon_->BeforeDraw();
+		spriteCommon_->BeforeDraw();
 		spriteCommon_->Update();
-		title_->Draw();*/
+		title_->Draw();
 
 		break;
 
@@ -283,10 +346,11 @@ void GameScene::Draw()
 
 		//モデル描画
 		sphere_->BeforeDraw();
-		ground_->BeforeDraw();
+		//ground_->BeforeDraw();
 
 		sphere_->Draw();
-		ground_->Draw();
+		//ground_->Draw();
+		triangle_->Draw();
 
 		break;
 	case END:

@@ -40,6 +40,9 @@ public:
 	int GetWinWidth() const { return winApi_->GetWinWidth(); }
 	int GetWinHeight() const { return winApi_->GetWinHeight(); }
 	
+	ComPtr<ID3D12CommandQueue> GetCommandQueue() { return commandQueue_; }
+	ComPtr<ID3D12Fence> GetFence() { return fence; }
+
 
 private:
 

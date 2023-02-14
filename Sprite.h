@@ -128,9 +128,8 @@ private:
 	static const size_t kMaxSRVCount = 2056;
 
 	//テクスチャバッファ
-	//ID3D12Resource* texBuff = nullptr;
-	//std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	//static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> uploadBuffer;
 
 	//テクスチャリソースデスク
 	D3D12_RESOURCE_DESC textureResourceDesc{};
@@ -148,6 +147,8 @@ private:
 	
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
+
+	static UINT64 fenceCount;
 
 public:
 

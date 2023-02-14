@@ -88,9 +88,13 @@ private:
 	Sphere sphereCollision;
 	////“–‚½‚è”»’è •½–Ê
 	Plane planeCollision;
+	//“–‚½‚è”»’è ŽOŠpŒ`
+	Triangle triangleCollison;
 
 	Object3d* sphere_;
 	Object3d* ground_;
+	Object3d* triangle_;
+
 
 	//‘Ò‚¿ŽžŠÔ
 	static const int waitTime = 40;

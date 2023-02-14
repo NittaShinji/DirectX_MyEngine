@@ -141,6 +141,7 @@ public:
 
 	XMFLOAT3 GetWorldPos();
 	void SetTransform(XMFLOAT3 pos) { transform = pos; };
+	void SetRotation(XMFLOAT3 rotate) { rotation = rotate; };
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 
