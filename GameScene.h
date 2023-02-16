@@ -110,5 +110,7 @@ private:
 	bool isUp = false;
 	bool isDown = true;
 
+	XMFLOAT3 trianglePosition2;
+	XMFLOAT3 triangleScale;
 };
 

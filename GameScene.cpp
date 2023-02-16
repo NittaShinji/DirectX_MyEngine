@@ -97,13 +97,13 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//3Dオブジェクトの生成
 	XMFLOAT3 position = { 0,0,0 };
 	XMFLOAT3 spherePosition = { 0,0,0 };
-	XMFLOAT3 groundPosition = { 0,-5,0 };
+	XMFLOAT3 groundPosition = { 0,0,0 };
 	XMFLOAT3 trianglePosition = { 0,0,0 };
 
 
 	XMFLOAT3 sphereScale = { 10,10,10 };
-	XMFLOAT3 groundScale = { 20,5,20 };
-	XMFLOAT3 triangleScale = { 20,20,1 };
+	XMFLOAT3 groundScale = { 20,3,20 };
+	 triangleScale = { 20,20,20 };
 
 
 	sphere_ = new Object3d(sphere, spherePosition, sphereScale);
@@ -114,18 +114,18 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	Camera::StaticInitialize(directXBasic_);
 	camera_ = new Camera;
 	testCamera_ = new Camera;
-	XMFLOAT3 cameraEye = { 0,0,-100 };
+	XMFLOAT3 cameraEye = { 0,100,-30 };
 	XMFLOAT3 cameraTarget = { 0,0,0 };
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize({ 50,0,10 }, cameraTarget, cameraUp);
+	testCamera_->Initialize({ 0,0,-20 }, cameraTarget, cameraUp);
 
 	//--球の初期値を設定
 	//中心座標
 	sphereCollision.pos = sphere_->GetWorldPos();
 	sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
-	sphereCollision.radius = 5.0f;
+	sphereCollision.radius = 10.0f;
 	sphere_->SetTransform(sphereCollision.pos);
 
 	//平面の初期値を設定
@@ -138,12 +138,20 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//ラジアン90度　1.5708f　
 	//XMFLOAT3 triangleRotation = { 1.5708f,0.0f,0.0f };
 	//triangle_->SetRotation(triangleRotation);
-	XMFLOAT3 trianglePosition2 = triangle_->GetWorldPos();
+	trianglePosition2 = triangle_->GetWorldPos();
 
-	triangleCollison.p0 = XMVectorSet(trianglePosition2.x - triangleScale.x - 5.0f, trianglePosition2.y -triangleScale.y - 5.0f, trianglePosition2.z, 1); //左手前
-	triangleCollison.p1 = XMVectorSet(trianglePosition2.x , trianglePosition2.y + triangleScale.y - 5.0f, trianglePosition2.z, 1); //奥
-	triangleCollison.p2 = XMVectorSet(trianglePosition2.x +  triangleScale.x + 5.0f, trianglePosition2.y - triangleScale.y - 5.0f, trianglePosition2.z, 1); //右手前
-	triangleCollison.normal = XMVectorSet(0.0f, 0.0f, 1.0f, 0); //上向き
+	//triangleCollison.p0 = XMVectorSet(trianglePosition2.x, trianglePosition2.y + triangleScale.y - 5.0f, trianglePosition2.z, 1); //奥
+	//triangleCollison.p1 = XMVectorSet(trianglePosition2.x - triangleScale.x + 3.0f, trianglePosition2.y - triangleScale.y + 5.0f, trianglePosition2.z, 1); //左手前
+	//triangleCollison.p0 = XMVectorSet(trianglePosition2.x - triangleScale.x + 3.0, trianglePosition2.y -triangleScale.y + 5.0f, trianglePosition2.z, 1); //左手前
+	//triangleCollison.p1 = XMVectorSet(trianglePosition2.x , trianglePosition2.y + triangleScale.y - 5.0f, trianglePosition2.z, 1); //奥
+	//triangleCollison.p2 = XMVectorSet(trianglePosition2.x + triangleScale.x - 3.0f, trianglePosition2.y - triangleScale.y + 5.0f, trianglePosition2.z, 1); //右手前
+
+	triangleCollison.p0 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //左手前
+	triangleCollison.p1 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z + triangleScale.z, 1); //奥
+	triangleCollison.p2 = XMVectorSet(trianglePosition2.x + triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //右手前
+
+
+	triangleCollison.normal = XMVectorSet(0.0f, 1.0f, 0.0f, 0); //上向き
 
 }
 
@@ -249,27 +257,52 @@ void GameScene::Update()
 
 		if(keys_->HasPushedKey(DIK_A))
 		{
-			move.y -= 0.1f;
+			move.x -= 0.1f;
 		}
 		else if(keys_->HasReleasedKey(DIK_A) != keys_->HasPushedKey(DIK_D))
 		{
-			move.y = 0;
+			move.x = 0;
 		}
 		else if(keys_->HasPushedKey(DIK_D))
 		{
-			move.y += 0.1f;
+			move.x += 0.1f;
 		}
 		else if(keys_->HasReleasedKey(DIK_D)&& keys_->HasPushedKey(DIK_A))
+		{
+			move.x = 0;
+		}
+
+		if(keys_->HasPushedKey(DIK_Q))
+		{
+			move.y -= 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_Q) != keys_->HasPushedKey(DIK_E))
+		{
+			move.y = 0;
+		}
+		else if(keys_->HasPushedKey(DIK_E))
+		{
+			move.y += 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_E)&& keys_->HasPushedKey(DIK_Q))
 		{
 			move.y = 0;
 		}
 
 
+		sphereCollision.pos.x += move.x;
 		sphereCollision.pos.y += move.y;
 		sphereCollision.pos.z += move.z;
 
 		sphere_->SetTransform(sphereCollision.pos);
 		sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
+
+		trianglePosition2 = triangle_->GetWorldPos();
+
+		//triangleCollison.p0 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //左手前
+		//triangleCollison.p1 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z + triangleScale.z, 1); //奥
+		//triangleCollison.p2 = XMVectorSet(trianglePosition2.x + triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //右手前
+		//triangleCollison.normal = XMVectorSet(0.0f, 1.0f, 0.0f, 0); //上向き
 
 		/*hit = Collision::CheckSphere2Plane(sphereCollision, planeCollision);
 		sphere_->SetColorFlag(hit);*/
@@ -285,6 +318,7 @@ void GameScene::Update()
 			ImGui::Begin("Collision");
 			ImGui::SetWindowSize("Collision", ImVec2(500, 100));
 			ImGui::InputInt("hit", &hit, 0.0f, 1000.0f);
+
 			ImGui::End();
 		}
 

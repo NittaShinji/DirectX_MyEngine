@@ -45,6 +45,9 @@ void Model::Load(const std::string& path)
 	vector<XMFLOAT3>normals;	//法線ベクトル
 	vector<XMFLOAT2>texcoords;	//テクスチャUV
 
+	//インデックスカウント用の変数
+	//int indexCountTex = 0;
+
 	//1行ずつ読み込む
 	string line;
 	while (getline(file, line))
@@ -64,6 +67,8 @@ void Model::Load(const std::string& path)
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
+			//右手系のモデルデータを左手系に変換(X反転)
+			//position.x = -position.x;
 			//座標データに追加
 			positions.emplace_back(position);
 		}
@@ -95,8 +100,10 @@ void Model::Load(const std::string& path)
 		//先頭文字列が"f"ならポリゴン(三角形)
 		if (key == "f")
 		{
+			//int faceIndexCount = 0;
 			//半角スペース区切りで行の続きを読み込む
 			string index_string;
+			//std::array<uint16_t, 4> tempIndices;
 			while (getline(line_stream,index_string,' '))
 			{
 				//頂点インデックス１個分の文字列をストリームに変換して解析しやすくする
@@ -115,9 +122,30 @@ void Model::Load(const std::string& path)
 				model.infomation_.vertices_.emplace_back(vertex);
 				//インデックスデータの追加
 				model.infomation_.indices_.emplace_back((unsigned short)model.infomation_.indices_.size());
+
+				//assert(faceIndexCount < 4 && "5角形ポリゴン以上は非対応です");
+
+				//// インデックスデータの追加
+				//tempIndices[faceIndexCount] = indexCountTex;
+
+				//indexCountTex++;
+				//faceIndexCount++;
 			}
+
+			//// インデックスデータの順序変更で時計回り→反時計回り変換
+			//model.infomation_.vertices_.emplace_back(tempIndices[0]);
+			//model.infomation_.vertices_.emplace_back(tempIndices[2]);
+			//model.infomation_.vertices_.emplace_back(tempIndices[1]);
+			//// 四角形なら三角形を追加
+			//if(faceIndexCount == 4)
+			//{
+			//	model.infomation_.vertices_.emplace_back(tempIndices[0]);
+			//	model.infomation_.vertices_.emplace_back(tempIndices[3]);
+			//	model.infomation_.vertices_.emplace_back(tempIndices[2]);
+			//}
 		}
 
+		
 		if (key == "mtllib")
 		{
 			//マテリアルのファイル読み込み
