@@ -27,6 +27,17 @@ struct Plane
 	DirectX::XMFLOAT3 pos = { 0,0,0 };
 };
 
+///<summary>
+/// レイ
+///</summary>
+struct Ray
+{
+	//始点座標
+	DirectX::XMVECTOR start = { 0,0,0,1 };
+	//方向(単位ベクトル)
+	DirectX::XMVECTOR dir = { 0,0,0,1 };
+};
+
 /// <summary>
 /// 法線付き三角形(時計回りが表面)
 /// </summary>

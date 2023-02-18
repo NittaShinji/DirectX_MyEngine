@@ -90,11 +90,13 @@ private:
 	Plane planeCollision;
 	//“–‚½‚è”»’è ŽOŠpŒ`
 	Triangle triangleCollison;
+	//“–‚½‚è”»’è ƒŒƒC
+	Ray rayCollision;
 
 	Object3d* sphere_;
 	Object3d* ground_;
 	Object3d* triangle_;
-
+	Object3d* ray_;
 
 	//‘Ò‚¿ŽžŠÔ
 	static const int waitTime = 40;
@@ -111,6 +113,6 @@ private:
 	bool isDown = true;
 
 	XMFLOAT3 trianglePosition2;
-	XMFLOAT3 triangleScale;
+	XMFLOAT3 rayWorldPositon;
 };
 
