@@ -30,7 +30,26 @@ public:
 	/// <returns>交差しているか否か</returns>
 	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, DirectX::XMVECTOR* inter = nullptr);
 
+	/// <summary>
+	/// レイと平面の当たり判定
+	/// </summary>
+	/// <param name="ray">レイ</param>
+	/// <param name="plane">平面</param>
+	/// <param name="distance">距離(出力用)</param>
+	/// <param name="inter">交点用(出力用)</param>
+	/// <returns>交差しているか否か</returns>
 	static bool CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
+
+	/// <summary>
+	/// レイと法線付き三角形の当たり判定
+	/// </summary>
+	/// <param name="ray">レイ</param>
+	/// <param name="triangle">三角形</param>
+	/// <param name="distance">距離(出力用)</param>
+	/// <param name="inter">交点(出力用)</param>
+	/// <returns>交差しているか否か</returns>
+	static bool CheckRay2Triangle(const Ray& ray, const Triangle& triangle,
+		float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
 
 private:
 

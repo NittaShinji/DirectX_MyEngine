@@ -44,6 +44,10 @@ struct Ray
 class  Triangle
 {
 public:
+
+	void ComputeNormal();
+
+public:
 	//’¸“_À•W3‚Â
 	DirectX::XMVECTOR p0;
 	DirectX::XMVECTOR p1;
