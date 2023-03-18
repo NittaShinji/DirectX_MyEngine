@@ -193,10 +193,16 @@ bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, floa
 	//•Ó‚ÌŠO‘¤‚Å‚ ‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚Å”»’è‚ğ‘Å‚¿Ø‚é
 	if(XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) { return false; }
 	//•Óp1,p2‚É‚Â‚¢‚Ä
+	XMVECTOR pt_p1 = triangle.p1 - interPlane;
+	XMVECTOR p1_p2 = triangle.p2 - triangle.p1;
+	m = XMVector3Cross(pt_p1, p1_p2);
 	//•Ó‚ÌŠO‘¤‚Å‚ ‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚Å”»’è‚ğ‘Å‚¿Ø‚é
+	if(XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) { return false; }
 	//•Óp2,p0‚É‚Â‚¢‚Ä
+	XMVECTOR pt_p2 = triangle.p2 - interPlane;
+	XMVECTOR p2_p0 = triangle.p0 - triangle.p2;
 	//•Ó‚ÌŠO‘¤‚Å‚ ‚ê‚Î“–‚½‚Á‚Ä‚¢‚È‚¢‚Ì‚Å”»’è‚ğ‘Å‚¿Ø‚é
-
+	if(XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) { return false; }
 	//“à‘¤‚È‚Ì‚Å“–‚½‚Á‚Ä‚¢‚é
 	if(inter)
 	{
