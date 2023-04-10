@@ -118,12 +118,12 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	Camera::StaticInitialize(directXBasic_);
 	camera_ = new Camera;
 	testCamera_ = new Camera;
-	XMFLOAT3 cameraEye = { 0,10,-60 };
+	XMFLOAT3 cameraEye = { 0,60,-30 };
 	XMFLOAT3 cameraTarget = { 0,0,0 };
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize({ 40,10,-60 }, cameraTarget, cameraUp);
+	testCamera_->Initialize({ 50,60,-30 }, cameraTarget, cameraUp);
 
 	//------------当たり判定----------
 	//--球の初期値を設定
@@ -149,15 +149,14 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	triangleCollison.p1 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z + triangleScale.z, 1); //奥
 	triangleCollison.p2 = XMVectorSet(trianglePosition2.x + triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //右手前
 
-
 	triangleCollison.normal = XMVectorSet(0.0f, 1.0f, 0.0f, 0); //上向き
 
 	//レイ
 	//3Dオブジェクトの座標を取得
-	//rayWorldPositon = ray_->GetWorldPos();
-	////レイの初期値を設定
-	//rayCollision.start = XMVectorSet(rayWorldPositon.x, rayWorldPositon.y, rayWorldPositon.z, 1);//原点やや上
-	//rayCollision.dir = XMVectorSet(0, -1, 0, 0);//下向き
+	rayWorldPositon = ray_->GetWorldPos();
+	//レイの初期値を設定
+	rayCollision.start = XMVectorSet(rayWorldPositon.x, rayWorldPositon.y, rayWorldPositon.z, 1);//原点やや上
+	rayCollision.dir = XMVectorSet(0, -1, 0, 0);//下向き
 	//斜め向きにする場合は正規化する。
 
 }
@@ -313,8 +312,8 @@ void GameScene::Update()
 			else if(keys_->HasPushedKey(DIK_E)) { rayWorldPositon.y -= moveY; }
 
 			float moveX = 0.1f;
-			if(keys_->HasPushedKey(DIK_A)) { rayWorldPositon.x += moveX; }
-			else if(keys_->HasPushedKey(DIK_D)) { rayWorldPositon.x -= moveX; }
+			if(keys_->HasPushedKey(DIK_A)) { rayWorldPositon.x -= moveX; }
+			else if(keys_->HasPushedKey(DIK_D)) { rayWorldPositon.x += moveX; }
 
 
 		}
@@ -332,7 +331,7 @@ void GameScene::Update()
 		/*sphere_->SetTransform(sphereCollision.pos);
 		sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };*/
 
-		//trianglePosition2 = triangle_->GetWorldPos();
+		trianglePosition2 = triangle_->GetWorldPos();
 
 		
 
@@ -342,7 +341,8 @@ void GameScene::Update()
 		//レイと平面の当たり判定
 		XMVECTOR inter;
 		float distance;
-		hit = Collision::CheckRay2Plane(rayCollision, planeCollision, &distance, &inter);
+		//hit = Collision::CheckRay2Plane(rayCollision, planeCollision, &distance, &inter);
+		hit = Collision::CheckRay2Triangle(rayCollision, triangleCollison, &distance, &inter);
 
 		//スプライトの編集ウインドウの表示
 		{
@@ -412,10 +412,10 @@ void GameScene::Draw()
 
 		//モデル描画
 		sphere_->BeforeDraw();
-		ground_->BeforeDraw();
+		//ground_->BeforeDraw();
 
 		//sphere_->Draw();
-		ground_->Draw();
+		//ground_->Draw();
 		triangle_->Draw();
 		ray_->Draw();
 
