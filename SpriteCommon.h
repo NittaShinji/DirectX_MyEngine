@@ -3,6 +3,8 @@
 #include <dxgi1_6.h>
 #include <wrl.h>
 #include <vector>
+#include <array>
+#include <DirectXTex.h>
 #include <DirectXMath.h>
 #include "DirectXBasic.h"
 using namespace DirectX;
@@ -32,7 +34,6 @@ public:
 	//描画終了後
 	void AfterDraw();
 
-
 	//半透明合成
 	void SemiTransparent();
 	//加算合成
@@ -41,6 +42,12 @@ public:
 	void Sub();
 	//色反転
 	void InvertColor();
+	
+	//画像読み込み
+	void LoadTexture(uint32_t textureIndex_,const std::string& fileName);
+
+	//描画用テクスチャコマンドの発行
+	void SetTextureCommands(uint32_t textureIndex_);
 
 private:
 
@@ -102,10 +109,21 @@ private:
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
 
 	//シェーダーリソース用のデスクリプタヒープ
-	ID3D12DescriptorHeap* srvHeap_ = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
+
+	//SRVの最大個数
+	static const size_t kMaxSRVCount = 2056;
 
 	//テクスチャバッファ
-	ID3D12Resource* texBuff = nullptr;
+	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+
+	//デフォルトテクスチャ格納ディレクトリ
+	static std::string kDefaultTextureDirectoryPath_;
+
+	//テクスチャメモリ用番号
+	uint32_t textureHandleIndex_;
+
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle;
 
 
 public:
@@ -116,9 +134,11 @@ public:
 	ConstBufferDataMaterial* GetConstMapMaterial() { return constMapMaterial; };
 	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform; };
 	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
-	
+	ID3D12DescriptorHeap*  GetSRVHeap() { return srvHeap_.Get(); };
+	D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGpuHandle() { return srvGpuHandle; }
+
 	//定数バッファの生成
-	void CreateConstantBuffer(ID3D12Resource* constBuff);
+	//void CreateConstantBuffer(ID3D12Resource* constBuff);
 
 	//セッター
 	//void SetSRVheap(ID3D12DescriptorHeap* srvHeap) { srvHeap_ = srvHeap; };

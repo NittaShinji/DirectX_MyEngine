@@ -54,7 +54,7 @@ private:
 
 	DirectXBasic* directXBasic_ = nullptr;
 	static KeyInput* keys_;
-	ImGuiManager* imGuiManager_ = nullptr;
+	//ImGuiManager* imGuiManager_ = nullptr;
 
 	//デバッグテキスト用の変数
 	//ウインドウの表示フラグ
@@ -69,9 +69,7 @@ private:
 
 	//スプライト
 	Sprite* title_ = nullptr;
-	Sprite* test_ = nullptr;
-
-
+	
 	//スプライト共通部分
 	SpriteCommon* spriteCommon_ = nullptr;
 

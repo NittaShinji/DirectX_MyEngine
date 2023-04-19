@@ -5,7 +5,6 @@
 #include <DirectXMath.h>
 #include <array>
 #include "SpriteCommon.h"
-#include <DirectXTex.h>
 #include "Input.h"
 using namespace DirectX;
 
@@ -18,14 +17,14 @@ public:
 	static void StaticInitialize(SpriteCommon* spriteCommon);
 
 	//初期化
-	void Initialize(uint32_t textureIndex,XMFLOAT2 position, XMFLOAT2 size);
+	void Initialize(uint32_t textureIndex,XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteCommon);
 	//行列更新
 	void matUpdate();
 	//描画
 	void Draw();
 
-	//画像読み込み
-	static void LoadTexture(const std::string& fileName);
+	////画像読み込み
+	//static void LoadTexture(const std::string& fileName);
 
 	/*void TexMapping();
 	void TexMappingSRVSet();*/
@@ -36,7 +35,7 @@ public:
 
 private:
 
-	static SpriteCommon* spriteCommon_;
+	SpriteCommon* spriteCommon_;
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
 
@@ -124,11 +123,8 @@ private:
 	//画像イメージデータ配列
 	XMFLOAT4* imageDate;
 
-	//SRVの最大個数
-	static const size_t kMaxSRVCount = 2056;
-
-	//テクスチャバッファ
-	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	
+	
 	//static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> uploadBuffer;
 
 	//テクスチャリソースデスク
@@ -138,17 +134,16 @@ private:
 
 	//シェーダーリソースビュー
 	//ID3D12DescriptorHeap* srvHeap = nullptr;
-	static ID3D12DescriptorHeap* srvHeap;
+	//static ID3D12DescriptorHeap* srvHeap;
 
 	//テクスチャ番号
-	static uint32_t textureIndex_;
+	uint32_t textureIndex_;
 	//テクスチャメモリ用番号
 	uint32_t textureHandleIndex_;
-	
-	//デフォルトテクスチャ格納ディレクトリ
-	static std::string kDefaultTextureDirectoryPath_;
 
 	static UINT64 fenceCount;
+
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle;
 
 public:
 
@@ -166,8 +161,7 @@ public:
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
 	uint32_t GetTextureIndex() const { return textureIndex_; };
-	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap; };
-
+	
 	//セッター
 	void SetMoveSpeed_(const DirectX::XMFLOAT2& moveSpeed) { moveSpeed_ = moveSpeed; };
 	void SetRotation(float rotation) { rotation_ = rotation; };
