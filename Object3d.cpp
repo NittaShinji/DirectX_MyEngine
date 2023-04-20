@@ -20,9 +20,6 @@ Object3d::~Object3d()
 Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale)
 //Object3d::Object3d(DirectXBasic* directXBasic,XMFLOAT3 position)
 {
-	/*model_ = model;*/
-	//model_.Load(path);
-
 	scale = Modelscale;
 	rotation = { 0.0f,0.0f,0.0f };
 	transform = position;
@@ -307,36 +304,16 @@ void Object3d::Update(Camera* camera)
 	//射影変換行列
 	matProjection_ = camera_->GetMatProjection();
 
-	//XMMATRIX matView;
-	//XMFLOAT3 eye(0, 0, -100);	//視点座標
-	//XMFLOAT3 target(0, 0, 0);	//注視点座標
-	//XMFLOAT3 up(0, 1, 0);		//上方向ベクトル
-	//matView = XMMatrixLookAtLH(XMLoadFloat3(&eye), XMLoadFloat3(&target), XMLoadFloat3(&up));
-
-	//float angle = 0.0f;	//カメラの回転角
-
-	//射影変換行列
-	//XMMATRIX matProjection =
-	//	XMMatrixPerspectiveFovLH(
-	//		XMConvertToRadians(45.0f),				//上下画角45度
-	//		(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
-	//		0.1f, 1000.0f							//前端,奥端
-	//	);
-
-
 	XMFLOAT3 move = { 0,0,0 };
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理
-	/*if(keys_->HasPushedKey(DIK_UP)) { transform.z += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_DOWN)) { transform.z -= 0.4f; }
-	else {}
 	if(keys_->HasPushedKey(DIK_RIGHT)) { transform.x += 0.4f; }
 	else if(keys_->HasPushedKey(DIK_LEFT)) { transform.x -= 0.4f; }
 	else {}
 	if(keys_->HasPushedKey(DIK_P)) { transform.y += 0.4f; }
 	else if(keys_->HasPushedKey(DIK_L)) { transform.y -= 0.4f; }
-	else {}*/
+	else {}
 
 	
 	matWorld = XMMatrixIdentity();
@@ -393,20 +370,12 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
 
 	//SRVヒープの設定コマンド
-	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &model_.GetInfomation()->srvHeap);
-
-	//デスクリプタヒープの配列をセットするコマンド
-	/*ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap };
-	directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);*/
-
-	////デスクリプタヒープの配列をセットするコマンド
-	//ID3D12DescriptorHeap* ppHeaps[] = { srvHeap };
-	//directXBasic_->GetCommandList()->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
+	ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap.Get()};
+	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, ppHeaps);
 
 	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = model_.GetInfomation()->srvHeap->GetGPUDescriptorHandleForHeapStart();
-	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = srvHeap->GetGPUDescriptorHandleForHeapStart();
-
+	
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
@@ -423,7 +392,7 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
 
 	//描画コマンド
-	directXBasic_->GetCommandList()->DrawIndexedInstanced(model_.GetInfomation()->indices_.size(), 1, 0, 0, 0);
+	directXBasic_->GetCommandList()->DrawIndexedInstanced((UINT)model_.GetInfomation()->indices_.size(), 1, 0, 0, 0);
 }
 
 void Object3d::LoadTexture(uint32_t textureIndex, const std::string& fileName)

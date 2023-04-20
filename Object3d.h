@@ -22,7 +22,7 @@ public:
 	~Object3d();
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
-
+	void Initialize();
 	void Update(Camera* camera);
 	void BeforeDraw();
 	void AfterDraw();

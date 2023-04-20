@@ -93,7 +93,7 @@ public:
 	using MODELKEY = std::string;
 
 	//SRVの最大個数
-	static const size_t kMaxSRVCount = 2056;
+	static const size_t kMaxSRVCount = 256;
 
 	struct MODELVALUE
 	{
@@ -118,7 +118,7 @@ public:
 		//インデックスバッファ
 		Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
 		//SRV用のデスクリプタヒープ
-		ID3D12DescriptorHeap* srvHeap = nullptr;
+		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap = nullptr;
 		
 		// 頂点バッファビュー
 		D3D12_VERTEX_BUFFER_VIEW vbView{};

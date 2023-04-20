@@ -11,7 +11,7 @@ public:
 	//球と平面の衝突判定
 	static bool CheckSphere2Plane(const Sphere& sphere, const Plane& plane, DirectX::XMVECTOR* inter = nullptr);
 	//AABBとAABBの衝突判定
-	static bool CheckAABB(const AABB& box1, const AABB& box2);
+	//static bool CheckAABB(const AABB& box1, const AABB& box2);
 
 	/// <summary>
 	///点と三角形の最近接点を求める 

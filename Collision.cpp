@@ -32,21 +32,21 @@ bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Dire
 
 	return true;
 };
-
-//AABB‚Ì“–‚½‚è”»’è
-bool Collision::CheckAABB(const AABB& box1, const AABB& box2)
-{
-	//Õ“Ë‚µ‚È‚©‚Á‚½ê‡
-	if (box1.min.x > box2.max.x) return false;
-	if (box1.max.x < box2.min.x) return false;
-	if (box1.min.y > box2.max.y) return false;
-	if (box1.max.y < box2.min.y) return false;
-	if (box1.min.z > box2.max.z) return false;
-	if (box1.max.z < box2.min.z) return false;
-
-	//Õ“Ë‚µ‚½ê‡
-	return true;
-}
+//
+////AABB‚Ì“–‚½‚è”»’è
+//bool Collision::CheckAABB(const AABB& box1, const AABB& box2)
+//{
+//	//Õ“Ë‚µ‚È‚©‚Á‚½ê‡
+//	if (box1.min.x > box2.max.x) return false;
+//	if (box1.max.x < box2.min.x) return false;
+//	if (box1.min.y > box2.max.y) return false;
+//	if (box1.max.y < box2.min.y) return false;
+//	if (box1.min.z > box2.max.z) return false;
+//	if (box1.max.z < box2.min.z) return false;
+//
+//	//Õ“Ë‚µ‚½ê‡
+//	return true;
+//}
 
 void Collision::ClosetPtPoint2Triangle(const DirectX::XMVECTOR& point, const Triangle& triangle, DirectX::XMVECTOR* closest)
 {
