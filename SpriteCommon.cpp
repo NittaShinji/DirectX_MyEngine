@@ -318,6 +318,7 @@ void SpriteCommon::InvertColor()
 void SpriteCommon::LoadTexture(uint32_t textureIndex_, const std::string& fileName)
 {
 	//画像番号
+	textureHandleIndex_ = textureIndex_;
 	//textureIndex_++;
 
 	//ディレクトリパスとファイル名を連結しを得る
@@ -557,11 +558,6 @@ void SpriteCommon::LoadTexture(uint32_t textureIndex_, const std::string& fileNa
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
-}
-
-void SpriteCommon::SetTextureCommands(uint32_t textureIndex_)
-{
-
 }
 
 void SpriteCommon::Update()

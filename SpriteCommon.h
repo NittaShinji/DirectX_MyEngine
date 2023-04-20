@@ -46,9 +46,6 @@ public:
 	//画像読み込み
 	void LoadTexture(uint32_t textureIndex_,const std::string& fileName);
 
-	//描画用テクスチャコマンドの発行
-	void SetTextureCommands(uint32_t textureIndex_);
-
 private:
 
 	//定数バッファ用データ構造体(マテリアル)
@@ -84,13 +81,11 @@ private:
 
 	//色用の定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
-	//ID3D12Resource* constBuffMaterial = nullptr;
-
-	ConstBufferDataMaterial* constMapMaterial = nullptr;
 	//座標用の定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
+
 	//定数バッファのGPUリソースのポインタ
-	//ID3D12Resource* constBuffTransform = nullptr;
+	ConstBufferDataMaterial* constMapMaterial = nullptr;
 	//定数バッファのマッピング用ポインタ
 	ConstBufferDataTransform* constMapTransform = nullptr;
 

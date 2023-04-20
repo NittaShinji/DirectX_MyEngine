@@ -216,7 +216,7 @@ void Sprite::matUpdate()
 	spriteCommon_->GetConstMapMaterial()->color = color_;
 }
 
-void Sprite::Draw()
+void Sprite::Draw(uint32_t textureIndex)
 {
 	spriteCommon_->Update();
 
@@ -233,7 +233,7 @@ void Sprite::Draw()
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	//取得したサイズを使用してハンドルを進める
-	for(uint32_t i = 0; i < textureHandleIndex_; i++)
+	for(uint32_t i = 0; i < textureIndex; i++)
 	{
 		srvGpuHandle.ptr += incrementSize;
 	}

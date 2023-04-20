@@ -21,12 +21,9 @@ public:
 	//行列更新
 	void matUpdate();
 	//描画
-	void Draw();
+	void Draw(uint32_t textureIndex);
 
 	~Sprite();
-
-	////画像読み込み
-	//static void LoadTexture(const std::string& fileName);
 
 	/*void TexMapping();
 	void TexMappingSRVSet();*/
@@ -34,19 +31,11 @@ public:
 	/*void PointListUpdate();
 	void LineListUpdate();*/
 
-
 private:
 
 	SpriteCommon* spriteCommon_;
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
-
-	//struct Vertex
-	//{
-	//	XMFLOAT3 pos;		//xyz座標
-	//	XMFLOAT3 normal;	//法線ベクトル
-	//	XMFLOAT2 uv;		//画像内のxyz座標
-	//};
 
 	enum VertexNumber
 	{

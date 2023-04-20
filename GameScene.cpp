@@ -21,7 +21,7 @@ GameScene::~GameScene()
 	//画像
 	delete spriteCommon_;
 	delete title_;
-	//delete test_;
+	delete test_;
 	//モデル
 	delete camera_;
 	delete testCamera_;
@@ -34,7 +34,7 @@ GameScene::~GameScene()
 	//sound = nullptr;
 	spriteCommon_ = nullptr;
 	title_ = nullptr;
-	//test_ = nullptr;
+	test_ = nullptr;
 	//モデル
 	object3d_ = nullptr;
 	camera_ = nullptr;
@@ -62,20 +62,26 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
+	test_ = new Sprite;
 	spriteCommon_ = new SpriteCommon;
 
 	//スプライト関係初期化
 	spriteCommon_->Initialize(directXBasic_);
 	Sprite::StaticInitialize(spriteCommon_);
-	spriteCommon_->LoadTexture(1, "title.png");
 
 	//画像読み込み
-	//Sprite::LoadTexture("title.png");
-	
+	spriteCommon_->LoadTexture(1, "title.png");
+	spriteCommon_->LoadTexture(2, "tomas.png");
+
 	//個々の画像を初期化(指定した番号の画像を使用する)
 	XMFLOAT2 titlePosition = { 0,0 };
 	XMFLOAT2 titleSize = { 1280,720 };
+	XMFLOAT2 testPosition = { 100,100 };
+	XMFLOAT2 testSize = { 266,369 };
+
 	title_->Initialize(1, titlePosition, titleSize, spriteCommon_);
+	test_->Initialize(1, testPosition, testSize, spriteCommon_);
+
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();
@@ -174,6 +180,8 @@ void GameScene::Update()
 		XMFLOAT2 anchorPoint = { 0.0f,0.0f };
 		title_->SetAnchorPoint(anchorPoint);
 		title_->matUpdate();
+		test_->SetAnchorPoint(anchorPoint);
+		test_->matUpdate();
 
 		if(keyTimer < 0)
 		{
@@ -406,7 +414,8 @@ void GameScene::Draw()
 		//画像描画
 		spriteCommon_->BeforeDraw();
 		spriteCommon_->Update();
-		title_->Draw();
+		title_->Draw(2);
+		test_->Draw(1);
 
 		break;
 
