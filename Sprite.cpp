@@ -29,7 +29,7 @@ void Sprite::Initialize(uint32_t textureIndex, XMFLOAT2 position, XMFLOAT2 size,
 
 	winWide = directXBasic_->GetWinWidth();
 	winHeight = directXBasic_->GetWinHeight();
-	textureHandleIndex_ = textureIndex;
+	//textureHandleIndex_ = textureIndex;
 
 	scale = { 10.0f,10.0f,10.0f };
 	rotation_ = { 0.0f };
@@ -216,9 +216,13 @@ void Sprite::matUpdate()
 	spriteCommon_->GetConstMapMaterial()->color = color_;
 }
 
-void Sprite::Draw(uint32_t textureIndex)
+//void Sprite::Draw(uint32_t textureIndex)
+void Sprite::Draw(const std::string& fileName)
 {
 	spriteCommon_->Update();
+
+	uint32_t textureIndex;
+	textureIndex = spriteCommon_->GetTextureMap().at(fileName);
 
 	//頂点バッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);

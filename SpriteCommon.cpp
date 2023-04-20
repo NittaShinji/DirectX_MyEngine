@@ -315,11 +315,14 @@ void SpriteCommon::InvertColor()
 	assert(SUCCEEDED(result_));
 }
 
-void SpriteCommon::LoadTexture(uint32_t textureIndex_, const std::string& fileName)
+void SpriteCommon::LoadTexture(const std::string& fileName)
 {
+	
 	//画像番号
-	textureHandleIndex_ = textureIndex_;
-	//textureIndex_++;
+	textureIndex_++;
+	
+	//画像の文字列と画像番号を格納
+	textureMap.emplace(fileName, textureIndex_);
 
 	//ディレクトリパスとファイル名を連結しを得る
 	std::string fullPath = kDefaultTextureDirectoryPath_ + fileName;

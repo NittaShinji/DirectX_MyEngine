@@ -2,8 +2,9 @@
 #include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
-#include <vector>
 #include <array>
+#include <map>
+#include <string>
 #include <DirectXTex.h>
 #include <DirectXMath.h>
 #include "DirectXBasic.h"
@@ -44,7 +45,7 @@ public:
 	void InvertColor();
 	
 	//画像読み込み
-	void LoadTexture(uint32_t textureIndex_,const std::string& fileName);
+	void LoadTexture(const std::string& fileName);
 
 private:
 
@@ -119,7 +120,13 @@ private:
 	//テクスチャメモリ用番号
 	uint32_t textureHandleIndex_;
 
+	//GPU用のSRVのデスクリプタハンドル
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle;
+
+	//テクスチャ番号
+	uint32_t textureIndex_;
+	//画像に結び付いたテクスチャ番号格納用map
+	std::map<const std::string, int, std::less<>> textureMap = {};
 
 
 public:
@@ -132,6 +139,7 @@ public:
 	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
 	ID3D12DescriptorHeap*  GetSRVHeap() { return srvHeap_.Get(); };
 	D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGpuHandle() { return srvGpuHandle; }
+	std::map<const std::string, int, std::less<>> GetTextureMap() { return textureMap; }
 
 	//定数バッファの生成
 	//void CreateConstantBuffer(ID3D12Resource* constBuff);

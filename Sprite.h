@@ -21,7 +21,9 @@ public:
 	//行列更新
 	void matUpdate();
 	//描画
-	void Draw(uint32_t textureIndex);
+	//void Draw(uint32_t textureIndex);
+	void Draw(const std::string& fileName);
+
 
 	~Sprite();
 
@@ -128,9 +130,9 @@ private:
 	//static ID3D12DescriptorHeap* srvHeap;
 
 	//テクスチャ番号
-	uint32_t textureIndex_;
+	//uint32_t textureIndex_;
 	//テクスチャメモリ用番号
-	uint32_t textureHandleIndex_;
+	//uint32_t textureHandleIndex_;
 
 	static UINT64 fenceCount;
 
@@ -151,7 +153,7 @@ public:
 	bool GetIsFlipX() const { return isFlipX_; };
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
-	uint32_t GetTextureIndex() const { return textureIndex_; };
+	//uint32_t GetTextureIndex() const { return textureIndex_; };
 	
 	//セッター
 	void SetMoveSpeed_(const DirectX::XMFLOAT2& moveSpeed) { moveSpeed_ = moveSpeed; };
@@ -164,7 +166,7 @@ public:
 	void SetIsFlipX(bool isFlipX) { isFlipX_ = isFlipX; };
 	void SetIsFlipY(bool isFlipY) { isFlipY_ = isFlipY; };
 	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
-	void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
+	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 	/*void SetWidth(size_t width) { wide_ = wide_; };
 	void SetHeight(size_t height) { height_ = height; };*/
 
