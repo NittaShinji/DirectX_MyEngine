@@ -68,6 +68,7 @@ private:
 	// 頂点レイアウト
 	//std::array<D3D12_INPUT_ELEMENT_DESC,layoutCount> inputLayout{};
 
+
 	DirectXBasic* directXBasic_ = nullptr;
 
 	ID3DBlob* vsBlob = nullptr; // 頂点シェーダオブジェクト
@@ -82,14 +83,14 @@ private:
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout{};
 
 	//色用の定数バッファ
-	//Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
-	ID3D12Resource* constBuffMaterial = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
+	//ID3D12Resource* constBuffMaterial = nullptr;
 
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
 	//座標用の定数バッファ
-	//Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
 	//定数バッファのGPUリソースのポインタ
-	ID3D12Resource* constBuffTransform = nullptr;
+	//ID3D12Resource* constBuffTransform = nullptr;
 	//定数バッファのマッピング用ポインタ
 	ConstBufferDataTransform* constMapTransform = nullptr;
 
@@ -132,7 +133,7 @@ public:
 	DirectXBasic* GetDirectXBasic() { return directXBasic_; };
 	Microsoft::WRL::ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
 	ConstBufferDataMaterial* GetConstMapMaterial() { return constMapMaterial; };
-	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform; };
+	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform.Get(); };
 	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
 	ID3D12DescriptorHeap*  GetSRVHeap() { return srvHeap_.Get(); };
 	D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGpuHandle() { return srvGpuHandle; }

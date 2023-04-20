@@ -23,6 +23,8 @@ public:
 	//•`‰æ
 	void Draw();
 
+	~Sprite();
+
 	////‰æ‘œ“Ç‚İ‚İ
 	//static void LoadTexture(const std::string& fileName);
 

@@ -19,7 +19,6 @@ UINT64 Sprite::fenceCount;
 
 void Sprite::StaticInitialize(SpriteCommon* spriteCommon)
 {
-	
 	keys_ = KeyInput::GetInstance();
 }
 
@@ -253,6 +252,11 @@ void Sprite::Draw()
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
 	directXBasic_->GetCommandList()->DrawInstanced(vertices_.size(), 1, 0, 0);
 
+}
+
+Sprite::~Sprite()
+{
+	
 }
 
 //

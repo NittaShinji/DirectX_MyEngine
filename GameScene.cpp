@@ -62,8 +62,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
-	
 	spriteCommon_ = new SpriteCommon;
+
 	//スプライト関係初期化
 	spriteCommon_->Initialize(directXBasic_);
 	Sprite::StaticInitialize(spriteCommon_);
