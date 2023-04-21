@@ -620,7 +620,7 @@ void SpriteCommon::PipelineSet()
 	// 頂点レイアウトの設定
 	pipelineDesc.InputLayout.pInputElementDescs = &inputLayout.at(0);
 	//pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-	pipelineDesc.InputLayout.NumElements = inputLayout.size();
+	pipelineDesc.InputLayout.NumElements = static_cast<UINT>(inputLayout.size());
 
 	// 図形の形状設定
 	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;

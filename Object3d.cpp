@@ -392,7 +392,7 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
 
 	//•`‰æƒRƒ}ƒ“ƒh
-	directXBasic_->GetCommandList()->DrawIndexedInstanced((UINT)model_.GetInfomation()->indices_.size(), 1, 0, 0, 0);
+	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices_.size()), 1, 0, 0, 0);
 }
 
 void Object3d::LoadTexture(uint32_t textureIndex, const std::string& fileName)

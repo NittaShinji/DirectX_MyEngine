@@ -27,8 +27,8 @@ void Sprite::Initialize(uint32_t textureIndex, XMFLOAT2 position, XMFLOAT2 size,
 	spriteCommon_ = spriteCommon;
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 
-	winWide = directXBasic_->GetWinWidth();
-	winHeight = directXBasic_->GetWinHeight();
+	winWide = static_cast<float>(directXBasic_->GetWinWidth());
+	winHeight = static_cast<float>(directXBasic_->GetWinHeight());
 	//textureHandleIndex_ = textureIndex;
 
 	scale = { 10.0f,10.0f,10.0f };
@@ -254,7 +254,7 @@ void Sprite::Draw(const std::string& fileName)
 	}
 
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
-	directXBasic_->GetCommandList()->DrawInstanced(vertices_.size(), 1, 0, 0);
+	directXBasic_->GetCommandList()->DrawInstanced(static_cast<UINT>(vertices_.size()), 1, 0, 0);
 
 }
 
