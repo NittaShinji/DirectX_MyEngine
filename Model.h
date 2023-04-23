@@ -20,7 +20,6 @@ public:
 
 	static void Load(const std::string& path);
 	void Update();
-	void Draw(ID3D12DescriptorHeap* srvHeapHandle);
 	
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
@@ -81,10 +80,6 @@ private:
 		float alpha;
 	};
 
-	XMFLOAT3 scale;
-	XMFLOAT3 rotation;
-	XMFLOAT3 transform;
-
 	//デフォルトテクスチャ格納ディレクトリ
 	//static std::string kDefaultTextureDirectoryPath_;
 
@@ -127,8 +122,6 @@ public:
 
 		//テクスチャバッファ
 		std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
-		
-
 	};	
 
 	static const MODELVALUE* GetMODELVALUE(const MODELKEY path);
@@ -141,7 +134,6 @@ private:
 	//テクスチャ番号
 	static uint32_t textureIndex_;
 
-	HRESULT result_;
 	//D3D12_RESOURCE_DESC textureResourceDesc_{};
 	MODELKEY name_;
 	MODELVALUE infomation_;

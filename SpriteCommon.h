@@ -9,11 +9,11 @@
 #include <DirectXMath.h>
 #include "DirectXBasic.h"
 using namespace DirectX;
-
+ 
 class SpriteCommon
 {
 public:
-	
+
 	//初期化
 	void Initialize(DirectXBasic* directXBasic);
 	//更新
@@ -47,6 +47,9 @@ public:
 	//画像読み込み
 	void LoadTexture(const std::string& fileName);
 
+	//行列用の定数バッファ作成
+	void CrateConstBuffTransform();
+
 private:
 
 	//定数バッファ用データ構造体(マテリアル)
@@ -73,7 +76,6 @@ private:
 	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
 	ID3DBlob* errorBlob = nullptr; // エラーオブジェクト
 
-	HRESULT result_;
 	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
 	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
 	
@@ -102,9 +104,6 @@ private:
 	//画像イメージデータ配列
 	XMFLOAT4* imageDate;
 
-	//シェーダーリソースビュー
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-
 	//シェーダーリソース用のデスクリプタヒープ
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
@@ -128,7 +127,7 @@ private:
 	//画像に結び付いたテクスチャ番号格納用map
 	std::map<const std::string, int, std::less<>> textureMap = {};
 
-
+	
 public:
 
 	//ゲッター

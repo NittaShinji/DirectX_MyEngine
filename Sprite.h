@@ -136,8 +136,6 @@ private:
 
 	static UINT64 fenceCount;
 
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle;
-
 public:
 
 	std::array <Vertex, vertexCount> GetterVertex() { return vertices_; };

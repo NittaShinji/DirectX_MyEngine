@@ -47,8 +47,8 @@ private:
 public:
 
 	//ÉQÉbÉ^Å[
-	const XMMATRIX GetMatView() const { return matView_; };
-	const XMMATRIX GetMatProjection() const { return matProjection_; };
+	const XMMATRIX GetMatView() const { return matView_; }
+	const XMMATRIX GetMatProjection() const { return matProjection_; }
 
 };
 

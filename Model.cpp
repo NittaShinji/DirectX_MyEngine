@@ -33,10 +33,10 @@ void Model::Load(const std::string& path)
 	//ファイルストリーム
 	std::ifstream file;
 	// .OBJファイルを開く
-	const string fileName = model.name_ + ".obj";
+	const string modelFileName = model.name_ + ".obj";
 	const string directoryPath = "Resources/" + model.name_ + "/";
 
-	file.open(directoryPath + fileName);
+	file.open(directoryPath + modelFileName);
 
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
@@ -255,8 +255,6 @@ void Model::Load(const std::string& path)
 }
 
 void Model::Update(){}
-
-void Model::Draw(ID3D12DescriptorHeap* srvHeapHandle){}
 
 void Model::LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model)
 {
