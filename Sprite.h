@@ -14,10 +14,10 @@ class Sprite
 public:
 
 	//静的初期化」
-	static void StaticInitialize(SpriteCommon* spriteCommon);
+	static void StaticInitialize();
 
 	//初期化
-	void Initialize(uint32_t textureIndex,XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteCommon);
+	void Initialize(XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteCommon);
 	//行列更新
 	void matUpdate();
 	//描画

@@ -66,8 +66,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	spriteCommon_ = new SpriteCommon;
 
 	//スプライト関係初期化
+	Sprite::StaticInitialize();
 	spriteCommon_->Initialize(directXBasic_);
-	Sprite::StaticInitialize(spriteCommon_);
 
 	//画像読み込み
 	spriteCommon_->LoadTexture("title.png");
@@ -79,8 +79,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT2 testPosition = { 100,100 };
 	XMFLOAT2 testSize = { 266,369 };
 
-	title_->Initialize(1, titlePosition, titleSize, spriteCommon_);
-	test_->Initialize(1, testPosition, testSize, spriteCommon_);
+	title_->Initialize(titlePosition, titleSize, spriteCommon_);
+	test_->Initialize(testPosition, testSize, spriteCommon_);
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();

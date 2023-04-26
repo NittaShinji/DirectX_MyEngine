@@ -17,12 +17,12 @@ KeyInput* Sprite::keys_ = nullptr;
 UINT64 Sprite::fenceCount;
 //D3D12_RESOURCE_DESC Sprite::textureResourceDesc{};
 
-void Sprite::StaticInitialize(SpriteCommon* spriteCommon)
+void Sprite::StaticInitialize()
 {
 	keys_ = KeyInput::GetInstance();
 }
 
-void Sprite::Initialize(uint32_t textureIndex, XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteCommon)
+void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteCommon)
 {
 	spriteCommon_ = spriteCommon;
 	directXBasic_ = spriteCommon_->GetDirectXBasic();

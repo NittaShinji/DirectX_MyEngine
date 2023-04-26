@@ -6,6 +6,38 @@ std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
 KeyInput* Object3d::keys_ = nullptr;
 
+//定数バッファの生成
+template <typename Type1, typename Type2, typename Type3>
+void CrateConstBuff(Type1 *&constBuffer, Type3 directXBasic_)
+{
+	//ヒープ設定
+	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
+	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//リソース設定
+	D3D12_RESOURCE_DESC cbResourceDesc{};
+	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	cbResourceDesc.Width = (sizeof(Type2) + 0xff) & ~0xff;	//256バイトアラインメント
+	cbResourceDesc.Height = 1;
+	cbResourceDesc.DepthOrArraySize = 1;
+	cbResourceDesc.MipLevels = 1;
+	cbResourceDesc.SampleDesc.Count = 1;
+	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	//定数バッファの生成
+	HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
+		&cbHeapProp,//ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,//リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuffer));
+	assert(SUCCEEDED(result));
+}
+
+void Object3d::CrateConstBuffandMapping()
+{
+}
+
 void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
@@ -24,62 +56,16 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	rotation = { 0.0f,0.0f,0.0f };
 	transform = position;
 
-	//ヒープ設定
-	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	//リソース設定
-	D3D12_RESOURCE_DESC cbResourceDesc{};
-	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(ConstBufferDateTransform) + 0xff) & ~0xff;	//256バイトアラインメント
-	cbResourceDesc.Height = 1;
-	cbResourceDesc.DepthOrArraySize = 1;
-	cbResourceDesc.MipLevels = 1;
-	cbResourceDesc.SampleDesc.Count = 1;
-	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	//定数バッファの生成
-	HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
-		&cbHeapProp,//ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&cbResourceDesc,//リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuffTransform));
-	assert(SUCCEEDED(result));
+	//CrateConstBuff<ID3D12Resource, DirectXBasic>(constBuffTransform.Get(), directXBasic_);
 
 	//定数バッファのマッピング
-	result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
+	HRESULT result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
 	assert(SUCCEEDED(result));
 
 	//単位行列を代入
 	constMapTransform->mat = XMMatrixIdentity();
-	
-	//関数が作れるまでの応急処置
-	{
-		//ヒープ設定
-		D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-		//リソース設定
-		D3D12_RESOURCE_DESC cbResourceDesc{};
-		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-		cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
-		cbResourceDesc.Height = 1;
-		cbResourceDesc.DepthOrArraySize = 1;
-		cbResourceDesc.MipLevels = 1;
-		cbResourceDesc.SampleDesc.Count = 1;
-		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
-		//定数バッファの生成
-		HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
-			&cbHeapProp,//ヒープ設定
-			D3D12_HEAP_FLAG_NONE,
-			&cbResourceDesc,//リソース設定
-			D3D12_RESOURCE_STATE_GENERIC_READ,
-			nullptr,
-			IID_PPV_ARGS(&constBuffMaterial));
-		assert(SUCCEEDED(result));
-
-	}
+	//CrateConstBuff<ID3D12Resource*, DirectXBasic*>(constBuffMaterial.Get(), directXBasic_);
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC  inputLayout[] =
@@ -393,10 +379,6 @@ void Object3d::Draw()
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices_.size()), 1, 0, 0, 0);
-}
-
-void Object3d::LoadTexture(uint32_t textureIndex, const std::string& fileName)
-{
 }
 
 void Object3d::BeforeDraw()

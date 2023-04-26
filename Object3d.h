@@ -27,8 +27,9 @@ public:
 	void BeforeDraw();
 	void AfterDraw();
 	void Draw();
-	void LoadTexture(uint32_t textureIndex, const std::string& fileName);
 	void SetModel(const std::string& path);
+
+	void CrateConstBuffandMapping();
 
 private:
 

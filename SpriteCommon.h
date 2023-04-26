@@ -13,7 +13,7 @@ using namespace DirectX;
 class SpriteCommon
 {
 public:
-
+	
 	//初期化
 	void Initialize(DirectXBasic* directXBasic);
 	//更新
@@ -62,13 +62,11 @@ private:
 		XMMATRIX mat;	//色(RGBA)
 	};
 
-
 	//頂点の数
 	//static const int layoutCount = 6;
 
 	// 頂点レイアウト
 	//std::array<D3D12_INPUT_ELEMENT_DESC,layoutCount> inputLayout{};
-
 
 	DirectXBasic* directXBasic_ = nullptr;
 
@@ -84,6 +82,7 @@ private:
 
 	//色用の定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
+	//ID3D12Resource* constBuffMaterial = nullptr;
 	//座標用の定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
 
@@ -127,7 +126,6 @@ private:
 	//画像に結び付いたテクスチャ番号格納用map
 	std::map<const std::string, int, std::less<>> textureMap = {};
 
-	
 public:
 
 	//ゲッター
@@ -136,14 +134,15 @@ public:
 	ConstBufferDataMaterial* GetConstMapMaterial() { return constMapMaterial; };
 	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform.Get(); };
 	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
-	ID3D12DescriptorHeap*  GetSRVHeap() { return srvHeap_.Get(); };
+	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); };
 	D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGpuHandle() { return srvGpuHandle; }
 	std::map<const std::string, int, std::less<>> GetTextureMap() { return textureMap; }
 
+	//テンプレートコンストラクタ
+	template <typename Type1, typename Type2, typename Type3>
 	//定数バッファの生成
-	//void CreateConstantBuffer(ID3D12Resource* constBuff);
+	void CrateConstBuff(Type1 *&constBuffer, Type2 *&constMapData, Type3* directXBasic_);
 
 	//セッター
 	//void SetSRVheap(ID3D12DescriptorHeap* srvHeap) { srvHeap_ = srvHeap; };
-
 };
