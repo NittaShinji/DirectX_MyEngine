@@ -49,7 +49,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 {
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
-	imGuiManager_ = imGuiManager;
+	//imGuiManager_ = imGuiManager;
 	scene_ = TITLE;
 
 	//------------ƒTƒEƒ“ƒh----------
