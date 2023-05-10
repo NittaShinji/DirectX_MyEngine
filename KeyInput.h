@@ -54,7 +54,7 @@ public:
 	void KeyAssert();
 
 	//キーボードの更新
-	void KeyUpdate(BYTE keyNumber);
+	void KeyUpdate();
 	//前フレームを保存する関数
 	void SaveFrameKey();
 

@@ -43,7 +43,7 @@ void KeyInput::Initialize(WindowsAPI* winApi)
 	assert(SUCCEEDED(result));
 }
 
-void KeyInput::KeyUpdate(BYTE keyNumber)
+void KeyInput::KeyUpdate()
 {
 	KeyAssert();
 
