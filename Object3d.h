@@ -146,6 +146,12 @@ public:
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 
+	//テンプレートコンストラクタ
+	template <typename Type1, typename Type2, typename Type3>
+	//定数バッファの生成
+	void CrateConstBuff(Type1*& constBuffer, Type3* directXBasic_);
+
+
 	//セッター
 	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 
