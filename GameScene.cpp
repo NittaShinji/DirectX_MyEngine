@@ -26,12 +26,12 @@ GameScene::~GameScene()
 	delete camera_;
 	delete testCamera_;
 	delete sphere_;
-	delete ground_;
-	delete triangle_;
+	//delete ground_;
+	//delete triangle_;
 
-	delete directXBasic_;
+	//delete directXBasic_;
 
-	sound = nullptr;
+	//sound = nullptr;
 	spriteCommon_ = nullptr;
 	title_ = nullptr;
 	test_ = nullptr;
@@ -40,8 +40,8 @@ GameScene::~GameScene()
 	camera_ = nullptr;
 	testCamera_ = nullptr;
 	sphere_ = nullptr;
-	ground_ = nullptr;
-	triangle_ = nullptr;
+	//ground_ = nullptr;
+	//triangle_ = nullptr;
 
 }
 
@@ -94,14 +94,14 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//モデル読み込み
 	
 	const string sphere = "sphere";
-	const string ground = "ground";
+	/*const string ground = "ground";
 	const string testTriangle = "triangle_tex";
-	const string ray = "blackCube";
+	const string ray = "blackCube";*/
 
 	Model::Load(sphere);
-	Model::Load(ground);
+	/*Model::Load(ground);
 	Model::Load(testTriangle);
-	Model::Load(ray);
+	Model::Load(ray);*/
 
 	//3Dオブジェクトの生成
 	XMFLOAT3 sphereScale = { 10,10,10 };
@@ -113,13 +113,13 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT3 spherePosition = { 0,0,0 };
 	XMFLOAT3 groundPosition = { 0,0,0 };
 	XMFLOAT3 trianglePosition = { 0,0,0 };
-	XMFLOAT3 raySetPosition = { 0,rayScale.y * 2,rayScale.z * 2 };
+	//XMFLOAT3 raySetPosition = { 0,rayScale.y * 2,rayScale.z * 2 };
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y,0 };
 
 	sphere_ = new Object3d(sphere, spherePosition, sphereScale);
-	ground_ = new Object3d(ground, groundPosition, groundScale);
+	/*ground_ = new Object3d(ground, groundPosition, groundScale);
 	triangle_ = new Object3d(testTriangle, trianglePosition, triangleScale);
-	ray_ = new Object3d(ray, raySetPosition, rayScale);
+	ray_ = new Object3d(ray, raySetPosition, rayScale);*/
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
@@ -142,29 +142,29 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	//平面の初期値を設定
 	//法線ベクトル
-	planeCollision.normal = XMVectorSet(0, 1, 0, 0);
-	//原点(0,0,0)からの距離
-	planeCollision.distance = 0.0f;
+	//planeCollision.normal = XMVectorSet(0, 1, 0, 0);
+	////原点(0,0,0)からの距離
+	//planeCollision.distance = 0.0f;
 
 	//三角形の初期値を設定
 	//ラジアン90度　1.5708f　
 	//XMFLOAT3 triangleRotation = { 1.5708f,0.0f,0.0f };
 	//triangle_->SetRotation(triangleRotation);
-	trianglePosition2 = triangle_->GetWorldPos();
+	//trianglePosition2 = triangle_->GetWorldPos();
 
-	triangleCollison.p0 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //左手前
-	triangleCollison.p1 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z + triangleScale.z, 1); //奥
-	triangleCollison.p2 = XMVectorSet(trianglePosition2.x + triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //右手前
+	//triangleCollison.p0 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //左手前
+	//triangleCollison.p1 = XMVectorSet(trianglePosition2.x - triangleScale.x, trianglePosition2.y, trianglePosition2.z + triangleScale.z, 1); //奥
+	//triangleCollison.p2 = XMVectorSet(trianglePosition2.x + triangleScale.x, trianglePosition2.y, trianglePosition2.z - triangleScale.z, 1); //右手前
 
-	triangleCollison.normal = XMVectorSet(0.0f, 1.0f, 0.0f, 0); //上向き
+	//triangleCollison.normal = XMVectorSet(0.0f, 1.0f, 0.0f, 0); //上向き
 
-	//レイ
-	//3Dオブジェクトの座標を取得
-	rayWorldPositon = ray_->GetWorldPos();
-	//レイの初期値を設定
-	rayCollision.start = XMVectorSet(rayWorldPositon.x, rayWorldPositon.y, rayWorldPositon.z, 1);//原点やや上
-	rayCollision.dir = XMVectorSet(0, -1, 0, 0);//下向き
-	//斜め向きにする場合は正規化する。
+	////レイ
+	////3Dオブジェクトの座標を取得
+	//rayWorldPositon = ray_->GetWorldPos();
+	////レイの初期値を設定
+	//rayCollision.start = XMVectorSet(rayWorldPositon.x, rayWorldPositon.y, rayWorldPositon.z, 1);//原点やや上
+	//rayCollision.dir = XMVectorSet(0, -1, 0, 0);//下向き
+	////斜め向きにする場合は正規化する。
 
 }
 
@@ -356,11 +356,11 @@ void GameScene::Update()
 		//スプライトの編集ウインドウの表示
 		{
 
-			ImGui::Begin("Collision");
-			ImGui::SetWindowSize("Collision", ImVec2(500, 100));
-			//ImGui::InputInt("hit", &hit, 0.0f, 1000.0f);
+			//ImGui::Begin("Collision");
+			//ImGui::SetWindowSize("Collision", ImVec2(500, 100));
+			////ImGui::InputInt("hit", &hit, 0.0f, 1000.0f);
 
-			ImGui::End();
+			//ImGui::End();
 		}
 
 
