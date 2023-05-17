@@ -22,6 +22,7 @@ using namespace Microsoft::WRL;
 #include "GameScene.h"
 #include "xaudio2.h"
 #include "ImGuiManager.h"
+#include "LightGroup.h"
 #include <memory>
 #include <fstream>
 
@@ -70,10 +71,17 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	KeyInput* keyInput = KeyInput::GetInstance();
 
 	input->Initialize(winApi);
-	
+
+	//------------ライト----------
+
+	//ライト静的初期化
+	LightGroup::StaticInitialize(directXBasic->GetDevice().Get());
+
 	GameScene* gameScene = nullptr;
 	gameScene = new GameScene;
 	gameScene->Initialize(directXBasic,imGuiManager);
+
+	
 
 	// ゲームループ
 	while (true) {

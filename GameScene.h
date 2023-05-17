@@ -10,6 +10,7 @@
 #include "Sound.h"
 #include "CollisionPrimitive.h"
 #include "ImGuiManager.h"
+#include "LightGroup.h"
 
 class GameScene
 {
@@ -55,6 +56,7 @@ private:
 	DirectXBasic* directXBasic_ = nullptr;
 	static KeyInput* keys_;
 	//ImGuiManager* imGuiManager_ = nullptr;
+	LightGroup* lightGroup_ = nullptr;
 
 	//デバッグテキスト用の変数
 	//ウインドウの表示フラグ

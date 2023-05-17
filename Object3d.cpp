@@ -5,6 +5,7 @@
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
 KeyInput* Object3d::keys_ = nullptr;
+LightGroup* Object3d::lightGroup_ = nullptr;
 
 //定数バッファの生成
 template <typename Type1, typename Type2, typename Type3>
@@ -38,6 +39,10 @@ void Object3d::CrateConstBuffandMapping()
 {
 }
 
+void Object3d::UpdateViewMatrix()
+{
+}
+
 void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
@@ -67,8 +72,7 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	assert(SUCCEEDED(result));
 
 	//単位行列を代入
-	constMapTransform->mat = XMMatrixIdentity();
-
+	
 	CrateConstBuff<ID3D12Resource, DirectXBasic>(constBuffMaterial_, directXBasic_);
 	constBuffMaterial = constBuffMaterial_;
 
@@ -160,7 +164,7 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	};
 
 
-#pragma region 頂点シェーダの読み込みとコンパイル(P02_01)
+#pragma region 頂点シェーダの読み込みとコンパイル
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
@@ -279,7 +283,7 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	//ルートパラメータの設定
-	D3D12_ROOT_PARAMETER rootParams[3] = {};
+	D3D12_ROOT_PARAMETER rootParams[4] = {};
 
 	//定数バッファ0番
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
@@ -298,6 +302,11 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRange;			//デスクリプタレンジ
 	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;						//デスクリプタレンジ数
 	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;				//全てのシェーダーから見える
+
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+	rootParams[3].Descriptor.ShaderRegister = 2;					//定数バッファ番号
+	rootParams[3].Descriptor.RegisterSpace = 0;						//デフォルト値
+	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
 
 	//テクスチャサンプラーの設定
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
@@ -355,6 +364,7 @@ void Object3d::Update(Camera* camera)
 	matView_ = camera_->GetMatView();
 	//射影変換行列
 	matProjection_ = camera_->GetMatProjection();
+	const XMFLOAT3& cameraPos = camera_->GetEye();
 
 	XMFLOAT3 move = { 0,0,0 };
 
@@ -389,16 +399,20 @@ void Object3d::Update(Camera* camera)
 
 	if(colorFlag_ == true)
 	{
-		constMapTransform->color = { 1,0,0,1 };
+		//constMapTransform->color = { 1,0,0,1 };
 	}
 	else if(colorFlag_ == false)
 	{
-		constMapTransform->color = { 1,1,1,1 };
-	}
+		//constMapTransform->color = { 1,1,1,1 };
+	}//
 	
 
 	//定数バッファへデータ転送
-	constMapTransform->mat = matWorld * matView_ * matProjection_;
+	//constMapTransform->mat = matWorld * matView_ * matProjection_;
+	constMapTransform->viewproj = matView_;
+	constMapTransform->world = matWorld;
+	constMapTransform->cameraPos = cameraPos;
+
 	
 	//定数バッファのマッピング
 	HRESULT result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
@@ -442,6 +456,9 @@ void Object3d::Draw()
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
+
+	//ライトの描画
+	lightGroup_->Draw(directXBasic_->GetCommandList().Get(),3);
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices_.size()), 1, 0, 0, 0);

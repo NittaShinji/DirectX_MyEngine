@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "Input.h"
+#include "LightGroup.h"
 #include <vector>
 #include <string>
 
@@ -31,6 +32,8 @@ public:
 
 	void CrateConstBuffandMapping();
 
+	void UpdateViewMatrix();
+
 private:
 
 	static DirectXBasic* directXBasic_;
@@ -38,7 +41,9 @@ private:
 	Model model_;
 	Sprite* sprite_;
 	Camera* camera_ = nullptr;
-
+	//ライト
+	static LightGroup* lightGroup_;
+	
 	//定数バッファ用データ構造体B1
 	//struct ConstBufferDateB1
 	//{
@@ -64,8 +69,10 @@ private:
 	//定数バッファ用データ構造体B0
 	struct ConstBufferDateTransform
 	{
-		XMMATRIX mat;	//3D変換行列
-		XMFLOAT4 color;	//色(RGBA)
+		//XMMATRIX mat;	//3D変換行列
+		XMMATRIX viewproj;
+		XMMATRIX world;
+		XMFLOAT3 cameraPos;
 	};
 
 	struct Vertex
@@ -133,6 +140,14 @@ private:
 	static std::string kDefaultTextureDirectoryPath_;
 
 	bool colorFlag_ = false;
+
+public:
+
+	//ライトのセット
+	static void SetLightGroup(LightGroup* lightGroup)
+	{
+		Object3d::lightGroup_ = lightGroup;
+	}
 
 public:
 

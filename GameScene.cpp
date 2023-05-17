@@ -26,10 +26,12 @@ GameScene::~GameScene()
 	delete camera_;
 	delete testCamera_;
 	delete sphere_;
+	delete lightGroup_;
 	//delete ground_;
 	//delete triangle_;
 
-	//delete directXBasic_;
+	delete directXBasic_;
+	delete lightGroup_;
 
 	//sound = nullptr;
 	spriteCommon_ = nullptr;
@@ -59,6 +61,44 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	sound->Initialize();
 	sound->LoadSoundWave("Alarm01.wav");
 	//sound->PlaySoundWave("Alarm01.wav");
+
+	//ライト生成
+	lightGroup_ = LightGroup::Create();
+
+	switch(scene_)
+	{
+
+	case TITLE:
+
+		lightGroup_->SetDirLightActive(0, true);
+		lightGroup_->SetDirLightActive(1, false);
+		lightGroup_->SetDirLightActive(2, false);
+		
+		lightGroup_->SetDirLightColor(0, XMFLOAT3({ 1, 1, 1 }));
+		lightGroup_->SetDirLightColor(1, XMFLOAT3({ 1, 1, 1 }));
+		lightGroup_->SetDirLightColor(2, XMFLOAT3({ 1, 1, 1 }));
+
+		break;
+
+	case GAME:
+
+		lightGroup_->SetDirLightActive(0, true);
+		lightGroup_->SetDirLightActive(1, false);
+		lightGroup_->SetDirLightActive(2, false);
+
+		lightGroup_->SetDirLightColor(0, XMFLOAT3({ 1, 1, 1 }));
+		lightGroup_->SetDirLightColor(1, XMFLOAT3({ 1, 1, 1 }));
+		lightGroup_->SetDirLightColor(2, XMFLOAT3({ 1, 1, 1 }));
+
+		break;
+
+	default:
+		break;
+	}
+
+	//3Dオブジェクトにライトをセット
+	Object3d::SetLightGroup(lightGroup_);
+	
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
@@ -120,7 +160,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	/*ground_ = new Object3d(ground, groundPosition, groundScale);
 	triangle_ = new Object3d(testTriangle, trianglePosition, triangleScale);
 	ray_ = new Object3d(ray, raySetPosition, rayScale);*/
-
+	
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
 	camera_ = new Camera;
@@ -170,6 +210,9 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 void GameScene::Update()
 {
+	//光線方向初期値
+	static XMVECTOR lightDir = { 0,1,5,0 };
+
 	switch(scene_)
 	{
 
@@ -199,6 +242,28 @@ void GameScene::Update()
 		break;
 
 	case GAME:
+
+		//lightGroup_->SetDirLightActive(0, true);
+		//lightGroup_->SetDirLightActive(1, false);
+		//lightGroup_->SetDirLightActive(2, false);
+		//
+		//lightGroup_->SetDirLightColor(0, XMFLOAT3({ 1, 1, 1 }));
+		//lightGroup_->SetDirLightColor(1, XMFLOAT3({ 1, 1, 1 }));
+		//lightGroup_->SetDirLightColor(2, XMFLOAT3({ 1, 1, 1 }));
+
+		//if(keys_->HasPushedKey(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
+		//else if(keys_->HasPushedKey(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; }
+		//if(keys_->HasPushedKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
+		//else if(keys_->HasPushedKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
+
+		//if(keys_->HasPushedKey(DIK_R))
+		//{
+		//	lightDir = { 0,1,5,0 };
+		//}
+
+		//lightGroup_->SetDirLightDir(0, lightDir);
+
+		lightGroup_->Update();
 		camera_->Updata();
 		testCamera_->Updata();
 
