@@ -26,7 +26,7 @@ GameScene::~GameScene()
 	delete camera_;
 	delete testCamera_;
 	delete sphere_;
-	delete light_;
+	delete dirLight_;
 	//delete ground_;
 	//delete triangle_;
 
@@ -36,7 +36,7 @@ GameScene::~GameScene()
 	spriteCommon_ = nullptr;
 	title_ = nullptr;
 	test_ = nullptr;
-	light_ = nullptr;
+	dirLight_ = nullptr;
 	//モデル
 	object3d_ = nullptr;
 	camera_ = nullptr;
@@ -55,12 +55,12 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	scene_ = TITLE;
 
 	//ライト
-	Light::StaticInitialize(directXBasic_->GetDevice().Get());
-	light_ = Light::Create();
+	DirectionalLight::StaticInitialize(directXBasic_->GetDevice().Get());
+	dirLight_ = DirectionalLight::Create();
 	//ライト色を設定
-	light_->SetLightColor({ 1,1,1 });
+	dirLight_->SetLightColor({ 1,1,1 });
 	//3Dオブジェクトにライトをセット
-	Object3d::SetLight(light_);
+	Object3d::SetLight(dirLight_);
 
 	//------------サウンド----------
 
@@ -188,10 +188,10 @@ void GameScene::Update()
 	if(keys_->HasPushedKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
 	else if(keys_->HasPushedKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
 
-	light_->SetLightDir(lightDir);
+	dirLight_->SetLightDir(lightDir);
 
 
-	light_->Update();
+	dirLight_->Update();
 
 	switch(scene_)
 	{

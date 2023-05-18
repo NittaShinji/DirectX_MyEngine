@@ -4,7 +4,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "Input.h"
-#include "Light.h"
+#include "DirectionalLight.h"
 #include <vector>
 #include <string>
 
@@ -36,7 +36,7 @@ private:
 
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
-	static Light* light_;
+	static DirectionalLight* dirLight_;
 	Model model_;
 	Sprite* sprite_;
 	Camera* camera_ = nullptr;
@@ -177,6 +177,6 @@ public:
 
 public: //ê√ìIÉÅÉìÉoä÷êî
 
-	static void SetLight(Light* light) { Object3d::light_ = light; }
+	static void SetLight(DirectionalLight* light) { Object3d::dirLight_ = light; }
 
 };

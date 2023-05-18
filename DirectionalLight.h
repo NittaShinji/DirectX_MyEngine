@@ -3,7 +3,7 @@
 #include <wrl.h>
 #include <d3d12.h>
 
-class Light
+class DirectionalLight
 {
 
 public://静的メンバ関数
@@ -17,7 +17,7 @@ public://静的メンバ関数
 	///<summary>
 	//インスタンス生成
 	///</summary>
-	static Light* Create();
+	static DirectionalLight * Create();
 
 private: //静的メンバ変数
 	//デバイス
@@ -40,6 +40,7 @@ public: //サブクラス
 	{
 		XMVECTOR lightv;		//ライトへ方向を表すベクトル
 		XMFLOAT3 lightColor;	//ライトの色
+		bool active;	//有効フラグ
 	};
 
 public: //メンバ関数
@@ -62,15 +63,34 @@ public: //メンバ関数
 	//ライト色のセット
 	void SetLightColor(const XMFLOAT3& lightColor);
 
+	XMVECTOR GetLightDir() { return lightDir; };
+	XMFLOAT3 GetLightColor() { return lightColor; };
+
+
+	/// <summary>
+	/// 有効フラグをセット
+	/// </summary>
+	/// <param name="active">有効フラグ</param>
+	inline void SetActive(bool active) { this->active = active; }
+
+	/// <summary>
+	/// 有効チェック
+	/// </summary>
+	/// <returns>有効フラグ</returns>
+	inline bool IsActive() { return active; }
+
+
 private: //メンバ変数
 
 	//定数バッファ
 	Comptr<ID3D12Resource> constBuff;
 	//ライト光線方向(単位ベクトル)
-	XMVECTOR lightDir = { 1,0,0,0 };
+	XMVECTOR lightDir = { 1,0,0,0};
 	//ライト色
 	XMFLOAT3 lightColor = { 1,1,1 };
+	//有効フラグ
+	bool active = false;
 	//ダーティフラグ
 	bool dirty = false;
-
+	
 };

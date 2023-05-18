@@ -10,7 +10,7 @@
 #include "Sound.h"
 #include "CollisionPrimitive.h"
 #include "ImGuiManager.h"
-#include "Light.h"
+#include "DirectionalLight.h"
 
 class GameScene
 {
@@ -62,7 +62,7 @@ private:
 	bool showEditWindow = true;
 	
 	//ÉâÉCÉg
-	Light* light_ = nullptr;
+	DirectionalLight* dirLight_ = nullptr;
 
 	//ÉJÉÅÉâ
 	Camera* camera_ = nullptr;

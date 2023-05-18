@@ -5,7 +5,7 @@
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
 KeyInput* Object3d::keys_ = nullptr;
-Light* Object3d::light_ = nullptr;
+DirectionalLight* Object3d::dirLight_ = nullptr;
 
 //定数バッファの生成
 template <typename Type1, typename Type2, typename Type3>
@@ -410,7 +410,7 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight->GetGPUVirtualAddress());
 
 	//ライトの描画
-	light_->Draw(directXBasic_->GetCommandList().Get(), 3);
+	dirLight_->Draw(directXBasic_->GetCommandList().Get(), 3);
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices_.size()), 1, 0, 0, 0);
