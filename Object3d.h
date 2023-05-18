@@ -4,6 +4,7 @@
 #include "Sprite.h"
 #include "Camera.h"
 #include "Input.h"
+#include "Light.h"
 #include <vector>
 #include <string>
 
@@ -35,6 +36,7 @@ private:
 
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
+	static Light* light_;
 	Model model_;
 	Sprite* sprite_;
 	Camera* camera_ = nullptr;
@@ -50,7 +52,21 @@ private:
 	//	float alpha;
 	//};
 	
-	//定数バッファ用データ構造体(マテリアル)
+	//定数バッファ用データ構造体b0
+	struct ConstBufferDateTransform
+	{
+		//XMMATRIX mat;	//3D変換行列
+
+		XMMATRIX viewProjection;
+		//ワールド行列
+		XMMATRIX worldMatrix;
+		//カメラ座標(ワールド行列)
+		XMFLOAT3 cameraPos;
+		float pad1;
+		XMFLOAT4 color;	//色(RGBA)
+	};
+
+	//定数バッファ用データ構造体(マテリアル)b1
 	struct ConstBufferDataMaterial
 	{
 		XMFLOAT3 ambient;	//アンビエント係数
@@ -61,11 +77,13 @@ private:
 		float alpha;
 	};
 
-	//定数バッファ用データ構造体B0
-	struct ConstBufferDateTransform
+	//定数バッファ用データ構造体(ライト情報)b2
+	struct ConstBufferLightDate
 	{
-		XMMATRIX mat;	//3D変換行列
-		XMFLOAT4 color;	//色(RGBA)
+		XMFLOAT3 lightv;
+		float pad1;
+		XMFLOAT3 lightcolor;
+		float pad2;
 	};
 
 	struct Vertex
@@ -78,12 +96,13 @@ private:
 	//定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform;
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial;
-
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffLight;
 	
 	//定数バッファのマッピング用ポインタ
 	ConstBufferDateTransform* constMapTransform = nullptr;
 	//ConstBufferDataMaterial* constMapColor = nullptr;
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
+	ConstBufferLightDate* constMapLight = nullptr;
 
 	//スケール
 	XMFLOAT3 scale;
@@ -101,6 +120,8 @@ private:
 	XMMATRIX matView_;
 	//射影行列
 	XMMATRIX matProjection_;
+	//カメラ座標
+	XMFLOAT3 cameraPos;
 
 	//親オブジェクトのポインタ
 	
@@ -151,8 +172,11 @@ public:
 	//定数バッファの生成
 	void CrateConstBuff(Type1*& constBuffer, Type3* directXBasic_);
 
-
 	//セッター
 	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
+
+public: //静的メンバ関数
+
+	static void SetLight(Light* light) { Object3d::light_ = light; }
 
 };

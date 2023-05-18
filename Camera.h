@@ -49,6 +49,7 @@ public:
 	//ÉQÉbÉ^Å[
 	const XMMATRIX GetMatView() const { return matView_; }
 	const XMMATRIX GetMatProjection() const { return matProjection_; }
+	const XMFLOAT3 GetEye() const { return eye_; }
 
 };
 

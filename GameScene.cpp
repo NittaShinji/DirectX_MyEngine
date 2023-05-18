@@ -26,6 +26,7 @@ GameScene::~GameScene()
 	delete camera_;
 	delete testCamera_;
 	delete sphere_;
+	delete light_;
 	//delete ground_;
 	//delete triangle_;
 
@@ -35,6 +36,7 @@ GameScene::~GameScene()
 	spriteCommon_ = nullptr;
 	title_ = nullptr;
 	test_ = nullptr;
+	light_ = nullptr;
 	//モデル
 	object3d_ = nullptr;
 	camera_ = nullptr;
@@ -51,6 +53,14 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	keys_ = KeyInput::GetInstance();
 	//imGuiManager_ = imGuiManager;
 	scene_ = TITLE;
+
+	//ライト
+	//Light::StaticInitialize(directXBasic_->GetDevice().Get());
+	//light_ = Light::Create();
+	////ライト色を設定
+	//light_->SetLightColor({ 1,1,1 });
+	////3Dオブジェクトにライトをセット
+	//Object3d::SetLight(light_);
 
 	//------------サウンド----------
 
@@ -170,6 +180,9 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 void GameScene::Update()
 {
+
+	//light_->Update();
+
 	switch(scene_)
 	{
 
@@ -199,6 +212,7 @@ void GameScene::Update()
 		break;
 
 	case GAME:
+
 		camera_->Updata();
 		testCamera_->Updata();
 
@@ -255,56 +269,56 @@ void GameScene::Update()
 		//	move.y += 0.3f;
 		//}*/
 
-		///*if(keys_->HasPushedKey(DIK_W))
-		//{
-		//	move.z -= 0.1f;
-		//}
-		//else if(keys_->HasReleasedKey(DIK_W) != keys_->HasPushedKey(DIK_S))
-		//{
-		//	move.z = 0;
-		//}
-		//else if(keys_->HasPushedKey(DIK_S))
-		//{
-		//	move.z += 0.1f;
-		//}
-		//else if(keys_->HasReleasedKey(DIK_S)&& keys_->HasPushedKey(DIK_W))
-		//{
-		//	move.z = 0;
-		//}
+		if(keys_->HasPushedKey(DIK_W))
+		{
+			move.z -= 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_W) != keys_->HasPushedKey(DIK_S))
+		{
+			move.z = 0;
+		}
+		else if(keys_->HasPushedKey(DIK_S))
+		{
+			move.z += 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_S)&& keys_->HasPushedKey(DIK_W))
+		{
+			move.z = 0;
+		}
 
-		//if(keys_->HasPushedKey(DIK_A))
-		//{
-		//	move.x -= 0.1f;
-		//}
-		//else if(keys_->HasReleasedKey(DIK_A) != keys_->HasPushedKey(DIK_D))
-		//{
-		//	move.x = 0;
-		//}
-		//else if(keys_->HasPushedKey(DIK_D))
-		//{
-		//	move.x += 0.1f;
-		//}
-		//else if(keys_->HasReleasedKey(DIK_D)&& keys_->HasPushedKey(DIK_A))
-		//{
-		//	move.x = 0;
-		//}
+		if(keys_->HasPushedKey(DIK_A))
+		{
+			move.x -= 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_A) != keys_->HasPushedKey(DIK_D))
+		{
+			move.x = 0;
+		}
+		else if(keys_->HasPushedKey(DIK_D))
+		{
+			move.x += 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_D)&& keys_->HasPushedKey(DIK_A))
+		{
+			move.x = 0;
+		}
 
-		//if(keys_->HasPushedKey(DIK_Q))
-		//{
-		//	move.y -= 0.1f;
-		//}
-		//else if(keys_->HasReleasedKey(DIK_Q) != keys_->HasPushedKey(DIK_E))
-		//{
-		//	move.y = 0;
-		//}
-		//else if(keys_->HasPushedKey(DIK_E))
-		//{
-		//	move.y += 0.1f;
-		//}
-		//else if(keys_->HasReleasedKey(DIK_E)&& keys_->HasPushedKey(DIK_Q))
-		//{
-		//	move.y = 0;
-		//}*/
+		if(keys_->HasPushedKey(DIK_Q))
+		{
+			move.y -= 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_Q) != keys_->HasPushedKey(DIK_E))
+		{
+			move.y = 0;
+		}
+		else if(keys_->HasPushedKey(DIK_E))
+		{
+			move.y += 0.1f;
+		}
+		else if(keys_->HasReleasedKey(DIK_E)&& keys_->HasPushedKey(DIK_Q))
+		{
+			move.y = 0;
+		}
 
 
 		////レイ操作
@@ -333,11 +347,11 @@ void GameScene::Update()
 
 		//rayCollision.start = XMVectorSet(rayWorldPositon.x, rayWorldPositon.y, rayWorldPositon.z, 1);//原点やや上
 		//rayCollision.dir = XMVectorSet(0, -1, 0, 0);//下向き
-		///*sphereCollision.pos.x += move.x;
-		//sphereCollision.pos.y += move.y;
-		//sphereCollision.pos.z += move.z;*/
+		/*sphereCollision.pos.x += move.x;
+		sphereCollision.pos.y += move.y;
+		sphereCollision.pos.z += move.z;
 
-		///*sphere_->SetTransform(sphereCollision.pos);
+		sphere_->SetTransform(sphereCollision.pos);*/
 		//sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };*/
 
 		//trianglePosition2 = triangle_->GetWorldPos();

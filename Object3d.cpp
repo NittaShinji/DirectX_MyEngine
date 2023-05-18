@@ -5,6 +5,7 @@
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
 KeyInput* Object3d::keys_ = nullptr;
+Light* Object3d::light_ = nullptr;
 
 //定数バッファの生成
 template <typename Type1, typename Type2, typename Type3>
@@ -58,6 +59,8 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 
 	ID3D12Resource* constBuffTransform_ = constBuffTransform.Get();
 	ID3D12Resource* constBuffMaterial_ = constBuffMaterial.Get();
+	ID3D12Resource* constBuffLight_ = constBuffLight.Get();
+
 
 	CrateConstBuff<ID3D12Resource, DirectXBasic>(constBuffTransform_, directXBasic_);
 	constBuffTransform = constBuffTransform_;
@@ -67,71 +70,20 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	assert(SUCCEEDED(result));
 
 	//単位行列を代入
-	constMapTransform->mat = XMMatrixIdentity();
+	//constMapTransform->mat = XMMatrixIdentity();
 
 	CrateConstBuff<ID3D12Resource, DirectXBasic>(constBuffMaterial_, directXBasic_);
 	constBuffMaterial = constBuffMaterial_;
 
-	////ヒープ設定
-	//D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-	//cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	////リソース設定
-	//D3D12_RESOURCE_DESC cbResourceDesc{};
-	//cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	//cbResourceDesc.Width = (sizeof(ConstBufferDateTransform) + 0xff) & ~0xff;	//256バイトアラインメント
-	//cbResourceDesc.Height = 1;
-	//cbResourceDesc.DepthOrArraySize = 1;
-	//cbResourceDesc.MipLevels = 1;
-	//cbResourceDesc.SampleDesc.Count = 1;
-	//cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	CrateConstBuff<ID3D12Resource, DirectXBasic>(constBuffLight_, directXBasic_);
+	constBuffLight = constBuffLight_;
 
-	////定数バッファの生成
-	//HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
-	//	&cbHeapProp,//ヒープ設定
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&cbResourceDesc,//リソース設定
-	//	D3D12_RESOURCE_STATE_GENERIC_READ,
-	//	nullptr,
-	//	IID_PPV_ARGS(&constBuffTransform));
-	//assert(SUCCEEDED(result));
+	//定数バッファのマッピング
+	result = constBuffLight->Map(0, nullptr, (void**)&constMapLight);//マッピング
+	assert(SUCCEEDED(result));
 
-	////定数バッファのマッピング
-	//result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
-	//assert(SUCCEEDED(result));
-
-	////単位行列を代入
-	//constMapTransform->mat = XMMatrixIdentity();
-
-	////関数が作れるまでの応急処置
-	//{
-	//	//ヒープ設定
-	//	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-	//	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	//	//リソース設定
-	//	D3D12_RESOURCE_DESC cbResourceDesc{};
-	//	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	//	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
-	//	cbResourceDesc.Height = 1;
-	//	cbResourceDesc.DepthOrArraySize = 1;
-	//	cbResourceDesc.MipLevels = 1;
-	//	cbResourceDesc.SampleDesc.Count = 1;
-	//	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	//	//定数バッファの生成
-	//	HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
-	//		&cbHeapProp,//ヒープ設定
-	//		D3D12_HEAP_FLAG_NONE,
-	//		&cbResourceDesc,//リソース設定
-	//		D3D12_RESOURCE_STATE_GENERIC_READ,
-	//		nullptr,
-	//		IID_PPV_ARGS(&constBuffMaterial));
-	//	assert(SUCCEEDED(result));
-
-
-	//	//constMapColor->color = { 1,1,0,1 };
-
-	//}
-
+	constMapLight->lightv = { 0,0,1 };
+	constMapLight->lightcolor = { 1,1,1 };
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC  inputLayout[] =
@@ -279,7 +231,7 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	descriptorRange.OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 	//ルートパラメータの設定
-	D3D12_ROOT_PARAMETER rootParams[3] = {};
+	D3D12_ROOT_PARAMETER rootParams[4] = {};
 
 	//定数バッファ0番
 	rootParams[0].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
@@ -298,6 +250,13 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	rootParams[2].DescriptorTable.pDescriptorRanges = &descriptorRange;			//デスクリプタレンジ
 	rootParams[2].DescriptorTable.NumDescriptorRanges = 1;						//デスクリプタレンジ数
 	rootParams[2].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;				//全てのシェーダーから見える
+
+	//定数バッファ1番
+	rootParams[3].ParameterType = D3D12_ROOT_PARAMETER_TYPE_CBV;	//定数バッファビュー
+	rootParams[3].Descriptor.ShaderRegister = 2;					//定数バッファ番号
+	rootParams[3].Descriptor.RegisterSpace = 0;						//デフォルト値
+	rootParams[3].ShaderVisibility = D3D12_SHADER_VISIBILITY_ALL;	//全てのシェーダーから見える
+
 
 	//テクスチャサンプラーの設定
 	D3D12_STATIC_SAMPLER_DESC samplerDesc{};
@@ -356,6 +315,8 @@ void Object3d::Update(Camera* camera)
 	//射影変換行列
 	matProjection_ = camera_->GetMatProjection();
 
+	cameraPos = camera_->GetEye();
+
 	XMFLOAT3 move = { 0,0,0 };
 
 	//いずれかのキーを押していたら
@@ -395,11 +356,15 @@ void Object3d::Update(Camera* camera)
 	{
 		constMapTransform->color = { 1,1,1,1 };
 	}
-	
 
 	//定数バッファへデータ転送
-	constMapTransform->mat = matWorld * matView_ * matProjection_;
+	//matを消すと表示がおかしくなってしまう
+	//constMapTransform->mat = matWorld * matView_ * matProjection_;
 	
+	constMapTransform->worldMatrix = matWorld;
+	constMapTransform->viewProjection = (matView_ * matProjection_);
+	constMapTransform->cameraPos = cameraPos;
+
 	//定数バッファのマッピング
 	HRESULT result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
 	constBuffMaterial->SetName(L"constBuffMaterial");
@@ -411,7 +376,7 @@ void Object3d::Update(Camera* camera)
 	constMapMaterial->alpha = model_.GetInfomation()->material_.alpha;
 
 	constBuffMaterial->Unmap(0, nullptr);
-
+	
 }
 
 void Object3d::Draw()
@@ -442,6 +407,10 @@ void Object3d::Draw()
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight->GetGPUVirtualAddress());
+
+	//ライトの描画
+	light_->Draw(directXBasic_->GetCommandList().Get(), 3);
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices_.size()), 1, 0, 0, 0);

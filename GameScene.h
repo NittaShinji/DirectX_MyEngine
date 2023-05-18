@@ -10,6 +10,7 @@
 #include "Sound.h"
 #include "CollisionPrimitive.h"
 #include "ImGuiManager.h"
+#include "Light.h"
 
 class GameScene
 {
@@ -60,6 +61,9 @@ private:
 	//ウインドウの表示フラグ
 	bool showEditWindow = true;
 	
+	//ライト
+	Light* light_ = nullptr;
+
 	//カメラ
 	Camera* camera_ = nullptr;
 	Camera* testCamera_ = nullptr;
