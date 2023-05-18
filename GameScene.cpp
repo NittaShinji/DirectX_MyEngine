@@ -348,13 +348,14 @@ void GameScene::Update()
 		//rayCollision.start = XMVectorSet(rayWorldPositon.x, rayWorldPositon.y, rayWorldPositon.z, 1);//Œ´“_‚â‚âã
 		//rayCollision.dir = XMVectorSet(0, -1, 0, 0);//‰ºŒü‚«
 
-		/*sphereCollision.pos.x += move.x;
-		sphereCollision.pos.y += move.y;
-		sphereCollision.pos.z += move.z;*/
+		sphereCollision.pos.y += move.x;
+		//sphereCollision.pos.y += move.y;
+		//sphereCollision.pos.z += move.z;
 
 		rotate.y += move.y;
 
-		//sphere_->SetTransform(sphereCollision.pos);
+
+		sphere_->SetTransform(sphereCollision.pos);
 		sphere_->SetRotation(rotate);
 
 

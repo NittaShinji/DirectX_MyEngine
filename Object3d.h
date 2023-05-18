@@ -63,7 +63,7 @@ private:
 		//カメラ座標(ワールド行列)
 		XMFLOAT3 cameraPos;
 		float pad1;
-		XMFLOAT4 color;	//色(RGBA)
+		//XMFLOAT4 color;	//色(RGBA)
 	};
 
 	//定数バッファ用データ構造体(マテリアル)b1

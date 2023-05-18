@@ -348,14 +348,14 @@ void Object3d::Update(Camera* camera)
 
 	model_.Update();
 
-	if(colorFlag_ == true)
+	/*if(colorFlag_ == true)
 	{
 		constMapTransform->color = { 1,0,0,1 };
 	}
 	else if(colorFlag_ == false)
 	{
 		constMapTransform->color = { 1,1,1,1 };
-	}
+	}*/
 
 	//定数バッファへデータ転送
 	//matを消すと表示がおかしくなってしまう
@@ -410,7 +410,7 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight->GetGPUVirtualAddress());
 
 	//ライトの描画
-	//light_->Draw(directXBasic_->GetCommandList().Get(), 3);
+	light_->Draw(directXBasic_->GetCommandList().Get(), 3);
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices_.size()), 1, 0, 0, 0);
