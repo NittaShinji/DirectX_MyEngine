@@ -26,7 +26,7 @@ GameScene::~GameScene()
 	delete camera_;
 	delete testCamera_;
 	delete sphere_;
-	delete dirLight_;
+	delete lightGroup_;
 	//delete ground_;
 	//delete triangle_;
 
@@ -36,7 +36,7 @@ GameScene::~GameScene()
 	spriteCommon_ = nullptr;
 	title_ = nullptr;
 	test_ = nullptr;
-	dirLight_ = nullptr;
+	lightGroup_ = nullptr;
 	//モデル
 	object3d_ = nullptr;
 	camera_ = nullptr;
@@ -51,16 +51,16 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 {
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
-	//imGuiManager_ = imGuiManager;
+	imGuiManager_ = imGuiManager;
 	scene_ = TITLE;
 
 	//ライト
-	DirectionalLight::StaticInitialize(directXBasic_->GetDevice().Get());
-	dirLight_ = DirectionalLight::Create();
-	//ライト色を設定
-	dirLight_->SetLightColor({ 1,1,1 });
+	//DirectionalLight::StaticInitialize(directXBasic_->GetDevice().Get());
+	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
+
+	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
-	Object3d::SetLight(dirLight_);
+	Object3d::SetLightGroup(lightGroup_);
 
 	//------------サウンド----------
 
@@ -180,18 +180,44 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 void GameScene::Update()
 {
+	
+
 	//光線方向初期値
 	static XMVECTOR lightDir = { 0,1,5,0 };
+	static XMFLOAT3 color = { 1, 1, 1 };
 
 	if(keys_->HasPushedKey(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
 	else if(keys_->HasPushedKey(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; }
 	if(keys_->HasPushedKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
 	else if(keys_->HasPushedKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
 
-	dirLight_->SetLightDir(lightDir);
+	if(keys_->HasPushedKey(DIK_2)) { color.x -= 0.01f; }
+	else if(keys_->HasPushedKey(DIK_3)) { color.x += 0.01f; }
+	else if(keys_->HasPushedKey(DIK_4)) { color.y += 0.01f; }
+	else if(keys_->HasPushedKey(DIK_5)) { color.y -= 0.01f; }
 
+	lightGroup_->SetAmbientColor(color);
+	lightGroup_->SetDirLightDir(0, lightDir);
+	lightGroup_->SetDirLightColor(0, XMFLOAT3(0,0,1));
 
-	dirLight_->Update();
+	lightGroup_->SetDirLightDir(1, lightDir);
+	lightGroup_->SetDirLightColor(1, XMFLOAT3(0,1,0));
+
+	lightGroup_->SetDirLightDir(2, lightDir);
+	lightGroup_->SetDirLightColor(2, XMFLOAT3(1,0,0));
+
+	{
+		//imguiからのライトパラメータを反映
+		lightGroup_->SetAmbientColor(XMFLOAT3(ambientColor0));
+		lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
+		lightGroup_->SetDirLightColor(0, XMFLOAT3(lightColor0));
+		lightGroup_->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
+		lightGroup_->SetDirLightColor(1, XMFLOAT3(lightColor1));
+		lightGroup_->SetDirLightDir(2, XMVECTOR({ lightDir2[0], lightDir2[1], lightDir2[2], 0 }));
+		lightGroup_->SetDirLightColor(2, XMFLOAT3(lightColor2));
+	}
+
+	lightGroup_->Update();
 
 	switch(scene_)
 	{
@@ -390,11 +416,19 @@ void GameScene::Update()
 		//スプライトの編集ウインドウの表示
 		{
 
-			//ImGui::Begin("Collision");
-			//ImGui::SetWindowSize("Collision", ImVec2(500, 100));
-			////ImGui::InputInt("hit", &hit, 0.0f, 1000.0f);
+			ImGui::Begin("Light");
+			ImGui::SetWindowPos(ImVec2(0, 0));
+			ImGui::SetWindowSize(ImVec2(500, 200));
 
-			//ImGui::End();
+			ImGui::ColorEdit3("ambientColor", ambientColor0, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir0", lightDir0);
+			ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir1", lightDir1);
+			ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir2", lightDir2);
+			ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
+
+			ImGui::End();
 		}
 
 
@@ -439,6 +473,8 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+	
+
 	switch(scene_)
 	{
 

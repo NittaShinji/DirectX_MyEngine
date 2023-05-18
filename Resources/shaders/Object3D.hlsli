@@ -1,4 +1,11 @@
+static const int DIRLIGHT_NUM = 3;
 
+struct DirLight
+{
+    float3 lightv;
+    float3 lightColor;
+    uint active;
+};
 
 cbuffer ConstBufferDateTransform : register(b0)
 {
@@ -20,16 +27,18 @@ cbuffer ConstBufferDateMaterial : register(b1)
 
 cbuffer cbuffer2 : register(b2)
 {
-    float3 lightv;
-    float3 lightcolor;
+    float3 ambientColor;
+    DirLight dirLights[DIRLIGHT_NUM]; //ライトの色(RGB)
 }
 	
 struct VSOutput
 {
     //システム用頂点座標
     float4 svpos : SV_POSITION;
-    //色
-    float4 color : COLOR;
+    // 法線ベクトル
+    float3 normal : NORMAL; 
+    //ワールド座標
+    float4 worldpos : POSITION; 
 	////uv値
     float2 uv : TEXCOORD;
 };

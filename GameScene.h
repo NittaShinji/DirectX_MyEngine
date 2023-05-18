@@ -11,6 +11,7 @@
 #include "CollisionPrimitive.h"
 #include "ImGuiManager.h"
 #include "DirectionalLight.h"
+#include "LightGroup.h"
 
 class GameScene
 {
@@ -55,14 +56,14 @@ private:
 
 	DirectXBasic* directXBasic_ = nullptr;
 	static KeyInput* keys_;
-	//ImGuiManager* imGuiManager_ = nullptr;
+	ImGuiManager* imGuiManager_ = nullptr;
 
 	//デバッグテキスト用の変数
 	//ウインドウの表示フラグ
 	bool showEditWindow = true;
 	
 	//ライト
-	DirectionalLight* dirLight_ = nullptr;
+	LightGroup* lightGroup_ = nullptr;
 
 	//カメラ
 	Camera* camera_ = nullptr;
@@ -119,6 +120,17 @@ private:
 	XMFLOAT3 rayWorldPositon;
 
 	XMFLOAT3 rotate = { 0,0,0 };
+
+	float ambientColor0[3] = { 1,1,1 };
+	//光線方向初期値
+	float lightDir0[3] = { 0,0,1 };
+	float lightColor0[3] = { 1,0,0 };
+
+	float lightDir1[3] = { 0,1,0 };
+	float lightColor1[3] = { 0,1,0 };
+
+	float lightDir2[3] = { 1,0,0 };
+	float lightColor2[3] = { 0,0,1 };
 
 };
 
