@@ -180,8 +180,18 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 void GameScene::Update()
 {
+	//Œõü•ûŒü‰Šú’l
+	static XMVECTOR lightDir = { 0,1,5,0 };
 
-	//light_->Update();
+	if(keys_->HasPushedKey(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
+	else if(keys_->HasPushedKey(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; }
+	if(keys_->HasPushedKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
+	else if(keys_->HasPushedKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
+
+	light_->SetLightDir(lightDir);
+
+
+	light_->Update();
 
 	switch(scene_)
 	{
@@ -212,6 +222,8 @@ void GameScene::Update()
 		break;
 
 	case GAME:
+
+		
 
 		camera_->Updata();
 		testCamera_->Updata();
@@ -269,7 +281,7 @@ void GameScene::Update()
 		//	move.y += 0.3f;
 		//}*/
 
-		if(keys_->HasPushedKey(DIK_W))
+		/*if(keys_->HasPushedKey(DIK_W))
 		{
 			move.z -= 0.01f;
 		}
@@ -318,8 +330,9 @@ void GameScene::Update()
 		else if(keys_->HasReleasedKey(DIK_E)&& keys_->HasPushedKey(DIK_Q))
 		{
 			move.y = 0;
-		}
+		}*/
 
+		
 
 		////ƒŒƒC‘€ì
 
