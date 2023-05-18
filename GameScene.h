@@ -117,5 +117,8 @@ private:
 
 	XMFLOAT3 trianglePosition2;
 	XMFLOAT3 rayWorldPositon;
+
+	XMFLOAT3 rotate = { 0,0,0 };
+
 };
 

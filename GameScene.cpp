@@ -55,12 +55,12 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	scene_ = TITLE;
 
 	//ライト
-	//Light::StaticInitialize(directXBasic_->GetDevice().Get());
-	//light_ = Light::Create();
-	////ライト色を設定
-	//light_->SetLightColor({ 1,1,1 });
-	////3Dオブジェクトにライトをセット
-	//Object3d::SetLight(light_);
+	Light::StaticInitialize(directXBasic_->GetDevice().Get());
+	light_ = Light::Create();
+	//ライト色を設定
+	light_->SetLightColor({ 1,1,1 });
+	//3Dオブジェクトにライトをセット
+	Object3d::SetLight(light_);
 
 	//------------サウンド----------
 
@@ -271,7 +271,7 @@ void GameScene::Update()
 
 		if(keys_->HasPushedKey(DIK_W))
 		{
-			move.z -= 0.1f;
+			move.z -= 0.01f;
 		}
 		else if(keys_->HasReleasedKey(DIK_W) != keys_->HasPushedKey(DIK_S))
 		{
@@ -279,7 +279,7 @@ void GameScene::Update()
 		}
 		else if(keys_->HasPushedKey(DIK_S))
 		{
-			move.z += 0.1f;
+			move.z += 0.01f;
 		}
 		else if(keys_->HasReleasedKey(DIK_S)&& keys_->HasPushedKey(DIK_W))
 		{
@@ -288,7 +288,7 @@ void GameScene::Update()
 
 		if(keys_->HasPushedKey(DIK_A))
 		{
-			move.x -= 0.1f;
+			move.x -= 0.01f;
 		}
 		else if(keys_->HasReleasedKey(DIK_A) != keys_->HasPushedKey(DIK_D))
 		{
@@ -296,7 +296,7 @@ void GameScene::Update()
 		}
 		else if(keys_->HasPushedKey(DIK_D))
 		{
-			move.x += 0.1f;
+			move.x += 0.01f;
 		}
 		else if(keys_->HasReleasedKey(DIK_D)&& keys_->HasPushedKey(DIK_A))
 		{
@@ -305,7 +305,7 @@ void GameScene::Update()
 
 		if(keys_->HasPushedKey(DIK_Q))
 		{
-			move.y -= 0.1f;
+			move.y -= 0.01f;
 		}
 		else if(keys_->HasReleasedKey(DIK_Q) != keys_->HasPushedKey(DIK_E))
 		{
@@ -313,7 +313,7 @@ void GameScene::Update()
 		}
 		else if(keys_->HasPushedKey(DIK_E))
 		{
-			move.y += 0.1f;
+			move.y += 0.01f;
 		}
 		else if(keys_->HasReleasedKey(DIK_E)&& keys_->HasPushedKey(DIK_Q))
 		{
@@ -347,11 +347,17 @@ void GameScene::Update()
 
 		//rayCollision.start = XMVectorSet(rayWorldPositon.x, rayWorldPositon.y, rayWorldPositon.z, 1);//原点やや上
 		//rayCollision.dir = XMVectorSet(0, -1, 0, 0);//下向き
+
 		/*sphereCollision.pos.x += move.x;
 		sphereCollision.pos.y += move.y;
-		sphereCollision.pos.z += move.z;
+		sphereCollision.pos.z += move.z;*/
 
-		sphere_->SetTransform(sphereCollision.pos);*/
+		rotate.y += move.y;
+
+		//sphere_->SetTransform(sphereCollision.pos);
+		sphere_->SetRotation(rotate);
+
+
 		//sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };*/
 
 		//trianglePosition2 = triangle_->GetWorldPos();

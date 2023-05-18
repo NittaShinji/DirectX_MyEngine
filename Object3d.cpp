@@ -410,7 +410,7 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight->GetGPUVirtualAddress());
 
 	//ライトの描画
-	light_->Draw(directXBasic_->GetCommandList().Get(), 3);
+	//light_->Draw(directXBasic_->GetCommandList().Get(), 3);
 
 	//描画コマンド
 	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices_.size()), 1, 0, 0, 0);
