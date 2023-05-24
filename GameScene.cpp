@@ -27,6 +27,7 @@ GameScene::~GameScene()
 	delete testCamera_;
 	delete sphere_;
 	delete lightGroup_;
+	delete levelData_;
 	//delete ground_;
 	//delete triangle_;
 
@@ -38,7 +39,7 @@ GameScene::~GameScene()
 	test_ = nullptr;
 	lightGroup_ = nullptr;
 	//モデル
-	object3d_ = nullptr;
+	//object3d_ = nullptr;
 	camera_ = nullptr;
 	testCamera_ = nullptr;
 	sphere_ = nullptr;
@@ -54,7 +55,11 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	imGuiManager_ = imGuiManager;
 	scene_ = TITLE;
 
-	//ライト
+	Model::StaticInitialize(directXBasic_);
+	Object3d::StaticInitialize(directXBasic_);
+
+
+	//------------ライト------------
 	//DirectionalLight::StaticInitialize(directXBasic_->GetDevice().Get());
 	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
 
@@ -69,6 +74,46 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	sound->Initialize();
 	sound->LoadSoundWave("Alarm01.wav");
 	//sound->PlaySoundWave("Alarm01.wav");
+
+	//-----------読み込み---------------
+	 
+	
+	//レベルデータからオブジェクトを生成、配置
+	levelData_ = LevelManager::LoadJSONFile("test2.json");
+
+	for(auto& objectData : levelData_->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models_)::iterator it = models_.find(objectData.fileName);
+		if(it != models_.end()) { model = &it->second; }
+		//モデルを指定して3Dオブジェクトを作成
+		//モデルをロード
+		Model::Load(objectData.fileName);
+
+		//3Dオブジェクトの生成
+		Object3d* newObject = new Object3d;
+		//座標
+		DirectX::XMFLOAT3 pos;
+		pos = objectData.translation;
+		newObject->SetTransform(pos);
+		//回転角
+		DirectX::XMFLOAT3 rot;
+		rot = objectData.rotation;
+
+		newObject->SetRotation(rot);
+		//座標
+		DirectX::XMFLOAT3 scale;
+		scale = objectData.scaling;
+		newObject->SetScale(scale);
+
+		//sphere_ = new Object3d(objectData.fileName, spherePosition, sphereScale);
+
+		newObject->Initialize(objectData.fileName, pos, scale);
+
+		//配列に登録
+		objects.push_back(newObject);
+	}
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
@@ -98,9 +143,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	spriteCommon_->SemiTransparent();
 
 	//------------モデル読み込み----------
-	Model::StaticInitialize(directXBasic_);
-	Object3d::StaticInitialize(directXBasic_);
-
+	
+	
 	//モデル読み込み
 	
 	const string sphere = "sphere";
@@ -126,7 +170,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y * 2,rayScale.z * 2 };
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y,0 };
 
-	sphere_ = new Object3d(sphere, spherePosition, sphereScale);
+	sphere_ = new Object3d();
+	sphere_->Initialize(sphere, spherePosition, sphereScale);
 	/*ground_ = new Object3d(ground, groundPosition, groundScale);
 	triangle_ = new Object3d(testTriangle, trianglePosition, triangleScale);
 	ray_ = new Object3d(ray, raySetPosition, rayScale);*/
@@ -257,6 +302,11 @@ void GameScene::Update()
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
 		{
+			for(auto& object : objects)
+			{
+				object->Update(testCamera_);
+			}
+
 			sphere_->Update(testCamera_);
 			//ground_->Update(testCamera_);
 			//triangle_->Update(testCamera_);
@@ -264,6 +314,11 @@ void GameScene::Update()
 		}
 		else
 		{
+			for(auto& object : objects)
+			{
+				object->Update(testCamera_);
+			}
+
 			//モデルの更新処理
 			sphere_->Update(camera_);
 			//ground_->Update(camera_);
@@ -494,7 +549,13 @@ void GameScene::Draw()
 		sphere_->BeforeDraw();
 		//ground_->BeforeDraw();
 
-		sphere_->Draw();
+		//sphere_->Draw();
+
+		for(auto& object : objects)
+		{
+			object->Draw();
+		}
+
 		//ground_->Draw();
 		//triangle_->Draw();
 		//ray_->Draw();

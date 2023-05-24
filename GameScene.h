@@ -12,6 +12,7 @@
 #include "ImGuiManager.h"
 #include "DirectionalLight.h"
 #include "LightGroup.h"
+#include "LevelManager.h"
 
 class GameScene
 {
@@ -83,10 +84,21 @@ private:
 	Model testModel_;
 
 	//3Dオブジェクト
-	Object3d* object3d_ = nullptr;
+	//Object3d* object3d_ = nullptr;
+	std::vector<Object3d*> objects;
 	
 	//ゲームシーン
 	int scene_;
+
+	//レベルデータ
+	//LevelManager* levelManager_ = nullptr;
+	LevelData* levelData_ = nullptr;
+
+	using MODELKEY = std::string;
+
+	MODELKEY name_;
+
+	std::map<MODELKEY, Model> models_;
 
 	//当たり判定 球
 	Sphere sphereCollision;
@@ -101,6 +113,8 @@ private:
 	Object3d* ground_;
 	Object3d* triangle_;
 	Object3d* ray_;
+
+	Object3d* blender_;
 
 	//待ち時間
 	static const int waitTime = 40;

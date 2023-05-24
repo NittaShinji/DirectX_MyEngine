@@ -45,17 +45,16 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 	keys_ = KeyInput::GetInstance();
 }
 
-Object3d::~Object3d()
-{
-	delete sprite_;
-}
-
-Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale)
-//Object3d::Object3d(DirectXBasic* directXBasic,XMFLOAT3 position)
+void Object3d::Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale)
 {
 	scale = Modelscale;
 	rotation = { 0.0f,0.0f,0.0f };
 	transform = position;
+
+
+	/*scale = Modelscale;
+	rotation = { 0.0f,0.0f,0.0f };
+	transform = position;*/
 
 	ID3D12Resource* constBuffTransform_ = constBuffTransform.Get();
 	ID3D12Resource* constBuffMaterial_ = constBuffMaterial.Get();
@@ -298,6 +297,16 @@ Object3d::Object3d(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelsca
 	model_.SetInfomation(*Model::GetMODELVALUE(path));
 }
 
+Object3d::~Object3d()
+{
+	delete sprite_;
+}
+
+Object3d::Object3d()
+{
+	
+}
+
 void Object3d::SetModel(const std::string& path)
 {
 	//検索キーからモデル情報を検索し、モデルを割り当てる
@@ -442,5 +451,10 @@ XMFLOAT3 Object3d::GetWorldPos()
 	resutVec.z = matWorld.r[3].m128_f32[2];
 
 	return resutVec;
+
+}
+
+void Object3d::Create(Model* model)
+{
 
 }

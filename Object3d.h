@@ -19,17 +19,17 @@ class Object3d
 public:
 
 	//Object3d(DirectXBasic* directXBasic,XMFLOAT3 position);
-	Object3d(const std::string& path,XMFLOAT3 position, XMFLOAT3 Modelscale);
+	Object3d();
 	~Object3d();
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
-	void Initialize();
+	void Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale);
 	void Update(Camera* camera);
 	void BeforeDraw();
 	void AfterDraw();
 	void Draw();
 	void SetModel(const std::string& path);
-
+	void Create(Model* model);
 	void CrateConstBuffandMapping();
 
 private:
@@ -164,6 +164,7 @@ public:
 	XMFLOAT3 GetWorldPos();
 	void SetTransform(XMFLOAT3 pos) { transform = pos; };
 	void SetRotation(XMFLOAT3 rotate) { rotation = rotate; };
+	void SetScale(XMFLOAT3 scale_) { scale = scale_; }
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 

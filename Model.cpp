@@ -10,7 +10,6 @@
 using namespace std;
 using namespace DirectX;
 
-
 DirectXBasic* Model::directXBasic_ = nullptr;
 //std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, Model::kMaxSRVCount> Model::textureBuffers_;
 //uint32_t Model::textureIndex_;
@@ -145,7 +144,6 @@ void Model::Load(const std::string& path)
 			//}
 		}
 
-		
 		if (key == "mtllib")
 		{
 			//マテリアルのファイル読み込み
@@ -446,6 +444,11 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	
 	//画像番号を進める
 	//textureIndex_++;
+}
+
+void Model::LoadJSON()
+{
+
 }
 
 //検索キー(パス)から値を検索
