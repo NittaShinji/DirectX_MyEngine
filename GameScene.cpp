@@ -79,7 +79,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	 
 	
 	//レベルデータからオブジェクトを生成、配置
-	levelData_ = LevelManager::LoadJSONFile("test2.json");
+	
+	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("test3.json");
 
 	for(auto& objectData : levelData_->objects)
 	{

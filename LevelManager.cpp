@@ -3,73 +3,63 @@
 #include <string>
 #include <cassert>
 
-std::string LevelManager::kDefaultJSONDirectoryPath_ = "Resources/";
-
-void LevelManager::Return(nlohmann::json deserialized)
+void LevelManager::Return(nlohmann::json object, LevelData* levelData)
 {
-	//レベルデータ格納用インスタンスを生成
-	LevelData* levelData = new LevelData();
+	assert(object.contains("type"));
 
-	//"objects"の全オブジェクトを走査
-	for(nlohmann::json& object : deserialized["objects"])
+	//種別を取得
+	std::string type = object["type"].get<std::string>();
+
+	//種類ごとの処理
+
+	//タイプが"MESH"だった場合
+	if(type.compare("MESH") == 0)
 	{
-		assert(object.contains("type"));
+		//要素追加
+		levelData->objects.emplace_back(LevelData::objectDate{});
+		//今追加した要素の参照を得る
+		LevelData::objectDate& objectData = levelData->objects.back();
 
-		//種別を取得
-		std::string type = object["type"].get<std::string>();
-
-		//種類ごとの処理
-
-		//タイプが"MESH"だった場合
-		if(type.compare("MESH") == 0)
+		if(object.contains("file_name"))
 		{
-			//要素追加
-			levelData->objects.emplace_back(LevelData::objectDate{});
-			//今追加した要素の参照を得る
-			LevelData::objectDate& objectData = levelData->objects.back();
+			//ファイル名
+			objectData.fileName = object["file_name"];
+		}
 
-			if(object.contains("file_name"))
-			{
-				//ファイル名
-				objectData.fileName = object["file_name"];
-			}
+		//トランスフォームのパラメータ読み込み
+		nlohmann::json& transform = object["transform"];
+		//平行移動
+		objectData.translation.x = (float)transform["translation"][1];
+		objectData.translation.y = (float)transform["translation"][2];
+		objectData.translation.z = (float)transform["translation"][0];
 
-			//トランスフォームのパラメータ読み込み
-			nlohmann::json& transform = object["transform"];
-			//平行移動
-			//objectData.translation.r->m128_f32[0] = (float)transform["translation"][1];
-			//objectData.translation.r->m128_f32[1] = (float)transform["translation"][2];
-			//objectData.translation.r->m128_f32[2] = -(float)transform["translation"][0];
-			//objectData.translation.r->m128_f32[3] = 1.0f;
-			////回転角
-			//objectData.rotation.r->m128_f32[0] = -(float)transform["rotation"][1];
-			//objectData.rotation.r->m128_f32[1] = -(float)transform["rotation"][2];
-			//objectData.rotation.r->m128_f32[2] = (float)transform["rotation"][0];
-			//objectData.rotation.r->m128_f32[3] = 0.0f;
-			////スケーリング
-			//objectData.scaling.r->m128_f32[0] = (float)transform["scaling"][1];
-			//objectData.scaling.r->m128_f32[1] = (float)transform["scaling"][2];
-			//objectData.scaling.r->m128_f32[2] = (float)transform["scaling"][0];
-			//objectData.scaling.r->m128_f32[3] = 0.0f;
-			objectData.translation.x = (float)transform["translation"][1];
-			objectData.translation.y = (float)transform["translation"][2];
-			objectData.translation.z = (float)transform["translation"][0];
+		//回転角
+		objectData.rotation.x = -(float)transform["rotation"][1];
+		objectData.rotation.y = -(float)transform["rotation"][2];
+		objectData.rotation.z = -(float)transform["rotation"][0];
 
-			//回転角
-			objectData.rotation.x = -(float)transform["rotation"][1];
-			objectData.rotation.y = -(float)transform["rotation"][2];
-			objectData.rotation.z = -(float)transform["rotation"][0];
+		//スケーリング
+		objectData.scaling.x = (float)transform["scaling"][1];
+		objectData.scaling.y = (float)transform["scaling"][2];
+		objectData.scaling.z = (float)transform["scaling"][0];
 
-			//スケーリング
-			objectData.scaling.x = (float)transform["scaling"][1];
-			objectData.scaling.y = (float)transform["scaling"][2];
-			objectData.scaling.z = (float)transform["scaling"][0];
+	}
+
+	//再帰処理
+	if(object.contains("children"))
+	{
+		for(nlohmann::json& object_ : object["childern"])
+		{
+			//Return(object_,levelData);
 		}
 	}
 }
 
 LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
 {
+	//デフォルトJSON格納ディレクトリ
+	std::string kDefaultJSONDirectoryPath_ = "Resources/";
+
 	//連結してフルパスを得る
 	const std::string fullPath = kDefaultJSONDirectoryPath_ + fileName;
 
@@ -103,60 +93,11 @@ LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
 
 	//レベルデータ格納用インスタンスを生成
 	LevelData* levelData = new LevelData();
-
+	
 	//"objects"の全オブジェクトを走査
 	for(nlohmann::json& object : deserialized["objects"])
 	{
-		assert(object.contains("type"));
-
-		//種別を取得
-		std::string type = object["type"].get<std::string>();
-
-		//種類ごとの処理
-
-		//タイプが"MESH"だった場合
-		if(type.compare("MESH") == 0)
-		{
-			//要素追加
-			levelData->objects.emplace_back(LevelData::objectDate{});
-			//今追加した要素の参照を得る
-			LevelData::objectDate& objectData = levelData->objects.back();
-
-			if(object.contains("file_name"))
-			{
-				//ファイル名
-				objectData.fileName = object["file_name"];
-			}
-
-			//トランスフォームのパラメータ読み込み
-			nlohmann::json& transform = object["transform"];
-			//平行移動
-			objectData.translation.x = (float)transform["translation"][1];
-			objectData.translation.y= (float)transform["translation"][2];
-			objectData.translation.z = (float)transform["translation"][0];
-			
-			//回転角
-			objectData.rotation.x = -(float)transform["rotation"][1];
-			objectData.rotation.y = -(float)transform["rotation"][2];
-			objectData.rotation.z = -(float)transform["rotation"][0];
-			
-			//スケーリング
-			objectData.scaling.x = (float)transform["scaling"][1];
-			objectData.scaling.y = (float)transform["scaling"][2];
-			objectData.scaling.z = (float)transform["scaling"][0];
-			
-		}
-
-		//再帰処理
-		if(object.contains("children")) 
-		{
-			//Return(deserialized);
-		}
-		/*else
-		{
-			levelData_ = *levelData;
-			break;
-		}*/
+		Return(object,levelData);
 	}
 
 	return levelData;

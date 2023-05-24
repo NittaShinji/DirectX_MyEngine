@@ -37,16 +37,23 @@ private: //エイリアス
 public:
 
 	//JSONファイル読み込み
-	static LevelData* LoadJSONFile(const std::string& fileName);
+	LevelData* LoadJSONFile(const std::string& fileName);
 	//再帰関数
-	void Return(nlohmann::json deserialized);
+	void Return(nlohmann::json deserialized, LevelData* levelData);
 	LevelData GetLevelData() { return levelData_; };
 
+	static LevelManager* GetLevelManager() 
+	{
+		static LevelManager levelManager;
+		return &levelManager;
+	};
+
+	
 private:
 
-	//デフォルトJSON格納ディレクトリ
-	static std::string kDefaultJSONDirectoryPath_;
-
+	LevelManager() {};
+	~LevelManager() {};
+	
 	LevelData levelData_;
 
 	//std::unique_ptr<Object3d> object3d_;
