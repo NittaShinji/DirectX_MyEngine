@@ -48,9 +48,9 @@ void LevelManager::Return(nlohmann::json object, LevelData* levelData)
 	//Ä‹Aˆ—
 	if(object.contains("children"))
 	{
-		for(nlohmann::json& object_ : object["childern"])
+		for(nlohmann::json& object_ : object["children"])
 		{
-			//Return(object_,levelData);
+			Return(object_,levelData);
 		}
 	}
 }
