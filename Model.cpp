@@ -446,11 +446,6 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	//textureIndex_++;
 }
 
-void Model::LoadJSON()
-{
-
-}
-
 //検索キー(パス)から値を検索
 const Model::MODELVALUE* Model::GetMODELVALUE(const MODELKEY path)
 {

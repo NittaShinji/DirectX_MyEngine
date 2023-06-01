@@ -85,7 +85,9 @@ private:
 
 	//3Dオブジェクト
 	//Object3d* object3d_ = nullptr;
-	std::vector<Object3d*> objects;
+	//std::vector<Object3d*> objects;
+	std::vector<std::unique_ptr<Object3d>> objects;
+
 	
 	//ゲームシーン
 	int scene_;

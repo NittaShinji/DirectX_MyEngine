@@ -34,8 +34,6 @@ public:
 	/// <returns>ê¨î€</returns>
 	static void LoadTexture(const std::string& directoryPath, const std::string& fileName, Model& model);
 
-	static void LoadJSON();
-
 private:
 
 	static DirectXBasic* directXBasic_;

@@ -46,6 +46,8 @@ GameScene::~GameScene()
 	//ground_ = nullptr;
 	//triangle_ = nullptr;
 
+
+
 }
 
 void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
@@ -93,7 +95,9 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 		Model::Load(objectData.fileName);
 
 		//3Dオブジェクトの生成
-		Object3d* newObject = new Object3d;
+		//Object3d* newObject = new Object3d;
+		std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
+
 		//座標
 		DirectX::XMFLOAT3 pos;
 		pos = objectData.translation;
@@ -109,11 +113,10 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 		newObject->SetScale(scale);
 
 		//sphere_ = new Object3d(objectData.fileName, spherePosition, sphereScale);
-
 		newObject->Initialize(objectData.fileName, pos, scale);
 
 		//配列に登録
-		objects.push_back(newObject);
+		objects.push_back(std::move(newObject));
 	}
 
 	//------------画像読み込み----------
@@ -308,7 +311,7 @@ void GameScene::Update()
 				object->Update(testCamera_);
 			}
 
-			sphere_->Update(testCamera_);
+			//sphere_->Update(testCamera_);
 			//ground_->Update(testCamera_);
 			//triangle_->Update(testCamera_);
 			//ray_->Update(testCamera_);
@@ -321,7 +324,7 @@ void GameScene::Update()
 			}
 
 			//モデルの更新処理
-			sphere_->Update(camera_);
+			//sphere_->Update(camera_);
 			//ground_->Update(camera_);
 			//triangle_->Update(camera_);
 			//ray_->Update(camera_);
@@ -443,15 +446,15 @@ void GameScene::Update()
 		//rayCollision.start = XMVectorSet(rayWorldPositon.x, rayWorldPositon.y, rayWorldPositon.z, 1);//原点やや上
 		//rayCollision.dir = XMVectorSet(0, -1, 0, 0);//下向き
 
-		sphereCollision.pos.y += move.x;
+		//sphereCollision.pos.y += move.x;
 		//sphereCollision.pos.y += move.y;
 		//sphereCollision.pos.z += move.z;
 
-		rotate.y += move.y;
+		/*rotate.y += move.y;
 
 
 		sphere_->SetTransform(sphereCollision.pos);
-		sphere_->SetRotation(rotate);
+		sphere_->SetRotation(rotate);*/
 
 
 		//sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };*/
