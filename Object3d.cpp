@@ -6,6 +6,8 @@ std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
 KeyInput* Object3d::keys_ = nullptr;
 LightGroup* Object3d::lightGroup_ = nullptr;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> Object3d::pipelineState = nullptr;
+Microsoft::WRL::ComPtr<ID3D12RootSignature> Object3d::rootSignature = nullptr;
 
 //定数バッファの生成
 template <typename Type1, typename Type2, typename Type3>

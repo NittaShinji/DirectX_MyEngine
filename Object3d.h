@@ -25,7 +25,9 @@ public:
 	static void StaticInitialize(DirectXBasic* directXBasic);
 	void Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale);
 	void Update(Camera* camera);
-	void BeforeDraw();
+	//void BeforeDraw();
+	static void BeforeDraw();
+
 	void AfterDraw();
 	void Draw();
 	void SetModel(const std::string& path);
@@ -129,8 +131,12 @@ private:
 	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
 	ID3DBlob* errorBlob = nullptr; // エラーオブジェクト
 
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
+	//Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
+	//Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
+
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
+	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+
 	//グラフィックスパイプライン
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
 

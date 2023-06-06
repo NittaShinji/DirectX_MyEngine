@@ -559,8 +559,9 @@ void GameScene::Draw()
 		//ƒ‚ƒfƒ‹•`‰æ
 		//sphere_->BeforeDraw();
 		//ground_->BeforeDraw();
-		testObject->BeforeDraw();
-
+		//testObject->BeforeDraw();
+		Object3d::BeforeDraw();
+		
 		sphere_->Draw();
 		testObject->Draw();
 
