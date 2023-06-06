@@ -34,7 +34,7 @@ void Model::Load(const std::string& path)
 	// .OBJファイルを開く
 	const string modelFileName = model.name_ + ".obj";
 	const string directoryPath = "Resources/" + model.name_ + "/";
-
+	
 	file.open(directoryPath + modelFileName);
 
 	//ファイルオープン失敗をチェック
@@ -256,6 +256,8 @@ void Model::Update(){}
 
 void Model::LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model)
 {
+	const string defaultResourcePath = "Resources/";
+
 	//ファイルストリーム
 	std::ifstream file;
 	//マテリアルファイルを開く
@@ -320,6 +322,12 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 			line_stream >> model.infomation_.material_.textureFilename;
 			//テクスチャ読み込み
 			LoadTexture(directoryPath, model.infomation_.material_.textureFilename,model);
+		}
+		else
+		{
+			model.infomation_.material_.textureFilename = "white1x1.png";
+			//テクスチャ読み込み
+			LoadTexture(defaultResourcePath, "white1x1.png", model);
 		}
 	}
 

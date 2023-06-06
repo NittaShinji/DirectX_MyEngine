@@ -88,6 +88,8 @@ private:
 	//std::vector<Object3d*> objects;
 	std::vector<std::unique_ptr<Object3d>> objects;
 
+	//画像なしテストオブジェクト
+	Object3d* testObject = nullptr;
 	
 	//ゲームシーン
 	int scene_;

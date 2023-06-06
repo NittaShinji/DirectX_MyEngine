@@ -28,6 +28,7 @@ GameScene::~GameScene()
 	delete sphere_;
 	delete lightGroup_;
 	delete levelData_;
+	delete testObject;
 	//delete ground_;
 	//delete triangle_;
 
@@ -43,11 +44,9 @@ GameScene::~GameScene()
 	camera_ = nullptr;
 	testCamera_ = nullptr;
 	sphere_ = nullptr;
+	testObject = nullptr;
 	//ground_ = nullptr;
 	//triangle_ = nullptr;
-
-
-
 }
 
 void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
@@ -152,10 +151,13 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//モデル読み込み
 	
 	const string sphere = "sphere";
+	const string test = "NoImageModel";
+
 	/*const string ground = "ground";
 	const string testTriangle = "triangle_tex";
 	const string ray = "blackCube";*/
 
+	Model::Load(test);
 	Model::Load(sphere);
 	/*Model::Load(ground);
 	Model::Load(testTriangle);
@@ -175,7 +177,9 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y,0 };
 
 	sphere_ = new Object3d();
-	sphere_->Initialize(sphere, spherePosition, sphereScale);
+	sphere_->Initialize(sphere, XMFLOAT3(-30, 0, 0), sphereScale);
+	testObject = new Object3d();
+	testObject->Initialize(test, XMFLOAT3(30,0,0), sphereScale);
 	/*ground_ = new Object3d(ground, groundPosition, groundScale);
 	triangle_ = new Object3d(testTriangle, trianglePosition, triangleScale);
 	ray_ = new Object3d(ray, raySetPosition, rayScale);*/
@@ -194,10 +198,10 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//------------当たり判定----------
 	//--球の初期値を設定
 	//中心座標
-	sphereCollision.pos = sphere_->GetWorldPos();
+	/*sphereCollision.pos = sphere_->GetWorldPos();
 	sphereCollision.center = { sphere_->GetWorldPos().x,sphere_->GetWorldPos().y,sphere_->GetWorldPos().z,1 };
 	sphereCollision.radius = 10.0f;
-	sphere_->SetTransform(sphereCollision.pos);
+	sphere_->SetTransform(sphereCollision.pos);*/
 
 	//平面の初期値を設定
 	//法線ベクトル
@@ -311,7 +315,8 @@ void GameScene::Update()
 				object->Update(testCamera_);
 			}
 
-			//sphere_->Update(testCamera_);
+			testObject->Update(testCamera_);
+			sphere_->Update(testCamera_);
 			//ground_->Update(testCamera_);
 			//triangle_->Update(testCamera_);
 			//ray_->Update(testCamera_);
@@ -323,8 +328,10 @@ void GameScene::Update()
 				object->Update(testCamera_);
 			}
 
+			testObject->Update(camera_);
+
 			//モデルの更新処理
-			//sphere_->Update(camera_);
+			sphere_->Update(camera_);
 			//ground_->Update(camera_);
 			//triangle_->Update(camera_);
 			//ray_->Update(camera_);
@@ -550,10 +557,12 @@ void GameScene::Draw()
 	case GAME:
 
 		//モデル描画
-		sphere_->BeforeDraw();
+		//sphere_->BeforeDraw();
 		//ground_->BeforeDraw();
+		testObject->BeforeDraw();
 
-		//sphere_->Draw();
+		sphere_->Draw();
+		testObject->Draw();
 
 		for(auto& object : objects)
 		{
