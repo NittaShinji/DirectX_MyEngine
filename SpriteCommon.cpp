@@ -10,6 +10,12 @@ const size_t kMaxSRVCount = 2056;
 
 std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> SpriteCommon::textureBuffers_;
 
+SpriteCommon::~SpriteCommon()
+{
+
+}
+
+
 template <typename Type1, typename Type2, typename Type3>
 void SpriteCommon::CrateConstBuff(Type1*& constBuffer, Type2*& constMapData, Type3* directXBasic_)
 //Comptrなら&で参照
@@ -45,6 +51,44 @@ void SpriteCommon::CrateConstBuff(Type1*& constBuffer, Type2*& constMapData, Typ
 
 }
 
+
+template <typename Type3, typename Type4, typename Type5>
+void SpriteCommon::TestCrateConstBuff(Type3** constBuffer, Type4*& constMapData, Type5* directXBasic_)
+//Comptrなら&で参照
+//*&で参照
+{
+	//ヒープ設定
+	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
+	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
+	//リソース設定
+	D3D12_RESOURCE_DESC cbResourceDesc{};
+	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	cbResourceDesc.Width = (sizeof(Type2) + 0xff) & ~0xff;	//256バイトアラインメント
+	cbResourceDesc.Height = 1;
+	cbResourceDesc.DepthOrArraySize = 1;
+	cbResourceDesc.MipLevels = 1;
+	cbResourceDesc.SampleDesc.Count = 1;
+	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	//定数バッファの生成
+	HRESULT result_ = directXBasic_->GetDevice()->CreateCommittedResource(
+		&cbHeapProp,//ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&cbResourceDesc,//リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&constBuffer));
+	assert(SUCCEEDED(result_));
+
+
+	//定数バッファのマッピング
+	result_ = constBuffer->Map(0, nullptr, (void**)&constMapData);//マッピング
+	assert(SUCCEEDED(result_));
+
+}
+
+
+
 void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
@@ -57,15 +101,21 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 	ID3D12Resource* constBuffMaterial_ = constBuffMaterial.Get();
 	ID3D12Resource* constBuffTransform_ = constBuffTransform.Get();
 
+	Microsoft::WRL::ComPtr<ID3D12Resource> testconstBuffMaterial_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> testconstBuffTransform_;
+
 	CrateConstBuff<ID3D12Resource, ConstBufferDataMaterial, DirectXBasic>(constBuffMaterial_, constMapMaterial, directXBasic_);
 	CrateConstBuff<ID3D12Resource, ConstBufferDataTransform, DirectXBasic>(constBuffTransform_, constMapTransform, directXBasic_);
 
+	//TestCrateConstBuff<Microsoft::WRL::ComPtr<ID3D12Resource>, ConstBufferDataTransform, DirectXBasic>(testconstBuffMaterial_.GetAddressOf(), constMapMaterial, directXBasic_);
+	
 	//CrateConstBuff<ID3D12Resource, ConstBufferDataMaterial, DirectXBasic>(constBuffMaterial_.GetAddressOf(), constMapMaterial, directXBasic_);
 	//CrateConstBuff<ID3D12Resource, ConstBufferDataTransform, DirectXBasic>(constBuffTransform_.GetAddressOf(), constMapTransform, directXBasic_);
 
 	constBuffMaterial = constBuffMaterial_;
 	constBuffTransform = constBuffTransform_;
 
+	
 	//単位行列を代入
 	constMapTransform->mat = XMMatrixIdentity();
 	constMapTransform->mat.r[0].m128_f32[0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
@@ -83,6 +133,10 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 	//設定を本にSRV用デスクリプタヒープを生成
 	HRESULT result_ = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result_));
+
+	/*delete constBuffMaterial_;
+	delete constBuffTransform_;*/
+
 }
 
 

@@ -13,6 +13,8 @@ using namespace DirectX;
 class SpriteCommon
 {
 public:
+
+	~SpriteCommon();
 	
 	//初期化
 	void Initialize(DirectXBasic* directXBasic);
@@ -142,6 +144,11 @@ public:
 	template <typename Type1, typename Type2, typename Type3>
 	//定数バッファの生成
 	void CrateConstBuff(Type1 *&constBuffer, Type2 *&constMapData, Type3* directXBasic_);
+
+	//テンプレートコンストラクタ
+	template <typename Type3, typename Type4, typename Type5>
+	//定数バッファの生成
+	void TestCrateConstBuff(Type3 **constBuffer, Type4 *&constMapData, Type5 *directXBasic_);
 
 	//セッター
 	//void SetSRVheap(ID3D12DescriptorHeap* srvHeap) { srvHeap_ = srvHeap; };

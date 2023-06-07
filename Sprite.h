@@ -36,6 +36,7 @@ public:
 private:
 
 	SpriteCommon* spriteCommon_;
+
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
 
