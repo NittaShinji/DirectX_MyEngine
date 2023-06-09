@@ -7,7 +7,6 @@ using namespace DirectX;
 
 std::string SpriteCommon::kDefaultTextureDirectoryPath_ = "Resources/";
 const size_t kMaxSRVCount = 2056;
-
 std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> SpriteCommon::textureBuffers_;
 
 SpriteCommon::~SpriteCommon()
