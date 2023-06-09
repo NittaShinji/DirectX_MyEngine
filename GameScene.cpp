@@ -61,12 +61,12 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 
 	////------------ライト------------
-	////DirectionalLight::StaticInitialize(directXBasic_->GetDevice().Get());
-	//LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
+	//DirectionalLight::StaticInitialize(directXBasic_->GetDevice().Get());
+	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
 
-	//lightGroup_ = LightGroup::Create();
-	////3Dオブジェクトにライトをセット
-	//Object3d::SetLightGroup(lightGroup_);
+	lightGroup_ = LightGroup::Create();
+	//3Dオブジェクトにライトをセット
+	Object3d::SetLightGroup(lightGroup_);
 
 	//------------サウンド----------
 
@@ -81,42 +81,42 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	
 	//レベルデータからオブジェクトを生成、配置
 	
-	//levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("test3.json");
+	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("test3.json");
 
-	//for(auto& objectData : levelData_->objects)
-	//{
-	//	//ファイル名から登録済みモデルを検索
-	//	Model* model = nullptr;
-	//	decltype(models_)::iterator it = models_.find(objectData.fileName);
-	//	if(it != models_.end()) { model = &it->second; }
-	//	//モデルを指定して3Dオブジェクトを作成
-	//	//モデルをロード
-	//	Model::Load(objectData.fileName);
+	for(auto& objectData : levelData_->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models_)::iterator it = models_.find(objectData.fileName);
+		if(it != models_.end()) { model = &it->second; }
+		//モデルを指定して3Dオブジェクトを作成
+		//モデルをロード
+		Model::Load(objectData.fileName);
 
-	//	//3Dオブジェクトの生成
-	//	//Object3d* newObject = new Object3d;
-	//	std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
+		//3Dオブジェクトの生成
+		//Object3d* newObject = new Object3d;
+		std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 
-	//	//座標
-	//	DirectX::XMFLOAT3 pos;
-	//	pos = objectData.translation;
-	//	newObject->SetTransform(pos);
-	//	//回転角
-	//	DirectX::XMFLOAT3 rot;
-	//	rot = objectData.rotation;
+		//座標
+		DirectX::XMFLOAT3 pos;
+		pos = objectData.translation;
+		newObject->SetTransform(pos);
+		//回転角
+		DirectX::XMFLOAT3 rot;
+		rot = objectData.rotation;
 
-	//	newObject->SetRotation(rot);
-	//	//座標
-	//	DirectX::XMFLOAT3 scale;
-	//	scale = objectData.scaling;
-	//	newObject->SetScale(scale);
+		newObject->SetRotation(rot);
+		//座標
+		DirectX::XMFLOAT3 scale;
+		scale = objectData.scaling;
+		newObject->SetScale(scale);
 
-	//	//sphere_ = new Object3d(objectData.fileName, spherePosition, sphereScale);
-	//	newObject->Initialize(objectData.fileName, pos, scale);
+		//sphere_ = new Object3d(objectData.fileName, spherePosition, sphereScale);
+		newObject->Initialize(objectData.fileName, pos, scale);
 
-	//	//配列に登録
-	//	objects.push_back(std::move(newObject));
-	//}
+		//配列に登録
+		objects.push_back(std::move(newObject));
+	}
 
 	//------------画像読み込み----------
 	title_ = new Sprite;
@@ -176,10 +176,10 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y * 2,rayScale.z * 2 };
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y,0 };
 
-	/*sphere_ = new Object3d();
+	sphere_ = new Object3d();
 	sphere_->Initialize(sphere, XMFLOAT3(-30, 0, 0), sphereScale);
 	testObject = new Object3d();
-	testObject->Initialize(test, XMFLOAT3(30,0,0), sphereScale);*/
+	testObject->Initialize(test, XMFLOAT3(30,0,0), sphereScale);
 	/*ground_ = new Object3d(ground, groundPosition, groundScale);
 	triangle_ = new Object3d(testTriangle, trianglePosition, triangleScale);
 	ray_ = new Object3d(ray, raySetPosition, rayScale);*/
@@ -233,44 +233,42 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 void GameScene::Update()
 {
-	
+	//光線方向初期値
+	static XMVECTOR lightDir = { 0,1,5,0 };
+	static XMFLOAT3 color = { 1, 1, 1 };
 
-	////光線方向初期値
-	//static XMVECTOR lightDir = { 0,1,5,0 };
-	//static XMFLOAT3 color = { 1, 1, 1 };
+	if(keys_->HasPushedKey(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
+	else if(keys_->HasPushedKey(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; }
+	if(keys_->HasPushedKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
+	else if(keys_->HasPushedKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
 
-	//if(keys_->HasPushedKey(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
-	//else if(keys_->HasPushedKey(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; }
-	//if(keys_->HasPushedKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
-	//else if(keys_->HasPushedKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
+	if(keys_->HasPushedKey(DIK_2)) { color.x -= 0.01f; }
+	else if(keys_->HasPushedKey(DIK_3)) { color.x += 0.01f; }
+	else if(keys_->HasPushedKey(DIK_4)) { color.y += 0.01f; }
+	else if(keys_->HasPushedKey(DIK_5)) { color.y -= 0.01f; }
 
-	//if(keys_->HasPushedKey(DIK_2)) { color.x -= 0.01f; }
-	//else if(keys_->HasPushedKey(DIK_3)) { color.x += 0.01f; }
-	//else if(keys_->HasPushedKey(DIK_4)) { color.y += 0.01f; }
-	//else if(keys_->HasPushedKey(DIK_5)) { color.y -= 0.01f; }
+	lightGroup_->SetAmbientColor(color);
+	lightGroup_->SetDirLightDir(0, lightDir);
+	lightGroup_->SetDirLightColor(0, XMFLOAT3(0,0,1));
 
-	//lightGroup_->SetAmbientColor(color);
-	//lightGroup_->SetDirLightDir(0, lightDir);
-	//lightGroup_->SetDirLightColor(0, XMFLOAT3(0,0,1));
+	lightGroup_->SetDirLightDir(1, lightDir);
+	lightGroup_->SetDirLightColor(1, XMFLOAT3(0,1,0));
 
-	//lightGroup_->SetDirLightDir(1, lightDir);
-	//lightGroup_->SetDirLightColor(1, XMFLOAT3(0,1,0));
+	lightGroup_->SetDirLightDir(2, lightDir);
+	lightGroup_->SetDirLightColor(2, XMFLOAT3(1,0,0));
 
-	//lightGroup_->SetDirLightDir(2, lightDir);
-	//lightGroup_->SetDirLightColor(2, XMFLOAT3(1,0,0));
+	{
+		//imguiからのライトパラメータを反映
+		lightGroup_->SetAmbientColor(XMFLOAT3(ambientColor0));
+		lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
+		lightGroup_->SetDirLightColor(0, XMFLOAT3(lightColor0));
+		lightGroup_->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
+		lightGroup_->SetDirLightColor(1, XMFLOAT3(lightColor1));
+		lightGroup_->SetDirLightDir(2, XMVECTOR({ lightDir2[0], lightDir2[1], lightDir2[2], 0 }));
+		lightGroup_->SetDirLightColor(2, XMFLOAT3(lightColor2));
+	}
 
-	//{
-	//	//imguiからのライトパラメータを反映
-	//	lightGroup_->SetAmbientColor(XMFLOAT3(ambientColor0));
-	//	lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
-	//	lightGroup_->SetDirLightColor(0, XMFLOAT3(lightColor0));
-	//	lightGroup_->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
-	//	lightGroup_->SetDirLightColor(1, XMFLOAT3(lightColor1));
-	//	lightGroup_->SetDirLightDir(2, XMVECTOR({ lightDir2[0], lightDir2[1], lightDir2[2], 0 }));
-	//	lightGroup_->SetDirLightColor(2, XMFLOAT3(lightColor2));
-	//}
-
-	//lightGroup_->Update();
+	lightGroup_->Update();
 
 	switch(scene_)
 	{
@@ -302,35 +300,33 @@ void GameScene::Update()
 
 	case GAME:
 
-		
-
 		camera_->Updata();
 		testCamera_->Updata();
 
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
 		{
-			/*for(auto& object : objects)
+			for(auto& object : objects)
 			{
 				object->Update(testCamera_);
-			}*/
+			}
 
-			//testObject->Update(testCamera_);
-			//sphere_->Update(testCamera_);
+			testObject->Update(testCamera_);
+			sphere_->Update(testCamera_);
 			//ground_->Update(testCamera_);
 			//triangle_->Update(testCamera_);
 			//ray_->Update(testCamera_);
 		}
 		else
 		{
-			/*for(auto& object : objects)
+			for(auto& object : objects)
 			{
 				object->Update(testCamera_);
-			}*/
+			}
 
-			//testObject->Update(camera_);
+			testObject->Update(camera_);
 			//モデルの更新処理
-			//sphere_->Update(camera_);
+			sphere_->Update(camera_);
 
 			//ground_->Update(camera_);
 			//triangle_->Update(camera_);
@@ -560,15 +556,15 @@ void GameScene::Draw()
 		//sphere_->BeforeDraw();
 		//ground_->BeforeDraw();
 		//testObject->BeforeDraw();
-		/*Object3d::BeforeDraw();
+		Object3d::BeforeDraw();
 		
 		sphere_->Draw();
-		testObject->Draw();*/
+		testObject->Draw();
 
-		/*for(auto& object : objects)
+		for(auto& object : objects)
 		{
 			object->Draw();
-		}*/
+		}
 
 		//ground_->Draw();
 		//triangle_->Draw();

@@ -10,11 +10,14 @@
 
 class Object3d
 {
-	//エイリアステンプレート
+	//nameSpace
 	using XMFLOAT = DirectX::XMFLOAT3;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMMATRIX = DirectX::XMMATRIX;
+
+	//エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
 
@@ -175,9 +178,11 @@ public:
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 
 	//テンプレートコンストラクタ
-	template <typename Type1, typename Type2, typename Type3>
+	template <typename Type1>
 	//定数バッファの生成
-	void CrateConstBuff(Type1*& constBuffer, Type3* directXBasic_);
+	//void CrateConstBuff(Type1*& constBuffer, Type2* directXBasic_);
+	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
+
 
 	//セッター
 	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };

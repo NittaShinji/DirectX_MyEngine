@@ -16,7 +16,7 @@ SpriteCommon::~SpriteCommon()
 }
 
 template<typename Type1, typename Type2>
-ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff1(Type1*& constMapData, Type2* directXBasic_)
+ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff(Type1*& constMapData, Type2* directXBasic_)
 {
 	ComPtr<ID3D12Resource> constBuff_;
 	
@@ -55,8 +55,8 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 	directXBasic_ = directXBasic;
 
 	//定数バッファの生成
-	constBuffMaterial = CrateConstBuff1<ConstBufferDataMaterial, DirectXBasic>(constMapMaterial, directXBasic_);
-	constBuffTransform = CrateConstBuff1<ConstBufferDataTransform, DirectXBasic>(constMapTransform, directXBasic_);
+	constBuffMaterial = CrateConstBuff<ConstBufferDataMaterial, DirectXBasic>(constMapMaterial, directXBasic_);
+	constBuffTransform = CrateConstBuff<ConstBufferDataTransform, DirectXBasic>(constMapTransform, directXBasic_);
 
 	//単位行列を代入
 	constMapTransform->mat = XMMatrixIdentity();

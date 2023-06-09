@@ -144,18 +144,7 @@ public:
 	std::map<const std::string, int, std::less<>> GetTextureMap() { return textureMap; }
 
 	//テンプレートコンストラクタ
-	template <typename Type1, typename Type2, typename Type3>
-	//定数バッファの生成
-	void CrateConstBuff(Type1 *&constBuffer, Type2 *&constMapData, Type3* directXBasic_);
-
 	template <typename Type1, typename Type2>
-	ComPtr<ID3D12Resource> CrateConstBuff1(Type1*& constMapData, Type2* directXBasic_);
-
-	//テンプレートコンストラクタ
-	//template <typename Type3, typename Type4, typename Type5>
-	////定数バッファの生成
-	//void TestCrateConstBuff(Type3 **constBuffer, Type4 *&constMapData, Type5 *directXBasic_);
-
-	//セッター
-	//void SetSRVheap(ID3D12DescriptorHeap* srvHeap) { srvHeap_ = srvHeap; };
+	//定数バッファの生成
+	ComPtr<ID3D12Resource> CrateConstBuff(Type1*& constMapData, Type2* directXBasic_);
 };

@@ -86,7 +86,7 @@ private:
 	//3Dオブジェクト
 	//Object3d* object3d_ = nullptr;
 	//std::vector<Object3d*> objects;
-	//std::vector<std::unique_ptr<Object3d>> objects;
+	std::vector<std::unique_ptr<Object3d>> objects;
 
 	//画像なしテストオブジェクト
 	Object3d* testObject = nullptr;

@@ -2,6 +2,8 @@
 #include <d3dcompiler.h>
 #pragma comment(lib, "d3dcompiler.lib")
 
+using namespace Microsoft::WRL;
+
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
 KeyInput* Object3d::keys_ = nullptr;
@@ -10,16 +12,18 @@ Microsoft::WRL::ComPtr<ID3D12PipelineState> Object3d::pipelineState = nullptr;
 Microsoft::WRL::ComPtr<ID3D12RootSignature> Object3d::rootSignature = nullptr;
 
 //定数バッファの生成
-template <typename Type1, typename Type2, typename Type3>
-void Object3d::CrateConstBuff(Type1 *&constBuffer, Type3* directXBasic_)
+template <typename Type1>
+ComPtr<ID3D12Resource> Object3d::CrateConstBuff(Type1* directXBasic_)
 {
+	ComPtr<ID3D12Resource> constBuff_;
+
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
 	//リソース設定
 	D3D12_RESOURCE_DESC cbResourceDesc{};
 	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(Type2) + 0xff) & ~0xff;	//256バイトアラインメント
+	cbResourceDesc.Width = (sizeof(Type1) + 0xff) & ~0xff;	//256バイトアラインメント
 	cbResourceDesc.Height = 1;
 	cbResourceDesc.DepthOrArraySize = 1;
 	cbResourceDesc.MipLevels = 1;
@@ -33,8 +37,10 @@ void Object3d::CrateConstBuff(Type1 *&constBuffer, Type3* directXBasic_)
 		&cbResourceDesc,//リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffer));
+		IID_PPV_ARGS(&constBuff_));
 	assert(SUCCEEDED(result));
+
+	return constBuff_;
 }
 
 void Object3d::CrateConstBuffandMapping()
@@ -53,32 +59,14 @@ void Object3d::Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 M
 	rotation = { 0.0f,0.0f,0.0f };
 	transform = position;
 
-
-	/*scale = Modelscale;
-	rotation = { 0.0f,0.0f,0.0f };
-	transform = position;*/
-
-	ID3D12Resource* constBuffTransform_ = constBuffTransform.Get();
-	ID3D12Resource* constBuffMaterial_ = constBuffMaterial.Get();
-	ID3D12Resource* constBuffLight_ = constBuffLight.Get();
-
-
-	CrateConstBuff<ID3D12Resource, DirectXBasic>(constBuffTransform_, directXBasic_);
-	constBuffTransform = constBuffTransform_;
-
+	//定数バッファの生成
+	constBuffTransform = CrateConstBuff<DirectXBasic>(directXBasic_);
+	constBuffMaterial = CrateConstBuff<DirectXBasic>(directXBasic_);
+	constBuffLight = CrateConstBuff<DirectXBasic>(directXBasic_);
+	
 	//定数バッファのマッピング
 	HRESULT result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
 	assert(SUCCEEDED(result));
-
-	//単位行列を代入
-	//constMapTransform->mat = XMMatrixIdentity();
-
-	CrateConstBuff<ID3D12Resource, DirectXBasic>(constBuffMaterial_, directXBasic_);
-	constBuffMaterial = constBuffMaterial_;
-
-	CrateConstBuff<ID3D12Resource, DirectXBasic>(constBuffLight_, directXBasic_);
-	constBuffLight = constBuffLight_;
-
 	//定数バッファのマッピング
 	result = constBuffLight->Map(0, nullptr, (void**)&constMapLight);//マッピング
 	assert(SUCCEEDED(result));
@@ -369,9 +357,6 @@ void Object3d::Update(Camera* camera)
 	}*/
 
 	//定数バッファへデータ転送
-	//matを消すと表示がおかしくなってしまう
-	//constMapTransform->mat = matWorld * matView_ * matProjection_;
-	
 	constMapTransform->worldMatrix = matWorld;
 	constMapTransform->viewProjection = (matView_ * matProjection_);
 	constMapTransform->cameraPos = cameraPos;
