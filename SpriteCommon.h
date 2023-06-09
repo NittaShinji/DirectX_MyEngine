@@ -14,6 +14,9 @@ class SpriteCommon
 {
 public:
 
+	//エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 	~SpriteCommon();
 	
 	//初期化
@@ -76,17 +79,17 @@ private:
 	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
 	ID3DBlob* errorBlob = nullptr; // エラーオブジェクト
 
-	Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
+	ComPtr<ID3D12PipelineState> pipelineState = nullptr;
+	ComPtr<ID3D12RootSignature> rootSignature = nullptr;
 	
 	//頂点レイアウト
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout{};
 
 	//色用の定数バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
+	ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
 	//ID3D12Resource* constBuffMaterial = nullptr;
 	//座標用の定数バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform = nullptr;
+	ComPtr<ID3D12Resource> constBuffTransform = nullptr;
 
 	//定数バッファのGPUリソースのポインタ
 	ConstBufferDataMaterial* constMapMaterial = nullptr;
@@ -106,13 +109,13 @@ private:
 	XMFLOAT4* imageDate;
 
 	//シェーダーリソース用のデスクリプタヒープ
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
+	ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
 	//SRVの最大個数
 	static const size_t kMaxSRVCount = 2056;
 
 	//テクスチャバッファ
-	static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
 
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
@@ -132,7 +135,7 @@ public:
 
 	//ゲッター
 	DirectXBasic* GetDirectXBasic() { return directXBasic_; };
-	Microsoft::WRL::ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
+	ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
 	ConstBufferDataMaterial* GetConstMapMaterial() { return constMapMaterial; };
 	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform.Get(); };
 	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
@@ -145,10 +148,13 @@ public:
 	//定数バッファの生成
 	void CrateConstBuff(Type1 *&constBuffer, Type2 *&constMapData, Type3* directXBasic_);
 
+	template <typename Type1, typename Type2>
+	ComPtr<ID3D12Resource> CrateConstBuff1(Type1*& constMapData, Type2* directXBasic_);
+
 	//テンプレートコンストラクタ
-	template <typename Type3, typename Type4, typename Type5>
-	//定数バッファの生成
-	void TestCrateConstBuff(Type3 **constBuffer, Type4 *&constMapData, Type5 *directXBasic_);
+	//template <typename Type3, typename Type4, typename Type5>
+	////定数バッファの生成
+	//void TestCrateConstBuff(Type3 **constBuffer, Type4 *&constMapData, Type5 *directXBasic_);
 
 	//セッター
 	//void SetSRVheap(ID3D12DescriptorHeap* srvHeap) { srvHeap_ = srvHeap; };

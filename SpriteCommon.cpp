@@ -15,12 +15,11 @@ SpriteCommon::~SpriteCommon()
 
 }
 
-
-template <typename Type1, typename Type2, typename Type3>
-void SpriteCommon::CrateConstBuff(Type1*& constBuffer, Type2*& constMapData, Type3* directXBasic_)
-//Comptrなら&で参照
-//*&で参照
+template<typename Type1, typename Type2>
+ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff1(Type1*& constMapData, Type2* directXBasic_)
 {
+	ComPtr<ID3D12Resource> constBuff_;
+	
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
@@ -41,81 +40,24 @@ void SpriteCommon::CrateConstBuff(Type1*& constBuffer, Type2*& constMapData, Typ
 		&cbResourceDesc,//リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&constBuffer));
+		IID_PPV_ARGS(&constBuff_));
 	assert(SUCCEEDED(result_));
-
 
 	//定数バッファのマッピング
-	result_ = constBuffer->Map(0, nullptr, (void**)&constMapData);//マッピング
+	result_ = constBuff_->Map(0, nullptr, (void**)&constMapData);//マッピング
 	assert(SUCCEEDED(result_));
 
+	return constBuff_;
 }
-
-
-template <typename Type3, typename Type4, typename Type5>
-void SpriteCommon::TestCrateConstBuff(Type3** constBuffer, Type4*& constMapData, Type5* directXBasic_)
-//Comptrなら&で参照
-//*&で参照
-{
-	//ヒープ設定
-	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	//リソース設定
-	D3D12_RESOURCE_DESC cbResourceDesc{};
-	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(Type2) + 0xff) & ~0xff;	//256バイトアラインメント
-	cbResourceDesc.Height = 1;
-	cbResourceDesc.DepthOrArraySize = 1;
-	cbResourceDesc.MipLevels = 1;
-	cbResourceDesc.SampleDesc.Count = 1;
-	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	//定数バッファの生成
-	HRESULT result_ = directXBasic_->GetDevice()->CreateCommittedResource(
-		&cbHeapProp,//ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&cbResourceDesc,//リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&constBuffer));
-	assert(SUCCEEDED(result_));
-
-
-	//定数バッファのマッピング
-	result_ = constBuffer->Map(0, nullptr, (void**)&constMapData);//マッピング
-	assert(SUCCEEDED(result_));
-
-}
-
-
 
 void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
 
-	//ID3D12Resource* constBuffMaterial_ = constBuffMaterial.Get();
+	//定数バッファの生成
+	constBuffMaterial = CrateConstBuff1<ConstBufferDataMaterial, DirectXBasic>(constMapMaterial, directXBasic_);
+	constBuffTransform = CrateConstBuff1<ConstBufferDataTransform, DirectXBasic>(constMapTransform, directXBasic_);
 
-	////SpriteCommon::CrateConstBuff<ID3D12Resource, ConstBufferDataMaterial, DirectXBasic>(constBuffMaterial.Get(), constMapMaterial, directXBasic_);
-	//CrateConstBuff<ID3D12Resource, ConstBufferDataMaterial, DirectXBasic>(constBuffMaterial_, constMapMaterial, directXBasic_);
-
-	ID3D12Resource* constBuffMaterial_ = constBuffMaterial.Get();
-	ID3D12Resource* constBuffTransform_ = constBuffTransform.Get();
-
-	Microsoft::WRL::ComPtr<ID3D12Resource> testconstBuffMaterial_;
-	Microsoft::WRL::ComPtr<ID3D12Resource> testconstBuffTransform_;
-
-	CrateConstBuff<ID3D12Resource, ConstBufferDataMaterial, DirectXBasic>(constBuffMaterial_, constMapMaterial, directXBasic_);
-	CrateConstBuff<ID3D12Resource, ConstBufferDataTransform, DirectXBasic>(constBuffTransform_, constMapTransform, directXBasic_);
-
-	//TestCrateConstBuff<Microsoft::WRL::ComPtr<ID3D12Resource>, ConstBufferDataTransform, DirectXBasic>(testconstBuffMaterial_.GetAddressOf(), constMapMaterial, directXBasic_);
-	
-	//CrateConstBuff<ID3D12Resource, ConstBufferDataMaterial, DirectXBasic>(constBuffMaterial_.GetAddressOf(), constMapMaterial, directXBasic_);
-	//CrateConstBuff<ID3D12Resource, ConstBufferDataTransform, DirectXBasic>(constBuffTransform_.GetAddressOf(), constMapTransform, directXBasic_);
-
-	constBuffMaterial = constBuffMaterial_;
-	constBuffTransform = constBuffTransform_;
-
-	
 	//単位行列を代入
 	constMapTransform->mat = XMMatrixIdentity();
 	constMapTransform->mat.r[0].m128_f32[0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
@@ -133,110 +75,7 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 	//設定を本にSRV用デスクリプタヒープを生成
 	HRESULT result_ = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result_));
-
-	/*delete constBuffMaterial_;
-	delete constBuffTransform_;*/
-
 }
-
-
-void SpriteCommon::CrateConstBuffTransform()
-{
-	//CrateConstBuff<ID3D12Resource*, ConstBufferDataTransform*, DirectXBasic*>(constBuffTransform.Get(), constMapTransform, directXBasic_);
-	//
-	////単位行列を代入
-	//constMapTransform->mat = XMMatrixIdentity();
-	//constMapTransform->mat.r[0].m128_f32[0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
-	//constMapTransform->mat.r[1].m128_f32[1] = -2.0f / directXBasic_->GetWinHeight();	//ウインドウ縦幅
-	////画面半分の平行移動
-	//constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
-	//constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
-}
-
-//半透明合成の初期化
-//void SpriteCommon::Initialize(DirectXBasic* directXBasic)
-//{
-//	directXBasic_ = directXBasic;
-//
-//	//ヒープ設定
-//	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-//	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-//	//リソース設定
-//	D3D12_RESOURCE_DESC cbResourceDesc{};
-//	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-//	cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
-//	cbResourceDesc.Height = 1;
-//	cbResourceDesc.DepthOrArraySize = 1;
-//	cbResourceDesc.MipLevels = 1;
-//	cbResourceDesc.SampleDesc.Count = 1;
-//	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-//
-//	//定数バッファの生成
-//	HRESULT result_ = directXBasic_->GetDevice()->CreateCommittedResource(
-//		&cbHeapProp,//ヒープ設定
-//		D3D12_HEAP_FLAG_NONE,
-//		&cbResourceDesc,//リソース設定
-//		D3D12_RESOURCE_STATE_GENERIC_READ,
-//		nullptr,
-//		IID_PPV_ARGS(&constBuffMaterial));
-//	assert(SUCCEEDED(result_));
-//
-//	//定数バッファのマッピング
-//	result_ = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
-//	assert(SUCCEEDED(result_));
-//
-//
-//	//関数が作れるまでの応急処置
-//	{
-//		//ヒープ設定
-//		D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
-//		cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-//		//リソース設定
-//		D3D12_RESOURCE_DESC cbResourceDesc{};
-//		cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-//		cbResourceDesc.Width = (sizeof(ConstBufferDataMaterial) + 0xff) & ~0xff;	//256バイトアラインメント
-//		cbResourceDesc.Height = 1;
-//		cbResourceDesc.DepthOrArraySize = 1;
-//		cbResourceDesc.MipLevels = 1;
-//		cbResourceDesc.SampleDesc.Count = 1;
-//		cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-//
-//		//定数バッファの生成
-//		result_ = directXBasic_->GetDevice()->CreateCommittedResource(
-//			&cbHeapProp,//ヒープ設定
-//			D3D12_HEAP_FLAG_NONE,
-//			&cbResourceDesc,//リソース設定
-//			D3D12_RESOURCE_STATE_GENERIC_READ,
-//			nullptr,
-//			IID_PPV_ARGS(&constBuffTransform));
-//		assert(SUCCEEDED(result_));
-//
-//		//定数バッファのマッピング
-//		result_ = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
-//		assert(SUCCEEDED(result_));
-//
-//		//単位行列を代入
-//		constMapTransform->mat = XMMatrixIdentity();
-//		constMapTransform->mat.r[0].m128_f32[0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
-//		constMapTransform->mat.r[1].m128_f32[1] = -2.0f / directXBasic_->GetWinHeight();	//ウインドウ縦幅
-//		//画面半分の平行移動
-//		constMapTransform->mat.r[3].m128_f32[0] = -1.0f;
-//		constMapTransform->mat.r[3].m128_f32[1] = 1.0f;
-//
-//	}
-//
-//	//デスクリプタヒープの設定
-//	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-//	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-//	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
-//	srvHeapDesc.NumDescriptors = kMaxSRVCount;
-//
-//	//設定を本にSRV用デスクリプタヒープを生成
-//	HRESULT result_ = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
-//	assert(SUCCEEDED(result_));
-//}
-
-
 
 void SpriteCommon::ShaderLoad()
 {
@@ -553,141 +392,6 @@ void SpriteCommon::LoadTexture(const std::string& fileName)
 		assert(SUCCEEDED(result_));
 	}
 
-
-	//----------------------------------
-
-	////ヒープ設定
-	//D3D12_HEAP_PROPERTIES textureHeapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-
-	////リソース設定
-	//D3D12_RESOURCE_DESC textureResourceDesc{};
-	//textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	//textureResourceDesc.Format = metadata.format;
-	//textureResourceDesc.Width = metadata.width; // 幅
-	//textureResourceDesc.Height = (UINT)metadata.height; // 幅
-	//textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
-	//textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
-	//textureResourceDesc.SampleDesc.Count = 1;
-
-	////テクスチャバッファの生成
-	//result_ = directXBasic_->GetDevice()->CreateCommittedResource(
-	//	&textureHeapProp,
-	//	D3D12_HEAP_FLAG_NONE,
-	//	&textureResourceDesc,
-	//	D3D12_RESOURCE_STATE_COPY_DEST,
-	//	nullptr,
-	//	IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
-
-	////レイアウト取得
-	//D3D12_PLACED_SUBRESOURCE_FOOTPRINT  footprint;
-	//UINT64  total_bytes = 0;
-	//directXBasic_->GetDevice()->GetCopyableFootprints(&textureResourceDesc, 0, 1, 0, &footprint, nullptr, nullptr, &total_bytes);
-
-	////転送用のバッファを作成
-	////転送用ヒープ設定
-	//D3D12_HEAP_PROPERTIES  uploadHeap = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-
-	////転送用リソース設定
-	//D3D12_RESOURCE_DESC  uploadDesc;
-	//memset(&uploadDesc, 0, sizeof(uploadDesc));
-	//uploadDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	//uploadDesc.Width = total_bytes; // 幅
-	//uploadDesc.Height = 1; // 幅
-	//uploadDesc.DepthOrArraySize = 1;
-	//uploadDesc.MipLevels = 1;
-	//uploadDesc.SampleDesc.Count = 1;
-	//uploadDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	////転送用テクスチャバッファの生成
-	//ID3D12Resource* uploadBuffer = nullptr;
-	//result_ = directXBasic_->GetDevice()->CreateCommittedResource(&uploadHeap,
-	//	D3D12_HEAP_FLAG_NONE, &uploadDesc, D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&uploadBuffer));
-
-	////転送用バッファへの書き込み
-	///*void* ptr = nullptr;
-	//uploadBuffer->Map(0, nullptr, &ptr);*/
-	////for(size_t i = 0; i < metadata.mipLevels; i++)
-	////{
-	////	//ミニマップレベルを指定してイメージを取得
-	////	//const Image* img = scratchImg.GetImage(i, 0, 0);
-	////	/*const uint8_t* pixel[] = { 0 };
-	////	pixel[i] = scratchImg.GetPixels();*/
-	////	const uint8_t* pixel = scratchImg.GetImage(i,0,0)->pixels;
-
-	////	/*uint8_t pixelData[];
-	////	size_t pixelDataSize = scratchImg.GetPixelsSize();*/
-
-	////	//memcpy(reinterpret_cast<unsigned char*>(ptr) + footprint.Offset, img->pixels, scratchImg.GetPixelsSize());
-	////	
-	////}
-	////全ミニマップについて
-	////for(size_t i = 0; i < metadata.mipLevels; i++)
-	////{
-	////	//ミニマップレベルを指定してイメージを取得
-	////	const Image* img = scratchImg.GetImage(i, 0, 0);
-
-	////	result_ = uploadBuffer->Map(
-	////				(UINT)i,
-	////				nullptr,
-	////				&ptr);
-
-	////	memcpy(reinterpret_cast<unsigned char*>(ptr) + footprint.Offset, img->pixels, sizeof(img->pixels));
-
-	////	//textureBuffers_[textureIndex_]->
-	////}
-
-	////全ミニマップについて
-	//for(size_t i = 0; i < metadata.mipLevels; i++)
-	//{
-	//	//ミニマップレベルを指定してイメージを取得
-	//	const Image* img = scratchImg.GetImage(i, 0, 0);
-
-	//	//テクスチャバッファにデータ転送
-
-	//	result_ = uploadBuffer->WriteToSubresource(
-	//		(UINT)i,
-	//		nullptr,
-	//		img->pixels,
-	//		(UINT)img->rowPitch,
-	//		(UINT)img->slicePitch
-	//	);
-
-	//	assert(SUCCEEDED(result_));
-	//}
-
-	//
-	////コピーコマンド作成
-	//D3D12_TEXTURE_COPY_LOCATION  dest;
-	//memset(&dest, 0, sizeof(dest));
-	//dest.pResource = textureBuffers_[textureIndex_].Get();
-	//dest.Type = D3D12_TEXTURE_COPY_TYPE_SUBRESOURCE_INDEX;
-	//dest.SubresourceIndex = 0;
-
-	//D3D12_TEXTURE_COPY_LOCATION  src;
-	//memset(&src, 0, sizeof(src));
-	//src.pResource = uploadBuffer;
-	//src.Type = D3D12_TEXTURE_COPY_TYPE_PLACED_FOOTPRINT;
-	//src.PlacedFootprint = footprint;
-
-	////転送コマンドを格納
-	//ID3D12GraphicsCommandList* iCommandList = directXBasic_->GetCommandList().Get();
-	//iCommandList->CopyTextureRegion(&dest, 0, 0, 0, &src, nullptr);
-
-	////コマンドキューとコマンドリストが描画用と共用なのでリソースバリアが必要
-	////リソースバリアの設定
-	//D3D12_RESOURCE_BARRIER  barrier;
-	//memset(&barrier, 0, sizeof(barrier));
-	//barrier.Type = D3D12_RESOURCE_BARRIER_TYPE_TRANSITION;
-	//barrier.Transition.pResource = textureBuffers_[textureIndex_].Get();
-	//barrier.Transition.Subresource = D3D12_RESOURCE_BARRIER_ALL_SUBRESOURCES;
-	//barrier.Transition.StateBefore = D3D12_RESOURCE_STATE_COPY_DEST;
-	//barrier.Transition.StateAfter = D3D12_RESOURCE_STATE_GENERIC_READ;
-
-	////リソースバリアの生成
-	//iCommandList->ResourceBarrier(1, &barrier);
-
-	//----------------------------
-
 	//SRVヒープの先頭ハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap_->GetCPUDescriptorHandleForHeapStart();
 
@@ -730,13 +434,6 @@ void SpriteCommon::VertexLayoutSet()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-
-		//{
-		//	//法線ベクトル(1行で書いたほう見やすい)
-		//	"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
-		//	D3D12_APPEND_ALIGNED_ELEMENT,
-		//	D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		//},
 
 		// uv座標
 		{
@@ -842,14 +539,9 @@ void SpriteCommon::RootSignatureSet()
 
 void SpriteCommon::DescriptorHeapSet()
 {
-
-	////SRVヒープの設定コマンド
-	//directXBasic_->GetCommandList()->SetDescriptorHeaps(1, &srvHeap_);
-
-	////GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	//srvGpuHandle = srvHeap_->GetGPUDescriptorHandleForHeapStart();
-
 }
+
+
 
 void SpriteCommon::BeforeDraw()
 {
