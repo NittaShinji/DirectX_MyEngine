@@ -21,7 +21,7 @@ public:
 private:
 
 	KeyInput* keyInput_ = nullptr;
-	static const int keyNumber_ = 256;
+	static const int32_t keyNumber_ = 256;
 	//DirectInputのインスタンス
 	ComPtr<IDirectInput8> dinput = nullptr;
 };

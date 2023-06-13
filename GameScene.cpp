@@ -475,23 +475,23 @@ void GameScene::Update()
 		////hit = Collision::CheckRay2Plane(rayCollision, planeCollision, &distance, &inter);
 		//hit = Collision::CheckRay2Triangle(rayCollision, triangleCollison, &distance, &inter);
 
-		////スプライトの編集ウインドウの表示
-		//{
+		//スプライトの編集ウインドウの表示
+		{
 
-		//	ImGui::Begin("Light");
-		//	ImGui::SetWindowPos(ImVec2(0, 0));
-		//	ImGui::SetWindowSize(ImVec2(500, 200));
+			ImGui::Begin("Light");
+			ImGui::SetWindowPos(ImVec2(0, 0));
+			ImGui::SetWindowSize(ImVec2(500, 200));
 
-		//	ImGui::ColorEdit3("ambientColor", ambientColor0, ImGuiColorEditFlags_Float);
-		//	ImGui::InputFloat3("lightDir0", lightDir0);
-		//	ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
-		//	ImGui::InputFloat3("lightDir1", lightDir1);
-		//	ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
-		//	ImGui::InputFloat3("lightDir2", lightDir2);
-		//	ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
+			ImGui::ColorEdit3("ambientColor", ambientColor0, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir0", lightDir0);
+			ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir1", lightDir1);
+			ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir2", lightDir2);
+			ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
 
-		//	ImGui::End();
-		//}
+			ImGui::End();
+		}
 
 
 		if(keyTimer < 0)

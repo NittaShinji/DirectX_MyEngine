@@ -83,7 +83,7 @@ private:
 	bool isFlipY_ = false;
 
 	//頂点の数
-	static const int vertexCount = 4;
+	static const int32_t vertexCount = 4;
 
 	//アンカーポイント
 	XMFLOAT2 anchorPoint_;
@@ -168,5 +168,4 @@ public:
 	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 	/*void SetWidth(size_t width) { wide_ = wide_; };
 	void SetHeight(size_t height) { height_ = height; };*/
-
 };

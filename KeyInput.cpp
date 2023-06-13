@@ -125,7 +125,7 @@ bool KeyInput::ReleasedKeyMoment(BYTE keyNumber)
 #pragma endregion 
 
 void KeyInput::KeyAssert(){
-	for (int i = 0; i < 255; i++)
+	for (int32_t i = 0; i < 255; i++)
 	{
 		assert(SUCCEEDED(keys[i]));
 		assert(SUCCEEDED(oldKeys[i]));

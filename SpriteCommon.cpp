@@ -315,7 +315,7 @@ void SpriteCommon::LoadTexture(const std::string& fileName)
 	std::string fullPath = kDefaultTextureDirectoryPath_ + fileName;
 
 	//ワイド文字列に変換した際の文字列バッファサイズを計算
-	int filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, nullptr, 0);
+	int32_t filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, fullPath.c_str(), -1, nullptr, 0);
 
 	//ワイド文字列に変換
 	std::vector<wchar_t> wfilePath(filePathBufferSize);
@@ -419,7 +419,6 @@ void SpriteCommon::Update()
 {
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial->GetGPUVirtualAddress());
-	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform->GetGPUVirtualAddress());
 }
 
 void SpriteCommon::VertexLayoutSet()

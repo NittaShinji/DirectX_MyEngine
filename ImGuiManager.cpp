@@ -25,7 +25,7 @@ void ImGuiManager::Initialize(WindowsAPI* winApi, DirectXBasic* directXBasic)
 	ImGui_ImplWin32_Init(winApi_->GetHwndClass());
 	//DirectX12—p‰Šú‰»
 	ImGui_ImplDX12_Init(directXBasic_->GetDevice().Get(), 
-		static_cast<int>(directXBasic_->GetBackBuffersCount()),
+		static_cast<int32_t>(directXBasic_->GetBackBuffersCount()),
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		srvHeap_.Get(), srvHeap_->GetCPUDescriptorHandleForHeapStart(),
 		srvHeap_->GetGPUDescriptorHandleForHeapStart());

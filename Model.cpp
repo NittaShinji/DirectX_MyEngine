@@ -342,7 +342,6 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 
 	//ユニコード文字列に変換する
 	wchar_t wfilePath[128];
-	//int iBufferSize
 	MultiByteToWideChar(CP_ACP, 0, filePath.c_str(), -1, wfilePath, _countof(wfilePath));
 
 	//画像ファイルの用意

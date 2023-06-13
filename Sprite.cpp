@@ -112,7 +112,7 @@ void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteC
 	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
-	for (int i = 0; i < vertices_.size(); i++) {
+	for (int32_t i = 0; i < vertices_.size(); i++) {
 		vertMap[i] = vertices_[i]; // 座標をコピー
 	}
 
@@ -187,7 +187,7 @@ void Sprite::matUpdate()
 	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
-	for (int i = 0; i < vertices_.size(); i++) {
+	for (int32_t i = 0; i < vertices_.size(); i++) {
 		vertMap[i] = vertices_[i]; // 座標をコピー
 	}
 	// 繋がりを解除

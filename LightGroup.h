@@ -74,56 +74,56 @@ public: //メンバ関数
 	/// </summary>
 	///  <param name="index">ライト番号</param>
 	///  <param name="active">有効フラグ</param>
-	void SetDirLightActive(int index, bool active);
+	void SetDirLightActive(int32_t index, bool active);
 
 	/// <summary>
 	/// 平行光源のライトをセット
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightDir">ライト方向</param>
-	void SetDirLightDir(int index, const XMVECTOR &lightDir);
+	void SetDirLightDir(int32_t index, const XMVECTOR &lightDir);
 
 	/// <summary>
 	/// 平行光源のライト色をセット
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightColor">ライト色</param>
-	void SetDirLightColor(int index, const XMFLOAT3 &lightColor);
+	void SetDirLightColor(int32_t index, const XMFLOAT3 &lightColor);
 
 	/// <summary>
 	/// 標準のライトの設定
 	/// </summary>
 	void DefaultLightSetting();
 
-	void SetPointLightActive(int index, bool active);
-	void SetPointLightPos(int index, const XMFLOAT3 &lightPos);
-	void SetPointLightColor(int index, const XMFLOAT3 &lightColor);
-	void SetPointLightAtten(int index, const XMFLOAT3 &lightAtten);
+	void SetPointLightActive(int32_t index, bool active);
+	void SetPointLightPos(int32_t index, const XMFLOAT3 &lightPos);
+	void SetPointLightColor(int32_t index, const XMFLOAT3 &lightColor);
+	void SetPointLightAtten(int32_t index, const XMFLOAT3 &lightAtten);
 
-	void SetSpotLightActive(int index, bool active);
-	void SetSpotLightDir(int index, const XMVECTOR &lightDir);
-	void SetSpotLightPos(int index, const XMFLOAT3 &lightPos);
-	void SetSpotLightColor(int index, const XMFLOAT3 &lightColor);
-	void SetSpotLightAtten(int index, const XMFLOAT3 &lightAtten);
-	void SetSpotLightFactorAngle(int index, const XMFLOAT2 &lightFactorAngle);
+	void SetSpotLightActive(int32_t index, bool active);
+	void SetSpotLightDir(int32_t index, const XMVECTOR &lightDir);
+	void SetSpotLightPos(int32_t index, const XMFLOAT3 &lightPos);
+	void SetSpotLightColor(int32_t index, const XMFLOAT3 &lightColor);
+	void SetSpotLightAtten(int32_t index, const XMFLOAT3 &lightAtten);
+	void SetSpotLightFactorAngle(int32_t index, const XMFLOAT2 &lightFactorAngle);
 
-	void SetCircleShadowActive(int index, bool active);
-	void SetCircleShadowCasterPos(int index, const XMFLOAT3 &casterPos);
-	void SetCircleShadowDir(int index, const XMVECTOR &lightDir);
-	void SetCircleShadowDistanceCasterLight(int index, float &distanceCasterLight);
-	void SetCircleShadowAtten(int index, const XMFLOAT3 &lightAtten);
-	void SetCircleShadowFactorAngle(int index, const XMFLOAT2 &lightFactorAngle);
+	void SetCircleShadowActive(int32_t index, bool active);
+	void SetCircleShadowCasterPos(int32_t index, const XMFLOAT3 &casterPos);
+	void SetCircleShadowDir(int32_t index, const XMVECTOR &lightDir);
+	void SetCircleShadowDistanceCasterLight(int32_t index, float &distanceCasterLight);
+	void SetCircleShadowAtten(int32_t index, const XMFLOAT3 &lightAtten);
+	void SetCircleShadowFactorAngle(int32_t index, const XMFLOAT2 &lightFactorAngle);
 
 
 public: //定数
 	//ライトの数
-	static const int DirLightNum = 3;
+	static const int32_t DirLightNum = 3;
 	//点光源の数
-	static const int PointLightNum = 3;
+	static const int32_t PointLightNum = 3;
 	//スポットライトの数
-	static const int SpotLightNum = 3;
+	static const int32_t SpotLightNum = 3;
 	//丸影の数
-	static const int CircleShadowNum = 1;
+	static const int32_t CircleShadowNum = 1;
 
 
 public: //サブクラス

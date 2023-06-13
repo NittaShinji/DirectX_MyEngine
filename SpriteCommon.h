@@ -129,7 +129,7 @@ private:
 	//テクスチャ番号
 	uint32_t textureIndex_;
 	//画像に結び付いたテクスチャ番号格納用map
-	std::map<const std::string, int, std::less<>> textureMap = {};
+	std::map<const std::string, uint32_t, std::less<>> textureMap = {};
 
 public:
 
@@ -141,7 +141,7 @@ public:
 	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
 	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); };
 	D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGpuHandle() { return srvGpuHandle; }
-	std::map<const std::string, int, std::less<>> GetTextureMap() { return textureMap; }
+	std::map<const std::string, uint32_t, std::less<>> GetTextureMap() { return textureMap; }
 
 	//テンプレートコンストラクタ
 	template <typename Type1, typename Type2>

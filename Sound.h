@@ -5,6 +5,7 @@
 #include <cassert>
 #include <map>
 #include <string>
+#include <stdint.h>
 
 class Sound
 {
@@ -47,7 +48,7 @@ public:
 		//バッファの先頭アドレス
 		BYTE* pBuffer;
 		//バッファのサイズ
-		unsigned int bufferSize;
+		uint32_t bufferSize;
 	};
 	
 	/// <sumary>

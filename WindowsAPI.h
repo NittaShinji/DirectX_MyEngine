@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <stdint.h>
 
 
 //windowsAPI
@@ -17,8 +18,8 @@ public:
 	HWND GetHwndClass()const{ return hwnd;}
 	RECT GetWrcClass() const {return wrc;}
 	HINSTANCE GetHInstance()const { return w.hInstance;}
-	int GetWinWidth() const { return window_width;}
-	int GetWinHeight() const { return window_height;}
+	int32_t GetWinWidth() const { return window_width;}
+	int32_t GetWinHeight() const { return window_height;}
 
 	//終了
 	void Finalize();
@@ -28,8 +29,8 @@ public:
 
 	//定数
 	//ウインドウサイズ
-	static constexpr int window_width = 1280; //横幅
-	static constexpr int window_height = 720; //縦幅
+	static constexpr int32_t window_width = 1280; //横幅
+	static constexpr int32_t window_height = 720; //縦幅
 
 private:
 

@@ -92,7 +92,7 @@ private:
 	Object3d* testObject = nullptr;
 	
 	//ゲームシーン
-	int scene_;
+	int32_t scene_;
 
 	//レベルデータ
 	//LevelManager* levelManager_ = nullptr;
@@ -121,16 +121,16 @@ private:
 	Object3d* blender_;
 
 	//待ち時間
-	static const int waitTime = 40;
+	static const int32_t waitTime = 40;
 	//キー入力の時間管理
-	int keyTimer = 60;
+	int32_t keyTimer = 60;
 
-	int hit;
+	int32_t hit;
 
 	XMFLOAT3 move = { 0,0,0 };
 
-	const int actionTime = 60;
-	int moveTimer = actionTime;
+	const int32_t actionTime = 60;
+	int32_t moveTimer = actionTime;
 	bool isUp = false;
 	bool isDown = true;
 
