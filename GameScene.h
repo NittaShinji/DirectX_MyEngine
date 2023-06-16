@@ -65,7 +65,6 @@ private:
 	
 	//ライト
 	LightGroup* lightGroup_ = nullptr;
-	//std::unique_ptr<LightGroup> lightGroup_ = nullptr;
 
 	//カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
@@ -85,7 +84,6 @@ private:
 	int32_t scene_;
 
 	//レベルデータ
-	//LevelManager* levelManager_ = nullptr;
 	LevelData* levelData_ = nullptr;
 
 	using MODELKEY = std::string;
@@ -105,17 +103,15 @@ private:
 
 	//3Dオブジェクト
 	std::unique_ptr<Object3d> sphere_ = nullptr;
+	//std::unique_ptr<Object3d> ground_ = nullptr;
+	//std::unique_ptr<Object3d> triangle_ = nullptr;
+	//std::unique_ptr<Object3d> ray_ = nullptr;
 
-
-	std::unique_ptr<Object3d> ground_ = nullptr;
-	std::unique_ptr<Object3d> triangle_ = nullptr;
-	std::unique_ptr<Object3d> ray_ = nullptr;
-
+	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<Object3d>> objects;
 
 	//画像なしテストオブジェクト
 	std::unique_ptr<Object3d> testObject_ = nullptr;
-
 
 	//待ち時間
 	static const int32_t waitTime = 40;

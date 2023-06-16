@@ -67,14 +67,8 @@ void LightGroup::Draw(ID3D12GraphicsCommandList *cmdList, UINT rootParameterInde
 
 LightGroup *LightGroup::Create()
 {
-	//3Dオブジェクトのインスタンスを生成
+	//3Dオブジェクトの静的インスタンスを生成
 	static LightGroup instance;
-
-	//LightGroup *instance = new LightGroup();
-	//初期化
-	//instance->Initialize();
-	//return instance;
-
 	instance.Initialize();
 
 	return &instance;

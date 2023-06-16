@@ -7,8 +7,6 @@
 using namespace std;
 using namespace DirectX;
 
-//KeyInput* GameScene::keys_ = nullptr;
-
 GameScene::GameScene(){}
 
 GameScene::~GameScene(){}
@@ -74,10 +72,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	}
 
 	//------------画像読み込み----------
-	//title_ = new Sprite;
 	title_ = std::make_unique<Sprite>();
 	test_ = std::make_unique<Sprite>();
-	//spriteCommon_ = new SpriteCommon;
 	spriteCommon_ = std::make_unique<SpriteCommon>();
 
 	//スプライト関係初期化
@@ -135,9 +131,6 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	sphere_->Initialize(sphere, XMFLOAT3(-30, 0, 0), sphereScale);
 	testObject_ = std::make_unique<Object3d>();
 	testObject_->Initialize(test, XMFLOAT3(30,0,0), sphereScale);
-	/*ground_ = new Object3d(ground, groundPosition, groundScale);
-	triangle_ = new Object3d(testTriangle, trianglePosition, triangleScale);
-	ray_ = new Object3d(ray, raySetPosition, rayScale);*/
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
