@@ -32,48 +32,35 @@ using namespace Microsoft::WRL;
 
 //Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
-{
-	//std::unique_ptr<WindowsAPI> winApi_ = std::make_unique<WindowsAPI>();
-	
-	WindowsAPI* winApi = nullptr;
-	winApi = new WindowsAPI();
+{	
+	//WindowsApi初期化処理
+	std::unique_ptr<WindowsAPI> winApi = std::make_unique<WindowsAPI>();
 	winApi->Initialize();
 
-	
-	ComPtr<IXAudio2> xAudio2;
-	IXAudio2MasteringVoice* masterVoice;
-
-	std::unique_ptr<Input> input = std::make_unique<Input>();
-	//std::unique_ptr<DirectXBasic> directBasic_ = std::make_unique<DirectXBasic>();
-	DirectXBasic* directXBasic = nullptr;
-	directXBasic = new DirectXBasic();
-
 	//DirectX初期化処理
-	directXBasic->Initialize(winApi);
+	std::unique_ptr<DirectXBasic> directXBasic = std::make_unique<DirectXBasic>();
+	directXBasic->Initialize(winApi.get());
 
 	//ImGui初期化処理
-	ImGuiManager* imGuiManager = nullptr;
-	imGuiManager = new ImGuiManager();
-	imGuiManager->Initialize(winApi,directXBasic);
+	std::unique_ptr<ImGuiManager> imGuiManager = std::make_unique<ImGuiManager>();
+	imGuiManager->Initialize(winApi.get(), directXBasic.get());
 
+	//------サウンド処理
 
-	//------サウンド
-
+	ComPtr<IXAudio2> xAudio2;
+	IXAudio2MasteringVoice* masterVoice;
 	//XAudio2エンジンのインスタンスを生成
 	HRESULT result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
-
 	//マスターボイスの生成
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	//シングルトンインスタンスを作成
-	KeyInput::Create();
-	KeyInput* keyInput = KeyInput::GetInstance();
+	//------入力処理
+	std::unique_ptr<Input> input = std::make_unique<Input>();
+	input->Initialize(winApi.get());
 
-	input->Initialize(winApi);
-	
-	GameScene* gameScene = nullptr;
-	gameScene = new GameScene;
-	gameScene->Initialize(directXBasic,imGuiManager);
+	//ゲームシーン
+	std::unique_ptr<GameScene> gameScene = std::make_unique<GameScene>();
+	gameScene->Initialize(directXBasic.get(), imGuiManager.get());
 
 	// ゲームループ
 	while (true) {
@@ -105,22 +92,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 #pragma region WindowsAPI後始末
 
-	keyInput->destroy();
 	//ゲーム全体の終了処理
 	imGuiManager->Finalize();
 	winApi->Finalize();
-	delete gameScene;
-	delete imGuiManager;
-	delete winApi;
-	delete directXBasic;
 	
 #pragma endregion WindowsAPI後始末
 
-	keyInput = nullptr;
-	imGuiManager = nullptr;
-	winApi = nullptr;
-	directXBasic = nullptr;
-	gameScene = nullptr;
-	
 	return 0;
 }

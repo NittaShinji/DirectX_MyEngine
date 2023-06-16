@@ -16,7 +16,6 @@ public:
 
 	void Initialize(WindowsAPI* winApi);
 	void Update();
-	void Delete();
 
 private:
 

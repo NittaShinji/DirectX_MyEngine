@@ -7,61 +7,22 @@
 using namespace std;
 using namespace DirectX;
 
-KeyInput* GameScene::keys_ = nullptr;
+//KeyInput* GameScene::keys_ = nullptr;
 
-GameScene::GameScene()
-{
-}
+GameScene::GameScene(){}
 
-GameScene::~GameScene()
-{
-	////サウンド
-	sound->Finalize();
-	delete sound;
-	//画像
-	delete title_;
-	delete test_;
-	delete spriteCommon_;
-	//モデル
-	delete camera_;
-	delete testCamera_;
-	delete sphere_;
-	delete lightGroup_;
-	delete levelData_;
-	delete testObject;
-	delete ground_;
-	delete triangle_;
-
-	//delete directXBasic_;
-
-	//sound = nullptr;
-	title_ = nullptr;
-	test_ = nullptr;
-	spriteCommon_ = nullptr;
-	lightGroup_ = nullptr;
-	//モデル
-	//object3d_ = nullptr;
-	camera_ = nullptr;
-	testCamera_ = nullptr;
-	sphere_ = nullptr;
-	testObject = nullptr;
-	ground_ = nullptr;
-	triangle_ = nullptr;
-}
+GameScene::~GameScene(){}
 
 void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
 {
 	directXBasic_ = directXBasic;
-	keys_ = KeyInput::GetInstance();
 	imGuiManager_ = imGuiManager;
 	scene_ = TITLE;
 
 	Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);
 
-
-	////------------ライト------------
-	//DirectionalLight::StaticInitialize(directXBasic_->GetDevice().Get());
+	//------------ライト------------
 	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
 
 	lightGroup_ = LightGroup::Create();
@@ -69,18 +30,14 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	Object3d::SetLightGroup(lightGroup_);
 
 	//------------サウンド----------
-
-	//Sound::StaticInitialize();
-	sound = new Sound;
-	sound->Initialize();
-	sound->LoadSoundWave("Alarm01.wav");
-	//sound->PlaySoundWave("Alarm01.wav");
-
+	sound_ = std::make_unique<Sound>();
+	sound_->Initialize();
+	sound_->LoadSoundWave("Alarm01.wav");
+	sound_->PlaySoundWave("Alarm01.wav");
+	
 	//-----------読み込み---------------
 	 
-	
 	//レベルデータからオブジェクトを生成、配置
-	
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("test3.json");
 
 	for(auto& objectData : levelData_->objects)
@@ -94,7 +51,6 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 		Model::Load(objectData.fileName);
 
 		//3Dオブジェクトの生成
-		//Object3d* newObject = new Object3d;
 		std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 
 		//座標
@@ -111,7 +67,6 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 		scale = objectData.scaling;
 		newObject->SetScale(scale);
 
-		//sphere_ = new Object3d(objectData.fileName, spherePosition, sphereScale);
 		newObject->Initialize(objectData.fileName, pos, scale);
 
 		//配列に登録
@@ -119,9 +74,11 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	}
 
 	//------------画像読み込み----------
-	title_ = new Sprite;
-	test_ = new Sprite;
-	spriteCommon_ = new SpriteCommon;
+	//title_ = new Sprite;
+	title_ = std::make_unique<Sprite>();
+	test_ = std::make_unique<Sprite>();
+	//spriteCommon_ = new SpriteCommon;
+	spriteCommon_ = std::make_unique<SpriteCommon>();
 
 	//スプライト関係初期化
 	Sprite::StaticInitialize();
@@ -130,15 +87,15 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//画像読み込み
 	spriteCommon_->LoadTexture("title.png");
 	spriteCommon_->LoadTexture("tomas.png");
-
+	
 	//個々の画像を初期化(指定した番号の画像を使用する)
 	XMFLOAT2 titlePosition = { 0,0 };
 	XMFLOAT2 titleSize = { 1280,720 };
 	XMFLOAT2 testPosition = { 100,100 };
 	XMFLOAT2 testSize = { 266,369 };
 
-	title_->Initialize(titlePosition, titleSize, spriteCommon_);
-	test_->Initialize(testPosition, testSize, spriteCommon_);
+	title_->Initialize(titlePosition, titleSize, spriteCommon_.get());
+	test_->Initialize(testPosition, testSize, spriteCommon_.get());
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();
@@ -147,9 +104,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	//------------モデル読み込み----------
 	
-	
 	//モデル読み込み
-	
 	const string sphere = "sphere";
 	const string test = "NoImageModel";
 
@@ -176,18 +131,21 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y * 2,rayScale.z * 2 };
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y,0 };
 
-	sphere_ = new Object3d();
+	sphere_ = std::make_unique<Object3d>();
 	sphere_->Initialize(sphere, XMFLOAT3(-30, 0, 0), sphereScale);
-	testObject = new Object3d();
-	testObject->Initialize(test, XMFLOAT3(30,0,0), sphereScale);
+	testObject_ = std::make_unique<Object3d>();
+	testObject_->Initialize(test, XMFLOAT3(30,0,0), sphereScale);
 	/*ground_ = new Object3d(ground, groundPosition, groundScale);
 	triangle_ = new Object3d(testTriangle, trianglePosition, triangleScale);
 	ray_ = new Object3d(ray, raySetPosition, rayScale);*/
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
-	camera_ = new Camera;
-	testCamera_ = new Camera;
+	camera_ = std::make_unique<Camera>();
+	//camera_ = new Camera;
+	testCamera_ = std::make_unique<Camera>();
+
+
 	XMFLOAT3 cameraEye = { 0,60,-30 };
 	XMFLOAT3 cameraTarget = { 0,0,0 };
 	XMFLOAT3 cameraUp = { 0,1,0 };
@@ -284,12 +242,25 @@ void GameScene::Update()
 
 		if(keyTimer < 0)
 		{
-			if(keys_->HasPushedKey(DIK_SPACE))
+			/*if(keys_->HasPushedKey(DIK_SPACE))
+			{
+
+				scene_ = GAME;
+				keyTimer = waitTime;
+			}*/
+
+			if(KeyInput::HasPushedKey(DIK_SPACE))
 			{
 
 				scene_ = GAME;
 				keyTimer = waitTime;
 			}
+
+			/*if(input_->GetKeys()->HasPushedKey(DIK_SPACE))
+			{
+				scene_ = GAME;
+				keyTimer = waitTime;
+			}*/
 		}
 		else
 		{
@@ -308,11 +279,11 @@ void GameScene::Update()
 		{
 			for(auto& object : objects)
 			{
-				object->Update(testCamera_);
+				object->Update(testCamera_.get());
 			}
 
-			testObject->Update(testCamera_);
-			sphere_->Update(testCamera_);
+			testObject_->Update(testCamera_.get());
+			sphere_->Update(testCamera_.get());
 			//ground_->Update(testCamera_);
 			//triangle_->Update(testCamera_);
 			//ray_->Update(testCamera_);
@@ -321,12 +292,12 @@ void GameScene::Update()
 		{
 			for(auto& object : objects)
 			{
-				object->Update(testCamera_);
+				object->Update(testCamera_.get());
 			}
 
-			testObject->Update(camera_);
+			testObject_->Update(camera_.get());
 			//モデルの更新処理
-			sphere_->Update(camera_);
+			sphere_->Update(camera_.get());
 
 			//ground_->Update(camera_);
 			//triangle_->Update(camera_);
@@ -559,7 +530,7 @@ void GameScene::Draw()
 		Object3d::BeforeDraw();
 		
 		sphere_->Draw();
-		testObject->Draw();
+		testObject_->Draw();
 
 		for(auto& object : objects)
 		{

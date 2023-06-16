@@ -372,7 +372,6 @@ void Object3d::Update(Camera* camera)
 	constMapMaterial->alpha = model_.GetInfomation()->material_.alpha;
 
 	constBuffMaterial->Unmap(0, nullptr);
-	
 }
 
 void Object3d::Draw()

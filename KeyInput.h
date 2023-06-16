@@ -21,26 +21,11 @@ public:
 	//ムーブ代入演算子
 	KeyInput& operator = (KeyInput&&) = delete;
 
-	//インスタンスを参照
+	//静的オブジェクトとしてインスタンスを生成
 	static KeyInput* GetInstance()
 	{
-		return instance;
-	}
-
-	//インスタンスの生成
-	static void Create()
-	{
-		if (!instance)
-		{
-			instance = new KeyInput;
-		}
-	}
-
-	//インスタンスの破棄
-	static void destroy()
-	{
-		delete instance;
-		instance = nullptr;
+		static KeyInput instance;
+		return &instance;
 	}
 
 	//アクセッサ
@@ -51,16 +36,16 @@ public:
 	void Initialize(WindowsAPI* winApi);
 	
 	//警告関数
-	void KeyAssert();
+	static void KeyAssert();
 
 	//キーボードの更新
-	void KeyUpdate();
+	static void KeyUpdate();
 	//前フレームを保存する関数
-	void SaveFrameKey();
+	static void SaveFrameKey();
 
 	//トリガー処理関数
 	//キーを押した状態か
-	bool HasPushedKey(BYTE keyNumber);
+	static bool HasPushedKey(BYTE keyNumber);
 	//キーを離した状態か
 	bool HasReleasedKey(BYTE keyNumber);
 	//キーを押した瞬間か
@@ -78,11 +63,11 @@ private:
 	static KeyInput* instance;
 
 	//各種キーの保存用変数
-	BYTE keys[256] = {};
-	BYTE oldKeys[256] = {};
+	static BYTE keys[256];
+	static BYTE oldKeys[256];
 
 	//インスタンス
 	ComPtr<IDirectInput8> directInput = nullptr;
 	//キーボードデバイス
-	ComPtr<IDirectInputDevice8> keyboard = nullptr;
+	static ComPtr<IDirectInputDevice8> keyboard;
 };

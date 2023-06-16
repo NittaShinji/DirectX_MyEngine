@@ -8,6 +8,9 @@
 #pragma comment(lib,"dxguid.lib")
 
 KeyInput* KeyInput::instance = nullptr;
+BYTE KeyInput::keys[256];
+BYTE KeyInput::oldKeys[256];
+Microsoft::WRL::ComPtr<IDirectInputDevice8> KeyInput::keyboard;
 
 //アクセッサ
 BYTE KeyInput::GetKeys(uint8_t keyNumber)
@@ -47,29 +50,21 @@ void KeyInput::KeyUpdate()
 {
 	KeyAssert();
 
-	/*GetKeys(keyNumber);
-	GetOldKeys(keyNumber);*/
 	SaveFrameKey();
-	/*HasPushedKey(keyNumber);
-	HasReleasedKey(keyNumber);
-	PushedKeyMoment(keyNumber);
-	ReleasedKeyMoment(keyNumber);*/
-}
-
-void KeyInput::SaveFrameKey()
-{
-	KeyAssert();
-
-	//1フレーム前の情報を保存する
-	for (int i = 0; i < 256; i++)
-	{
-		oldKeys[i] = keys[i];
-	}
 
 	//キーボード情報の取得開始
 	keyboard->Acquire();
 	//全てのキーの入力情報を取得する
 	keyboard->GetDeviceState(sizeof(keys), keys);
+}
+
+void KeyInput::SaveFrameKey()
+{
+	//1フレーム前の情報を保存する
+	for (int i = 0; i < 256; i++)
+	{
+		oldKeys[i] = keys[i];
+	}
 }
 
 #pragma region トリガー処理関数

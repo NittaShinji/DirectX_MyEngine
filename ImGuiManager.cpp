@@ -2,8 +2,6 @@
 
 void ImGuiManager::Initialize(WindowsAPI* winApi, DirectXBasic* directXBasic)
 {
-	//WindowsAPIをセット
-	winApi_ = winApi;
 	//directXBasicをセット
 	directXBasic_ = directXBasic;
 
@@ -22,9 +20,9 @@ void ImGuiManager::Initialize(WindowsAPI* winApi, DirectXBasic* directXBasic)
 	assert(SUCCEEDED(result));
 
 	//Win32用初期化
-	ImGui_ImplWin32_Init(winApi_->GetHwndClass());
+	ImGui_ImplWin32_Init(winApi->GetHwndClass());
 	//DirectX12用初期化
-	ImGui_ImplDX12_Init(directXBasic_->GetDevice().Get(), 
+	ImGui_ImplDX12_Init(directXBasic_->GetDevice().Get(),
 		static_cast<int32_t>(directXBasic_->GetBackBuffersCount()),
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
 		srvHeap_.Get(), srvHeap_->GetCPUDescriptorHandleForHeapStart(),

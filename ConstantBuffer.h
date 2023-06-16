@@ -1,7 +1,5 @@
 #pragma once
 
-long ConstantBufferResult();
-
 class ConstantBuffer
 {
 public:
@@ -9,8 +7,6 @@ public:
 	~ConstantBuffer();
 
 private:
-
-
 
 };
 

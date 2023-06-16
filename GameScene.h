@@ -65,31 +65,21 @@ private:
 	
 	//ライト
 	LightGroup* lightGroup_ = nullptr;
+	//std::unique_ptr<LightGroup> lightGroup_ = nullptr;
 
 	//カメラ
-	Camera* camera_ = nullptr;
-	Camera* testCamera_ = nullptr;
+	std::unique_ptr<Camera> camera_ = nullptr;
+	std::unique_ptr<Camera> testCamera_ = nullptr;
 
 	//サウンド
-	Sound* sound = nullptr;
+	std::unique_ptr<Sound> sound_ = nullptr;
 
 	//スプライト
-	Sprite* title_ = nullptr;
-	Sprite* test_ = nullptr;
+	std::unique_ptr<Sprite> title_ = nullptr;
+	std::unique_ptr<Sprite> test_ = nullptr;
 	
 	//スプライト共通部分
-	SpriteCommon* spriteCommon_ = nullptr;
-
-	//モデル
-	Model testModel_;
-
-	//3Dオブジェクト
-	//Object3d* object3d_ = nullptr;
-	//std::vector<Object3d*> objects;
-	std::vector<std::unique_ptr<Object3d>> objects;
-
-	//画像なしテストオブジェクト
-	Object3d* testObject = nullptr;
+	std::unique_ptr<SpriteCommon> spriteCommon_ = nullptr;
 	
 	//ゲームシーン
 	int32_t scene_;
@@ -113,12 +103,19 @@ private:
 	//当たり判定 レイ
 	Ray rayCollision;
 
-	Object3d* sphere_;
-	Object3d* ground_;
-	Object3d* triangle_;
-	Object3d* ray_;
+	//3Dオブジェクト
+	std::unique_ptr<Object3d> sphere_ = nullptr;
 
-	Object3d* blender_;
+
+	std::unique_ptr<Object3d> ground_ = nullptr;
+	std::unique_ptr<Object3d> triangle_ = nullptr;
+	std::unique_ptr<Object3d> ray_ = nullptr;
+
+	std::vector<std::unique_ptr<Object3d>> objects;
+
+	//画像なしテストオブジェクト
+	std::unique_ptr<Object3d> testObject_ = nullptr;
+
 
 	//待ち時間
 	static const int32_t waitTime = 40;
@@ -149,6 +146,8 @@ private:
 
 	float lightDir2[3] = { 1,0,0 };
 	float lightColor2[3] = { 0,0,1 };
+
+	Input* input_ = nullptr;
 
 };
 

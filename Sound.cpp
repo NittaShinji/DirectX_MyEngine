@@ -89,9 +89,9 @@ void Sound::LoadSoundWave(const std::string& fileName)
 	}
 
 	//DATAチャンクのデータ部(波形データ)の読み込み
-	char* pBuffer = new char[data.size];
-	file.read(pBuffer, data.size);
-
+	std::vector<char> pBuffer(data.size);
+	file.read(pBuffer.data(), data.size);
+	
 #pragma endregion
 
 	//--ファイルを閉じる
@@ -101,7 +101,7 @@ void Sound::LoadSoundWave(const std::string& fileName)
 	SoundData soundData = {};
 
 	soundData.wfex = format.fmt;
-	soundData.pBuffer = reinterpret_cast<BYTE*> (pBuffer);
+	soundData.pBuffer = std::vector<BYTE>(pBuffer.begin(),pBuffer.end());
 	soundData.bufferSize = data.size;
 
 	//サウンドデータを連想配列(map)に格納
@@ -112,11 +112,8 @@ void Sound::LoadSoundWave(const std::string& fileName)
 void Sound::UnloadSound(SoundData* soundData)
 {
 	//バッファのメモリを解放
-	delete[] soundData->pBuffer;
-
-	soundData->pBuffer = 0;
-	soundData->bufferSize = 0;
-	soundData->wfex = {};
+	//soundData->bufferSize = 0;
+	//soundData->wfex = {};
 }
 
 //音声再生
@@ -137,7 +134,7 @@ void Sound::PlaySoundWave(const std::string& fileName)
 
 	//再生する波形データの設定
 	XAUDIO2_BUFFER buf{};
-	buf.pAudioData = soundData.pBuffer;
+	buf.pAudioData = soundData.pBuffer.data();
 	buf.AudioBytes = soundData.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
@@ -151,20 +148,14 @@ void Sound::Finalize()
 {
 	//XAudio2解放
 	xAudio2_.Reset();
+	
 	//音声データ解放
-
-	//イテレーターを回すやり方
+	//イテレーターを回す
 	std::map<std::string, SoundData>::iterator it = soundDates_.begin();
 	for (; it != soundDates_.end(); it++)
 	{
 		UnloadSound(&it->second);
 	}
-
-	//コンストある
-	/*for ( std::pair<const std::string,SoundData>& pair : soundDates_ )
-	{
-		UnloadSound(&pair.second);
-	}*/
 
 	soundDates_.clear();
 }

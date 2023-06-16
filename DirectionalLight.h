@@ -5,25 +5,8 @@
 
 class DirectionalLight
 {
+private: //エイリアステンプレート
 
-public://静的メンバ関数
-
-	///<summary>
-	//静的初期化
-	///<summary>
-	///<param name = "device">デバイス</param>
-	static void StaticInitialize(ID3D12Device* device);
-
-	///<summary>
-	//インスタンス生成
-	///</summary>
-	static DirectionalLight * Create();
-
-private: //静的メンバ変数
-	//デバイス
-	static ID3D12Device* device;
-
-private:
 	//Microsoft::WRL::を省略
 	template<class T>using Comptr = Microsoft::WRL::ComPtr<T>;
 	//DirectXを省略
@@ -43,29 +26,25 @@ public: //サブクラス
 		bool active;	//有効フラグ
 	};
 
-public: //メンバ関数
+public: //アクセッサ
 
-	///<summary>
-	//静的初期化
-	///<summary>
-	void Initialize();
-
-	//更新
-	void Update();
-
-	//描画
-	void Draw(ID3D12GraphicsCommandList* cmdlist, UINT rootParameterIndex);
-
-	//定数バッファ転送
-	void TransferConstBuffer();
 	//ライト方向をセット
-	void SetLightDir(const XMVECTOR& lightDir);
+	void SetLightDir(const XMVECTOR& lightDir) 
+	{
+		//正規化してセット
+		this->lightDir = DirectX::XMVector3Normalize(lightDir);
+		dirty = true;
+	}
+
 	//ライト色のセット
-	void SetLightColor(const XMFLOAT3& lightColor);
+	void SetLightColor(const XMFLOAT3& lightColor)
+	{
+		this->lightColor = lightColor;
+		dirty = true;
+	}
 
 	XMVECTOR GetLightDir() { return lightDir; };
 	XMFLOAT3 GetLightColor() { return lightColor; };
-
 
 	/// <summary>
 	/// 有効フラグをセット
@@ -79,7 +58,6 @@ public: //メンバ関数
 	/// <returns>有効フラグ</returns>
 	inline bool IsActive() { return active; }
 
-
 private: //メンバ変数
 
 	//定数バッファ
@@ -90,7 +68,6 @@ private: //メンバ変数
 	XMFLOAT3 lightColor = { 1,1,1 };
 	//有効フラグ
 	bool active = false;
-	//ダーティフラグ
+	//ダーティフラグ(値に変更があったときだけ定数バッファに転送)
 	bool dirty = false;
-	
 };

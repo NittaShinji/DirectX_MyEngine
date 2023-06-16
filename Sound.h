@@ -6,6 +6,7 @@
 #include <map>
 #include <string>
 #include <stdint.h>
+#include <vector>
 
 class Sound
 {
@@ -14,7 +15,7 @@ public:
 	Sound();
 	~Sound();
 
-	//static void StaticInitialize();
+	static void StaticInitialize();
 	void Initialize();
 
 public:
@@ -46,7 +47,7 @@ public:
 		//波形フォーマット
 		WAVEFORMATEX wfex;
 		//バッファの先頭アドレス
-		BYTE* pBuffer;
+		std::vector<BYTE> pBuffer;
 		//バッファのサイズ
 		uint32_t bufferSize;
 	};
