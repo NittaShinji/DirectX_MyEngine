@@ -14,12 +14,12 @@ public:
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	//ゲッター
-	WNDCLASSEX GetWindosClass() const { return w;}
-	HWND GetHwndClass()const{ return hwnd;}
-	RECT GetWrcClass() const {return wrc;}
-	HINSTANCE GetHInstance()const { return w.hInstance;}
-	int32_t GetWinWidth() const { return window_width;}
-	int32_t GetWinHeight() const { return window_height;}
+	WNDCLASSEX GetWindosClass() const { return w_;}
+	HWND GetHwndClass()const{ return hwnd_;}
+	RECT GetWrcClass() const {return wrc_;}
+	HINSTANCE GetHInstance()const { return w_.hInstance;}
+	int32_t GetWinWidth() const { return kWindow_width_;}
+	int32_t GetWinHeight() const { return kWindow_height_;}
 
 	//終了
 	void Finalize();
@@ -29,15 +29,15 @@ public:
 
 	//定数
 	//ウインドウサイズ
-	static constexpr int32_t window_width = 1280; //横幅
-	static constexpr int32_t window_height = 720; //縦幅
+	static constexpr int32_t kWindow_width_ = 1280; //横幅
+	static constexpr int32_t kWindow_height_ = 720; //縦幅
 
 private:
 
 	// ウィンドウ
-	WNDCLASSEX w{};
+	WNDCLASSEX w_{};
 	// ウィンドウオブジェクト
-	HWND hwnd;
+	HWND hwnd_;
 	// ウインドウサイズ{X座標　Y座標　横幅　縦幅}
-	RECT wrc;
+	RECT wrc_;
 };

@@ -8,8 +8,8 @@ std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
 KeyInput* Object3d::keys_ = nullptr;
 LightGroup* Object3d::lightGroup_ = nullptr;
-Microsoft::WRL::ComPtr<ID3D12PipelineState> Object3d::pipelineState = nullptr;
-Microsoft::WRL::ComPtr<ID3D12RootSignature> Object3d::rootSignature = nullptr;
+Microsoft::WRL::ComPtr<ID3D12PipelineState> Object3d::pipelineState_ = nullptr;
+Microsoft::WRL::ComPtr<ID3D12RootSignature> Object3d::rootSignature_ = nullptr;
 
 //定数バッファの生成
 template <typename Type1>
@@ -55,24 +55,24 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 
 void Object3d::Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale)
 {
-	scale = Modelscale;
-	rotation = { 0.0f,0.0f,0.0f };
-	transform = position;
+	scale_ = Modelscale;
+	rotation_ = { 0.0f,0.0f,0.0f };
+	transform_ = position;
 
 	//定数バッファの生成
-	constBuffTransform = CrateConstBuff<DirectXBasic>(directXBasic_);
-	constBuffMaterial = CrateConstBuff<DirectXBasic>(directXBasic_);
-	constBuffLight = CrateConstBuff<DirectXBasic>(directXBasic_);
+	constBuffTransform_ = CrateConstBuff<DirectXBasic>(directXBasic_);
+	constBuffMaterial_ = CrateConstBuff<DirectXBasic>(directXBasic_);
+	constBuffLight_ = CrateConstBuff<DirectXBasic>(directXBasic_);
 	
 	//定数バッファのマッピング
-	HRESULT result = constBuffTransform->Map(0, nullptr, (void**)&constMapTransform);//マッピング
+	HRESULT result = constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform_);//マッピング
 	assert(SUCCEEDED(result));
 	//定数バッファのマッピング
-	result = constBuffLight->Map(0, nullptr, (void**)&constMapLight);//マッピング
+	result = constBuffLight_->Map(0, nullptr, (void**)&constMapLight_);//マッピング
 	assert(SUCCEEDED(result));
 
-	constMapLight->lightv = { 0,0,1 };
-	constMapLight->lightcolor = { 1,1,1 };
+	constMapLight_->lightv = { 0,0,1 };
+	constMapLight_->lightcolor = { 1,1,1 };
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC  inputLayout[] =
@@ -111,15 +111,15 @@ void Object3d::Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 M
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
-		&vsBlob, &errorBlob);
+		&vsBlob_, &errorBlob_);
 	// エラーなら
 	if(FAILED(result))
 	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string error;
-		error.resize(errorBlob->GetBufferSize());
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
+		error.resize(errorBlob_->GetBufferSize());
+		std::copy_n((char*)errorBlob_->GetBufferPointer(),
+			errorBlob_->GetBufferSize(),
 			error.begin());
 		error += "\n";
 		// エラー内容を出力ウィンドウに表示
@@ -137,16 +137,16 @@ void Object3d::Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 M
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
-		&psBlob, &errorBlob);
+		&psBlob_, &errorBlob_);
 
 	// エラーなら
 	if(FAILED(result))
 	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string error;
-		error.resize(errorBlob->GetBufferSize());
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
+		error.resize(errorBlob_->GetBufferSize());
+		std::copy_n((char*)errorBlob_->GetBufferPointer(),
+			errorBlob_->GetBufferSize(),
 			error.begin());
 		error += "\n";
 		// エラー内容を出力ウィンドウに表示
@@ -158,45 +158,45 @@ void Object3d::Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 M
 
 	//グラフィックスパイプラインの設定
 	// シェーダーの設定
-	pipelineDesc.VS.pShaderBytecode = vsBlob->GetBufferPointer();
-	pipelineDesc.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc.PS.pShaderBytecode = psBlob->GetBufferPointer();
-	pipelineDesc.PS.BytecodeLength = psBlob->GetBufferSize();
+	pipelineDesc_.VS.pShaderBytecode = vsBlob_->GetBufferPointer();
+	pipelineDesc_.VS.BytecodeLength = vsBlob_->GetBufferSize();
+	pipelineDesc_.PS.pShaderBytecode = psBlob_->GetBufferPointer();
+	pipelineDesc_.PS.BytecodeLength = psBlob_->GetBufferSize();
 
 	// サンプルマスクの設定
-	pipelineDesc.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
+	pipelineDesc_.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 
 	// ラスタライザの設定
-	pipelineDesc.RasterizerState.CullMode = D3D12_CULL_MODE_NONE; // 背面をカリング
-	pipelineDesc.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
-	pipelineDesc.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
+	pipelineDesc_.RasterizerState.CullMode = D3D12_CULL_MODE_NONE; // 背面をカリング
+	pipelineDesc_.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
+	pipelineDesc_.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
 
 #pragma region ブレンド設定
 
 	// 頂点レイアウトの設定
-	pipelineDesc.InputLayout.pInputElementDescs = inputLayout;
+	pipelineDesc_.InputLayout.pInputElementDescs = inputLayout;
 	//pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
-	pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
+	pipelineDesc_.InputLayout.NumElements = _countof(inputLayout);
 
 	// 図形の形状設定
-	pipelineDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	pipelineDesc_.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
 
 	// その他の設定
-	pipelineDesc.NumRenderTargets = 1; // 描画対象は1つ
-	pipelineDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
-	pipelineDesc.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
+	pipelineDesc_.NumRenderTargets = 1; // 描画対象は1つ
+	pipelineDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
+	pipelineDesc_.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
 	//デプスステンシルステートの設定
-	pipelineDesc.DepthStencilState.DepthEnable = true;	//深度テストを行う
-	pipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;	//書き込み許可
-	pipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;		//小さければ合格
-	pipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;		//深度値フォーマット
+	pipelineDesc_.DepthStencilState.DepthEnable = true;	//深度テストを行う
+	pipelineDesc_.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;	//書き込み許可
+	pipelineDesc_.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;		//小さければ合格
+	pipelineDesc_.DSVFormat = DXGI_FORMAT_D32_FLOAT;		//深度値フォーマット
 
 #pragma region ブレンド設定
 	// ブレンドステート
 
 	//レンダーターゲットのブレンド設定
-	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc.BlendState.RenderTarget[0];
+	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
 
 	//アルファ値の計算式の設定
@@ -270,17 +270,17 @@ void Object3d::Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 M
 	// ルートシグネチャのシリアライズ
 	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob;
 	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
-		&rootSigBlob, &errorBlob);
+		&rootSigBlob, &errorBlob_);
 	assert(SUCCEEDED(result));
 	result = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
-		IID_PPV_ARGS(&rootSignature));
+		IID_PPV_ARGS(&rootSignature_));
 	assert(SUCCEEDED(result));
 
 	// パイプラインにルートシグネチャをセット
-	pipelineDesc.pRootSignature = rootSignature.Get();
+	pipelineDesc_.pRootSignature = rootSignature_.Get();
 
 	// パイプランステートの生成
-	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc, IID_PPV_ARGS(&pipelineState));
+	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result));
 
 	model_.SetName(path);
@@ -314,36 +314,36 @@ void Object3d::Update(Camera* camera)
 	//射影変換行列
 	matProjection_ = camera_->GetMatProjection();
 
-	cameraPos = camera_->GetEye();
+	cameraPos_ = camera_->GetEye();
 
 	XMFLOAT3 move = { 0,0,0 };
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理
-	if(keys_->HasPushedKey(DIK_RIGHT)) { transform.x += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_LEFT)) { transform.x -= 0.4f; }
+	if(keys_->HasPushedKey(DIK_RIGHT)) { transform_.x += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_LEFT)) { transform_.x -= 0.4f; }
 	else {}
-	if(keys_->HasPushedKey(DIK_P)) { transform.y += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_L)) { transform.y -= 0.4f; }
+	if(keys_->HasPushedKey(DIK_P)) { transform_.y += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_L)) { transform_.y -= 0.4f; }
 	else {}
 
 	
-	matWorld = XMMatrixIdentity();
+	matWorld_ = XMMatrixIdentity();
 
 	//スケール、回転、平行移動の計算
-	matScale = XMMatrixIdentity();
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ(rotation.z);
-	matRot *= XMMatrixRotationX(rotation.x);
-	matRot *= XMMatrixRotationY(rotation.y);
-	matTrans = XMMatrixIdentity();
-	matTrans = XMMatrixTranslation(transform.x, transform.y, transform.z);
+	matScale_ = XMMatrixIdentity();
+	matScale_ = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
+	matRot_ = XMMatrixIdentity();
+	matRot_ *= XMMatrixRotationZ(rotation_.z);
+	matRot_ *= XMMatrixRotationX(rotation_.x);
+	matRot_ *= XMMatrixRotationY(rotation_.y);
+	matTrans_ = XMMatrixIdentity();
+	matTrans_ = XMMatrixTranslation(transform_.x, transform_.y, transform_.z);
 
-	matWorld = XMMatrixIdentity();
-	matWorld *= matScale;
-	matWorld *= matRot;
-	matWorld *= matTrans;
+	matWorld_ = XMMatrixIdentity();
+	matWorld_ *= matScale_;
+	matWorld_ *= matRot_;
+	matWorld_ *= matTrans_;
 
 	model_.Update();
 
@@ -357,21 +357,21 @@ void Object3d::Update(Camera* camera)
 	}*/
 
 	//定数バッファへデータ転送
-	constMapTransform->worldMatrix = matWorld;
-	constMapTransform->viewProjection = (matView_ * matProjection_);
-	constMapTransform->cameraPos = cameraPos;
+	constMapTransform_->worldMatrix = matWorld_;
+	constMapTransform_->viewProjection = (matView_ * matProjection_);
+	constMapTransform_->cameraPos = cameraPos_;
 
 	//定数バッファのマッピング
-	HRESULT result = constBuffMaterial->Map(0, nullptr, (void**)&constMapMaterial);//マッピング
-	constBuffMaterial->SetName(L"constBuffMaterial");
+	HRESULT result = constBuffMaterial_->Map(0, nullptr, (void**)&constMapMaterial_);//マッピング
+	constBuffMaterial_->SetName(L"constBuffMaterial");
 	assert(SUCCEEDED(result));
 
-	constMapMaterial->ambient = model_.GetInfomation()->material_.ambient;
-	constMapMaterial->diffuse = model_.GetInfomation()->material_.diffuse;
-	constMapMaterial->specular = model_.GetInfomation()->material_.specular;
-	constMapMaterial->alpha = model_.GetInfomation()->material_.alpha;
+	constMapMaterial_->ambient = model_.GetInfomation()->material.ambient;
+	constMapMaterial_->diffuse = model_.GetInfomation()->material.diffuse;
+	constMapMaterial_->specular = model_.GetInfomation()->material.specular;
+	constMapMaterial_->alpha = model_.GetInfomation()->material.alpha;
 
-	constBuffMaterial->Unmap(0, nullptr);
+	constBuffMaterial_->Unmap(0, nullptr);
 }
 
 void Object3d::Draw()
@@ -400,23 +400,23 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(2, srvGpuHandle);
 
 	//定数バッファビュー(CBV)の設定コマンド
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform->GetGPUVirtualAddress());
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial->GetGPUVirtualAddress());
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight->GetGPUVirtualAddress());
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform_->GetGPUVirtualAddress());
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial_->GetGPUVirtualAddress());
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight_->GetGPUVirtualAddress());
 
 	//ライトの描画
 	lightGroup_->Draw(directXBasic_->GetCommandList().Get(), 3);
 
 	//描画コマンド
-	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices_.size()), 1, 0, 0, 0);
+	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices.size()), 1, 0, 0, 0);
 }
 
 void Object3d::BeforeDraw()
 {
 	//パイプラインのセット
-	directXBasic_->GetCommandList()->SetPipelineState(pipelineState.Get());
+	directXBasic_->GetCommandList()->SetPipelineState(pipelineState_.Get());
 	//ルートシグネチャのセット
-	directXBasic_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+	directXBasic_->GetCommandList()->SetGraphicsRootSignature(rootSignature_.Get());
 	//プリミティブトポロジーのセット
 	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
@@ -432,9 +432,9 @@ XMFLOAT3 Object3d::GetWorldPos()
 	XMFLOAT3 resutVec = { 0,0,0 };
 
 	//ワールド行列の平行移動成分を取得(ワールド座標)
-	resutVec.x = matWorld.r[3].m128_f32[0];
-	resutVec.y = matWorld.r[3].m128_f32[1];
-	resutVec.z = matWorld.r[3].m128_f32[2];
+	resutVec.x = matWorld_.r[3].m128_f32[0];
+	resutVec.y = matWorld_.r[3].m128_f32[1];
+	resutVec.z = matWorld_.r[3].m128_f32[2];
 
 	return resutVec;
 

@@ -117,13 +117,13 @@ public: //メンバ関数
 
 public: //定数
 	//ライトの数
-	static const int32_t DirLightNum = 3;
+	static const int32_t kDirLightNum_ = 3;
 	//点光源の数
-	static const int32_t PointLightNum = 3;
+	static const int32_t kPointLightNum_ = 3;
 	//スポットライトの数
-	static const int32_t SpotLightNum = 3;
+	static const int32_t kSpotLightNum_ = 3;
 	//丸影の数
-	static const int32_t CircleShadowNum = 1;
+	static const int32_t kCircleShadowNum_ = 1;
 
 
 public: //サブクラス
@@ -135,7 +135,7 @@ public: //サブクラス
 		XMFLOAT3 ambientColor;
 		float pad1;
 		//平行光源用
-		DirectionalLight::ConstBufferData dirLights[DirLightNum];
+		DirectionalLight::ConstBufferData dirLights[kDirLightNum_];
 		//点光源用
 		//PointLight::ConstBufferData pointLights[PointLightNum];
 		////スポットライト用
@@ -148,7 +148,7 @@ public: //サブクラス
 private: //静的メンバ変数
 
 	//デバイス
-	static ID3D12Device *device;
+	static ID3D12Device *device_;
 
 private: //メンバ変数
 
@@ -157,7 +157,7 @@ private: //メンバ変数
 	//環境光の色
 	XMFLOAT3 ambientColor_ = { 1,1,1};
 	//平行光源の配列
-	DirectionalLight dirLights_[DirLightNum];
+	DirectionalLight dirLights_[kDirLightNum_];
 	//点光源の配列
 	//PointLight pointLights[PointLightNum];
 	////スポットライト配列

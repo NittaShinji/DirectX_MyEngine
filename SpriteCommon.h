@@ -52,8 +52,10 @@ public:
 	//画像読み込み
 	void LoadTexture(const std::string& fileName);
 
-	//行列用の定数バッファ作成
-	void CrateConstBuffTransform();
+	//テンプレートコンストラクタ
+	template <typename Type1, typename Type2>
+	//定数バッファの生成
+	ComPtr<ID3D12Resource> CrateConstBuff(Type1*& constMapData, Type2* directXBasic_);
 
 private:
 
@@ -67,84 +69,57 @@ private:
 		XMMATRIX mat;	//色(RGBA)
 	};
 
-	//頂点の数
-	//static const int layoutCount = 6;
-
-	// 頂点レイアウト
-	//std::array<D3D12_INPUT_ELEMENT_DESC,layoutCount> inputLayout{};
-
 	DirectXBasic* directXBasic_ = nullptr;
 
-	ID3DBlob* vsBlob = nullptr; // 頂点シェーダオブジェクト
-	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
-	ID3DBlob* errorBlob = nullptr; // エラーオブジェクト
+	ID3DBlob* vsBlob_ = nullptr; // 頂点シェーダオブジェクト
+	ID3DBlob* psBlob_ = nullptr; // ピクセルシェーダオブジェクト
+	ID3DBlob* errorBlob_ = nullptr; // エラーオブジェクト
 
-	ComPtr<ID3D12PipelineState> pipelineState = nullptr;
-	ComPtr<ID3D12RootSignature> rootSignature = nullptr;
+	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
+	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
 	
 	//頂点レイアウト
-	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout{};
+	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout_{};
 
 	//色用の定数バッファ
-	ComPtr<ID3D12Resource> constBuffMaterial = nullptr;
+	ComPtr<ID3D12Resource> constBuffMaterial_ = nullptr;
 	//ID3D12Resource* constBuffMaterial = nullptr;
 	//座標用の定数バッファ
-	ComPtr<ID3D12Resource> constBuffTransform = nullptr;
+	ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
 
 	//定数バッファのGPUリソースのポインタ
-	ConstBufferDataMaterial* constMapMaterial = nullptr;
+	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
 	//定数バッファのマッピング用ポインタ
-	ConstBufferDataTransform* constMapTransform = nullptr;
+	ConstBufferDataTransform* constMapTransform_ = nullptr;
 
 	//グラフィックスパイプライン
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
-
-	//横方向ピクセル数
-	const size_t textureWidth = 256;
-	//縦方向ピクセル数
-	const size_t textureHeight = 256;
-	//配列の要素数
-	const size_t imageDateCount = textureWidth * textureHeight;
-	//画像イメージデータ配列
-	XMFLOAT4* imageDate;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
 
 	//シェーダーリソース用のデスクリプタヒープ
 	ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
 	//SRVの最大個数
-	static const size_t kMaxSRVCount = 2056;
+	static const size_t kMaxSRVCount_ = 2056;
 
 	//テクスチャバッファ
-	static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+	static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
 
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
 
-	//テクスチャメモリ用番号
-	uint32_t textureHandleIndex_;
-
-	//GPU用のSRVのデスクリプタハンドル
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle;
-
 	//テクスチャ番号
 	uint32_t textureIndex_;
 	//画像に結び付いたテクスチャ番号格納用map
-	std::map<const std::string, uint32_t, std::less<>> textureMap = {};
+	std::map<const std::string, uint32_t, std::less<>> textureMap_ = {};
 
 public:
 
 	//ゲッター
 	DirectXBasic* GetDirectXBasic() { return directXBasic_; };
-	ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial; };
-	ConstBufferDataMaterial* GetConstMapMaterial() { return constMapMaterial; };
-	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform.Get(); };
-	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform; };
+	ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial_; };
+	ConstBufferDataMaterial* GetConstMapMaterial() { return constMapMaterial_; };
+	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform_.Get(); };
+	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform_; };
 	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); };
-	D3D12_GPU_DESCRIPTOR_HANDLE GetSRVGpuHandle() { return srvGpuHandle; }
-	std::map<const std::string, uint32_t, std::less<>> GetTextureMap() { return textureMap; }
-
-	//テンプレートコンストラクタ
-	template <typename Type1, typename Type2>
-	//定数バッファの生成
-	ComPtr<ID3D12Resource> CrateConstBuff(Type1*& constMapData, Type2* directXBasic_);
+	std::map<const std::string, uint32_t, std::less<>> GetTextureMap() { return textureMap_; }
 };

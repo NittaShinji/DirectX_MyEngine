@@ -98,7 +98,6 @@
     <ClCompile Include="ImGuiManager.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="KeyInput.cpp" />
-    <ClCompile Include="LevelData.cpp" />
     <ClCompile Include="LightGroup.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -121,7 +120,6 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="KeyInput.h" />
-    <ClInclude Include="LevelData.h" />
     <ClInclude Include="LightGroup.h" />
     <ClInclude Include="LevelManager.h" />
     <ClInclude Include="Model.h" />

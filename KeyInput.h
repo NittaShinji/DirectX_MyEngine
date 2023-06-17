@@ -63,11 +63,11 @@ private:
 	static KeyInput* instance;
 
 	//各種キーの保存用変数
-	static BYTE keys[256];
-	static BYTE oldKeys[256];
+	static BYTE sKeys_[256];
+	static BYTE sOldKeys_[256];
 
 	//インスタンス
-	ComPtr<IDirectInput8> directInput = nullptr;
+	ComPtr<IDirectInput8> directInput_ = nullptr;
 	//キーボードデバイス
-	static ComPtr<IDirectInputDevice8> keyboard;
+	static ComPtr<IDirectInputDevice8> keyboard_;
 };

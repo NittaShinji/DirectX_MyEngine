@@ -13,11 +13,11 @@ using namespace DirectX;
 DirectXBasic* Model::directXBasic_ = nullptr;
 //std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, Model::kMaxSRVCount> Model::textureBuffers_;
 //uint32_t Model::textureIndex_;
-std::map<Model::MODELKEY, Model::MODELVALUE> Model::models_;
+std::map<Model::MODELKEY, Model::MODELVALUE> Model::sModels_;
 //std::string Model::kDefaultTextureDirectoryPath_ = "Resources/";
 //D3D12_CPU_DESCRIPTOR_HANDLE Model::srvHandle;
-uint32_t Model::textureIndex_ = 0;
-D3D12_CPU_DESCRIPTOR_HANDLE Model::srvHandle;
+uint32_t Model::sTextureIndex_ = 0;
+D3D12_CPU_DESCRIPTOR_HANDLE Model::sSrvHandle_;
 
 void Model::StaticInitialize(DirectXBasic* directXBasic)
 {
@@ -118,9 +118,9 @@ void Model::Load(const std::string& path)
 				vertex.pos = positions[indexPosition - 1];
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcoords[indexTexcoord - 1];
-				model.infomation_.vertices_.emplace_back(vertex);
+				model.infomation_.vertices.emplace_back(vertex);
 				//インデックスデータの追加
-				model.infomation_.indices_.emplace_back((unsigned short)model.infomation_.indices_.size());
+				model.infomation_.indices.emplace_back((unsigned short)model.infomation_.indices.size());
 
 				//assert(faceIndexCount < 4 && "5角形ポリゴン以上は非対応です");
 
@@ -157,7 +157,7 @@ void Model::Load(const std::string& path)
 	file.close();
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * model.infomation_.vertices_.size());
+	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * model.infomation_.vertices.size());
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -183,21 +183,21 @@ void Model::Load(const std::string& path)
 		&resDesc, // リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&model.infomation_.vertBuff_)); 
+		IID_PPV_ARGS(&model.infomation_.vertBuff)); 
 	assert(SUCCEEDED(result));
 
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	result = model.infomation_.vertBuff_->Map(0, nullptr, (void**)&vertMap);
+	result = model.infomation_.vertBuff->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
-	std::copy(model.infomation_.vertices_.begin(), model.infomation_.vertices_.end(), vertMap);
+	std::copy(model.infomation_.vertices.begin(), model.infomation_.vertices.end(), vertMap);
 	
 	// 繋がりを解除
-	model.infomation_.vertBuff_->Unmap(0, nullptr);
+	model.infomation_.vertBuff->Unmap(0, nullptr);
 
 	//インデックスデータ全体のサイズ
-	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * model.infomation_.indices_.size());
+	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * model.infomation_.indices.size());
 	
 	//リソース設定
 	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
@@ -222,7 +222,7 @@ void Model::Load(const std::string& path)
 	uint16_t* indexMap = nullptr;
 	result = model.infomation_.indexBuff->Map(0, nullptr, (void**)&indexMap);
 	//全インデックスに対して
-	std::copy(model.infomation_.indices_.begin(), model.infomation_.indices_.end(), indexMap);
+	std::copy(model.infomation_.indices.begin(), model.infomation_.indices.end(), indexMap);
 
 	//マッピング解除
 	model.infomation_.indexBuff->Unmap(0, nullptr);
@@ -230,11 +230,11 @@ void Model::Load(const std::string& path)
 #pragma region 頂点バッファビューの作成
 
 	// GPU仮想アドレス
-	model.infomation_.vbView.BufferLocation = model.infomation_.vertBuff_->GetGPUVirtualAddress();
+	model.infomation_.vbView.BufferLocation = model.infomation_.vertBuff->GetGPUVirtualAddress();
 	// 頂点バッファのサイズ
 	model.infomation_.vbView.SizeInBytes = sizeVB;
 	// 頂点1つ分のデータサイズ
-	model.infomation_.vbView.StrideInBytes = sizeof(infomation_.vertices_[0]);
+	model.infomation_.vbView.StrideInBytes = sizeof(infomation_.vertices[0]);
 
 #pragma endregion
 
@@ -249,7 +249,7 @@ void Model::Load(const std::string& path)
 #pragma endregion
 	
 	//モデルmapへの挿入
-	models_.insert_or_assign(model.name_, model.infomation_);
+	sModels_.insert_or_assign(model.name_, model.infomation_);
 }
 
 void Model::Update(){}
@@ -289,43 +289,43 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 		if (key == "newmtl")
 		{
 			//マテリアル名読み込み
-			line_stream >> model.infomation_.material_.name;
+			line_stream >> model.infomation_.material.name;
 		}
 		//先頭文字列がKaならアンビエント色
 		if (key == "Ka")
 		{
-			line_stream >> model.infomation_.material_.ambient.x;
-			line_stream >> model.infomation_.material_.ambient.y;
-			line_stream >> model.infomation_.material_.ambient.z;
+			line_stream >> model.infomation_.material.ambient.x;
+			line_stream >> model.infomation_.material.ambient.y;
+			line_stream >> model.infomation_.material.ambient.z;
 		}
 
 		//先頭文字列がKdならディフューズ色
 		if (key == "Kd")
 		{
-			line_stream >> model.infomation_.material_.diffuse.x;
-			line_stream >> model.infomation_.material_.diffuse.y;
-			line_stream >> model.infomation_.material_.diffuse.z;
+			line_stream >> model.infomation_.material.diffuse.x;
+			line_stream >> model.infomation_.material.diffuse.y;
+			line_stream >> model.infomation_.material.diffuse.z;
 		}
 
 		//先頭文字列がKdならスペキュラー色
 		if (key == "Ks")
 		{
-			line_stream >> model.infomation_.material_.specular.x;
-			line_stream >> model.infomation_.material_.specular.y;
-			line_stream >> model.infomation_.material_.specular.z;
+			line_stream >> model.infomation_.material.specular.x;
+			line_stream >> model.infomation_.material.specular.y;
+			line_stream >> model.infomation_.material.specular.z;
 		}
 
 		//先頭文字列がmap_kdならテクスチャファイル名
 		if (key == "map_Kd")
 		{
 			//テクスチャのファイル名読み込み
-			line_stream >> model.infomation_.material_.textureFilename;
+			line_stream >> model.infomation_.material.textureFilename;
 			//テクスチャ読み込み
-			LoadTexture(directoryPath, model.infomation_.material_.textureFilename,model);
+			LoadTexture(directoryPath, model.infomation_.material.textureFilename,model);
 		}
 		else
 		{
-			model.infomation_.material_.textureFilename = "white1x1.png";
+			model.infomation_.material.textureFilename = "white1x1.png";
 			//テクスチャ読み込み
 			LoadTexture(defaultResourcePath, "white1x1.png", model);
 		}
@@ -393,7 +393,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		//IID_PPV_ARGS(&textureBuffers_[0]));
-		IID_PPV_ARGS(&model.infomation_.textureBuffers_[textureIndex_]));
+		IID_PPV_ARGS(&model.infomation_.textureBuffers[sTextureIndex_]));
 
 	textureHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
 
@@ -405,7 +405,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 
 		//テクスチャバッファにデータ転送
 
-		result = model.infomation_.textureBuffers_[textureIndex_]->WriteToSubresource(
+		result = model.infomation_.textureBuffers[sTextureIndex_]->WriteToSubresource(
 
 			(UINT)i,
 			nullptr,
@@ -421,21 +421,21 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
 	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
-	srvHeapDesc.NumDescriptors = kMaxSRVCount;
+	srvHeapDesc.NumDescriptors = kMaxSRVCount_;
 
 	//設定を本にSRV用デスクリプタヒープを生成
 	result = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&model.infomation_.srvHeap));
 	assert(SUCCEEDED(result));
 
 	//SRVヒープの先頭ハンドルを取得
-	srvHandle = model.infomation_.srvHeap->GetCPUDescriptorHandleForHeapStart();
+	sSrvHandle_ = model.infomation_.srvHeap->GetCPUDescriptorHandleForHeapStart();
 
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//取得したサイズを使用してハンドルを進める
-	for (uint32_t i = 0; i < textureIndex_; i++)
+	for (uint32_t i = 0; i < sTextureIndex_; i++)
 	{
-		srvHandle.ptr += incrementSize;
+		sSrvHandle_.ptr += incrementSize;
 	}
 
 	//シェーダーリソースビューの設定
@@ -447,7 +447,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	directXBasic_->GetDevice()->CreateShaderResourceView(model.infomation_.textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
+	directXBasic_->GetDevice()->CreateShaderResourceView(model.infomation_.textureBuffers[sTextureIndex_].Get(), &srvDesc, sSrvHandle_);
 	
 	//画像番号を進める
 	//textureIndex_++;
@@ -456,5 +456,5 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 //検索キー(パス)から値を検索
 const Model::MODELVALUE* Model::GetMODELVALUE(const MODELKEY path)
 {
-	return &models_.at(path);
+	return &sModels_.at(path);
 }

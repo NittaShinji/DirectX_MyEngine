@@ -55,8 +55,5 @@ private:
 	~LevelManager() {};
 	
 	LevelData levelData_;
-
-	//std::unique_ptr<Object3d> object3d_;
-
 };
 

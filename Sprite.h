@@ -13,7 +13,10 @@ class Sprite
 {
 public:
 
-	//静的初期化」
+	//エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+	//静的初期化
 	static void StaticInitialize();
 
 	//初期化
@@ -21,11 +24,7 @@ public:
 	//行列更新
 	void matUpdate();
 	//描画
-	//void Draw(uint32_t textureIndex);
 	void Draw(const std::string& fileName);
-
-
-	~Sprite();
 
 	/*void TexMapping();
 	void TexMappingSRVSet();*/
@@ -34,11 +33,6 @@ public:
 	void LineListUpdate();*/
 
 private:
-
-	SpriteCommon* spriteCommon_;
-
-	static DirectXBasic* directXBasic_;
-	static KeyInput* keys_;
 
 	enum VertexNumber
 	{
@@ -54,19 +48,21 @@ private:
 		XMFLOAT2 uv; // uv座標
 	};
 
+	SpriteCommon* spriteCommon_;
+
+	static DirectXBasic* directXBasic_;
+	static KeyInput* keys_;
+
 	//ウインドウの長さ
-	float winWide;
-	float winHeight;
+	float winWide_;
+	float winHeight_;
 
 	//スプライトの長さ
 	float wide_;
 	float height_;
 
-	//射影変換行列
-	XMMATRIX matProjection;
-
 	//スケーリング倍率
-	XMFLOAT3 scale;
+	XMFLOAT3 scale_;
 	//回転角
 	float rotation_;
 	//座標
@@ -83,7 +79,7 @@ private:
 	bool isFlipY_ = false;
 
 	//頂点の数
-	static const int32_t vertexCount = 4;
+	static const int32_t kVertexCount_ = 4;
 
 	//アンカーポイント
 	XMFLOAT2 anchorPoint_;
@@ -95,54 +91,36 @@ private:
 	XMFLOAT2 position_;
 
 	//頂点配列
-	std::array<Vertex, vertexCount> vertices_{};
+	std::array<Vertex, kVertexCount_> vertices_{};
 
 	// 頂点バッファビューの作成
 	//std::array <D3D12_VERTEX_BUFFER_VIEW, imageCount> vbView{};
-	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	D3D12_VERTEX_BUFFER_VIEW vbView_{};
 	
 	// 頂点データ全体のサイズ
 	
 	HRESULT result_;
-	Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;
-	//ComPtr<ID3D12Resource> vertBuff_ = nullptr;
+	ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 	
+	//テクスチャマッピング用の変数
 	//横方向ピクセル数
-	const size_t textureWidth = 256;
+	const size_t kTextureWidth_ = 256;
 	//縦方向ピクセル数
-	const size_t textureHeight = 256;
+	const size_t kTextureHeight_ = 256;
 	//配列の要素数
-	const size_t imageDateCount = textureWidth * textureHeight;
-
+	const size_t imageDateCount_ = kTextureWidth_ * kTextureHeight_;
 	//画像イメージデータ配列
-	XMFLOAT4* imageDate;
-
-	
-	
-	//static std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> uploadBuffer;
-
+	XMFLOAT4* imageDate_;
 	//テクスチャリソースデスク
-	D3D12_RESOURCE_DESC textureResourceDesc{};
+	D3D12_RESOURCE_DESC textureResourceDesc_{};
 
-	D3D12_RESOURCE_DESC resDesc{};
-
-	//シェーダーリソースビュー
-	//ID3D12DescriptorHeap* srvHeap = nullptr;
-	//static ID3D12DescriptorHeap* srvHeap;
-
-	//テクスチャ番号
-	//uint32_t textureIndex_;
-	//テクスチャメモリ用番号
-	//uint32_t textureHandleIndex_;
-
-	static UINT64 fenceCount;
+	D3D12_RESOURCE_DESC resDesc_{};
 
 public:
 
-	std::array <Vertex, vertexCount> GetterVertex() { return vertices_; };
+	std::array <Vertex, kVertexCount_> GetterVertex() { return vertices_; };
 
 	//ゲッター
-	//ID3D12Resource* GetTexBuff() { return texBuff; };
 	const XMFLOAT2& GetMoveSpeed_() const { return moveSpeed_; };
 	float GetRotation() const { return rotation_; };
 	const XMFLOAT4 GetColor() const { return color_; };
@@ -152,7 +130,6 @@ public:
 	bool GetIsFlipX() const { return isFlipX_; };
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
-	//uint32_t GetTextureIndex() const { return textureIndex_; };
 	
 	//セッター
 	void SetMoveSpeed_(const DirectX::XMFLOAT2& moveSpeed) { moveSpeed_ = moveSpeed; };
@@ -165,7 +142,6 @@ public:
 	void SetIsFlipX(bool isFlipX) { isFlipX_ = isFlipX; };
 	void SetIsFlipY(bool isFlipY) { isFlipY_ = isFlipY; };
 	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
-	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 	/*void SetWidth(size_t width) { wide_ = wide_; };
 	void SetHeight(size_t height) { height_ = height; };*/
 };

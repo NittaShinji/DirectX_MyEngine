@@ -17,9 +17,6 @@ public:
 private:
 
 	Object3d* objce3d_;
-
-
-
 };
 
 Sphere::Sphere()

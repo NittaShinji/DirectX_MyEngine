@@ -80,15 +80,12 @@ private:
 		float alpha;
 	};
 
-	//デフォルトテクスチャ格納ディレクトリ
-	//static std::string kDefaultTextureDirectoryPath_;
-
 public:
 
 	using MODELKEY = std::string;
 
 	//SRVの最大個数
-	static const size_t kMaxSRVCount = 256;
+	static const size_t kMaxSRVCount_ = 256;
 
 	struct MODELVALUE
 	{
@@ -101,15 +98,15 @@ public:
 		ConstBufferDateB1* constMap1 = nullptr;
 
 		//マテリアル
-		Material material_;
+		Material material;
 
 		//頂点データ配列
-		std::vector<Vertex> vertices_;
+		std::vector<Vertex> vertices;
 		//頂点インデックス配列
-		std::vector<unsigned short> indices_;
+		std::vector<unsigned short> indices;
 
 		//頂点バッファ
-		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff_ = nullptr;
+		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
 		//インデックスバッファ
 		Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
 		//SRV用のデスクリプタヒープ
@@ -121,7 +118,7 @@ public:
 		D3D12_INDEX_BUFFER_VIEW ibView{};
 
 		//テクスチャバッファ
-		std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
+		std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers;
 	};	
 
 	static const MODELVALUE* GetMODELVALUE(const MODELKEY path);
@@ -129,30 +126,24 @@ public:
 private:
 
 	//デスクリプタヒープハンドル
-	static D3D12_CPU_DESCRIPTOR_HANDLE srvHandle;
+	static D3D12_CPU_DESCRIPTOR_HANDLE sSrvHandle_;
 
 	//テクスチャ番号
-	static uint32_t textureIndex_;
+	static uint32_t sTextureIndex_;
 
-	//D3D12_RESOURCE_DESC textureResourceDesc_{};
 	MODELKEY name_;
 	MODELVALUE infomation_;
-	static std::map<MODELKEY, MODELVALUE> models_;
+	static std::map<MODELKEY, MODELVALUE> sModels_;
 
 public:
 
 	//ゲッター
-	//std::map<MODELKEY, MODELVALUE> GetModels() { return models_; };
 	MODELKEY* GetName() { return &name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
-	const uint32_t GetTexIndex() { return textureIndex_; };
+	const uint32_t GetTexIndex() { return sTextureIndex_; };
 
 	//セッター
 	void SetName(MODELKEY name) { name_ = name; };
 	void SetInfomation (MODELVALUE infomation) { infomation_ = infomation; };
-
-	/*void SetName(MODELKEY name) { name_ = name; };
-	void SetInfomation (MODELVALUE infomation) { infomation_ = infomation; };*/
-
 };
 

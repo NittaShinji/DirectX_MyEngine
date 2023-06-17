@@ -5,17 +5,17 @@ using namespace DirectX;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
-ID3D12Device* LightGroup::device = nullptr;
+ID3D12Device* LightGroup::device_ = nullptr;
 
 void LightGroup::StaticInitialize(ID3D12Device *device)
 {
 	//再初期化チェック
-	assert(!LightGroup::device);
+	assert(!LightGroup::device_);
 
 	//nullptrチェック
 	assert(device);
 
-	LightGroup::device = device;
+	LightGroup::device_ = device;
 }
 
 void LightGroup::Initialize()
@@ -36,7 +36,7 @@ void LightGroup::Initialize()
 	cbResourceDesc.SampleDesc.Count = 1;
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	///定数バッファの生成
-	HRESULT result = device->CreateCommittedResource(
+	HRESULT result = device_->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
@@ -87,7 +87,7 @@ void LightGroup::TransferConstBuffer()
 		constMap->ambientColor = ambientColor_;
 		
 		//平行光源
-		for(int32_t i = 0; i < DirLightNum; i++)
+		for(int32_t i = 0; i < kDirLightNum_; i++)
 		{
 			//ライトが有効なら設定を転送
 			if(dirLights_[i].IsActive())
@@ -105,7 +105,7 @@ void LightGroup::TransferConstBuffer()
 		}
 
 		//点光源
-		for(int32_t i = 0; i < PointLightNum; i++)
+		for(int32_t i = 0; i < kPointLightNum_; i++)
 		{
 			//ライトが有効なら設定を転送
 			//if(pointLights[i].IsActive())
@@ -123,7 +123,7 @@ void LightGroup::TransferConstBuffer()
 		}
 
 		//スポットライト
-		for(int32_t i = 0; i < SpotLightNum; i++)
+		for(int32_t i = 0; i < kSpotLightNum_; i++)
 		{
 			//ライトが有効なら設定を転送
 			//if(spotLights[i].IsActive())
@@ -143,7 +143,7 @@ void LightGroup::TransferConstBuffer()
 		}
 
 		//丸影
-		for(int32_t i = 0; i < CircleShadowNum; i++)
+		for(int32_t i = 0; i < kCircleShadowNum_; i++)
 		{
 			//有効なら設定を転送
 			//if(circleShadows[i].IsActive())
@@ -174,20 +174,20 @@ void LightGroup::SetAmbientColor(const XMFLOAT3 &color)
 
 void LightGroup::SetDirLightActive(int32_t index, bool active)
 {
-	assert(0 <= index && index < DirLightNum);
+	assert(0 <= index && index < kDirLightNum_);
 	dirLights_[index].SetActive(active);
 }
 
 void LightGroup::SetDirLightDir(int32_t index, const XMVECTOR &lightDir)
 {
-	assert(0 <= index && index < DirLightNum);
+	assert(0 <= index && index < kDirLightNum_);
 	dirLights_[index].SetLightDir(lightDir);
 	dirty_ = true;
 }
 
 void LightGroup::SetDirLightColor(int32_t index, const XMFLOAT3 &lightColor)
 {
-	assert(0 <= index && index < DirLightNum);
+	assert(0 <= index && index < kDirLightNum_);
 	dirLights_[index].SetLightColor(lightColor);
 	dirty_ = true;
 }

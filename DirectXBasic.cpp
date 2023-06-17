@@ -33,11 +33,11 @@ void DirectXBasic::Initialize(WindowsAPI* winApi)
 	//フェンス
 	InitializeFence();
 
-#pragma region デスクリプタヒープの生成 (P01_02)
+#pragma region デスクリプタヒープの生成
 #pragma endregion
-#pragma region バックバッファ(P01_02)
+#pragma region バックバッファ
 #pragma endregion 
-#pragma region フェンス (P01_02)
+#pragma region フェンス
 #pragma endregion 
 }
 
@@ -45,18 +45,18 @@ void DirectXBasic::BeforeDraw()
 {
 	// バックバッファの番号を取得(2つなので0番か1番)
 	UINT bbIndex = swapChain_->GetCurrentBackBufferIndex();
-#pragma region リソースバリアの変更コマンド (P01_03)
+#pragma region リソースバリアの変更コマンド
 	
 	// 1.リソースバリアで書き込み可能に変更
-	barrierDesc.Transition.pResource = backBuffers_[bbIndex].Get(); // バックバッファを指定
+	barrierDesc_.Transition.pResource = backBuffers_[bbIndex].Get(); // バックバッファを指定
 	
-	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT; // 表示状態から
-	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
-	commandList_->ResourceBarrier(1, &barrierDesc);
+	barrierDesc_.Transition.StateBefore = D3D12_RESOURCE_STATE_PRESENT; // 表示状態から
+	barrierDesc_.Transition.StateAfter = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態へ
+	commandList_->ResourceBarrier(1, &barrierDesc_);
 
 #pragma endregion 
 
-#pragma region 描画先指定コマンド (P01_03)
+#pragma region 描画先指定コマンド
 	// 2.描画先の変更
 	// レンダーターゲットビューのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE rtvHandle = rtvHeap_->GetCPUDescriptorHandleForHeapStart();
@@ -68,7 +68,7 @@ void DirectXBasic::BeforeDraw()
 
 #pragma endregion
 
-#pragma region 画面クリアコマンド・背景色変更(P01_03)
+#pragma region 画面クリアコマンド・背景色変更
 
 	// 3.画面クリア R G B A
 	FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f }; // 青っぽい色
@@ -122,14 +122,14 @@ void DirectXBasic::AfterDraw()
 	// バックバッファの番号を取得(2つなので0番か1番)
 	UINT bbIndex = swapChain_->GetCurrentBackBufferIndex();
 
-#pragma region リソースバリアの変更コマンド (P01_03)
+#pragma region リソースバリアの変更コマンド
 	// 5.リソースバリアを戻す
-	barrierDesc.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
-	barrierDesc.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
-	commandList_->ResourceBarrier(1, &barrierDesc);
+	barrierDesc_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
+	barrierDesc_.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
+	commandList_->ResourceBarrier(1, &barrierDesc_);
 #pragma endregion 
 
-#pragma region コマンドのフラッシュ(P01_03)
+#pragma region コマンドのフラッシュ
 
 	// 命令のクローズ
 	result_ = commandList_->Close();
@@ -159,13 +159,13 @@ void DirectXBasic::AfterDraw()
 
 #endif
 
-#pragma region コマンド完了待ち(P01_03)
+#pragma region コマンド完了待ち
 	// コマンドの実行完了を待つ
-	commandQueue_->Signal(fence.Get(), ++fenceVal);
+	commandQueue_->Signal(fence_.Get(), ++fenceVal_);
 
-	if (fence->GetCompletedValue() != fenceVal) {
+	if (fence_->GetCompletedValue() != fenceVal_) {
 		HANDLE event = CreateEvent(nullptr, false, false, nullptr);
-		fence->SetEventOnCompletion(fenceVal, event);
+		fence_->SetEventOnCompletion(fenceVal_, event);
 		WaitForSingleObject(event, INFINITE);
 		CloseHandle(event);
 	}
@@ -184,7 +184,7 @@ void DirectXBasic::AfterDraw()
 
 void DirectXBasic::InitializeDevice()
 {
-#pragma region アダプタの列挙(P01_02)
+#pragma region アダプタの列挙
 
 #ifdef _DEBUG
 
@@ -237,7 +237,7 @@ void DirectXBasic::InitializeDevice()
 	}
 #pragma endregion
 
-#pragma region デバイスの生成(P01_02)
+#pragma region デバイスの生成
 
 	// 対応レベルの配列
 	D3D_FEATURE_LEVEL levels[] = {
@@ -288,7 +288,7 @@ void DirectXBasic::InitializeDevice()
 
 void DirectXBasic::InitializeCommand()
 {
-#pragma region コマンドアロケータとリストの生成 (P01_02)
+#pragma region コマンドアロケータとリストの生成
 
 	// コマンドアロケータを生成
 	result_ = device_->CreateCommandAllocator(
@@ -304,7 +304,7 @@ void DirectXBasic::InitializeCommand()
 
 #pragma endregion
 
-#pragma region コマンドキューの生成(P01_02)
+#pragma region コマンドキューの生成
 	//コマンドキューの設定
 	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
 
@@ -317,23 +317,23 @@ void DirectXBasic::InitializeCommand()
 
 void DirectXBasic::InitializeSwapChain()
 {
-#pragma region スワップチェーン (P01_02)
+#pragma region スワップチェーン
 	// スワップチェーンの設定
-	swapChainDesc.Width = 1280;
-	swapChainDesc.Height = 720;
-	swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 色情報の書式
-	swapChainDesc.SampleDesc.Count = 1; // マルチサンプルしない
-	swapChainDesc.BufferUsage = DXGI_USAGE_BACK_BUFFER; // バックバッファ用
-	swapChainDesc.BufferCount = 2; // バッファ数を2つに設定
-	swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; // フリップ後は破棄
-	swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+	swapChainDesc_.Width = 1280;
+	swapChainDesc_.Height = 720;
+	swapChainDesc_.Format = DXGI_FORMAT_R8G8B8A8_UNORM; // 色情報の書式
+	swapChainDesc_.SampleDesc.Count = 1; // マルチサンプルしない
+	swapChainDesc_.BufferUsage = DXGI_USAGE_BACK_BUFFER; // バックバッファ用
+	swapChainDesc_.BufferCount = 2; // バッファ数を2つに設定
+	swapChainDesc_.SwapEffect = DXGI_SWAP_EFFECT_FLIP_DISCARD; // フリップ後は破棄
+	swapChainDesc_.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
 
 	//IDXGISwapChainのComPtrを用意(初期化でのみ仕様)
 	ComPtr<IDXGISwapChain1> swapChain1;
 
 	// スワップチェーンの生成
 	result_ = dxgiFactory_->CreateSwapChainForHwnd(
-		commandQueue_.Get(), winApi_->GetHwndClass(), &swapChainDesc, nullptr, nullptr, &swapChain1);
+		commandQueue_.Get(), winApi_->GetHwndClass(), &swapChainDesc_, nullptr, nullptr, &swapChain1);
 	assert(SUCCEEDED(result_));
 
 	//生成したIDXGISwapChain1のオブジェクトをIDXGISwapChain4に変換する
@@ -343,14 +343,14 @@ void DirectXBasic::InitializeSwapChain()
 
 void DirectXBasic::InitializeTargetView()
 {
-#pragma region レンダーターゲートビュー(RTV)の生成 (P01_02)
+#pragma region レンダーターゲートビュー(RTV)の生成
 	// デスクリプタヒープの設定
 	rtvHeapDesc_.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV; // レンダーターゲットビュー
-	rtvHeapDesc_.NumDescriptors = swapChainDesc.BufferCount; // 裏表の2つ
+	rtvHeapDesc_.NumDescriptors = swapChainDesc_.BufferCount; // 裏表の2つ
 	// デスクリプタヒープの生成
 	device_->CreateDescriptorHeap(&rtvHeapDesc_, IID_PPV_ARGS(&rtvHeap_));
 
-	backBuffers_.resize(swapChainDesc.BufferCount);
+	backBuffers_.resize(swapChainDesc_.BufferCount);
 
 	// スワップチェーンの全てのバッファについて処理する
 	for (size_t i = 0; i < backBuffers_.size(); i++) {
@@ -443,7 +443,7 @@ void DirectXBasic::InitializeFence()
 {
 #pragma region フェンス
 	// フェンスの生成
-	result_ = device_->CreateFence(fenceVal, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence));
+	result_ = device_->CreateFence(fenceVal_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence_));
 #pragma endregion 
 }
 

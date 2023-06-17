@@ -51,9 +51,9 @@ bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Dire
 void Collision::ClosetPtPoint2Triangle(const DirectX::XMVECTOR& point, const Triangle& triangle, DirectX::XMVECTOR* closest)
 {
 	// pointがp0の外側の頂点領域の中にあるかどうかチェック
-	XMVECTOR p0_p1 = triangle.p1 - triangle.p0;
-	XMVECTOR p0_p2 = triangle.p2 - triangle.p0;
-	XMVECTOR p0_pt = point - triangle.p0;
+	XMVECTOR p0_p1 = triangle.p1_ - triangle.p0_;
+	XMVECTOR p0_p2 = triangle.p2_ - triangle.p0_;
+	XMVECTOR p0_pt = point - triangle.p0_;
 
 	XMVECTOR d1 = XMVector3Dot(p0_p1, p0_pt);
 	XMVECTOR d2 = XMVector3Dot(p0_p2, p0_pt);
@@ -61,12 +61,12 @@ void Collision::ClosetPtPoint2Triangle(const DirectX::XMVECTOR& point, const Tri
 	if(d1.m128_f32[0] <= 0.0f && d2.m128_f32[0] <= 0.0f)
 	{
 		// p0が最近傍
-		*closest = triangle.p0;
+		*closest = triangle.p0_;
 		return;
 	}
 
 	// pointがp1の外側の頂点領域の中にあるかどうかチェック
-	XMVECTOR p1_pt = point - triangle.p1;
+	XMVECTOR p1_pt = point - triangle.p1_;
 
 	XMVECTOR d3 = XMVector3Dot(p0_p1, p1_pt);
 	XMVECTOR d4 = XMVector3Dot(p0_p2, p1_pt);
@@ -74,7 +74,7 @@ void Collision::ClosetPtPoint2Triangle(const DirectX::XMVECTOR& point, const Tri
 	if(d3.m128_f32[0] >= 0.0f && d4.m128_f32[0] <= d3.m128_f32[0])
 	{
 		// p1が最近傍
-		*closest = triangle.p1;
+		*closest = triangle.p1_;
 		return;
 	}
 
@@ -83,18 +83,18 @@ void Collision::ClosetPtPoint2Triangle(const DirectX::XMVECTOR& point, const Tri
 	if(vc <= 0.0f && d1.m128_f32[0] >= 0.0f && d3.m128_f32[0] <= 0.0f)
 	{
 		float v = d1.m128_f32[0] / (d1.m128_f32[0] - d3.m128_f32[0]);
-		*closest = triangle.p0 + v * p0_p1;
+		*closest = triangle.p0_ + v * p0_p1;
 		return;
 	}
 
 	// pointがp2の外側の頂点領域の中にあるかどうかチェック
-	XMVECTOR p2_pt = point - triangle.p2;
+	XMVECTOR p2_pt = point - triangle.p2_;
 
 	XMVECTOR d5 = XMVector3Dot(p0_p1, p2_pt);
 	XMVECTOR d6 = XMVector3Dot(p0_p2, p2_pt);
 	if(d6.m128_f32[0] >= 0.0f && d5.m128_f32[0] <= d6.m128_f32[0])
 	{
-		*closest = triangle.p2;
+		*closest = triangle.p2_;
 		return;
 	}
 
@@ -103,7 +103,7 @@ void Collision::ClosetPtPoint2Triangle(const DirectX::XMVECTOR& point, const Tri
 	if(vb <= 0.0f && d2.m128_f32[0] >= 0.0f && d6.m128_f32[0] <= 0.0f)
 	{
 		float w = d2.m128_f32[0] / (d2.m128_f32[0] - d6.m128_f32[0]);
-		*closest = triangle.p0 + w * p0_p2;
+		*closest = triangle.p0_ + w * p0_p2;
 		return;
 	}
 
@@ -112,14 +112,14 @@ void Collision::ClosetPtPoint2Triangle(const DirectX::XMVECTOR& point, const Tri
 	if(va <= 0.0f && (d4.m128_f32[0] - d3.m128_f32[0]) >= 0.0f && (d5.m128_f32[0] - d6.m128_f32[0]) >= 0.0f)
 	{
 		float w = (d4.m128_f32[0] - d3.m128_f32[0]) / ((d4.m128_f32[0] - d3.m128_f32[0]) + (d5.m128_f32[0] - d6.m128_f32[0]));
-		*closest = triangle.p1 + w * (triangle.p2 - triangle.p1);
+		*closest = triangle.p1_ + w * (triangle.p2_ - triangle.p1_);
 		return;
 	}
 
 	float denom = 1.0f / (va + vb + vc);
 	float v = vb * denom;
 	float w = vc * denom;
-	*closest = triangle.p0 + p0_p1 * v + p0_p2 * w;
+	*closest = triangle.p0_ + p0_p1 * v + p0_p2 * w;
 }
 
 bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, DirectX::XMVECTOR* inter)
@@ -178,8 +178,8 @@ bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, floa
 	//三角形が乗っている平面を算出
 	Plane plane;
 	XMVECTOR interPlane;
-	plane.normal = triangle.normal;
-	plane.distance = XMVector3Dot(triangle.normal, triangle.p0).m128_f32[0];
+	plane.normal = triangle.normal_;
+	plane.distance = XMVector3Dot(triangle.normal_, triangle.p0_).m128_f32[0];
 	//レイと平面が当たっていなければ、当たっていない
 	if(!CheckRay2Plane(ray, plane, distance, &interPlane)) { return false; }
 	//レイと平面の交点が三角形の内側にあるか判定
@@ -187,25 +187,25 @@ bool Collision::CheckRay2Triangle(const Ray& ray, const Triangle& triangle, floa
 
 	XMVECTOR m;
 	//辺p0_p1について
-	XMVECTOR pt_p0 = triangle.p0 - interPlane;
-	XMVECTOR p0_p1 = triangle.p1 - triangle.p0;
+	XMVECTOR pt_p0 = triangle.p0_ - interPlane;
+	XMVECTOR p0_p1 = triangle.p1_ - triangle.p0_;
 	m = XMVector3Cross(pt_p0, p0_p1);
 	//辺の外側であれば当たっていないので判定を打ち切る
-	if(XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) { return false; }
+	if(XMVector3Dot(m, triangle.normal_).m128_f32[0] < -epsilon) { return false; }
 
 	//辺p1,p2について
-	XMVECTOR pt_p1 = triangle.p1 - interPlane;
-	XMVECTOR p1_p2 = triangle.p2 - triangle.p1;
+	XMVECTOR pt_p1 = triangle.p1_ - interPlane;
+	XMVECTOR p1_p2 = triangle.p2_ - triangle.p1_;
 	m = XMVector3Cross(pt_p1, p1_p2);
 	//辺の外側であれば当たっていないので判定を打ち切る
-	if(XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) { return false; }
+	if(XMVector3Dot(m, triangle.normal_).m128_f32[0] < -epsilon) { return false; }
 
 	//辺p2,p0について
-	XMVECTOR pt_p2 = triangle.p2 - interPlane;
-	XMVECTOR p2_p0 = triangle.p0 - triangle.p2;
+	XMVECTOR pt_p2 = triangle.p2_ - interPlane;
+	XMVECTOR p2_p0 = triangle.p0_ - triangle.p2_;
 	m = XMVector3Cross(pt_p2, p2_p0);
 	//辺の外側であれば当たっていないので判定を打ち切る
-	if(XMVector3Dot(m, triangle.normal).m128_f32[0] < -epsilon) { return false; }
+	if(XMVector3Dot(m, triangle.normal_).m128_f32[0] < -epsilon) { return false; }
 
 	//内側なので当たっている
 	if(inter)

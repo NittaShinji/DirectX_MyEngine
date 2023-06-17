@@ -8,13 +8,6 @@ using namespace Microsoft::WRL;
 //SpriteCommon* Sprite::spriteCommon_ = nullptr;
 DirectXBasic* Sprite::directXBasic_ = nullptr;
 KeyInput* Sprite::keys_ = nullptr;
-
-//uint32_t Sprite::textureIndex_ = 0;
-//const size_t kMaxSRVCount = 2056;
-//std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> Sprite::textureBuffers_;
-
-//ID3D12DescriptorHeap* Sprite::srvHeap = nullptr;
-UINT64 Sprite::fenceCount;
 //D3D12_RESOURCE_DESC Sprite::textureResourceDesc{};
 
 void Sprite::StaticInitialize()
@@ -27,11 +20,10 @@ void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteC
 	spriteCommon_ = spriteCommon;
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 
-	winWide = static_cast<float>(directXBasic_->GetWinWidth());
-	winHeight = static_cast<float>(directXBasic_->GetWinHeight());
-	//textureHandleIndex_ = textureIndex;
+	winWide_ = static_cast<float>(directXBasic_->GetWinWidth());
+	winHeight_ = static_cast<float>(directXBasic_->GetWinHeight());
 
-	scale = { 10.0f,10.0f,10.0f };
+	scale_ = { 10.0f,10.0f,10.0f };
 	rotation_ = { 0.0f };
 	moveSpeed_ = { 0.0f,0.0f };
 	anchorPoint_ = { 0.0f,0.0f };
@@ -86,13 +78,13 @@ void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteC
 	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
 
 	// リソース設定
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	resDesc_.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc_.Width = sizeVB; // 頂点データ全体のサイズ
+	resDesc_.Height = 1;
+	resDesc_.DepthOrArraySize = 1;
+	resDesc_.MipLevels = 1;
+	resDesc_.SampleDesc.Count = 1;
+	resDesc_.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 頂点バッファの生成
 	//ComPtr<ID3D12Resource> vertBuff_ = nullptr;
@@ -100,7 +92,7 @@ void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteC
 	result_ = directXBasic_->GetDevice()->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
-		&resDesc, // リソース設定
+		&resDesc_, // リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff_));
@@ -122,11 +114,11 @@ void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteC
 #pragma region 頂点バッファビューの作成
 
 	// GPU仮想アドレス
-	vbView.BufferLocation = vertBuff_->GetGPUVirtualAddress();
+	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
 	// 頂点バッファのサイズ
-	vbView.SizeInBytes = sizeVB;
+	vbView_.SizeInBytes = sizeVB;
 	// 頂点1つ分のデータサイズ
-	vbView.StrideInBytes = sizeof(vertices_[0]);
+	vbView_.StrideInBytes = sizeof(vertices_[0]);
 
 #pragma endregion
 }
@@ -197,7 +189,7 @@ void Sprite::matUpdate()
 	XMMATRIX matWorld;
 
 	XMMATRIX matScale;	//スケーリング行列
-	matScale = XMMatrixScaling(scale.x, scale.y, scale.z);
+	matScale = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
 	//matScale = XMMatrixScaling(100.0f, 0.5f, 100.0f);
 
 	XMMATRIX matRot;	//回転行列
@@ -225,7 +217,7 @@ void Sprite::Draw(const std::string& fileName)
 	textureIndex = spriteCommon_->GetTextureMap().at(fileName);
 
 	//頂点バッファビューの設定コマンド
-	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView);
+	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView_);
 	//SRVヒープの設定コマンド
 	ID3D12DescriptorHeap* heaps[] = { spriteCommon_->GetSRVHeap() };
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, heaps);
@@ -256,11 +248,6 @@ void Sprite::Draw(const std::string& fileName)
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
 	directXBasic_->GetCommandList()->DrawInstanced(static_cast<UINT>(vertices_.size()), 1, 0, 0);
 
-}
-
-Sprite::~Sprite()
-{
-	
 }
 
 //

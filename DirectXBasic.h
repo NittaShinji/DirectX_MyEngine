@@ -17,8 +17,6 @@ public:
 	//エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	//template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
 	//初期化
 	void Initialize(WindowsAPI* winApi);
 	
@@ -26,23 +24,6 @@ public:
 	void BeforeDraw();
 	//描画後処理
 	void AfterDraw();
-
-	HRESULT GetResult() { return result_; };
-
-	ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return commandList_; };
-
-	ComPtr<ID3D12Resource> GetDepthBuff() { return depthBuff_; };
-
-	ComPtr<ID3D12Device> GetDevice() const { return device_; };
-
-	size_t GetBackBuffersCount() const { return backBuffers_.size(); };
-
-	int32_t GetWinWidth() const { return winApi_->GetWinWidth(); }
-	int32_t GetWinHeight() const { return winApi_->GetWinHeight(); }
-	
-	ComPtr<ID3D12CommandQueue> GetCommandQueue() { return commandQueue_; }
-	ComPtr<ID3D12Fence> GetFence() { return fence; }
-
 
 private:
 
@@ -53,10 +34,8 @@ private:
 	void UpdateFixFPS();
 
 	std::chrono::steady_clock::time_point reference_;
-
 	
 	WindowsAPI* winApi_ = nullptr;
-	//std::unique_ptr<WindowsAPI> winApi_ = std::make_unique<WindowsAPI>();
 
 	HRESULT result_;
 
@@ -70,23 +49,23 @@ private:
 	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff_;
 
 	//フェンス
-	Microsoft::WRL::ComPtr<ID3D12Fence> fence;
+	Microsoft::WRL::ComPtr<ID3D12Fence> fence_;
 
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
-	DXGI_SWAP_CHAIN_DESC1 swapChainDesc{};
+	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
 
 	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> backBuffers_;
 	
 	//コマンドキューの設定
-	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
+	//D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
 
 	//デスクリプタヒープ
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvHeap_;
 
 	//リソースバリア
-	D3D12_RESOURCE_BARRIER barrierDesc{};
+	D3D12_RESOURCE_BARRIER barrierDesc_{};
 
-	UINT64 fenceVal = 0;
+	UINT64 fenceVal_ = 0;
 
 
 	//初期化関数
@@ -97,4 +76,21 @@ private:
 	void InitializeDepthBuffer();
 	void InitializeFence();
 
+public:	//アクセッサ
+
+	HRESULT GetResult() { return result_; };
+
+	ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return commandList_; };
+
+	ComPtr<ID3D12Resource> GetDepthBuff() { return depthBuff_; };
+
+	ComPtr<ID3D12Device> GetDevice() const { return device_; };
+
+	size_t GetBackBuffersCount() const { return backBuffers_.size(); };
+
+	int32_t GetWinWidth() const { return winApi_->GetWinWidth(); }
+	int32_t GetWinHeight() const { return winApi_->GetWinHeight(); }
+
+	ComPtr<ID3D12CommandQueue> GetCommandQueue() { return commandQueue_; }
+	ComPtr<ID3D12Fence> GetFence() { return fence_; }
 };

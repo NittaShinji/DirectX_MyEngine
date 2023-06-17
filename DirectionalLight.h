@@ -32,42 +32,42 @@ public: //アクセッサ
 	void SetLightDir(const XMVECTOR& lightDir) 
 	{
 		//正規化してセット
-		this->lightDir = DirectX::XMVector3Normalize(lightDir);
-		dirty = true;
+		this->lightDir_ = DirectX::XMVector3Normalize(lightDir);
+		dirty_ = true;
 	}
 
 	//ライト色のセット
 	void SetLightColor(const XMFLOAT3& lightColor)
 	{
-		this->lightColor = lightColor;
-		dirty = true;
+		this->lightColor_ = lightColor;
+		dirty_ = true;
 	}
 
-	XMVECTOR GetLightDir() { return lightDir; };
-	XMFLOAT3 GetLightColor() { return lightColor; };
+	XMVECTOR GetLightDir() { return lightDir_; };
+	XMFLOAT3 GetLightColor() { return lightColor_; };
 
 	/// <summary>
 	/// 有効フラグをセット
 	/// </summary>
 	/// <param name="active">有効フラグ</param>
-	inline void SetActive(bool active) { this->active = active; }
+	inline void SetActive(bool active) { this->active_ = active; }
 
 	/// <summary>
 	/// 有効チェック
 	/// </summary>
 	/// <returns>有効フラグ</returns>
-	inline bool IsActive() { return active; }
+	inline bool IsActive() { return active_; }
 
 private: //メンバ変数
 
 	//定数バッファ
-	Comptr<ID3D12Resource> constBuff;
+	Comptr<ID3D12Resource> constBuff_;
 	//ライト光線方向(単位ベクトル)
-	XMVECTOR lightDir = { 1,0,0,0};
+	XMVECTOR lightDir_ = { 1,0,0,0};
 	//ライト色
-	XMFLOAT3 lightColor = { 1,1,1 };
+	XMFLOAT3 lightColor_ = { 1,1,1 };
 	//有効フラグ
-	bool active = false;
+	bool active_ = false;
 	//ダーティフラグ(値に変更があったときだけ定数バッファに転送)
-	bool dirty = false;
+	bool dirty_ = false;
 };

@@ -45,17 +45,6 @@ private:
 	Model model_;
 	Sprite* sprite_;
 	Camera* camera_ = nullptr;
-
-	//定数バッファ用データ構造体B1
-	//struct ConstBufferDateB1
-	//{
-	//	XMFLOAT3 ambient;	//アンビエント係数
-	//	float pad1;
-	//	XMFLOAT3 diffuse;
-	//	float pad2;
-	//	XMFLOAT3 specular;
-	//	float alpha;
-	//};
 	
 	//定数バッファ用データ構造体b0
 	struct ConstBufferDateTransform
@@ -99,65 +88,51 @@ private:
 	};
 	
 	//定数バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform;
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial;
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffLight;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffLight_;
 	
 	//定数バッファのマッピング用ポインタ
-	ConstBufferDateTransform* constMapTransform = nullptr;
-	//ConstBufferDataMaterial* constMapColor = nullptr;
-	ConstBufferDataMaterial* constMapMaterial = nullptr;
-	ConstBufferLightDate* constMapLight = nullptr;
+	ConstBufferDateTransform* constMapTransform_ = nullptr;
+	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
+	ConstBufferLightDate* constMapLight_ = nullptr;
 
 	//スケール
-	XMFLOAT3 scale;
+	XMFLOAT3 scale_;
 	//回転角
-	XMFLOAT3 rotation;
+	XMFLOAT3 rotation_;
 	//平行移動
-	XMFLOAT3 transform;
+	XMFLOAT3 transform_;
 
-	XMMATRIX matScale, matRot, matTrans;
+	XMMATRIX matScale_, matRot_, matTrans_;
 
 	//ワールド変換行列
-	XMMATRIX matWorld;
+	XMMATRIX matWorld_;
 
 	//ビュー行列
 	XMMATRIX matView_;
 	//射影行列
 	XMMATRIX matProjection_;
 	//カメラ座標
-	XMFLOAT3 cameraPos;
+	XMFLOAT3 cameraPos_;
 
 	//親オブジェクトのポインタ
 	
-	ID3DBlob* vsBlob = nullptr; // 頂点シェーダオブジェクト
-	ID3DBlob* psBlob = nullptr; // ピクセルシェーダオブジェクト
-	ID3DBlob* errorBlob = nullptr; // エラーオブジェクト
+	ID3DBlob* vsBlob_ = nullptr; // 頂点シェーダオブジェクト
+	ID3DBlob* psBlob_ = nullptr; // ピクセルシェーダオブジェクト
+	ID3DBlob* errorBlob_ = nullptr; // エラーオブジェクト
 
-	//Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState = nullptr;
-	//Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature = nullptr;
-
-	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState;
-	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature;
+	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState_;
+	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
 
 	//グラフィックスパイプライン
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc{};
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
 
-	//シェーダーリソースビュー
-	ID3D12DescriptorHeap* srvHeap = nullptr;
+	//SRVの最大個数
+	static const size_t kMaxSRVCount_ = 2056;
 
-	////SRVの最大個数
-	static const size_t kMaxSRVCount = 2056;
-
-	////テクスチャバッファ
-	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> textureBuffers_;
-
-	//テクスチャリソースデスク
-	D3D12_RESOURCE_DESC textureResourceDesc{};
-	D3D12_RESOURCE_DESC resDesc{};
-
-	//テクスチャ番号
-	uint32_t textureIndex_;
+	//テクスチャバッファ
+	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
 
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
@@ -167,25 +142,20 @@ private:
 public:
 
 	//ゲッター
-	//uint32_t GetTextureIndex() const { return textureIndex_; };
-	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform; };
+	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform_; };
 
 	XMFLOAT3 GetWorldPos();
-	void SetTransform(XMFLOAT3 pos) { transform = pos; };
-	void SetRotation(XMFLOAT3 rotate) { rotation = rotate; };
-	void SetScale(XMFLOAT3 scale_) { scale = scale_; }
+	void SetTransform(XMFLOAT3 pos) { transform_ = pos; };
+	void SetRotation(XMFLOAT3 rotate) { rotation_ = rotate; };
+	void SetScale(XMFLOAT3 scale) { scale_ = scale; }
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 
 	//テンプレートコンストラクタ
 	template <typename Type1>
 	//定数バッファの生成
-	//void CrateConstBuff(Type1*& constBuffer, Type2* directXBasic_);
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
 
-
-	//セッター
-	//void SetTextureIndex(uint32_t textureIndex) { textureIndex_ = textureIndex; };
 
 public: //静的メンバ関数
 

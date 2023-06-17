@@ -68,7 +68,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 		newObject->Initialize(objectData.fileName, pos, scale);
 
 		//配列に登録
-		objects.push_back(std::move(newObject));
+		objects_.push_back(std::move(newObject));
 	}
 
 	//------------画像読み込み----------
@@ -210,13 +210,13 @@ void GameScene::Update()
 
 	{
 		//imguiからのライトパラメータを反映
-		lightGroup_->SetAmbientColor(XMFLOAT3(ambientColor0));
-		lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0[0], lightDir0[1], lightDir0[2], 0 }));
-		lightGroup_->SetDirLightColor(0, XMFLOAT3(lightColor0));
-		lightGroup_->SetDirLightDir(1, XMVECTOR({ lightDir1[0], lightDir1[1], lightDir1[2], 0 }));
-		lightGroup_->SetDirLightColor(1, XMFLOAT3(lightColor1));
-		lightGroup_->SetDirLightDir(2, XMVECTOR({ lightDir2[0], lightDir2[1], lightDir2[2], 0 }));
-		lightGroup_->SetDirLightColor(2, XMFLOAT3(lightColor2));
+		lightGroup_->SetAmbientColor(XMFLOAT3(ambientColor0_));
+		lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0_[0], lightDir0_[1], lightDir0_[2], 0 }));
+		lightGroup_->SetDirLightColor(0, XMFLOAT3(lightColor0_));
+		lightGroup_->SetDirLightDir(1, XMVECTOR({ lightDir1_[0], lightDir1_[1], lightDir1_[2], 0 }));
+		lightGroup_->SetDirLightColor(1, XMFLOAT3(lightColor1_));
+		lightGroup_->SetDirLightDir(2, XMVECTOR({ lightDir2_[0], lightDir2_[1], lightDir2_[2], 0 }));
+		lightGroup_->SetDirLightColor(2, XMFLOAT3(lightColor2_));
 	}
 
 	lightGroup_->Update();
@@ -233,7 +233,7 @@ void GameScene::Update()
 		test_->SetAnchorPoint(anchorPoint);
 		test_->matUpdate();
 
-		if(keyTimer < 0)
+		if(keyTimer_ < 0)
 		{
 			/*if(keys_->HasPushedKey(DIK_SPACE))
 			{
@@ -246,7 +246,7 @@ void GameScene::Update()
 			{
 
 				scene_ = GAME;
-				keyTimer = waitTime;
+				keyTimer_ = kWaitTime_;
 			}
 
 			/*if(input_->GetKeys()->HasPushedKey(DIK_SPACE))
@@ -257,7 +257,7 @@ void GameScene::Update()
 		}
 		else
 		{
-			keyTimer--;
+			keyTimer_--;
 		}
 
 		break;
@@ -270,7 +270,7 @@ void GameScene::Update()
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
 		{
-			for(auto& object : objects)
+			for(auto& object : objects_)
 			{
 				object->Update(testCamera_.get());
 			}
@@ -283,7 +283,7 @@ void GameScene::Update()
 		}
 		else
 		{
-			for(auto& object : objects)
+			for(auto& object : objects_)
 			{
 				object->Update(testCamera_.get());
 			}
@@ -446,48 +446,48 @@ void GameScene::Update()
 			ImGui::SetWindowPos(ImVec2(0, 0));
 			ImGui::SetWindowSize(ImVec2(500, 200));
 
-			ImGui::ColorEdit3("ambientColor", ambientColor0, ImGuiColorEditFlags_Float);
-			ImGui::InputFloat3("lightDir0", lightDir0);
-			ImGui::ColorEdit3("lightColor0", lightColor0, ImGuiColorEditFlags_Float);
-			ImGui::InputFloat3("lightDir1", lightDir1);
-			ImGui::ColorEdit3("lightColor1", lightColor1, ImGuiColorEditFlags_Float);
-			ImGui::InputFloat3("lightDir2", lightDir2);
-			ImGui::ColorEdit3("lightColor2", lightColor2, ImGuiColorEditFlags_Float);
+			ImGui::ColorEdit3("ambientColor", ambientColor0_, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir0", lightDir0_);
+			ImGui::ColorEdit3("lightColor0", lightColor0_, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir1", lightDir1_);
+			ImGui::ColorEdit3("lightColor1", lightColor1_, ImGuiColorEditFlags_Float);
+			ImGui::InputFloat3("lightDir2", lightDir2_);
+			ImGui::ColorEdit3("lightColor2", lightColor2_, ImGuiColorEditFlags_Float);
 
 			ImGui::End();
 		}
 
 
-		if(keyTimer < 0)
+		if(keyTimer_ < 0)
 		{
 			if(keys_->HasPushedKey(DIK_SPACE))
 			{
 
 				scene_ = TITLE;
-				keyTimer = waitTime;
+				keyTimer_ = kWaitTime_;
 			}
 		}
 		else
 		{
-			keyTimer--;
+			keyTimer_--;
 		}
 
 		break;
 
 	case END:
 
-		if(keyTimer < 0)
+		if(keyTimer_ < 0)
 		{
 			if(keys_->HasPushedKey(DIK_SPACE))
 			{
 
 				scene_ = TITLE;
-				keyTimer = waitTime;
+				keyTimer_ = kWaitTime_;
 			}
 		}
 		else
 		{
-			keyTimer--;
+			keyTimer_--;
 		}
 
 		break;
@@ -525,7 +525,7 @@ void GameScene::Draw()
 		sphere_->Draw();
 		testObject_->Draw();
 
-		for(auto& object : objects)
+		for(auto& object : objects_)
 		{
 			object->Draw();
 		}

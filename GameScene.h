@@ -61,7 +61,7 @@ private:
 
 	//デバッグテキスト用の変数
 	//ウインドウの表示フラグ
-	bool showEditWindow = true;
+	//bool showEditWindow_ = true;
 	
 	//ライト
 	LightGroup* lightGroup_ = nullptr;
@@ -87,19 +87,18 @@ private:
 	LevelData* levelData_ = nullptr;
 
 	using MODELKEY = std::string;
-
 	MODELKEY name_;
 
 	std::map<MODELKEY, Model> models_;
 
 	//当たり判定 球
-	Sphere sphereCollision;
+	Sphere sphereCollision_;
 	////当たり判定 平面
-	Plane planeCollision;
+	Plane planeCollision_;
 	//当たり判定 三角形
-	Triangle triangleCollison;
+	Triangle triangleCollison_;
 	//当たり判定 レイ
-	Ray rayCollision;
+	Ray rayCollision_;
 
 	//3Dオブジェクト
 	std::unique_ptr<Object3d> sphere_ = nullptr;
@@ -108,40 +107,40 @@ private:
 	//std::unique_ptr<Object3d> ray_ = nullptr;
 
 	//blender読み込みオブジェクト
-	std::vector<std::unique_ptr<Object3d>> objects;
+	std::vector<std::unique_ptr<Object3d>> objects_;
 
 	//画像なしテストオブジェクト
 	std::unique_ptr<Object3d> testObject_ = nullptr;
 
 	//待ち時間
-	static const int32_t waitTime = 40;
+	static const int32_t kWaitTime_ = 40;
 	//キー入力の時間管理
-	int32_t keyTimer = 60;
+	int32_t keyTimer_ = 60;
 
-	int32_t hit;
+	int32_t hit_;
 
-	XMFLOAT3 move = { 0,0,0 };
+	XMFLOAT3 move_ = { 0,0,0 };
 
-	const int32_t actionTime = 60;
-	int32_t moveTimer = actionTime;
-	bool isUp = false;
-	bool isDown = true;
+	const int32_t kActionTime_ = 60;
+	int32_t moveTimer_ = kActionTime_;
+	bool isUp_ = false;
+	bool isDown_ = true;
 
-	XMFLOAT3 trianglePosition2;
-	XMFLOAT3 rayWorldPositon;
+	XMFLOAT3 trianglePosition2_;
+	XMFLOAT3 rayWorldPositon_;
 
-	XMFLOAT3 rotate = { 0,0,0 };
+	XMFLOAT3 rotate_ = { 0,0,0 };
 
-	float ambientColor0[3] = { 1,1,1 };
+	float ambientColor0_[3] = { 1,1,1 };
 	//光線方向初期値
-	float lightDir0[3] = { 0,0,1 };
-	float lightColor0[3] = { 1,0,0 };
+	float lightDir0_[3] = { 0,0,1 };
+	float lightColor0_[3] = { 1,0,0 };
 
-	float lightDir1[3] = { 0,1,0 };
-	float lightColor1[3] = { 0,1,0 };
+	float lightDir1_[3] = { 0,1,0 };
+	float lightColor1_[3] = { 0,1,0 };
 
-	float lightDir2[3] = { 1,0,0 };
-	float lightColor2[3] = { 0,0,1 };
+	float lightDir2_[3] = { 1,0,0 };
+	float lightColor2_[3] = { 0,0,1 };
 
 	Input* input_ = nullptr;
 
