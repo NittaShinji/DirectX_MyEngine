@@ -19,7 +19,7 @@ public:
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
-	void Initialize(XMFLOAT3 eye, XMFLOAT3 target,XMFLOAT3 up);
+	void Initialize(XMFLOAT3& eye, XMFLOAT3& target,XMFLOAT3& up);
 
 	void Updata();
 
@@ -45,9 +45,9 @@ private:
 public:
 
 	//ÉQÉbÉ^Å[
-	const XMMATRIX GetMatView() const { return matView_; }
-	const XMMATRIX GetMatProjection() const { return matProjection_; }
-	const XMFLOAT3 GetEye() const { return eye_; }
+	const XMMATRIX& GetMatView() const { return matView_; }
+	const XMMATRIX& GetMatProjection() const { return matProjection_; }
+	const XMFLOAT3& GetEye() const { return eye_; }
 
 };
 

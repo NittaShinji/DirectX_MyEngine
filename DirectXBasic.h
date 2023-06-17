@@ -39,34 +39,28 @@ private:
 
 	HRESULT result_;
 
-	Microsoft::WRL::ComPtr<ID3D12Device> device_ = nullptr;
-	Microsoft::WRL::ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;
-	Microsoft::WRL::ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12CommandAllocator> commandAllocator_ = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12CommandQueue> commandQueue_ = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> rtvHeap_ = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12Resource> depthBuff_;
+	ComPtr<ID3D12Device> device_ = nullptr;
+	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;
+	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
+	ComPtr<ID3D12CommandAllocator> commandAllocator_ = nullptr;
+	ComPtr<ID3D12CommandQueue> commandQueue_ = nullptr;
+	ComPtr<ID3D12DescriptorHeap> rtvHeap_ = nullptr;
+	ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
+	ComPtr<ID3D12Resource> depthBuff_;
 
 	//フェンス
-	Microsoft::WRL::ComPtr<ID3D12Fence> fence_;
+	ComPtr<ID3D12Fence> fence_;
+	UINT64 fenceVal_ = 0;
 
+	//デスクリプタヒープ
+	ComPtr<ID3D12DescriptorHeap> dsvHeap_;
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
 
-	std::vector<Microsoft::WRL::ComPtr<ID3D12Resource>> backBuffers_;
-	
-	//コマンドキューの設定
-	//D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
-
-	//デスクリプタヒープ
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> dsvHeap_;
+	std::vector<ComPtr<ID3D12Resource>> backBuffers_;
 
 	//リソースバリア
 	D3D12_RESOURCE_BARRIER barrierDesc_{};
-
-	UINT64 fenceVal_ = 0;
-
 
 	//初期化関数
 	void InitializeDevice();
@@ -78,15 +72,15 @@ private:
 
 public:	//アクセッサ
 
-	HRESULT GetResult() { return result_; };
+	const HRESULT& GetResult() const { return result_; };
 
-	ComPtr<ID3D12GraphicsCommandList> GetCommandList() { return commandList_; };
+	ComPtr<ID3D12GraphicsCommandList> GetCommandList() const { return commandList_; };
 
-	ComPtr<ID3D12Resource> GetDepthBuff() { return depthBuff_; };
+	ComPtr<ID3D12Resource> GetDepthBuff() const { return depthBuff_; };
 
 	ComPtr<ID3D12Device> GetDevice() const { return device_; };
 
-	size_t GetBackBuffersCount() const { return backBuffers_.size(); };
+	int32_t GetBackBuffersCount() const { return static_cast<int32_t>(backBuffers_.size()); };
 
 	int32_t GetWinWidth() const { return winApi_->GetWinWidth(); }
 	int32_t GetWinHeight() const { return winApi_->GetWinHeight(); }

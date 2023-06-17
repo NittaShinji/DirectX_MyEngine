@@ -140,11 +140,13 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 
 	XMFLOAT3 cameraEye = { 0,60,-30 };
+	XMFLOAT3 testCameraEye = { 50,60,-30 };
+
 	XMFLOAT3 cameraTarget = { 0,0,0 };
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize({ 50,60,-30 }, cameraTarget, cameraUp);
+	testCamera_->Initialize(testCameraEye, cameraTarget, cameraUp);
 
 	//------------“–‚½‚è”»’è----------
 	//--‹…‚Ì‰Šú’l‚ğİ’è

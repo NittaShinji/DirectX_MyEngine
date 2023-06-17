@@ -115,11 +115,11 @@ private:
 public:
 
 	//ÉQÉbÉ^Å[
-	DirectXBasic* GetDirectXBasic() { return directXBasic_; };
-	ComPtr<ID3D12Resource> GetConstBuffMaterial() { return constBuffMaterial_; };
-	ConstBufferDataMaterial* GetConstMapMaterial() { return constMapMaterial_; };
-	ID3D12Resource* GetConstBuffTransform() { return constBuffTransform_.Get(); };
-	ConstBufferDataTransform* GetConstMapTransform() { return constMapTransform_; };
-	ID3D12DescriptorHeap* GetSRVHeap() { return srvHeap_.Get(); };
-	std::map<const std::string, uint32_t, std::less<>> GetTextureMap() { return textureMap_; }
+	DirectXBasic* GetDirectXBasic() const { return directXBasic_; };
+	ComPtr<ID3D12Resource> GetConstBuffMaterial() const { return constBuffMaterial_; };
+	ConstBufferDataMaterial* GetConstMapMaterial() const { return constMapMaterial_; };
+	ID3D12Resource* GetConstBuffTransform() const { return constBuffTransform_.Get(); };
+	ConstBufferDataTransform* GetConstMapTransform() const { return constMapTransform_; };
+	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
+	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
 };

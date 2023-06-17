@@ -53,7 +53,7 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 	keys_ = KeyInput::GetInstance();
 }
 
-void Object3d::Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale)
+void Object3d::Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& Modelscale)
 {
 	scale_ = Modelscale;
 	rotation_ = { 0.0f,0.0f,0.0f };
@@ -426,7 +426,7 @@ void Object3d::AfterDraw()
 
 }
 
-XMFLOAT3 Object3d::GetWorldPos()
+XMFLOAT3 Object3d::GetWorldPos() const 
 {
 	//ëSÇƒÇÃï«ÇÃç¿ïWÇìnÇ∑
 	XMFLOAT3 resutVec = { 0,0,0 };
@@ -437,7 +437,6 @@ XMFLOAT3 Object3d::GetWorldPos()
 	resutVec.z = matWorld_.r[3].m128_f32[2];
 
 	return resutVec;
-
 }
 
 void Object3d::Create(Model* model)

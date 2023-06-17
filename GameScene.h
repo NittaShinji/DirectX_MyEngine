@@ -143,6 +143,5 @@ private:
 	float lightColor2_[3] = { 0,0,1 };
 
 	Input* input_ = nullptr;
-
 };
 

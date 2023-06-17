@@ -29,8 +29,8 @@ public:
 	}
 
 	//アクセッサ
-	BYTE GetKeys(uint8_t keynumber);
-	BYTE GetOldKeys(uint8_t oldKeyNumber);
+	BYTE GetKeys(uint8_t keynumber) const ;
+	BYTE GetOldKeys(uint8_t oldKeyNumber) const;
 
 	//DirectInputの初期化
 	void Initialize(WindowsAPI* winApi);

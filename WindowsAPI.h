@@ -14,10 +14,10 @@ public:
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
 	//ÉQÉbÉ^Å[
-	WNDCLASSEX GetWindosClass() const { return w_;}
-	HWND GetHwndClass()const{ return hwnd_;}
-	RECT GetWrcClass() const {return wrc_;}
-	HINSTANCE GetHInstance()const { return w_.hInstance;}
+	const WNDCLASSEX& GetWindosClass() const { return w_;}
+	const HWND& GetHwndClass()const{ return hwnd_;}
+	const RECT& GetWrcClass() const {return wrc_;}
+	const HINSTANCE& GetHInstance()const { return w_.hInstance;}
 	int32_t GetWinWidth() const { return kWindow_width_;}
 	int32_t GetWinHeight() const { return kWindow_height_;}
 

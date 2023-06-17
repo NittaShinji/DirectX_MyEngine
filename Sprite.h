@@ -123,10 +123,10 @@ public:
 	//ゲッター
 	const XMFLOAT2& GetMoveSpeed_() const { return moveSpeed_; };
 	float GetRotation() const { return rotation_; };
-	const XMFLOAT4 GetColor() const { return color_; };
-	const XMFLOAT2 GetSize() const { return size_; };
-	const XMFLOAT2 GetAnchorPoint() const { return anchorPoint_; };
-	const XMFLOAT2 GetPosition() const { return position_; };
+	const XMFLOAT4& GetColor() const { return color_; };
+	const XMFLOAT2& GetSize() const { return size_; };
+	const XMFLOAT2& GetAnchorPoint() const { return anchorPoint_; };
+	const XMFLOAT2& GetPosition() const { return position_; };
 	bool GetIsFlipX() const { return isFlipX_; };
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
@@ -134,14 +134,14 @@ public:
 	//セッター
 	void SetMoveSpeed_(const DirectX::XMFLOAT2& moveSpeed) { moveSpeed_ = moveSpeed; };
 	void SetRotation(float rotation) { rotation_ = rotation; };
-	void SetColor(const DirectX::XMFLOAT4 color) { color_ = color; };
-	//ID3D12DescriptorHeap* GetSRVheap() { return srvHeap; };
-	void SetSize(const DirectX::XMFLOAT2 size) { size_ = size; };
-	void SetAnchorPoint(const DirectX::XMFLOAT2 anchorPoint) { anchorPoint_ = anchorPoint; }
-	void SetPosition(const DirectX::XMFLOAT2 initPosition) { position_ = initPosition; }
+	void SetColor(const DirectX::XMFLOAT4& color) { color_ = color; };
+	void SetSize(const DirectX::XMFLOAT2& size) { size_ = size; };
+	void SetAnchorPoint(const DirectX::XMFLOAT2& anchorPoint) { anchorPoint_ = anchorPoint; }
+	void SetPosition(const DirectX::XMFLOAT2& initPosition) { position_ = initPosition; }
 	void SetIsFlipX(bool isFlipX) { isFlipX_ = isFlipX; };
 	void SetIsFlipY(bool isFlipY) { isFlipY_ = isFlipY; };
 	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
+	//ID3D12DescriptorHeap* GetSRVheap() { return srvHeap; };
 	/*void SetWidth(size_t width) { wide_ = wide_; };
 	void SetHeight(size_t height) { height_ = height; };*/
 };

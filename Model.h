@@ -140,10 +140,10 @@ public:
 	//ゲッター
 	MODELKEY* GetName() { return &name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
-	const uint32_t GetTexIndex() { return sTextureIndex_; };
+	uint32_t const GetTexIndex() { return sTextureIndex_; };
 
 	//セッター
-	void SetName(MODELKEY name) { name_ = name; };
-	void SetInfomation (MODELVALUE infomation) { infomation_ = infomation; };
+	void SetName(const MODELKEY& name) { name_ = name; };
+	void SetInfomation (const MODELVALUE& infomation) { infomation_ = infomation; };
 };
 

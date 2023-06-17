@@ -39,7 +39,7 @@ public:
 	//JSONファイル読み込み
 	LevelData* LoadJSONFile(const std::string& fileName);
 	//再帰関数
-	void Return(nlohmann::json deserialized, LevelData* levelData);
+	void Return(nlohmann::json& deserialized, LevelData* levelData);
 	LevelData GetLevelData() { return levelData_; };
 
 	static LevelManager* GetLevelManager() 

@@ -13,12 +13,12 @@ BYTE KeyInput::sOldKeys_[256];
 Microsoft::WRL::ComPtr<IDirectInputDevice8> KeyInput::keyboard_;
 
 //アクセッサ
-BYTE KeyInput::GetKeys(uint8_t keyNumber)
+BYTE KeyInput::GetKeys(uint8_t keyNumber) const
 {
 	return sKeys_[keyNumber];
 }
 
-BYTE KeyInput::GetOldKeys(uint8_t oldKeyNumber)
+BYTE KeyInput::GetOldKeys(uint8_t oldKeyNumber) const
 {
 	return sOldKeys_[oldKeyNumber];
 }

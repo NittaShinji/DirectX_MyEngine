@@ -11,7 +11,7 @@ void Camera::StaticInitialize(DirectXBasic* directXBasic)
 	directXBasic_ = directXBasic;
 }
 
-void Camera::Initialize(XMFLOAT3 eye, XMFLOAT3 target, XMFLOAT3 up)
+void Camera::Initialize(XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up)
 {
 	eye_	= eye;
 	target_ = target;

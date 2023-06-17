@@ -26,7 +26,7 @@ public:
 	~Object3d();
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
-	void Initialize(const std::string& path, XMFLOAT3 position, XMFLOAT3 Modelscale);
+	void Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& Modelscale);
 	void Update(Camera* camera);
 	//void BeforeDraw();
 	static void BeforeDraw();
@@ -144,10 +144,10 @@ public:
 	//ÉQÉbÉ^Å[
 	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform_; };
 
-	XMFLOAT3 GetWorldPos();
-	void SetTransform(XMFLOAT3 pos) { transform_ = pos; };
-	void SetRotation(XMFLOAT3 rotate) { rotation_ = rotate; };
-	void SetScale(XMFLOAT3 scale) { scale_ = scale; }
+	XMFLOAT3 GetWorldPos() const ;
+	void SetTransform(const XMFLOAT3& pos) { transform_ = pos; };
+	void SetRotation(const XMFLOAT3& rotate) { rotation_ = rotate; };
+	void SetScale(const XMFLOAT3& scale) { scale_ = scale; }
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 

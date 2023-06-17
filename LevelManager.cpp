@@ -3,7 +3,7 @@
 #include <string>
 #include <cassert>
 
-void LevelManager::Return(nlohmann::json object, LevelData* levelData)
+void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 {
 	assert(object.contains("type"));
 

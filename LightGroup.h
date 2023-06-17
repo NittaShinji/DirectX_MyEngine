@@ -81,14 +81,14 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightDir">ライト方向</param>
-	void SetDirLightDir(int32_t index, const XMVECTOR &lightDir);
+	void SetDirLightDir(int32_t index, const XMVECTOR&lightDir);
 
 	/// <summary>
 	/// 平行光源のライト色をセット
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightColor">ライト色</param>
-	void SetDirLightColor(int32_t index, const XMFLOAT3 &lightColor);
+	void SetDirLightColor(int32_t index, const XMFLOAT3&lightColor);
 
 	/// <summary>
 	/// 標準のライトの設定
@@ -108,11 +108,11 @@ public: //メンバ関数
 	void SetSpotLightFactorAngle(int32_t index, const XMFLOAT2 &lightFactorAngle);
 
 	void SetCircleShadowActive(int32_t index, bool active);
-	void SetCircleShadowCasterPos(int32_t index, const XMFLOAT3 &casterPos);
-	void SetCircleShadowDir(int32_t index, const XMVECTOR &lightDir);
+	void SetCircleShadowCasterPos(int32_t index, const XMFLOAT3& casterPos);
+	void SetCircleShadowDir(int32_t index, const XMVECTOR& lightDir);
 	void SetCircleShadowDistanceCasterLight(int32_t index, float &distanceCasterLight);
-	void SetCircleShadowAtten(int32_t index, const XMFLOAT3 &lightAtten);
-	void SetCircleShadowFactorAngle(int32_t index, const XMFLOAT2 &lightFactorAngle);
+	void SetCircleShadowAtten(int32_t index, const XMFLOAT3& lightAtten);
+	void SetCircleShadowFactorAngle(int32_t index, const XMFLOAT2& lightFactorAngle);
 
 
 public: //定数
