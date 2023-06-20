@@ -128,9 +128,9 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//XMFLOAT3 raySetPosition = { 0,rayScale.y,0 };
 
 	sphere_ = std::make_unique<Object3d>();
-	sphere_->Initialize(sphere, XMFLOAT3(-30, 0, 0), sphereScale);
+	sphere_->Initialize(sphere, XMFLOAT3(30, 0, 0), sphereScale);
 	testObject_ = std::make_unique<Object3d>();
-	testObject_->Initialize(test, XMFLOAT3(30,0,0), sphereScale);
+	testObject_->Initialize(test, XMFLOAT3(-30,0,0), sphereScale);
 
 	//------------ÉJÉÅÉâ----------
 	Camera::StaticInitialize(directXBasic_);

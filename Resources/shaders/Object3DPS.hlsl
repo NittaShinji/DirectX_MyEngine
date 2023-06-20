@@ -41,6 +41,7 @@ float4 main(VSOutput input) : SV_TARGET
 	//シェーディングによる色で描画
     return shadeColor * texcolor;
     
+    
     //float4 texcolor = float4(tex.Sample(smp, input.uv));
 	
     //return input.color * texcolor;
