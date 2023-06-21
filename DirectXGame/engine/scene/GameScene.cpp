@@ -74,15 +74,17 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//------------画像読み込み----------
 	title_ = std::make_unique<Sprite>();
 	test_ = std::make_unique<Sprite>();
-	spriteCommon_ = std::make_unique<SpriteCommon>();
+	//spriteCommon_ = std::make_unique<SpriteCommon>();
+	spriteCommon_ = SpriteCommon::GetInstance();
 
 	//スプライト関係初期化
-	Sprite::StaticInitialize();
 	spriteCommon_->Initialize(directXBasic_);
-
 	//画像読み込み
-	spriteCommon_->LoadTexture("title.png");
-	spriteCommon_->LoadTexture("tomas.png");
+	//spriteCommon_->LoadTexture("title.png");
+	SpriteCommon::LoadTexture("tomas.png");
+	SpriteCommon::LoadTexture("title.png");
+
+	Sprite::StaticInitialize();
 	
 	//個々の画像を初期化(指定した番号の画像を使用する)
 	XMFLOAT2 titlePosition = { 0,0 };
@@ -90,8 +92,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT2 testPosition = { 100,100 };
 	XMFLOAT2 testSize = { 266,369 };
 
-	title_->Initialize(titlePosition, titleSize, spriteCommon_.get());
-	test_->Initialize(testPosition, testSize, spriteCommon_.get());
+	title_->Initialize(titlePosition, titleSize);
+	test_->Initialize(testPosition, testSize);
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();

@@ -78,7 +78,8 @@ private:
 	std::unique_ptr<Sprite> test_ = nullptr;
 	
 	//スプライト共通部分
-	std::unique_ptr<SpriteCommon> spriteCommon_ = nullptr;
+	//std::unique_ptr<SpriteCommon> spriteCommon_ = nullptr;
+	SpriteCommon* spriteCommon_ = nullptr;
 	
 	//ゲームシーン
 	int32_t scene_;

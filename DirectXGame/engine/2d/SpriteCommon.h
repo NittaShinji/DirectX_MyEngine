@@ -24,6 +24,12 @@ public:
 	//更新
 	void Update();
 
+	static SpriteCommon* GetInstance()
+	{
+		static SpriteCommon spriteCommon;
+		return &spriteCommon;
+	}
+
 	//頂点レイアウト設定
 	void VertexLayoutSet();
 	//シェーダーの読み込み
@@ -50,7 +56,7 @@ public:
 	void InvertColor();
 	
 	//画像読み込み
-	void LoadTexture(const std::string& fileName);
+	static void LoadTexture(const std::string& fileName);
 
 	//テンプレートコンストラクタ
 	template <typename Type1, typename Type2>
@@ -69,7 +75,7 @@ private:
 		XMMATRIX mat;	//色(RGBA)
 	};
 
-	DirectXBasic* directXBasic_ = nullptr;
+	static DirectXBasic* directXBasic_;
 
 	ID3DBlob* vsBlob_ = nullptr; // 頂点シェーダオブジェクト
 	ID3DBlob* psBlob_ = nullptr; // ピクセルシェーダオブジェクト
@@ -96,7 +102,7 @@ private:
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
 
 	//シェーダーリソース用のデスクリプタヒープ
-	ComPtr<ID3D12DescriptorHeap> srvHeap_;
+	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
 	//SRVの最大個数
 	static const size_t kMaxSRVCount_ = 2056;
@@ -108,9 +114,9 @@ private:
 	static std::string kDefaultTextureDirectoryPath_;
 
 	//テクスチャ番号
-	uint32_t textureIndex_;
+	static uint32_t sTextureIndex_;
 	//画像に結び付いたテクスチャ番号格納用map
-	std::map<const std::string, uint32_t, std::less<>> textureMap_ = {};
+	static std::map<const std::string, uint32_t, std::less<>> textureMap_;
 
 public:
 
@@ -122,4 +128,8 @@ public:
 	ConstBufferDataTransform* GetConstMapTransform() const { return constMapTransform_; };
 	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
 	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
+	ComPtr<ID3D12PipelineState> GetPipelineState() { return pipelineState_; };
+	ComPtr<ID3D12RootSignature> GetRootSignature_() { return rootSignature_; };
+
+
 };

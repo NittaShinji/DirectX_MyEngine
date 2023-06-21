@@ -20,7 +20,7 @@ public:
 	static void StaticInitialize();
 
 	//初期化
-	void Initialize(XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteCommon);
+	void Initialize(XMFLOAT2 position, XMFLOAT2 size);
 	//行列更新
 	void matUpdate();
 	//描画
@@ -32,7 +32,7 @@ public:
 	/*void PointListUpdate();
 	void LineListUpdate();*/
 
-private:
+protected:
 
 	enum VertexNumber
 	{
@@ -48,7 +48,7 @@ private:
 		XMFLOAT2 uv; // uv座標
 	};
 
-	SpriteCommon* spriteCommon_;
+	static SpriteCommon* spriteCommon_;
 
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
@@ -130,6 +130,8 @@ public:
 	bool GetIsFlipX() const { return isFlipX_; };
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
+
+
 	
 	//セッター
 	void SetMoveSpeed_(const DirectX::XMFLOAT2& moveSpeed) { moveSpeed_ = moveSpeed; };

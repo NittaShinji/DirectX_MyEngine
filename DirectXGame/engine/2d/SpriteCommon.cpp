@@ -8,6 +8,11 @@ using namespace DirectX;
 std::string SpriteCommon::kDefaultTextureDirectoryPath_ = "Resources/";
 const size_t kMaxSRVCount = 2056;
 std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount> SpriteCommon::textureBuffers_;
+std::map<const std::string, uint32_t, std::less<>> SpriteCommon::textureMap_;
+ComPtr<ID3D12DescriptorHeap> SpriteCommon::srvHeap_;
+DirectXBasic* SpriteCommon::directXBasic_;
+uint32_t SpriteCommon::sTextureIndex_;
+
 
 SpriteCommon::~SpriteCommon()
 {
@@ -304,12 +309,11 @@ void SpriteCommon::InvertColor()
 //画像読み込み
 void SpriteCommon::LoadTexture(const std::string& fileName)
 {
-
 	//画像番号
-	textureIndex_++;
+	sTextureIndex_++;
 
 	//画像の文字列と画像番号を格納
-	textureMap_.emplace(fileName, textureIndex_);
+	textureMap_.emplace(fileName, sTextureIndex_);
 
 	//ディレクトリパスとファイル名を連結しを得る
 	std::string fullPath = kDefaultTextureDirectoryPath_ + fileName;
@@ -367,7 +371,7 @@ void SpriteCommon::LoadTexture(const std::string& fileName)
 		&textureResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(&textureBuffers_[textureIndex_]));
+		IID_PPV_ARGS(&textureBuffers_[sTextureIndex_]));
 
 	/*SetWidth(textureResourceDesc.Width);
 	SetHeight(textureResourceDesc.Height);*/
@@ -380,7 +384,7 @@ void SpriteCommon::LoadTexture(const std::string& fileName)
 
 		//テクスチャバッファにデータ転送
 
-		result_ = textureBuffers_[textureIndex_]->WriteToSubresource(
+		result_ = textureBuffers_[sTextureIndex_]->WriteToSubresource(
 			(UINT)i,
 			nullptr,
 			img->pixels,
@@ -397,7 +401,7 @@ void SpriteCommon::LoadTexture(const std::string& fileName)
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	//取得したサイズを使用してハンドルを進める
-	for(uint32_t i = 0; i < textureIndex_; i++)
+	for(uint32_t i = 0; i < sTextureIndex_; i++)
 	{
 		srvHandle.ptr += incrementSize;
 	}
@@ -412,7 +416,7 @@ void SpriteCommon::LoadTexture(const std::string& fileName)
 	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
-	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[textureIndex_].Get(), &srvDesc, srvHandle);
+	directXBasic_->GetDevice()->CreateShaderResourceView(textureBuffers_[sTextureIndex_].Get(), &srvDesc, srvHandle);
 }
 
 void SpriteCommon::Update()
@@ -538,8 +542,6 @@ void SpriteCommon::RootSignatureSet()
 void SpriteCommon::DescriptorHeapSet()
 {
 }
-
-
 
 void SpriteCommon::BeforeDraw()
 {

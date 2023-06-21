@@ -60,7 +60,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\engine\2d\PostEffect.cpp" />
     <ClCompile Include="DirectXGame\engine\camera\Camera.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\Collision.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\CollisionPrimitive.cpp" />
@@ -111,6 +112,7 @@
     <ClCompile Include="DirectXGame\engine\base\WindowsAPI.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\engine\2d\PostEffect.h" />
     <ClInclude Include="DirectXGame\engine\camera\Camera.h" />
     <ClInclude Include="DirectXGame\engine\collision\Collision.h" />
     <ClInclude Include="DirectXGame\engine\collision\CollisionPrimitive.h" />

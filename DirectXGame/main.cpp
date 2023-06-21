@@ -22,6 +22,7 @@ using namespace Microsoft::WRL;
 #include "GameScene.h"
 #include "xaudio2.h"
 #include "ImGuiManager.h"
+#include "PostEffect.h"
 #include <memory>
 #include <fstream>
 
@@ -62,6 +63,13 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	std::unique_ptr<GameScene> gameScene = std::make_unique<GameScene>();
 	gameScene->Initialize(directXBasic.get(), imGuiManager.get());
 
+	PostEffect* postEffect = nullptr;
+
+	//ポストエフェクト用テクスチャの読み込み
+	SpriteCommon::LoadTexture("black.png");
+	postEffect = new PostEffect;
+	postEffect->Initialize(XMFLOAT2(0,0),XMFLOAT2(170,170));
+	
 	// ゲームループ
 	while (true) {
 		//windowsメッセージ処理
@@ -77,6 +85,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		input->Update();
 
+		postEffect->SetAnchorPoint(XMFLOAT2(0.0f, 0.0f));
+		/*postEffect->matUpdate();*/
 		gameScene->Update();
 
 		imGuiManager->End();
@@ -84,7 +94,9 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		//描画
 		directXBasic->BeforeDraw();
 		
-		gameScene->Draw();
+		//ポストエフェクトの描画
+		postEffect->Draw("black.png");
+		//gameScene->Draw();
 		imGuiManager->Draw();
 		
 		directXBasic->AfterDraw();
@@ -95,6 +107,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	//ゲーム全体の終了処理
 	imGuiManager->Finalize();
 	winApi->Finalize();
+
+	delete postEffect;
 	
 #pragma endregion WindowsAPI後始末
 

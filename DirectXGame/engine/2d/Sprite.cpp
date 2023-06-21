@@ -5,7 +5,7 @@
 
 using namespace Microsoft::WRL;
 
-//SpriteCommon* Sprite::spriteCommon_ = nullptr;
+SpriteCommon* Sprite::spriteCommon_ = nullptr;
 DirectXBasic* Sprite::directXBasic_ = nullptr;
 KeyInput* Sprite::keys_ = nullptr;
 //D3D12_RESOURCE_DESC Sprite::textureResourceDesc{};
@@ -13,11 +13,11 @@ KeyInput* Sprite::keys_ = nullptr;
 void Sprite::StaticInitialize()
 {
 	keys_ = KeyInput::GetInstance();
+	spriteCommon_ = SpriteCommon::GetInstance();
 }
 
-void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size, SpriteCommon* spriteCommon)
+void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size)
 {
-	spriteCommon_ = spriteCommon;
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 
 	winWide_ = static_cast<float>(directXBasic_->GetWinWidth());
