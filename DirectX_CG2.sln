@@ -9,27 +9,61 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTex", "DirectXTex\Di
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "imgui\imgui.vcxproj", "{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{5D6BFD22-2A41-4C88-87C0-8A3A95BFE7B8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
+		Profile|ARM64 = Profile|ARM64
+		Profile|x64 = Profile|x64
+		Release|ARM64 = Release|ARM64
 		Release|x64 = Release|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Debug|ARM64.ActiveCfg = Debug|x64
+		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Debug|ARM64.Build.0 = Debug|x64
 		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Debug|x64.ActiveCfg = Debug|x64
 		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Debug|x64.Build.0 = Debug|x64
+		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Profile|ARM64.ActiveCfg = Release|x64
+		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Profile|ARM64.Build.0 = Release|x64
+		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Profile|x64.ActiveCfg = Release|x64
+		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Profile|x64.Build.0 = Release|x64
+		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Release|ARM64.ActiveCfg = Release|x64
+		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Release|ARM64.Build.0 = Release|x64
 		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Release|x64.ActiveCfg = Release|x64
 		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Release|x64.Build.0 = Release|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|ARM64.Build.0 = Debug|ARM64
 		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x64.ActiveCfg = Debug|x64
 		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x64.Build.0 = Debug|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Profile|ARM64.ActiveCfg = Profile|ARM64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Profile|ARM64.Build.0 = Profile|ARM64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Profile|x64.ActiveCfg = Profile|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Profile|x64.Build.0 = Profile|x64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|ARM64.ActiveCfg = Release|ARM64
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|ARM64.Build.0 = Release|ARM64
 		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x64.ActiveCfg = Release|x64
 		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x64.Build.0 = Release|x64
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Debug|ARM64.ActiveCfg = Debug|x64
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Debug|ARM64.Build.0 = Debug|x64
 		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Debug|x64.ActiveCfg = Debug|x64
 		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Debug|x64.Build.0 = Debug|x64
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Profile|ARM64.ActiveCfg = Release|x64
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Profile|ARM64.Build.0 = Release|x64
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Profile|x64.ActiveCfg = Release|x64
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Profile|x64.Build.0 = Release|x64
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Release|ARM64.ActiveCfg = Release|x64
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Release|ARM64.Build.0 = Release|x64
 		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Release|x64.ActiveCfg = Release|x64
 		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{371B9FA9-4C90-4AC6-A123-ACED756D6C77} = {5D6BFD22-2A41-4C88-87C0-8A3A95BFE7B8}
+		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E} = {5D6BFD22-2A41-4C88-87C0-8A3A95BFE7B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9DA684E1-C675-47AA-AE0F-0D9E7F2920F4}
