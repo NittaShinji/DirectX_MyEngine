@@ -4,6 +4,9 @@
 
 using namespace DirectX;
 
+//静的メンバ変数の実態
+const float PostEffect::clearColor[4] = { 0.25f,0.5f,0.1f,0.0f };	//緑っぽい色
+
 PostEffect::PostEffect() 
 	: Sprite()
 {
@@ -24,16 +27,18 @@ void PostEffect::Initialize()
 		1, 0, 1, 0, D3D12_RESOURCE_FLAG_ALLOW_RENDER_TARGET
 	);
 
+	//テクスチャバッファの生成
 	D3D12_HEAP_PROPERTIES textureHeapProp =
 		CD3DX12_HEAP_PROPERTIES(D3D12_CPU_PAGE_PROPERTY_WRITE_BACK, D3D12_MEMORY_POOL_L0);
+	D3D12_CLEAR_VALUE textureClearValue =
+		CD3DX12_CLEAR_VALUE(DXGI_FORMAT_R8G8B8A8_UNORM_SRGB, clearColor);
 
-	//テクスチャバッファの生成
 	result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&texresDesc,
 		D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
-		nullptr,
+		&textureClearValue,
 		IID_PPV_ARGS(&texBuff));
 	assert(SUCCEEDED(result));
 
@@ -76,6 +81,65 @@ void PostEffect::Initialize()
 		descHeapSRV->GetCPUDescriptorHandleForHeapStart()
 	);
 
+	//RTV用デスクリプタヒープ設定
+	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
+	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	rtvDescHeapDesc.NumDescriptors = 1;
+	//RTV用デスクリプタヒープを生成
+	result = directXBasic_->GetDevice()->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&descHeapRTV));
+	assert(SUCCEEDED(result));
+
+	//レンダーターゲットビューの設定
+	D3D12_RENDER_TARGET_VIEW_DESC renderTargetViewDesc{};
+	//シェーダーの計算結果をSRBGに変換して書き込む
+	renderTargetViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB;
+	renderTargetViewDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
+
+	//デスクリプタヒープにRTV作成
+	directXBasic_->GetDevice()->CreateRenderTargetView(texBuff.Get(),
+		&renderTargetViewDesc,
+		descHeapRTV->GetCPUDescriptorHandleForHeapStart()
+	);
+
+	//深度バッファリソース設定
+	CD3DX12_RESOURCE_DESC depthResDesc =
+		CD3DX12_RESOURCE_DESC::Tex2D(
+			DXGI_FORMAT_D32_FLOAT,
+			WindowsAPI::kWindow_width_,
+			WindowsAPI::kWindow_height_,
+			1, 0,
+			1, 0,
+			D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL
+		);
+	//深度バッファの生成
+	D3D12_HEAP_PROPERTIES depthHeapProp =
+		CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	D3D12_CLEAR_VALUE depthClearValue =
+		CD3DX12_CLEAR_VALUE(DXGI_FORMAT_D32_FLOAT, 1.0f, 0);
+	result = directXBasic_->GetDevice()->CreateCommittedResource(
+		&depthHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&depthResDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		&depthClearValue,
+		IID_PPV_ARGS(&depthBuff));
+	assert(SUCCEEDED(result));
+
+	//DSV用デスクリプタヒープ
+	D3D12_DESCRIPTOR_HEAP_DESC DescHeapDesc{};
+	DescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	DescHeapDesc.NumDescriptors = 1;
+	//DSV用デスクリプタヒープを作成
+	result = directXBasic_->GetDevice()->CreateDescriptorHeap(&DescHeapDesc, IID_PPV_ARGS(&descHeapDSV));
+	assert(SUCCEEDED(result));
+
+	//デスクリプタヒープにDSVを作成
+	D3D12_DEPTH_STENCIL_VIEW_DESC dsvDesc = {};
+	dsvDesc.Format = DXGI_FORMAT_D32_FLOAT;			//深度値フォーマット
+	dsvDesc.ViewDimension = D3D12_DSV_DIMENSION_TEXTURE2D;
+	directXBasic_->GetDevice()->CreateDepthStencilView(depthBuff.Get(),
+		&dsvDesc,
+		descHeapDSV->GetCPUDescriptorHandleForHeapStart());
 
 }
 
@@ -128,4 +192,45 @@ void PostEffect::Draw(const std::string& fileName)
 
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
 	directXBasic_->GetCommandList()->DrawInstanced(static_cast<UINT>(vertices_.size()), 1, 0, 0);
+}
+
+void PostEffect::PreDrawScene()
+{
+	//リソースバリアを変更(シェーダーリソース描画可能)
+	D3D12_RESOURCE_BARRIER resBarrier =
+		CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(), 
+			D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE,
+			D3D12_RESOURCE_STATE_RENDER_TARGET);
+
+	directXBasic_->GetCommandList()->ResourceBarrier(1,&resBarrier);
+
+	//レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvH = descHeapRTV->GetCPUDescriptorHandleForHeapStart();
+	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
+	//レンダーターゲットをセット
+	directXBasic_->GetCommandList()->OMSetRenderTargets(1, &rtvH, false, &dsvH);
+
+	//ビューポートの設定
+	D3D12_VIEWPORT viewPort =
+		CD3DX12_VIEWPORT(0.0f, 0.0f, WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_);
+	directXBasic_->GetCommandList()->RSSetViewports(1, &viewPort);
+	//シザリング矩形の設定
+	D3D12_RECT rect =
+		CD3DX12_RECT(0, 0, WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_);
+	directXBasic_->GetCommandList()->RSSetScissorRects(1, &rect);
+
+	//全画面クリア
+	directXBasic_->GetCommandList()->ClearRenderTargetView(rtvH, clearColor, 0, nullptr);
+	//深度バッファのクリア
+	directXBasic_->GetCommandList()->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+}
+
+void PostEffect::PostDrawScene()
+{
+	//リソースバリアを変更(描画可能→シェーダーリソース)
+	D3D12_RESOURCE_BARRIER resBarrier =
+		CD3DX12_RESOURCE_BARRIER::Transition(texBuff.Get(),
+			D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PIXEL_SHADER_RESOURCE);
+	directXBasic_->GetCommandList()->ResourceBarrier(1, &resBarrier);
 }

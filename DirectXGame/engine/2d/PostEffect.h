@@ -22,15 +22,35 @@ public:
     /// <param name="cmdList">コマンドリスト</param>
     void Draw(const std::string& fileName);
 
+    /// <summary>
+    /// シーン描画前処理
+    /// </summary>
+    /// <param name="cmdList"></param>
+    void PreDrawScene();
+
+    /// <summary>
+    /// シーン描画後処理
+    /// </summary>
+    /// <param name="cmdList"></param>
+    void PostDrawScene();
+
+
+
 private:
 
     //テクスチャバッファ
     ComPtr<ID3D12Resource> texBuff;
+    //深度バッファ
+    ComPtr<ID3D12Resource> depthBuff;
 
     //SRV用デスクリプタヒープ
     ComPtr<ID3D12DescriptorHeap> descHeapSRV;
+    //RTN用デスクリプタヒープ
+    ComPtr<ID3D12DescriptorHeap> descHeapRTV;
+    //DSV用デスクリプタヒープ
+    ComPtr<ID3D12DescriptorHeap> descHeapDSV;
 
-    //ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
-    //ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
+    //画面クリアカラー
+    static const float clearColor[4];
 };
 

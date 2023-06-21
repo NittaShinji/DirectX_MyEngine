@@ -66,7 +66,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 	PostEffect* postEffect = nullptr;
 
 	//ポストエフェクト用テクスチャの読み込み
-	SpriteCommon::LoadTexture("white1x1.png");
+	SpriteCommon::LoadTexture("title.png");
 	postEffect = new PostEffect;
 	postEffect->Initialize();
 	
@@ -92,12 +92,14 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		imGuiManager->End();
 
 		//描画
+		postEffect->PreDrawScene();
+		gameScene->Draw();
+		postEffect->PostDrawScene();
+
 		directXBasic->BeforeDraw();
-		
 		//ポストエフェクトの描画
-		postEffect->Draw("white1x1.png");
-		//gameScene->Draw();
-		imGuiManager->Draw();
+		postEffect->Draw("title.png");
+		//imGuiManager->Draw();
 		
 		directXBasic->AfterDraw();
 	}
