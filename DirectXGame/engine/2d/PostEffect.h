@@ -42,6 +42,8 @@ private:
     ComPtr<ID3D12Resource> texBuff;
     //深度バッファ
     ComPtr<ID3D12Resource> depthBuff;
+    //頂点バッファ
+    ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 
     //SRV用デスクリプタヒープ
     ComPtr<ID3D12DescriptorHeap> descHeapSRV;
@@ -50,7 +52,23 @@ private:
     //DSV用デスクリプタヒープ
     ComPtr<ID3D12DescriptorHeap> descHeapDSV;
 
+    //色用の定数バッファ
+    ComPtr<ID3D12Resource> constBuffMaterial_ = nullptr;
+    //座標用の定数バッファ
+    ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
+
+    //頂点配列
+    //std::array<Vertex, kVertexCount_> vertices_{};
+    Vertex vertices[kVertexCount_];
+
+    // 頂点バッファビューの作成
+    D3D12_VERTEX_BUFFER_VIEW vbView_{};
+
     //画面クリアカラー
     static const float clearColor[4];
+
+    //色(RGBA)
+    XMFLOAT4 color_ = { 1,1,1,1 };
+
 };
 

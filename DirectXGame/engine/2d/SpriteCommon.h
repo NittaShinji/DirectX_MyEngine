@@ -14,6 +14,18 @@ class SpriteCommon
 {
 public:
 
+	//定数バッファ用データ構造体(マテリアル)
+	struct ConstBufferDataMaterial
+	{
+		XMFLOAT4 color;	//色(RGBA)
+	};
+	struct ConstBufferDataTransform
+	{
+		XMMATRIX mat;	//色(RGBA)
+	};
+
+public:
+
 	//エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -65,15 +77,6 @@ public:
 
 private:
 
-	//定数バッファ用データ構造体(マテリアル)
-	struct ConstBufferDataMaterial
-	{
-		XMFLOAT4 color;	//色(RGBA)
-	};
-	struct ConstBufferDataTransform
-	{
-		XMMATRIX mat;	//色(RGBA)
-	};
 
 	static DirectXBasic* directXBasic_;
 
@@ -124,7 +127,7 @@ public:
 	DirectXBasic* GetDirectXBasic() const { return directXBasic_; };
 	ComPtr<ID3D12Resource> GetConstBuffMaterial() const { return constBuffMaterial_; };
 	ConstBufferDataMaterial* GetConstMapMaterial() const { return constMapMaterial_; };
-	ID3D12Resource* GetConstBuffTransform() const { return constBuffTransform_.Get(); };
+	ComPtr<ID3D12Resource> GetConstBuffTransform() const { return constBuffTransform_; };
 	ConstBufferDataTransform* GetConstMapTransform() const { return constMapTransform_; };
 	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
 	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }

@@ -94,7 +94,6 @@ protected:
 	std::array<Vertex, kVertexCount_> vertices_{};
 
 	// 頂点バッファビューの作成
-	//std::array <D3D12_VERTEX_BUFFER_VIEW, imageCount> vbView{};
 	D3D12_VERTEX_BUFFER_VIEW vbView_{};
 	
 	// 頂点データ全体のサイズ

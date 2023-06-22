@@ -17,7 +17,98 @@ void PostEffect::Initialize()
 	HRESULT result;
 
 	//基底クラスとしての初期化
-	Sprite::Initialize(XMFLOAT2(0, 0), XMFLOAT2(170, 170));
+	//Sprite::Initialize(XMFLOAT2(0, 0), XMFLOAT2(170, 170));
+
+	//頂点バッファ生成
+	D3D12_HEAP_PROPERTIES vertexHeapProp =
+		CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	D3D12_RESOURCE_DESC vertResourceDesc = 
+		CD3DX12_RESOURCE_DESC::Buffer(sizeof(Vertex) * kVertexCount_);
+
+	result = directXBasic_->GetDevice()->CreateCommittedResource(
+		&vertexHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&vertResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&this->vertBuff_));
+	assert(SUCCEEDED(result));
+
+	//頂点データ
+	//vertices[kVertexCount_] = {(
+	//	{{-0.5f, -0.5f, 0.0f }, {0.0f,1.0f}},	//左下
+	//	{{-0.5f, +0.5f, 0.0f }, {0.0f,0.0f}},	//左上
+	//	{{+0.5f, -0.5f, 0.0f }, {1.0f,1.0f}},	//右下
+	//	{{+0.5f, +0.5f, 0.0f }, {1.0f,1.0f}},	//右上
+	//)};
+
+	vertices[LB] = {
+		{ -0.5f , -0.5f, 0.0f }, {0.0f,1.0f}//左下
+	};
+	vertices[LT] = {
+		{ -0.5f ,+0.5f, 0.0f }, {0.0f,0.0f}//左上
+	};
+	vertices[RB] = {
+		{ +0.5f, -0.5f, 0.0f }, {1.0f,1.0f}//右下
+	};
+	vertices[RT] = {
+		{ +0.5f, +0.5f, 0.0f }, {1.0f,0.0f}//右上
+	};
+
+	//頂点バッファへのデータ転送
+	Vertex* vertMap = nullptr;
+	result = this->vertBuff_->Map(0, nullptr, (void**)&vertMap);
+	if(SUCCEEDED(result))
+	{
+		memcpy(vertMap, vertices, sizeof(vertices));
+		this->vertBuff_->Unmap(0, nullptr);
+	}
+
+	//頂点バッファビューの作成
+	this->vbView_.BufferLocation = this->vertBuff_->GetGPUVirtualAddress();
+	this->vbView_.SizeInBytes = sizeof(Vertex) * 4;
+	this->vbView_.StrideInBytes = sizeof(Vertex);
+
+	//定数バッファの生成
+	D3D12_HEAP_PROPERTIES cbmHeapProp =
+		CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	D3D12_RESOURCE_DESC cbmResourceDesc =
+		CD3DX12_RESOURCE_DESC::Buffer((sizeof(SpriteCommon::ConstBufferDataMaterial) +
+			0xff) & ~0xff);
+
+	result = directXBasic_->GetDevice()->CreateCommittedResource(
+		&cbmHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&cbmResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&this->constBuffMaterial_));
+	assert(SUCCEEDED(result));
+
+	//定数バッファにデータ転送
+	SpriteCommon::ConstBufferDataMaterial* constMapMaterial = nullptr;
+	result = this->constBuffMaterial_->Map(0, nullptr, (void**)&constMapMaterial);
+	if(SUCCEEDED(result))
+	{
+		constMapMaterial->color = this->color_;
+		this->constBuffMaterial_->Unmap(0, nullptr);
+	}
+
+	//定数バッファの生成
+	D3D12_HEAP_PROPERTIES cbtHeapProp =
+		CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	D3D12_RESOURCE_DESC cbtResourceDesc =
+		CD3DX12_RESOURCE_DESC::Buffer((sizeof(SpriteCommon::ConstBufferDataTransform) +
+			0xff) & ~0xff);
+
+	result = directXBasic_->GetDevice()->CreateCommittedResource(
+		&cbtHeapProp,
+		D3D12_HEAP_FLAG_NONE,
+		&cbtResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&this->constBuffTransform_));
+	assert(SUCCEEDED(result));
 
 	//テクスチャリソース設定
 	CD3DX12_RESOURCE_DESC texresDesc = CD3DX12_RESOURCE_DESC::Tex2D(
@@ -145,8 +236,64 @@ void PostEffect::Initialize()
 
 void PostEffect::Draw(const std::string& fileName)
 {
-	matUpdate();
+	//アンカーポイントの設定
+	float left = (0.0f - anchorPoint_.x) * size_.x;
+	float right = (1.0f - anchorPoint_.x) * size_.x;
+	float top = (0.0f - anchorPoint_.y) * size_.y;
+	float bottom = (1.0f - anchorPoint_.y) * size_.y;
 
+	//左右反転
+	if(isFlipX_ == true)
+	{
+		left = -left;
+		right = -right;
+	}
+	//上下反転
+	if(isFlipY_ == true)
+	{
+		top = -top;
+		bottom = -bottom;
+	}
+
+	vertices[LB].pos = { left + position_.x , bottom + position_.y,0.0f };
+	vertices[LT].pos = { left + position_.x, top + position_.y,0.0f };
+	vertices[RB].pos = { right + position_.x,bottom + position_.y,0.0f };
+	vertices[RT].pos = { right + position_.x,top + position_.y,0.0f };
+
+
+	//いずれかのキーを押していたら
+	//座標を移動する処理(Z座標)
+	if(keys_->HasPushedKey(DIK_UP)) { moveSpeed_.y -= 0.1f; }
+	else if(keys_->HasPushedKey(DIK_DOWN)) { moveSpeed_.y += 0.1f; }
+	else
+	{
+		moveSpeed_.y = 0.0f;
+	}
+	if(keys_->HasPushedKey(DIK_RIGHT)) { moveSpeed_.x += 0.1f; }
+	else if(keys_->HasPushedKey(DIK_LEFT)) { moveSpeed_.x -= 0.1f; }
+	else
+	{
+		moveSpeed_.x = 0.0f;
+	}
+
+	////頂点バッファへのデータ転送
+	//Vertex* vertMap = nullptr;
+	//HRESULT result = this->vertBuff_->Map(0, nullptr, (void**)&vertMap);
+	//if(SUCCEEDED(result))
+	//{
+	//	memcpy(vertMap, vertices, sizeof(vertices));
+	//	this->vertBuff_->Unmap(0, nullptr);
+	//}
+
+	//定数バッファにデータ転送
+	SpriteCommon::ConstBufferDataTransform* constMapTransform = nullptr;
+	HRESULT result = this->constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform);
+	if(SUCCEEDED(result))
+	{
+		constMapTransform->mat = XMMatrixIdentity();
+		this->constBuffTransform_->Unmap(0, nullptr);
+	}
+	
 	//パイプラインステートの設定
 	directXBasic_->GetCommandList()->SetPipelineState(spriteCommon_->GetPipelineState().Get());
 	//ルートシグネチャの設定
@@ -157,7 +304,7 @@ void PostEffect::Draw(const std::string& fileName)
 	spriteCommon_->Update();
 	
 	//頂点バッファビューの設定コマンド
-	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView_);
+	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &this->vbView_);
 	//SRVヒープの設定コマンド
 	//ID3D12DescriptorHeap* heaps[] = { spriteCommon_->GetSRVHeap() };
 	ID3D12DescriptorHeap* heaps[] = { descHeapSRV.Get()};
@@ -183,7 +330,7 @@ void PostEffect::Draw(const std::string& fileName)
 	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(1, descHeapSRV->GetGPUDescriptorHandleForHeapStart());
 
 	//定数バッファビュー(CBV)の設定コマンド
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, spriteCommon_->GetConstBuffTransform()->GetGPUVirtualAddress());
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, this->constBuffTransform_->GetGPUVirtualAddress());
 
 	if(isInvisible_)
 	{
@@ -191,7 +338,7 @@ void PostEffect::Draw(const std::string& fileName)
 	}
 
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
-	directXBasic_->GetCommandList()->DrawInstanced(static_cast<UINT>(vertices_.size()), 1, 0, 0);
+	directXBasic_->GetCommandList()->DrawInstanced(_countof(vertices), 1, 0, 0);
 }
 
 void PostEffect::PreDrawScene()
