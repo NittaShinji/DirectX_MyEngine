@@ -14,13 +14,18 @@ public:
     /// <summary>
     /// 初期化
     /// </summary>
-    void Initialize();
+    void Initialize(DirectXBasic* directXBasic);
 
     /// <summary>
     /// 描画コマンドの発行
     /// </summary>
     /// <param name="cmdList">コマンドリスト</param>
     void Draw(const std::string& fileName);
+
+    /// <summary>
+    /// パイプライン生成
+    /// </summary>
+    void CreateGraphicsPipelineState();
 
     /// <summary>
     /// シーン描画前処理
@@ -34,12 +39,20 @@ public:
     /// <param name="cmdList"></param>
     void PostDrawScene();
 
-
+    void LoadTexture(const std::string& fileName);
 
 private:
 
+    DirectXBasic* directXBasic_;
+
     //テクスチャバッファ
     ComPtr<ID3D12Resource> texBuff;
+
+    //SRVの最大個数
+    static const size_t kMaxSRVCount_ = 2056;
+    //テクスチャバッファ
+    static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
+
     //深度バッファ
     ComPtr<ID3D12Resource> depthBuff;
     //頂点バッファ
@@ -57,6 +70,11 @@ private:
     //座標用の定数バッファ
     ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
 
+    //グラフィックスパイプライン
+    ComPtr<ID3D12PipelineState> pipelineState_;
+    //ルートシグネチャ
+    ComPtr<ID3D12RootSignature> rootSignature;
+
     //頂点配列
     //std::array<Vertex, kVertexCount_> vertices_{};
     Vertex vertices[kVertexCount_];
@@ -69,6 +87,14 @@ private:
 
     //色(RGBA)
     XMFLOAT4 color_ = { 1,1,1,1 };
+
+    //テクスチャ番号
+    static uint32_t sTextureIndex_;
+    //画像に結び付いたテクスチャ番号格納用map
+    static std::map<const std::string, uint32_t, std::less<>> textureMap_;
+    //デフォルトテクスチャ格納ディレクトリ
+    static std::string kDefaultTextureDirectoryPath_;
+
 
 };
 

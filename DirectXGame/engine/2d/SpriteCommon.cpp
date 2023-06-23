@@ -430,20 +430,17 @@ void SpriteCommon::VertexLayoutSet()
 	// 頂点レイアウト
 	inputLayout_ =
 	{
-		{
-			//xyz座標
+		{	//xyz座標
 			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, //どれぐらいの量を送るか
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
 
-		// uv座標
-		{
+		{	//uv座標
 			"TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
 		},
-		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
 	};
 }
 
@@ -459,7 +456,7 @@ void SpriteCommon::PipelineSet()
 	pipelineDesc_.SampleMask = D3D12_DEFAULT_SAMPLE_MASK; // 標準設定
 
 	// ラスタライザの設定
-	pipelineDesc_.RasterizerState.CullMode = D3D12_CULL_MODE_NONE; // 背面をカリング
+	pipelineDesc_.RasterizerState.CullMode = D3D12_CULL_MODE_NONE; // 背面をカリングするかどうか
 	pipelineDesc_.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
 	pipelineDesc_.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
 

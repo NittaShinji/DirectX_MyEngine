@@ -524,6 +524,13 @@ void GameScene::Draw()
 		//sphere_->BeforeDraw();
 		//ground_->BeforeDraw();
 		//testObject->BeforeDraw();
+		/*spriteCommon_->BeforeDraw();
+		spriteCommon_->Update();
+		title_->Draw("title.png");
+		test_->Draw("tomas.png");*/
+
+
+
 		Object3d::BeforeDraw();
 		
 		sphere_->Draw();
