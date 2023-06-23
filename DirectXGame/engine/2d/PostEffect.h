@@ -71,7 +71,7 @@ private:
     ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
 
     //グラフィックスパイプライン
-    ComPtr<ID3D12PipelineState> pipelineState_;
+    ComPtr<ID3D12PipelineState> pipelineState;
     //ルートシグネチャ
     ComPtr<ID3D12RootSignature> rootSignature;
 
