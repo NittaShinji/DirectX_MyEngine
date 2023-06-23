@@ -15,7 +15,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 {
 	directXBasic_ = directXBasic;
 	imGuiManager_ = imGuiManager;
-	scene_ = TITLE;
+	scene_ = GAME;
 
 	Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);

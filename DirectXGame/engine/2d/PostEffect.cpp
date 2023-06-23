@@ -233,36 +233,10 @@ void PostEffect::Initialize(DirectXBasic* directXBasic)
 
 	//パイプライン生成
 	CreateGraphicsPipelineState();
-
 }
 
 void PostEffect::Draw(const std::string& fileName)
 {
-	//アンカーポイントの設定
-	float left = (0.0f - anchorPoint_.x) * size_.x;
-	float right = (1.0f - anchorPoint_.x) * size_.x;
-	float top = (0.0f - anchorPoint_.y) * size_.y;
-	float bottom = (1.0f - anchorPoint_.y) * size_.y;
-
-	//左右反転
-	if(isFlipX_ == true)
-	{
-		left = -left;
-		right = -right;
-	}
-	//上下反転
-	if(isFlipY_ == true)
-	{
-		top = -top;
-		bottom = -bottom;
-	}
-
-	vertices[LB].pos = { left + position_.x , bottom + position_.y,0.0f };
-	vertices[LT].pos = { left + position_.x, top + position_.y,0.0f };
-	vertices[RB].pos = { right + position_.x,bottom + position_.y,0.0f };
-	vertices[RT].pos = { right + position_.x,top + position_.y,0.0f };
-
-
 	//いずれかのキーを押していたら
 	//座標を移動する処理(Z座標)
 	if(keys_->HasPushedKey(DIK_UP)) { moveSpeed_.y -= 0.1f; }
@@ -278,15 +252,6 @@ void PostEffect::Draw(const std::string& fileName)
 		moveSpeed_.x = 0.0f;
 	}
 
-	////頂点バッファへのデータ転送
-	//Vertex* vertMap = nullptr;
-	//HRESULT result = this->vertBuff_->Map(0, nullptr, (void**)&vertMap);
-	//if(SUCCEEDED(result))
-	//{
-	//	memcpy(vertMap, vertices, sizeof(vertices));
-	//	this->vertBuff_->Unmap(0, nullptr);
-	//}
-
 	//定数バッファにデータ転送
 	SpriteCommon::ConstBufferDataTransform* constMapTransform = nullptr;
 	HRESULT result = this->constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform);
@@ -297,9 +262,13 @@ void PostEffect::Draw(const std::string& fileName)
 	}
 	
 	//パイプラインステートの設定
-	directXBasic_->GetCommandList()->SetPipelineState(spriteCommon_->GetPipelineState().Get());
+	//directXBasic_->GetCommandList()->SetPipelineState(spriteCommon_->GetPipelineState().Get());
+	directXBasic_->GetCommandList()->SetPipelineState(pipelineState.Get());
+
 	//ルートシグネチャの設定
-	directXBasic_->GetCommandList()->SetGraphicsRootSignature(spriteCommon_->GetRootSignature_().Get());
+	//directXBasic_->GetCommandList()->SetGraphicsRootSignature(spriteCommon_->GetRootSignature_().Get());
+	directXBasic_->GetCommandList()->SetGraphicsRootSignature(rootSignature.Get());
+
 	//プリミティブ形状を設定
 	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
