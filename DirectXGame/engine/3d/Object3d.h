@@ -139,6 +139,8 @@ private:
 
 	bool colorFlag_ = false;
 
+	static const UINT kRenderTexNum = 2;
+
 public:
 
 	//ÉQÉbÉ^Å[

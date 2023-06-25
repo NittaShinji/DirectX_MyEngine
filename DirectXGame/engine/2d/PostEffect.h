@@ -45,8 +45,10 @@ private:
 
     DirectXBasic* directXBasic_;
 
+    static const UINT kRenderTexNum = 2;
+
     //テクスチャバッファ
-    ComPtr<ID3D12Resource> texBuff;
+    ComPtr<ID3D12Resource> texBuff[kRenderTexNum];
 
     //SRVの最大個数
     static const size_t kMaxSRVCount_ = 2056;

@@ -3,8 +3,16 @@
 Texture2D<float4> tex : register(t0); //0番スロットに設定されたテクスチャ
 SamplerState smp : register(s0); //0番スロットに設定されたサンプラー
 
-float4 main(VSOutput input) : SV_TARGET
+struct PSOutput
 {
+    float4 target0 : SV_TARGET0;
+    float4 target1 : SV_TARGET1;
+};
+
+PSOutput main(VSOutput input)
+{
+    PSOutput output;
+    
     //テクスチャマッピング
     float4 texcolor = tex.Sample(smp, input.uv);
 	
@@ -38,8 +46,13 @@ float4 main(VSOutput input) : SV_TARGET
         }
     }
 	
+    //陰影とテクスチャの色を合成
+    output.target0 = shadeColor * texcolor;
+    output.target1 = float4(1 - (shadeColor * texcolor).rgb, 1);
+    
+    
 	//シェーディングによる色で描画
-    return shadeColor * texcolor;
+    return output;
     
     
     //float4 texcolor = float4(tex.Sample(smp, input.uv));

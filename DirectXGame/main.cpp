@@ -99,7 +99,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		directXBasic->BeforeDraw();
 		//ポストエフェクトの描画
 		postEffect->Draw("test.png");
-		//imGuiManager->Draw();
+		imGuiManager->Draw();
 		
 		directXBasic->AfterDraw();
 	}
