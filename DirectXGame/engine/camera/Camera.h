@@ -23,6 +23,8 @@ public:
 
 	void Updata();
 
+	void UpdateViewMatrix();
+
 private:
 
 	static DirectXBasic* directXBasic_;
@@ -33,6 +35,12 @@ private:
 	XMFLOAT3 eye_;		//視点座標
 	XMFLOAT3 target_;	//注視点座標
 	XMFLOAT3 up_;		//上方向ベクトル
+
+	//XMVECTOR eye_;		//視点座標
+	//XMVECTOR target_;	//注視点座標
+	//XMVECTOR up_;		//上方向ベクトル
+
+
 	
 	float angle_ = 0.0f;	//カメラの回転角
 

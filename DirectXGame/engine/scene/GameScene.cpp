@@ -32,7 +32,20 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	sound_->Initialize();
 	sound_->LoadSoundWave("Alarm01.wav");
 	sound_->PlaySoundWave("Alarm01.wav");
-	
+
+	//------------カメラ----------
+	Camera::StaticInitialize(directXBasic_);
+	camera_ = std::make_unique<Camera>();
+	//camera_ = new Camera;
+	testCamera_ = std::make_unique<Camera>();
+
+
+	XMFLOAT3 cameraEye = { 0,60,-30 };
+	XMFLOAT3 testCameraEye = { 50,60,-30 };
+
+	XMFLOAT3 cameraTarget = { 0,0,0 };
+	XMFLOAT3 cameraUp = { 0,1,0 };
+
 	//-----------読み込み---------------
 	 
 	//レベルデータからオブジェクトを生成、配置
@@ -40,36 +53,50 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	for(auto& objectData : levelData_->objects)
 	{
-		//ファイル名から登録済みモデルを検索
-		Model* model = nullptr;
-		decltype(models_)::iterator it = models_.find(objectData.fileName);
-		if(it != models_.end()) { model = &it->second; }
-		//モデルを指定して3Dオブジェクトを作成
-		//モデルをロード
-		Model::Load(objectData.fileName);
+		if(objectData.fileName == "sphere")
+		{
+			//ファイル名から登録済みモデルを検索
+			Model* model = nullptr;
+			decltype(models_)::iterator it = models_.find(objectData.fileName);
+			if(it != models_.end()) { model = &it->second; }
+			//モデルを指定して3Dオブジェクトを作成
+		 
+			//モデルをロード
+			Model::Load(objectData.fileName);
 
-		//3Dオブジェクトの生成
-		std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
+			//3Dオブジェクトの生成
+			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 
-		//座標
-		DirectX::XMFLOAT3 pos;
-		pos = objectData.translation;
-		newObject->SetTransform(pos);
-		//回転角
-		DirectX::XMFLOAT3 rot;
-		rot = objectData.rotation;
+			//座標
+			DirectX::XMFLOAT3 pos;
+			pos = objectData.translation;
+			newObject->SetTransform(pos);
+			//回転角
+			DirectX::XMFLOAT3 rot;
+			rot = objectData.rotation;
 
-		newObject->SetRotation(rot);
-		//座標
-		DirectX::XMFLOAT3 scale;
-		scale = objectData.scaling;
-		newObject->SetScale(scale);
+			newObject->SetRotation(rot);
+			//座標
+			DirectX::XMFLOAT3 scale;
+			scale = objectData.scaling;
+			newObject->SetScale(scale);
 
-		newObject->Initialize(objectData.fileName, pos, scale);
+			newObject->Initialize(objectData.fileName, pos, scale);
 
-		//配列に登録
-		objects_.push_back(std::move(newObject));
+			//配列に登録
+			objects_.push_back(std::move(newObject));
+		}
+		else if(objectData.fileName == "CAMERA")
+		{
+			//カメラの生成
+			cameraEye = objectData.translation;
+			cameraTarget = objectData.rotation;
+		}
 	}
+
+	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
+	testCamera_->Initialize(testCameraEye, cameraTarget, cameraUp);
+
 
 	//------------画像読み込み----------
 	title_ = std::make_unique<Sprite>();
@@ -134,22 +161,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	testObject_ = std::make_unique<Object3d>();
 	testObject_->Initialize(test, XMFLOAT3(-30,0,0), sphereScale);
 
-	//------------カメラ----------
-	Camera::StaticInitialize(directXBasic_);
-	camera_ = std::make_unique<Camera>();
-	//camera_ = new Camera;
-	testCamera_ = std::make_unique<Camera>();
-
-
-	XMFLOAT3 cameraEye = { 0,60,-30 };
-	XMFLOAT3 testCameraEye = { 50,60,-30 };
-
-	XMFLOAT3 cameraTarget = { 0,0,0 };
-	XMFLOAT3 cameraUp = { 0,1,0 };
-
-	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize(testCameraEye, cameraTarget, cameraUp);
-
+	
 	//------------当たり判定----------
 	//--球の初期値を設定
 	//中心座標
@@ -532,7 +544,7 @@ void GameScene::Draw()
 
 		spriteCommon_->BeforeDraw();
 		spriteCommon_->Update();
-		title_->Draw("title.png");
+		//title_->Draw("title.png");
 		
 		Object3d::BeforeDraw();
 		

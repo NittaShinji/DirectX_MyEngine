@@ -42,8 +42,9 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 		objectData.scaling.x = (float)transform["scaling"][1];
 		objectData.scaling.y = (float)transform["scaling"][2];
 		objectData.scaling.z = (float)transform["scaling"][0];
-
 	}
+	
+
 
 	//再帰処理
 	if(object.contains("children"))
@@ -53,6 +54,38 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 			Return(object_,levelData);
 		}
 	}
+}
+
+void LevelManager::LoadElement(nlohmann::json& object, LevelData* levelData)
+{
+	////要素追加
+	//levelData->objects.emplace_back(LevelData::objectDate{});
+	////今追加した要素の参照を得る
+	//LevelData::objectDate& objectData = levelData->objects.back();
+
+	//if(object.contains("file_name"))
+	//{
+	//	//ファイル名
+	//	objectData.fileName = object["file_name"];
+	//}
+
+	////トランスフォームのパラメータ読み込み
+	//nlohmann::json& transform = object["transform"];
+	////平行移動
+	//objectData.translation.x = (float)transform["translation"][1];
+	//objectData.translation.y = (float)transform["translation"][2];
+	//objectData.translation.z = (float)transform["translation"][0];
+
+	////回転角
+	//objectData.rotation.x = -(float)transform["rotation"][1];
+	//objectData.rotation.y = -(float)transform["rotation"][2];
+	//objectData.rotation.z = -(float)transform["rotation"][0];
+
+	////スケーリング
+	//objectData.scaling.x = (float)transform["scaling"][1];
+	//objectData.scaling.y = (float)transform["scaling"][2];
+	//objectData.scaling.z = (float)transform["scaling"][0];
+
 }
 
 LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
@@ -97,6 +130,67 @@ LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
 	//"objects"の全オブジェクトを走査
 	for(nlohmann::json& object : deserialized["objects"])
 	{
+		//種別を取得
+		std::string type = object["type"].get<std::string>();
+
+		//タイプが"LIGHT"だった場合
+		if( type.compare("LIGHT") == 0)
+		{
+			//要素追加
+			levelData->objects.emplace_back(LevelData::objectDate{});
+			//今追加した要素の参照を得る
+			LevelData::objectDate& objectData = levelData->objects.back();
+
+			//ファイル名
+			objectData.fileName = "LIGHT";
+
+			//トランスフォームのパラメータ読み込み
+			nlohmann::json& transform = object["transform"];
+			//平行移動
+			objectData.translation.x = (float)transform["translation"][1];
+			objectData.translation.y = (float)transform["translation"][2];
+			objectData.translation.z = (float)transform["translation"][0];
+
+			//回転角
+			objectData.rotation.x = -(float)transform["rotation"][1];
+			objectData.rotation.y = -(float)transform["rotation"][2];
+			objectData.rotation.z = -(float)transform["rotation"][0];
+
+			//スケーリング
+			objectData.scaling.x = (float)transform["scaling"][1];
+			objectData.scaling.y = (float)transform["scaling"][2];
+			objectData.scaling.z = (float)transform["scaling"][0];
+			//LoadElement(object, levelData);
+		}
+		if(type.compare("CAMERA") == 0)
+		{
+			//要素追加
+			levelData->objects.emplace_back(LevelData::objectDate{});
+			//今追加した要素の参照を得る
+			LevelData::objectDate& objectData = levelData->objects.back();
+
+			//ファイル名
+			objectData.fileName = "CAMERA";
+			
+			//トランスフォームのパラメータ読み込み
+			nlohmann::json& transform = object["transform"];
+			//平行移動
+			objectData.translation.x = (float)transform["translation"][1];
+			objectData.translation.y = (float)transform["translation"][2];
+			objectData.translation.z = (float)transform["translation"][0];
+
+			//回転角
+			objectData.rotation.x = -(float)transform["rotation"][1];
+			objectData.rotation.y = -(float)transform["rotation"][2];
+			objectData.rotation.z = -(float)transform["rotation"][0];
+
+			//スケーリング
+			objectData.scaling.x = (float)transform["scaling"][1];
+			objectData.scaling.y = (float)transform["scaling"][2];
+			objectData.scaling.z = (float)transform["scaling"][0];
+			//LoadElement(object, levelData);
+		}
+
 		Return(object,levelData);
 	}
 
