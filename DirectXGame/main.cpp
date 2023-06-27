@@ -91,16 +91,18 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 		imGuiManager->End();
 
-		//描画
+		//レンダーテクスチャの描画
 		postEffect->PreDrawScene();
 		gameScene->Draw();
 		postEffect->PostDrawScene();
 
+		//描画開始
 		directXBasic->BeforeDraw();
 		//ポストエフェクトの描画
 		postEffect->Draw("test.png");
 		imGuiManager->Draw();
 		
+		//描画終了
 		directXBasic->AfterDraw();
 	}
 

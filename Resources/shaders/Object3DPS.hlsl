@@ -42,20 +42,15 @@ PSOutput main(VSOutput input)
             float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
 			//全て加算する
             shadeColor.rgb += (diffuse + specular) * dirLights[i].lightColor;
-
         }
     }
 	
     //陰影とテクスチャの色を合成
-    output.target0 = shadeColor * texcolor;
-    output.target1 = float4(1 - (shadeColor * texcolor).rgb, 1);
+    output.target0 = float4(1 - (shadeColor * texcolor).rgb, 1);
+    //output.target0 = float4((shadeColor * texcolor).rgb, 1);
     
+    output.target1 = shadeColor * texcolor;
     
 	//シェーディングによる色で描画
     return output;
-    
-    
-    //float4 texcolor = float4(tex.Sample(smp, input.uv));
-	
-    //return input.color * texcolor;
 }

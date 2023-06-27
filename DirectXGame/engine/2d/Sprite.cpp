@@ -208,7 +208,6 @@ void Sprite::matUpdate()
 	spriteCommon_->GetConstMapMaterial()->color = color_;
 }
 
-//void Sprite::Draw(uint32_t textureIndex)
 void Sprite::Draw(const std::string& fileName)
 {
 	spriteCommon_->Update();
@@ -247,10 +246,14 @@ void Sprite::Draw(const std::string& fileName)
 
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
 	directXBasic_->GetCommandList()->DrawInstanced(static_cast<UINT>(vertices_.size()), 1, 0, 0);
+}
+
+void Sprite::ClearDepthBuffer()
+{
+
 
 }
 
-//
 //void Sprite::TexMapping()
 //{
 //

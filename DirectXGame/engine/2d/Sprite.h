@@ -26,6 +26,8 @@ public:
 	//•`‰æ
 	void Draw(const std::string& fileName);
 
+	void ClearDepthBuffer();
+
 	/*void TexMapping();
 	void TexMappingSRVSet();*/
 

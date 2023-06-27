@@ -15,7 +15,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 {
 	directXBasic_ = directXBasic;
 	imGuiManager_ = imGuiManager;
-	scene_ = GAME;
+	scene_ = TITLE;
 
 	Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);
@@ -239,25 +239,12 @@ void GameScene::Update()
 
 		if(keyTimer_ < 0)
 		{
-			/*if(keys_->HasPushedKey(DIK_SPACE))
-			{
-
-				scene_ = GAME;
-				keyTimer = waitTime;
-			}*/
-
 			if(KeyInput::HasPushedKey(DIK_SPACE))
 			{
 
 				scene_ = GAME;
 				keyTimer_ = kWaitTime_;
 			}
-
-			/*if(input_->GetKeys()->HasPushedKey(DIK_SPACE))
-			{
-				scene_ = GAME;
-				keyTimer = waitTime;
-			}*/
 		}
 		else
 		{
@@ -271,9 +258,19 @@ void GameScene::Update()
 		camera_->Updata();
 		testCamera_->Updata();
 
+		/*title_->SetAnchorPoint(anchorPoint);
+		title_->matUpdate();
+		test_->SetAnchorPoint(anchorPoint);
+		test_->matUpdate();*/
+
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
 		{
+			//アンカーポイントの設定
+			/*title_->SetAnchorPoint(anchorPoint);
+			title_->matUpdate();*/
+
+
 			for(auto& object : objects_)
 			{
 				object->Update(testCamera_.get());
@@ -287,6 +284,9 @@ void GameScene::Update()
 		}
 		else
 		{
+			//アンカーポイントの設定
+			
+
 			for(auto& object : objects_)
 			{
 				object->Update(testCamera_.get());
@@ -514,7 +514,6 @@ void GameScene::Draw()
 		spriteCommon_->BeforeDraw();
 		spriteCommon_->Update();
 		title_->Draw("title.png");
-		test_->Draw("tomas.png");
 
 		break;
 
@@ -529,8 +528,12 @@ void GameScene::Draw()
 		title_->Draw("title.png");
 		test_->Draw("tomas.png");*/
 
+		//directXBasic_->GetCommandList()->
 
-
+		spriteCommon_->BeforeDraw();
+		spriteCommon_->Update();
+		title_->Draw("title.png");
+		
 		Object3d::BeforeDraw();
 		
 		sphere_->Draw();
