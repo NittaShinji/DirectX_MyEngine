@@ -325,11 +325,11 @@ void Object3d::Update(Camera* camera)
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理
-	if(keys_->HasPushedKey(DIK_RIGHT)) { transform_.x += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_LEFT)) { transform_.x -= 0.4f; }
+	if(keys_->HasPushedKey(DIK_RIGHT)) { rotation_.x += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_LEFT)) { rotation_.x -= 0.4f; }
 	else {}
-	if(keys_->HasPushedKey(DIK_P)) { transform_.y += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_L)) { transform_.y -= 0.4f; }
+	if(keys_->HasPushedKey(DIK_P)) { rotation_.y += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_L)) { rotation_.y -= 0.4f; }
 	else {}
 
 	//スケール、回転、平行移動の計算

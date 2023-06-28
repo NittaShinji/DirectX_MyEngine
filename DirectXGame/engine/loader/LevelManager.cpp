@@ -9,12 +9,14 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 
 	//種別を取得
 	std::string type = object["type"].get<std::string>();
+	//bool visible = object["visible"].get<bool>();
 
 	//種類ごとの処理
 
 	//タイプが"MESH"だった場合
 	if(type.compare("MESH") == 0)
 	{
+
 		//要素追加
 		levelData->objects.emplace_back(LevelData::objectDate{});
 		//今追加した要素の参照を得る
@@ -25,6 +27,11 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 			//ファイル名
 			objectData.fileName = object["file_name"];
 		}
+		//else if(visible == true)
+		//{
+		//	//ファイル名
+		//	objectData.fileName = object["visible"];
+		//}
 
 		//トランスフォームのパラメータ読み込み
 		nlohmann::json& transform = object["transform"];
@@ -43,7 +50,7 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 		objectData.scaling.y = (float)transform["scaling"][2];
 		objectData.scaling.z = (float)transform["scaling"][0];
 	}
-	
+
 
 
 	//再帰処理
@@ -51,7 +58,7 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 	{
 		for(nlohmann::json& object_ : object["children"])
 		{
-			Return(object_,levelData);
+			Return(object_, levelData);
 		}
 	}
 }
@@ -126,7 +133,7 @@ LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
 
 	//レベルデータ格納用インスタンスを生成
 	LevelData* levelData = new LevelData();
-	
+
 	//"objects"の全オブジェクトを走査
 	for(nlohmann::json& object : deserialized["objects"])
 	{
@@ -134,7 +141,7 @@ LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
 		std::string type = object["type"].get<std::string>();
 
 		//タイプが"LIGHT"だった場合
-		if( type.compare("LIGHT") == 0)
+		if(type.compare("LIGHT") == 0)
 		{
 			//要素追加
 			levelData->objects.emplace_back(LevelData::objectDate{});
@@ -171,7 +178,7 @@ LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
 
 			//ファイル名
 			objectData.fileName = "CAMERA";
-			
+
 			//トランスフォームのパラメータ読み込み
 			nlohmann::json& transform = object["transform"];
 			//平行移動
@@ -191,7 +198,7 @@ LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
 			//LoadElement(object, levelData);
 		}
 
-		Return(object,levelData);
+		Return(object, levelData);
 	}
 
 	return levelData;
