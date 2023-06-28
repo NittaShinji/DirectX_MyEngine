@@ -110,6 +110,7 @@
     <ClCompile Include="DirectXGame\engine\2d\Sprite.cpp" />
     <ClCompile Include="DirectXGame\engine\2d\SpriteCommon.cpp" />
     <ClCompile Include="DirectXGame\engine\base\WindowsAPI.cpp" />
+    <ClCompile Include="WorldTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\engine\2d\PostEffect.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="DirectXGame\engine\2d\Sprite.h" />
     <ClInclude Include="DirectXGame\engine\2d\SpriteCommon.h" />
     <ClInclude Include="DirectXGame\engine\base\WindowsAPI.h" />
+    <ClInclude Include="WorldTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />

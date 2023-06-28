@@ -319,6 +319,7 @@ void Object3d::Update(Camera* camera)
 	matProjection_ = camera_->GetMatProjection();
 
 	cameraPos_ = camera_->GetEye();
+	
 
 	XMFLOAT3 move = { 0,0,0 };
 
@@ -330,9 +331,6 @@ void Object3d::Update(Camera* camera)
 	if(keys_->HasPushedKey(DIK_P)) { transform_.y += 0.4f; }
 	else if(keys_->HasPushedKey(DIK_L)) { transform_.y -= 0.4f; }
 	else {}
-
-	
-	matWorld_ = XMMatrixIdentity();
 
 	//スケール、回転、平行移動の計算
 	matScale_ = XMMatrixIdentity();

@@ -14,6 +14,7 @@ class Camera
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMMATRIX = DirectX::XMMATRIX;
+	using XMVECTOR = DirectX::XMVECTOR;
 
 public:
 
@@ -35,12 +36,6 @@ private:
 	XMFLOAT3 eye_;		//視点座標
 	XMFLOAT3 target_;	//注視点座標
 	XMFLOAT3 up_;		//上方向ベクトル
-
-	//XMVECTOR eye_;		//視点座標
-	//XMVECTOR target_;	//注視点座標
-	//XMVECTOR up_;		//上方向ベクトル
-
-
 	
 	float angle_ = 0.0f;	//カメラの回転角
 

@@ -150,6 +150,9 @@
     <ClCompile Include="DirectXGame\engine\2d\PostEffect.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
     </ClCompile>
+    <ClCompile Include="WorldTransform.cpp">
+      <Filter>ソース ファイル\engine\3d</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\engine\2d\Sprite.h">
@@ -205,6 +208,9 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\2d\PostEffect.h">
       <Filter>ヘッダー ファイル\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldTransform.h">
+      <Filter>ヘッダー ファイル\engine\3d</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
