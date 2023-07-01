@@ -14,7 +14,9 @@ float Gaussian(float2 drawUV, float2 pickUV, float sigma)
 float4 main(VSOutput input) : SV_TARGET
 {
     //色反転
-    float4 colortex0 = float4(1 - tex0.Sample(smp, input.uv).rgb,1);
+    //float4 colortex0 = float4(1 - tex0.Sample(smp, input.uv).rgb,1);
+    float4 colortex0 = float4(tex0.Sample(smp, input.uv).rgb,1);
+    
    
     //ガウシアンブラー
     float totalWeight = 0, _Sigma = 0.005, _StepWidth = 0.001;
@@ -36,10 +38,10 @@ float4 main(VSOutput input) : SV_TARGET
     colortex1.a = 1;
     
     float4 color = colortex0;
-    if (fmod(input.uv.y, 0.1f) < 0.05f)
-    {
-        color = colortex1;
-    }
+    //if (fmod(input.uv.y, 0.1f) < 0.05f)
+    //{
+    //    color = colortex1;
+    //}
     
     return float4(color.rgb, 1);
     
