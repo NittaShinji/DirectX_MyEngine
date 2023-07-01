@@ -34,6 +34,7 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 		//	objectData.fileName = object["visible"];
 		//}
 
+
 		//トランスフォームのパラメータ読み込み
 		nlohmann::json& transform = object["transform"];
 		////平行移動
