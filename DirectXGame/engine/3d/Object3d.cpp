@@ -57,9 +57,9 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 
 void Object3d::Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& rotation, const XMFLOAT3& Modelscale)
 {
-	/*scale_ = Modelscale;
+	scale_ = Modelscale;
 	rotation_ = rotation;
-	transform_ = position;*/
+	transform_ = position;
 
 	//定数バッファの生成
 	constBuffTransform_ = CrateConstBuff<DirectXBasic>(directXBasic_);
