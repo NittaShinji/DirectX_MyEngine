@@ -103,6 +103,8 @@ private:
 
 	//3Dオブジェクト
 	std::unique_ptr<Object3d> sphere_ = nullptr;
+	std::unique_ptr<Object3d> testStage0_ = nullptr;
+
 	//std::unique_ptr<Object3d> ground_ = nullptr;
 	//std::unique_ptr<Object3d> triangle_ = nullptr;
 	//std::unique_ptr<Object3d> ray_ = nullptr;

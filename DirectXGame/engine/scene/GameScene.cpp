@@ -33,16 +33,11 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//sound_->LoadSoundWave("Alarm01.wav");
 	//sound_->PlaySoundWave("Alarm01.wav");
 
-	//------------カメラ----------
-	Camera::StaticInitialize(directXBasic_);
-	camera_ = std::make_unique<Camera>();
-	//camera_ = new Camera;
-	testCamera_ = std::make_unique<Camera>();
-
+	
 	//-----------読み込み---------------
 
 	//レベルデータからオブジェクトを生成、配置
-	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("TL2.json");
+	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
 
 	for(auto& objectData : levelData_->objects)
 	{
@@ -52,7 +47,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 		if(it != models_.end()) { model = &it->second; }
 		//モデルを指定して3Dオブジェクトを作成
 
-		if(objectData.fileName == "spear")
+		if(objectData.fileName == "sphere" || objectData.fileName == "testStage0")
 		{
 			//モデルをロード
 			Model::Load(objectData.fileName);
@@ -97,18 +92,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 		}
 	}
 
-	//カメラ
-
-	XMFLOAT3 cameraEye = { 0,0,-30 };
-	XMFLOAT3 testCameraEye = { 0,50,-30 };
-
-	XMFLOAT3 cameraTarget = { 0,0,0 };
-	XMFLOAT3 cameraUp = { 0,1,0 };
-
-
-	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize(testCameraEye, cameraTarget, cameraUp);
-
+	
 
 	//------------画像読み込み----------
 	title_ = std::make_unique<Sprite>();
@@ -145,10 +129,14 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	const string sphere = "sphere";
 	const string test = "NoImageModel";
 	const string spear = "spear";
+	const string testStage0 = "testStage0";
+
 
 	Model::Load(test);
 	Model::Load(sphere);
 	Model::Load(spear);
+	Model::Load(testStage0);
+
 	
 	//3Dオブジェクトの生成
 	XMFLOAT3 sphereScale = { 10,10,10 };
@@ -158,19 +146,39 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	
 	
 	sphere_ = std::make_unique<Object3d>();
-	sphere_->Initialize(sphere, XMFLOAT3(40, 0, 0), XMFLOAT3(0, 0, 0), sphereScale);
+	sphere_->Initialize(sphere, XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), sphereScale);
+	testStage0_ = std::make_unique<Object3d>();
+	testStage0_->Initialize(testStage0, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(5, 5, 5));
+
 	/*sphere_->Initialize(sphere);
 	sphere_->SetTransform(XMFLOAT3(40, 0, 0));
 	sphere_->SetRotation(XMFLOAT3(0, 0, 0));
 	sphere_->SetScale(sphereScale);*/
 
 	testObject_ = std::make_unique<Object3d>();
-	testObject_->Initialize(test, XMFLOAT3(-40, 0, 0), XMFLOAT3(0, 0, 0), sphereScale);
+	testObject_->Initialize(test, XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0), sphereScale);
 
 	/*testObject_->Initialize(sphere);
 	testObject_->SetTransform(XMFLOAT3(-40, 0, 0));
 	testObject_->SetRotation(XMFLOAT3(0, 0, 0));
 	testObject_->SetScale(sphereScale);*/
+
+	//------------カメラ----------
+	Camera::StaticInitialize(directXBasic_);
+	camera_ = std::make_unique<Camera>();
+	//camera_ = new Camera;
+	testCamera_ = std::make_unique<Camera>();
+
+
+	//カメラ
+	XMFLOAT3 cameraEye = { 0,20,-60 };
+	XMFLOAT3 testCameraEye = { 0,50,-30 };
+	XMFLOAT3 cameraTarget = { 0,0,0 };
+	XMFLOAT3 cameraUp = { 0,1,0 };
+
+
+	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
+	testCamera_->Initialize(testCameraEye, cameraTarget, cameraUp);
 
 
 }
@@ -256,6 +264,7 @@ void GameScene::Update()
 			}
 
 			testObject_->Update(testCamera_.get());
+			testStage0_->Update(testCamera_.get());
 			sphere_->Update(testCamera_.get());
 		}
 		else
@@ -267,6 +276,8 @@ void GameScene::Update()
 			}
 
 			testObject_->Update(camera_.get());
+			testStage0_->Update(camera_.get());
+
 			//モデルの更新処理
 			sphere_->Update(camera_.get());
 		}
@@ -386,13 +397,11 @@ void GameScene::Draw()
 	case GAME:
 
 		//モデル描画
-		spriteCommon_->BeforeDraw();
-		spriteCommon_->Update();
-		
 		Object3d::BeforeDraw();
 
-		sphere_->Draw();
-		testObject_->Draw();
+		//sphere_->Draw();
+		//testObject_->Draw();
+		//testStage0_->Draw();
 
 		for(auto& object : objects_)
 		{
