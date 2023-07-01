@@ -26,7 +26,7 @@ public:
 	~Object3d();
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
-	void Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& Modelscale);
+	void Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& rotation , const XMFLOAT3& Modelscale);
 	void Update(Camera* camera);
 	//void BeforeDraw();
 	static void BeforeDraw();
@@ -150,6 +150,11 @@ public:
 	void SetTransform(const XMFLOAT3& pos) { transform_ = pos; };
 	void SetRotation(const XMFLOAT3& rotate) { rotation_ = rotate; };
 	void SetScale(const XMFLOAT3& scale) { scale_ = scale; }
+
+	void SetMatTrans(const XMMATRIX& matTrans) { matTrans_ = matTrans; }
+	void SetMatRot(const XMMATRIX& matRot) { matRot_ = matRot; }
+	void SetMatScale(const XMMATRIX& matScale) { matScale_ = matScale; }
+
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 

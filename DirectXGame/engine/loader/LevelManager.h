@@ -11,9 +11,15 @@ struct LevelData
 	//オブジェクト
 	struct objectDate
 	{
+		/*XMMATRIX translation;
+		XMMATRIX rotation;
+		XMMATRIX scaling;*/
+
 		XMFLOAT3 translation;
 		XMFLOAT3 rotation;
 		XMFLOAT3 scaling;
+
+
 		std::string fileName;
 	};
 

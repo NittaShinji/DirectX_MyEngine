@@ -42,7 +42,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//-----------読み込み---------------
 
 	//レベルデータからオブジェクトを生成、配置
-	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("TL1.json");
+	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("TL2.json");
 
 	for(auto& objectData : levelData_->objects)
 	{
@@ -60,21 +60,37 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 			//3Dオブジェクトの生成
 			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 
+			/*XMMATRIX matTrans = XMMatrixIdentity();
+			XMMATRIX matRot = XMMatrixIdentity();
+			XMMATRIX matScale = XMMatrixIdentity();
+			XMMATRIX matWolrd = XMMatrixIdentity();
+			*/
 			//座標
+			//matTrans = objectData.translation;
+			//newObject->SetMatTrans(matTrans);
+
 			DirectX::XMFLOAT3 pos;
 			pos = objectData.translation;
 			newObject->SetTransform(pos);
+
 			//回転角
 			DirectX::XMFLOAT3 rot;
 			rot = objectData.rotation;
-
 			newObject->SetRotation(rot);
+
+			//matRot = objectData.rotation;
+			//newObject->SetMatRot(matRot);
+			
 			//大きさ
+			
+			//matScale = objectData.scaling;
+			//newObject->SetMatScale(matScale);
+
 			DirectX::XMFLOAT3 scale;
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
 
-			newObject->Initialize(objectData.fileName, pos, scale);
+			newObject->Initialize(objectData.fileName,pos,rot,scale);
 
 			//配列に登録
 			objects_.push_back(std::move(newObject));
@@ -83,7 +99,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	//カメラ
 
-	XMFLOAT3 cameraEye = { 0,20,-70 };
+	XMFLOAT3 cameraEye = { 0,0,-30 };
 	XMFLOAT3 testCameraEye = { 0,50,-30 };
 
 	XMFLOAT3 cameraTarget = { 0,0,0 };
@@ -142,9 +158,20 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	
 	
 	sphere_ = std::make_unique<Object3d>();
-	sphere_->Initialize(sphere, XMFLOAT3(40, 0, 0), sphereScale);
+	sphere_->Initialize(sphere, XMFLOAT3(40, 0, 0), XMFLOAT3(0, 0, 0), sphereScale);
+	/*sphere_->Initialize(sphere);
+	sphere_->SetTransform(XMFLOAT3(40, 0, 0));
+	sphere_->SetRotation(XMFLOAT3(0, 0, 0));
+	sphere_->SetScale(sphereScale);*/
+
 	testObject_ = std::make_unique<Object3d>();
-	testObject_->Initialize(test, XMFLOAT3(-40, 0, 0), sphereScale);
+	testObject_->Initialize(test, XMFLOAT3(-40, 0, 0), XMFLOAT3(0, 0, 0), sphereScale);
+
+	/*testObject_->Initialize(sphere);
+	testObject_->SetTransform(XMFLOAT3(-40, 0, 0));
+	testObject_->SetRotation(XMFLOAT3(0, 0, 0));
+	testObject_->SetScale(sphereScale);*/
+
 
 }
 
