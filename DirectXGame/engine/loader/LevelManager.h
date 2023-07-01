@@ -11,9 +11,15 @@ struct LevelData
 	//オブジェクト
 	struct objectDate
 	{
+		/*XMMATRIX translation;
+		XMMATRIX rotation;
+		XMMATRIX scaling;*/
+
 		XMFLOAT3 translation;
 		XMFLOAT3 rotation;
 		XMFLOAT3 scaling;
+
+
 		std::string fileName;
 	};
 
@@ -40,6 +46,10 @@ public:
 	LevelData* LoadJSONFile(const std::string& fileName);
 	//再帰関数
 	void Return(nlohmann::json& deserialized, LevelData* levelData);
+
+	void LoadElement(nlohmann::json& deserialized, LevelData* levelData);
+
+
 	LevelData GetLevelData() { return levelData_; };
 
 	static LevelManager* GetLevelManager() 

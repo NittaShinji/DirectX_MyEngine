@@ -1,8 +1,10 @@
 #include "Object3d.h"
 #include <d3dcompiler.h>
+#include "MathUtillity.h"
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
+using namespace DirectX;
 
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
@@ -53,17 +55,17 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 	keys_ = KeyInput::GetInstance();
 }
 
-void Object3d::Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& Modelscale)
+void Object3d::Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& rotation, const XMFLOAT3& Modelscale)
 {
-	scale_ = Modelscale;
-	rotation_ = { 0.0f,0.0f,0.0f };
-	transform_ = position;
+	/*scale_ = Modelscale;
+	rotation_ = rotation;
+	transform_ = position;*/
 
 	//定数バッファの生成
 	constBuffTransform_ = CrateConstBuff<DirectXBasic>(directXBasic_);
 	constBuffMaterial_ = CrateConstBuff<DirectXBasic>(directXBasic_);
 	constBuffLight_ = CrateConstBuff<DirectXBasic>(directXBasic_);
-	
+
 	//定数バッファのマッピング
 	HRESULT result = constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform_);//マッピング
 	assert(SUCCEEDED(result));
@@ -216,7 +218,7 @@ void Object3d::Initialize(const std::string& path, const XMFLOAT3& position, con
 		blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
 	}
 
-		//デスクリプタレンジの設定
+	//デスクリプタレンジの設定
 	D3D12_DESCRIPTOR_RANGE descriptorRange{};
 	descriptorRange.NumDescriptors = 1;			//一度の描画に使うテクスチャが1枚なので1
 	descriptorRange.RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
@@ -298,7 +300,7 @@ Object3d::~Object3d()
 
 Object3d::Object3d()
 {
-	
+
 }
 
 void Object3d::SetModel(const std::string& path)
@@ -320,27 +322,36 @@ void Object3d::Update(Camera* camera)
 
 	cameraPos_ = camera_->GetEye();
 
+
 	XMFLOAT3 move = { 0,0,0 };
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理
-	if(keys_->HasPushedKey(DIK_RIGHT)) { transform_.x += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_LEFT)) { transform_.x -= 0.4f; }
+	if(keys_->HasPushedKey(DIK_RIGHT)) { rotation_.x += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_LEFT)) { rotation_.x -= 0.4f; }
 	else {}
-	if(keys_->HasPushedKey(DIK_P)) { transform_.y += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_L)) { transform_.y -= 0.4f; }
+	if(keys_->HasPushedKey(DIK_P)) { rotation_.y += 0.4f; }
+	else if(keys_->HasPushedKey(DIK_L)) { rotation_.y -= 0.4f; }
 	else {}
-
-	
-	matWorld_ = XMMatrixIdentity();
 
 	//スケール、回転、平行移動の計算
 	matScale_ = XMMatrixIdentity();
 	matScale_ = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
 	matRot_ = XMMatrixIdentity();
+
+	//XMFLOAT3 radian = {0.0f,0.0f,0.0f};
+	//radian.x = MathUtillty::Toradian(XMConvertToRadians(rotation_.x));
+	//radian.y = MathUtillty::Toradian(XMConvertToRadians(rotation_.y));
+	//radian.z = MathUtillty::Toradian(XMConvertToRadians(rotation_.z));
+
 	matRot_ *= XMMatrixRotationZ(rotation_.z);
 	matRot_ *= XMMatrixRotationX(rotation_.x);
 	matRot_ *= XMMatrixRotationY(rotation_.y);
+
+	/*matRot_ *= XMMatrixRotationZ(XMConvertToRadians((rotation_.z)));
+	matRot_ *= XMMatrixRotationX(XMConvertToRadians((rotation_.x)));
+	matRot_ *= XMMatrixRotationY(XMConvertToRadians((rotation_.y)));*/
+
 	matTrans_ = XMMatrixIdentity();
 	matTrans_ = XMMatrixTranslation(transform_.x, transform_.y, transform_.z);
 
@@ -386,12 +397,12 @@ void Object3d::Draw()
 	directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
 
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap.Get()};
+	ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap.Get() };
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, ppHeaps);
 
 	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = model_.GetInfomation()->srvHeap->GetGPUDescriptorHandleForHeapStart();
-	
+
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
@@ -430,7 +441,7 @@ void Object3d::AfterDraw()
 
 }
 
-XMFLOAT3 Object3d::GetWorldPos() const 
+XMFLOAT3 Object3d::GetWorldPos() const
 {
 	//全ての壁の座標を渡す
 	XMFLOAT3 resutVec = { 0,0,0 };

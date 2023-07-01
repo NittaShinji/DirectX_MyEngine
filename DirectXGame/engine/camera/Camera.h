@@ -14,6 +14,7 @@ class Camera
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMMATRIX = DirectX::XMMATRIX;
+	using XMVECTOR = DirectX::XMVECTOR;
 
 public:
 
@@ -22,6 +23,8 @@ public:
 	void Initialize(XMFLOAT3& eye, XMFLOAT3& target,XMFLOAT3& up);
 
 	void Updata();
+
+	void UpdateViewMatrix();
 
 private:
 

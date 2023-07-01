@@ -144,5 +144,13 @@ private:
 	float lightColor2_[3] = { 0,0,1 };
 
 	Input* input_ = nullptr;
+
+	XMFLOAT3 move = { 0,0,0 };
+	XMFLOAT3 sphereRotation = { 0,0,0 };
+
+	const int actionTime = 720;
+	int moveTimer = actionTime;
+	bool isUp = false;
+	bool isDown = true;
 };
 
