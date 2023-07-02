@@ -26,7 +26,7 @@ public:
 	~Object3d();
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
-	void Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& rotation , const XMFLOAT3& Modelscale);
+	void Initialize(const std::string& path, const XMFLOAT3& Modelscale, const XMFLOAT3& position, const XMFLOAT3& rotation);
 	void Update(Camera* camera);
 	//void BeforeDraw();
 	static void BeforeDraw();

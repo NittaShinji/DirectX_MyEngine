@@ -13,6 +13,8 @@
 #include "DirectionalLight.h"
 #include "LightGroup.h"
 #include "LevelManager.h"
+#include "Player.h"
+#include "GameCamera.h"
 
 class GameScene
 {
@@ -69,6 +71,8 @@ private:
 	//カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
 	std::unique_ptr<Camera> testCamera_ = nullptr;
+	std::unique_ptr<GameCamera> testGameCamera_ = nullptr;
+
 
 	//サウンド
 	std::unique_ptr<Sound> sound_ = nullptr;
@@ -76,6 +80,11 @@ private:
 	//スプライト
 	std::unique_ptr<Sprite> title_ = nullptr;
 	std::unique_ptr<Sprite> test_ = nullptr;
+	std::unique_ptr<Sprite> end_ = nullptr;
+
+
+	//プレイヤー
+	std::unique_ptr<Player> player_ = nullptr;
 	
 	//スプライト共通部分
 	//std::unique_ptr<SpriteCommon> spriteCommon_ = nullptr;
@@ -154,5 +163,7 @@ private:
 	int moveTimer = actionTime;
 	bool isUp = false;
 	bool isDown = true;
+
+	//bool isStartGame_ = false;
 };
 

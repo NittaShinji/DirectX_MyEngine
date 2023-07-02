@@ -32,9 +32,16 @@ void KeyInput::Initialize(WindowsAPI* winApi)
 		winApi->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput_, nullptr);
 	assert(SUCCEEDED(result));
 
+	//directInput_->EnumDevices(D18DEVTYPE_JOYSTICK,DeviceFindCallBack,&parameter,DIEDFL_ATTACHEDONLY)))
+
 	//キーボードのデバイスの生成
 	result = directInput_->CreateDevice(GUID_SysKeyboard, &keyboard_, NULL);
 	assert(SUCCEEDED(result));
+
+	////キーボードのデバイスの生成
+	//result = directInput_->CreateDevice(GUID_Joystick, &controller_, NULL);
+	//assert(SUCCEEDED(result));
+
 
 	//入力データ形式のセット
 	result = keyboard_->SetDataFormat(&c_dfDIKeyboard);//標準形式
@@ -116,8 +123,12 @@ bool KeyInput::ReleasedKeyMoment(BYTE keyNumber)
 	}
 	return false;
 }
-
 #pragma endregion 
+
+//BOOL KeyInput::DeviceFindCallBack(LPCDIDEVICEINSTANCE ipddi, LPVOID pvRef)
+//{
+//	return DIENUM_CONTINUE;
+//}
 
 void KeyInput::KeyAssert(){
 	for (int32_t i = 0; i < 255; i++)

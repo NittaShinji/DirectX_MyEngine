@@ -47,11 +47,14 @@ public:
 	//キーを押した状態か
 	static bool HasPushedKey(BYTE keyNumber);
 	//キーを離した状態か
-	bool HasReleasedKey(BYTE keyNumber);
+	static bool HasReleasedKey(BYTE keyNumber);
 	//キーを押した瞬間か
-	bool PushedKeyMoment(BYTE keyNumber);
+	static bool PushedKeyMoment(BYTE keyNumber);
 	//キーを離した瞬間か
-	bool ReleasedKeyMoment(BYTE keyNumber);
+	static bool ReleasedKeyMoment(BYTE keyNumber);
+
+	//デバイス発見時に実行される
+	//BOOL CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE ipddi, LPVOID pvRef);
 	
 private:
 
@@ -70,4 +73,8 @@ private:
 	ComPtr<IDirectInput8> directInput_ = nullptr;
 	//キーボードデバイス
 	static ComPtr<IDirectInputDevice8> keyboard_;
+	//コントローラー
+	static ComPtr<IDirectInputDevice8> controller_;
+
+
 };

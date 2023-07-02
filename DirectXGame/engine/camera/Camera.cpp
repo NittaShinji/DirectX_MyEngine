@@ -18,19 +18,14 @@ void Camera::Initialize(XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up)
 	up_		= up;
 }
 
-void Camera::Updata()
+void Camera::Update()
 {
 	//ビュー行列の生成
 	//matView_ = XMMatrixLookAtLH(XMLoadFloat3(&eye_), XMLoadFloat3(&target_), XMLoadFloat3(&up_));
 	UpdateViewMatrix();
 
 	//射影行列(透視投影)の生成
-	matProjection_ =
-		XMMatrixPerspectiveFovLH(
-			XMConvertToRadians(45.0f),				//上下画角45度
-			(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
-			0.1f, 1000.0f							//前端,奥端
-		);
+	UpdateProjectionMatrix();
 }
 
 void Camera::UpdateViewMatrix()
@@ -85,4 +80,14 @@ void Camera::UpdateViewMatrix()
 	//ビュー行列に平行移動成分を指定
 	matView_.r[3] = translation;
 
+}
+
+void Camera::UpdateProjectionMatrix()
+{
+	matProjection_ =
+		XMMatrixPerspectiveFovLH(
+			XMConvertToRadians(45.0f),				//上下画角45度
+			(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
+			0.1f, 1000.0f							//前端,奥端
+		);
 }

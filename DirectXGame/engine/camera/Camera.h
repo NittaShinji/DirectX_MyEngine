@@ -20,13 +20,15 @@ public:
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
-	void Initialize(XMFLOAT3& eye, XMFLOAT3& target,XMFLOAT3& up);
+	virtual void Initialize(XMFLOAT3& eye, XMFLOAT3& target,XMFLOAT3& up);
 
-	void Updata();
+	void Update();
 
-	void UpdateViewMatrix();
+	virtual void UpdateViewMatrix();
 
-private:
+	virtual void UpdateProjectionMatrix();
+
+protected:
 
 	static DirectXBasic* directXBasic_;
 

@@ -55,7 +55,7 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 	keys_ = KeyInput::GetInstance();
 }
 
-void Object3d::Initialize(const std::string& path, const XMFLOAT3& position, const XMFLOAT3& rotation, const XMFLOAT3& Modelscale)
+void Object3d::Initialize(const std::string& path, const XMFLOAT3& Modelscale,const XMFLOAT3& position, const XMFLOAT3& rotation)
 {
 	scale_ = Modelscale;
 	rotation_ = rotation;

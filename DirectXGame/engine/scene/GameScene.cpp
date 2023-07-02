@@ -85,7 +85,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
 
-			newObject->Initialize(objectData.fileName,pos,rot,scale);
+			newObject->Initialize(objectData.fileName, scale,pos,rot);
 
 			//配列に登録
 			objects_.push_back(std::move(newObject));
@@ -97,6 +97,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//------------画像読み込み----------
 	title_ = std::make_unique<Sprite>();
 	test_ = std::make_unique<Sprite>();
+	end_ = std::make_unique<Sprite>();
 	//spriteCommon_ = std::make_unique<SpriteCommon>();
 	spriteCommon_ = SpriteCommon::GetInstance();
 
@@ -106,6 +107,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//spriteCommon_->LoadTexture("title.png");
 	SpriteCommon::LoadTexture("tomas.png");
 	SpriteCommon::LoadTexture("title.png");
+	SpriteCommon::LoadTexture("end.png");
+
 
 	Sprite::StaticInitialize();
 
@@ -114,9 +117,12 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT2 titleSize = { 1280,720 };
 	XMFLOAT2 testPosition = { 100,100 };
 	XMFLOAT2 testSize = { 266,369 };
+	XMFLOAT2 endPosition = { 0,0 };
+	XMFLOAT2 endSize = { 1280,720 };
 
 	title_->Initialize(titlePosition, titleSize);
 	test_->Initialize(testPosition, testSize);
+	end_->Initialize(endPosition, endSize);
 
 	//シェーダー読み込み
 	spriteCommon_->ShaderLoad();
@@ -146,9 +152,9 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	
 	
 	sphere_ = std::make_unique<Object3d>();
-	sphere_->Initialize(sphere, XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0), sphereScale);
+	sphere_->Initialize(sphere, sphereScale,XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0));
 	testStage0_ = std::make_unique<Object3d>();
-	testStage0_->Initialize(testStage0, XMFLOAT3(0, 0, 0), XMFLOAT3(0, 0, 0), XMFLOAT3(5, 5, 5));
+	testStage0_->Initialize(testStage0, XMFLOAT3(5, 5, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(5, 5, 5));
 
 	/*sphere_->Initialize(sphere);
 	sphere_->SetTransform(XMFLOAT3(40, 0, 0));
@@ -156,31 +162,36 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	sphere_->SetScale(sphereScale);*/
 
 	testObject_ = std::make_unique<Object3d>();
-	testObject_->Initialize(test, XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0), sphereScale);
+	testObject_->Initialize(test, sphereScale, XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0));
 
 	/*testObject_->Initialize(sphere);
 	testObject_->SetTransform(XMFLOAT3(-40, 0, 0));
 	testObject_->SetRotation(XMFLOAT3(0, 0, 0));
 	testObject_->SetScale(sphereScale);*/
 
+	//プレイヤー
+	player_ = std::make_unique<Player>();
+	player_->Initialzie();
+
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
 	camera_ = std::make_unique<Camera>();
-	//camera_ = new Camera;
 	testCamera_ = std::make_unique<Camera>();
+
+	testGameCamera_ = std::make_unique<GameCamera>();
 
 
 	//カメラ
-	XMFLOAT3 cameraEye = { 0,20,-60 };
+	XMFLOAT3 cameraEye = { 30,7.5,-20 };
 	XMFLOAT3 testCameraEye = { 0,50,-30 };
-	XMFLOAT3 cameraTarget = { 0,0,0 };
+	XMFLOAT3 cameraTarget = { 0,5,5 };
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
 	testCamera_->Initialize(testCameraEye, cameraTarget, cameraUp);
 
-
+	testGameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
 }
 
 void GameScene::Update()
@@ -238,9 +249,9 @@ void GameScene::Update()
 		{
 			if(KeyInput::HasPushedKey(DIK_SPACE))
 			{
-
 				scene_ = GAME;
 				keyTimer_ = kWaitTime_;
+				player_->SetIsMoving(true);
 			}
 		}
 		else
@@ -252,8 +263,9 @@ void GameScene::Update()
 
 	case GAME:
 
-		camera_->Updata();
-		testCamera_->Updata();
+		camera_->Update();
+		testCamera_->Update();
+		testGameCamera_->Update(player_->GetIsMoving());
 
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
@@ -266,21 +278,35 @@ void GameScene::Update()
 			testObject_->Update(testCamera_.get());
 			testStage0_->Update(testCamera_.get());
 			sphere_->Update(testCamera_.get());
+			player_->Update(testCamera_.get());
 		}
-		else
+		else 
 		{
-			//アンカーポイントの設定
 			for(auto& object : objects_)
 			{
-				object->Update(camera_.get());
+				object->Update(testGameCamera_.get());
 			}
 
-			testObject_->Update(camera_.get());
-			testStage0_->Update(camera_.get());
-
-			//モデルの更新処理
-			sphere_->Update(camera_.get());
+			testObject_->Update(testGameCamera_.get());
+			testStage0_->Update(testGameCamera_.get());
+			sphere_->Update(testGameCamera_.get());
+			player_->Update(testGameCamera_.get());
 		}
+		//else
+		//{
+		//	//アンカーポイントの設定
+		//	for(auto& object : objects_)
+		//	{
+		//		object->Update(camera_.get());
+		//	}
+
+		//	testObject_->Update(camera_.get());
+		//	testStage0_->Update(camera_.get());
+
+		//	//モデルの更新処理
+		//	sphere_->Update(camera_.get());
+		//	player_->Update(camera_.get());
+		//}
 
 		if(moveTimer >= 0)
 		{
@@ -338,12 +364,12 @@ void GameScene::Update()
 			ImGui::End();
 		}
 
-
 		if(keyTimer_ < 0)
 		{
-			if(keys_->HasPushedKey(DIK_SPACE))
+			if(player_->GetIsFinish() == true)
 			{
-
+				player_->Reset();
+				testGameCamera_->Reset();
 				scene_ = TITLE;
 				keyTimer_ = kWaitTime_;
 			}
@@ -357,7 +383,10 @@ void GameScene::Update()
 
 	case END:
 
-		if(keyTimer_ < 0)
+		end_->SetAnchorPoint(anchorPoint);
+		end_->matUpdate();
+
+		/*if(keyTimer_ < 0)
 		{
 			if(keys_->HasPushedKey(DIK_SPACE))
 			{
@@ -369,7 +398,7 @@ void GameScene::Update()
 		else
 		{
 			keyTimer_--;
-		}
+		}*/
 
 		break;
 
@@ -399,17 +428,21 @@ void GameScene::Draw()
 		//モデル描画
 		Object3d::BeforeDraw();
 
-		//sphere_->Draw();
-		//testObject_->Draw();
-		//testStage0_->Draw();
-
 		for(auto& object : objects_)
 		{
 			object->Draw();
 		}
 
+		player_->Draw();
+
 		break;
 	case END:
+
+		//画像描画
+		spriteCommon_->BeforeDraw();
+		spriteCommon_->Update();
+		end_->Draw("end.png");
+
 
 		break;
 

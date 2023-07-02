@@ -206,17 +206,17 @@ void LightGroup::DefaultLightSetting()
 	dirLights_[2].SetLightColor({1.0f,1.0f,1.0f});
 	dirLights_[2].SetLightDir({ -0.5f,0.1f,-0.2f,0});	
 }
-//
+
 //void LightGroup::SetPointLightActive(int32_t index, bool active)
 //{
-//	assert(0 <= index && index < PointLightNum);
+//	assert(0 <= index && index < kPointLightNum_);
 //
 //	pointLights[index].SetActive(active);
 //}
 //
 //void LightGroup::SetPointLightPos(int32_t index, const XMFLOAT3 &lightPos)
 //{
-//	assert(0 <= index && index < PointLightNum);
+//	assert(0 <= index && index < kPointLightNum_);
 //
 //	pointLights[index].SetLightPos(lightPos);
 //	dirty_ = true;
@@ -224,7 +224,7 @@ void LightGroup::DefaultLightSetting()
 //
 //void LightGroup::SetPointLightColor(int32_t index, const XMFLOAT3 &lightColor)
 //{
-//	assert(0 <= index && index < PointLightNum);
+//	assert(0 <= index && index < kPointLightNum_);
 //	
 //	pointLights[index].SetLightColor(lightColor);
 //	dirty_ = true;
@@ -232,12 +232,12 @@ void LightGroup::DefaultLightSetting()
 //
 //void LightGroup::SetPointLightAtten(int32_t index, const XMFLOAT3 &lightAtten)
 //{
-//	assert(0 <= index && index < PointLightNum);
+//	assert(0 <= index && index < kPointLightNum_);
 //
 //	pointLights[index].SetLightAtten(lightAtten);
 //	dirty_ = true;
 //}
-//
+
 //void LightGroup::SetSpotLightActive(int32_t index, bool active)
 //{
 //	assert(0 <= index && index < SpotLightNum);
