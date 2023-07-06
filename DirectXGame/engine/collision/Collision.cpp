@@ -150,6 +150,25 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 	return true;
 }
 
+bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, DirectX::XMVECTOR* inter)
+{
+	//‹…‚Æ‹…‚Ì‹——£
+	float distance;
+	distance = (sphereB.center.m128_f32[0] - sphereA.center.m128_f32[0]) * (sphereB.center.m128_f32[0] - sphereA.center.m128_f32[0]) +
+		(sphereB.center.m128_f32[1] - sphereA.center.m128_f32[1]) * (sphereB.center.m128_f32[1] - sphereA.center.m128_f32[1]) +
+		(sphereB.center.m128_f32[2] - sphereA.center.m128_f32[2]) * (sphereB.center.m128_f32[2] - sphereA.center.m128_f32[2]);
+
+	float addRadius;
+	addRadius = (sphereA.radius + sphereB.radius) * (sphereA.radius + sphereB.radius);
+
+	if(distance <= addRadius)
+	{
+		return true;
+	}
+
+	return false;
+}
+
 bool Collision::CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance, DirectX::XMVECTOR* inter)
 {
 	const float epsilon = 1.0e-5f; //Œë·‹zŽû—p‚Ì”÷¬‚È’l

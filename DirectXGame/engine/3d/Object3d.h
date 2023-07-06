@@ -5,8 +5,11 @@
 #include "Camera.h"
 #include "Input.h"
 #include "LightGroup.h"
+#include "CollisionInfo.h"
 #include <vector>
 #include <string>
+
+class BaseCollider;
 
 class Object3d
 {
@@ -22,28 +25,41 @@ class Object3d
 public:
 
 	//Object3d(DirectXBasic* directXBasic,XMFLOAT3 position);
-	Object3d();
-	~Object3d();
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Object3d() = default;
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	virtual ~Object3d();
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
-	void Initialize(const std::string& path, const XMFLOAT3& Modelscale, const XMFLOAT3& position, const XMFLOAT3& rotation);
-	void Update(Camera* camera);
+	virtual void Initialize(const std::string& path, const XMFLOAT3& Modelscale, const XMFLOAT3& position, const XMFLOAT3& rotation);
+	virtual void Update(Camera* camera);
 	//void BeforeDraw();
 	static void BeforeDraw();
 
 	void AfterDraw();
-	void Draw();
+	virtual void Draw();
 	void SetModel(const std::string& path);
 	void Create(Model* model);
 	void CrateConstBuffandMapping();
 
-private:
+protected:	//メンバ変数
+
+
+	//クラス名(デバッグ用)
+	const char* name = nullptr;
+	//コライダー
+	BaseCollider* collider = nullptr;
 
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
 	static LightGroup* lightGroup_;
 	Model model_;
-	Sprite* sprite_;
 	Camera* camera_ = nullptr;
 	
 	//定数バッファ用データ構造体b0
@@ -147,6 +163,12 @@ public:
 	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform_; };
 
 	XMFLOAT3 GetWorldPos() const ;
+	/// <summary>
+	/// ワールド行列の取得
+	/// </summary>
+	/// <returns>ワールド行列</returns>
+	const XMMATRIX& GetMatWorld() { return matWorld_; }
+
 	void SetTransform(const XMFLOAT3& pos) { transform_ = pos; };
 	void SetRotation(const XMFLOAT3& rotate) { rotation_ = rotate; };
 	void SetScale(const XMFLOAT3& scale) { scale_ = scale; }
@@ -155,8 +177,19 @@ public:
 	void SetMatRot(const XMMATRIX& matRot) { matRot_ = matRot; }
 	void SetMatScale(const XMMATRIX& matScale) { matScale_ = matScale; }
 
-
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
+	
+	/// <summary>
+	/// コライダーのセット
+	/// </summary>
+	/// <param name="collider">コライダー</param>
+	void SetCollider(BaseCollider* collider);
+
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	/// <param name="info">衝突情報</param>
+	virtual void OnCollison(const CollisionInfo& info) {}
 
 	//テンプレートコンストラクタ
 	template <typename Type1>

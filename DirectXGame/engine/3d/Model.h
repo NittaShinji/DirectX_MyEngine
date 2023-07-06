@@ -11,6 +11,9 @@
 
 class Model
 {
+
+private:
+
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT2 = DirectX::XMFLOAT2;

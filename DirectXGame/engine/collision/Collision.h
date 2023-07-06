@@ -30,6 +30,8 @@ public:
 	/// <returns>Œğ·‚µ‚Ä‚¢‚é‚©”Û‚©</returns>
 	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, DirectX::XMVECTOR* inter = nullptr);
 
+	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, DirectX::XMVECTOR* inter = nullptr);
+
 	/// <summary>
 	/// ƒŒƒC‚Æ•½–Ê‚Ì“–‚½‚è”»’è
 	/// </summary>

@@ -1,6 +1,8 @@
 #include "Object3d.h"
 #include <d3dcompiler.h>
 #include "MathUtillity.h"
+#include "BaseCollider.h"
+#include "CollisionManager.h"
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
@@ -57,6 +59,9 @@ void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 
 void Object3d::Initialize(const std::string& path, const XMFLOAT3& Modelscale,const XMFLOAT3& position, const XMFLOAT3& rotation)
 {
+	//クラス名の文字列を取得
+	name = typeid(*this).name();
+
 	scale_ = Modelscale;
 	rotation_ = rotation;
 	transform_ = position;
@@ -295,12 +300,12 @@ void Object3d::Initialize(const std::string& path, const XMFLOAT3& Modelscale,co
 
 Object3d::~Object3d()
 {
-	delete sprite_;
-}
-
-Object3d::Object3d()
-{
-
+	if(collider)
+	{
+		//コリジョンマネージャーから登録を解除する
+		CollisionManager::GetInstance()->RemoveCollider(collider);
+		delete collider;
+	}
 }
 
 void Object3d::SetModel(const std::string& path)
@@ -387,6 +392,12 @@ void Object3d::Update(Camera* camera)
 	constMapMaterial_->alpha = model_.GetInfomation()->material.alpha;
 
 	constBuffMaterial_->Unmap(0, nullptr);
+
+	//当たり判定更新
+	if(collider)
+	{
+		collider->Update();
+	}
 }
 
 void Object3d::Draw()
