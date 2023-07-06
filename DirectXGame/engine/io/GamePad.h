@@ -26,16 +26,16 @@ public:
 		bool RT;
 	} PadButton;
 
-	void Initialzie();
+	void Initialzie(UINT padNum);
 
 	//更新
-	bool Update();
+	bool IsConnected(UINT padNum);
 
 	//デッドゾーンの設定
 	void CheckDeadZone();
 
 	//振動の設定
-	void SetVibration(const DWORD& i);
+	void SetVibration();
 
 	WORD GetButton() { return state_.Gamepad.wButtons; };
 
@@ -69,8 +69,12 @@ public:
 
 private:
 
+	bool availability[XUSER_MAX_COUNT];
 	XINPUT_STATE state_;
 	XINPUT_STATE oldState_;
+
+	//コントローラの番号
+	UINT padNum_;
 
 	//各ボタンの構造体
 	PadButton padButton_;

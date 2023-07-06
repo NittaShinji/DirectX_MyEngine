@@ -1,33 +1,30 @@
 #include "GamePad.h"
 #include <wrl.h>
 
-void GamePad::Initialzie()
+void GamePad::Initialzie(UINT padNum)
 {
+	padNum_ = padNum - 1;
 }
 
-bool GamePad::Update()
+bool GamePad::IsConnected(UINT padNum)
 {
 	DWORD dwResult;
-	for(DWORD i = 0; i < XUSER_MAX_COUNT; i++)
+
+	//‰ß‹Žî•ñ‚ð•Û‘¶
+	//oldState_ = state_;
+
+	ZeroMemory(&state_, sizeof(XINPUT_STATE));
+
+	dwResult = XInputGetState(padNum, &state_);
+
+	if(dwResult == ERROR_SUCCESS)
 	{
-		//‰ß‹Žî•ñ‚ð•Û‘¶
-		oldState_ = state_;
-
-		ZeroMemory(&state_, sizeof(XINPUT_STATE));
-
-		dwResult = XInputGetState(i, &state_);
-
-		if(dwResult == ERROR_SUCCESS)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return true;
 	}
-
-	CheckDeadZone();
+	else
+	{
+		return false;
+	}
 }
 
 void GamePad::CheckDeadZone()
@@ -63,13 +60,16 @@ void GamePad::CheckDeadZone()
 	}
 }
 
-void GamePad::SetVibration(const DWORD& i)
+void GamePad::SetVibration()
 {
-	XINPUT_VIBRATION vibration;
-	ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
-	vibration.wLeftMotorSpeed = 32000;
-	vibration.wRightMotorSpeed = 16000;
-	XInputSetState(i, &vibration);
+	for(DWORD i = 0; i < XUSER_MAX_COUNT; i++)
+	{
+		XINPUT_VIBRATION vibration;
+		ZeroMemory(&vibration, sizeof(XINPUT_VIBRATION));
+		vibration.wLeftMotorSpeed = 32000;
+		vibration.wRightMotorSpeed = 16000;
+		XInputSetState(i, &vibration);
+	}
 }
 
 void GamePad::SaveOldButton()

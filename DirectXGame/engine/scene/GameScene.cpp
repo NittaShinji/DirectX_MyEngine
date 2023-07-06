@@ -35,6 +35,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();
+	gamePad_->Initialzie(Player1);
 
 	
 	//-----------読み込み---------------
@@ -199,8 +200,13 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 void GameScene::Update()
 {
-	gamePad_->Update();
-	//if(XINPUT_GAME_GAMEPAD_DAD_UP)
+	if(gamePad_->IsConnected(Player1))
+	{
+		if(gamePad_->GetButton() && XINPUT_GAMEPAD_A)
+		{
+			gamePad_->SetVibration();
+		}
+	}
 
 	//光線方向初期値
 	static XMVECTOR lightDir = { 0,1,5,0 };

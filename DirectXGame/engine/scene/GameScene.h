@@ -58,6 +58,11 @@ private:
 		END,
 	};
 
+	enum PadNum
+	{
+		Player1 = 1,
+	};
+
 	DirectXBasic* directXBasic_ = nullptr;
 	static KeyInput* keys_;
 	ImGuiManager* imGuiManager_ = nullptr;
