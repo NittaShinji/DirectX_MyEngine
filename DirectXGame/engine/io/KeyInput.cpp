@@ -34,23 +34,47 @@ void KeyInput::Initialize(WindowsAPI* winApi)
 
 	//directInput_->EnumDevices(D18DEVTYPE_JOYSTICK,DeviceFindCallBack,&parameter,DIEDFL_ATTACHEDONLY)))
 
+	//デバイスの列挙
+	//result = directInput_->EnumDevices(DI8DEVTYPE_JOYSTICK, DIENUM_STOP, gamePad_, DIEDFL_ATTACHEDONLY)))
+	
 	//キーボードのデバイスの生成
 	result = directInput_->CreateDevice(GUID_SysKeyboard, &keyboard_, NULL);
 	assert(SUCCEEDED(result));
 
-	////キーボードのデバイスの生成
-	//result = directInput_->CreateDevice(GUID_Joystick, &controller_, NULL);
-	//assert(SUCCEEDED(result));
-
+	//キーボードのデバイスの生成
+	/*result = directInput_->CreateDevice(GUID_Joystick, &gamePad_, NULL);
+	assert(SUCCEEDED(result));*/
 
 	//入力データ形式のセット
 	result = keyboard_->SetDataFormat(&c_dfDIKeyboard);//標準形式
 	assert(SUCCEEDED(result));
 
+	/*result = gamePad_->SetDataFormat(&c_dfDIJoystick);
+	assert(SUCCEEDED(result));*/
+
+	
+
+	////軸のモードを絶対軸に設定
+	//DIPROPDWORD dipropdWord;
+	//dipropdWord.diph.dwSize = sizeof(DIPROPDWORD);
+	//dipropdWord.diph.dwHeaderSize = sizeof(DIPROPHEADER);
+	//dipropdWord.diph.dwHow = DIPH_DEVICE;
+	//dipropdWord.diph.dwObj = 0;
+	//dipropdWord.dwData = DIPROPAXISMODE_ABS;
+
+
+	//result = keyboard_->SetProperty()
+
 	//排他制御レベルのセット
 	result = keyboard_->SetCooperativeLevel(
 		winApi->GetHwndClass(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
+
+	/*result = gamePad_->SetCooperativeLevel(
+		winApi->GetHwndClass(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+	assert(SUCCEEDED(result));*/
+
+
 }
 
 void KeyInput::KeyUpdate()
@@ -124,6 +148,8 @@ bool KeyInput::ReleasedKeyMoment(BYTE keyNumber)
 	return false;
 }
 #pragma endregion 
+
+
 
 //BOOL KeyInput::DeviceFindCallBack(LPCDIDEVICEINSTANCE ipddi, LPVOID pvRef)
 //{

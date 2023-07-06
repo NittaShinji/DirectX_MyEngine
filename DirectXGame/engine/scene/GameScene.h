@@ -15,6 +15,7 @@
 #include "LevelManager.h"
 #include "Player.h"
 #include "GameCamera.h"
+#include "GamePad.h"
 
 class GameScene
 {
@@ -123,6 +124,9 @@ private:
 
 	//画像なしテストオブジェクト
 	std::unique_ptr<Object3d> testObject_ = nullptr;
+
+	//ゲームパッド
+	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;

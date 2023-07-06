@@ -33,6 +33,9 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//sound_->LoadSoundWave("Alarm01.wav");
 	//sound_->PlaySoundWave("Alarm01.wav");
 
+	//ゲームパッド
+	gamePad_ = std::make_unique<GamePad>();
+
 	
 	//-----------読み込み---------------
 
@@ -196,6 +199,9 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 void GameScene::Update()
 {
+	gamePad_->Update();
+	//if(XINPUT_GAME_GAMEPAD_DAD_UP)
+
 	//光線方向初期値
 	static XMVECTOR lightDir = { 0,1,5,0 };
 	static XMFLOAT3 color = { 1, 1, 1 };
