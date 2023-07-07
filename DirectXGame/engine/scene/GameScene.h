@@ -13,9 +13,11 @@
 #include "DirectionalLight.h"
 #include "LightGroup.h"
 #include "LevelManager.h"
-#include "Player.h"
 #include "GameCamera.h"
 #include "GamePad.h"
+
+class CollisionManager;
+class Player;
 
 class GameScene
 {
@@ -91,6 +93,7 @@ private:
 
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
+	//Player* player_ = nullptr;
 	
 	//スプライト共通部分
 	//std::unique_ptr<SpriteCommon> spriteCommon_ = nullptr;
@@ -127,11 +130,14 @@ private:
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<Object3d>> objects_;
 
+
 	//画像なしテストオブジェクト
 	std::unique_ptr<Object3d> testObject_ = nullptr;
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
+
+	
 
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;
@@ -173,6 +179,9 @@ private:
 	bool isUp = false;
 	bool isDown = true;
 
-	//bool isStartGame_ = false;
+
+
+	//衝突マネージャー
+	CollisionManager* collisionManager_ = nullptr;
 };
 

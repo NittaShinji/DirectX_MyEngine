@@ -29,9 +29,9 @@ public:
 	//形状タイプ取得
 	inline CollisionShapeType GetShapeType() { return shapeType_; }
 
-	inline void OnCollison(const CollisionInfo& info) 
+	inline void OnCollison(const CollisionInfo& info)
 	{
-		objcet3d_->OnCollison(info);
+		objcet3d_->OnCollision(info);
 	}
 
 protected:

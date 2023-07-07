@@ -1,5 +1,8 @@
 #include "GameScene.h"
 #include "Collision.h"
+#include "SphereCollider.h"
+#include "CollisionManager.h"
+#include "Player.h"
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -57,7 +60,12 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 			Model::Load(objectData.fileName);
 
 			//3Dオブジェクトの生成
-			std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
+			//std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
+			std::unique_ptr<Object3d> newObject = nullptr;
+
+			newObject = Object3d::Create(objectData.fileName);
+
+			//Object3d* newObject = Object3d::Create(objectData.fileName);
 
 			/*XMMATRIX matTrans = XMMatrixIdentity();
 			XMMATRIX matRot = XMMatrixIdentity();
@@ -88,8 +96,6 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 			DirectX::XMFLOAT3 scale;
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
-
-			newObject->Initialize(objectData.fileName, scale,pos,rot);
 
 			//配列に登録
 			objects_.push_back(std::move(newObject));
@@ -155,27 +161,31 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT3 spherePosition = { 0,0,0 };
 	
 	
-	sphere_ = std::make_unique<Object3d>();
-	sphere_->Initialize(sphere, sphereScale,XMFLOAT3(10, 0, 0), XMFLOAT3(0, 0, 0));
-	testStage0_ = std::make_unique<Object3d>();
-	testStage0_->Initialize(testStage0, XMFLOAT3(5, 5, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(5, 5, 5));
+	
+	//testStage0_ = std::make_unique<Object3d>();
+	//testStage0_->Initialize(testStage0, XMFLOAT3(5, 5, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(5, 5, 5));
 
 	/*sphere_->Initialize(sphere);
 	sphere_->SetTransform(XMFLOAT3(40, 0, 0));
 	sphere_->SetRotation(XMFLOAT3(0, 0, 0));
 	sphere_->SetScale(sphereScale);*/
 
-	testObject_ = std::make_unique<Object3d>();
-	testObject_->Initialize(test, sphereScale, XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0));
+	//testObject_ = std::make_unique<Object3d>();
+	//testObject_->Initialize(test, sphereScale, XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0));
 
 	/*testObject_->Initialize(sphere);
 	testObject_->SetTransform(XMFLOAT3(-40, 0, 0));
 	testObject_->SetRotation(XMFLOAT3(0, 0, 0));
 	testObject_->SetScale(sphereScale);*/
 
-	//プレイヤー
-	player_ = std::make_unique<Player>();
-	player_->Initialzie();
+	collisionManager_ = CollisionManager::GetInstance();
+
+	player_ = Player::Create("sphere");
+	
+	sphere_ = Object3d::Create("sphere");
+	sphere_->Initialize();
+	sphere_->SetTransform(XMFLOAT3{ 0,0,10 });
+	sphere_->SetCollider(new SphereCollider);
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
@@ -277,7 +287,7 @@ void GameScene::Update()
 
 		camera_->Update();
 		testCamera_->Update();
-		testGameCamera_->Update(player_->GetIsMoving());
+		//testGameCamera_->Update(player_->GetIsMoving());
 
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
@@ -287,38 +297,38 @@ void GameScene::Update()
 				object->Update(testCamera_.get());
 			}
 
-			testObject_->Update(testCamera_.get());
-			testStage0_->Update(testCamera_.get());
-			sphere_->Update(testCamera_.get());
+			/*testObject_->Update(testCamera_.get());
+			testStage0_->Update(testCamera_.get());*/
+			//sphere_->Update(testCamera_.get());
 			player_->Update(testCamera_.get());
+			sphere_->Update(testCamera_.get());
 		}
-		else 
-		{
-			for(auto& object : objects_)
-			{
-				object->Update(testGameCamera_.get());
-			}
-
-			testObject_->Update(testGameCamera_.get());
-			testStage0_->Update(testGameCamera_.get());
-			sphere_->Update(testGameCamera_.get());
-			player_->Update(testGameCamera_.get());
-		}
-		//else
+		//else 
 		//{
-		//	//アンカーポイントの設定
 		//	for(auto& object : objects_)
 		//	{
-		//		object->Update(camera_.get());
+		//		object->Update(testGameCamera_.get());
 		//	}
 
-		//	testObject_->Update(camera_.get());
-		//	testStage0_->Update(camera_.get());
+		//	/*testObject_->Update(testGameCamera_.get());
+		//	testStage0_->Update(testGameCamera_.get());*/
+		//	//sphere_->Update(testGameCamera_.get());
+		//	player_->Update(testGameCamera_.get());
+		//	sphere_->Update(testGameCamera_.get());
 
-		//	//モデルの更新処理
-		//	sphere_->Update(camera_.get());
-		//	player_->Update(camera_.get());
 		//}
+		else
+		{
+			//アンカーポイントの設定
+			for(auto& object : objects_)
+			{
+				object->Update(camera_.get());
+			}
+
+			//モデルの更新処理
+			sphere_->Update(camera_.get());
+			player_->Update(camera_.get());
+		}
 
 		if(moveTimer >= 0)
 		{
@@ -352,8 +362,8 @@ void GameScene::Update()
 		}
 
 		sphereRotation.y += move.y;
-		sphere_->SetRotation(sphereRotation);
-		testObject_->SetRotation(sphereRotation);
+		//sphere_->SetRotation(sphereRotation);
+		//testObject_->SetRotation(sphereRotation);
 
 		
 		//画像の更新処理
@@ -390,6 +400,9 @@ void GameScene::Update()
 		{
 			keyTimer_--;
 		}
+
+		//全ての衝突をチェック
+		collisionManager_->CheckAllCollisions();
 
 		break;
 
@@ -440,12 +453,14 @@ void GameScene::Draw()
 		//モデル描画
 		Object3d::BeforeDraw();
 
-		for(auto& object : objects_)
+		/*for(auto& object : objects_)
 		{
 			object->Draw();
-		}
+		}*/
 
 		player_->Draw();
+		sphere_->Draw();
+		
 
 		break;
 	case END:

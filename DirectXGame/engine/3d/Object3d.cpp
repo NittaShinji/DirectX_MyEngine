@@ -3,6 +3,7 @@
 #include "MathUtillity.h"
 #include "BaseCollider.h"
 #include "CollisionManager.h"
+
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
@@ -51,20 +52,24 @@ void Object3d::CrateConstBuffandMapping()
 {
 }
 
+//void Object3d::SetWorldTransForm()
+//{
+//}
+
 void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
 	keys_ = KeyInput::GetInstance();
 }
 
-void Object3d::Initialize(const std::string& path, const XMFLOAT3& Modelscale,const XMFLOAT3& position, const XMFLOAT3& rotation)
+void Object3d::Initialize()
 {
+	scale_ = { 1,1,1 };
+	rotation_ = { 0,0,0 };
+	transform_ = { 0,0,0 };
+
 	//クラス名の文字列を取得
 	name = typeid(*this).name();
-
-	scale_ = Modelscale;
-	rotation_ = rotation;
-	transform_ = position;
 
 	//定数バッファの生成
 	constBuffTransform_ = CrateConstBuff<DirectXBasic>(directXBasic_);
@@ -294,8 +299,10 @@ void Object3d::Initialize(const std::string& path, const XMFLOAT3& Modelscale,co
 	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result));
 
-	model_.SetName(path);
-	model_.SetInfomation(*Model::GetMODELVALUE(path));
+	//SetModel(path);
+
+	//model_.SetName(path);
+	//model_.SetInfomation(*Model::GetMODELVALUE(path));
 }
 
 Object3d::~Object3d()
@@ -307,6 +314,7 @@ Object3d::~Object3d()
 		delete collider;
 	}
 }
+
 
 void Object3d::SetModel(const std::string& path)
 {
@@ -465,7 +473,35 @@ XMFLOAT3 Object3d::GetWorldPos() const
 	return resutVec;
 }
 
-void Object3d::Create(Model* model)
+void Object3d::SetCollider(BaseCollider* collider)
 {
+	collider->SetObject(this);
+	this->collider = collider;
+	//コリジョンマネージャーに登録
+	CollisionManager::GetInstance()->AddCollider(collider);
+	//コライダーを更新しておく
+	collider->Update();
+}
 
+std::unique_ptr<Object3d> Object3d::Create(const std::string& path)
+{
+	//3Dオブジェクトのインスタンスを生成
+	std::unique_ptr<Object3d> instance = nullptr;
+	instance = std::make_unique<Object3d>();
+
+	//Object3d* instance = new Object3d();
+	if(instance == nullptr)
+	{
+		return nullptr;
+	}
+
+	//モデル読み込み
+	//const std::string player = "sphere";
+
+	Model::Load(path);
+
+	instance->Initialize();
+	instance->SetModel(path);
+
+	return instance;
 }

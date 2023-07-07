@@ -3,14 +3,31 @@
 #include "Model.h"
 #include "Camera.h"
 
-class Player
+class Player : public Object3d
 {
+private:
+
+	//nameSpace
+	using XMFLOAT = DirectX::XMFLOAT3;
+	using XMFLOAT2 = DirectX::XMFLOAT2;
+	using XMFLOAT3 = DirectX::XMFLOAT3;
+	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
 
-	void Initialzie();
+	static std::unique_ptr<Player> Create(const std::string& path);
 
-	void Update(Camera* camera);
+public:
+
+	void Initialize() override;
+
+	void Update(Camera* camera) override;
+
+	void OnCollision(const CollisionInfo& info) override;
+
+	//void Initialzie();
+
+	//void Update(Camera* camera);
 
 	void SetNextState();
 

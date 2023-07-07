@@ -154,13 +154,15 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB,
 {
 	//‹…‚Æ‹…‚Ì‹——£
 	float distance;
-	distance = (sphereB.center.m128_f32[0] - sphereA.center.m128_f32[0]) * (sphereB.center.m128_f32[0] - sphereA.center.m128_f32[0]) +
-		(sphereB.center.m128_f32[1] - sphereA.center.m128_f32[1]) * (sphereB.center.m128_f32[1] - sphereA.center.m128_f32[1]) +
-		(sphereB.center.m128_f32[2] - sphereA.center.m128_f32[2]) * (sphereB.center.m128_f32[2] - sphereA.center.m128_f32[2]);
+	distance = (sphereB.pos.x - sphereA.pos.x) * (sphereB.pos.x - sphereA.pos.x) +
+		(sphereB.pos.y - sphereA.pos.y) * (sphereB.pos.y - sphereA.pos.y) +
+		(sphereB.pos.z - sphereA.pos.z) * (sphereB.pos.z - sphereA.pos.z);
 
+	//”¼Œa‚Æ”¼Œa‚ğ‘«‚µ‚½‚à‚Ì
 	float addRadius;
 	addRadius = (sphereA.radius + sphereB.radius) * (sphereA.radius + sphereB.radius);
 
+	//Õ“Ë(”¼Œa“à‚É“ü‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©)
 	if(distance <= addRadius)
 	{
 		return true;

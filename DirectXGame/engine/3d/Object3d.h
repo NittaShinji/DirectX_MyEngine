@@ -13,6 +13,8 @@ class BaseCollider;
 
 class Object3d
 {
+private:
+
 	//nameSpace
 	using XMFLOAT = DirectX::XMFLOAT3;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
@@ -36,8 +38,10 @@ public:
 	/// </summary>
 	virtual ~Object3d();
 
+	static std::unique_ptr<Object3d> Create(const std::string& path);
+
 	static void StaticInitialize(DirectXBasic* directXBasic);
-	virtual void Initialize(const std::string& path, const XMFLOAT3& Modelscale, const XMFLOAT3& position, const XMFLOAT3& rotation);
+	virtual void Initialize();
 	virtual void Update(Camera* camera);
 	//void BeforeDraw();
 	static void BeforeDraw();
@@ -45,8 +49,16 @@ public:
 	void AfterDraw();
 	virtual void Draw();
 	void SetModel(const std::string& path);
-	void Create(Model* model);
+	//void Create(Model* model);
 	void CrateConstBuffandMapping();
+
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	/// <param name="info">衝突情報</param>
+	virtual void OnCollision(const CollisionInfo& info) {}
+
+	//void SetWorldTransForm();
 
 protected:	//メンバ変数
 
@@ -61,7 +73,7 @@ protected:	//メンバ変数
 	static LightGroup* lightGroup_;
 	Model model_;
 	Camera* camera_ = nullptr;
-	
+
 	//定数バッファ用データ構造体b0
 	struct ConstBufferDateTransform
 	{
@@ -102,12 +114,12 @@ protected:	//メンバ変数
 		XMFLOAT3 normal;	//法線ベクトル
 		XMFLOAT2 uv;		// uv座標
 	};
-	
+
 	//定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffLight_;
-	
+
 	//定数バッファのマッピング用ポインタ
 	ConstBufferDateTransform* constMapTransform_ = nullptr;
 	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
@@ -133,7 +145,7 @@ protected:	//メンバ変数
 	XMFLOAT3 cameraPos_;
 
 	//親オブジェクトのポインタ
-	
+
 	ID3DBlob* vsBlob_ = nullptr; // 頂点シェーダオブジェクト
 	ID3DBlob* psBlob_ = nullptr; // ピクセルシェーダオブジェクト
 	ID3DBlob* errorBlob_ = nullptr; // エラーオブジェクト
@@ -162,7 +174,7 @@ public:
 	//ゲッター
 	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform_; };
 
-	XMFLOAT3 GetWorldPos() const ;
+	XMFLOAT3 GetWorldPos() const;
 	/// <summary>
 	/// ワールド行列の取得
 	/// </summary>
@@ -178,18 +190,12 @@ public:
 	void SetMatScale(const XMMATRIX& matScale) { matScale_ = matScale; }
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
-	
+
 	/// <summary>
 	/// コライダーのセット
 	/// </summary>
 	/// <param name="collider">コライダー</param>
 	void SetCollider(BaseCollider* collider);
-
-	/// <summary>
-	/// 衝突時コールバック関数
-	/// </summary>
-	/// <param name="info">衝突情報</param>
-	virtual void OnCollison(const CollisionInfo& info) {}
 
 	//テンプレートコンストラクタ
 	template <typename Type1>
