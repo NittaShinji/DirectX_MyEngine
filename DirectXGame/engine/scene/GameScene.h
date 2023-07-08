@@ -15,6 +15,7 @@
 #include "LevelManager.h"
 #include "GameCamera.h"
 #include "GamePad.h"
+#include "SphereCollider.h"
 
 class CollisionManager;
 class Player;
@@ -137,8 +138,12 @@ private:
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
-	
+	std::unique_ptr<SphereCollider> sphereCollider_ = nullptr;
 
+	//衝突マネージャー
+	CollisionManager* collisionManager_ = nullptr;
+
+	
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;
 	//キー入力の時間管理
@@ -179,9 +184,5 @@ private:
 	bool isUp = false;
 	bool isDown = true;
 
-
-
-	//衝突マネージャー
-	CollisionManager* collisionManager_ = nullptr;
 };
 

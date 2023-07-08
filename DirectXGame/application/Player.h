@@ -2,6 +2,7 @@
 #include"Object3d.h"
 #include "Model.h"
 #include "Camera.h"
+#include "SphereCollider.h"
 
 class Player : public Object3d
 {
@@ -37,6 +38,8 @@ public:
 
 	void Reset();
 
+	//void SetCollider(SphereCollider* sphereCollider);
+
 private:
 
 	std::unique_ptr<Object3d> object_;
@@ -67,6 +70,11 @@ private:
 
 	//ÉSÅ[ÉãÇµÇΩÇ©Ç«Ç§Ç©
 	bool isfinish_;
+
+	//îºåa
+	float radius = 0.6f;
+
+	std::unique_ptr<SphereCollider> playerCollider_ = nullptr;
 
 public:
 

@@ -1,13 +1,5 @@
 #include "GameCamera.h"
 
-//void GameCamera::StaticInitialize(DirectXBasic* directXBasic){}
-//
-//void GameCamera::Initialize(XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up){}
-//
-//void GameCamera::UpdateViewMatrix(){}
-//
-//void GameCamera::UpdateProjectionMatrix(){}
-
 void GameCamera::Update(bool isPlayerMoving)
 {
 	if(isPlayerMoving == true)

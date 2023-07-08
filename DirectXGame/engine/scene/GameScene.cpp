@@ -3,6 +3,7 @@
 #include "SphereCollider.h"
 #include "CollisionManager.h"
 #include "Player.h"
+#include "SphereCollider.h"
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -40,7 +41,12 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	gamePad_ = std::make_unique<GamePad>();
 	gamePad_->Initialzie(Player1);
 
-	
+	//------------コライダー----------
+
+	collisionManager_ = CollisionManager::GetInstance();
+	sphereCollider_ = std::make_unique<SphereCollider>();
+
+
 	//-----------読み込み---------------
 
 	//レベルデータからオブジェクトを生成、配置
@@ -60,21 +66,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 			Model::Load(objectData.fileName);
 
 			//3Dオブジェクトの生成
-			//std::unique_ptr<Object3d> newObject = std::make_unique<Object3d>();
 			std::unique_ptr<Object3d> newObject = nullptr;
-
 			newObject = Object3d::Create(objectData.fileName);
-
-			//Object3d* newObject = Object3d::Create(objectData.fileName);
-
-			/*XMMATRIX matTrans = XMMatrixIdentity();
-			XMMATRIX matRot = XMMatrixIdentity();
-			XMMATRIX matScale = XMMatrixIdentity();
-			XMMATRIX matWolrd = XMMatrixIdentity();
-			*/
-			//座標
-			//matTrans = objectData.translation;
-			//newObject->SetMatTrans(matTrans);
 
 			DirectX::XMFLOAT3 pos;
 			pos = objectData.translation;
@@ -85,14 +78,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 			rot = objectData.rotation;
 			newObject->SetRotation(rot);
 
-			//matRot = objectData.rotation;
-			//newObject->SetMatRot(matRot);
-			
 			//大きさ
-			
-			//matScale = objectData.scaling;
-			//newObject->SetMatScale(matScale);
-
 			DirectX::XMFLOAT3 scale;
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
@@ -101,8 +87,6 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 			objects_.push_back(std::move(newObject));
 		}
 	}
-
-	
 
 	//------------画像読み込み----------
 	title_ = std::make_unique<Sprite>();
@@ -153,47 +137,23 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	Model::Load(spear);
 	Model::Load(testStage0);
 
-	
+
 	//3Dオブジェクトの生成
+	XMFLOAT3 spherePosition = { 0,2,20 };
 	XMFLOAT3 sphereScale = { 10,10,10 };
-	
-	XMFLOAT3 position = { 0,0,0 };
-	XMFLOAT3 spherePosition = { 0,0,0 };
-	
-	
-	
-	//testStage0_ = std::make_unique<Object3d>();
-	//testStage0_->Initialize(testStage0, XMFLOAT3(5, 5, 5), XMFLOAT3(0, 0, 0), XMFLOAT3(5, 5, 5));
-
-	/*sphere_->Initialize(sphere);
-	sphere_->SetTransform(XMFLOAT3(40, 0, 0));
-	sphere_->SetRotation(XMFLOAT3(0, 0, 0));
-	sphere_->SetScale(sphereScale);*/
-
-	//testObject_ = std::make_unique<Object3d>();
-	//testObject_->Initialize(test, sphereScale, XMFLOAT3(-10, 0, 0), XMFLOAT3(0, 0, 0));
-
-	/*testObject_->Initialize(sphere);
-	testObject_->SetTransform(XMFLOAT3(-40, 0, 0));
-	testObject_->SetRotation(XMFLOAT3(0, 0, 0));
-	testObject_->SetScale(sphereScale);*/
-
-	collisionManager_ = CollisionManager::GetInstance();
 
 	player_ = Player::Create("sphere");
 	
 	sphere_ = Object3d::Create("sphere");
 	sphere_->Initialize();
-	sphere_->SetTransform(XMFLOAT3{ 0,0,10 });
-	sphere_->SetCollider(new SphereCollider);
+	sphere_->SetTransform(spherePosition);
+	sphere_->SetCollider(sphereCollider_.get());
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
 	camera_ = std::make_unique<Camera>();
 	testCamera_ = std::make_unique<Camera>();
-
 	testGameCamera_ = std::make_unique<GameCamera>();
-
 
 	//カメラ
 	XMFLOAT3 cameraEye = { 30,7.5,-20 };
@@ -201,10 +161,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT3 cameraTarget = { 0,5,5 };
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
-
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
 	testCamera_->Initialize(testCameraEye, cameraTarget, cameraUp);
-
 	testGameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
 }
 
@@ -287,7 +245,7 @@ void GameScene::Update()
 
 		camera_->Update();
 		testCamera_->Update();
-		//testGameCamera_->Update(player_->GetIsMoving());
+		testGameCamera_->Update(player_->GetIsMoving());
 
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
@@ -296,81 +254,24 @@ void GameScene::Update()
 			{
 				object->Update(testCamera_.get());
 			}
-
-			/*testObject_->Update(testCamera_.get());
-			testStage0_->Update(testCamera_.get());*/
-			//sphere_->Update(testCamera_.get());
 			player_->Update(testCamera_.get());
 			sphere_->Update(testCamera_.get());
 		}
-		//else 
-		//{
-		//	for(auto& object : objects_)
-		//	{
-		//		object->Update(testGameCamera_.get());
-		//	}
-
-		//	/*testObject_->Update(testGameCamera_.get());
-		//	testStage0_->Update(testGameCamera_.get());*/
-		//	//sphere_->Update(testGameCamera_.get());
-		//	player_->Update(testGameCamera_.get());
-		//	sphere_->Update(testGameCamera_.get());
-
-		//}
 		else
 		{
-			//アンカーポイントの設定
 			for(auto& object : objects_)
 			{
-				object->Update(camera_.get());
+				object->Update(testGameCamera_.get());
 			}
 
-			//モデルの更新処理
-			sphere_->Update(camera_.get());
-			player_->Update(camera_.get());
+			sphere_->Update(testGameCamera_.get());
+			player_->Update(testGameCamera_.get());
 		}
 
-		if(moveTimer >= 0)
-		{
-			moveTimer--;
-		}
-		else if(moveTimer < 0)
-		{
-			moveTimer = actionTime;
-		}
-
-		if(moveTimer >= 360)
-		{
-			isDown = false;
-			isUp = true;
-			move.y = 0;
-		}
-		else if(moveTimer <= 359)
-		{
-			isUp = false;
-			isDown = true;
-			move.y = 0;
-		}
-
-		if(isDown == true && isUp == false)
-		{
-			move.y -= 0.01f;
-		}
-		else if(isUp == true && isDown == false)
-		{
-			move.y += 0.01f;
-		}
-
-		sphereRotation.y += move.y;
-		//sphere_->SetRotation(sphereRotation);
-		//testObject_->SetRotation(sphereRotation);
-
-		
 		//画像の更新処理
 
 		//スプライトの編集ウインドウの表示
 		{
-
 			ImGui::Begin("Light");
 			ImGui::SetWindowPos(ImVec2(0, 0));
 			ImGui::SetWindowSize(ImVec2(500, 200));
@@ -411,7 +312,7 @@ void GameScene::Update()
 		end_->SetAnchorPoint(anchorPoint);
 		end_->matUpdate();
 
-		/*if(keyTimer_ < 0)
+		if(keyTimer_ < 0)
 		{
 			if(keys_->HasPushedKey(DIK_SPACE))
 			{
@@ -423,7 +324,7 @@ void GameScene::Update()
 		else
 		{
 			keyTimer_--;
-		}*/
+		}
 
 		break;
 
@@ -453,10 +354,10 @@ void GameScene::Draw()
 		//モデル描画
 		Object3d::BeforeDraw();
 
-		/*for(auto& object : objects_)
+		for(auto& object : objects_)
 		{
 			object->Draw();
-		}*/
+		}
 
 		player_->Draw();
 		sphere_->Draw();
@@ -469,7 +370,6 @@ void GameScene::Draw()
 		spriteCommon_->BeforeDraw();
 		spriteCommon_->Update();
 		end_->Draw("end.png");
-
 
 		break;
 

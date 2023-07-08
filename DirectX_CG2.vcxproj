@@ -127,6 +127,7 @@
     <ClInclude Include="DirectXGame\engine\collision\CollisionPrimitive.h" />
     <ClInclude Include="DirectXGame\engine\collision\CollisionTypes.h" />
     <ClInclude Include="DirectXGame\engine\collision\CollisionManager.h" />
+    <ClInclude Include="DirectXGame\engine\collision\RaycastHit.h" />
     <ClInclude Include="DirectXGame\engine\collision\SphereCollider.h" />
     <ClInclude Include="DirectXGame\engine\light\DirectionalLight.h" />
     <ClInclude Include="DirectXGame\engine\base\DirectXBasic.h" />

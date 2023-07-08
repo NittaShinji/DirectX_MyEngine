@@ -1,5 +1,5 @@
 #include "Player.h"
-#include "SphereCollider.h"
+
 #include "MathUtillity.h"
 
 using namespace std;
@@ -7,15 +7,11 @@ using namespace std;
 std::unique_ptr<Player> Player::Create(const std::string& path)
 {
 	//3Dオブジェクトのインスタンスを生成
-	//Player* instance = new Player();
 	std::unique_ptr<Player> instance = std::make_unique<Player>();
 	if(instance == nullptr)
 	{
 		return nullptr;
 	}
-
-	//モデル読み込み
-	//const string player = "sphere";
 
 	Model::Load(path);
 
@@ -30,7 +26,7 @@ void Player::Initialize()
 {
 	Object3d::Initialize();
 
-	position_ = { 0,1,0 };
+	position_ = { 0,2,0 };
 	rotation_ = { 0,0,0 };
 	scale_ = { 1,1,1 };
 
@@ -41,8 +37,9 @@ void Player::Initialize()
 
 	//コライダーの追加
 	float radius = 0.6f;
+	playerCollider_ = std::make_unique<SphereCollider>(XMVECTOR({ 0,radius,0,0 }), radius);
 	//半径分だけ足元から浮いた座標を球の中心にする
-	SetCollider(new SphereCollider(XMVECTOR({ 0,radius,0,0 }), radius));
+	SetCollider(playerCollider_.get());
 
 	move = { 0,0,0 };
 
@@ -57,7 +54,7 @@ void Player::Update(Camera* camera)
 	
 	if(isMoving_ == true)
 	{
-		//move.z = -0.25f;
+		move.z = 0.25f;
 	}
 
 	if(jumpCount > 0)
@@ -88,7 +85,7 @@ void Player::Update(Camera* camera)
 		}
 	}
 
-	if(KeyInput::PushedKeyMoment(DIK_D))
+	/*if(KeyInput::PushedKeyMoment(DIK_D))
 	{
 		move.z = -0.25f;
 		position_.z += move.z;
@@ -96,7 +93,7 @@ void Player::Update(Camera* camera)
 	{
 		move.z = 0.25f;
 		position_.z += move.z;
-	}
+	}*/
 
 	/*if(position_.y < 2)
 	{
@@ -108,7 +105,7 @@ void Player::Update(Camera* camera)
 	}*/
 
 
-	//position_.z += move.z;
+	position_.z += move.z;
 	Object3d::SetTransform(position_);
 
 	Object3d::Update(camera);
@@ -154,5 +151,11 @@ void Player::Reset()
 	isfinish_ = false;
 	isMoving_ = false;
 }
+
+//void Player::SetCollider(SphereCollider* sphereCollider)
+//{
+//
+//
+//}
 
 

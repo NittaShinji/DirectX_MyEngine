@@ -14,17 +14,8 @@ class GameCamera : public Camera
 
 public:
 
-	//static void StaticInitialize(DirectXBasic* directXBasic);
-
-	//void Initialize(XMFLOAT3& eye, XMFLOAT3& target, XMFLOAT3& up) override;
-
 	void Update(bool isPlayerMoving);
 
 	void Reset();
-
-	//void UpdateViewMatrix() override;
-
-	//void UpdateProjectionMatrix() override;
-
 };
 

@@ -311,7 +311,6 @@ Object3d::~Object3d()
 	{
 		//コリジョンマネージャーから登録を解除する
 		CollisionManager::GetInstance()->RemoveCollider(collider);
-		delete collider;
 	}
 }
 
