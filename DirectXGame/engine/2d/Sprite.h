@@ -26,14 +26,6 @@ public:
 	//描画
 	void Draw(const std::string& fileName);
 
-	void ClearDepthBuffer();
-
-	/*void TexMapping();
-	void TexMappingSRVSet();*/
-
-	/*void PointListUpdate();
-	void LineListUpdate();*/
-
 protected:
 
 	enum VertexNumber
@@ -132,8 +124,6 @@ public:
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
 
-
-	
 	//セッター
 	void SetMoveSpeed_(const DirectX::XMFLOAT2& moveSpeed) { moveSpeed_ = moveSpeed; };
 	void SetRotation(float rotation) { rotation_ = rotation; };
@@ -144,7 +134,4 @@ public:
 	void SetIsFlipX(bool isFlipX) { isFlipX_ = isFlipX; };
 	void SetIsFlipY(bool isFlipY) { isFlipY_ = isFlipY; };
 	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
-	//ID3D12DescriptorHeap* GetSRVheap() { return srvHeap; };
-	/*void SetWidth(size_t width) { wide_ = wide_; };
-	void SetHeight(size_t height) { height_ = height; };*/
 };

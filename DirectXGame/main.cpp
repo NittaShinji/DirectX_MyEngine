@@ -1,6 +1,3 @@
-
-//#include <d3d12.h>
-//#include <dxgi1_6.h>
 #include <cassert>
 #include <vector>
 #include <string>
@@ -86,7 +83,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		input->Update();
 
 		postEffect->SetAnchorPoint(XMFLOAT2(0.0f, 0.0f));
-		/*postEffect->matUpdate();*/
 		gameScene->Update();
 
 		imGuiManager->End();

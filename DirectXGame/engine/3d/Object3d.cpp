@@ -48,14 +48,6 @@ ComPtr<ID3D12Resource> Object3d::CrateConstBuff(Type1* directXBasic_)
 	return constBuff_;
 }
 
-void Object3d::CrateConstBuffandMapping()
-{
-}
-
-//void Object3d::SetWorldTransForm()
-//{
-//}
-
 void Object3d::StaticInitialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
@@ -298,11 +290,6 @@ void Object3d::Initialize()
 	// パイプランステートの生成
 	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result));
-
-	//SetModel(path);
-
-	//model_.SetName(path);
-	//model_.SetInfomation(*Model::GetMODELVALUE(path));
 }
 
 Object3d::~Object3d()
@@ -351,18 +338,9 @@ void Object3d::Update(Camera* camera)
 	matScale_ = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
 	matRot_ = XMMatrixIdentity();
 
-	//XMFLOAT3 radian = {0.0f,0.0f,0.0f};
-	//radian.x = MathUtillty::Toradian(XMConvertToRadians(rotation_.x));
-	//radian.y = MathUtillty::Toradian(XMConvertToRadians(rotation_.y));
-	//radian.z = MathUtillty::Toradian(XMConvertToRadians(rotation_.z));
-
 	matRot_ *= XMMatrixRotationZ(rotation_.z);
 	matRot_ *= XMMatrixRotationX(rotation_.x);
 	matRot_ *= XMMatrixRotationY(rotation_.y);
-
-	/*matRot_ *= XMMatrixRotationZ(XMConvertToRadians((rotation_.z)));
-	matRot_ *= XMMatrixRotationX(XMConvertToRadians((rotation_.x)));
-	matRot_ *= XMMatrixRotationY(XMConvertToRadians((rotation_.y)));*/
 
 	matTrans_ = XMMatrixIdentity();
 	matTrans_ = XMMatrixTranslation(transform_.x, transform_.y, transform_.z);
@@ -373,15 +351,6 @@ void Object3d::Update(Camera* camera)
 	matWorld_ *= matTrans_;
 
 	model_.Update();
-
-	/*if(colorFlag_ == true)
-	{
-		constMapTransform->color = { 1,0,0,1 };
-	}
-	else if(colorFlag_ == false)
-	{
-		constMapTransform->color = { 1,1,1,1 };
-	}*/
 
 	//定数バッファへデータ転送
 	constMapTransform_->worldMatrix = matWorld_;
@@ -495,8 +464,6 @@ std::unique_ptr<Object3d> Object3d::Create(const std::string& path)
 	}
 
 	//モデル読み込み
-	//const std::string player = "sphere";
-
 	Model::Load(path);
 
 	instance->Initialize();

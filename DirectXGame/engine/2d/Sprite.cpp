@@ -31,23 +31,9 @@ void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size)
 	size_ = size;
 
 	//ウインドウの中心に表示
-	//initPosition_ = { float(winWide / 2),float(winHeight / 2) };
 	position_ = position;
 
-	////スプライトの座標
-	//vertices_.at(LB) = {
-	//	{ initPosition_.x , initPosition_.y + size_.y, 0.0f }, {0.0f,1.0f}//左下
-	//};
-	//vertices_.at(LT) = {
-	//	{ initPosition_.x ,initPosition_.y, 0.0f }, {0.0f,0.0f}//左上
-	//};
-	//vertices_.at(RB) = {
-	//	{ initPosition_.x + size_.x, initPosition_.y + size_.y, 0.0f }, {1.0f,1.0f}//右下
-	//};
-	//vertices_.at(RT) = {
-	//	{ initPosition_.x + size_.x, initPosition_.y, 0.0f }, {1.0f,0.0f}//右上
-	//};
-	
+	//スプライトの座標
 	vertices_.at(LB) = {
 		{ 0.0f , size_.y, 0.0f }, {0.0f,1.0f}//左下
 	};
@@ -61,13 +47,7 @@ void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size)
 		{ size_.x, 0.0f, 0.0f }, {1.0f,0.0f}//右上
 	};
 
-	/*vertices_.at(LB).pos.y += initPosition.y;
-	vertices_.at(RB).pos.x += initPosition.x;
-	vertices_.at(RB).pos.y += initPosition.y;
-	vertices_.at(RT).pos.x += initPosition.x;*/
-
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	//UINT sizeVB = static_cast<UINT>(sizeof(XMFLOAT3) * _countof(vertices));
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
 
 	//カラーの書き込みと転送
@@ -149,11 +129,6 @@ void Sprite::matUpdate()
 	}
 
 	//頂点データ
-	/*vertices_[LB].pos = { initPosition_.x + left,initPosition_.y + bottom,0.0f };
-	vertices_[LT].pos = { initPosition_.x + left,initPosition_.y + top,0.0f };
-	vertices_[RB].pos = { initPosition_.x + right,initPosition_.y + bottom,0.0f };
-	vertices_[RT].pos = { initPosition_.x + right,initPosition_.y + top,0.0f };*/
-
 	vertices_[LB].pos = { left + position_.x , bottom + position_.y,0.0f };
 	vertices_[LT].pos = { left + position_.x, top + position_.y,0.0f };
 	vertices_[RB].pos = { right + position_.x,bottom + position_.y,0.0f };
@@ -247,64 +222,3 @@ void Sprite::Draw(const std::string& fileName)
 	//描画コマンド(頂点数、インスタンスの数、最初の頂点のインデックス,データを読み取る前に各インデックスに追加される値)
 	directXBasic_->GetCommandList()->DrawInstanced(static_cast<UINT>(vertices_.size()), 1, 0, 0);
 }
-
-void Sprite::ClearDepthBuffer()
-{
-
-
-}
-
-//void Sprite::TexMapping()
-//{
-//
-//	//画像イメージデータ配列
-//	XMFLOAT4* imageDate;
-//	//画像イメージデータ配列
-//	imageDate = new XMFLOAT4[imageDateCount];
-//
-//	//全ピクセルの色を初期化
-//	for (size_t i = 0; i < imageDateCount; i++)
-//	{
-//		imageDate[i].x = 1.0f; // R
-//		imageDate[i].y = 0.0f; // G
-//		imageDate[i].z = 0.0f; // B
-//		imageDate[i].w = 1.0f; // A
-//	}
-//
-//	//ヒープ設定
-//	D3D12_HEAP_PROPERTIES textureHeapProp{};
-//	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
-//	textureHeapProp.CPUPageProperty =
-//		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
-//	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-//	//リソース設定
-//	D3D12_RESOURCE_DESC textureResourceDesc{};
-//	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-//	textureResourceDesc.Format = DXGI_FORMAT_R32G32B32A32_FLOAT;
-//	textureResourceDesc.Width = textureWidth; // 幅
-//	textureResourceDesc.Height = textureWidth; // 幅
-//	textureResourceDesc.DepthOrArraySize = 1;
-//	textureResourceDesc.MipLevels = 1;
-//	textureResourceDesc.SampleDesc.Count = 1;
-//
-//	//テクスチャバッファの生成
-//	//ID3D12Resource* texBuff = nullptr;
-//	result_ = directXBasic_->GetDevice()->CreateCommittedResource(
-//		&textureHeapProp,
-//		D3D12_HEAP_FLAG_NONE,
-//		&textureResourceDesc,
-//		D3D12_RESOURCE_STATE_GENERIC_READ,
-//		nullptr,
-//		IID_PPV_ARGS(&texBuff));
-//
-//	//テクスチャバッファにデータ転送
-//	result_ = texBuff->WriteToSubresource(
-//		0,
-//		nullptr,	//全領域へコピー
-//		imageDate,	//元データアドレス
-//		sizeof(XMFLOAT4) * textureWidth,	// 1ラインサイズ
-//		sizeof(XMFLOAT4) * imageDateCount	//　全サイズ
-//	);
-//
-//	delete[] imageDate;
-//}

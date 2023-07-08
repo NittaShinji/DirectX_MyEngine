@@ -26,10 +26,6 @@ public:
 
 	void OnCollision(const CollisionInfo& info) override;
 
-	//void Initialzie();
-
-	//void Update(Camera* camera);
-
 	void SetNextState();
 
 	void Draw();
@@ -37,8 +33,6 @@ public:
 	void finish();
 
 	void Reset();
-
-	//void SetCollider(SphereCollider* sphereCollider);
 
 private:
 
@@ -74,15 +68,14 @@ private:
 	//半径
 	float radius = 0.6f;
 
+	//プレイヤーのコライダー
 	std::unique_ptr<SphereCollider> playerCollider_ = nullptr;
 
 public:
 
 	bool GetIsMoving() { return isMoving_; }
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
-
 	bool GetIsFinish() { return isfinish_; }
-
 
 };
 

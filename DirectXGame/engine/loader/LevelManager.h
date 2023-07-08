@@ -47,9 +47,6 @@ public:
 	//Ä‹AŠÖ”
 	void Return(nlohmann::json& deserialized, LevelData* levelData);
 
-	void LoadElement(nlohmann::json& deserialized, LevelData* levelData);
-
-
 	LevelData GetLevelData() { return levelData_; };
 
 	static LevelManager* GetLevelManager() 

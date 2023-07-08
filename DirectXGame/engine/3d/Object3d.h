@@ -26,8 +26,6 @@ private:
 
 public:
 
-	//Object3d(DirectXBasic* directXBasic,XMFLOAT3 position);
-
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
@@ -43,22 +41,17 @@ public:
 	static void StaticInitialize(DirectXBasic* directXBasic);
 	virtual void Initialize();
 	virtual void Update(Camera* camera);
-	//void BeforeDraw();
 	static void BeforeDraw();
 
 	void AfterDraw();
 	virtual void Draw();
 	void SetModel(const std::string& path);
-	//void Create(Model* model);
-	void CrateConstBuffandMapping();
 
 	/// <summary>
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="info">衝突情報</param>
 	virtual void OnCollision(const CollisionInfo& info) {}
-
-	//void SetWorldTransForm();
 
 protected:	//メンバ変数
 
