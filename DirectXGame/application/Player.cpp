@@ -56,9 +56,6 @@ void Player::Update(Camera* camera)
 
 	if(jumpCount > 0)
 	{
-		gamePad_->HasPushedButton();
-		gamePad_->ResetButton();
-
 		gamePad_->PushedButtonMoment();
 
 		if(gamePad_->GetButtonA())
