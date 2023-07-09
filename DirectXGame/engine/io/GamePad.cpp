@@ -11,11 +11,11 @@ bool GamePad::IsConnected(UINT padNum)
 	DWORD dwResult;
 
 	//âﬂãéèÓïÒÇï€ë∂
-	//oldState_ = state_;
+	oldState_ = state_;
 
 	ZeroMemory(&state_, sizeof(XINPUT_STATE));
 
-	dwResult = XInputGetState(padNum, &state_);
+	dwResult = XInputGetState(padNum_, &state_);
 
 	if(dwResult == ERROR_SUCCESS)
 	{
@@ -78,16 +78,55 @@ void GamePad::SaveOldButton()
 	oldState_ = state_;
 }
 
+void GamePad::ResetButton()
+{
+	padButton_.A = false;
+	padButton_.B = false;
+	padButton_.X = false;
+	padButton_.Y = false;
+	padButton_.Left = false;
+	padButton_.Right = false;
+	padButton_.Up = false;
+	padButton_.Down = false;
+	padButton_.LB = false;
+	padButton_.LT = false;
+	padButton_.RB = false;
+	padButton_.RT = false;
+}
+
+//âüÇµÇΩèÛë‘Ç©Ç«Ç§Ç©
 void GamePad::HasPushedButton()
 {
 	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_A)
 	{
-		padButton_.A = true;
+		if(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_A)
+		{
+			padButton_.A = true;
+		}
+		else
+		{
+			padButton_.A = false;
+		}
+	}
+	else
+	{
+		padButton_.A = false;
 	}
 
 	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_B)
 	{
-		padButton_.B = true;
+		if(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_B)
+		{
+			padButton_.B = true;
+		}
+		else
+		{
+			padButton_.B = false;
+		}
+	}
+	else
+	{
+		padButton_.B = false;
 	}
 
 	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_X)
@@ -142,14 +181,47 @@ void GamePad::HasPushedButton()
 
 }
 
+//ó£ÇµÇΩèÛë‘Ç©Ç«Ç§Ç©
 void GamePad::HasReleasedButton()
 {
+	if(!(state_.Gamepad.wButtons && XINPUT_GAMEPAD_A))
+	{
+		if(!(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_A))
+		{
+			padButton_.A = true;
+		}
+		else
+		{
+			padButton_.A = false;
+		}
+	}
+	else
+	{
+		padButton_.A = false;
+	}
+
 }
 
+//âüÇµÇΩèuä‘Ç©Ç«Ç§Ç©
 void GamePad::PushedButtonMoment()
 {
+	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_A)
+	{
+		if(!(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_A))
+		{
+			padButton_.A = true;
+		}
+	}
 }
 
+//ó£ÇµÇΩèuä‘Ç©Ç«Ç§Ç©
 void GamePad::ReleaseButtonMoment()
 {
+	if(!(state_.Gamepad.wButtons && XINPUT_GAMEPAD_A))
+	{
+		if(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_A)
+		{
+			padButton_.A = true;
+		}
+	}
 }

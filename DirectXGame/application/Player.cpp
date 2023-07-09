@@ -1,5 +1,4 @@
 #include "Player.h"
-
 #include "MathUtillity.h"
 
 using namespace std;
@@ -50,7 +49,6 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
-	
 	if(isMoving_ == true)
 	{
 		move.z = 0.25f;
@@ -58,6 +56,21 @@ void Player::Update(Camera* camera)
 
 	if(jumpCount > 0)
 	{
+		gamePad_->HasPushedButton();
+		gamePad_->ResetButton();
+
+		gamePad_->PushedButtonMoment();
+
+		if(gamePad_->GetButtonA())
+		{
+			move.y += 0.05f;
+			isFlying_ = true;
+			gravitySpeed = 0;
+			jumpCount -= 1;
+			jumpHeight = kMaxJump;
+			gamePad_->ResetButton();
+		}
+
 		if(KeyInput::PushedKeyMoment(DIK_SPACE))
 		{
 			move.y += 0.05f;

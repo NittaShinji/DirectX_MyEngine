@@ -75,6 +75,4 @@ private:
 	static ComPtr<IDirectInputDevice8> keyboard_;
 	//コントローラー
 	static ComPtr<IDirectInputDevice8> gamePad_;
-
-
 };

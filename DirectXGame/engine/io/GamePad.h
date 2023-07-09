@@ -37,12 +37,13 @@ public:
 	//振動の設定
 	void SetVibration();
 
+	XINPUT_STATE GetState() {return state_; }
 	WORD GetButton() { return state_.Gamepad.wButtons; };
 
 	void SaveOldButton();
 
 	//各ボタンの判定
-	bool GetButtonA() { return padButton_.A; }
+	bool GetButtonA() { return padButton_.A; };
 	bool GetButtonB() { return padButton_.B; }
 	bool GetButtonX() { return padButton_.X; }
 	bool GetButtonY() { return padButton_.Y; }
@@ -55,6 +56,9 @@ public:
 	bool GetButtonRB() { return padButton_.RB; }
 	bool GetButtonRT() { return padButton_.RT; }
 
+	//ボタン情報をリセットする
+	void ResetButton();
+
 	//押した瞬間
 	void HasPushedButton();
 
@@ -66,6 +70,8 @@ public:
 
 	//離している
 	void ReleaseButtonMoment();
+
+	PadButton GetPadButton() { return padButton_; }
 
 private:
 

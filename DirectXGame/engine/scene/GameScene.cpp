@@ -143,6 +143,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT3 sphereScale = { 10,10,10 };
 
 	player_ = Player::Create("sphere");
+	player_->SetGamePad(gamePad_.get());
 	
 	sphere_ = Object3d::Create("sphere");
 	sphere_->Initialize();
@@ -170,10 +171,7 @@ void GameScene::Update()
 {
 	if(gamePad_->IsConnected(Player1))
 	{
-		if(gamePad_->GetButton() && XINPUT_GAMEPAD_A)
-		{
-			gamePad_->SetVibration();
-		}
+
 	}
 
 	//Œõü•ûŒü‰Šú’l

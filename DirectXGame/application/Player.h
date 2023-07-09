@@ -2,7 +2,9 @@
 #include"Object3d.h"
 #include "Model.h"
 #include "Camera.h"
+#include "GamePad.h"
 #include "SphereCollider.h"
+
 
 class Player : public Object3d
 {
@@ -71,11 +73,17 @@ private:
 	//プレイヤーのコライダー
 	std::unique_ptr<SphereCollider> playerCollider_ = nullptr;
 
+	//プレイヤー用のコントローラー
+	//std::unique_ptr<GamePad> player_ = nullptr;
+	GamePad* gamePad_ = nullptr;
+
 public:
 
 	bool GetIsMoving() { return isMoving_; }
-	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	bool GetIsFinish() { return isfinish_; }
+
+	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
+	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }
 
 };
 
