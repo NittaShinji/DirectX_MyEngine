@@ -26,47 +26,6 @@ private:
 
 public:
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	Object3d() = default;
-
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	virtual ~Object3d();
-
-	static std::unique_ptr<Object3d> Create(const std::string& path);
-
-	static void StaticInitialize(DirectXBasic* directXBasic);
-	virtual void Initialize();
-	virtual void Update(Camera* camera);
-	static void BeforeDraw();
-
-	void AfterDraw();
-	virtual void Draw();
-	void SetModel(const std::string& path);
-
-	/// <summary>
-	/// 衝突時コールバック関数
-	/// </summary>
-	/// <param name="info">衝突情報</param>
-	virtual void OnCollision(const CollisionInfo& info) {}
-
-protected:	//メンバ変数
-
-
-	//クラス名(デバッグ用)
-	const char* name = nullptr;
-	//コライダー
-	BaseCollider* collider = nullptr;
-
-	static DirectXBasic* directXBasic_;
-	static KeyInput* keys_;
-	static LightGroup* lightGroup_;
-	Model model_;
-	Camera* camera_ = nullptr;
-
 	//定数バッファ用データ構造体b0
 	struct ConstBufferDateTransform
 	{
@@ -101,12 +60,47 @@ protected:	//メンバ変数
 		float pad2;
 	};
 
-	struct Vertex
-	{
-		XMFLOAT3 pos;		// xyz座標
-		XMFLOAT3 normal;	//法線ベクトル
-		XMFLOAT2 uv;		// uv座標
-	};
+public:
+
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	Object3d() = default;
+
+	/// <summary>
+	/// デストラクタ
+	/// </summary>
+	virtual ~Object3d();
+
+	static std::unique_ptr<Object3d> Create(const std::string& path);
+
+	static void StaticInitialize(DirectXBasic* directXBasic);
+	virtual void Initialize();
+	virtual void Update(Camera* camera);
+	static void BeforeDraw();
+
+	void AfterDraw();
+	virtual void Draw();
+	void SetModel(const std::string& path);
+
+	/// <summary>
+	/// 衝突時コールバック関数
+	/// </summary>
+	/// <param name="info">衝突情報</param>
+	virtual void OnCollision(const CollisionInfo& info) {}
+
+protected:	//メンバ変数
+
+	//クラス名(デバッグ用)
+	const char* name = nullptr;
+	//コライダー
+	BaseCollider* collider = nullptr;
+
+	static DirectXBasic* directXBasic_;
+	static KeyInput* keys_;
+	static LightGroup* lightGroup_;
+	Model model_;
+	Camera* camera_ = nullptr;
 
 	//定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
@@ -173,6 +167,9 @@ public:
 	/// </summary>
 	/// <returns>ワールド行列</returns>
 	const XMMATRIX& GetMatWorld() { return matWorld_; }
+
+	//モデルを取得
+	const Model& GetModel() { return model_; }
 
 	void SetTransform(const XMFLOAT3& pos) { transform_ = pos; };
 	void SetRotation(const XMFLOAT3& rotate) { rotation_ = rotate; };

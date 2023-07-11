@@ -23,6 +23,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);
+	Mesh::StaticInitialize(directXBasic_);
 
 	//------------ƒ‰ƒCƒg------------
 	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
@@ -169,10 +170,7 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 void GameScene::Update()
 {
-	if(gamePad_->IsConnected(Player1))
-	{
-
-	}
+	if(gamePad_->IsConnected(Player1)){}
 
 	//Œõü•ûŒü‰Šú’l
 	static XMVECTOR lightDir = { 0,1,5,0 };

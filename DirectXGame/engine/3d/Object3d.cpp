@@ -89,7 +89,7 @@ void Object3d::Initialize()
 		},
 
 		{
-			//法線ベクトル(1行で書いたほう見やすい)
+			//法線ベクトル
 			"NORMAL",0,DXGI_FORMAT_R32G32B32_FLOAT,0,
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
@@ -101,7 +101,6 @@ void Object3d::Initialize()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
 		},
-		//座標以外に、色、テクスチャUVなどを渡す場合はさらに続ける
 	};
 
 
@@ -379,9 +378,17 @@ void Object3d::Update(Camera* camera)
 void Object3d::Draw()
 {
 	//頂点バッファビューの設定コマンド
-	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &model_.GetInfomation()->vbView);
+	//directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &model_.GetInfomation()->vbView);
+
 	//インデックスバッファビューの設定コマンド
-	directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
+	//directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
+
+	std::vector<Mesh>::iterator it;
+	for(it = model_.GetInfomation()->meshes.begin(); it < model_.GetInfomation()->meshes.end(); it++)
+	{
+		directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &it->GetVBView());
+		directXBasic_->GetCommandList()->IASetIndexBuffer(&it->GetIBView());
+	}
 
 	//SRVヒープの設定コマンド
 	ID3D12DescriptorHeap* ppHeaps[] = { model_.GetInfomation()->srvHeap.Get() };
@@ -410,7 +417,12 @@ void Object3d::Draw()
 	lightGroup_->Draw(directXBasic_->GetCommandList().Get(), 3);
 
 	//描画コマンド
-	directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices.size()), 1, 0, 0, 0);
+	//directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices.size()), 1, 0, 0, 0);
+
+	for(it = model_.GetInfomation()->meshes.begin(); it < model_.GetInfomation()->meshes.end(); it++)
+	{
+		directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(it->GetIndices().size()), 1, 0, 0, 0);
+	}
 }
 
 void Object3d::BeforeDraw()

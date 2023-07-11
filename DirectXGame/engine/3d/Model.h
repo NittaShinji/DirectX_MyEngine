@@ -8,6 +8,7 @@
 #include <map>
 #include <array>
 #include "DirectXBasic.h"
+#include "Mesh.h"
 
 class Model
 {
@@ -59,12 +60,12 @@ private:
 		}
 	};
 
-	struct Vertex
-	{
-		XMFLOAT3 pos;		// xyz座標
-		XMFLOAT3 normal;	//法線ベクトル
-		XMFLOAT2 uv;		// uv座標
-	};
+	//struct Vertex
+	//{
+	//	XMFLOAT3 pos;		// xyz座標
+	//	XMFLOAT3 normal;	//法線ベクトル
+	//	XMFLOAT2 uv;		// uv座標
+	//};
 
 	//定数バッファ用データ構造体B0
 	struct ConstBufferDateB0
@@ -103,22 +104,25 @@ public:
 		//マテリアル
 		Material material;
 
-		//頂点データ配列
-		std::vector<Vertex> vertices;
-		//頂点インデックス配列
-		std::vector<unsigned short> indices;
+		//メッシュ
+		std::vector<Mesh> meshes;
 
-		//頂点バッファ
-		Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
-		//インデックスバッファ
-		Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
+		////頂点データ配列
+		//std::vector<Vertex> vertices;
+		////頂点インデックス配列
+		//std::vector<unsigned short> indices;
+
+		////頂点バッファ
+		//Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
+		////インデックスバッファ
+		//Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
 		//SRV用のデスクリプタヒープ
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap = nullptr;
 		
 		// 頂点バッファビュー
-		D3D12_VERTEX_BUFFER_VIEW vbView{};
-		//インデックスバッファビュー
-		D3D12_INDEX_BUFFER_VIEW ibView{};
+		//D3D12_VERTEX_BUFFER_VIEW vbView{};
+		////インデックスバッファビュー
+		//D3D12_INDEX_BUFFER_VIEW ibView{};
 
 		//テクスチャバッファ
 		std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers;
@@ -144,6 +148,7 @@ public:
 	MODELKEY* GetName() { return &name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
 	uint32_t const GetTexIndex() { return sTextureIndex_; };
+	const std::vector<Mesh>& GetMeshes() { return infomation_.meshes; }
 
 	//セッター
 	void SetName(const MODELKEY& name) { name_ = name; };

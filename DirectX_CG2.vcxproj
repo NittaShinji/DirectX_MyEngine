@@ -117,6 +117,7 @@
     <ClCompile Include="DirectXGame\application\Player.cpp" />
     <ClCompile Include="DirectXGame\engine\math\WorldTransform.cpp" />
     <ClCompile Include="DirectXGame\application\GameCamera.cpp" />
+    <ClCompile Include="DirectXGame\engine\3d\Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\engine\2d\PostEffect.h" />
@@ -148,6 +149,7 @@
     <ClInclude Include="DirectXGame\application\Player.h" />
     <ClInclude Include="DirectXGame\engine\math\WorldTransform.h" />
     <ClInclude Include="DirectXGame\application\GameCamera.h" />
+    <ClInclude Include="DirectXGame\engine\3d\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />

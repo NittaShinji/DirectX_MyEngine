@@ -6,16 +6,13 @@
 
 #include <DirectXTex.h>
 #include <D3dx12.h>
+#include "Mesh.h"
 
 using namespace std;
 using namespace DirectX;
 
 DirectXBasic* Model::directXBasic_ = nullptr;
-//std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, Model::kMaxSRVCount> Model::textureBuffers_;
-//uint32_t Model::textureIndex_;
 std::map<Model::MODELKEY, Model::MODELVALUE> Model::sModels_;
-//std::string Model::kDefaultTextureDirectoryPath_ = "Resources/";
-//D3D12_CPU_DESCRIPTOR_HANDLE Model::srvHandle;
 uint32_t Model::sTextureIndex_ = 0;
 D3D12_CPU_DESCRIPTOR_HANDLE Model::sSrvHandle_;
 
@@ -28,6 +25,8 @@ void Model::Load(const std::string& path)
 {
 	Model model;
 	model.name_ = path;
+
+	Mesh mesh{};
 
 	//ファイルストリーム
 	std::ifstream file;
@@ -100,10 +99,8 @@ void Model::Load(const std::string& path)
 		//先頭文字列が"f"ならポリゴン(三角形)
 		if (key == "f")
 		{
-			//int faceIndexCount = 0;
 			//半角スペース区切りで行の続きを読み込む
 			string index_string;
-			//std::array<uint16_t, 4> tempIndices;
 			while (getline(line_stream,index_string,' '))
 			{
 				//頂点インデックス１個分の文字列をストリームに変換して解析しやすくする
@@ -115,34 +112,20 @@ void Model::Load(const std::string& path)
 				index_stream.seekg(1, ios_base::cur);	//スラッシュを飛ばす
 				index_stream >> indexNormal;
 				//頂点データ追加
-				Vertex vertex{};
+				Mesh::Vertex vertex{};
 				vertex.pos = positions[indexPosition - 1];
 				vertex.normal = normals[indexNormal - 1];
 				vertex.uv = texcoords[indexTexcoord - 1];
-				model.infomation_.vertices.emplace_back(vertex);
+
+				//インデックスデータ追加
+				mesh.SetVertices(vertex);
+				mesh.SetIndices(static_cast<unsigned short>(mesh.GetIndices().size()));
+				//model.infomation_.meshes.emplace_back(mesh);
+
+				//model.infomation_.vertices.emplace_back(vertex);
 				//インデックスデータの追加
-				model.infomation_.indices.emplace_back((unsigned short)model.infomation_.indices.size());
-
-				//assert(faceIndexCount < 4 && "5角形ポリゴン以上は非対応です");
-
-				//// インデックスデータの追加
-				//tempIndices[faceIndexCount] = indexCountTex;
-
-				//indexCountTex++;
-				//faceIndexCount++;
+				//model.infomation_.indices.emplace_back((unsigned short)model.infomation_.indices.size());
 			}
-
-			//// インデックスデータの順序変更で時計回り→反時計回り変換
-			//model.infomation_.vertices_.emplace_back(tempIndices[0]);
-			//model.infomation_.vertices_.emplace_back(tempIndices[2]);
-			//model.infomation_.vertices_.emplace_back(tempIndices[1]);
-			//// 四角形なら三角形を追加
-			//if(faceIndexCount == 4)
-			//{
-			//	model.infomation_.vertices_.emplace_back(tempIndices[0]);
-			//	model.infomation_.vertices_.emplace_back(tempIndices[3]);
-			//	model.infomation_.vertices_.emplace_back(tempIndices[2]);
-			//}
 		}
 
 		if (key == "mtllib")
@@ -157,98 +140,123 @@ void Model::Load(const std::string& path)
 
 	file.close();
 
-	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
-	UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * model.infomation_.vertices.size());
+	mesh.CrateBuffer();
 
-	// 頂点バッファの設定
-	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
+	//std::vector<Mesh>::iterator it;
+	////頂点、インデックスバッファの作成
+	//for(it = model.infomation_.meshes.begin(); it < model.infomation_.meshes.end(); it++)
+	//{
+	//	it->CrateBuffer();
+	//}
 
-	// リソース設定
-	D3D12_RESOURCE_DESC resDesc{};
+	model.infomation_.meshes.emplace_back(mesh);
 
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+	//model.infomation_.meshes
 
-	// 頂点バッファの生成
-	HRESULT result;
-	result = directXBasic_->GetResult();
-	result = directXBasic_->GetDevice()->CreateCommittedResource(
-		&heapProp, // ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&resDesc, // リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&model.infomation_.vertBuff)); 
-	assert(SUCCEEDED(result));
+//
+//	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
+//	//UINT sizeVB = static_cast<UINT>(sizeof(Vertex) * model.infomation_.vertices.size());
+//	//UINT sizeVB = static_cast<UINT>(sizeof(Mesh::Vertex) * mesh.GetVertices().size());
+//
+//
+//	// 頂点バッファの設定
+//	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
+//	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
+//
+//	// リソース設定
+//	D3D12_RESOURCE_DESC resDesc{};
+//
+//	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+//	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
+//	resDesc.Height = 1;
+//	resDesc.DepthOrArraySize = 1;
+//	resDesc.MipLevels = 1;
+//	resDesc.SampleDesc.Count = 1;
+//	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+//
+//	// 頂点バッファの生成
+//	HRESULT result;
+//	result = directXBasic_->GetResult();
+//	result = directXBasic_->GetDevice()->CreateCommittedResource(
+//		&heapProp, // ヒープ設定
+//		D3D12_HEAP_FLAG_NONE,
+//		&resDesc, // リソース設定
+//		D3D12_RESOURCE_STATE_GENERIC_READ,
+//		nullptr,
+//		IID_PPV_ARGS(&model.infomation_.vertBuff)); 
+//	assert(SUCCEEDED(result));
+//
+//	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
+//	Vertex* vertMap = nullptr;
+//	Mesh::Vertex* vertMap = nullptr;
+//	result = model.infomation_.vertBuff->Map(0, nullptr, (void**)&vertMap);
+//	assert(SUCCEEDED(result));
+//	// 全頂点に対して
+//	std::copy(model.infomation_.vertices.begin(), model.infomation_.vertices.end(), vertMap);
+//	//std::copy(mesh.GetVertices().begin(), mesh.GetVertices().end(), vertMap);
+//	//vector<Mesh>::iterator it;
+//	
+//	/*for(it = model.infomation_.meshes.begin();  it < model.infomation_.meshes.end(); ++it)
+//	{
+//		std::copy(it->GetVertices().begin(), it->GetVertices().end(), vertMap);
+//	}*/
+//	
+//	// 繋がりを解除
+//	model.infomation_.vertBuff->Unmap(0, nullptr);
+//
+//	//インデックスデータ全体のサイズ
+//	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * model.infomation_.indices.size());
+//	//UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * model.infomation_.meshes);
+//
+//	
+//	//リソース設定
+//	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+//	resDesc.Width = sizeIB;	//　インデックス情報が入る分のサイズ
+//	resDesc.Height = 1;
+//	resDesc.DepthOrArraySize = 1;
+//	resDesc.MipLevels = 1;
+//	resDesc.SampleDesc.Count = 1;
+//	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+//
+//	//インデックスバッファの設定
+//	result = directXBasic_->GetDevice()->CreateCommittedResource(
+//		&heapProp,
+//		D3D12_HEAP_FLAG_NONE,
+//		&resDesc,
+//		D3D12_RESOURCE_STATE_GENERIC_READ,
+//		nullptr,
+//		IID_PPV_ARGS(&model.infomation_.indexBuff)
+//	);
+//
+//	//インデックスバッファをマッピング
+//	uint16_t* indexMap = nullptr;
+//	result = model.infomation_.indexBuff->Map(0, nullptr, (void**)&indexMap);
+//	//全インデックスに対して
+//	std::copy(model.infomation_.indices.begin(), model.infomation_.indices.end(), indexMap);
+//
+//	//マッピング解除
+//	model.infomation_.indexBuff->Unmap(0, nullptr);
+//
+//#pragma region 頂点バッファビューの作成
+//
+//	// GPU仮想アドレス
+//	model.infomation_.vbView.BufferLocation = model.infomation_.vertBuff->GetGPUVirtualAddress();
+//	// 頂点バッファのサイズ
+//	model.infomation_.vbView.SizeInBytes = sizeVB;
+//	// 頂点1つ分のデータサイズ
+//	model.infomation_.vbView.StrideInBytes = sizeof(infomation_.vertices[0]);
+//
+//#pragma endregion
+//
+//#pragma region インデックスバッファビューの作成
+//
+//	//インデックスバッファビューの作成
+//	model.infomation_.ibView.BufferLocation = model.infomation_.indexBuff->GetGPUVirtualAddress();
+//	model.infomation_.ibView.Format = DXGI_FORMAT_R16_UINT;
+//	model.infomation_.ibView.SizeInBytes = sizeIB;
+//
+//#pragma endregion
 
-	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
-	Vertex* vertMap = nullptr;
-	result = model.infomation_.vertBuff->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result));
-	// 全頂点に対して
-	std::copy(model.infomation_.vertices.begin(), model.infomation_.vertices.end(), vertMap);
-	
-	// 繋がりを解除
-	model.infomation_.vertBuff->Unmap(0, nullptr);
-
-	//インデックスデータ全体のサイズ
-	UINT sizeIB = static_cast<UINT>(sizeof(unsigned short) * model.infomation_.indices.size());
-	
-	//リソース設定
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeIB;	//　インデックス情報が入る分のサイズ
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	//インデックスバッファの設定
-	result = directXBasic_->GetDevice()->CreateCommittedResource(
-		&heapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&resDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&model.infomation_.indexBuff)
-	);
-
-	//インデックスバッファをマッピング
-	uint16_t* indexMap = nullptr;
-	result = model.infomation_.indexBuff->Map(0, nullptr, (void**)&indexMap);
-	//全インデックスに対して
-	std::copy(model.infomation_.indices.begin(), model.infomation_.indices.end(), indexMap);
-
-	//マッピング解除
-	model.infomation_.indexBuff->Unmap(0, nullptr);
-
-#pragma region 頂点バッファビューの作成
-
-	// GPU仮想アドレス
-	model.infomation_.vbView.BufferLocation = model.infomation_.vertBuff->GetGPUVirtualAddress();
-	// 頂点バッファのサイズ
-	model.infomation_.vbView.SizeInBytes = sizeVB;
-	// 頂点1つ分のデータサイズ
-	model.infomation_.vbView.StrideInBytes = sizeof(infomation_.vertices[0]);
-
-#pragma endregion
-
-#pragma region インデックスバッファビューの作成
-
-	//インデックスバッファビューの作成
-	//D3D12_INDEX_BUFFER_VIEW ibView{};
-	model.infomation_.ibView.BufferLocation = model.infomation_.indexBuff->GetGPUVirtualAddress();
-	model.infomation_.ibView.Format = DXGI_FORMAT_R16_UINT;
-	model.infomation_.ibView.SizeInBytes = sizeIB;
-
-#pragma endregion
-	
 	//モデルmapへの挿入
 	sModels_.insert_or_assign(model.name_, model.infomation_);
 }
