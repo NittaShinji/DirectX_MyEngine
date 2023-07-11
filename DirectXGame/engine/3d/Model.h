@@ -60,13 +60,6 @@ private:
 		}
 	};
 
-	//struct Vertex
-	//{
-	//	XMFLOAT3 pos;		// xyz座標
-	//	XMFLOAT3 normal;	//法線ベクトル
-	//	XMFLOAT2 uv;		// uv座標
-	//};
-
 	//定数バッファ用データ構造体B0
 	struct ConstBufferDateB0
 	{
@@ -107,22 +100,8 @@ public:
 		//メッシュ
 		std::vector<Mesh> meshes;
 
-		////頂点データ配列
-		//std::vector<Vertex> vertices;
-		////頂点インデックス配列
-		//std::vector<unsigned short> indices;
-
-		////頂点バッファ
-		//Microsoft::WRL::ComPtr<ID3D12Resource> vertBuff = nullptr;
-		////インデックスバッファ
-		//Microsoft::WRL::ComPtr<ID3D12Resource> indexBuff = nullptr;
 		//SRV用のデスクリプタヒープ
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap = nullptr;
-		
-		// 頂点バッファビュー
-		//D3D12_VERTEX_BUFFER_VIEW vbView{};
-		////インデックスバッファビュー
-		//D3D12_INDEX_BUFFER_VIEW ibView{};
 
 		//テクスチャバッファ
 		std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers;
