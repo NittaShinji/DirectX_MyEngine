@@ -18,6 +18,7 @@
 #include "SphereCollider.h"
 
 class CollisionManager;
+class TouchableObject;
 class Player;
 
 class GameScene
@@ -94,8 +95,7 @@ private:
 
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
-	//Player* player_ = nullptr;
-	
+
 	//スプライト共通部分
 	//std::unique_ptr<SpriteCommon> spriteCommon_ = nullptr;
 	SpriteCommon* spriteCommon_ = nullptr;
@@ -139,6 +139,9 @@ private:
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
 	std::unique_ptr<SphereCollider> sphereCollider_ = nullptr;
+
+	//TouchableObject* objGround_ = nullptr;
+	std::unique_ptr<TouchableObject> objGround_ = nullptr;
 
 	//衝突マネージャー
 	CollisionManager* collisionManager_ = nullptr;

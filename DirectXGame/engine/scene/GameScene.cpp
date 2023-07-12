@@ -4,6 +4,8 @@
 #include "CollisionManager.h"
 #include "Player.h"
 #include "SphereCollider.h"
+#include "MeshCollider.h"
+#include "TouchableObject.h"
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -131,25 +133,34 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	const string test = "NoImageModel";
 	const string spear = "spear";
 	const string testStage0 = "testStage0";
+	const string ground = "ground";
+
 
 
 	Model::Load(test);
 	Model::Load(sphere);
 	Model::Load(spear);
 	Model::Load(testStage0);
+	Model::Load(ground);
 
 
 	//3Dオブジェクトの生成
 	XMFLOAT3 spherePosition = { 0,2,20 };
+	XMFLOAT3 groundPosition = { 0,0,0 };
+
 	XMFLOAT3 sphereScale = { 10,10,10 };
 
-	player_ = Player::Create("sphere");
+	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
 	
-	sphere_ = Object3d::Create("sphere");
+	sphere_ = Object3d::Create(sphere);
 	sphere_->Initialize();
 	sphere_->SetTransform(spherePosition);
 	sphere_->SetCollider(sphereCollider_.get());
+
+	objGround_ = TouchableObject::Create(ground);
+	objGround_->SetTransform(groundPosition);
+	objGround_->SetScale(sphereScale);
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
@@ -227,7 +238,7 @@ void GameScene::Update()
 			{
 				scene_ = GAME;
 				keyTimer_ = kWaitTime_;
-				player_->SetIsMoving(true);
+				//player_->SetIsMoving(true);
 			}
 		}
 		else
@@ -252,6 +263,7 @@ void GameScene::Update()
 			}
 			player_->Update(testCamera_.get());
 			sphere_->Update(testCamera_.get());
+			objGround_->Update(testCamera_.get());
 		}
 		else
 		{
@@ -262,6 +274,7 @@ void GameScene::Update()
 
 			sphere_->Update(testGameCamera_.get());
 			player_->Update(testGameCamera_.get());
+			objGround_->Update(testGameCamera_.get());
 		}
 
 		//画像の更新処理
@@ -350,13 +363,14 @@ void GameScene::Draw()
 		//モデル描画
 		Object3d::BeforeDraw();
 
-		for(auto& object : objects_)
+		/*for(auto& object : objects_)
 		{
 			object->Draw();
-		}
+		}*/
 
 		player_->Draw();
-		sphere_->Draw();
+		//sphere_->Draw();
+		objGround_->Draw();
 		
 
 		break;

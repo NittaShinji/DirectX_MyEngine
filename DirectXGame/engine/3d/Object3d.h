@@ -169,7 +169,9 @@ public:
 	const XMMATRIX& GetMatWorld() { return matWorld_; }
 
 	//ƒ‚ƒfƒ‹‚ðŽæ“¾
-	const Model& GetModel() { return model_; }
+	//const Model& GetModel() { return model_; }
+	Model* GetModel() { return &model_; }
+
 
 	void SetTransform(const XMFLOAT3& pos) { transform_ = pos; };
 	void SetRotation(const XMFLOAT3& rotate) { rotation_ = rotate; };

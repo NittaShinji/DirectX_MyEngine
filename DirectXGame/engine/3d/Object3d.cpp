@@ -300,7 +300,6 @@ Object3d::~Object3d()
 	}
 }
 
-
 void Object3d::SetModel(const std::string& path)
 {
 	//検索キーからモデル情報を検索し、モデルを割り当てる

@@ -78,6 +78,13 @@ void Player::Update(Camera* camera)
 		}
 	}
 
+	if(KeyInput::PushedKeyMoment(DIK_7))
+	{
+		move.y -= 0.05f;
+		position_.y += move.y;
+	}
+
+
 	if(jumpCount < 2)
 	{
 		if(isFlying_ == 1)
@@ -95,14 +102,14 @@ void Player::Update(Camera* camera)
 		position_.y += move.y;
 	}
 
-	if(position_.y < 2)
+	/*if(position_.y < 2)
 	{
 		position_.y = 2;
 		jumpCount = 2;
 		isFlying_ = 0;
 		jumpHeight = 0;
 		move.y = 0;
-	}
+	}*/
 
 
 	position_.z += move.z;
@@ -116,8 +123,11 @@ void Player::Update(Camera* camera)
 
 void Player::OnCollision(const CollisionInfo& info)
 {
-	move.y = +0.25f;
-	position_.y += move.y;
+	move.y = 0;
+	position_.y = 2;
+	jumpCount = 2;
+	isFlying_ = 0;
+	jumpHeight = 0;
 	Object3d::SetTransform(position_);
 }
 
