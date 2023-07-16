@@ -5,7 +5,6 @@
 #include "GamePad.h"
 #include "SphereCollider.h"
 
-
 class Player : public Object3d
 {
 private:
@@ -41,6 +40,7 @@ private:
 	std::unique_ptr<Object3d> object_;
 
 	XMFLOAT3 position_ = { 0,2,0 };
+	//XMMATRIX position_ = { 0,2,0 };
 	XMFLOAT3 rotation_ = { 0,0,0 };
 	XMFLOAT3 scale_ = { 1,1,1 };
 
@@ -76,6 +76,11 @@ private:
 	//プレイヤー用のコントローラー
 	//std::unique_ptr<GamePad> player_ = nullptr;
 	GamePad* gamePad_ = nullptr;
+
+	//接地フラグ
+	bool onGround = false;
+	//落下ベクトル
+	DirectX::XMVECTOR fallVec;
 
 public:
 

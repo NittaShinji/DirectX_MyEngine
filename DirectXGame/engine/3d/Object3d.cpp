@@ -323,7 +323,6 @@ void Object3d::Update(Camera* camera)
 	XMFLOAT3 move = { 0,0,0 };
 
 	//‚¢‚¸‚ê‚©‚ÌƒL[‚ð‰Ÿ‚µ‚Ä‚¢‚½‚ç
-	//À•W‚ðˆÚ“®‚·‚éˆ—
 	if(keys_->HasPushedKey(DIK_RIGHT)) { rotation_.x += 0.4f; }
 	else if(keys_->HasPushedKey(DIK_LEFT)) { rotation_.x -= 0.4f; }
 	else {}

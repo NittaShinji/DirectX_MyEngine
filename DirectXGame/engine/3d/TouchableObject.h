@@ -26,6 +26,8 @@ public:
 	//コライダーの追加
 	void AddCollider(Model* model);
 
+	void ColliderUpdate();
+
 	void Draw() override;
 
 private:

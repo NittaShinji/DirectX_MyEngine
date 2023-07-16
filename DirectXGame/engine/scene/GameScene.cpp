@@ -55,41 +55,41 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
 
-	for(auto& objectData : levelData_->objects)
-	{
-		//ファイル名から登録済みモデルを検索
-		Model* model = nullptr;
-		decltype(models_)::iterator it = models_.find(objectData.fileName);
-		if(it != models_.end()) { model = &it->second; }
-		//モデルを指定して3Dオブジェクトを作成
+	//for(auto& objectData : levelData_->objects)
+	//{
+	//	//ファイル名から登録済みモデルを検索
+	//	Model* model = nullptr;
+	//	decltype(models_)::iterator it = models_.find(objectData.fileName);
+	//	if(it != models_.end()) { model = &it->second; }
+	//	//モデルを指定して3Dオブジェクトを作成
 
-		if(objectData.fileName == "sphere" || objectData.fileName == "testStage0")
-		{
-			//モデルをロード
-			Model::Load(objectData.fileName);
+	//	if(objectData.fileName == "sphere" || objectData.fileName == "testStage0")
+	//	{
+	//		//モデルをロード
+	//		Model::Load(objectData.fileName);
 
-			//3Dオブジェクトの生成
-			std::unique_ptr<Object3d> newObject = nullptr;
-			newObject = Object3d::Create(objectData.fileName);
+	//		//3Dオブジェクトの生成
+	//		std::unique_ptr<Object3d> newObject = nullptr;
+	//		newObject = Object3d::Create(objectData.fileName);
 
-			DirectX::XMFLOAT3 pos;
-			pos = objectData.translation;
-			newObject->SetTransform(pos);
+	//		DirectX::XMFLOAT3 pos;
+	//		pos = objectData.translation;
+	//		newObject->SetTransform(pos);
 
-			//回転角
-			DirectX::XMFLOAT3 rot;
-			rot = objectData.rotation;
-			newObject->SetRotation(rot);
+	//		//回転角
+	//		DirectX::XMFLOAT3 rot;
+	//		rot = objectData.rotation;
+	//		newObject->SetRotation(rot);
 
-			//大きさ
-			DirectX::XMFLOAT3 scale;
-			scale = objectData.scaling;
-			newObject->SetScale(scale);
+	//		//大きさ
+	//		DirectX::XMFLOAT3 scale;
+	//		scale = objectData.scaling;
+	//		newObject->SetScale(scale);
 
-			//配列に登録
-			objects_.push_back(std::move(newObject));
-		}
-	}
+	//		//配列に登録
+	//		objects_.push_back(std::move(newObject));
+	//	}
+	//}
 
 	//------------画像読み込み----------
 	title_ = std::make_unique<Sprite>();
@@ -135,32 +135,30 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	const string testStage0 = "testStage0";
 	const string ground = "ground";
 
-
-
 	Model::Load(test);
 	Model::Load(sphere);
 	Model::Load(spear);
 	Model::Load(testStage0);
 	Model::Load(ground);
 
-
 	//3Dオブジェクトの生成
 	XMFLOAT3 spherePosition = { 0,2,20 };
-	XMFLOAT3 groundPosition = { 0,0,0 };
+	XMFLOAT3 groundPosition = { 0,-5,0 };
 
 	XMFLOAT3 sphereScale = { 10,10,10 };
+	XMFLOAT3 groundScale = { 10,1,10 };
 
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
 	
-	sphere_ = Object3d::Create(sphere);
+	/*sphere_ = Object3d::Create(sphere);
 	sphere_->Initialize();
 	sphere_->SetTransform(spherePosition);
-	sphere_->SetCollider(sphereCollider_.get());
+	sphere_->SetCollider(sphereCollider_.get());*/
 
 	objGround_ = TouchableObject::Create(ground);
 	objGround_->SetTransform(groundPosition);
-	objGround_->SetScale(sphereScale);
+	objGround_->SetScale(groundScale);
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
@@ -170,13 +168,15 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 
 	//カメラ
 	XMFLOAT3 cameraEye = { 30,7.5,-20 };
-	XMFLOAT3 testCameraEye = { 0,50,-30 };
-	XMFLOAT3 cameraTarget = { 0,5,5 };
+	XMFLOAT3 testCameraEye = { 0,-5,-30 };
+	XMFLOAT3 cameraTarget = { 0,0,5 };
+	XMFLOAT3 testcameraTarget = { 0,-5,5 };
+
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize(testCameraEye, cameraTarget, cameraUp);
-	testGameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
+	testCamera_->Initialize(testCameraEye, testcameraTarget, cameraUp);
+	testGameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 }
 
 void GameScene::Update()
@@ -257,24 +257,24 @@ void GameScene::Update()
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
 		{
-			for(auto& object : objects_)
+			/*for(auto& object : objects_)
 			{
 				object->Update(testCamera_.get());
-			}
-			player_->Update(testCamera_.get());
-			sphere_->Update(testCamera_.get());
+			}*/
 			objGround_->Update(testCamera_.get());
+			player_->Update(testCamera_.get());
+			//sphere_->Update(testCamera_.get());
 		}
 		else
 		{
-			for(auto& object : objects_)
+			/*for(auto& object : objects_)
 			{
 				object->Update(testGameCamera_.get());
-			}
+			}*/
 
-			sphere_->Update(testGameCamera_.get());
-			player_->Update(testGameCamera_.get());
+			//sphere_->Update(testGameCamera_.get());
 			objGround_->Update(testGameCamera_.get());
+			player_->Update(testGameCamera_.get());
 		}
 
 		//画像の更新処理
@@ -300,10 +300,10 @@ void GameScene::Update()
 		{
 			if(player_->GetIsFinish() == true)
 			{
-				player_->Reset();
+				/*player_->Reset();
 				testGameCamera_->Reset();
 				scene_ = TITLE;
-				keyTimer_ = kWaitTime_;
+				keyTimer_ = kWaitTime_;*/
 			}
 		}
 		else

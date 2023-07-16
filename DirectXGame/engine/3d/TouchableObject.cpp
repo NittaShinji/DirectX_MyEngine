@@ -1,5 +1,6 @@
 #include "TouchableObject.h"
 #include "MeshCollider.h"
+#include "CollisionAttribute.h"
 
 //TouchableObject* TouchableObject::Create(const std::string& path)
 std::unique_ptr<TouchableObject> TouchableObject::Create(const std::string& path)
@@ -15,7 +16,8 @@ std::unique_ptr<TouchableObject> TouchableObject::Create(const std::string& path
 	instance->Initialize();
 	instance->SetModel(path);
 	instance->AddCollider(instance->GetModel());
-
+	//属性を設定
+	instance->collider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	return instance;
 }
 
@@ -27,9 +29,18 @@ void TouchableObject::Initialize()
 void TouchableObject::AddCollider(Model* model)
 {
 	//コライダーの追加
-	MeshCollider* collider = new MeshCollider;
-	SetCollider(collider);
-	collider->ConstructTriangles(model);
+	//MeshCollider* collider = new MeshCollider;
+	//SetCollider(collider);
+	//collider->ConstructTriangles(model);
+
+	objMeshCollider_ = std::make_unique<MeshCollider>();
+	SetCollider(objMeshCollider_.get());
+	objMeshCollider_->ConstructTriangles(model);
+}
+
+void TouchableObject::ColliderUpdate()
+{
+	objMeshCollider_->Update();
 }
 
 void TouchableObject::Draw()

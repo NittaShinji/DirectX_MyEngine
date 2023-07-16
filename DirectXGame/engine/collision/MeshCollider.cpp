@@ -8,12 +8,10 @@ void MeshCollider::ConstructTriangles(Model* model)
 	//三角形リストをクリア
 	triangles.clear();
 	//モデルの持つメッシュリストを取得
-	//const std::vector<Mesh>& meshes = model->GetMeshes();
 	std::vector<Mesh> meshes = model->GetMeshes();
 	//現在のメッシュの開始三角形番号を入れておく変数(0で初期化)
 	int start = 0;
 	//全メッシュについて順に処理する
-	//std::vector<Mesh*>::const_iterator it = meshes.cbegin();
 	std::vector<Mesh>::iterator it = meshes.begin();
 
 	for(; it != meshes.cend(); ++it)

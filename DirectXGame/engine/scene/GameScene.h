@@ -121,15 +121,11 @@ private:
 	Ray rayCollision_;
 
 	//3Dオブジェクト
-	std::unique_ptr<Object3d> sphere_ = nullptr;
-	std::unique_ptr<Object3d> testStage0_ = nullptr;
-
-	//std::unique_ptr<Object3d> ground_ = nullptr;
-	//std::unique_ptr<Object3d> triangle_ = nullptr;
-	//std::unique_ptr<Object3d> ray_ = nullptr;
+	//std::unique_ptr<Object3d> sphere_ = nullptr;
+	//std::unique_ptr<Object3d> testStage0_ = nullptr;
 
 	//blender読み込みオブジェクト
-	std::vector<std::unique_ptr<Object3d>> objects_;
+	//std::vector<std::unique_ptr<Object3d>> objects_;
 
 
 	//画像なしテストオブジェクト

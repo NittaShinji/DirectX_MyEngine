@@ -46,6 +46,8 @@ public: //メンバ関数
 	/// <returns>レイが任意のコライダーと交わる場合はtrue、それ以外はfalse</returns>
 	bool Raycast(const Ray& ray, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
 
+	bool Raycast(const Ray& ray, unsigned short attribute, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
+
 private:
 	CollisionManager() = default;
 	CollisionManager(const CollisionManager&) = delete;
