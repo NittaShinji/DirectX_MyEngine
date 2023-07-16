@@ -37,13 +37,10 @@ void Player::Initialize()
 
 	//コライダーの追加
 	float radius = 1.0f;
-	//playerCollider_ = std::make_unique<SphereCollider>(XMVECTOR({ 0,radius,0,0 }), radius);
 	playerCollider_ = std::make_unique<SphereCollider>(XMVECTOR({ 0,0,0,0 }), radius);
 
 	//コライダーの登録
 	SetCollider(playerCollider_.get());
-
-	//collider->SetAttribute(COLLISION_ATTR_ALLIES);
 	
 	//属性を指定
 	playerCollider_->SetAttribute(COLLISION_ATTR_ALLIES);
@@ -95,8 +92,6 @@ void Player::Update(Camera* camera)
 	Object3d::SetTransform(position_);
 	Object3d::Update(camera);
 
-	//collider->Update();
-
 	//球コライダーを取得
 	SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 	assert(sphereCollider);
@@ -141,13 +136,6 @@ void Player::Update(Camera* camera)
 			Object3d::Update(camera);
 		}
 	}
-
-	//position_.y = 1.0f;
-	//position_.x = 1.0f;
-
-	////行列の更新など
-	//Object3d::SetTransform(position_);
-	//Object3d::Update(camera);
 
 	finish();
 }
