@@ -186,7 +186,10 @@
     <ClCompile Include="DirectXGame\engine\3d\TouchableObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\scene\GameManager.cpp">
+    <ClCompile Include="DirectXGame\engine\scene\MyGame.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\base\MyFramework.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -290,7 +293,10 @@
     <ClInclude Include="DirectXGame\engine\collision\CollisionAttribute.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\engine\scene\GameManager.h">
+    <ClInclude Include="DirectXGame\engine\scene\MyGame.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\base\MyFramework.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

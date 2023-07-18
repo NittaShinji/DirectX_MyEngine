@@ -37,8 +37,8 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//------------サウンド----------
 	sound_ = std::make_unique<Sound>();
 	sound_->Initialize();
-	//sound_->LoadSoundWave("Alarm01.wav");
-	//sound_->PlaySoundWave("Alarm01.wav");
+	sound_->LoadSoundWave("Alarm01.wav");
+	sound_->PlaySoundWave("Alarm01.wav");
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();
