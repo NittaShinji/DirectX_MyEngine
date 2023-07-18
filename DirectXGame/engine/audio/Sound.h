@@ -8,15 +8,20 @@
 #include <stdint.h>
 #include <vector>
 
-class Sound
+class Sound final
 {
 
-public:
+private:
+
 	Sound();
 	~Sound();
 
-	static void StaticInitialize();
-	void Initialize();
+public:
+
+	//コピーコンストラクタの無効
+	Sound(const Sound& sound) = delete;
+	//代入演算子の無効
+	Sound& operator=(const Sound& sound) = delete;
 
 public:
 
@@ -51,6 +56,16 @@ public:
 		//バッファのサイズ
 		uint32_t bufferSize;
 	};
+
+public: //メンバ関数
+
+	static Sound* GetInstance()
+	{
+		static Sound instance;
+		return &instance;
+	}
+
+	void Initialize();
 	
 	/// <sumary>
 	/// WAV音声読み込み

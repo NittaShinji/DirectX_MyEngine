@@ -16,12 +16,13 @@
 #include "GameCamera.h"
 #include "GamePad.h"
 #include "SphereCollider.h"
+#include "BaseScene.h"
 
 class CollisionManager;
 class TouchableObject;
 class Player;
 
-class GameScene
+class GameScene : public BaseScene
 {
 
 public:
@@ -39,17 +40,19 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager);
+	//void Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager);
+	void Initialize() override;
+
 
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update();
+	void Update() override;
 
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw() override;
 
 
 private:
@@ -85,10 +88,10 @@ private:
 
 
 	//サウンド
-	std::unique_ptr<Sound> sound_ = nullptr;
+	//std::unique_ptr<Sound> sound_ = nullptr;
 
 	//スプライト
-	std::unique_ptr<Sprite> title_ = nullptr;
+	//std::unique_ptr<Sprite> title_ = nullptr;
 	std::unique_ptr<Sprite> test_ = nullptr;
 	std::unique_ptr<Sprite> end_ = nullptr;
 
@@ -98,7 +101,6 @@ private:
 
 	//スプライト共通部分
 	//std::unique_ptr<SpriteCommon> spriteCommon_ = nullptr;
-	SpriteCommon* spriteCommon_ = nullptr;
 	
 	//ゲームシーン
 	int32_t scene_;

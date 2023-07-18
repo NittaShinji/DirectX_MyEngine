@@ -16,14 +16,20 @@ void MyGame::Initialize()
 	imGuiManager_ = std::make_unique<ImGuiManager>();
 	imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());
 
-	//GameScene初期化処理
-	gameScene_ = std::make_unique<GameScene>();
-	gameScene_->Initialize(directXBasic_.get(), imGuiManager_.get());
+	//基盤シーン静的初期化
+	scene_ = std::make_unique<TitleScene>();
+	scene_->StaticInitialize(directXBasic_.get(), imGuiManager_.get());
+	//タイトルシーン初期化処理
+	scene_->Initialize();
+	 
+	//ゲームシーン初期化処理
+	/*gameScene_ = std::make_unique<GameScene>();
+	gameScene_->Initialize();*/
 
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
 	//ポストエフェクト用テクスチャの読み込み
-	SpriteCommon::LoadTexture("test.png");
+	SpriteCommon::GetInstance()->LoadTexture("test.png");
 	postEffect_->Initialize(directXBasic_.get());
 }
 
@@ -37,7 +43,8 @@ void MyGame::Update()
 	// DirectX毎フレーム処理 ここから
 	imGuiManager_->Begin();
 
-	gameScene_->Update();
+	//gameScene_->Update();
+	scene_->Update();
 
 	imGuiManager_->End();
 }
@@ -46,7 +53,8 @@ void MyGame::Draw()
 {
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
-	gameScene_->Draw();
+	//gameScene_->Draw();
+	scene_->Draw();
 	postEffect_->PostDrawScene();
 
 	//描画開始

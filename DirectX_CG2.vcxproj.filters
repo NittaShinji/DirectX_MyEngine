@@ -138,13 +138,13 @@
     <ClCompile Include="DirectXGame\engine\base\WindowsAPI.cpp">
       <Filter>ソース ファイル\engine\base</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\scene\GameScene.cpp">
+    <ClCompile Include="DirectXGame\application\scene\GameScene.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\engine\camera\Camera.cpp">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\debugText\ImGuiManager.cpp">
+    <ClCompile Include="DirectXGame\application\ImGuiManager.cpp">
       <Filter>ソース ファイル\engine\debugText</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\engine\loader\LevelManager.cpp">
@@ -153,7 +153,7 @@
     <ClCompile Include="DirectXGame\engine\light\LightGroup.cpp">
       <Filter>ソース ファイル\engine\light</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\2d\PostEffect.cpp">
+    <ClCompile Include="DirectXGame\application\PostEffect.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\engine\math\WorldTransform.cpp">
@@ -162,34 +162,40 @@
     <ClCompile Include="DirectXGame\engine\math\MathUtillity.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\io\GamePad.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\application\Player.cpp">
       <Filter>ソース ファイル\application</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\application\GameCamera.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\engine\collision\SphereCollider.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\engine\collision\CollisionManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\engine\3d\Mesh.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\engine\collision</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\engine\collision\MeshCollider.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\collision\SphereCollider.cpp">
+      <Filter>ソース ファイル\engine\collision</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\3d\Mesh.cpp">
+      <Filter>ソース ファイル\engine\3d</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\engine\3d\TouchableObject.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\engine\3d</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\scene\MyGame.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="DirectXGame\application\GameCamera.cpp">
+      <Filter>ソース ファイル\application</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\application\MyGame.cpp">
+      <Filter>ソース ファイル\application</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\io\GamePad.cpp">
+      <Filter>ソース ファイル\engine\io</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\engine\base\MyFramework.cpp">
+      <Filter>ソース ファイル\engine\base</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\application\scene\TitleScene.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\application\scene\BaseScene.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -230,13 +236,13 @@
     <ClInclude Include="DirectXGame\engine\camera\Camera.h">
       <Filter>ヘッダー ファイル\engine\camera</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\engine\scene\GameScene.h">
+    <ClInclude Include="DirectXGame\application\scene\GameScene.h">
       <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\light\DirectionalLight.h">
       <Filter>ヘッダー ファイル\engine\light</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\engine\debugText\ImGuiManager.h">
+    <ClInclude Include="DirectXGame\application\ImGuiManager.h">
       <Filter>ヘッダー ファイル\engine\debugText</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\light\LightGroup.h">
@@ -245,7 +251,7 @@
     <ClInclude Include="DirectXGame\engine\loader\LevelManager.h">
       <Filter>ヘッダー ファイル\engine\loader</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\engine\2d\PostEffect.h">
+    <ClInclude Include="DirectXGame\application\PostEffect.h">
       <Filter>ヘッダー ファイル\engine\2d</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\math\WorldTransform.h">
@@ -254,49 +260,55 @@
     <ClInclude Include="DirectXGame\engine\math\MathUtillity.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\engine\io\GamePad.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\application\Player.h">
       <Filter>ヘッダー ファイル\application</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\application\GameCamera.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\collision\CollisionTypes.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\engine\collision\BaseCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\collision\CollisionInfo.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\collision\SphereCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\collision\CollisionManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\collision\RaycastHit.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\3d\Mesh.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\collision\MeshCollider.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\3d\TouchableObject.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\collision\CollisionAttribute.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\engine\scene\MyGame.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="DirectXGame\engine\collision\CollisionInfo.h">
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\collision\CollisionManager.h">
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\collision\CollisionTypes.h">
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\collision\MeshCollider.h">
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\collision\SphereCollider.h">
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\base\MyFramework.h">
+      <Filter>ヘッダー ファイル\engine\base</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\GameCamera.h">
+      <Filter>ヘッダー ファイル\application</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\MyGame.h">
+      <Filter>ヘッダー ファイル\application</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\io\GamePad.h">
+      <Filter>ヘッダー ファイル\engine\io</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\3d\Mesh.h">
+      <Filter>ヘッダー ファイル\engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\collision\RaycastHit.h">
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\3d\TouchableObject.h">
+      <Filter>ヘッダー ファイル\engine\3d</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\scene\TitleScene.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\scene\BaseScene.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

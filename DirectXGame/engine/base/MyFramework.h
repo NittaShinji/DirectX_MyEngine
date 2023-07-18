@@ -2,7 +2,9 @@
 #include "WindowsAPI.h"
 #include "DirectXBasic.h"
 #include "ImGuiManager.h"
-#include "GameScene.h"
+#include "Sprite.h"
+#include "SpriteCommon.h"
+#include "Sound.h"
 #include "Input.h"
 
 //ゲーム全体
@@ -43,6 +45,18 @@ protected: //メンバ変数
 
 	//入力処理
 	std::unique_ptr<Input> input_ = nullptr;
+
+	//ImGui初期化処理
+	//std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
+
+	//サウンド
+	//std::unique_ptr<Sound> sound_ = nullptr;
+
+	//スプライト
+	SpriteCommon* spriteCommon_ = nullptr;
+
+	//基盤シーン
+	//std::unique_ptr<BaseScene> scene_ = nullptr;
 
 	//ゲーム終了フラグ
 	bool endRequst_ = false;

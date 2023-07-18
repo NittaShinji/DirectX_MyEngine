@@ -1,4 +1,6 @@
 #include "MyFramework.h"
+#include "TitleScene.h"
+#include "GameScene.h"
 #include "xaudio2.h"
 #include <wrl.h>
 
@@ -18,6 +20,10 @@ void MyFramework::Initialize()
 	input_ = std::make_unique<Input>();
 	input_->Initialize(winApi_.get());
 
+	//ImGui初期化処理
+	/*imGuiManager_ = std::make_unique<ImGuiManager>();
+	imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());*/
+
 	//サウンド処理
 	ComPtr<IXAudio2> xAudio2;
 	IXAudio2MasteringVoice* masterVoice;
@@ -25,6 +31,20 @@ void MyFramework::Initialize()
 	HRESULT result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	//マスターボイスの生成
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
+	
+	//スプライト
+	SpriteCommon::GetInstance()->Initialize(directXBasic_.get());
+	Sprite::StaticInitialize();
+
+	//サウンド
+	Sound::GetInstance()->Initialize();
+
+	//基盤シーン静的初期化
+	//scene_ = std::make_unique<TitleScene>();
+	//scene_->StaticInitialize(directXBasic_.get(), imGuiManager_.get());
+	////タイトルシーン初期化処理
+	//scene_->Initialize();
+
 }
 
 void MyFramework::Update()
@@ -37,10 +57,12 @@ void MyFramework::Update()
 	}
 
 	input_->Update();
+	//scene_->Update();
 }
 
 void MyFramework::Finalize()
 {
+	Sound::GetInstance()->Finalize();
 	//ゲーム全体の終了処理
 	winApi_->Finalize();
 }

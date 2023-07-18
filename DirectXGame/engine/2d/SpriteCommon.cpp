@@ -13,11 +13,8 @@ ComPtr<ID3D12DescriptorHeap> SpriteCommon::srvHeap_;
 DirectXBasic* SpriteCommon::directXBasic_;
 uint32_t SpriteCommon::sTextureIndex_;
 
-
-SpriteCommon::~SpriteCommon()
-{
-
-}
+SpriteCommon::SpriteCommon() {}
+SpriteCommon::~SpriteCommon(){}
 
 template<typename Type1, typename Type2>
 ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff(Type1*& constMapData, Type2* directXBasic_)

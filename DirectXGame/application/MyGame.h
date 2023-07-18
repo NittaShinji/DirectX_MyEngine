@@ -3,6 +3,7 @@
 #include "GameScene.h"
 #include "PostEffect.h"
 #include "MyFramework.h"
+#include "TitleScene.h"
 #include <fstream>
 #include <memory>
 
@@ -26,7 +27,10 @@ private: //メンバ変数
 
 	//ImGui初期化処理
 	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
-	
+	//基盤シーン
+	std::unique_ptr<BaseScene> scene_ = nullptr;
+	//タイトルシーン
+	std::unique_ptr<TitleScene> titleScene_ = nullptr;
 	//ゲームシーン
 	std::unique_ptr<GameScene> gameScene_ = nullptr;
 	

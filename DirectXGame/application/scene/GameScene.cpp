@@ -17,10 +17,11 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {}
 
-void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
+//void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
+void GameScene::Initialize()
 {
-	directXBasic_ = directXBasic;
-	imGuiManager_ = imGuiManager;
+	directXBasic_ = BaseScene::directXBasic_;
+	imGuiManager_ = BaseScene::imGuiManager_;
 	scene_ = TITLE;
 
 	Model::StaticInitialize(directXBasic_);
@@ -35,10 +36,10 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	Object3d::SetLightGroup(lightGroup_);
 
 	//------------サウンド----------
-	sound_ = std::make_unique<Sound>();
-	sound_->Initialize();
-	sound_->LoadSoundWave("Alarm01.wav");
-	sound_->PlaySoundWave("Alarm01.wav");
+	//sound_ = std::make_unique<Sound>();
+	//sound_->Initialize();
+	Sound::GetInstance()->LoadSoundWave("Alarm01.wav");
+	Sound::GetInstance()->PlaySoundWave("Alarm01.wav");
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();
@@ -92,22 +93,28 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	//}
 
 	//------------画像読み込み----------
-	title_ = std::make_unique<Sprite>();
+	//title_ = std::make_unique<Sprite>();
 	test_ = std::make_unique<Sprite>();
 	end_ = std::make_unique<Sprite>();
 	//spriteCommon_ = std::make_unique<SpriteCommon>();
-	spriteCommon_ = SpriteCommon::GetInstance();
+	//spriteCommon_ = SpriteCommon::GetInstance();
+	//SpriteCommon::GetInstance()->Initialize(directXBasic_);
 
 	//スプライト関係初期化
-	spriteCommon_->Initialize(directXBasic_);
+	//spriteCommon_->Initialize(directXBasic_);
 	//画像読み込み
 	//spriteCommon_->LoadTexture("title.png");
-	SpriteCommon::LoadTexture("tomas.png");
-	SpriteCommon::LoadTexture("title.png");
-	SpriteCommon::LoadTexture("end.png");
+	SpriteCommon::GetInstance()->LoadTexture("tomas.png");
+	//SpriteCommon::GetInstance()->LoadTexture("title.png");
+	SpriteCommon::GetInstance()->LoadTexture("end.png");
 
 
-	Sprite::StaticInitialize();
+	//SpriteCommon::LoadTexture("tomas.png");
+	//SpriteCommon::LoadTexture("title.png");
+	//SpriteCommon::LoadTexture("end.png");
+
+
+	//Sprite::StaticInitialize();
 
 	//個々の画像を初期化(指定した番号の画像を使用する)
 	XMFLOAT2 titlePosition = { 0,0 };
@@ -117,14 +124,16 @@ void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManage
 	XMFLOAT2 endPosition = { 0,0 };
 	XMFLOAT2 endSize = { 1280,720 };
 
-	title_->Initialize(titlePosition, titleSize);
+	//title_->Initialize(titlePosition, titleSize);
 	test_->Initialize(testPosition, testSize);
 	end_->Initialize(endPosition, endSize);
 
 	//シェーダー読み込み
-	spriteCommon_->ShaderLoad();
+	SpriteCommon::GetInstance()->ShaderLoad();
+	//spriteCommon_->ShaderLoad();
+	SpriteCommon::GetInstance()->SemiTransparent();
 	//スプライト用のパイプラインステート(透過可能)を用意
-	spriteCommon_->SemiTransparent();
+	//spriteCommon_->SemiTransparent();
 
 	//------------モデル読み込み----------
 
@@ -227,8 +236,8 @@ void GameScene::Update()
 
 		//アンカーポイントの設定
 		XMFLOAT2 anchorPoint = { 0.0f,0.0f };
-		title_->SetAnchorPoint(anchorPoint);
-		title_->matUpdate();
+		//title_->SetAnchorPoint(anchorPoint);
+		//title_->matUpdate();
 		test_->SetAnchorPoint(anchorPoint);
 		test_->matUpdate();
 
@@ -352,9 +361,12 @@ void GameScene::Draw()
 	case TITLE:
 
 		//画像描画
-		spriteCommon_->BeforeDraw();
-		spriteCommon_->Update();
-		title_->Draw("title.png");
+		SpriteCommon::GetInstance()->BeforeDraw();
+		SpriteCommon::GetInstance()->Update();
+
+		//spriteCommon_->BeforeDraw();
+		//spriteCommon_->Update();
+		//title_->Draw("title.png");
 
 		break;
 
@@ -377,8 +389,11 @@ void GameScene::Draw()
 	case END:
 
 		//画像描画
-		spriteCommon_->BeforeDraw();
-		spriteCommon_->Update();
+		SpriteCommon::GetInstance()->BeforeDraw();
+		SpriteCommon::GetInstance()->Update();
+
+		//spriteCommon_->BeforeDraw();
+		//spriteCommon_->Update();
 		end_->Draw("end.png");
 
 		break;

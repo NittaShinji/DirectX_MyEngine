@@ -10,7 +10,7 @@
 #include "DirectXBasic.h"
 using namespace DirectX;
  
-class SpriteCommon
+class SpriteCommon final
 {
 public:
 
@@ -28,8 +28,6 @@ public:
 
 	//エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	~SpriteCommon();
 	
 	//初期化
 	void Initialize(DirectXBasic* directXBasic);
@@ -77,7 +75,6 @@ public:
 
 private:
 
-
 	static DirectXBasic* directXBasic_;
 
 	ID3DBlob* vsBlob_ = nullptr; // 頂点シェーダオブジェクト
@@ -120,6 +117,18 @@ private:
 	static uint32_t sTextureIndex_;
 	//画像に結び付いたテクスチャ番号格納用map
 	static std::map<const std::string, uint32_t, std::less<>> textureMap_;
+
+private:
+
+	SpriteCommon();
+	~SpriteCommon();
+
+public:
+
+	//コピーコンストラクタを無効
+	SpriteCommon(const SpriteCommon& spritecommon) = delete;
+	//代入演算子を無効
+	SpriteCommon& operator= (const SpriteCommon& spritecommon) = delete;
 
 public:
 

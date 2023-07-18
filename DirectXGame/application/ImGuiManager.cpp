@@ -53,12 +53,10 @@ void ImGuiManager::Begin()
 	ImGui::NewFrame();
 }
 
-
 void ImGuiManager::End()
 {
 	ImGui::Render();
 }
-
 
 void ImGuiManager::Draw()
 {
