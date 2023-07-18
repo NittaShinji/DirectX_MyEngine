@@ -120,6 +120,7 @@
     <ClCompile Include="DirectXGame\engine\3d\Mesh.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\MeshCollider.cpp" />
     <ClCompile Include="DirectXGame\engine\3d\TouchableObject.cpp" />
+    <ClCompile Include="DirectXGame\engine\scene\GameManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\engine\2d\PostEffect.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="DirectXGame\engine\3d\Mesh.h" />
     <ClInclude Include="DirectXGame\engine\collision\MeshCollider.h" />
     <ClInclude Include="DirectXGame\engine\3d\TouchableObject.h" />
+    <ClInclude Include="DirectXGame\engine\scene\GameManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />

@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include <stdint.h>
 
-
 //windowsAPI
 class WindowsAPI
 {
