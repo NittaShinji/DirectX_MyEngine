@@ -14,15 +14,19 @@ using namespace std;
 using namespace DirectX;
 
 GameScene::GameScene() {}
-
 GameScene::~GameScene() {}
+
+void GameScene::StaticInitialize(ImGuiManager* imGuiManager)
+{
+	//imGuiManager_ = imGuiManager;
+}
 
 //void GameScene::Initialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
 void GameScene::Initialize()
 {
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
-	scene_ = TITLE;
+	scene_ = GAME;
 
 	Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);
@@ -56,41 +60,41 @@ void GameScene::Initialize()
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
 
-	//for(auto& objectData : levelData_->objects)
-	//{
-	//	//ファイル名から登録済みモデルを検索
-	//	Model* model = nullptr;
-	//	decltype(models_)::iterator it = models_.find(objectData.fileName);
-	//	if(it != models_.end()) { model = &it->second; }
-	//	//モデルを指定して3Dオブジェクトを作成
+	for(auto& objectData : levelData_->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models_)::iterator it = models_.find(objectData.fileName);
+		if(it != models_.end()) { model = &it->second; }
+		//モデルを指定して3Dオブジェクトを作成
 
-	//	if(objectData.fileName == "sphere" || objectData.fileName == "testStage0")
-	//	{
-	//		//モデルをロード
-	//		Model::Load(objectData.fileName);
+		if(objectData.fileName == "sphere" || objectData.fileName == "testStage0")
+		{
+			//モデルをロード
+			Model::Load(objectData.fileName);
 
-	//		//3Dオブジェクトの生成
-	//		std::unique_ptr<Object3d> newObject = nullptr;
-	//		newObject = Object3d::Create(objectData.fileName);
+			//3Dオブジェクトの生成
+			std::unique_ptr<Object3d> newObject = nullptr;
+			newObject = Object3d::Create(objectData.fileName);
 
-	//		DirectX::XMFLOAT3 pos;
-	//		pos = objectData.translation;
-	//		newObject->SetTransform(pos);
+			DirectX::XMFLOAT3 pos;
+			pos = objectData.translation;
+			newObject->SetTransform(pos);
 
-	//		//回転角
-	//		DirectX::XMFLOAT3 rot;
-	//		rot = objectData.rotation;
-	//		newObject->SetRotation(rot);
+			//回転角
+			DirectX::XMFLOAT3 rot;
+			rot = objectData.rotation;
+			newObject->SetRotation(rot);
 
-	//		//大きさ
-	//		DirectX::XMFLOAT3 scale;
-	//		scale = objectData.scaling;
-	//		newObject->SetScale(scale);
+			//大きさ
+			DirectX::XMFLOAT3 scale;
+			scale = objectData.scaling;
+			newObject->SetScale(scale);
 
-	//		//配列に登録
-	//		objects_.push_back(std::move(newObject));
-	//	}
-	//}
+			//配列に登録
+			objects_.push_back(std::move(newObject));
+		}
+	}
 
 	//------------画像読み込み----------
 	//title_ = std::make_unique<Sprite>();
@@ -177,9 +181,9 @@ void GameScene::Initialize()
 
 	//カメラ
 	XMFLOAT3 cameraEye = { 30,7.5,-20 };
-	XMFLOAT3 testCameraEye = { 0,-5,-30 };
-	XMFLOAT3 cameraTarget = { 0,0,5 };
-	XMFLOAT3 testcameraTarget = { 0,-5,5 };
+	XMFLOAT3 testCameraEye = { 0,50,-30 };
+	XMFLOAT3 cameraTarget = { 0,5,5 };
+	XMFLOAT3 testcameraTarget = { 0,5,5 };
 
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
@@ -191,6 +195,12 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 	if(gamePad_->IsConnected(Player1)){}
+
+	if(KeyInput::HasPushedKey(DIK_SPACE))
+	{
+		player_->SetIsMoving(true);
+	}
+
 
 	//光線方向初期値
 	static XMVECTOR lightDir = { 0,1,5,0 };
@@ -266,20 +276,20 @@ void GameScene::Update()
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
 		{
-			/*for(auto& object : objects_)
+			for(auto& object : objects_)
 			{
 				object->Update(testCamera_.get());
-			}*/
-			objGround_->Update(testCamera_.get());
+			}
+			//objGround_->Update(testCamera_.get());
 			player_->Update(testCamera_.get());
 			//sphere_->Update(testCamera_.get());
 		}
 		else
 		{
-			/*for(auto& object : objects_)
+			for(auto& object : objects_)
 			{
 				object->Update(testGameCamera_.get());
-			}*/
+			}
 
 			//sphere_->Update(testGameCamera_.get());
 			objGround_->Update(testGameCamera_.get());
@@ -353,8 +363,6 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-
-
 	switch(scene_)
 	{
 
@@ -368,6 +376,7 @@ void GameScene::Draw()
 		//spriteCommon_->Update();
 		//title_->Draw("title.png");
 
+
 		break;
 
 	case GAME:
@@ -375,14 +384,14 @@ void GameScene::Draw()
 		//モデル描画
 		Object3d::BeforeDraw();
 
-		/*for(auto& object : objects_)
+		for(auto& object : objects_)
 		{
 			object->Draw();
-		}*/
+		}
 
 		player_->Draw();
 		//sphere_->Draw();
-		objGround_->Draw();
+		//objGround_->Draw();
 		
 
 		break;

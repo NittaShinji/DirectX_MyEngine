@@ -26,14 +26,14 @@ public: //メンバ関数
 private: //メンバ変数
 
 	//ImGui初期化処理
-	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
-	//基盤シーン
-	std::unique_ptr<BaseScene> scene_ = nullptr;
-	//タイトルシーン
-	std::unique_ptr<TitleScene> titleScene_ = nullptr;
-	//ゲームシーン
-	std::unique_ptr<GameScene> gameScene_ = nullptr;
-	
+	//std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
+	////基盤シーン
+	//std::unique_ptr<BaseScene> scene_ = nullptr;
+	////タイトルシーン
+	//std::unique_ptr<TitleScene> titleScene_ = nullptr;
+	////ゲームシーン
+	//std::unique_ptr<GameScene> gameScene_ = nullptr;
+	//
 	//ポストエフェクト
 	std::unique_ptr<PostEffect> postEffect_ = nullptr;
 };

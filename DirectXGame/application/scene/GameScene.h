@@ -37,6 +37,8 @@ public:
 	/// </summary>
 	~GameScene();
 
+	static void StaticInitialize(ImGuiManager* imGuiManager);
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -72,7 +74,7 @@ private:
 
 	DirectXBasic* directXBasic_ = nullptr;
 	static KeyInput* keys_;
-	ImGuiManager* imGuiManager_ = nullptr;
+	ImGuiManager* imGuiManager_;
 
 	//デバッグテキスト用の変数
 	//ウインドウの表示フラグ
@@ -127,7 +129,7 @@ private:
 	//std::unique_ptr<Object3d> testStage0_ = nullptr;
 
 	//blender読み込みオブジェクト
-	//std::vector<std::unique_ptr<Object3d>> objects_;
+	std::vector<std::unique_ptr<Object3d>> objects_;
 
 
 	//画像なしテストオブジェクト

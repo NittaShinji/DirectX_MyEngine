@@ -13,18 +13,14 @@ void MyGame::Initialize()
 	MyFramework::Initialize();
 
 	//ImGui初期化処理
-	imGuiManager_ = std::make_unique<ImGuiManager>();
-	imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());
-
-	//基盤シーン静的初期化
-	scene_ = std::make_unique<TitleScene>();
-	scene_->StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	//タイトルシーン初期化処理
-	scene_->Initialize();
-	 
+	//imGuiManager_ = std::make_unique<ImGuiManager>();
+	//imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());
+	
 	//ゲームシーン初期化処理
-	/*gameScene_ = std::make_unique<GameScene>();
-	gameScene_->Initialize();*/
+	//最初のシーンの生成
+	//BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
+	std::unique_ptr<BaseScene> scene = std::make_unique<TitleScene>();
+	sceneManager_->SetNextScene(std::move(scene));
 
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
@@ -35,16 +31,17 @@ void MyGame::Initialize()
 
 void MyGame::Update()
 {
+	// DirectX毎フレーム処理 ここから
+	imGuiManager_->Begin();
+
 	//基底クラスの更新処理
 	MyFramework::Update();
 
 	postEffect_->SetAnchorPoint(XMFLOAT2(0.0f, 0.0f));
 
-	// DirectX毎フレーム処理 ここから
-	imGuiManager_->Begin();
-
 	//gameScene_->Update();
-	scene_->Update();
+	sceneManager_->Update();
+	//scene_->Update();
 
 	imGuiManager_->End();
 }
@@ -54,7 +51,8 @@ void MyGame::Draw()
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
 	//gameScene_->Draw();
-	scene_->Draw();
+	//scene_->Draw();
+	sceneManager_->Draw();
 	postEffect_->PostDrawScene();
 
 	//描画開始

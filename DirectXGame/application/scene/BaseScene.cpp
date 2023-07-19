@@ -3,7 +3,7 @@
 DirectXBasic* BaseScene::directXBasic_ = nullptr;
 ImGuiManager* BaseScene::imGuiManager_ = nullptr;
 
-void BaseScene::StaticInitialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager)
+void BaseScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
 {
 	directXBasic_ = directXBasic;
 	imGuiManager_ = imGuiManager;

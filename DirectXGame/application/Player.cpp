@@ -26,7 +26,7 @@ void Player::Initialize()
 {
 	Object3d::Initialize();
 
-	position_ = { 0,10,0 };
+	position_ = { 0,2,2 };
 	rotation_ = { 0,0,0 };
 	scale_ = { 1.0,1.0,1.0 };
 
@@ -55,6 +55,11 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
+	if(isMoving_ == true)
+	{
+		move.z = 0.25f;
+	}
+
 	if(KeyInput::HasPushedKey(DIK_S))
 	{
 		position_.y += -0.05f;
@@ -136,6 +141,12 @@ void Player::Update(Camera* camera)
 			Object3d::Update(camera);
 		}
 	}
+
+	position_.z += move.z;
+
+	Object3d::SetTransform(position_);
+
+	Object3d::Update(camera);
 
 	finish();
 }

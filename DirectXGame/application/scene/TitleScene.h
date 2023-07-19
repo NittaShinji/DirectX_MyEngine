@@ -6,6 +6,8 @@ class TitleScene : public BaseScene
 {
 public:
 
+	static void StaticInitialize();
+
 	//‰Šú‰»
 	void Initialize() override;
 
@@ -21,6 +23,9 @@ public:
 private:
 
 	std::unique_ptr<Sprite> title_ = nullptr;
+	//std::unique_ptr<Input> input_ = nullptr;
+
+	static KeyInput* keys_;
 
 };
 

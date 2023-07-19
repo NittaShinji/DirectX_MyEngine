@@ -60,7 +60,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\scene;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,6 +124,7 @@
     <ClCompile Include="DirectXGame\application\MyGame.cpp" />
     <ClCompile Include="DirectXGame\engine\base\MyFramework.cpp" />
     <ClCompile Include="DirectXGame\application\scene\TitleScene.cpp" />
+    <ClCompile Include="DirectXGame\engine\scene\SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\application\scene\BaseScene.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="DirectXGame\application\MyGame.h" />
     <ClInclude Include="DirectXGame\engine\base\MyFramework.h" />
     <ClInclude Include="DirectXGame\application\scene\TitleScene.h" />
+    <ClInclude Include="DirectXGame\engine\scene\SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />

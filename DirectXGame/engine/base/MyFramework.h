@@ -6,6 +6,7 @@
 #include "SpriteCommon.h"
 #include "Sound.h"
 #include "Input.h"
+#include "SceneManager.h"
 
 //ゲーム全体
 class MyFramework
@@ -47,7 +48,7 @@ protected: //メンバ変数
 	std::unique_ptr<Input> input_ = nullptr;
 
 	//ImGui初期化処理
-	//std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
+	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
 
 	//サウンド
 	//std::unique_ptr<Sound> sound_ = nullptr;
@@ -56,6 +57,7 @@ protected: //メンバ変数
 	SpriteCommon* spriteCommon_ = nullptr;
 
 	//基盤シーン
+	std::unique_ptr<SceneManager> sceneManager_ = nullptr;
 	//std::unique_ptr<BaseScene> scene_ = nullptr;
 
 	//ゲーム終了フラグ

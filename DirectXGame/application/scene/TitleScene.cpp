@@ -1,4 +1,6 @@
 #include "TitleScene.h"
+#include "GameScene.h"
+#include "SceneManager.h"
 
 void TitleScene::Initialize()
 {
@@ -18,6 +20,16 @@ void TitleScene::Update()
 	XMFLOAT2 anchorPoint = { 0.0f,0.0f };
 	title_->SetAnchorPoint(anchorPoint);
 	title_->matUpdate();
+
+	if(keys_->HasPushedKey(DIK_RETURN))
+	{
+		GameScene::StaticInitialize(BaseScene::imGuiManager_);
+		//ゲームシーンに切り替え
+		std::unique_ptr<BaseScene> scene = std::make_unique<GameScene>();
+		
+		//シーン切り替え依頼
+		sceneManager_->SetNextScene(std::move(scene));
+	}
 }
 
 void TitleScene::Draw()

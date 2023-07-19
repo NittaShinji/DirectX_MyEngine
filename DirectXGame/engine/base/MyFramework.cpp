@@ -21,8 +21,8 @@ void MyFramework::Initialize()
 	input_->Initialize(winApi_.get());
 
 	//ImGui初期化処理
-	/*imGuiManager_ = std::make_unique<ImGuiManager>();
-	imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());*/
+	imGuiManager_ = std::make_unique<ImGuiManager>();
+	imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());
 
 	//サウンド処理
 	ComPtr<IXAudio2> xAudio2;
@@ -40,6 +40,11 @@ void MyFramework::Initialize()
 	Sound::GetInstance()->Initialize();
 
 	//基盤シーン静的初期化
+	
+	//インスタンス生成
+	sceneManager_ = std::make_unique<SceneManager>();
+	/*BaseScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());*/
+	
 	//scene_ = std::make_unique<TitleScene>();
 	//scene_->StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	////タイトルシーン初期化処理
@@ -57,6 +62,9 @@ void MyFramework::Update()
 	}
 
 	input_->Update();
+	sceneManager_->Update();
+	BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
+	
 	//scene_->Update();
 }
 
