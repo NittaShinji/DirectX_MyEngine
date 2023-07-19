@@ -79,16 +79,24 @@ private:
 
 	//接地フラグ
 	bool onGround = false;
+
+	//死亡フラグ
+	bool isDead_ = false;
+
 	//落下ベクトル
-	DirectX::XMVECTOR fallVec;
+	DirectX::XMVECTOR fallVec_;
 
 public:
 
 	bool GetIsMoving() { return isMoving_; }
 	bool GetIsFinish() { return isfinish_; }
+	bool GetIsDead() { return isDead_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }
+	void SetIsDead(bool isDead) { isDead_ = isDead; }
+
+
 
 };
 

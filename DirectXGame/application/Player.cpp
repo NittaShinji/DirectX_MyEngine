@@ -58,6 +58,9 @@ void Player::Update(Camera* camera)
 	if(isMoving_ == true)
 	{
 		move.z = 0.25f;
+		position_.z += move.z;
+		Object3d::SetTransform(position_);
+		Object3d::Update(camera);
 	}
 
 	if(KeyInput::HasPushedKey(DIK_S))
@@ -80,18 +83,18 @@ void Player::Update(Camera* camera)
 		const float fallAcc = -0.01f;
 		const float fallVYMin = -0.5f;
 		//â¡ë¨
-		fallVec.m128_f32[1] = max(fallVec.m128_f32[1] + fallAcc, fallVYMin);
+		fallVec_.m128_f32[1] = max(fallVec_.m128_f32[1] + fallAcc, fallVYMin);
 		//à⁄ìÆ
-		position_.x += fallVec.m128_f32[0];
-		position_.y += fallVec.m128_f32[1];
-		position_.z += fallVec.m128_f32[2];
+		position_.x += fallVec_.m128_f32[0];
+		position_.y += fallVec_.m128_f32[1];
+		position_.z += fallVec_.m128_f32[2];
 	}
 	//ÉWÉÉÉìÉvëÄçÏ
 	else if(keys_->HasPushedKey(DIK_SPACE))
 	{
 		onGround = false;
-		const float jumpVYFist = 0.2f;
-		fallVec = { 0,jumpVYFist,0,0 };
+		const float jumpVYFist = 0.5f;
+		fallVec_ = { 0,jumpVYFist,0,0 };
 	}
 
 	Object3d::SetTransform(position_);
@@ -125,11 +128,11 @@ void Player::Update(Camera* camera)
 		else
 		{
 			onGround = false;
-			fallVec = {0,0,0};
+			fallVec_ = {0,0,0};
 		}
 	}
 	//óéâ∫èÛë‘
-	else if(fallVec.m128_f32[1] <= 0.0f)
+	else if(fallVec_.m128_f32[1] <= 0.0f)
 	{
  		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 		{
@@ -142,11 +145,10 @@ void Player::Update(Camera* camera)
 		}
 	}
 
-	position_.z += move.z;
-
-	Object3d::SetTransform(position_);
-
-	Object3d::Update(camera);
+	if(position_.y <= -5)
+	{
+		isDead_ = true;
+	}
 
 	finish();
 }
@@ -185,7 +187,7 @@ void Player::finish()
 
 void Player::Reset()
 {
-	position_ = { 0,2,0 };
+	position_ = { 0,2,2 };
 	rotation_ = { 0,0,0 };
 	scale_ = { 1,1,1 };
 
@@ -195,6 +197,7 @@ void Player::Reset()
 	isFlying_ = 0;
 	isfinish_ = false;
 	isMoving_ = false;
+	isDead_ = false;
 }
 
 

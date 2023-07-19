@@ -129,7 +129,7 @@ private:
 	//std::unique_ptr<Object3d> testStage0_ = nullptr;
 
 	//blender読み込みオブジェクト
-	std::vector<std::unique_ptr<Object3d>> objects_;
+	std::vector<std::unique_ptr<TouchableObject>> objects_;
 
 
 	//画像なしテストオブジェクト

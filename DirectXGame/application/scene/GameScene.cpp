@@ -74,8 +74,8 @@ void GameScene::Initialize()
 			Model::Load(objectData.fileName);
 
 			//3Dオブジェクトの生成
-			std::unique_ptr<Object3d> newObject = nullptr;
-			newObject = Object3d::Create(objectData.fileName);
+			std::unique_ptr<TouchableObject> newObject = nullptr;
+			newObject = TouchableObject::Create(objectData.fileName);
 
 			DirectX::XMFLOAT3 pos;
 			pos = objectData.translation;
@@ -196,11 +196,18 @@ void GameScene::Update()
 {
 	if(gamePad_->IsConnected(Player1)){}
 
-	if(KeyInput::HasPushedKey(DIK_SPACE))
+	if(player_->GetIsDead() == false)
 	{
-		player_->SetIsMoving(true);
+		if(KeyInput::HasPushedKey(DIK_SPACE))
+		{
+			player_->SetIsMoving(true);
+		}
 	}
-
+	else
+	{
+		player_->Reset();
+		testGameCamera_->Reset();
+	}
 
 	//光線方向初期値
 	static XMVECTOR lightDir = { 0,1,5,0 };
