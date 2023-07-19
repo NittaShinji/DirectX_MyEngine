@@ -66,17 +66,17 @@ void Object3d::Initialize()
 	//定数バッファの生成
 	constBuffTransform_ = CrateConstBuff<DirectXBasic>(directXBasic_);
 	constBuffMaterial_ = CrateConstBuff<DirectXBasic>(directXBasic_);
-	constBuffLight_ = CrateConstBuff<DirectXBasic>(directXBasic_);
+	//constBuffLight_ = CrateConstBuff<DirectXBasic>(directXBasic_);
 
 	//定数バッファのマッピング
 	HRESULT result = constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform_);//マッピング
 	assert(SUCCEEDED(result));
 	//定数バッファのマッピング
-	result = constBuffLight_->Map(0, nullptr, (void**)&constMapLight_);//マッピング
-	assert(SUCCEEDED(result));
+	//result = constBuffLight_->Map(0, nullptr, (void**)&constMapLight_);//マッピング
+	//assert(SUCCEEDED(result));
 
-	constMapLight_->lightv = { 0,0,1 };
-	constMapLight_->lightcolor = { 1,1,1 };
+	//constMapLight_->lightv = { 1,1,1 };
+	//constMapLight_->lightcolor = { 1,1,1 };
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC  inputLayout[] =
@@ -198,9 +198,6 @@ void Object3d::Initialize()
 
 #pragma region ブレンド設定
 	// ブレンドステート
-
-
-
 	for(UINT i = 0; i < kRenderTexNum; i++)
 	{
 		//レンダーターゲットのブレンド設定
@@ -364,6 +361,11 @@ void Object3d::Update(Camera* camera)
 	constMapMaterial_->specular = model_.GetInfomation()->material.specular;
 	constMapMaterial_->alpha = model_.GetInfomation()->material.alpha;
 
+	if(colorFlag_ == false)
+	{
+		constMapTransform_->color = { 1,1,1,1 };
+	}
+
 	constBuffMaterial_->Unmap(0, nullptr);
 
 	//当たり判定更新
@@ -409,7 +411,7 @@ void Object3d::Draw()
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform_->GetGPUVirtualAddress());
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial_->GetGPUVirtualAddress());
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight_->GetGPUVirtualAddress());
+	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight_->GetGPUVirtualAddress());
 
 	//ライトの描画
 	lightGroup_->Draw(directXBasic_->GetCommandList().Get(), 3);

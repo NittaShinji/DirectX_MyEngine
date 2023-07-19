@@ -51,6 +51,7 @@ void Player::Initialize()
 	isFlying_ = 0;
 	isfinish_ = false;
 	isMoving_ = false;
+	isChangeColor = false;
 }
 
 void Player::Update(Camera* camera)
@@ -75,6 +76,38 @@ void Player::Update(Camera* camera)
 		Object3d::SetTransform(position_);
 		Object3d::Update(camera);
 	}
+
+	if(KeyInput::PushedKeyMoment(DIK_O))
+	{
+		--colorTimer;
+
+		if(colorFlag_ == false && colorTimer < 0)
+		{
+			colorFlag_ = true;
+			colorTimer = pushTime;
+			
+			SetColor(XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
+		}
+
+		if(colorFlag_ == true && colorTimer < 0)
+		{
+			colorFlag_ = false;
+			colorTimer = pushTime;
+		}
+	}
+
+	//if(colorFlag_ == false && colorTimer < 0)
+	//{
+	//	colorFlag_ = true;
+	//	colorTimer = pushTime;
+	//}
+	//else if(colorFlag_ == true && colorTimer < 0)
+	//{
+	//	colorFlag_ = false;
+	//	colorTimer = pushTime;
+	//}
+
+	Object3d::SetColorFlag(colorFlag_);
 
 	//—Ž‰ºˆ—
 	if(!onGround)
@@ -198,6 +231,7 @@ void Player::Reset()
 	isfinish_ = false;
 	isMoving_ = false;
 	isDead_ = false;
+	isChangeColor = false;
 }
 
 

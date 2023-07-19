@@ -86,6 +86,14 @@ private:
 	//—Ž‰ºƒxƒNƒgƒ‹
 	DirectX::XMVECTOR fallVec_;
 
+	bool isChangeColor = false;
+
+	const int32_t pushTime = 1;
+
+	int32_t colorTimer = pushTime;
+
+	bool pushMoment_ = false;
+
 public:
 
 	bool GetIsMoving() { return isMoving_; }

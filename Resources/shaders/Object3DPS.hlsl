@@ -46,9 +46,9 @@ PSOutput main(VSOutput input)
     }
 	
     //陰影とテクスチャの色を合成
-    output.target0 = shadeColor * texcolor;
+    output.target0 = shadeColor * texcolor * color;
     
-    output.target1 = shadeColor * texcolor;
+    output.target1 = shadeColor * texcolor * color;
     
 	//シェーディングによる色で描画
     return output;

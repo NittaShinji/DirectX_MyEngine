@@ -9,12 +9,13 @@ struct DirLight
 
 cbuffer ConstBufferDateTransform : register(b0)
 {
-    ////ビュープロジェクション行列
+    //ビュープロジェクション行列
     matrix viewproj;
     //ワールド行列
     matrix world;
-    ////カメラ座標(ワールド行列)
+    //カメラ座標(ワールド行列)
     float3 cameraPos;
+    float4 color;
 }
 
 cbuffer ConstBufferDateMaterial : register(b1)

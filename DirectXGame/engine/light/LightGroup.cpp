@@ -72,7 +72,6 @@ LightGroup *LightGroup::Create()
 	instance.Initialize();
 
 	return &instance;
-
 }
 
 void LightGroup::TransferConstBuffer()

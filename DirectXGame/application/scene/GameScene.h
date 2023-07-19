@@ -168,14 +168,16 @@ private:
 
 	float ambientColor0_[3] = { 1,1,1 };
 	//Œõü•ûŒü‰Šú’l
-	float lightDir0_[3] = { 0,0,1 };
-	float lightColor0_[3] = { 1,0,0 };
+	float lightDir0_[3] = { 1,-5,-5 };
+	float lightColor0_[3] = { 1,1,1 };
 
-	float lightDir1_[3] = { 0,1,0 };
-	float lightColor1_[3] = { 0,1,0 };
+	//float lightDir1_[3] = { 0,1,0 };
+	//float lightColor1_[3] = { 1,1,1 };
 
-	float lightDir2_[3] = { 1,0,0 };
-	float lightColor2_[3] = { 0,0,1 };
+	//float lightDir2_[3] = { 1,0,0 };
+	//float lightColor2_[3] = { 1,1,1 };
+
+	float whiteColor_[3] = { 1,1,1 };
 
 	Input* input_ = nullptr;
 

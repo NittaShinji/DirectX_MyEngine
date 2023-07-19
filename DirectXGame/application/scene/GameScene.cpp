@@ -42,8 +42,8 @@ void GameScene::Initialize()
 	//------------サウンド----------
 	//sound_ = std::make_unique<Sound>();
 	//sound_->Initialize();
-	Sound::GetInstance()->LoadSoundWave("Alarm01.wav");
-	Sound::GetInstance()->PlaySoundWave("Alarm01.wav");
+	//Sound::GetInstance()->LoadSoundWave("Alarm01.wav");
+	//Sound::GetInstance()->PlaySoundWave("Alarm01.wav");
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();
@@ -210,7 +210,7 @@ void GameScene::Update()
 	}
 
 	//光線方向初期値
-	static XMVECTOR lightDir = { 0,1,5,0 };
+	static XMVECTOR lightDir = { 1,-1,-10,0 };
 	static XMFLOAT3 color = { 1, 1, 1 };
 
 	if(keys_->HasPushedKey(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
@@ -227,21 +227,21 @@ void GameScene::Update()
 	lightGroup_->SetDirLightDir(0, lightDir);
 	lightGroup_->SetDirLightColor(0, XMFLOAT3(1, 1, 1));
 
-	lightGroup_->SetDirLightDir(1, lightDir);
-	lightGroup_->SetDirLightColor(1, XMFLOAT3(1, 1, 1));
+	//lightGroup_->SetDirLightDir(1, lightDir);
+	//lightGroup_->SetDirLightColor(1, XMFLOAT3(1, 1, 1));
 
-	lightGroup_->SetDirLightDir(2, lightDir);
-	lightGroup_->SetDirLightColor(2, XMFLOAT3(1, 1, 1));
+	//lightGroup_->SetDirLightDir(2, lightDir);
+	//lightGroup_->SetDirLightColor(2, XMFLOAT3(1, 1, 1));
 
 	{
 		//imguiからのライトパラメータを反映
 		lightGroup_->SetAmbientColor(XMFLOAT3(ambientColor0_));
 		lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0_[0], lightDir0_[1], lightDir0_[2], 0 }));
 		lightGroup_->SetDirLightColor(0, XMFLOAT3(lightColor0_));
-		lightGroup_->SetDirLightDir(1, XMVECTOR({ lightDir1_[0], lightDir1_[1], lightDir1_[2], 0 }));
+		/*lightGroup_->SetDirLightDir(1, XMVECTOR({ lightDir1_[0], lightDir1_[1], lightDir1_[2], 0 }));
 		lightGroup_->SetDirLightColor(1, XMFLOAT3(lightColor1_));
 		lightGroup_->SetDirLightDir(2, XMVECTOR({ lightDir2_[0], lightDir2_[1], lightDir2_[2], 0 }));
-		lightGroup_->SetDirLightColor(2, XMFLOAT3(lightColor2_));
+		lightGroup_->SetDirLightColor(2, XMFLOAT3(lightColor2_));*/
 	}
 
 	lightGroup_->Update();
@@ -289,7 +289,6 @@ void GameScene::Update()
 			}
 			//objGround_->Update(testCamera_.get());
 			player_->Update(testCamera_.get());
-			//sphere_->Update(testCamera_.get());
 		}
 		else
 		{
@@ -298,7 +297,6 @@ void GameScene::Update()
 				object->Update(testGameCamera_.get());
 			}
 
-			//sphere_->Update(testGameCamera_.get());
 			objGround_->Update(testGameCamera_.get());
 			player_->Update(testGameCamera_.get());
 		}
@@ -314,10 +312,10 @@ void GameScene::Update()
 			ImGui::ColorEdit3("ambientColor", ambientColor0_, ImGuiColorEditFlags_Float);
 			ImGui::InputFloat3("lightDir0", lightDir0_);
 			ImGui::ColorEdit3("lightColor0", lightColor0_, ImGuiColorEditFlags_Float);
-			ImGui::InputFloat3("lightDir1", lightDir1_);
+			/*ImGui::InputFloat3("lightDir1", lightDir1_);
 			ImGui::ColorEdit3("lightColor1", lightColor1_, ImGuiColorEditFlags_Float);
 			ImGui::InputFloat3("lightDir2", lightDir2_);
-			ImGui::ColorEdit3("lightColor2", lightColor2_, ImGuiColorEditFlags_Float);
+			ImGui::ColorEdit3("lightColor2", lightColor2_, ImGuiColorEditFlags_Float);*/
 
 			ImGui::End();
 		}
@@ -326,10 +324,10 @@ void GameScene::Update()
 		{
 			if(player_->GetIsFinish() == true)
 			{
-				/*player_->Reset();
+				player_->Reset();
 				testGameCamera_->Reset();
 				scene_ = TITLE;
-				keyTimer_ = kWaitTime_;*/
+				keyTimer_ = kWaitTime_;
 			}
 		}
 		else
