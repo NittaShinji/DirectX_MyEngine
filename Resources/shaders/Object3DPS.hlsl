@@ -40,15 +40,16 @@ PSOutput main(VSOutput input)
             float3 diffuse = dotlightnormal * m_diffuse;
 			//鏡面反射光の計算
             float3 specular = pow(saturate(dot(reflect, eyedir)), shininess) * m_specular;
+            
 			//全て加算する
             shadeColor.rgb += (diffuse + specular) * dirLights[i].lightColor;
         }
     }
 	
     //陰影とテクスチャの色を合成
-    output.target0 = shadeColor * texcolor * color;
+    output.target0 = shadeColor * texcolor;
     
-    output.target1 = shadeColor * texcolor * color;
+    output.target1 = shadeColor * texcolor;
     
 	//シェーディングによる色で描画
     return output;

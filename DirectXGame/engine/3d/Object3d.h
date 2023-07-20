@@ -35,7 +35,7 @@ public:
 		//カメラ座標(ワールド行列)
 		XMFLOAT3 cameraPos;
 		float pad1;
-		XMFLOAT4 color;
+		//XMFLOAT4 color;
 	};
 
 	//定数バッファ用データ構造体(マテリアル)b1
@@ -154,6 +154,10 @@ protected:	//メンバ変数
 
 	static const UINT kRenderTexNum = 2;
 
+	XMFLOAT3 color_ = { 1,1,1};
+
+	XMFLOAT4 colorA_ = { 1,1,1,1 };
+
 public:
 
 	//ゲッター
@@ -180,7 +184,9 @@ public:
 	void SetMatScale(const XMMATRIX& matScale) { matScale_ = matScale; }
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
-	void SetColor(XMFLOAT4 color) { constMapTransform_->color = color; }
+	void SetColor(XMFLOAT3 color) { color_ = color; }
+	void SetColorA(XMFLOAT4 colorA) { colorA_ = colorA; }
+	void SetAmbient(XMFLOAT3 color);
 
 	/// <summary>
 	/// コライダーのセット

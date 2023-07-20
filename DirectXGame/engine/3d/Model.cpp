@@ -186,12 +186,6 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 			line_stream >> model.infomation_.material.ambient.y;
 			line_stream >> model.infomation_.material.ambient.z;
 		}
-		else 
-		{
-			model.infomation_.material.ambient.x = 1.0f;
-			model.infomation_.material.ambient.y = 1.0f;
-			model.infomation_.material.ambient.z = 1.0f;
-		}
 
 		//先頭文字列がKdならディフューズ色
 		if (key == "Kd")
@@ -200,12 +194,6 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 			line_stream >> model.infomation_.material.diffuse.y;
 			line_stream >> model.infomation_.material.diffuse.z;
 		}
-		else 
-		{
-			model.infomation_.material.diffuse.x = 1.0f;
-			model.infomation_.material.diffuse.y = 1.0f;
-			model.infomation_.material.diffuse.z = 1.0f;
-		}
 
 		//先頭文字列がKdならスペキュラー色
 		if (key == "Ks")
@@ -213,12 +201,6 @@ void Model::LoadMaterial(const std::string& directoryPath, const std::string& fi
 			line_stream >> model.infomation_.material.specular.x;
 			line_stream >> model.infomation_.material.specular.y;
 			line_stream >> model.infomation_.material.specular.z;
-		}
-		else 
-		{
-			model.infomation_.material.specular.x = 1.0f;
-			model.infomation_.material.specular.y = 1.0f;
-			model.infomation_.material.specular.z = 1.0f;
 		}
 
 		//先頭文字列がmap_kdならテクスチャファイル名

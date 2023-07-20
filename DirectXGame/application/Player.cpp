@@ -86,7 +86,8 @@ void Player::Update(Camera* camera)
 			colorFlag_ = true;
 			colorTimer = pushTime;
 			
-			SetColor(XMFLOAT4(0.0f, 0.0f, 0.5f, 1.0f));
+			SetColor(XMFLOAT3(0.0f, 0.0f, 1.0f));
+			//SetColorA(XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 		}
 
 		if(colorFlag_ == true && colorTimer < 0)

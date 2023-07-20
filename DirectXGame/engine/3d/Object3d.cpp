@@ -356,15 +356,21 @@ void Object3d::Update(Camera* camera)
 	constBuffMaterial_->SetName(L"constBuffMaterial");
 	assert(SUCCEEDED(result));
 
-	constMapMaterial_->ambient = model_.GetInfomation()->material.ambient;
+	//constMapMaterial_->ambient = model_.GetInfomation()->material.ambient;
+	SetAmbient(color_);
+
+	//constMapMaterial_->ambient = model_.GetInfomation()->material.ambient;
 	constMapMaterial_->diffuse = model_.GetInfomation()->material.diffuse;
 	constMapMaterial_->specular = model_.GetInfomation()->material.specular;
 	constMapMaterial_->alpha = model_.GetInfomation()->material.alpha;
+	
 
 	if(colorFlag_ == false)
 	{
-		constMapTransform_->color = { 1,1,1,1 };
+		color_ = { 1,1,1};
 	}
+
+	//constMapTransform_->color = colorA_;
 
 	constBuffMaterial_->Unmap(0, nullptr);
 
@@ -451,6 +457,13 @@ XMFLOAT3 Object3d::GetWorldPos() const
 	resutVec.z = matWorld_.r[3].m128_f32[2];
 
 	return resutVec;
+}
+
+void Object3d::SetAmbient(XMFLOAT3 color)
+{
+	constMapMaterial_->ambient.x = model_.GetInfomation()->material.ambient.x * color.x;
+	constMapMaterial_->ambient.y = model_.GetInfomation()->material.ambient.x * color.y;
+	constMapMaterial_->ambient.z = model_.GetInfomation()->material.ambient.x * color.z;
 }
 
 void Object3d::SetCollider(BaseCollider* collider)

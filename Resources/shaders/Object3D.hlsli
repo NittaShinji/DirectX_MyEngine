@@ -15,7 +15,7 @@ cbuffer ConstBufferDateTransform : register(b0)
     matrix world;
     //カメラ座標(ワールド行列)
     float3 cameraPos;
-    float4 color;
+    //float4 color;
 }
 
 cbuffer ConstBufferDateMaterial : register(b1)
