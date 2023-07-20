@@ -13,6 +13,5 @@ public:
 	virtual ~AbstractSceneFactory() = default;
 	//ƒV[ƒ“¶¬
 	virtual std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) = 0;
-
 };
 

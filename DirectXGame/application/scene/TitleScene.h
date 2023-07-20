@@ -23,9 +23,7 @@ public:
 private:
 
 	std::unique_ptr<Sprite> title_ = nullptr;
-	//std::unique_ptr<Input> input_ = nullptr;
 
 	static KeyInput* keys_;
-
 };
 

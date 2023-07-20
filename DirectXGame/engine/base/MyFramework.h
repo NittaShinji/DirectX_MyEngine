@@ -56,7 +56,6 @@ protected: //メンバ変数
 
 	//シーンファクトリー
 	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
-	//AbstractSceneFactory* sceneFactory_ = nullptr;
 
 	//ゲーム終了フラグ
 	bool endRequst_ = false;

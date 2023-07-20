@@ -42,7 +42,6 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	//void Initialize(DirectXBasic* directXBasic,ImGuiManager* imGuiManager);
 	void Initialize() override;
 
 
@@ -55,7 +54,6 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw() override;
-
 
 private:
 
@@ -78,7 +76,6 @@ private:
 
 	//デバッグテキスト用の変数
 	//ウインドウの表示フラグ
-	//bool showEditWindow_ = true;
 	
 	//ライト
 	LightGroup* lightGroup_ = nullptr;
@@ -88,21 +85,11 @@ private:
 	std::unique_ptr<Camera> testCamera_ = nullptr;
 	std::unique_ptr<GameCamera> testGameCamera_ = nullptr;
 
-
-	//サウンド
-	//std::unique_ptr<Sound> sound_ = nullptr;
-
-	//スプライト
-	//std::unique_ptr<Sprite> title_ = nullptr;
 	std::unique_ptr<Sprite> test_ = nullptr;
 	std::unique_ptr<Sprite> end_ = nullptr;
 
-
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
-
-	//スプライト共通部分
-	//std::unique_ptr<SpriteCommon> spriteCommon_ = nullptr;
 	
 	//ゲームシーン
 	int32_t scene_;
@@ -125,28 +112,21 @@ private:
 	Ray rayCollision_;
 
 	//3Dオブジェクト
-	//std::unique_ptr<Object3d> sphere_ = nullptr;
-	//std::unique_ptr<Object3d> testStage0_ = nullptr;
-
+	
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
-
-
 	//画像なしテストオブジェクト
 	std::unique_ptr<Object3d> testObject_ = nullptr;
-
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
 	std::unique_ptr<SphereCollider> sphereCollider_ = nullptr;
 
-	//TouchableObject* objGround_ = nullptr;
 	std::unique_ptr<TouchableObject> objGround_ = nullptr;
 
 	//衝突マネージャー
 	CollisionManager* collisionManager_ = nullptr;
 
-	
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;
 	//キー入力の時間管理

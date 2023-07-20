@@ -26,9 +26,7 @@ public: //メンバ関数
 	void ChangeScene(const std::string& sceneName);
 
 	//シーンファクトリーのセッター
-	//void SetSceneFactory(AbstractSceneFactory* sceneFactory) { sceneFactory_ = sceneFactory; }
 	void SetSceneFactory(std::unique_ptr<AbstractSceneFactory> sceneFactory) { sceneFactory_ = std::move(sceneFactory); }
-
 
 private:
 
