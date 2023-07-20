@@ -1,4 +1,5 @@
 #include "MyGame.h"
+#include "SceneFactory.h"
 #include <wrl.h>
 #pragma comment(lib,"xaudio2.lib")
 
@@ -11,17 +12,13 @@ void MyGame::Initialize()
 {
 	//基底クラスの初期化処理
 	MyFramework::Initialize();
-
-	//ImGui初期化処理
-	//imGuiManager_ = std::make_unique<ImGuiManager>();
-	//imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());
 	
 	//ゲームシーン初期化処理
-	//最初のシーンの生成
-	//BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	std::unique_ptr<BaseScene> scene = std::make_unique<TitleScene>();
-	SceneManager::GetInstance()->SetNextScene(std::move(scene));
-	//sceneManager_->SetNextScene(std::move(scene));
+	//シーンファクトリーを生成し、マネージャにセット
+	sceneFactory_ = std::make_unique<SceneFactory>();
+	SceneManager::GetInstance()->SetSceneFactory(std::move(sceneFactory_));
+	//シーンマネージャに最初のシーンをセット
+	SceneManager::GetInstance()->ChangeScene("TITLE");
 
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
@@ -40,10 +37,7 @@ void MyGame::Update()
 
 	postEffect_->SetAnchorPoint(XMFLOAT2(0.0f, 0.0f));
 
-	//gameScene_->Update();
 	SceneManager::GetInstance()->Update();
-	//sceneManager_->Update();
-	//scene_->Update();
 
 	imGuiManager_->End();
 }
@@ -52,10 +46,7 @@ void MyGame::Draw()
 {
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
-	//gameScene_->Draw();
-	//scene_->Draw();
 	SceneManager::GetInstance()->Draw();
-	//sceneManager_->Draw();
 	postEffect_->PostDrawScene();
 
 	//描画開始

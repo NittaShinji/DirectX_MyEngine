@@ -1,5 +1,5 @@
 #include "TitleScene.h"
-#include "GameScene.h"
+//#include "GameScene.h"
 #include "SceneManager.h"
 
 void TitleScene::Initialize()
@@ -23,12 +23,13 @@ void TitleScene::Update()
 
 	if(keys_->HasPushedKey(DIK_RETURN))
 	{
-		GameScene::StaticInitialize(BaseScene::imGuiManager_);
+		//GameScene::StaticInitialize(BaseScene::imGuiManager_);
 		//ゲームシーンに切り替え
-		std::unique_ptr<BaseScene> scene = std::make_unique<GameScene>();
-		
+		//std::unique_ptr<BaseScene> scene = std::make_unique<GameScene>();
 		//シーン切り替え依頼
-		sceneManager_->SetNextScene(std::move(scene));
+		//sceneManager_->SetNextScene(std::move(scene));
+
+		SceneManager::GetInstance()->ChangeScene("GAME");
 	}
 }
 

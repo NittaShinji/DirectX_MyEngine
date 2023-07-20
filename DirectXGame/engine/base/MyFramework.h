@@ -7,6 +7,7 @@
 #include "Sound.h"
 #include "Input.h"
 #include "SceneManager.h"
+#include "AbstractSceneFactory.h"
 
 //ゲーム全体
 class MyFramework
@@ -50,15 +51,12 @@ protected: //メンバ変数
 	//ImGui初期化処理
 	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
 
-	//サウンド
-	//std::unique_ptr<Sound> sound_ = nullptr;
-
 	//スプライト
 	SpriteCommon* spriteCommon_ = nullptr;
 
-	//基盤シーン
-	//std::unique_ptr<SceneManager> sceneManager_ = nullptr;
-	//std::unique_ptr<BaseScene> scene_ = nullptr;
+	//シーンファクトリー
+	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
+	//AbstractSceneFactory* sceneFactory_ = nullptr;
 
 	//ゲーム終了フラグ
 	bool endRequst_ = false;

@@ -92,7 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\application\scene\BaseScene.cpp" />
+    <ClCompile Include="DirectXGame\engine\scene\BaseScene.cpp" />
     <ClCompile Include="DirectXGame\application\PostEffect.cpp" />
     <ClCompile Include="DirectXGame\engine\camera\Camera.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\Collision.cpp" />
@@ -125,9 +125,11 @@
     <ClCompile Include="DirectXGame\engine\base\MyFramework.cpp" />
     <ClCompile Include="DirectXGame\application\scene\TitleScene.cpp" />
     <ClCompile Include="DirectXGame\engine\scene\SceneManager.cpp" />
+    <ClCompile Include="DirectXGame\application\scene\SceneFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\application\scene\BaseScene.h" />
+    <ClInclude Include="DirectXGame\engine\scene\AbstractSceneFactory.h" />
+    <ClInclude Include="DirectXGame\engine\scene\BaseScene.h" />
     <ClInclude Include="DirectXGame\application\PostEffect.h" />
     <ClInclude Include="DirectXGame\engine\camera\Camera.h" />
     <ClInclude Include="DirectXGame\engine\collision\BaseCollider.h" />
@@ -165,6 +167,7 @@
     <ClInclude Include="DirectXGame\engine\base\MyFramework.h" />
     <ClInclude Include="DirectXGame\application\scene\TitleScene.h" />
     <ClInclude Include="DirectXGame\engine\scene\SceneManager.h" />
+    <ClInclude Include="DirectXGame\application\scene\SceneFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />

@@ -45,3 +45,12 @@ void SceneManager::Draw()
 {
 	scene_->Draw();
 }
+
+void SceneManager::ChangeScene(const std::string& sceneName)
+{
+	assert(sceneFactory_);
+	assert(nextScene_ == nullptr);
+
+	//ŽŸƒV[ƒ“‚ð¶¬
+	nextScene_ = std::move(sceneFactory_->CreateScene(sceneName));
+}

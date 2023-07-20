@@ -38,20 +38,6 @@ void MyFramework::Initialize()
 
 	//サウンド
 	Sound::GetInstance()->Initialize();
-
-	//基盤シーン静的初期化
-	
-	//インスタンス生成
-	//sceneManager_ = SceneManager::GetInstance();
-	//sceneManager_ = std::make_unique<SceneManager>();
-
-	/*BaseScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());*/
-	
-	//scene_ = std::make_unique<TitleScene>();
-	//scene_->StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	////タイトルシーン初期化処理
-	//scene_->Initialize();
-
 }
 
 void MyFramework::Update()
@@ -65,10 +51,7 @@ void MyFramework::Update()
 
 	input_->Update();
 	SceneManager::GetInstance()->Update();
-	//sceneManager_->Update();
 	BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	
-	//scene_->Update();
 }
 
 void MyFramework::Finalize()
