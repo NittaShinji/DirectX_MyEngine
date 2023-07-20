@@ -87,7 +87,6 @@ void Player::Update(Camera* camera)
 			colorTimer = pushTime;
 			
 			SetColor(XMFLOAT3(0.0f, 0.0f, 1.0f));
-			//SetColorA(XMFLOAT4(0.0f, 0.0f, 1.0f, 1.0f));
 		}
 
 		if(colorFlag_ == true && colorTimer < 0)
@@ -96,17 +95,6 @@ void Player::Update(Camera* camera)
 			colorTimer = pushTime;
 		}
 	}
-
-	//if(colorFlag_ == false && colorTimer < 0)
-	//{
-	//	colorFlag_ = true;
-	//	colorTimer = pushTime;
-	//}
-	//else if(colorFlag_ == true && colorTimer < 0)
-	//{
-	//	colorFlag_ = false;
-	//	colorTimer = pushTime;
-	//}
 
 	Object3d::SetColorFlag(colorFlag_);
 

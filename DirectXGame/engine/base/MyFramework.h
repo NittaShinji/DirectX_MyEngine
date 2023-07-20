@@ -57,7 +57,7 @@ protected: //メンバ変数
 	SpriteCommon* spriteCommon_ = nullptr;
 
 	//基盤シーン
-	std::unique_ptr<SceneManager> sceneManager_ = nullptr;
+	//std::unique_ptr<SceneManager> sceneManager_ = nullptr;
 	//std::unique_ptr<BaseScene> scene_ = nullptr;
 
 	//ゲーム終了フラグ

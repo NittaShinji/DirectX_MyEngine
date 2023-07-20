@@ -20,7 +20,8 @@ void MyGame::Initialize()
 	//最初のシーンの生成
 	//BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	std::unique_ptr<BaseScene> scene = std::make_unique<TitleScene>();
-	sceneManager_->SetNextScene(std::move(scene));
+	SceneManager::GetInstance()->SetNextScene(std::move(scene));
+	//sceneManager_->SetNextScene(std::move(scene));
 
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
@@ -40,7 +41,8 @@ void MyGame::Update()
 	postEffect_->SetAnchorPoint(XMFLOAT2(0.0f, 0.0f));
 
 	//gameScene_->Update();
-	sceneManager_->Update();
+	SceneManager::GetInstance()->Update();
+	//sceneManager_->Update();
 	//scene_->Update();
 
 	imGuiManager_->End();
@@ -52,7 +54,8 @@ void MyGame::Draw()
 	postEffect_->PreDrawScene();
 	//gameScene_->Draw();
 	//scene_->Draw();
-	sceneManager_->Draw();
+	SceneManager::GetInstance()->Draw();
+	//sceneManager_->Draw();
 	postEffect_->PostDrawScene();
 
 	//描画開始

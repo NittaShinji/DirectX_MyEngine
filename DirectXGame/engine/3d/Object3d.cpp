@@ -356,21 +356,15 @@ void Object3d::Update(Camera* camera)
 	constBuffMaterial_->SetName(L"constBuffMaterial");
 	assert(SUCCEEDED(result));
 
-	//constMapMaterial_->ambient = model_.GetInfomation()->material.ambient;
-	SetAmbient(color_);
-
-	//constMapMaterial_->ambient = model_.GetInfomation()->material.ambient;
-	constMapMaterial_->diffuse = model_.GetInfomation()->material.diffuse;
-	constMapMaterial_->specular = model_.GetInfomation()->material.specular;
-	constMapMaterial_->alpha = model_.GetInfomation()->material.alpha;
-	
-
 	if(colorFlag_ == false)
 	{
 		color_ = { 1,1,1};
 	}
 
-	//constMapTransform_->color = colorA_;
+	SetAmbient(color_);
+	constMapMaterial_->diffuse = model_.GetInfomation()->material.diffuse;
+	constMapMaterial_->specular = model_.GetInfomation()->material.specular;
+	constMapMaterial_->alpha = model_.GetInfomation()->material.alpha;
 
 	constBuffMaterial_->Unmap(0, nullptr);
 

@@ -1,14 +1,16 @@
 #pragma once
 #include "BaseScene.h"
 
-class SceneManager
+class SceneManager final
 {
 
 public: //メンバ関数
 
-	SceneManager();
-
-	~SceneManager();
+	static SceneManager* GetInstance()
+	{
+		static SceneManager instance;
+		return &instance;
+	}
 
 	void Initialize();
 
@@ -21,12 +23,16 @@ public: //メンバ関数
 
 private:
 
-	//次のシーン
-	//BaseScene* nextScene_ = nullptr;
-	std::unique_ptr<BaseScene> nextScene_ = nullptr;
+	SceneManager();
+	~SceneManager();
+	//コピーコンストラクタの無効
+	SceneManager(const SceneManager& sceneManager) = delete;
+	//代入演算子の無効
+	SceneManager& operator=(const SceneManager& sceneManager) = delete;
 
+	//次のシーン
+	std::unique_ptr<BaseScene> nextScene_ = nullptr;
 	//今のシーン(実行中シーン)
-	//BaseScene* scene_ = nullptr;
 	std::unique_ptr<BaseScene> scene_ = nullptr;
 
 };

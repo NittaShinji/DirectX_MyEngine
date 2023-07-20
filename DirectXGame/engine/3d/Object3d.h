@@ -35,7 +35,6 @@ public:
 		//カメラ座標(ワールド行列)
 		XMFLOAT3 cameraPos;
 		float pad1;
-		//XMFLOAT4 color;
 	};
 
 	//定数バッファ用データ構造体(マテリアル)b1
@@ -48,15 +47,6 @@ public:
 		XMFLOAT3 specular;
 		float alpha;
 	};
-
-	////定数バッファ用データ構造体(ライト情報)b2
-	//struct ConstBufferLightDate
-	//{
-	//	XMFLOAT3 lightv;
-	//	float pad1;
-	//	XMFLOAT3 lightcolor;
-	//	float pad2;
-	//};
 
 public:
 
@@ -103,12 +93,10 @@ protected:	//メンバ変数
 	//定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_;
-	//Microsoft::WRL::ComPtr<ID3D12Resource> constBuffLight_;
 
 	//定数バッファのマッピング用ポインタ
 	ConstBufferDateTransform* constMapTransform_ = nullptr;
 	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
-	//ConstBufferLightDate* constMapLight_ = nullptr;
 
 	//スケール
 	XMFLOAT3 scale_;

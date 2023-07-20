@@ -42,7 +42,9 @@ void MyFramework::Initialize()
 	//基盤シーン静的初期化
 	
 	//インスタンス生成
-	sceneManager_ = std::make_unique<SceneManager>();
+	//sceneManager_ = SceneManager::GetInstance();
+	//sceneManager_ = std::make_unique<SceneManager>();
+
 	/*BaseScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());*/
 	
 	//scene_ = std::make_unique<TitleScene>();
@@ -62,7 +64,8 @@ void MyFramework::Update()
 	}
 
 	input_->Update();
-	sceneManager_->Update();
+	SceneManager::GetInstance()->Update();
+	//sceneManager_->Update();
 	BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	
 	//scene_->Update();
