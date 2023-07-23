@@ -18,9 +18,8 @@ struct LevelData
 		XMFLOAT3 translation;
 		XMFLOAT3 rotation;
 		XMFLOAT3 scaling;
-
-
 		std::string fileName;
+		std::string attribute;
 	};
 
 	std::vector<objectDate> objects;

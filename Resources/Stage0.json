@@ -27,17 +27,17 @@
             "name": "Camera",
             "transform": {
                 "translation": [
-                    31.725128173828125,
-                    13.618959426879883,
+                    7.358891487121582,
+                    -6.925790786743164,
                     4.958309173583984
                 ],
                 "rotation": [
-                    81.35929107666016,
-                    8.629023113826406e-07,
-                    117.5919418334961
+                    63.559303283691406,
+                    -2.664711473698844e-06,
+                    46.69194793701172
                 ],
                 "scaling": [
-                    0.9999999403953552,
+                    1.0,
                     1.0,
                     1.0
                 ]
@@ -70,7 +70,7 @@
             "name": "球",
             "transform": {
                 "translation": [
-                    7.5431623458862305,
+                    0.0,
                     0.0,
                     2.0
                 ],
@@ -107,7 +107,9 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "visible": true,
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -129,7 +131,9 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "visible": false,
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -151,7 +155,21 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "collider": {
+                "type": "BOX",
+                "center": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "size": [
+                    2.0,
+                    2.0,
+                    2.0
+                ]
+            },
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -173,7 +191,8 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -195,7 +214,8 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -217,7 +237,8 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -239,7 +260,8 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -261,7 +283,8 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -283,7 +306,8 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0"
+            "file_name": "testStage0",
+            "attribute": "Pink"
         }
     ]
 }

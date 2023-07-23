@@ -38,6 +38,8 @@ void MyFramework::Initialize()
 
 	//ƒTƒEƒ“ƒh
 	Sound::GetInstance()->Initialize();
+
+	BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 }
 
 void MyFramework::Update()
@@ -50,8 +52,7 @@ void MyFramework::Update()
 	}
 
 	input_->Update();
-	SceneManager::GetInstance()->Update();
-	BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
+	//SceneManager::GetInstance()->Update();
 }
 
 void MyFramework::Finalize()

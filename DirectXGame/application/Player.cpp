@@ -58,41 +58,29 @@ void Player::Update(Camera* camera)
 {
 	if(isMoving_ == true)
 	{
-		move.z = 0.25f;
+		move.z = 0.3f;
 		position_.z += move.z;
-		Object3d::SetTransform(position_);
-		Object3d::Update(camera);
 	}
 
-	if(KeyInput::HasPushedKey(DIK_S))
+	if(KeyInput::GetInstance()->HasPushedKey(DIK_S))
 	{
-		position_.y += -0.05f;
-		Object3d::SetTransform(position_);
-		Object3d::Update(camera);
+		position_.z += -0.05f;
 	}
-	if(KeyInput::HasPushedKey(DIK_W))
+	if(KeyInput::GetInstance()->HasPushedKey(DIK_W))
 	{
-		position_.y += 0.05f;
-		Object3d::SetTransform(position_);
-		Object3d::Update(camera);
+		position_.x += 0.05f;
 	}
 
-	if(KeyInput::PushedKeyMoment(DIK_O))
+	if(KeyInput::GetInstance()->PushedKeyMoment(DIK_O))
 	{
-		--colorTimer;
-
-		if(colorFlag_ == false && colorTimer < 0)
+		if(colorFlag_ == false)
 		{
 			colorFlag_ = true;
-			colorTimer = pushTime;
-			
 			SetColor(XMFLOAT3(0.0f, 0.0f, 1.0f));
 		}
-
-		if(colorFlag_ == true && colorTimer < 0)
+		else if(colorFlag_ == true)
 		{
 			colorFlag_ = false;
-			colorTimer = pushTime;
 		}
 	}
 
@@ -102,7 +90,7 @@ void Player::Update(Camera* camera)
 	if(!onGround)
 	{
 		//‰ºŒü‚«‰Á‘¬“x@
-		const float fallAcc = -0.01f;
+		const float fallAcc = -0.015f;
 		const float fallVYMin = -0.5f;
 		//‰Á‘¬
 		fallVec_.m128_f32[1] = max(fallVec_.m128_f32[1] + fallAcc, fallVYMin);
@@ -115,7 +103,7 @@ void Player::Update(Camera* camera)
 	else if(keys_->HasPushedKey(DIK_SPACE))
 	{
 		onGround = false;
-		const float jumpVYFist = 0.5f;
+		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0,0 };
 	}
 
@@ -201,10 +189,10 @@ void Player::Draw()
 
 void Player::finish()
 {
-	/*if(position_.z > 235.0f)
+	if(position_.z > 235.0f)
 	{
 		isfinish_ = true;
-	}*/
+	}
 }
 
 void Player::Reset()

@@ -17,7 +17,6 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 	//タイプが"MESH"だった場合
 	if(type.compare("MESH") == 0)
 	{
-
 		//要素追加
 		levelData->objects.emplace_back(LevelData::objectDate{});
 		//今追加した要素の参照を得る
@@ -28,6 +27,12 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 			//ファイル名
 			objectData.fileName = object["file_name"];
 		}
+		if(object.contains("attribute"))
+		{
+			//属性
+			objectData.attribute = object["attribute"];
+		}
+
 		//else if(visible == true)
 		//{
 		//	//ファイル名
@@ -55,7 +60,6 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 		objectData.scaling.y = (float)transform["scaling"][2];
 		objectData.scaling.z = (float)transform["scaling"][0];
 	}
-
 
 
 	//再帰処理

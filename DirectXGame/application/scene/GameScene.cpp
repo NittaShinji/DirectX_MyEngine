@@ -56,45 +56,45 @@ void GameScene::Initialize()
 
 
 	//-----------読み込み---------------
-
+	
 	//レベルデータからオブジェクトを生成、配置
-	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
+	//levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
 
-	for(auto& objectData : levelData_->objects)
-	{
-		//ファイル名から登録済みモデルを検索
-		Model* model = nullptr;
-		decltype(models_)::iterator it = models_.find(objectData.fileName);
-		if(it != models_.end()) { model = &it->second; }
-		//モデルを指定して3Dオブジェクトを作成
+	//for(auto& objectData : levelData_->objects)
+	//{
+	//	//ファイル名から登録済みモデルを検索
+	//	Model* model = nullptr;
+	//	decltype(models_)::iterator it = models_.find(objectData.fileName);
+	//	if(it != models_.end()) { model = &it->second; }
+	//	//モデルを指定して3Dオブジェクトを作成
 
-		if(objectData.fileName == "sphere" || objectData.fileName == "testStage0")
-		{
-			//モデルをロード
-			Model::Load(objectData.fileName);
+	//	if(objectData.fileName == "sphere" || objectData.fileName == "testStage0")
+	//	{
+	//		//モデルをロード
+	//		Model::Load(objectData.fileName);
 
-			//3Dオブジェクトの生成
-			std::unique_ptr<TouchableObject> newObject = nullptr;
-			newObject = TouchableObject::Create(objectData.fileName);
+	//		//3Dオブジェクトの生成
+	//		std::unique_ptr<TouchableObject> newObject = nullptr;
+	//		newObject = TouchableObject::Create(objectData.fileName);
 
-			DirectX::XMFLOAT3 pos;
-			pos = objectData.translation;
-			newObject->SetTransform(pos);
+	//		DirectX::XMFLOAT3 pos;
+	//		pos = objectData.translation;
+	//		newObject->SetTransform(pos);
 
-			//回転角
-			DirectX::XMFLOAT3 rot;
-			rot = objectData.rotation;
-			newObject->SetRotation(rot);
+	//		//回転角
+	//		DirectX::XMFLOAT3 rot;
+	//		rot = objectData.rotation;
+	//		newObject->SetRotation(rot);
 
-			//大きさ
-			DirectX::XMFLOAT3 scale;
-			scale = objectData.scaling;
-			newObject->SetScale(scale);
+	//		//大きさ
+	//		DirectX::XMFLOAT3 scale;
+	//		scale = objectData.scaling;
+	//		newObject->SetScale(scale);
 
-			//配列に登録
-			objects_.push_back(std::move(newObject));
-		}
-	}
+	//		//配列に登録
+	//		objects_.push_back(std::move(newObject));
+	//	}
+	//}
 
 	//------------画像読み込み----------
 	//title_ = std::make_unique<Sprite>();
@@ -161,6 +161,9 @@ void GameScene::Initialize()
 	XMFLOAT3 sphereScale = { 10,10,10 };
 	XMFLOAT3 groundScale = { 10,1,10 };
 
+	stage_ = std::make_unique<Stage>();
+	stage_->Initialize();
+
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
 	
@@ -169,9 +172,9 @@ void GameScene::Initialize()
 	sphere_->SetTransform(spherePosition);
 	sphere_->SetCollider(sphereCollider_.get());*/
 
-	objGround_ = TouchableObject::Create(ground);
+	/*objGround_ = TouchableObject::Create(ground);
 	objGround_->SetTransform(groundPosition);
-	objGround_->SetScale(groundScale);
+	objGround_->SetScale(groundScale);*/
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
@@ -283,21 +286,24 @@ void GameScene::Update()
 		//カメラの切り替え
 		if(keys_->HasPushedKey(DIK_0))
 		{
-			for(auto& object : objects_)
+			/*for(auto& object : objects_)
 			{
 				object->Update(testCamera_.get());
-			}
+			}*/
+			stage_->Update(testCamera_.get());
+
 			//objGround_->Update(testCamera_.get());
 			player_->Update(testCamera_.get());
 		}
 		else
 		{
-			for(auto& object : objects_)
+			/*for(auto& object : objects_)
 			{
 				object->Update(testGameCamera_.get());
-			}
+			}*/
+			stage_->Update(testGameCamera_.get());
 
-			objGround_->Update(testGameCamera_.get());
+			//objGround_->Update(testGameCamera_.get());
 			player_->Update(testGameCamera_.get());
 		}
 
@@ -322,13 +328,13 @@ void GameScene::Update()
 
 		if(keyTimer_ < 0)
 		{
-			if(player_->GetIsFinish() == true)
+			/*if(player_->GetIsFinish() == true)
 			{
 				player_->Reset();
 				testGameCamera_->Reset();
 				scene_ = TITLE;
 				keyTimer_ = kWaitTime_;
-			}
+			}*/
 		}
 		else
 		{
@@ -389,10 +395,12 @@ void GameScene::Draw()
 		//モデル描画
 		Object3d::BeforeDraw();
 
-		for(auto& object : objects_)
+		/*for(auto& object : objects_)
 		{
 			object->Draw();
-		}
+		}*/
+
+		stage_->Draw();
 
 		player_->Draw();
 		//sphere_->Draw();

@@ -126,6 +126,7 @@
     <ClCompile Include="DirectXGame\application\scene\TitleScene.cpp" />
     <ClCompile Include="DirectXGame\engine\scene\SceneManager.cpp" />
     <ClCompile Include="DirectXGame\application\scene\SceneFactory.cpp" />
+    <ClCompile Include="DirectXGame\application\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\engine\scene\AbstractSceneFactory.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="DirectXGame\application\scene\TitleScene.h" />
     <ClInclude Include="DirectXGame\engine\scene\SceneManager.h" />
     <ClInclude Include="DirectXGame\application\scene\SceneFactory.h" />
+    <ClInclude Include="DirectXGame\application\Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />

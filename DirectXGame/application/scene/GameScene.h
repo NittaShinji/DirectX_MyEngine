@@ -17,6 +17,7 @@
 #include "GamePad.h"
 #include "SphereCollider.h"
 #include "BaseScene.h"
+#include "Stage.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -112,7 +113,8 @@ private:
 	Ray rayCollision_;
 
 	//3Dオブジェクト
-	
+	std::unique_ptr<Stage> stage_ = nullptr;
+
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
 	//画像なしテストオブジェクト

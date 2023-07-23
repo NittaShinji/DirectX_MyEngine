@@ -15,7 +15,6 @@ public:
 	//static TouchableObject* Create(const std::string& path);
 	static std::unique_ptr<TouchableObject> Create(const std::string& path);
 
-
 	/// <summary>
 	/// ‰Šú‰»
 	/// </summary>
@@ -33,6 +32,11 @@ public:
 private:
 
 	std::unique_ptr<MeshCollider> objMeshCollider_;
+
+protected:
+
+	//‘®«
+	std::string attribute_;
 
 };
 

@@ -144,8 +144,6 @@ protected:	//メンバ変数
 
 	XMFLOAT3 color_ = { 1,1,1};
 
-	XMFLOAT4 colorA_ = { 1,1,1,1 };
-
 public:
 
 	//ゲッター
@@ -161,6 +159,7 @@ public:
 	//モデルを取得
 	//const Model& GetModel() { return model_; }
 	Model* GetModel() { return &model_; }
+	bool GetColorFlag() { return colorFlag_; }
 
 
 	void SetTransform(const XMFLOAT3& pos) { transform_ = pos; };
@@ -173,7 +172,7 @@ public:
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 	void SetColor(XMFLOAT3 color) { color_ = color; }
-	void SetColorA(XMFLOAT4 colorA) { colorA_ = colorA; }
+	//void SetColorA(XMFLOAT4 colorA) { colorA_ = colorA; }
 	void SetAmbient(XMFLOAT3 color);
 
 	/// <summary>
