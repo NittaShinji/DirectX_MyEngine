@@ -41,7 +41,7 @@ void Player::Initialize()
 
 	//コライダーの登録
 	SetCollider(playerCollider_.get());
-	
+
 	//属性を指定
 	playerCollider_->SetAttribute(COLLISION_ATTR_ALLIES);
 
@@ -98,13 +98,25 @@ void Player::Update(Camera* camera)
 		position_.x += fallVec_.m128_f32[0];
 		position_.y += fallVec_.m128_f32[1];
 		position_.z += fallVec_.m128_f32[2];
+
+		if(jumpCount > 0)
+		{
+			if(keys_->PushedKeyMoment(DIK_SPACE))
+			{
+				onGround = false;
+				const float jumpVYFist = 0.4f;
+				fallVec_ = { 0,jumpVYFist,0,0 };
+				jumpCount -= 1;
+			}	
+		}
 	}
 	//ジャンプ操作
-	else if(keys_->HasPushedKey(DIK_SPACE))
+	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
 		onGround = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0,0 };
+		jumpCount -= 1;
 	}
 
 	Object3d::SetTransform(position_);
@@ -138,17 +150,18 @@ void Player::Update(Camera* camera)
 		else
 		{
 			onGround = false;
-			fallVec_ = {0,0,0};
+			fallVec_ = { 0,0,0 };
 		}
 	}
 	//落下状態
 	else if(fallVec_.m128_f32[1] <= 0.0f)
 	{
- 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
+		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 		{
 			//着地
 			onGround = true;
 			position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+			jumpCount = kMaxJumpNum;
 			//行列の更新など
 			Object3d::SetTransform(position_);
 			Object3d::Update(camera);

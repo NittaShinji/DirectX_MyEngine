@@ -55,6 +55,9 @@ private:
 	//jumpheight‚ÌÅ‘å’l
 	const float kMaxJump = 0.1f;
 
+	//Å‘åƒWƒƒƒ“ƒv‰ñ”
+	int32_t kMaxJumpNum = 2;;
+
 	//‹ó’†‚É‚¢‚é‚©‚Ç‚¤‚©
 	bool isFlying_;
 
@@ -103,8 +106,5 @@ public:
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
-
-
-
 };
 
