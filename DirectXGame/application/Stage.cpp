@@ -38,66 +38,47 @@ void Stage::Initialize()
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
 
-			attribute_ = objectData.attribute;
+			if(objectData.attribute == "Pink")
+			{
+				newObject->SetAttribute(Attribute::pink);
+			}
+			else if(objectData.attribute == "Yellow")
+			{
+				newObject->SetAttribute(Attribute::yellow);
+			}
 
 			//配列に登録
 			objects_.push_back(std::move(newObject));
 		}
 	}
 
-	/*colorFlag_ = false;*/
+	//オブジェクトの色をセット
+	for(auto& object : objects_)
+	{
+		if(object->GetColorFlag() == false)
+		{
+			object->SetColorFlag(true);
+
+			if(object->GetAttribute() == Attribute::yellow)
+			{
+				object->SetColor(XMFLOAT3(1.0f, 1.0f, 0.0f));
+			}
+			else if(object->GetAttribute() == Attribute::pink)
+			{
+				object->SetColor(XMFLOAT3(0.78f, 0.08f, 0.52f));
+			}
+		}
+		else if(object->GetColorFlag() == true)
+		{
+			object->SetColorFlag(false);
+		}
+	}
 }
 
 void Stage::Update(Camera* camera)
 {
-	/*std::vector<std::unique_ptr<TouchableObject>>::iterator itr = objects_.begin();
-
-	for(; itr < objects_.end(); itr++)
-	{
-		if(KeyInput::GetInstance()->PushedKeyMoment(DIK_7))
-		{
-			if((*itr)->GetColorFlag() == false)
-			{
-				(*itr)->SetColorFlag(true);
-				(*itr)->SetColor(XMFLOAT3(0.0f, 0.0f, 1.0f));
-			}
-			else if((*itr)->GetColorFlag() == true)
-			{
-				(*itr)->SetColorFlag(false);
-			}
-		}
-
-		(*itr)->Update(camera);
-	}*/
-
 	for(auto& object : objects_)
 	{
-		if(KeyInput::GetInstance()->PushedKeyMoment(DIK_7))
-		{
-			//if(colorFlag_ == false)
-			//{
-			//	colorFlag_ = true;
-
-			//	object->SetColor(XMFLOAT3(0.0f, 0.0f, 1.0f));
-			//}
-
-			//if(colorFlag_ == true)
-			//{
-			//	colorFlag_ = false;
-			//}
-
-			if(object->GetColorFlag() == false)
-			{
-				object->SetColorFlag(true);
-
-				object->SetColor(XMFLOAT3(0.0f, 0.0f, 1.0f));
-			}
-
-			else if(object->GetColorFlag() == true)
-			{
-				object->SetColorFlag(false);
-			}
-		}
 		object->Update(camera);
 	}
 }

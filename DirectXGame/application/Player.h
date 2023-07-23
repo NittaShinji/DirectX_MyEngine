@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "GamePad.h"
 #include "SphereCollider.h"
+#include "ObjectAttribute.h"
 
 class Player : public Object3d
 {
@@ -96,6 +97,8 @@ private:
 	int32_t colorTimer = pushTime;
 
 	bool pushMoment_ = false;
+
+	Attribute attribute_;
 
 public:
 

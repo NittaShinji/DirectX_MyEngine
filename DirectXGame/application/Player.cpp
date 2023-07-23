@@ -52,6 +52,10 @@ void Player::Initialize()
 	isfinish_ = false;
 	isMoving_ = false;
 	isChangeColor = false;
+
+	attribute_ = Attribute::pink;
+	colorFlag_ = true;
+	SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
 }
 
 void Player::Update(Camera* camera)
@@ -73,14 +77,33 @@ void Player::Update(Camera* camera)
 
 	if(KeyInput::GetInstance()->PushedKeyMoment(DIK_O))
 	{
-		if(colorFlag_ == false)
+		//‘®«‚Ì•ÏX
+		if(attribute_ == Attribute::pink)
 		{
-			colorFlag_ = true;
-			SetColor(XMFLOAT3(0.0f, 0.0f, 1.0f));
+			attribute_ = Attribute::yellow;
 		}
-		else if(colorFlag_ == true)
+		else if(attribute_ == Attribute::yellow)
 		{
-			colorFlag_ = false;
+			attribute_ = Attribute::pink;
+		}
+		else
+		{
+			attribute_ = Attribute::black;
+		}
+		
+		colorFlag_ = true;
+
+		if(attribute_ == Attribute::pink)
+		{
+			SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
+		}
+		else if(attribute_ == Attribute::yellow)
+		{
+			SetColor(XMFLOAT3(1.0f, 1.0f, 0.0f));
+		}
+		else
+		{
+			SetColor(XMFLOAT3(0.0f, 0.0f, 0.0f));
 		}
 	}
 
@@ -178,16 +201,11 @@ void Player::Update(Camera* camera)
 
 void Player::OnCollision(const CollisionInfo& info)
 {
-	/*onGround = true;
-	fallVec = {0,0,0};*/
-
-	/*onGround = true;
-	move.y = 0;
-	position_.y = 0 + radius;
-	jumpCount = 2;
-	isFlying_ = 0;
-	jumpHeight = 0;
-	Object3d::SetTransform(position_);*/
+	//F‚ªˆá‚¤ê‡AŽ€–S”»’è‚É‚·‚é
+	if(info.object->GetAttribute() != attribute_)
+	{
+		isDead_ = true;
+	}
 }
 
 void Player::SetNextState()
@@ -222,6 +240,8 @@ void Player::Reset()
 	isMoving_ = false;
 	isDead_ = false;
 	isChangeColor = false;
+	attribute_ = Attribute::pink;
+	SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
 }
 
 

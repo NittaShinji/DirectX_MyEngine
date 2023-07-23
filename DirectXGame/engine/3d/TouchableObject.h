@@ -32,11 +32,5 @@ public:
 private:
 
 	std::unique_ptr<MeshCollider> objMeshCollider_;
-
-protected:
-
-	//‘®«
-	std::string attribute_;
-
 };
 

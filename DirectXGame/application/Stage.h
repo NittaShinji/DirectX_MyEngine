@@ -1,8 +1,10 @@
 #pragma once
 #include "TouchableObject.h"
 #include "LevelManager.h"
+#include "ObjectAttribute.h"
 
 class Camera;
+class Player;
 
 class Stage : public TouchableObject
 {
@@ -40,7 +42,5 @@ private:
 
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
-
-	//std::vector<bool> colorFlag_;
 };
 
