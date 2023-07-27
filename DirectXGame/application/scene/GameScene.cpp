@@ -6,6 +6,7 @@
 #include "SphereCollider.h"
 #include "MeshCollider.h"
 #include "TouchableObject.h"
+#include "SceneManager.h"
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -13,10 +14,13 @@
 using namespace std;
 using namespace DirectX;
 
+DirectXBasic* GameScene::directXBasic_ = nullptr;
+ImGuiManager* GameScene::imGuiManager_ = nullptr;
+
 GameScene::GameScene() {}
 GameScene::~GameScene() {}
 
-void GameScene::Initialize()
+void GameScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
 {
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
@@ -24,10 +28,12 @@ void GameScene::Initialize()
 	Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);
 	Mesh::StaticInitialize(directXBasic_);
-
-	//------------ライト------------
 	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
+	Camera::StaticInitialize(directXBasic_);
+}
 
+void GameScene::Initialize()
+{	
 	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLightGroup(lightGroup_);
@@ -78,12 +84,7 @@ void GameScene::Initialize()
 	skydome_ = Object3d::Create(skydome);
 	skydome_->SetScale(skydomeScale);
 
-	//skydome_ = std::make_unique<TouchableObject>();
-	//skydome_ = TouchableObject::Create(skydome);
-	//skydome_->SetScale(skydomeScale);
-
 	//------------カメラ----------
-	Camera::StaticInitialize(directXBasic_);
 	camera_ = std::make_unique<Camera>();
 	testCamera_ = std::make_unique<Camera>();
 	testGameCamera_ = std::make_unique<GameCamera>();
@@ -192,6 +193,11 @@ void GameScene::Update()
 
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
+
+	if(player_->GetIsFinish() == true)
+	{
+		SceneManager::GetInstance()->ChangeScene("CLEAR");
+	}
 }
 
 void GameScene::Draw()

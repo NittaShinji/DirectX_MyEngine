@@ -62,7 +62,7 @@ void Player::Update(Camera* camera)
 {
 	if(isMoving_ == true)
 	{
-		move.z = 0.4f;
+		move.z = 0.5f;
 		position_.z += move.z;
 	}
 
@@ -72,7 +72,7 @@ void Player::Update(Camera* camera)
 	}
 	if(KeyInput::GetInstance()->HasPushedKey(DIK_W))
 	{
-		position_.x += 0.05f;
+		isfinish_ = true;
 	}
 
 	if(KeyInput::GetInstance()->PushedKeyMoment(DIK_O))

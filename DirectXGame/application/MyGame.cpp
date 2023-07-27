@@ -19,6 +19,8 @@ void MyGame::Initialize()
 	SceneManager::GetInstance()->SetSceneFactory(std::move(sceneFactory_));
 	//シーンマネージャに最初のシーンをセット
 	SceneManager::GetInstance()->ChangeScene("TITLE");
+	//一度のみ初期化
+	GameScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());
 
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();

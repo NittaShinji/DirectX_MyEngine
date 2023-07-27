@@ -20,8 +20,9 @@ void TitleScene::Update()
 	title_->SetAnchorPoint(anchorPoint);
 	title_->matUpdate();
 
-	if(keys_->HasPushedKey(DIK_RETURN))
+	if(keys_->PushedKeyMoment(DIK_RETURN))
 	{
+
 		SceneManager::GetInstance()->ChangeScene("GAME");
 	}
 }
@@ -31,8 +32,4 @@ void TitleScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
 	title_->Draw("title.png");
-}
-
-void TitleScene::Finalize()
-{
 }

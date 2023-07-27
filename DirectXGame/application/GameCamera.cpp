@@ -4,8 +4,8 @@ void GameCamera::Update(bool isPlayerMoving)
 {
 	if(isPlayerMoving == true)
 	{
-		target_.z += 0.4f;
-		eye_.z += 0.4f;
+		target_.z += 0.5f;
+		eye_.z += 0.5f;
 	}
 
 	UpdateViewMatrix();

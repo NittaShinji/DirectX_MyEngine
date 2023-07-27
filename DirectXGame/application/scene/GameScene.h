@@ -38,11 +38,12 @@ public:
 	/// </summary>
 	~GameScene();
 
+	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
 	void Initialize() override;
-
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -61,9 +62,9 @@ private:
 		Player1 = 1,
 	};
 
-	DirectXBasic* directXBasic_ = nullptr;
+	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
-	ImGuiManager* imGuiManager_;
+	static ImGuiManager* imGuiManager_;
 	
 	//ライト
 	LightGroup* lightGroup_ = nullptr;

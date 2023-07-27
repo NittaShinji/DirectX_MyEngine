@@ -2,8 +2,9 @@
 #include "BaseScene.h"
 #include "Sprite.h"
 
-class TitleScene : public BaseScene
+class ClearScene : public BaseScene
 {
+
 public:
 
 	//‰Šú‰»
@@ -17,7 +18,7 @@ public:
 
 private:
 
-	std::unique_ptr<Sprite> title_ = nullptr;
+	std::unique_ptr<Sprite> end_ = nullptr;
 
 	static KeyInput* keys_;
 };
