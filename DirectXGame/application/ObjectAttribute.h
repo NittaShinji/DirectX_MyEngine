@@ -9,4 +9,5 @@ enum Attribute
 	pink,		//ピンク
 	yellow,		//黄色
 	black,		//プレイヤーが乗れない色
+	Goal,		//ゴール
 };

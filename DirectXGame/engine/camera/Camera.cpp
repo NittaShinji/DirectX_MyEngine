@@ -88,6 +88,6 @@ void Camera::UpdateProjectionMatrix()
 		XMMatrixPerspectiveFovLH(
 			XMConvertToRadians(45.0f),				//上下画角45度
 			(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//アスペクト比(画面横幅/画面縦幅)
-			0.1f, 1000.0f							//前端,奥端
+			0.1f, 1100.0f							//前端,奥端
 		);
 }

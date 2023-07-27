@@ -62,7 +62,7 @@ void Player::Update(Camera* camera)
 {
 	if(isMoving_ == true)
 	{
-		move.z = 0.3f;
+		move.z = 0.4f;
 		position_.z += move.z;
 	}
 
@@ -206,6 +206,11 @@ void Player::OnCollision(const CollisionInfo& info)
 	{
 		isDead_ = true;
 	}
+
+	if(info.object->GetAttribute() == Attribute::Goal)
+	{
+		isfinish_ = true;
+	}
 }
 
 void Player::SetNextState()
@@ -220,10 +225,10 @@ void Player::Draw()
 
 void Player::finish()
 {
-	if(position_.z > 235.0f)
+	/*if(position_.z > 235.0f)
 	{
-		isfinish_ = true;
-	}
+		isDead_ = true;
+	}*/
 }
 
 void Player::Reset()

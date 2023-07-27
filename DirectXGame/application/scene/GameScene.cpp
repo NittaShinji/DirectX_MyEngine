@@ -51,11 +51,14 @@ void GameScene::Initialize()
 	const string test = "NoImageModel";
 	const string testStage0 = "testStage0";
 	const string ground = "ground";
+	const string skydome = "skydome";
 
 	Model::Load(test);
 	Model::Load(sphere);
 	Model::Load(testStage0);
 	Model::Load(ground);
+	Model::Load(skydome);
+
 
 	//3Dオブジェクトの生成
 	XMFLOAT3 spherePosition = { 0,2,20 };
@@ -63,12 +66,21 @@ void GameScene::Initialize()
 
 	XMFLOAT3 sphereScale = { 10,10,10 };
 	XMFLOAT3 groundScale = { 10,1,10 };
+	XMFLOAT3 skydomeScale = { 5,5,10 };
+
 
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize();
 
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
+
+	skydome_ = Object3d::Create(skydome);
+	skydome_->SetScale(skydomeScale);
+
+	//skydome_ = std::make_unique<TouchableObject>();
+	//skydome_ = TouchableObject::Create(skydome);
+	//skydome_->SetScale(skydomeScale);
 
 	//------------カメラ----------
 	Camera::StaticInitialize(directXBasic_);
@@ -136,17 +148,19 @@ void GameScene::Update()
 	camera_->Update();
 	testCamera_->Update();
 	testGameCamera_->Update(player_->GetIsMoving());
-
+	
 	//カメラの切り替え
 	if(keys_->HasPushedKey(DIK_0))
 	{
 		stage_->Update(testCamera_.get());
 		player_->Update(testCamera_.get());
+		skydome_->Update(testCamera_.get());
 	}
 	else
 	{
 		stage_->Update(testGameCamera_.get());
 		player_->Update(testGameCamera_.get());
+		skydome_->Update(testGameCamera_.get());
 	}
 
 	//スプライトの編集ウインドウの表示
@@ -164,7 +178,7 @@ void GameScene::Update()
 
 	if(keyTimer_ < 0)
 	{
-		if(player_->GetIsFinish() == true)
+		if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
 		{
 			player_->Reset();
 			testGameCamera_->Reset();
@@ -178,19 +192,14 @@ void GameScene::Update()
 
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
-
-	/*for(auto& object : stage_->GetObjects())
-	{
-
-
-	}*/
-
 }
 
 void GameScene::Draw()
 {
 	//モデル描画
 	Object3d::BeforeDraw();
+	skydome_->Draw();
 	stage_->Draw();
 	player_->Draw();
+
 }

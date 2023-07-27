@@ -79,6 +79,9 @@ private:
 	//3Dオブジェクト
 	std::unique_ptr<Stage> stage_ = nullptr;
 
+	//背景
+	std::unique_ptr<Object3d> skydome_ = nullptr;
+
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 

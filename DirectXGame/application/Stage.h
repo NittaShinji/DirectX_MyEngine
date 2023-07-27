@@ -18,13 +18,6 @@ private:
 
 public:
 
-	enum Attribute
-	{
-		pink = 0,
-		yellow,
-		black,
-	};
-
 	void Initialize();
 
 	void Update(Camera* camera);
