@@ -18,6 +18,7 @@
 #include "SphereCollider.h"
 #include "BaseScene.h"
 #include "Stage.h"
+#include "ParticleManager.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -103,5 +104,8 @@ private:
 	float lightDir0_[3] = { 1,-5,-5 };
 	float lightColor0_[3] = { 1,1,1 };
 	float whiteColor_[3] = { 1,1,1 };
+
+	//パーティクル
+	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
 };
 

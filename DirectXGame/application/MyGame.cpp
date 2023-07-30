@@ -27,6 +27,9 @@ void MyGame::Initialize()
 	//ポストエフェクト用テクスチャの読み込み
 	SpriteCommon::GetInstance()->LoadTexture("test.png");
 	postEffect_->Initialize(directXBasic_.get());
+
+	//パーティクル初期化処理
+	//particleManager_ = std::make_unique<ParticleManager>();
 }
 
 void MyGame::Update()

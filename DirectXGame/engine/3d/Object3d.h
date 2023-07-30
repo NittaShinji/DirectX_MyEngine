@@ -13,16 +13,16 @@ class BaseCollider;
 
 class Object3d
 {
-private:
+private: //エイリアス
+
+	//テンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	//nameSpace
 	using XMFLOAT = DirectX::XMFLOAT3;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMMATRIX = DirectX::XMMATRIX;
-
-	//エイリアステンプレート
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
 
@@ -46,6 +46,13 @@ public:
 		float pad2;
 		XMFLOAT3 specular;
 		float alpha;
+	};
+
+	struct GSOutput
+	{
+		XMFLOAT3 pos;		// xyz座標
+		XMFLOAT3 normal;	//法線ベクトル
+		XMFLOAT2 uv;		// uv座標
 	};
 
 public:
@@ -121,6 +128,7 @@ protected:	//メンバ変数
 
 	ID3DBlob* vsBlob_ = nullptr; // 頂点シェーダオブジェクト
 	ID3DBlob* psBlob_ = nullptr; // ピクセルシェーダオブジェクト
+	ID3DBlob* gsBlob_ = nullptr;	//ジオメトリシェーダーオブジェクト
 	ID3DBlob* errorBlob_ = nullptr; // エラーオブジェクト
 
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState_;

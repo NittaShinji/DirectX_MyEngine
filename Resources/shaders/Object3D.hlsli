@@ -43,3 +43,15 @@ struct VSOutput
 	////uv値
     float2 uv : TEXCOORD;
 };
+
+struct GSOutput
+{
+    //システム用頂点座標
+    float4 svpos : SV_POSITION;
+    // 法線ベクトル
+    float3 normal : NORMAL;
+    //ワールド座標
+    float4 worldpos : POSITION;
+	////uv値
+    float2 uv : TEXCOORD;
+};

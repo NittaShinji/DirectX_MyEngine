@@ -104,7 +104,7 @@ void Object3d::Initialize()
 	};
 
 
-#pragma region 頂点シェーダの読み込みとコンパイル(P02_01)
+#pragma region 頂点シェーダの読み込みとコンパイル
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
@@ -130,6 +130,32 @@ void Object3d::Initialize()
 		assert(0);
 	}
 #pragma endregion
+
+#pragma region ジオメトリシェーダの読み込みとコンパイル
+
+	// ジオメトリシェーダの読み込みとコンパイル
+	result = D3DCompileFromFile(
+		L"Resources/Shaders/Object3DGS.hlsl",	// シェーダファイル名
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+		0,
+		&gsBlob_, &errorBlob_);
+	if(FAILED(result))
+	{
+		// errorBlobからエラー内容をstring型にコピー
+		std::string errstr;
+		errstr.resize(errorBlob_->GetBufferSize());
+
+		std::copy_n((char*)errorBlob_->GetBufferPointer(),
+			errorBlob_->GetBufferSize(),
+			errstr.begin());
+		errstr += "\n";
+		// エラー内容を出力ウィンドウに表示
+		OutputDebugStringA(errstr.c_str());
+		exit(1);
+	}
 
 #pragma region ピクセルシェーダーの読み込み
 	// ピクセルシェーダの読み込みとコンパイル
@@ -163,6 +189,8 @@ void Object3d::Initialize()
 	// シェーダーの設定
 	pipelineDesc_.VS.pShaderBytecode = vsBlob_->GetBufferPointer();
 	pipelineDesc_.VS.BytecodeLength = vsBlob_->GetBufferSize();
+	pipelineDesc_.GS.pShaderBytecode = gsBlob_->GetBufferPointer();
+	pipelineDesc_.GS.BytecodeLength = gsBlob_->GetBufferSize();
 	pipelineDesc_.PS.pShaderBytecode = psBlob_->GetBufferPointer();
 	pipelineDesc_.PS.BytecodeLength = psBlob_->GetBufferSize();
 

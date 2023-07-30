@@ -4,6 +4,7 @@
 #include "PostEffect.h"
 #include "MyFramework.h"
 #include "TitleScene.h"
+//#include "ParticleManager.h"
 #include <fstream>
 #include <memory>
 
@@ -27,5 +28,7 @@ private: //メンバ変数
 
 	//ポストエフェクト
 	std::unique_ptr<PostEffect> postEffect_ = nullptr;
+	////パーティクル
+	//std::unique_ptr<ParticleManager> particleManager_ = nullptr;
 };
 
