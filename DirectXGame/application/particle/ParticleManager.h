@@ -56,7 +56,7 @@ public: // サブクラス
 		//終了フレーム
 		int num_frame = 0;
 
-		XMFLOAT4 color = { 0,0,1,1 };
+		XMFLOAT4 color = { 1,1,1,1 };
 
 		XMFLOAT4 colorSpeed = { 0.01f,0.0f,0.0f,1.0f };
 
@@ -139,6 +139,10 @@ public: // メンバ関数
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
 
 	bool GetIsMaxParticle() { return isMaxParticle_; }
+
+	void SetScale();
+
+	std::forward_list<Particle> GetPaticles() { return particles_; }
 
 
 private: // メンバ変数

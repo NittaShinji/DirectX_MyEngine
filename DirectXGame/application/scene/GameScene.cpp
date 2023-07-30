@@ -154,6 +154,7 @@ void GameScene::Update()
 	testCamera_->Update();
 	testGameCamera_->Update(player_->GetIsMoving());
 
+
 	for(int i = 0; i < 50; i++)
 	{
 		//x,y,z全て[-5.0f,+5.0f]でランダムに分布
@@ -174,11 +175,22 @@ void GameScene::Update()
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 		//色を変化させる
 		XMFLOAT4 colorSpeed{};
-		colorSpeed.x += 0.01f;
+		colorSpeed.x = 0.0f;
+		colorSpeed.y = 0.0f;
+		colorSpeed.z = 0.0f;
+		colorSpeed.w = 1.0f;
+
 		//追加
-		particleManager_->Add(120, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
+		if(particleManager_->GetIsMaxParticle() == false)
+		{
+			particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
+		}
 	}
 
+	if(keys_->HasPushedKey(DIK_G))
+	{
+		particleManager_->SetScale();
+	}
 
 	//カメラの切り替え
 	if(keys_->HasPushedKey(DIK_0))
@@ -234,7 +246,7 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	
+
 	//モデル描画
 	Object3d::BeforeDraw();
 	skydome_->Draw();

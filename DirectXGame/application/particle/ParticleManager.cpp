@@ -99,12 +99,19 @@ void ParticleManager::Initialize()
 	isMaxParticle_ = false;
 }
 
+void ParticleManager::SetScale()
+{
+	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	{
+		it->scale -= 0.11f;
+	}
+}
+
 void ParticleManager::Update(Camera* camera)
 {
 	HRESULT result;
 
 	//寿命が尽きたパーティクルを全削除
-
 	particles_.remove_if(
 		[](Particle& x)
 		{
@@ -119,54 +126,83 @@ void ParticleManager::Update(Camera* camera)
 
 
 	//全パーティクル更新
-	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
-	{
-		nowParticleCount_++;
+	//for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	//{
+	//	//nowParticleCount_++;
 
-		//経過フレーム数をカウント
-		it->frame++;
+	//	//経過フレーム数をカウント
+	//	//it->frame++;
 
-		//速度に加速度を加算
-		it->velocity = it->velocity + it->accel;
-		//速度による移動
-		it->position = it->position + it->velocity;
+	//	////速度に加速度を加算
+	//	//it->velocity = it->velocity + it->accel;
+	//	////速度による移動
+	//	//it->position = it->position + it->velocity;
 
-		//進行度を0～1の範囲に換算
-		float f = (float)it->frame / it->num_frame;
+	//	////進行度を0～1の範囲に換算
+	//	//float f = (float)it->frame / it->num_frame;
 
-		//スケールの線形補間
-		it->scale = (it->e_scale - it->s_scale) * f,
-			it->scale += it->s_scale;
+	//	////スケールの線形補間
+	//	//it->scale = (it->e_scale - it->s_scale) * f;
+	//	//it->scale += it->s_scale;
 
-		//色の移動
-		if(it->color.x < 1)
-		{
-			it->color.x = it->color.x + it->colorSpeed.x;
-		}
-		else if(it->color.x >= 1)
-		{
-			it->color.x = 0;
-		}
+	//	//色の移動
+	//	/*if(it->color.x < 1)
+	//	{
+	//		it->color.x = it->color.x + it->colorSpeed.x;
+	//	}
+	//	else if(it->color.x >= 1)
+	//	{
+	//		it->color.x = 0;
+	//	}*/
 
-		if(nowParticleCount_ >= vertexCount)
-		{
-			isMaxParticle_ = true;
-			break;
-		}
-	}
+	//	/*it->color.x = 1;
+	//	it->color.y = 1;
+	//	it->color.z = 1;
+	//	it->color.w = 1;*/
+
+
+	//	/*if(nowParticleCount_ >= vertexCount)
+	//	{
+	//		isMaxParticle_ = true;
+	//		break;
+	//	}*/
+	//}
 
 	//頂点バッファへデータ転送
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 
-	//カウントをリセット
 	nowParticleCount_ = 0;
-
+	
 	if(SUCCEEDED(result))
 	{
 		for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 		{
 			nowParticleCount_++;
+
+			if(nowParticleCount_ >= vertexCount)
+			{
+				isMaxParticle_ = true;
+				break;
+			}
+			else
+			{
+				isMaxParticle_ = false;
+			}
+
+			//速度に加速度を加算
+			it->velocity = it->velocity + it->accel;
+			//速度による移動
+			it->position = it->position + it->velocity;
+
+			it->frame++;
+			//進行度を0～1の範囲に換算
+			float f = (float)it->frame / it->num_frame;
+
+			//スケールの線形補間
+			it->scale = (it->e_scale - it->s_scale) * f;
+			it->scale += it->s_scale;
+
 			//座標
 			vertMap->pos.x = it->position.x;
 			vertMap->pos.y = it->position.y;
@@ -174,16 +210,14 @@ void ParticleManager::Update(Camera* camera)
 
 			//スケール
 			vertMap->scale = it->scale;
-			//色
-			vertMap->color = it->color;
+
+			vertMap->color.x = it->color.x;
+			vertMap->color.y = it->color.y;
+			vertMap->color.z = it->color.z;
+			vertMap->color.w = it->color.w;
+
 			//次の頂点へ
 			vertMap++;
-
-			if(nowParticleCount_ >= vertexCount)
-			{
-				isMaxParticle_ = true;
-				break;
-			}
 		}
 		vertBuff_->Unmap(0, nullptr);
 	}
@@ -215,6 +249,14 @@ void ParticleManager::Draw()
 	cmdList_->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 	// 描画コマンド
+	/*for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	{
+		if(it->frame <= it->num_frame)
+		{
+			cmdList_->DrawInstanced(_countof(vertices_), 1, 0, 0);
+		}
+	}*/
+
 	cmdList_->DrawInstanced((UINT)std::distance(particles_.begin(), particles_.end()), 1, 0, 0);
 }
 
@@ -240,6 +282,8 @@ std::unique_ptr<ParticleManager> ParticleManager::Create()
 
 void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, XMFLOAT4 colorSpeed, float start_scale, float end_scale)
 {
+	//パーティクルのカウントを1増やす
+	//nowParticleCount_++;
 	//リストに要素を追加
 	particles_.emplace_front();
 	//追加した要素の参照
@@ -398,7 +442,7 @@ void  ParticleManager::InitializeGraphicsPipeline()
 
 	//デプスステンシルステートの設定
 	pipelineDesc_.DepthStencilState.DepthEnable = true;	//深度テストを行う
-	pipelineDesc_.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;	//書き込み許可
+	pipelineDesc_.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;	//書き込み禁止
 	pipelineDesc_.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;		//小さければ合格
 	pipelineDesc_.DSVFormat = DXGI_FORMAT_D32_FLOAT;		//深度値フォーマット
 
@@ -416,10 +460,10 @@ void  ParticleManager::InitializeGraphicsPipeline()
 		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;		//ソースの値を100%使う(今から描画しようとしている色)
 		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;	//デストの値を  0%使う(既に描かれている色)
 
-		//半透明合成
-		blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
-		blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
-		blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
+		//加算合成
+		blenddesc.BlendOp = D3D12_BLEND_OP_ADD;			//加算
+		blenddesc.SrcBlend = D3D12_BLEND_ONE;			
+		blenddesc.DestBlend = D3D12_BLEND_ONE;			
 
 		blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
@@ -695,3 +739,5 @@ void ParticleManager::LoadTexture(const std::string& fileName)
 	device_->CreateShaderResourceView(texbuff_.Get(), &srvDesc, sSrvHandle_);
 
 }
+
+
