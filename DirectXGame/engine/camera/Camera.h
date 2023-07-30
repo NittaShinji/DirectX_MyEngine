@@ -9,7 +9,9 @@
 
 class Camera
 {
-	//エイリアステンプレート
+private:
+
+	//DirectXを省略
 	using XMFLOAT = DirectX::XMFLOAT3;
 	using XMFLOAT2 = DirectX::XMFLOAT2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;

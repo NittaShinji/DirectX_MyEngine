@@ -8,7 +8,6 @@ using namespace Microsoft::WRL;
 SpriteCommon* Sprite::spriteCommon_ = nullptr;
 DirectXBasic* Sprite::directXBasic_ = nullptr;
 KeyInput* Sprite::keys_ = nullptr;
-//D3D12_RESOURCE_DESC Sprite::textureResourceDesc{};
 
 void Sprite::StaticInitialize()
 {
@@ -110,10 +109,6 @@ void Sprite::matUpdate()
 	float right = (1.0f - anchorPoint_.x) * size_.x;
 	float top = (0.0f - anchorPoint_.y) * size_.y;
 	float bottom = (1.0f - anchorPoint_.y) * size_.y;
-
-	//îΩì]èàóùÅ@
-	//isFlipX_ = true;
-	//isFlipY_ = true;
 
 	//ç∂âEîΩì]
 	if (isFlipX_ == true)

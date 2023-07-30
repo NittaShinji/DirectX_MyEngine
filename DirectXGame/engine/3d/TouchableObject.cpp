@@ -2,7 +2,6 @@
 #include "MeshCollider.h"
 #include "CollisionAttribute.h"
 
-//TouchableObject* TouchableObject::Create(const std::string& path)
 std::unique_ptr<TouchableObject> TouchableObject::Create(const std::string& path)
 {
 	//オブジェクトのインスタンスを生成
@@ -29,10 +28,6 @@ void TouchableObject::Initialize()
 void TouchableObject::AddCollider(Model* model)
 {
 	//コライダーの追加
-	//MeshCollider* collider = new MeshCollider;
-	//SetCollider(collider);
-	//collider->ConstructTriangles(model);
-
 	objMeshCollider_ = std::make_unique<MeshCollider>();
 	SetCollider(objMeshCollider_.get());
 	objMeshCollider_->ConstructTriangles(model);

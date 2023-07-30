@@ -586,98 +586,6 @@ void ParticleManager::CreateModel()
 	vbView_.StrideInBytes = sizeof(vertices_[0]);
 }
 
-//void ParticleManager::LoadTexture()
-//{
-//	HRESULT result = S_FALSE;
-//
-//	TexMetadata metadata{};
-//	ScratchImage scratchImg{};
-//
-//	// WICテクスチャのロード
-//	result = LoadFromWICFile(L"Resources/effect1.png", WIC_FLAGS_NONE, &metadata, scratchImg);
-//	assert(SUCCEEDED(result));
-//
-//	ScratchImage mipChain{};
-//	// ミップマップ生成
-//	result = GenerateMipMaps(
-//		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
-//		TEX_FILTER_DEFAULT, 0, mipChain);
-//	if(SUCCEEDED(result))
-//	{
-//		scratchImg = std::move(mipChain);
-//		metadata = scratchImg.GetMetadata();
-//	}
-//
-//	// 読み込んだディフューズテクスチャをSRGBとして扱う
-//	metadata.format = MakeSRGB(metadata.format);
-//
-//	//リソース設定
-//	D3D12_RESOURCE_DESC textureResourceDesc{};
-//	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-//	textureResourceDesc.Format = metadata.format;
-//	textureResourceDesc.Width = metadata.width; // 幅
-//	textureResourceDesc.Height = (UINT)metadata.height; // 幅
-//	textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
-//	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
-//	textureResourceDesc.SampleDesc.Count = 1;
-//
-//	//ヒープ設定
-//	D3D12_HEAP_PROPERTIES textureHeapProp{};
-//	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
-//	textureHeapProp.CPUPageProperty =
-//		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
-//	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-//
-//	// テクスチャ用バッファの生成
-//	result = directXBasic_->GetDevice()->CreateCommittedResource(
-//		&textureHeapProp, D3D12_HEAP_FLAG_NONE, &textureResourceDesc,
-//		D3D12_RESOURCE_STATE_GENERIC_READ, // テクスチャ用指定
-//		nullptr, IID_PPV_ARGS(&texbuff_));
-//	assert(SUCCEEDED(result));
-//
-//	textureHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
-//
-//	// テクスチャバッファにデータ転送
-//	for(size_t i = 0; i < metadata.mipLevels; i++)
-//	{
-//		const Image* img = scratchImg.GetImage(i, 0, 0); // 生データ抽出
-//		result = texbuff_->WriteToSubresource(
-//			(UINT)i,
-//			nullptr,              // 全領域へコピー
-//			img->pixels,          // 元データアドレス
-//			(UINT)img->rowPitch,  // 1ラインサイズ
-//			(UINT)img->slicePitch // 1枚サイズ
-//		);
-//		assert(SUCCEEDED(result));
-//	}
-//
-//	//デスクリプタヒープの設定
-//	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-//	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-//	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
-//	srvHeapDesc.NumDescriptors = kMaxSRVCount_;
-//
-//	//設定を本にSRV用デスクリプタヒープを生成
-//	result = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&descHeap_));
-//	assert(SUCCEEDED(result));
-//
-//	//SRVヒープの先頭ハンドルを取得
-//	cpuDescHandleSRV_ = descHeap_->GetCPUDescriptorHandleForHeapStart();
-//	gpuDescHandleSRV_ = descHeap_->GetGPUDescriptorHandleForHeapStart();
-//
-//	//シェーダーリソースビューの設定
-//	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-//	srvDesc.Format = textureResourceDesc.Format;//RGBA float
-//	srvDesc.Shader4ComponentMapping =
-//		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-//	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-//	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
-//
-//	//ハンドルの指す位置にシェーダーリソースビュー作成
-//	directXBasic_->GetDevice()->CreateShaderResourceView(texbuff_.Get(), &srvDesc, cpuDescHandleSRV_);
-//
-//}
-
 void ParticleManager::LoadTexture(const std::string& fileName)
 {
 	const std::string directoryPath = "Resources/";
@@ -774,14 +682,6 @@ void ParticleManager::LoadTexture(const std::string& fileName)
 
 	//SRVヒープの先頭ハンドルを取得
 	sSrvHandle_ = descHeap_->GetCPUDescriptorHandleForHeapStart();
-
-	////デスクリプタのサイズを取得
-	//UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	////取得したサイズを使用してハンドルを進める
-	//for(uint32_t i = 0; i < sTextureIndex_; i++)
-	//{
-	//	sSrvHandle_.ptr += incrementSize;
-	//}
 
 	//シェーダーリソースビューの設定
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体

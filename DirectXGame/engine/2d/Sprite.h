@@ -6,16 +6,17 @@
 #include <array>
 #include "SpriteCommon.h"
 #include "Input.h"
-using namespace DirectX;
 
 //スプライト
 class Sprite
 {
-public:
+private:
 
 	//エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+public:
+	
 	//静的初期化
 	static void StaticInitialize();
 

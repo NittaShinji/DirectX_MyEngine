@@ -3,8 +3,6 @@
 #include <dinput.h>
 #include <cstdint>
 #include <wrl.h>
-#pragma comment(lib,"dinput8.lib")
-#pragma comment(lib,"dxguid.lib")
 
 class KeyInput
 {

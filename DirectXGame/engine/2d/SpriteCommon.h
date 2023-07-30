@@ -12,6 +12,11 @@ using namespace DirectX;
  
 class SpriteCommon final
 {
+private:
+
+	//エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 public:
 
 	//定数バッファ用データ構造体(マテリアル)
@@ -26,9 +31,6 @@ public:
 
 public:
 
-	//エイリアステンプレート
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	
 	//初期化
 	void Initialize(DirectXBasic* directXBasic);
 	//更新

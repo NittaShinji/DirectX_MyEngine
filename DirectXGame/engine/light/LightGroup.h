@@ -1,9 +1,6 @@
 
 #pragma once
 #include "DirectionalLight.h"
-//#include "PointLight.h"
-//#include "SpotLight.h"
-//#include "CircleShadow.h"
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <d3d12.h>

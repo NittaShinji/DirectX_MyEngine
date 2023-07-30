@@ -241,10 +241,6 @@ void GameScene::Draw()
 	stage_->Draw();
 	player_->Draw();
 
-	//ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
-	particleManager_->PreDraw(directXBasic_->GetCommandList().Get());
+	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
 	particleManager_->Draw();
-
-	//SpriteCommon::BeforeDraw();
-
 }

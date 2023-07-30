@@ -1,4 +1,6 @@
 #pragma once
+#include "DirectXBasic.h"
+#include "Mesh.h"
 #include <string>
 #include <Vector>
 #include <d3d12.h>
@@ -7,8 +9,6 @@
 #include <DirectXMath.h>
 #include <map>
 #include <array>
-#include "DirectXBasic.h"
-#include "Mesh.h"
 
 class Model
 {

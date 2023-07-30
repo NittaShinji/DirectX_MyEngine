@@ -1,5 +1,4 @@
 #include "Mesh.h"
-//#include "WindowsAPI.h"
 #include "DirectXBasic.h"
 
 DirectXBasic* Mesh::directXBasic_ = nullptr;

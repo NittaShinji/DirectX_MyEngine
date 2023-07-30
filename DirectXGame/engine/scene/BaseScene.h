@@ -11,7 +11,6 @@ class BaseScene
 {
 public:
 
-	//static void StaticInitialize(DirectXBasic* directXBasic);
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
 
 	//‰Šú‰»
