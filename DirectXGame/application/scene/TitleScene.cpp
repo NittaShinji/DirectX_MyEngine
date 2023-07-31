@@ -11,6 +11,7 @@ void TitleScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGu
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
+	Sprite::StaticInitialize();
 	Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);
 	Mesh::StaticInitialize(directXBasic_);
@@ -20,13 +21,20 @@ void TitleScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGu
 
 void TitleScene::Initialize()
 {
+	gamePad_ = std::make_unique<GamePad>();
+	gamePad_->Initialzie(Player1);
+
 	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLightGroup(lightGroup_);
 
 	//3Dオブジェクト
 	titleSphere_ = Object3d::Create("sphere");
-	titleSphere_->SetTransform(XMFLOAT3{ 0.0f, 8.0f, 5.0f });
+	spherPos_.x = 0.0f;
+	spherPos_.y = 5.0f;
+	spherPos_.z = 5.0f;
+
+	titleSphere_->SetTransform(spherPos_);
 	titleSphere_->SetScale(XMFLOAT3{ 3.0f, 3.0f, 3.0f });
 
 	//画像
@@ -34,17 +42,16 @@ void TitleScene::Initialize()
 	aButtonSprite_ = std::make_unique<Sprite>();
 
 	SpriteCommon::GetInstance()->LoadTexture("title.png");
-	SpriteCommon::GetInstance()->LoadTexture("A.png");
+	SpriteCommon::GetInstance()->LoadTexture("click.png");
 
 	XMFLOAT2 titlePosition = { 0.0f,0.0f };
 	const XMFLOAT2 titleSize = { 1280.0f,720.0f };
 	titleSprite_->Initialize(titlePosition, titleSize);
 
 	const XMFLOAT2 aButtonSize = { 128.0f,128.0f };
-	//XMFLOAT2 aButtonPosition = { 576.0f,360.0f };
 	XMFLOAT2 aButtonPosition;
-	aButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (aButtonSize.x / 2);
-	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y / 2);
+	aButtonPosition.x = (WindowsAPI::kWindow_width_  / 2) - (aButtonSize.x / 2);
+	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y) + (aButtonSize.y / 3);
 
 
 	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
@@ -59,10 +66,6 @@ void TitleScene::Initialize()
 
 	//カメラ
 	camera_ = std::make_unique<Camera>();
-
-	//XMFLOAT3 cameraEye = { 0.0f,0.0f,0.0f };
-	//XMFLOAT3 cameraTarget = { 0.0f,0.0f,0.0f };
-	//XMFLOAT3 cameraUp = { 0.0f,1.0f,0.0f };
 
 	XMFLOAT3 cameraEye = { 30,15.5,-20 };
 	XMFLOAT3 cameraTarget = { 0,5,5 };
@@ -86,30 +89,74 @@ void TitleScene::Update()
 
 	titleSphere_->Update(camera_.get());
 
-	sphereRotate.y -= 0.01f;
-	titleSphere_->SetRotation(sphereRotate);
-
+	//回転処理
+	if(isChangeScene_ == false)
+	{
+		sphereRotate.y -= 0.01f;
+		titleSphere_->SetRotation(sphereRotate);
+	}
+	
+	//移動処理
 	if(moveTimer_ >= 0)
 	{
 		moveTimer_--;
 	}
-	else if(moveTimer_ < 0)
+	else
 	{
 		moveTimer_ = kActionTime_;
 	}
 
 	if(moveTimer_ > (kActionTime_ / 2))
 	{
+		isDown_ = false;
+		isUp_ = true;
+		move_.y = 0;
+	}
+	else
+	{
+		isDown_ = true;
+		isUp_ = false;
+		move_.y = 0;
+	}
+
+	//色を変える処理
+	if(rotateTimer_ >= 0)
+	{
+		rotateTimer_--;
+	}
+	else
+	{
+		rotateTimer_ = kRoateTime_;
+	}
+
+	if(rotateTimer_ > (kRoateTime_ / 2))
+	{
 		titleSphere_->SetColorFlag(true);
 		titleSphere_->SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
 	}
-	else if(moveTimer_ <= (kActionTime_ / 2))
+	else
 	{
 		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(XMFLOAT3(1.0f, 1.0f, 0.0f));
+		titleSphere_->SetColor(XMFLOAT3(1.0f, 0.469f, 0.0f));
 	}
 
-	if(keys_->PushedKeyMoment(DIK_RETURN))
+	if(isDown_ == true && isUp_ == false)
+	{
+		move_.y -= 0.3f;
+	}
+	else if(isUp_ == true && isDown_ == false)
+	{
+		move_.y += 0.3f;
+	}
+
+	titleSphere_->SetTransform(spherPos_);
+
+	//ゲームパッドが繋がっているかどうか
+	if(gamePad_->IsConnected(Player1)) {}
+	//押した瞬間の判定を取る
+	gamePad_->PushedButtonMoment();
+
+	if(keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->GetButtonA())
 	{
 		isChangeScene_ = true;	
 	}
@@ -132,7 +179,7 @@ void TitleScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
 	titleSprite_->Draw("title.png");
-	aButtonSprite_->Draw("A.png");
+	aButtonSprite_->Draw("click.png");
 
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();

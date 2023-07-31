@@ -32,6 +32,11 @@ public: //ƒƒ“ƒoŠÖ”
 
 protected:
 
+	enum PadNum
+	{
+		Player1 = 1,
+	};
+
 	static DirectXBasic* directXBasic_;
 
 	static ImGuiManager* imGuiManager_;

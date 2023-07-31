@@ -66,17 +66,11 @@ void Player::Update(Camera* camera)
 		position_.z += move.z;
 	}
 
-	if(KeyInput::GetInstance()->HasPushedKey(DIK_S))
+	gamePad_->PushedButtonMoment();
+	
+	if(KeyInput::GetInstance()->PushedKeyMoment(DIK_O) || gamePad_->GetButtonB())
 	{
-		position_.z += -0.05f;
-	}
-	if(KeyInput::GetInstance()->HasPushedKey(DIK_W))
-	{
-		isfinish_ = true;
-	}
-
-	if(KeyInput::GetInstance()->PushedKeyMoment(DIK_O))
-	{
+		gamePad_->ResetButton();
 		//‘®«‚Ì•ÏX
 		if(attribute_ == Attribute::pink)
 		{
@@ -99,7 +93,7 @@ void Player::Update(Camera* camera)
 		}
 		else if(attribute_ == Attribute::yellow)
 		{
-			SetColor(XMFLOAT3(1.0f, 1.0f, 0.0f));
+			SetColor(XMFLOAT3(1.0f, 0.469f, 0.0f));
 		}
 		else
 		{
@@ -124,18 +118,34 @@ void Player::Update(Camera* camera)
 
 		if(jumpCount > 0)
 		{
-			if(keys_->PushedKeyMoment(DIK_SPACE))
+			if(gamePad_->GetButtonA())
+			{
+				gamePad_->ResetButton();
+				onGround_ = false;
+				const float jumpVYFist = 0.4f;
+				fallVec_ = { 0,jumpVYFist,0,0 };
+				jumpCount -= 1;
+			}
+			/*if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0,0 };
 				jumpCount -= 1;
-			}	
+			}	*/
 		}
 	}
 	//ƒWƒƒƒ“ƒv‘€ì
-	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
+	/*else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
+		onGround_ = false;
+		const float jumpVYFist = 0.4f;
+		fallVec_ = { 0,jumpVYFist,0,0 };
+		jumpCount -= 1;
+	}*/
+	else if(gamePad_->GetButtonA() && jumpCount > 0)
+	{
+		gamePad_->ResetButton();
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0,0 };

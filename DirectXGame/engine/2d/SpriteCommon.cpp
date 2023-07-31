@@ -148,8 +148,6 @@ void SpriteCommon::SemiTransparent()
 
 #pragma region ブレンド設定
 	// ブレンドステート
-	//pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
-	//	= D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
 	//レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
@@ -188,10 +186,8 @@ void SpriteCommon::Add()
 	//グラフィックスパイプライン設定
 	PipelineSet();
 
-#pragma region ブレンド設定(03_01)
+#pragma region ブレンド設定
 	// ブレンドステート
-	//pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
-	//	= D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
 	//レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
@@ -230,10 +226,8 @@ void SpriteCommon::Sub()
 	//グラフィックスパイプライン設定
 	PipelineSet();
 
-#pragma region ブレンド設定(03_01)
+#pragma region ブレンド設定
 	// ブレンドステート
-	//pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
-	//	= D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
 	//レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
@@ -271,7 +265,7 @@ void SpriteCommon::InvertColor()
 	//グラフィックスパイプライン設定
 	PipelineSet();
 
-#pragma region ブレンド設定(03_01)
+#pragma region ブレンド設定()
 	// ブレンドステート
 	//pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
 	//	= D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
@@ -370,9 +364,6 @@ void SpriteCommon::LoadTexture(const std::string& fileName)
 		nullptr,
 		IID_PPV_ARGS(&textureBuffers_[sTextureIndex_]));
 
-	/*SetWidth(textureResourceDesc.Width);
-	SetHeight(textureResourceDesc.Height);*/
-
 	//全ミニマップについて
 	for(size_t i = 0; i < metadata.mipLevels; i++)
 	{
@@ -457,7 +448,7 @@ void SpriteCommon::PipelineSet()
 	pipelineDesc_.RasterizerState.FillMode = D3D12_FILL_MODE_SOLID; // ポリゴン内塗りつぶし
 	pipelineDesc_.RasterizerState.DepthClipEnable = true; // 深度クリッピングを有効に
 
-#pragma region ブレンド設定(03_01)
+#pragma region ブレンド設定
 
 	// 頂点レイアウトの設定
 	pipelineDesc_.InputLayout.pInputElementDescs = &inputLayout_.at(0);

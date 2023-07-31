@@ -26,7 +26,7 @@ public:
 	};
 	struct ConstBufferDataTransform
 	{
-		XMMATRIX mat;	//êF(RGBA)
+		XMMATRIX mat;	
 	};
 
 public:

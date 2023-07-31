@@ -131,7 +131,7 @@ void Sprite::matUpdate()
 
 	//いずれかのキーを押していたら
 	//座標を移動する処理(Z座標)
-	if (keys_->HasPushedKey(DIK_UP)) { moveSpeed_.y -= 0.1f; }
+	/*if (keys_->HasPushedKey(DIK_UP)) { moveSpeed_.y -= 0.1f; }
 	else if (keys_->HasPushedKey(DIK_DOWN)) { moveSpeed_.y += 0.1f; }
 	else
 	{
@@ -142,7 +142,7 @@ void Sprite::matUpdate()
 	else
 	{
 		moveSpeed_.x = 0.0f;
-	}
+	}*/
 
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
@@ -176,6 +176,9 @@ void Sprite::matUpdate()
 	//定数バッファにデータ転送
 	spriteCommon_->GetConstMapTransform()->mat = matWorld * spriteCommon_->GetConstMapTransform()->mat;
 	spriteCommon_->GetConstMapMaterial()->color = color_;
+
+	moveSpeed_.x = 0.0f;
+	moveSpeed_.y = 0.0f;
 }
 
 void Sprite::Draw(const std::string& fileName)

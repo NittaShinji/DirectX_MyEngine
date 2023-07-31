@@ -97,9 +97,95 @@ void GamePad::ResetButton()
 //âüÇµÇΩèÛë‘Ç©Ç«Ç§Ç©
 void GamePad::HasPushedButton()
 {
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_A)
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
-		if(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_A)
+		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
+		{
+			padButton_.A = true;
+		}
+		else
+		{
+			padButton_.A = false;
+		}
+	}
+	
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+	{
+		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+		{
+			padButton_.B = true;
+		}
+		else
+		{
+			padButton_.B = false;
+		}
+	}
+	
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+	{
+		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_X)
+		{
+			padButton_.X = true;
+		}
+		else
+		{
+			padButton_.X = false;
+		}
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
+	{
+		padButton_.Y = true;
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
+	{
+		padButton_.Up = true;
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+	{
+		padButton_.Down = true;
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+	{
+		padButton_.Left = true;
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+	{
+		padButton_.Right = true;
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
+	{
+		padButton_.Up = true;
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
+	{
+		padButton_.Down = true;
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+	{
+		padButton_.Left = true;
+	}
+
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+	{
+		padButton_.Right = true;
+	}
+
+}
+
+//ó£ÇµÇΩèÛë‘Ç©Ç«Ç§Ç©
+void GamePad::HasReleasedButton()
+{
+	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
+	{
+		if(!(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
 		{
 			padButton_.A = true;
 		}
@@ -113,9 +199,9 @@ void GamePad::HasPushedButton()
 		padButton_.A = false;
 	}
 
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_B)
+	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B))
 	{
-		if(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_B)
+		if(!(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B))
 		{
 			padButton_.B = true;
 		}
@@ -128,65 +214,14 @@ void GamePad::HasPushedButton()
 	{
 		padButton_.B = false;
 	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_X)
-	{
-		padButton_.X = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_Y)
-	{
-		padButton_.Y = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_DPAD_UP)
-	{
-		padButton_.Up = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_DPAD_DOWN)
-	{
-		padButton_.Down = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_DPAD_LEFT)
-	{
-		padButton_.Left = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_DPAD_RIGHT)
-	{
-		padButton_.Right = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_DPAD_UP)
-	{
-		padButton_.Up = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_DPAD_DOWN)
-	{
-		padButton_.Down = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_DPAD_LEFT)
-	{
-		padButton_.Left = true;
-	}
-
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_DPAD_RIGHT)
-	{
-		padButton_.Right = true;
-	}
-
 }
 
-//ó£ÇµÇΩèÛë‘Ç©Ç«Ç§Ç©
-void GamePad::HasReleasedButton()
+//âüÇµÇΩèuä‘Ç©Ç«Ç§Ç©
+void GamePad::PushedButtonMoment()
 {
-	if(!(state_.Gamepad.wButtons && XINPUT_GAMEPAD_A))
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 	{
-		if(!(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_A))
+		if(!(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
 		{
 			padButton_.A = true;
 		}
@@ -200,28 +235,55 @@ void GamePad::HasReleasedButton()
 		padButton_.A = false;
 	}
 
-}
-
-//âüÇµÇΩèuä‘Ç©Ç«Ç§Ç©
-void GamePad::PushedButtonMoment()
-{
-	if(state_.Gamepad.wButtons && XINPUT_GAMEPAD_A)
+	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
-		if(!(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_A))
+		if(!(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B))
 		{
-			padButton_.A = true;
+			padButton_.B = true;
 		}
+		else
+		{
+			padButton_.B = false;
+		}
+	}
+	else
+	{
+		padButton_.B = false;
 	}
 }
 
 //ó£ÇµÇΩèuä‘Ç©Ç«Ç§Ç©
 void GamePad::ReleaseButtonMoment()
 {
-	if(!(state_.Gamepad.wButtons && XINPUT_GAMEPAD_A))
+	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
 	{
-		if(oldState_.Gamepad.wButtons && XINPUT_GAMEPAD_A)
+		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
 		{
 			padButton_.A = true;
 		}
+		else
+		{
+			padButton_.A = false;
+		}
+	}
+	else
+	{
+		padButton_.A = false;
+	}
+
+	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B))
+	{
+		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
+		{
+			padButton_.B = true;
+		}
+		else
+		{
+			padButton_.B = false;
+		}
+	}
+	else
+	{
+		padButton_.B = false;
 	}
 }

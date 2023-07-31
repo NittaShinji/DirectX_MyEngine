@@ -58,11 +58,6 @@ public:
 
 private:
 
-	enum PadNum
-	{
-		Player1 = 1,
-	};
-
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
 	static ImGuiManager* imGuiManager_;
@@ -108,6 +103,5 @@ private:
 	//パーティクル
 	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
 	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
-
 };
 

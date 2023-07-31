@@ -25,11 +25,6 @@ void GameScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGui
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
-	/*Model::StaticInitialize(directXBasic_);
-	Object3d::StaticInitialize(directXBasic_);
-	Mesh::StaticInitialize(directXBasic_);
-	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
-	Camera::StaticInitialize(directXBasic_);*/
 	ParticleManager::StaticInitialize(directXBasic_->GetDevice().Get());
 }
 
@@ -110,9 +105,10 @@ void GameScene::Update()
 {
 	if(gamePad_->IsConnected(Player1)) {}
 
+	gamePad_->PushedButtonMoment();
 	if(player_->GetIsDead() == false)
 	{
-		if(KeyInput::HasPushedKey(DIK_SPACE))
+		if(KeyInput::HasPushedKey(DIK_SPACE) || gamePad_->GetButtonA())
 		{
 			player_->SetIsMoving(true);
 		}
@@ -126,16 +122,6 @@ void GameScene::Update()
 	//光線方向初期値
 	static XMVECTOR lightDir = { 1,-1,-10,0 };
 	static XMFLOAT3 color = { 1, 1, 1 };
-
-	if(keys_->HasPushedKey(DIK_W)) { lightDir.m128_f32[1] += 1.0f; }
-	else if(keys_->HasPushedKey(DIK_S)) { lightDir.m128_f32[1] -= 1.0f; }
-	if(keys_->HasPushedKey(DIK_D)) { lightDir.m128_f32[0] += 1.0f; }
-	else if(keys_->HasPushedKey(DIK_A)) { lightDir.m128_f32[0] -= 1.0f; }
-
-	if(keys_->HasPushedKey(DIK_2)) { color.x -= 0.01f; }
-	else if(keys_->HasPushedKey(DIK_3)) { color.x += 0.01f; }
-	else if(keys_->HasPushedKey(DIK_4)) { color.y += 0.01f; }
-	else if(keys_->HasPushedKey(DIK_5)) { color.y -= 0.01f; }
 
 	lightGroup_->SetAmbientColor(color);
 	lightGroup_->SetDirLightDir(0, lightDir);
@@ -218,11 +204,6 @@ void GameScene::Update()
 		}
 	}
 
-	if(keys_->HasPushedKey(DIK_G))
-	{
-		particleManager_->SetScale();
-	}
-
 	//カメラの切り替え
 	if(keys_->HasPushedKey(DIK_0))
 	{
@@ -269,8 +250,9 @@ void GameScene::Update()
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
 
-	if(player_->GetIsFinish() == true)
+	if(player_->GetIsFinish() == true || keys_->HasPushedKey(DIK_G))
 	{
+		Sound::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
 }

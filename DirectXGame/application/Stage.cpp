@@ -63,7 +63,7 @@ void Stage::Initialize()
 
 					if(newObject->GetAttribute() == Attribute::yellow)
 					{
-						newObject->SetColor(XMFLOAT3(1.0f, 1.0f, 0.0f));
+						newObject->SetColor(XMFLOAT3(1.0f, 0.469f, 0.0f));
 					}
 					else if(newObject->GetAttribute() == Attribute::pink)
 					{
