@@ -34,5 +34,18 @@ private:
 	std::unique_ptr<Camera> camera_ = nullptr;
 	LightGroup* lightGroup_ = nullptr;
 
+	//‘Ò‚¿ŽžŠÔ
+	static const int32_t waitTime = 40;
+
+	XMFLOAT3 sphereRotate = { 0,0,0 };
+	const int32_t kActionTime_ = 240;
+	const int32_t kChangeTime_ = 10;
+
+
+	int32_t moveTimer_ = kActionTime_;
+
+	bool isChangeScene_;
+	int32_t changeTimer_ = kChangeTime_;
+
 };
 

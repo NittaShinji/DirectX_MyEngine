@@ -69,6 +69,8 @@ void TitleScene::Initialize()
 	XMFLOAT3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
+
+	isChangeScene_ = false;
 }
 
 void TitleScene::Update()
@@ -84,10 +86,44 @@ void TitleScene::Update()
 
 	titleSphere_->Update(camera_.get());
 
+	sphereRotate.y -= 0.01f;
+	titleSphere_->SetRotation(sphereRotate);
+
+	if(moveTimer_ >= 0)
+	{
+		moveTimer_--;
+	}
+	else if(moveTimer_ < 0)
+	{
+		moveTimer_ = kActionTime_;
+	}
+
+	if(moveTimer_ > (kActionTime_ / 2))
+	{
+		titleSphere_->SetColorFlag(true);
+		titleSphere_->SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
+	}
+	else if(moveTimer_ <= (kActionTime_ / 2))
+	{
+		titleSphere_->SetColorFlag(true);
+		titleSphere_->SetColor(XMFLOAT3(1.0f, 1.0f, 0.0f));
+	}
+
 	if(keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		Sound::GetInstance()->Finalize();
-		SceneManager::GetInstance()->ChangeScene("GAME");
+		isChangeScene_ = true;	
+	}
+
+	if(isChangeScene_ == true)
+	{
+		changeTimer_--;
+		titleSphere_->SetColorFlag(true);
+		titleSphere_->SetColor(XMFLOAT3(1.0f, 1.0f, 1.0f));
+		if(changeTimer_ <= 0)
+		{
+			Sound::GetInstance()->Finalize();
+			SceneManager::GetInstance()->ChangeScene("GAME");
+		}
 	}
 }
 
