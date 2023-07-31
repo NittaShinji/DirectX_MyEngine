@@ -7,7 +7,7 @@ void GameCamera::Update(bool isPlayerMoving)
 		target_.z += 0.5f;
 		eye_.z += 0.5f;
 	}
-
+	 
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
 }
