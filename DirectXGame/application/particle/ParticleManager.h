@@ -208,5 +208,7 @@ private: // メンバ変数
 
 	//生成済みのパーティクルの数
 	int32_t nowParticleCount_ = 0;
+
+	bool isFinish_ = 0;
 };
 

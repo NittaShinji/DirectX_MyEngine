@@ -82,7 +82,7 @@ private:
 	GamePad* gamePad_ = nullptr;
 
 	//接地フラグ
-	bool onGround = false;
+	bool onGround_ = false;
 
 	//死亡フラグ
 	bool isDead_ = false;
@@ -105,6 +105,8 @@ public:
 	bool GetIsMoving() { return isMoving_; }
 	bool GetIsFinish() { return isfinish_; }
 	bool GetIsDead() { return isDead_; }
+	XMFLOAT3 GetPos() { return position_; }
+	bool GetOnGround() { return onGround_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }

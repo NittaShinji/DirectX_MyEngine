@@ -3,9 +3,17 @@
 #include <stdint.h>
 
 //windowsAPI
-class WindowsAPI
+class WindowsAPI final
 {
 public:
+
+	//コピーコンストラクタを無効にする
+	WindowsAPI(const WindowsAPI& windowsApi) = delete;
+	//代入演算子を無効
+	WindowsAPI& operator=(const WindowsAPI& windowsApi) = delete;
+
+	static WindowsAPI* GetInstance();
+
 	//初期化
 	void Initialize();
 	
@@ -32,6 +40,9 @@ public:
 	static constexpr int32_t kWindow_height_ = 720; //縦幅
 
 private:
+
+	WindowsAPI() {};
+	~WindowsAPI() {};
 
 	// ウィンドウ
 	WNDCLASSEX w_{};

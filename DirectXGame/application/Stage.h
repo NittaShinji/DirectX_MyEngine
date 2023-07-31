@@ -24,6 +24,8 @@ public:
 
 	void Draw();
 
+	XMFLOAT3 GetGoalPos();
+
 private:
 
 	//ステージ情報
@@ -35,5 +37,8 @@ private:
 
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
+
+	//ゴール座標
+	XMFLOAT3 goalPos_;
 };
 

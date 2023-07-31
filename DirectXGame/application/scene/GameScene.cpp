@@ -25,11 +25,11 @@ void GameScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGui
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
-	Model::StaticInitialize(directXBasic_);
+	/*Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);
 	Mesh::StaticInitialize(directXBasic_);
 	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
-	Camera::StaticInitialize(directXBasic_);
+	Camera::StaticInitialize(directXBasic_);*/
 	ParticleManager::StaticInitialize(directXBasic_->GetDevice().Get());
 }
 
@@ -40,10 +40,9 @@ void GameScene::Initialize()
 	Object3d::SetLightGroup(lightGroup_);
 
 	//------------サウンド----------
-	//sound_ = std::make_unique<Sound>();
-	//sound_->Initialize();
-	//Sound::GetInstance()->LoadSoundWave("Alarm01.wav");
-	//Sound::GetInstance()->PlaySoundWave("Alarm01.wav");
+	Sound::GetInstance()->Initialize();
+	Sound::GetInstance()->LoadSoundWave("gamescene.wav");
+	Sound::GetInstance()->PlaySoundWave("gamescene.wav");
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();
@@ -104,6 +103,7 @@ void GameScene::Initialize()
 
 	//パーティクル
 	particleManager_ = ParticleManager::Create();
+	playerRunEffect_ = ParticleManager::Create();
 }
 
 void GameScene::Update()
@@ -154,15 +154,46 @@ void GameScene::Update()
 	testCamera_->Update();
 	testGameCamera_->Update(player_->GetIsMoving());
 
+	if(player_->GetOnGround() == true)
+	{
+		for(int i = 0; i < 5; i++)
+		{
+			//x,y,z全て[-1.0f,+1.0f]でランダムに分布
+			const float md_pos = 2.0f;
+			XMFLOAT3 pos{};
+			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f;
+			pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().z;
+			//x,y,z全て[-0.05f,+0.05f]でランダムに分布
+			const float md_vel = 0.1f;
+			XMFLOAT3 vel{};
+			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+			XMFLOAT3 acc{};
+			const float md_acc = 0.001f;
+			acc.y = (float)rand() / RAND_MAX * md_acc;
+			//色を変化させる
+			XMFLOAT4 colorSpeed{};
+			colorSpeed.x = 0.0f;
+			colorSpeed.y = 0.0f;
+			colorSpeed.z = 0.0f;
+			colorSpeed.w = 1.0f;
+
+			//追加
+			particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
+		}
+	}
 
 	for(int i = 0; i < 50; i++)
 	{
-		//x,y,z全て[-5.0f,+5.0f]でランダムに分布
-		const float md_pos = 10.0f;
+		//x,y,z全て[-2.0f,+2.0f]でランダムに分布
+		const float md_pos = 4.0f;
 		XMFLOAT3 pos{};
 		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
+		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + 2.0f;
+		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + stage_->GetGoalPos().z;
 		//x,y,z全て[-0.05f,+0.05f]でランダムに分布
 		const float md_vel = 0.1f;
 		XMFLOAT3 vel{};

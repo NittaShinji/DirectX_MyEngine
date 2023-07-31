@@ -29,7 +29,7 @@ void Sound::LoadSoundWave(const std::string& fileName)
 
 	//--ファイルオープン
 	//ディレクトリパスとファイル名を連結してフルパスを得る
-	const std::string directoryPath = "Resources/";
+	const std::string directoryPath = "Resources/Sound/";
 	std::string fullPath = directoryPath + fileName;
 	//ファイル入力ストリームのインスタンス
 	std::ifstream file;

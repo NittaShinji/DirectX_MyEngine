@@ -9,20 +9,25 @@ using namespace Microsoft::WRL;
 void MyFramework::Initialize()
 {
 	//WindowsApi初期化処理
-	winApi_ = std::make_unique<WindowsAPI>();
+	winApi_ = WindowsAPI::GetInstance();
+	//winApi_ = std::make_unique<WindowsAPI>();
 	winApi_->Initialize();
 
 	//DirectX初期化処理
 	directXBasic_ = std::make_unique<DirectXBasic>();
-	directXBasic_->Initialize(winApi_.get());
+	//directXBasic_->Initialize(winApi_.get());
+	directXBasic_->Initialize(winApi_);
+
 	
 	//Input初期化処理
 	input_ = std::make_unique<Input>();
-	input_->Initialize(winApi_.get());
+	//input_->Initialize(winApi_.get());
+	input_->Initialize(winApi_);
 
 	//ImGui初期化処理
 	imGuiManager_ = std::make_unique<ImGuiManager>();
-	imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());
+	//imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());
+	imGuiManager_->Initialize(winApi_, directXBasic_.get());
 
 	//サウンド処理
 	ComPtr<IXAudio2> xAudio2;
@@ -36,9 +41,7 @@ void MyFramework::Initialize()
 	SpriteCommon::GetInstance()->Initialize(directXBasic_.get());
 	Sprite::StaticInitialize();
 
-	//サウンド
-	Sound::GetInstance()->Initialize();
-
+	//シーン静的初期化
 	BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 }
 
@@ -52,7 +55,6 @@ void MyFramework::Update()
 	}
 
 	input_->Update();
-	//SceneManager::GetInstance()->Update();
 }
 
 void MyFramework::Finalize()

@@ -110,7 +110,7 @@ void Player::Update(Camera* camera)
 	Object3d::SetColorFlag(colorFlag_);
 
 	//落下処理
-	if(!onGround)
+	if(!onGround_)
 	{
 		//下向き加速度　
 		const float fallAcc = -0.015f;
@@ -126,7 +126,7 @@ void Player::Update(Camera* camera)
 		{
 			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
-				onGround = false;
+				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0,0 };
 				jumpCount -= 1;
@@ -136,7 +136,7 @@ void Player::Update(Camera* camera)
 	//ジャンプ操作
 	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
-		onGround = false;
+		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0,0 };
 		jumpCount -= 1;
@@ -157,14 +157,15 @@ void Player::Update(Camera* camera)
 	RaycastHit raycastHit;
 
 	//接地状態
-	if(onGround)
+	if(onGround_)
 	{
+		
 		//スムーズに坂を下る為の吸着距離
 		const float adsDistance = 0.2f;
 		//接地を維持
 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 		{
-			onGround = true;
+			onGround_ = true;
 			position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 			Object3d::SetTransform(position_);
 			Object3d::Update(camera);
@@ -172,7 +173,7 @@ void Player::Update(Camera* camera)
 		//地面がないので落下
 		else
 		{
-			onGround = false;
+			onGround_ = false;
 			fallVec_ = { 0,0,0 };
 		}
 	}
@@ -182,7 +183,7 @@ void Player::Update(Camera* camera)
 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 		{
 			//着地
-			onGround = true;
+			onGround_ = true;
 			position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 			jumpCount = kMaxJumpNum;
 			//行列の更新など

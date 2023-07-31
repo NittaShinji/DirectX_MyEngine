@@ -20,16 +20,15 @@ void MyGame::Initialize()
 	//シーンマネージャに最初のシーンをセット
 	SceneManager::GetInstance()->ChangeScene("TITLE");
 	//一度のみ初期化
+	TitleScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	GameScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());
 
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
 	//ポストエフェクト用テクスチャの読み込み
-	SpriteCommon::GetInstance()->LoadTexture("test.png");
+	SpriteCommon::GetInstance()->LoadTexture("postEffect.png");
 	postEffect_->Initialize(directXBasic_.get());
 
-	//パーティクル初期化処理
-	//particleManager_ = std::make_unique<ParticleManager>();
 }
 
 void MyGame::Update()
@@ -57,7 +56,7 @@ void MyGame::Draw()
 	//描画開始
 	directXBasic_->BeforeDraw();
 	//ポストエフェクトの描画
-	postEffect_->Draw("test.png");
+	postEffect_->Draw("postEffect.png");
 	imGuiManager_->Draw();
 
 	//描画終了

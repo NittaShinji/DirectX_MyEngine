@@ -107,5 +107,7 @@ private:
 
 	//パーティクル
 	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
+	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
+
 };
 

@@ -28,6 +28,13 @@ LRESULT WindowsAPI::WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam
 	return DefWindowProc(hwnd, msg, wparam, lparam);
 }
 
+WindowsAPI* WindowsAPI::GetInstance()
+{
+	static WindowsAPI insatnce;
+
+	return &insatnce;
+}
+
 void WindowsAPI::Initialize()
 {
 	//システムタイマーの分解能を上げる

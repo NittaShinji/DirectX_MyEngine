@@ -4,6 +4,8 @@
 
 void Stage::Initialize()
 {
+	goalPos_ = { 0,0,0 };
+
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
 
@@ -45,6 +47,7 @@ void Stage::Initialize()
 			}
 			else if(objectData.attribute == "Goal")
 			{
+				goalPos_ = pos;
 				newObject->SetAttribute(Attribute::Goal);
 			}
 			else
@@ -93,4 +96,9 @@ void Stage::Draw()
 	{
 		object->Draw();
 	}
+}
+
+XMFLOAT3 Stage::GetGoalPos()
+{
+	return goalPos_;
 }
