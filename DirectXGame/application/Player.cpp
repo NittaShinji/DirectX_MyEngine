@@ -2,6 +2,7 @@
 #include "MathUtillity.h"
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
+#include "Sound.h"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ std::unique_ptr<Player> Player::Create(const std::string& path)
 void Player::Initialize()
 {
 	Object3d::Initialize();
+	Sound::GetInstance()->LoadSoundWave("jump.wav");
+
 
 	position_ = { 0,2,2 };
 	rotation_ = { 0,0,0 };
@@ -68,7 +71,7 @@ void Player::Update(Camera* camera)
 
 	gamePad_->PushedButtonMoment();
 	
-	if(KeyInput::GetInstance()->PushedKeyMoment(DIK_O) || gamePad_->GetButtonB())
+	if(gamePad_->GetButtonB())
 	{
 		gamePad_->ResetButton();
 		//‘®«‚Ì•ÏX
@@ -121,6 +124,7 @@ void Player::Update(Camera* camera)
 			if(gamePad_->GetButtonA())
 			{
 				gamePad_->ResetButton();
+				Sound::GetInstance()->PlaySoundWave("jump.wav");
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0,0 };
@@ -145,6 +149,7 @@ void Player::Update(Camera* camera)
 	}*/
 	else if(gamePad_->GetButtonA() && jumpCount > 0)
 	{
+		Sound::GetInstance()->PlaySoundWave("jump.wav");
 		gamePad_->ResetButton();
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;

@@ -62,6 +62,8 @@ void TitleScene::Initialize()
 	//サウンド
 	Sound::GetInstance()->Initialize();
 	Sound::GetInstance()->LoadSoundWave("title.wav");
+	Sound::GetInstance()->LoadSoundWave("touch.wav");
+
 	Sound::GetInstance()->PlaySoundWave("title.wav");
 
 	//カメラ
@@ -156,8 +158,9 @@ void TitleScene::Update()
 	//押した瞬間の判定を取る
 	gamePad_->PushedButtonMoment();
 
-	if(keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->GetButtonA())
+	if(gamePad_->GetButtonA())
 	{
+		Sound::GetInstance()->PlaySoundWave("touch.wav");
 		isChangeScene_ = true;	
 	}
 

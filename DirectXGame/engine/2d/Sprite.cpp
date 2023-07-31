@@ -129,21 +129,6 @@ void Sprite::matUpdate()
 	vertices_[RB].pos = { right + position_.x,bottom + position_.y,0.0f };
 	vertices_[RT].pos = { right + position_.x,top + position_.y,0.0f };
 
-	//いずれかのキーを押していたら
-	//座標を移動する処理(Z座標)
-	/*if (keys_->HasPushedKey(DIK_UP)) { moveSpeed_.y -= 0.1f; }
-	else if (keys_->HasPushedKey(DIK_DOWN)) { moveSpeed_.y += 0.1f; }
-	else
-	{
-		moveSpeed_.y = 0.0f;
-	}
-	if (keys_->HasPushedKey(DIK_RIGHT)) { moveSpeed_.x += 0.1f; }
-	else if (keys_->HasPushedKey(DIK_LEFT)) { moveSpeed_.x -= 0.1f; }
-	else
-	{
-		moveSpeed_.x = 0.0f;
-	}*/
-
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
 	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);

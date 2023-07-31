@@ -108,7 +108,7 @@ void GameScene::Update()
 	gamePad_->PushedButtonMoment();
 	if(player_->GetIsDead() == false)
 	{
-		if(KeyInput::HasPushedKey(DIK_SPACE) || gamePad_->GetButtonA())
+		if(gamePad_->GetButtonA())
 		{
 			player_->SetIsMoving(true);
 		}
@@ -205,20 +205,10 @@ void GameScene::Update()
 	}
 
 	//カメラの切り替え
-	if(keys_->HasPushedKey(DIK_0))
-	{
-		stage_->Update(testCamera_.get());
-		player_->Update(testCamera_.get());
-		skydome_->Update(testCamera_.get());
-		particleManager_->Update(testCamera_.get());
-	}
-	else
-	{
-		stage_->Update(testGameCamera_.get());
-		player_->Update(testGameCamera_.get());
-		skydome_->Update(testGameCamera_.get());
-		particleManager_->Update(testGameCamera_.get());
-	}
+	stage_->Update(testGameCamera_.get());
+	player_->Update(testGameCamera_.get());
+	skydome_->Update(testGameCamera_.get());
+	particleManager_->Update(testGameCamera_.get());
 
 	//スプライトの編集ウインドウの表示
 	{

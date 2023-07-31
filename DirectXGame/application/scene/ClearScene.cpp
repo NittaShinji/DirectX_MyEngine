@@ -1,5 +1,6 @@
 #include "ClearScene.h"
 #include "SceneManager.h"
+#include "Sound.h"
 
 void ClearScene::Initialize()
 {
@@ -34,6 +35,13 @@ void ClearScene::Initialize()
 	gamePad_ = std::make_unique<GamePad>();
 	gamePad_->Initialzie(Player1);
 
+	//ƒTƒEƒ“ƒh
+	Sound::GetInstance()->Initialize();
+	Sound::GetInstance()->LoadSoundWave("clear.wav");
+	Sound::GetInstance()->PlaySoundWave("clear.wav");
+
+	Sound::GetInstance()->LoadSoundWave("touch.wav");
+
 	//•Ï”
 	move_ = {0.0f,0.0f};
 }
@@ -62,8 +70,9 @@ void ClearScene::Update()
 	if(gamePad_->IsConnected(Player1)) {}
 	//‰Ÿ‚µ‚½uŠÔ‚Ì”»’è‚ðŽæ‚é
 	gamePad_->PushedButtonMoment();
-	if(keys_->ReleasedKeyMoment(DIK_RETURN) || gamePad_->GetButtonA())
+	if(gamePad_->GetButtonA())
 	{
+		Sound::GetInstance()->PlaySoundWave("touch.wav");
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 }
