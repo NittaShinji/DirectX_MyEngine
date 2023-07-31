@@ -32,7 +32,7 @@ void Model::Load(const std::string& path)
 	std::ifstream file;
 	// .OBJファイルを開く
 	const string modelFileName = model.name_ + ".obj";
-	const string directoryPath = "Resources/" + model.name_ + "/";
+	const string directoryPath = "Resources/Model/" + model.name_ + "/";
 	
 	file.open(directoryPath + modelFileName);
 
@@ -144,7 +144,7 @@ void Model::Update(){}
 
 void Model::LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model)
 {
-	const string defaultResourcePath = "Resources/";
+	const string defaultResourcePath = "Resources/Sprite/";
 
 	//ファイルストリーム
 	std::ifstream file;

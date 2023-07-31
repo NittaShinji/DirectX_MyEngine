@@ -54,21 +54,11 @@ void GameScene::Initialize()
 	const string ground = "ground";
 	const string skydome = "skydome";
 
-	Model::Load(test);
 	Model::Load(sphere);
 	Model::Load(testStage0);
-	Model::Load(ground);
 	Model::Load(skydome);
 
-
 	//3Dオブジェクトの生成
-	XMFLOAT3 spherePosition = { 0,2,20 };
-	XMFLOAT3 groundPosition = { 0,-5,0 };
-
-	XMFLOAT3 sphereScale = { 10,10,10 };
-	XMFLOAT3 groundScale = { 10,1,10 };
-	XMFLOAT3 skydomeScale = { 5,5,10 };
-
 
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize();
@@ -77,12 +67,13 @@ void GameScene::Initialize()
 	player_->SetGamePad(gamePad_.get());
 
 	skydome_ = Object3d::Create(skydome);
+	XMFLOAT3 skydomeScale = { 5,5,10 };
 	skydome_->SetScale(skydomeScale);
 
 	//------------カメラ----------
 	camera_ = std::make_unique<Camera>();
 	testCamera_ = std::make_unique<Camera>();
-	testGameCamera_ = std::make_unique<GameCamera>();
+	gameCamera_ = std::make_unique<GameCamera>();
 
 	//カメラ
 	XMFLOAT3 cameraEye = { 30,7.5,-20 };
@@ -94,7 +85,7 @@ void GameScene::Initialize()
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
 	testCamera_->Initialize(testCameraEye, testcameraTarget, cameraUp);
-	testGameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
+	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 
 	//パーティクル
 	particleManager_ = ParticleManager::Create();
@@ -116,7 +107,7 @@ void GameScene::Update()
 	else
 	{
 		player_->Reset();
-		testGameCamera_->Reset();
+		gameCamera_->Reset();
 	}
 
 	//光線方向初期値
@@ -138,7 +129,7 @@ void GameScene::Update()
 
 	camera_->Update();
 	testCamera_->Update();
-	testGameCamera_->Update(player_->GetIsMoving());
+	gameCamera_->Update(player_->GetIsMoving());
 
 	if(player_->GetOnGround() == true)
 	{
@@ -148,7 +139,7 @@ void GameScene::Update()
 			const float md_pos = 2.0f;
 			XMFLOAT3 pos{};
 			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f;
+			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f + player_->GetPos().y - 1.0f;
 			pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().z;
 			//x,y,z全て[-0.05f,+0.05f]でランダムに分布
 			const float md_vel = 0.1f;
@@ -205,10 +196,12 @@ void GameScene::Update()
 	}
 
 	//カメラの切り替え
-	stage_->Update(testGameCamera_.get());
-	player_->Update(testGameCamera_.get());
-	skydome_->Update(testGameCamera_.get());
-	particleManager_->Update(testGameCamera_.get());
+	stage_->Update(gameCamera_.get());
+	player_->Update(gameCamera_.get());
+	skydome_->Update(gameCamera_.get());
+	particleManager_->Update(gameCamera_.get());
+
+#ifdef _DEBUG
 
 	//スプライトの編集ウインドウの表示
 	{
@@ -223,12 +216,14 @@ void GameScene::Update()
 		ImGui::End();
 	}
 
+#endif
+
 	if(keyTimer_ < 0)
 	{
 		if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
 		{
 			player_->Reset();
-			testGameCamera_->Reset();
+			gameCamera_->Reset();
 			keyTimer_ = kWaitTime_;
 		}
 	}
@@ -240,7 +235,7 @@ void GameScene::Update()
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
 
-	if(player_->GetIsFinish() == true || keys_->HasPushedKey(DIK_G))
+	if(player_->GetIsFinish() == true)
 	{
 		Sound::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");

@@ -68,7 +68,7 @@ private:
 	//カメラ
 	std::unique_ptr<Camera> camera_ = nullptr;
 	std::unique_ptr<Camera> testCamera_ = nullptr;
-	std::unique_ptr<GameCamera> testGameCamera_ = nullptr;
+	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
 
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;

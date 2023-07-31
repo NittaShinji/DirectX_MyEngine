@@ -60,7 +60,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\particle;%(AdditionalIncludeDirectories);$(ProjectDir)\DirectXGame\application\particle</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\particle;$(ProjectDir)\DirectXGame\application\object;$(ProjectDir)\DirectXGame\application\camera;$(ProjectDir)\DirectXGame\application\postEffect;$(ProjectDir)\DirectXGame\application\debug;%(AdditionalIncludeDirectories);$(ProjectDir)\DirectXGame\application\particle</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -80,7 +80,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\particle;$(ProjectDir)\DirectXGame\application\scene;%(AdditionalIncludeDirectories);$(ProjectDir)\DirectXGame\application\particle</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\particle;$(ProjectDir)\DirectXGame\application\object;$(ProjectDir)\DirectXGame\application\camera;$(ProjectDir)\DirectXGame\application\postEffect;$(ProjectDir)\DirectXGame\application\debug;$(ProjectDir)\DirectXGame\application\scene;%(AdditionalIncludeDirectories);$(ProjectDir)\DirectXGame\application\particle</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -95,7 +95,7 @@
     <ClCompile Include="DirectXGame\application\scene\ClearScene.cpp" />
     <ClCompile Include="DirectXGame\application\particle\ParticleManager.cpp" />
     <ClCompile Include="DirectXGame\engine\scene\BaseScene.cpp" />
-    <ClCompile Include="DirectXGame\application\PostEffect.cpp" />
+    <ClCompile Include="DirectXGame\application\postEffect\PostEffect.cpp" />
     <ClCompile Include="DirectXGame\engine\camera\Camera.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\Collision.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\CollisionPrimitive.cpp" />
@@ -103,7 +103,7 @@
     <ClCompile Include="DirectXGame\engine\collision\CollisionManager.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\SphereCollider.cpp" />
     <ClCompile Include="DirectXGame\application\scene\GameScene.cpp" />
-    <ClCompile Include="DirectXGame\application\ImGuiManager.cpp" />
+    <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp" />
     <ClCompile Include="DirectXGame\engine\io\Input.cpp" />
     <ClCompile Include="DirectXGame\engine\io\KeyInput.cpp" />
     <ClCompile Include="DirectXGame\engine\light\LightGroup.cpp" />
@@ -117,9 +117,9 @@
     <ClCompile Include="DirectXGame\engine\base\WindowsAPI.cpp" />
     <ClCompile Include="DirectXGame\engine\math\MathUtillity.cpp" />
     <ClCompile Include="DirectXGame\engine\io\GamePad.cpp" />
-    <ClCompile Include="DirectXGame\application\Player.cpp" />
+    <ClCompile Include="DirectXGame\application\object\Player.cpp" />
     <ClCompile Include="DirectXGame\engine\math\WorldTransform.cpp" />
-    <ClCompile Include="DirectXGame\application\GameCamera.cpp" />
+    <ClCompile Include="DirectXGame\application\camera\GameCamera.cpp" />
     <ClCompile Include="DirectXGame\engine\3d\Mesh.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\MeshCollider.cpp" />
     <ClCompile Include="DirectXGame\engine\3d\TouchableObject.cpp" />
@@ -128,15 +128,15 @@
     <ClCompile Include="DirectXGame\application\scene\TitleScene.cpp" />
     <ClCompile Include="DirectXGame\engine\scene\SceneManager.cpp" />
     <ClCompile Include="DirectXGame\application\scene\SceneFactory.cpp" />
-    <ClCompile Include="DirectXGame\application\Stage.cpp" />
+    <ClCompile Include="DirectXGame\application\object\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\application\scene\ClearScene.h" />
-    <ClInclude Include="DirectXGame\application\ObjectAttribute.h" />
+    <ClInclude Include="DirectXGame\application\object\ObjectAttribute.h" />
     <ClInclude Include="DirectXGame\application\particle\ParticleManager.h" />
     <ClInclude Include="DirectXGame\engine\scene\AbstractSceneFactory.h" />
     <ClInclude Include="DirectXGame\engine\scene\BaseScene.h" />
-    <ClInclude Include="DirectXGame\application\PostEffect.h" />
+    <ClInclude Include="DirectXGame\application\postEffect\PostEffect.h" />
     <ClInclude Include="DirectXGame\engine\camera\Camera.h" />
     <ClInclude Include="DirectXGame\engine\collision\BaseCollider.h" />
     <ClInclude Include="DirectXGame\engine\collision\Collision.h" />
@@ -150,7 +150,7 @@
     <ClInclude Include="DirectXGame\engine\light\DirectionalLight.h" />
     <ClInclude Include="DirectXGame\engine\base\DirectXBasic.h" />
     <ClInclude Include="DirectXGame\application\scene\GameScene.h" />
-    <ClInclude Include="DirectXGame\application\ImGuiManager.h" />
+    <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h" />
     <ClInclude Include="DirectXGame\engine\io\Input.h" />
     <ClInclude Include="DirectXGame\engine\io\KeyInput.h" />
     <ClInclude Include="DirectXGame\engine\light\LightGroup.h" />
@@ -163,9 +163,9 @@
     <ClInclude Include="DirectXGame\engine\base\WindowsAPI.h" />
     <ClInclude Include="DirectXGame\engine\math\MathUtillity.h" />
     <ClInclude Include="DirectXGame\engine\io\GamePad.h" />
-    <ClInclude Include="DirectXGame\application\Player.h" />
+    <ClInclude Include="DirectXGame\application\object\Player.h" />
     <ClInclude Include="DirectXGame\engine\math\WorldTransform.h" />
-    <ClInclude Include="DirectXGame\application\GameCamera.h" />
+    <ClInclude Include="DirectXGame\application\camera\GameCamera.h" />
     <ClInclude Include="DirectXGame\engine\3d\Mesh.h" />
     <ClInclude Include="DirectXGame\engine\collision\MeshCollider.h" />
     <ClInclude Include="DirectXGame\engine\3d\TouchableObject.h" />
@@ -174,7 +174,7 @@
     <ClInclude Include="DirectXGame\application\scene\TitleScene.h" />
     <ClInclude Include="DirectXGame\engine\scene\SceneManager.h" />
     <ClInclude Include="DirectXGame\application\scene\SceneFactory.h" />
-    <ClInclude Include="DirectXGame\application\Stage.h" />
+    <ClInclude Include="DirectXGame\application\object\Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />

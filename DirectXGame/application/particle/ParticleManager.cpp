@@ -632,7 +632,7 @@ void ParticleManager::CreateModel()
 
 void ParticleManager::LoadTexture(const std::string& fileName)
 {
-	const std::string directoryPath = "Resources/";
+	const std::string directoryPath = "Resources/Sprite/";
 
 	//ファイルパスを結合
 	std::string filePath = directoryPath + fileName;

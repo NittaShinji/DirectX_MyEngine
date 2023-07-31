@@ -9,7 +9,7 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/";
+std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/Model/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;
 KeyInput* Object3d::keys_ = nullptr;
 LightGroup* Object3d::lightGroup_ = nullptr;
@@ -344,16 +344,7 @@ void Object3d::Update(Camera* camera)
 
 	cameraPos_ = camera_->GetEye();
 
-
 	XMFLOAT3 move = { 0,0,0 };
-
-	//いずれかのキーを押していたら
-	if(keys_->HasPushedKey(DIK_RIGHT)) { rotation_.x += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_LEFT)) { rotation_.x -= 0.4f; }
-	else {}
-	if(keys_->HasPushedKey(DIK_P)) { rotation_.y += 0.4f; }
-	else if(keys_->HasPushedKey(DIK_L)) { rotation_.y -= 0.4f; }
-	else {}
 
 	//スケール、回転、平行移動の計算
 	matScale_ = XMMatrixIdentity();

@@ -39,22 +39,37 @@ void TitleScene::Initialize()
 
 	//画像
 	titleSprite_ = std::make_unique<Sprite>();
+	clickSprite_= std::make_unique<Sprite>();
 	aButtonSprite_ = std::make_unique<Sprite>();
+	bButtonSprite_ = std::make_unique<Sprite>();
 
 	SpriteCommon::GetInstance()->LoadTexture("title.png");
+	SpriteCommon::GetInstance()->LoadTexture("A.png");
+	SpriteCommon::GetInstance()->LoadTexture("B.png");
 	SpriteCommon::GetInstance()->LoadTexture("click.png");
 
 	XMFLOAT2 titlePosition = { 0.0f,0.0f };
 	const XMFLOAT2 titleSize = { 1280.0f,720.0f };
 	titleSprite_->Initialize(titlePosition, titleSize);
 
+	const XMFLOAT2 clickButtonSize = { 128.0f,128.0f };
+	XMFLOAT2 clickButtonPosition;
+	clickButtonPosition.x = (WindowsAPI::kWindow_width_  / 2) - (clickButtonSize.x / 2);
+	clickButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (clickButtonSize.y) + (clickButtonSize.y / 3);
+
 	const XMFLOAT2 aButtonSize = { 128.0f,128.0f };
 	XMFLOAT2 aButtonPosition;
-	aButtonPosition.x = (WindowsAPI::kWindow_width_  / 2) - (aButtonSize.x / 2);
+	aButtonPosition.x = (WindowsAPI::kWindow_width_) - (aButtonSize.x * 2);
 	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y) + (aButtonSize.y / 3);
 
+	const XMFLOAT2 bButtonSize = { 128.0f,128.0f };
+	XMFLOAT2 bButtonPosition;
+	bButtonPosition.x = (WindowsAPI::kWindow_width_) - (bButtonSize.x);
+	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y) + (bButtonSize.y / 3);
 
+	clickSprite_->Initialize(clickButtonPosition, clickButtonSize);
 	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
+	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -86,8 +101,12 @@ void TitleScene::Update()
 	XMFLOAT2 anchorPoint = { 0.0f,0.0f };
 	titleSprite_->SetAnchorPoint(anchorPoint);
 	titleSprite_->matUpdate();
+	clickSprite_->SetAnchorPoint(anchorPoint);
+	clickSprite_->matUpdate();
 	aButtonSprite_->SetAnchorPoint(anchorPoint);
 	aButtonSprite_->matUpdate();
+	bButtonSprite_->SetAnchorPoint(anchorPoint);
+	bButtonSprite_->matUpdate();
 
 	titleSphere_->Update(camera_.get());
 
@@ -182,7 +201,10 @@ void TitleScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
 	titleSprite_->Draw("title.png");
-	aButtonSprite_->Draw("click.png");
+	clickSprite_->Draw("click.png");
+	aButtonSprite_->Draw("A.png");
+	bButtonSprite_->Draw("B.png");
+
 
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();

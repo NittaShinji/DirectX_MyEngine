@@ -343,9 +343,9 @@ void PostEffect::Draw(const std::string& fileName)
 void PostEffect::CreateGraphicsPipelineState()
 {
 	HRESULT result = S_FALSE;
-	ComPtr<ID3DBlob> vsBlob = nullptr; // 頂点シェーダオブジェクト
-	ComPtr<ID3DBlob> psBlob = nullptr; // ピクセルシェーダオブジェクト
-	ComPtr<ID3DBlob> errorBlob = nullptr; // エラーオブジェクト
+	Microsoft::WRL::ComPtr<ID3DBlob> vsBlob = nullptr; // 頂点シェーダオブジェクト
+	Microsoft::WRL::ComPtr<ID3DBlob> psBlob = nullptr; // ピクセルシェーダオブジェクト
+	Microsoft::WRL::ComPtr<ID3DBlob> errorBlob = nullptr; // エラーオブジェクト
 
 	// 頂点シェーダの読み込みとコンパイル
 	HRESULT result_ = D3DCompileFromFile(
@@ -483,7 +483,7 @@ void PostEffect::CreateGraphicsPipelineState()
 	rootSignatureDesc.Init_1_0(_countof(rootparams), rootparams, 1, &samplerDesc,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
 
-	ComPtr<ID3DBlob> rootSigBlob;
+	Microsoft::WRL::ComPtr<ID3DBlob> rootSigBlob;
 	//バージョン自動判定のシリアライズ
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob,&errorBlob);
