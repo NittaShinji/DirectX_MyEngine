@@ -100,6 +100,36 @@
     <Filter Include="ソース ファイル\engine\math">
       <UniqueIdentifier>{7fe90c76-6023-4b5c-9951-116bf1d5c1fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\scene">
+      <UniqueIdentifier>{91d74808-cd57-4878-bf08-793cdec1c5f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\object">
+      <UniqueIdentifier>{e58ec66c-ecb5-43e1-a941-a3468bbe0a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\scene">
+      <UniqueIdentifier>{d34ee322-17f4-4255-9492-0a646d9a162c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\camera">
+      <UniqueIdentifier>{73a18352-eec5-4aaf-ab9b-75ac6697d364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\postEffect">
+      <UniqueIdentifier>{303b80e0-8b7c-433e-a048-4c9fcd9f2010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\scene">
+      <UniqueIdentifier>{cdbe2102-9691-4b16-9334-ba37df464fbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\camera">
+      <UniqueIdentifier>{3258f7eb-a3ae-4b9b-bfc5-611717b27e19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\object">
+      <UniqueIdentifier>{53493948-894a-4315-a3e6-d89a7da47a91}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\particle">
+      <UniqueIdentifier>{38efeb82-2c41-412a-bd43-7ecb74020315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\particle">
+      <UniqueIdentifier>{19fc2173-1364-4484-a04d-8bd3707dfd53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\main.cpp">
@@ -138,9 +168,6 @@
     <ClCompile Include="DirectXGame\engine\base\WindowsAPI.cpp">
       <Filter>ソース ファイル\engine\base</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\application\scene\GameScene.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\engine\camera\Camera.cpp">
       <Filter>ソース ファイル\engine\camera</Filter>
     </ClCompile>
@@ -162,9 +189,6 @@
     <ClCompile Include="DirectXGame\engine\math\MathUtillity.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\application\object\Player.cpp">
-      <Filter>ソース ファイル\application</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\engine\collision\CollisionManager.cpp">
       <Filter>ソース ファイル\engine\collision</Filter>
     </ClCompile>
@@ -180,9 +204,6 @@
     <ClCompile Include="DirectXGame\engine\3d\TouchableObject.cpp">
       <Filter>ソース ファイル\engine\3d</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\application\camera\GameCamera.cpp">
-      <Filter>ソース ファイル\application</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\application\MyGame.cpp">
       <Filter>ソース ファイル\application</Filter>
     </ClCompile>
@@ -192,26 +213,38 @@
     <ClCompile Include="DirectXGame\engine\base\MyFramework.cpp">
       <Filter>ソース ファイル\engine\base</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\application\scene\TitleScene.cpp">
+    <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\scene\BaseScene.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="DirectXGame\application\camera\GameCamera.cpp">
+      <Filter>ソース ファイル\application\camera</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\scene\SceneManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\application\scene\SceneFactory.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="DirectXGame\application\scene\GameScene.cpp">
+      <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\application\object\Stage.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\application\object</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\application\scene\ClearScene.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\application\particle\ParticleManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\application\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\application\scene\SceneFactory.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\scene\SceneManager.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\scene\BaseScene.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\application\scene\TitleScene.cpp">
+      <Filter>ソース ファイル\application\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\application\object\Player.cpp">
+      <Filter>ソース ファイル\application\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -251,9 +284,6 @@
     <ClInclude Include="DirectXGame\engine\camera\Camera.h">
       <Filter>ヘッダー ファイル\engine\camera</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\application\scene\GameScene.h">
-      <Filter>ヘッダー ファイル\engine\scene</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\engine\light\DirectionalLight.h">
       <Filter>ヘッダー ファイル\engine\light</Filter>
     </ClInclude>
@@ -266,17 +296,11 @@
     <ClInclude Include="DirectXGame\engine\loader\LevelManager.h">
       <Filter>ヘッダー ファイル\engine\loader</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\application\postEffect\PostEffect.h">
-      <Filter>ヘッダー ファイル\engine\2d</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\engine\math\WorldTransform.h">
       <Filter>ヘッダー ファイル\engine\3d</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\math\MathUtillity.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\application\object\Player.h">
-      <Filter>ヘッダー ファイル\application</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\collision\BaseCollider.h">
       <Filter>ヘッダー ファイル\engine\collision</Filter>
@@ -302,9 +326,6 @@
     <ClInclude Include="DirectXGame\engine\base\MyFramework.h">
       <Filter>ヘッダー ファイル\engine\base</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\application\camera\GameCamera.h">
-      <Filter>ヘッダー ファイル\application</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\application\MyGame.h">
       <Filter>ヘッダー ファイル\application</Filter>
     </ClInclude>
@@ -320,32 +341,47 @@
     <ClInclude Include="DirectXGame\engine\3d\TouchableObject.h">
       <Filter>ヘッダー ファイル\engine\3d</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\application\scene\TitleScene.h">
+    <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\engine\scene\BaseScene.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="DirectXGame\application\scene\GameScene.h">
+      <Filter>ヘッダー ファイル\application\scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\scene\SceneManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\scene\AbstractSceneFactory.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\application\scene\SceneFactory.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\application\object\Stage.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="DirectXGame\engine\scene\AbstractSceneFactory.h">
+      <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\application\object\ObjectAttribute.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="DirectXGame\application\camera\GameCamera.h">
+      <Filter>ヘッダー ファイル\application\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\object\Player.h">
+      <Filter>ヘッダー ファイル\application\object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\scene\BaseScene.h">
+      <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\application\scene\ClearScene.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\application\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\object\Stage.h">
+      <Filter>ヘッダー ファイル\application\object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\object\ObjectAttribute.h">
+      <Filter>ヘッダー ファイル\application\object</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\postEffect\PostEffect.h">
+      <Filter>ヘッダー ファイル\application\postEffect</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\scene\TitleScene.h">
+      <Filter>ヘッダー ファイル\application\scene</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\application\particle\ParticleManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\application\particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

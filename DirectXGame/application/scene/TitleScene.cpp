@@ -177,7 +177,7 @@ void TitleScene::Update()
 	//‰Ÿ‚µ‚½uŠÔ‚Ì”»’è‚ðŽæ‚é
 	gamePad_->PushedButtonMoment();
 
-	if(gamePad_->GetButtonA())
+	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		Sound::GetInstance()->PlaySoundWave("touch.wav");
 		isChangeScene_ = true;	

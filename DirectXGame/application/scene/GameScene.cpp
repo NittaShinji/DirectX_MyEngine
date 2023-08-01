@@ -235,7 +235,7 @@ void GameScene::Update()
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
 
-	if(player_->GetIsFinish() == true)
+	if(player_->GetIsFinish() == true || keys_->PushedKeyMoment(DIK_G))
 	{
 		Sound::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
