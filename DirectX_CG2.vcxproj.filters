@@ -130,6 +130,12 @@
     <Filter Include="ヘッダー ファイル\application\particle">
       <UniqueIdentifier>{19fc2173-1364-4484-a04d-8bd3707dfd53}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\application\debug">
+      <UniqueIdentifier>{b57c3464-f3b3-4bd4-99ef-13ff67068078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\debug">
+      <UniqueIdentifier>{2bec686b-86aa-41ee-ac7e-63c494813b6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectXGame\main.cpp">
@@ -170,9 +176,6 @@
     </ClCompile>
     <ClCompile Include="DirectXGame\engine\camera\Camera.cpp">
       <Filter>ソース ファイル\engine\camera</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp">
-      <Filter>ソース ファイル\engine\debugText</Filter>
     </ClCompile>
     <ClCompile Include="DirectXGame\engine\loader\LevelManager.cpp">
       <Filter>ソース ファイル\engine\loader</Filter>
@@ -246,6 +249,21 @@
     <ClCompile Include="DirectXGame\application\object\Player.cpp">
       <Filter>ソース ファイル\application\object</Filter>
     </ClCompile>
+    <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp">
+      <Filter>ソース ファイル\application\debug</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\math\Vector3.cpp">
+      <Filter>ソース ファイル\engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\math\Quaternion.cpp">
+      <Filter>ソース ファイル\engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\math\Matrix4.cpp">
+      <Filter>ソース ファイル\engine\math</Filter>
+    </ClCompile>
+    <ClCompile Include="DirectXGame\engine\math\Vector2.cpp">
+      <Filter>ソース ファイル\engine\math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\engine\2d\Sprite.h">
@@ -286,9 +304,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\light\DirectionalLight.h">
       <Filter>ヘッダー ファイル\engine\light</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h">
-      <Filter>ヘッダー ファイル\engine\debugText</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\light\LightGroup.h">
       <Filter>ヘッダー ファイル\engine\light</Filter>
@@ -382,6 +397,21 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\application\particle\ParticleManager.h">
       <Filter>ヘッダー ファイル\application\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h">
+      <Filter>ヘッダー ファイル\application\debug</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\math\Vector3.h">
+      <Filter>ヘッダー ファイル\engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\math\Quaternion.h">
+      <Filter>ヘッダー ファイル\engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\math\Matrix4.h">
+      <Filter>ヘッダー ファイル\engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXGame\engine\math\Vector2.h">
+      <Filter>ヘッダー ファイル\engine\math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
