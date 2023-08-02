@@ -41,7 +41,7 @@ void Model::Load(const std::string& path)
 
 	vector<XMFLOAT3>positions;	//頂点座標
 	vector<XMFLOAT3>normals;	//法線ベクトル
-	vector<XMFLOAT2>texcoords;	//テクスチャUV
+	vector<Vector2>texcoords;	//テクスチャUV
 
 	//1行ずつ読み込む
 	string line;
@@ -72,7 +72,7 @@ void Model::Load(const std::string& path)
 		if (key == "vt")
 		{
 			////UV成分読み込み
-			XMFLOAT2 texcoord{};
+			Vector2 texcoord{};
 			line_stream >> texcoord.x;
 			line_stream >> texcoord.y;
 			//V方向反転

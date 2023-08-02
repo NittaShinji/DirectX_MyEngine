@@ -39,7 +39,7 @@ void MyGame::Update()
 	//基底クラスの更新処理
 	MyFramework::Update();
 
-	postEffect_->SetAnchorPoint(XMFLOAT2(0.0f, 0.0f));
+	postEffect_->SetAnchorPoint(Vector2(0.0f, 0.0f));
 
 	SceneManager::GetInstance()->Update();
 

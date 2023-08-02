@@ -2,6 +2,7 @@
 #include "BaseScene.h"
 #include "Sprite.h"
 #include"GamePad.h"
+#include "Vector2.h"
 
 class ClearScene : public BaseScene
 {
@@ -27,10 +28,10 @@ private:
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
-	XMFLOAT2 checkPosition_;
+	Vector2 checkPosition_;
 
 	const int32_t kActionTime_ = 60;
 	int32_t moveTimer_ = kActionTime_;
-	XMFLOAT2 move_;
+	Vector2 move_;
 };
 

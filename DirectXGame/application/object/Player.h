@@ -12,7 +12,7 @@ private:
 
 	//nameSpace
 	using XMFLOAT = DirectX::XMFLOAT3;
-	using XMFLOAT2 = DirectX::XMFLOAT2;
+	//using Vector2 = DirectX::Vector2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMMATRIX = DirectX::XMMATRIX;
 

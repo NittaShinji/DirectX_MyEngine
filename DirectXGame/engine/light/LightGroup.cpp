@@ -271,7 +271,7 @@ void LightGroup::DefaultLightSetting()
 //	dirty_ = true;
 //}
 //
-//void LightGroup::SetSpotLightFactorAngle(int32_t index, const XMFLOAT2 &lightFactorAngle)
+//void LightGroup::SetSpotLightFactorAngle(int32_t index, const Vector2 &lightFactorAngle)
 //{
 //	assert(0 <= index && index < SpotLightNum);
 //	spotLights[index].SetLightFactorAngle(lightFactorAngle);
@@ -317,7 +317,7 @@ void LightGroup::DefaultLightSetting()
 //	dirty_ = true;
 //}
 //
-//void LightGroup::SetCircleShadowFactorAngle(int index, const XMFLOAT2 &lightFactorAngle)
+//void LightGroup::SetCircleShadowFactorAngle(int index, const Vector2 &lightFactorAngle)
 //{
 //	assert(0 <= index && index < CircleShadowNum);
 //

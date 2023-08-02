@@ -4,6 +4,7 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <d3d12.h>
+#include "Vector2.h"
 
 ///<summary>
 /// ライト
@@ -16,7 +17,7 @@ private: //エイリアス
 	//Microsoft::WRL::を省略
 	template <class T> using Comptr = Microsoft::WRL::ComPtr<T>;
 	//DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
+	//using Vector2 = DirectX::Vector2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
@@ -102,14 +103,14 @@ public: //メンバ関数
 	void SetSpotLightPos(int32_t index, const XMFLOAT3 &lightPos);
 	void SetSpotLightColor(int32_t index, const XMFLOAT3 &lightColor);
 	void SetSpotLightAtten(int32_t index, const XMFLOAT3 &lightAtten);
-	void SetSpotLightFactorAngle(int32_t index, const XMFLOAT2 &lightFactorAngle);
+	void SetSpotLightFactorAngle(int32_t index, const Vector2 &lightFactorAngle);
 
 	void SetCircleShadowActive(int32_t index, bool active);
 	void SetCircleShadowCasterPos(int32_t index, const XMFLOAT3& casterPos);
 	void SetCircleShadowDir(int32_t index, const XMVECTOR& lightDir);
 	void SetCircleShadowDistanceCasterLight(int32_t index, float &distanceCasterLight);
 	void SetCircleShadowAtten(int32_t index, const XMFLOAT3& lightAtten);
-	void SetCircleShadowFactorAngle(int32_t index, const XMFLOAT2& lightFactorAngle);
+	void SetCircleShadowFactorAngle(int32_t index, const Vector2& lightFactorAngle);
 
 
 public: //定数

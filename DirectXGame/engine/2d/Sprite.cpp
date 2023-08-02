@@ -15,7 +15,7 @@ void Sprite::StaticInitialize()
 	spriteCommon_ = SpriteCommon::GetInstance();
 }
 
-void Sprite::Initialize( XMFLOAT2 position, XMFLOAT2 size)
+void Sprite::Initialize( Vector2 position, Vector2 size)
 {
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 

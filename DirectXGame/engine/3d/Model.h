@@ -9,6 +9,7 @@
 #include <DirectXMath.h>
 #include <map>
 #include <array>
+#include "Vector2.h"
 
 class Model
 {
@@ -17,7 +18,7 @@ private:
 
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT2 = DirectX::XMFLOAT2;
+	//using Vector2 = DirectX::Vector2;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:

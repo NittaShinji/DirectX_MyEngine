@@ -2,6 +2,7 @@
 #include "Object3D.h"
 #include "Camera.h"
 #include <forward_list>
+#include <vector>
 
 /// <summary>
 /// 3Dオブジェクト
@@ -12,7 +13,7 @@ private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
+	//using Vector2 = DirectX::Vector2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
@@ -30,9 +31,7 @@ public: // サブクラス
 	// 定数バッファ用データ構造体
 	struct ConstBufferData
 	{
-		//XMFLOAT4 color;	// 色 (RGBA)
 		XMMATRIX viewProjection;	// ３Ｄ変換行列
-		//XMMATRIX matBillboard; //ビルボード行列
 	};
 
 	struct Particle
@@ -144,6 +143,7 @@ public: // メンバ関数
 
 	std::forward_list<Particle> GetPaticles() { return particles_; }
 
+	void SetGenerationNum(int32_t generationNum) { generationNum_ = generationNum; }
 
 private: // メンバ変数
 
@@ -169,7 +169,9 @@ private: // メンバ変数
 	// 頂点バッファ
 	static ComPtr<ID3D12Resource> vertBuff_;
 	//頂点データ配列
-	static Vertex vertices_[vertexCount];
+	static std::vector<Vertex> vertices_;
+	//static std::forward_list<Vertex> vertices_;
+
 
 	// デスクリプタヒープ
 	static ComPtr<ID3D12DescriptorHeap> descHeap_;
@@ -201,6 +203,7 @@ private: // メンバ変数
 	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
 
 	//パーティクル配列
+	//std::forward_list<Particle> particles_;
 	std::forward_list<Particle> particles_;
 
 	//最大限生成しているかどうか
@@ -210,5 +213,9 @@ private: // メンバ変数
 	int32_t nowParticleCount_ = 0;
 
 	bool isFinish_ = 0;
+
+	//一度に生成する数
+	int32_t generationNum_;
+
 };
 

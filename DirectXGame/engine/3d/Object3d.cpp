@@ -66,17 +66,10 @@ void Object3d::Initialize()
 	//定数バッファの生成
 	constBuffTransform_ = CrateConstBuff<DirectXBasic>(directXBasic_);
 	constBuffMaterial_ = CrateConstBuff<DirectXBasic>(directXBasic_);
-	//constBuffLight_ = CrateConstBuff<DirectXBasic>(directXBasic_);
 
 	//定数バッファのマッピング
 	HRESULT result = constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform_);//マッピング
 	assert(SUCCEEDED(result));
-	//定数バッファのマッピング
-	//result = constBuffLight_->Map(0, nullptr, (void**)&constMapLight_);//マッピング
-	//assert(SUCCEEDED(result));
-
-	//constMapLight_->lightv = { 1,1,1 };
-	//constMapLight_->lightcolor = { 1,1,1 };
 
 	// 頂点レイアウト
 	D3D12_INPUT_ELEMENT_DESC  inputLayout[] =

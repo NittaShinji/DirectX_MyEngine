@@ -20,7 +20,7 @@ private: //エイリアス
 
 	//nameSpace
 	using XMFLOAT = DirectX::XMFLOAT3;
-	using XMFLOAT2 = DirectX::XMFLOAT2;
+	//using Vector2 = DirectX::Vector2;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
 	using XMMATRIX = DirectX::XMMATRIX;
 
@@ -52,7 +52,7 @@ public:
 	{
 		XMFLOAT3 pos;		// xyz座標
 		XMFLOAT3 normal;	//法線ベクトル
-		XMFLOAT2 uv;		// uv座標
+		Vector2 uv;		// uv座標
 	};
 
 public:

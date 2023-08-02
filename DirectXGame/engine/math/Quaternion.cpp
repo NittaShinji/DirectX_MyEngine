@@ -172,17 +172,17 @@ Matrix4 Quaternion::MakeRotateMatrix()
 
 	resultMat = identity();
 
-	resultMat.m[0][0] = pow(this->w, 2) + pow(this->x, 2) - pow(this->y, 2) - pow(this->z, 2);
+	resultMat.m[0][0] = float(pow(this->w, 2) + pow(this->x, 2) - pow(this->y, 2) - pow(this->z, 2));
 	resultMat.m[0][1] = 2 * ((this->x * this->y) + (this->w * this->z));
 	resultMat.m[0][2] = 2 * ((this->x * this->z) - (this->w * this->y));
 
 	resultMat.m[1][0] = 2 * ((this->x * this->y) - (this->w * this->z));
-	resultMat.m[1][1] = pow(this->w, 2) - pow(this->x, 2) + pow(this->y, 2) - pow(this->z, 2);
+	resultMat.m[1][1] = float(pow(this->w, 2) - pow(this->x, 2) + pow(this->y, 2) - pow(this->z, 2));
 	resultMat.m[1][2] = 2 * ((this->y * this->z) + (this->w * this->x));
 
 	resultMat.m[2][0] = 2 * ((this->x * this->z) + (this->w * this->y));
 	resultMat.m[2][1] = 2 * ((this->y * this->z) - (this->w * this->x));
-	resultMat.m[2][2] = pow(this->w, 2) - pow(this->x, 2) - pow(this->y, 2) + pow(this->z, 2);
+	resultMat.m[2][2] = float(pow(this->w, 2) - pow(this->x, 2) - pow(this->y, 2) + pow(this->z, 2));
 
 	return resultMat;
 }

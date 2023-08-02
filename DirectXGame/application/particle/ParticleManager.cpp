@@ -2,6 +2,8 @@
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <string.h>
+#include <vector>
+#include <cassert>
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -15,7 +17,9 @@ ComPtr<ID3D12Resource> ParticleManager::texbuff_;
 // 頂点バッファ
 ComPtr<ID3D12Resource> ParticleManager::vertBuff_;
 //頂点データ配列
-ParticleManager::Vertex ParticleManager::vertices_[vertexCount];
+//ParticleManager::Vertex ParticleManager::vertices_[vertexCount];
+//std::vector<ParticleManager::Vertex> ParticleManager::vertices_;
+//std::forward_list<ParticleManager::Vertex> ParticleManager::vertices_;
 
 //SRV用のデスクリプタヒープ
 ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap_;
@@ -40,6 +44,8 @@ ID3D12Device* ParticleManager::device_ = nullptr;
 
 ComPtr<ID3D12RootSignature> ParticleManager::rootSignature_;
 
+std::vector<ParticleManager::Vertex> ParticleManager::vertices_;
+//std::forward_list<ParticleManager::Vertex> ParticleManager::vertices_;
 
 //定数バッファの生成
 template <typename Type1>
@@ -124,63 +130,17 @@ void ParticleManager::Update(Camera* camera)
 	//射影変換行列
 	matProjection_ = camera->GetMatProjection();
 
-
-	//全パーティクル更新
-	//for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
-	//{
-	//	//nowParticleCount_++;
-
-	//	//経過フレーム数をカウント
-	//	//it->frame++;
-
-	//	////速度に加速度を加算
-	//	//it->velocity = it->velocity + it->accel;
-	//	////速度による移動
-	//	//it->position = it->position + it->velocity;
-
-	//	////進行度を0～1の範囲に換算
-	//	//float f = (float)it->frame / it->num_frame;
-
-	//	////スケールの線形補間
-	//	//it->scale = (it->e_scale - it->s_scale) * f;
-	//	//it->scale += it->s_scale;
-
-	//	//色の移動
-	//	/*if(it->color.x < 1)
-	//	{
-	//		it->color.x = it->color.x + it->colorSpeed.x;
-	//	}
-	//	else if(it->color.x >= 1)
-	//	{
-	//		it->color.x = 0;
-	//	}*/
-
-	//	/*it->color.x = 1;
-	//	it->color.y = 1;
-	//	it->color.z = 1;
-	//	it->color.w = 1;*/
-
-
-	//	/*if(nowParticleCount_ >= vertexCount)
-	//	{
-	//		isMaxParticle_ = true;
-	//		break;
-	//	}*/
-	//}
-
 	//頂点バッファへデータ転送
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 
 	nowParticleCount_ = 0;
-	
+
 	if(SUCCEEDED(result))
 	{
 		for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 		{
-			nowParticleCount_++;
-
-			if(nowParticleCount_ >= vertexCount)
+			if(nowParticleCount_ + generationNum_ >= vertexCount)
 			{
 				isMaxParticle_ = true;
 				break;
@@ -188,6 +148,7 @@ void ParticleManager::Update(Camera* camera)
 			else
 			{
 				isMaxParticle_ = false;
+				nowParticleCount_++;
 			}
 
 			//速度に加速度を加算
@@ -249,14 +210,7 @@ void ParticleManager::Draw()
 	cmdList_->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 	// 描画コマンド
-	/*for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
-	{
-		if(it->frame <= it->num_frame)
-		{
-			cmdList_->DrawInstanced(_countof(vertices_), 1, 0, 0);
-		}
-	}*/
-
+	//cmdList_->DrawInstanced((UINT)std::size(particles_.end()), 1, 0, 0);
 	cmdList_->DrawInstanced((UINT)std::distance(particles_.begin(), particles_.end()), 1, 0, 0);
 }
 
@@ -271,32 +225,45 @@ std::unique_ptr<ParticleManager> ParticleManager::Create()
 		return nullptr;
 	}
 
-	//モデル読み込み
-	//Model::Load(path);
-
 	instance->Initialize();
-	//instance->SetModel(path);
 
 	return instance;
 }
 
 void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, XMFLOAT4 colorSpeed, float start_scale, float end_scale)
 {
-	//パーティクルのカウントを1増やす
-	//nowParticleCount_++;
-	//リストに要素を追加
-	particles_.emplace_front();
-	//追加した要素の参照
-	Particle& p = particles_.front();
-	//値のセット
-	p.position = position;
-	p.velocity = velocity;
-	p.accel = accel;
-	p.num_frame = life;
-	p.scale = start_scale;
-	p.s_scale = start_scale;
-	p.e_scale = end_scale;
-	p.colorSpeed = colorSpeed;
+	int32_t isMaxParticle = 0;
+	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	{
+		if(nowParticleCount_ + generationNum_ >= vertexCount)
+		{
+			isMaxParticle_ = true;
+			break;
+		}
+		else
+		{
+			isMaxParticle_ = false;
+		}
+		isMaxParticle++;
+	}
+
+	if(isMaxParticle_ == false)
+	{
+		//リストに要素を追加
+		particles_.emplace_front();
+		//追加した要素の参照
+		Particle& p = particles_.front();
+		//値のセット
+		p.position = position;
+		p.velocity = velocity;
+		p.accel = accel;
+		p.num_frame = life;
+		p.scale = start_scale;
+		p.s_scale = start_scale;
+		p.e_scale = end_scale;
+		p.colorSpeed = colorSpeed;
+	}
+	
 }
 
 void  ParticleManager::InitializeGraphicsPipeline()
@@ -462,8 +429,8 @@ void  ParticleManager::InitializeGraphicsPipeline()
 
 		//加算合成
 		blenddesc.BlendOp = D3D12_BLEND_OP_ADD;			//加算
-		blenddesc.SrcBlend = D3D12_BLEND_ONE;			
-		blenddesc.DestBlend = D3D12_BLEND_ONE;			
+		blenddesc.SrcBlend = D3D12_BLEND_ONE;
+		blenddesc.DestBlend = D3D12_BLEND_ONE;
 
 		blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
 		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
@@ -573,19 +540,7 @@ void ParticleManager::CreateModel()
 {
 	HRESULT result = S_FALSE;
 
-	//std::vector<VertexPosNormalUv> realVertices;
-	std::vector<Vertex> realVertices;
-
-	//for (int i = 0; i < vertexCount; i++)
-	//{
-	//	//X,Y,Z全て{-5.0f, +5.0f}でランダムに分布
-	//	const float md_width = 10.0f;
-	//	vertices[i].pos.x = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
-	//	vertices[i].pos.y = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
-	//	vertices[i].pos.z = (float)rand() / RAND_MAX * md_width - md_width / 2.0f;
-	//}
-
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices_));
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertexCount);
 
 	// ヒーププロパティ
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -612,21 +567,11 @@ void ParticleManager::CreateModel()
 		IID_PPV_ARGS(&vertBuff_));
 	assert(SUCCEEDED(result));
 
-
-	// 頂点バッファへのデータ転送
-	//VertexPosNormalUv* vertMap = nullptr;
-	Vertex* vertMap = nullptr;
-
-	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
-	if(SUCCEEDED(result))
-	{
-		memcpy(vertMap, vertices_, sizeof(vertices_));
-		vertBuff_->Unmap(0, nullptr);
-	}
-
 	// 頂点バッファビューの作成
 	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
-	vbView_.SizeInBytes = sizeof(vertices_);
+	//頂点バッファのサイズ
+	vbView_.SizeInBytes = sizeVB;
+	//頂点一つ分のサイズ
 	vbView_.StrideInBytes = sizeof(vertices_[0]);
 }
 
@@ -669,8 +614,6 @@ void ParticleManager::LoadTexture(const std::string& fileName)
 	textureHeapProp.CPUPageProperty =
 		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-
-	//CD3DX12_HEAP_PROPERTIES textureHeapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 
 	//リソース設定
 	D3D12_RESOURCE_DESC textureResourceDesc{};

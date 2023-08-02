@@ -1,5 +1,6 @@
 #pragma once
 #include "DirectXBasic.h"
+#include "Vector2.h"
 #include <DirectXMath.h>
 #include <vector>
 #include <wrl.h>
@@ -15,7 +16,7 @@ private:
 	//DirectXを省略
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT2 = DirectX::XMFLOAT2;
+	//using Vector2 = DirectX::Vector2;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
@@ -25,7 +26,7 @@ public:
 	{
 		XMFLOAT3 pos;		// xyz座標
 		XMFLOAT3 normal;	//法線ベクトル
-		XMFLOAT2 uv;		// uv座標
+		Vector2 uv;		// uv座標
 	};
 
 public:

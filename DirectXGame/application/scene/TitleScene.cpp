@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Sound.h"
 #include "WindowsAPI.h"
+#include "Vector2.h"
 
 DirectXBasic* TitleScene::directXBasic_ = nullptr;
 ImGuiManager* TitleScene::imGuiManager_ = nullptr;
@@ -48,22 +49,22 @@ void TitleScene::Initialize()
 	SpriteCommon::GetInstance()->LoadTexture("B.png");
 	SpriteCommon::GetInstance()->LoadTexture("click.png");
 
-	XMFLOAT2 titlePosition = { 0.0f,0.0f };
-	const XMFLOAT2 titleSize = { 1280.0f,720.0f };
+	Vector2 titlePosition = { 0.0f,0.0f };
+	const Vector2 titleSize = { 1280.0f,720.0f };
 	titleSprite_->Initialize(titlePosition, titleSize);
 
-	const XMFLOAT2 clickButtonSize = { 128.0f,128.0f };
-	XMFLOAT2 clickButtonPosition;
+	const Vector2 clickButtonSize = { 128.0f,128.0f };
+	Vector2 clickButtonPosition;
 	clickButtonPosition.x = (WindowsAPI::kWindow_width_  / 2) - (clickButtonSize.x / 2);
 	clickButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (clickButtonSize.y) + (clickButtonSize.y / 3);
 
-	const XMFLOAT2 aButtonSize = { 128.0f,128.0f };
-	XMFLOAT2 aButtonPosition;
+	const Vector2 aButtonSize = { 128.0f,128.0f };
+	Vector2 aButtonPosition;
 	aButtonPosition.x = (WindowsAPI::kWindow_width_) - (aButtonSize.x * 2);
 	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y) + (aButtonSize.y / 3);
 
-	const XMFLOAT2 bButtonSize = { 128.0f,128.0f };
-	XMFLOAT2 bButtonPosition;
+	const Vector2 bButtonSize = { 128.0f,128.0f };
+	Vector2 bButtonPosition;
 	bButtonPosition.x = (WindowsAPI::kWindow_width_) - (bButtonSize.x);
 	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y) + (bButtonSize.y / 3);
 
@@ -98,7 +99,7 @@ void TitleScene::Update()
 	camera_->Update();
 
 	//アンカーポイントの設定
-	XMFLOAT2 anchorPoint = { 0.0f,0.0f };
+	Vector2 anchorPoint = { 0.0f,0.0f };
 	titleSprite_->SetAnchorPoint(anchorPoint);
 	titleSprite_->matUpdate();
 	clickSprite_->SetAnchorPoint(anchorPoint);

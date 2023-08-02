@@ -89,7 +89,9 @@ void GameScene::Initialize()
 
 	//パーティクル
 	particleManager_ = ParticleManager::Create();
+	particleManager_->SetGenerationNum(50);
 	playerRunEffect_ = ParticleManager::Create();
+	playerRunEffect_->SetGenerationNum(50);
 }
 
 void GameScene::Update()
@@ -159,7 +161,10 @@ void GameScene::Update()
 			colorSpeed.w = 1.0f;
 
 			//追加
-			particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
+			if(particleManager_->GetIsMaxParticle() == false)
+			{
+				particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
+			}
 		}
 	}
 
