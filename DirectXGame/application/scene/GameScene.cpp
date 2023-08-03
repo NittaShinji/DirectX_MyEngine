@@ -67,7 +67,7 @@ void GameScene::Initialize()
 	player_->SetGamePad(gamePad_.get());
 
 	skydome_ = Object3d::Create(skydome);
-	XMFLOAT3 skydomeScale = { 5,5,10 };
+	Vector3 skydomeScale = { 5,5,10 };
 	skydome_->SetScale(skydomeScale);
 
 	//------------カメラ----------
@@ -76,12 +76,12 @@ void GameScene::Initialize()
 	gameCamera_ = std::make_unique<GameCamera>();
 
 	//カメラ
-	XMFLOAT3 cameraEye = { 30,7.5,-20 };
-	XMFLOAT3 testCameraEye = { 0,50,-30 };
-	XMFLOAT3 cameraTarget = { 0,5,5 };
-	XMFLOAT3 testcameraTarget = { 0,5,5 };
+	Vector3 cameraEye = { 30,7.5,-20 };
+	Vector3 testCameraEye = { 0,50,-30 };
+	Vector3 cameraTarget = { 0,5,5 };
+	Vector3 testcameraTarget = { 0,5,5 };
 
-	XMFLOAT3 cameraUp = { 0,1,0 };
+	Vector3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
 	testCamera_->Initialize(testCameraEye, testcameraTarget, cameraUp);
@@ -114,17 +114,17 @@ void GameScene::Update()
 
 	//光線方向初期値
 	static XMVECTOR lightDir = { 1,-1,-10,0 };
-	static XMFLOAT3 color = { 1, 1, 1 };
+	static Vector3 color = { 1, 1, 1 };
 
 	lightGroup_->SetAmbientColor(color);
 	lightGroup_->SetDirLightDir(0, lightDir);
-	lightGroup_->SetDirLightColor(0, XMFLOAT3(1, 1, 1));
+	lightGroup_->SetDirLightColor(0, Vector3(1, 1, 1));
 
 	{
 		//imguiからのライトパラメータを反映
-		lightGroup_->SetAmbientColor(XMFLOAT3(ambientColor0_));
-		lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0_[0], lightDir0_[1], lightDir0_[2], 0 }));
-		lightGroup_->SetDirLightColor(0, XMFLOAT3(lightColor0_));
+		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
+		lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0_.x, lightDir0_.y, lightDir0_.z, 0 }));
+		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
 	}
 
 	lightGroup_->Update();
@@ -139,18 +139,18 @@ void GameScene::Update()
 		{
 			//x,y,z全て[-1.0f,+1.0f]でランダムに分布
 			const float md_pos = 2.0f;
-			XMFLOAT3 pos{};
+			Vector3 pos{};
 			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f + player_->GetPos().y - 1.0f;
 			pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().z;
 			//x,y,z全て[-0.05f,+0.05f]でランダムに分布
 			const float md_vel = 0.1f;
-			XMFLOAT3 vel{};
+			Vector3 vel{};
 			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-			XMFLOAT3 acc{};
+			Vector3 acc{};
 			const float md_acc = 0.001f;
 			acc.y = (float)rand() / RAND_MAX * md_acc;
 			//色を変化させる
@@ -172,18 +172,18 @@ void GameScene::Update()
 	{
 		//x,y,z全て[-2.0f,+2.0f]でランダムに分布
 		const float md_pos = 4.0f;
-		XMFLOAT3 pos{};
+		Vector3 pos{};
 		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + 2.0f;
 		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + stage_->GetGoalPos().z;
 		//x,y,z全て[-0.05f,+0.05f]でランダムに分布
 		const float md_vel = 0.1f;
-		XMFLOAT3 vel{};
+		Vector3 vel{};
 		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-		XMFLOAT3 acc{};
+		Vector3 acc{};
 		const float md_acc = 0.001f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 		//色を変化させる
@@ -209,7 +209,7 @@ void GameScene::Update()
 #ifdef _DEBUG
 
 	//スプライトの編集ウインドウの表示
-	{
+	/*{
 		ImGui::Begin("Light");
 		ImGui::SetWindowPos(ImVec2(0, 0));
 		ImGui::SetWindowSize(ImVec2(500, 200));
@@ -219,7 +219,7 @@ void GameScene::Update()
 		ImGui::ColorEdit3("lightColor0", lightColor0_, ImGuiColorEditFlags_Float);
 
 		ImGui::End();
-	}
+	}*/
 
 #endif
 
@@ -249,7 +249,6 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-
 	//モデル描画
 	Object3d::BeforeDraw();
 	skydome_->Draw();

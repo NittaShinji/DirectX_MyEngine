@@ -11,9 +11,9 @@ class Stage : public TouchableObject
 private:
 
 	//nameSpace
-	using XMFLOAT = DirectX::XMFLOAT3;
+	//using XMFLOAT = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
@@ -24,7 +24,7 @@ public:
 
 	void Draw();
 
-	XMFLOAT3 GetGoalPos();
+	Vector3 GetGoalPos();
 
 private:
 
@@ -39,6 +39,6 @@ private:
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
 
 	//ÉSÅ[Éãç¿ïW
-	XMFLOAT3 goalPos_;
+	Vector3 goalPos_;
 };
 

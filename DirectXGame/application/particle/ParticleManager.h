@@ -14,7 +14,7 @@ private: // エイリアス
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 	// DirectX::を省略
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMMATRIX = DirectX::XMMATRIX;
 
@@ -23,7 +23,7 @@ public: // サブクラス
 	//頂点情報
 	struct Vertex
 	{
-		XMFLOAT3 pos;		// xyz座標
+		Vector3 pos;		// xyz座標
 		float scale;		// 大きさ
 		XMFLOAT4 color;		// 色
 	};
@@ -37,11 +37,11 @@ public: // サブクラス
 	struct Particle
 	{
 		//座標
-		XMFLOAT3 position = {};
+		Vector3 position = {};
 		//速度
-		XMFLOAT3 velocity = {};
+		Vector3 velocity = {};
 		//加速度
-		XMFLOAT3 accel = {};
+		Vector3 accel = {};
 
 		//スケール
 		float scale = 1.0f;
@@ -126,7 +126,7 @@ public: // メンバ関数
 	void CreateModel();
 
 
-	void Add(int life,XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, XMFLOAT4 colorSpeed,float start_scale, float end_scale);
+	void Add(int life,Vector3 position, Vector3 velocity, Vector3 accel, XMFLOAT4 colorSpeed,float start_scale, float end_scale);
 
 	//static void LoadTexture();
 	static void LoadTexture(const std::string& fileName);

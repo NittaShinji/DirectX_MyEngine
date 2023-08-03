@@ -5,6 +5,7 @@
 #include <wrl.h>
 #include <d3d12.h>
 #include "Vector2.h"
+#include "Vector3.h"
 
 ///<summary>
 /// ライト
@@ -18,7 +19,7 @@ private: //エイリアス
 	template <class T> using Comptr = Microsoft::WRL::ComPtr<T>;
 	//DirectX::を省略
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
@@ -65,7 +66,7 @@ public: //メンバ関数
 	/// 環境光のライト色をセット
 	/// </summary>
 	/// <param name="color">ライト色</param>
-	void SetAmbientColor(const XMFLOAT3& color);
+	void SetAmbientColor(const Vector3& color);
 
 	/// <summary>
 	/// 平行光源の有効フラグをセット
@@ -86,7 +87,7 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightColor">ライト色</param>
-	void SetDirLightColor(int32_t index, const XMFLOAT3&lightColor);
+	void SetDirLightColor(int32_t index, const Vector3&lightColor);
 
 	/// <summary>
 	/// 標準のライトの設定
@@ -94,22 +95,22 @@ public: //メンバ関数
 	void DefaultLightSetting();
 
 	void SetPointLightActive(int32_t index, bool active);
-	void SetPointLightPos(int32_t index, const XMFLOAT3 &lightPos);
-	void SetPointLightColor(int32_t index, const XMFLOAT3 &lightColor);
-	void SetPointLightAtten(int32_t index, const XMFLOAT3 &lightAtten);
+	void SetPointLightPos(int32_t index, const Vector3 &lightPos);
+	void SetPointLightColor(int32_t index, const Vector3 &lightColor);
+	void SetPointLightAtten(int32_t index, const Vector3 &lightAtten);
 
 	void SetSpotLightActive(int32_t index, bool active);
 	void SetSpotLightDir(int32_t index, const XMVECTOR &lightDir);
-	void SetSpotLightPos(int32_t index, const XMFLOAT3 &lightPos);
-	void SetSpotLightColor(int32_t index, const XMFLOAT3 &lightColor);
-	void SetSpotLightAtten(int32_t index, const XMFLOAT3 &lightAtten);
+	void SetSpotLightPos(int32_t index, const Vector3 &lightPos);
+	void SetSpotLightColor(int32_t index, const Vector3 &lightColor);
+	void SetSpotLightAtten(int32_t index, const Vector3 &lightAtten);
 	void SetSpotLightFactorAngle(int32_t index, const Vector2 &lightFactorAngle);
 
 	void SetCircleShadowActive(int32_t index, bool active);
-	void SetCircleShadowCasterPos(int32_t index, const XMFLOAT3& casterPos);
+	void SetCircleShadowCasterPos(int32_t index, const Vector3& casterPos);
 	void SetCircleShadowDir(int32_t index, const XMVECTOR& lightDir);
 	void SetCircleShadowDistanceCasterLight(int32_t index, float &distanceCasterLight);
-	void SetCircleShadowAtten(int32_t index, const XMFLOAT3& lightAtten);
+	void SetCircleShadowAtten(int32_t index, const Vector3& lightAtten);
 	void SetCircleShadowFactorAngle(int32_t index, const Vector2& lightFactorAngle);
 
 
@@ -130,7 +131,7 @@ public: //サブクラス
 	struct ConstBufferData
 	{
 		//環境光の色
-		XMFLOAT3 ambientColor;
+		Vector3 ambientColor;
 		float pad1;
 		//平行光源用
 		DirectionalLight::ConstBufferData dirLights[kDirLightNum_];
@@ -153,7 +154,7 @@ private: //メンバ変数
 	//定数バッファ
 	Comptr<ID3D12Resource> constBuff_;
 	//環境光の色
-	XMFLOAT3 ambientColor_ = { 1,1,1};
+	Vector3 ambientColor_ = { 1,1,1};
 	//平行光源の配列
 	DirectionalLight dirLights_[kDirLightNum_];
 	//点光源の配列

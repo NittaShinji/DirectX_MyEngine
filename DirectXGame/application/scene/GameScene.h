@@ -94,11 +94,17 @@ private:
 	//キー入力の時間管理
 	int32_t keyTimer_ = 60;
 
-	float ambientColor0_[3] = { 1,1,1 };
+	//float ambientColor0_[3] = { 1,1,1 };
+	Vector3 ambientColor0_ = { 1,1,1 };
 	//光線方向初期値
-	float lightDir0_[3] = { 1,-5,-5 };
-	float lightColor0_[3] = { 1,1,1 };
-	float whiteColor_[3] = { 1,1,1 };
+	//float lightDir0_[3] = { 1,-5,-5 };
+	Vector3 lightDir0_ = { 1,-5,-5 };
+
+	//float lightColor0_[3] = { 1,1,1 };
+	Vector3 lightColor0_ = { 1,1,1 };
+
+	//float whiteColor_[3] = { 1,1,1 };
+	Vector3 whiteColor_ = { 1,1,1 };
 
 	//パーティクル
 	std::unique_ptr<ParticleManager> particleManager_ = nullptr;

@@ -137,7 +137,7 @@ Quaternion Quaternion::Inverse()
 Quaternion MakeAxisAngle(const Vector3 &axis, float angle)
 {
 	Vector3 axisNorm = axis;
-	axisNorm.normalize();
+	axisNorm.Normalize();
 
 	Quaternion result;
 
@@ -230,19 +230,19 @@ Quaternion DirectionToDirection(const Vector3& u, const Vector3& v)
 {
 	//uとvを正規化して内積を求める,u,vを単位ベクトル前提とするなら正規化は不要
 	Vector3 before = u;
-	before.normalize();
+	before.Normalize();
 
 	Vector3 after = v;
-	after.normalize();
+	after.Normalize();
 
-	float dot = before.dot(after);
+	float dot = before.Dot(after);
 
 	//u,vの外積をとる
-	Vector3 cross = u.cross(v);
+	Vector3 cross = u.Cross(v);
 
 	//軸は単位ベクトルである必要があるので正規化
 	//u,vが単位ベクトルであっても、外積が単位ベクトルとは限らないのでここの正規化は必須
-	Vector3 axis = cross.normalize();
+	Vector3 axis = cross.Normalize();
 
 	//単位ベクトルで内積を取っているのでacosで角度を求める
 	float theta = std::acosf(dot);

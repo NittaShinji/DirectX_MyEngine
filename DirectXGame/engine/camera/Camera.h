@@ -6,15 +6,16 @@
 #include "DirectXBasic.h"
 #include <DirectXMath.h>
 #include <wrl.h>
+#include "Vector3.h"
 
 class Camera
 {
 private:
 
 	//DirectXを省略
-	using XMFLOAT = DirectX::XMFLOAT3;
+	//using XMFLOAT = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
 
@@ -22,7 +23,7 @@ public:
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
-	virtual void Initialize(XMFLOAT3& eye, XMFLOAT3& target,XMFLOAT3& up);
+	virtual void Initialize(Vector3& eye, Vector3& target,Vector3& up);
 
 	void Update();
 
@@ -37,9 +38,9 @@ protected:
 	//ビュー変換行列
 	XMMATRIX matView_;
 	//ビュー行列の設定項目
-	XMFLOAT3 eye_;		//視点座標
-	XMFLOAT3 target_;	//注視点座標
-	XMFLOAT3 up_;		//上方向ベクトル
+	Vector3 eye_;		//視点座標
+	Vector3 target_;	//注視点座標
+	Vector3 up_;		//上方向ベクトル
 	
 	float angle_ = 0.0f;	//カメラの回転角
 
@@ -54,7 +55,7 @@ public:
 	//ゲッター
 	const XMMATRIX& GetMatView() const { return matView_; }
 	const XMMATRIX& GetMatProjection() const { return matProjection_; }
-	const XMFLOAT3& GetEye() const { return eye_; }
+	const Vector3& GetEye() const { return eye_; }
 
 };
 

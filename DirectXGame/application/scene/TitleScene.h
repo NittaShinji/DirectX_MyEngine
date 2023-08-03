@@ -40,7 +40,7 @@ private:
 	//待ち時間
 	static const int32_t waitTime = 40;
 
-	XMFLOAT3 sphereRotate = { 0,0,0 };
+	Vector3 sphereRotate = { 0,0,0 };
 	const int32_t kRoateTime_ = 240;
 	const int32_t kActionTime_ = 60;
 
@@ -55,9 +55,9 @@ private:
 	int32_t changeTimer_ = kChangeTime_;
 	bool isUp_ = false;
 	bool isDown_ = true;
-	XMFLOAT3 move_ = { 0,0,0 };
+	Vector3 move_ = { 0,0,0 };
 
-	XMFLOAT3 spherPos_;
+	Vector3 spherPos_;
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;

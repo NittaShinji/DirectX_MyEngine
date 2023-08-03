@@ -79,10 +79,10 @@ ComPtr<ID3D12Resource> ParticleManager::CrateConstBuff(Type1* device)
 	return constBuff_;
 }
 
-//XMFLOAT3同士の加算処理
-const DirectX::XMFLOAT3 operator+(const DirectX::XMFLOAT3& lhs, const DirectX::XMFLOAT3& rhs)
+//Vector3同士の加算処理
+const Vector3 operator+(const Vector3& lhs, const Vector3& rhs)
 {
-	XMFLOAT3 result;
+	Vector3 result;
 	result.x = lhs.x + rhs.x;
 	result.y = lhs.y + rhs.y;
 	result.z = lhs.z + rhs.z;
@@ -211,6 +211,7 @@ void ParticleManager::Draw()
 
 	// 描画コマンド
 	//cmdList_->DrawInstanced((UINT)std::size(particles_.end()), 1, 0, 0);
+
 	cmdList_->DrawInstanced((UINT)std::distance(particles_.begin(), particles_.end()), 1, 0, 0);
 }
 
@@ -230,7 +231,7 @@ std::unique_ptr<ParticleManager> ParticleManager::Create()
 	return instance;
 }
 
-void ParticleManager::Add(int life, XMFLOAT3 position, XMFLOAT3 velocity, XMFLOAT3 accel, XMFLOAT4 colorSpeed, float start_scale, float end_scale)
+void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, XMFLOAT4 colorSpeed, float start_scale, float end_scale)
 {
 	int32_t isMaxParticle = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)

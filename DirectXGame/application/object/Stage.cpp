@@ -23,17 +23,17 @@ void Stage::Initialize()
 			std::unique_ptr<TouchableObject> newObject = nullptr;
 			newObject = TouchableObject::Create(objectData.fileName);
 
-			DirectX::XMFLOAT3 pos;
+			Vector3 pos;
 			pos = objectData.translation;
 			newObject->SetTransform(pos);
 
 			//‰ñ“]Šp
-			DirectX::XMFLOAT3 rot;
+			Vector3 rot;
 			rot = objectData.rotation;
 			newObject->SetRotation(rot);
 
 			//‘å‚«‚³
-			DirectX::XMFLOAT3 scale;
+			Vector3 scale;
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
 
@@ -63,11 +63,11 @@ void Stage::Initialize()
 
 					if(newObject->GetAttribute() == Attribute::yellow)
 					{
-						newObject->SetColor(XMFLOAT3(1.0f, 0.469f, 0.0f));
+						newObject->SetColor(Vector3(1.0f, 0.469f, 0.0f));
 					}
 					else if(newObject->GetAttribute() == Attribute::pink)
 					{
-						newObject->SetColor(XMFLOAT3(0.78f, 0.08f, 0.52f));
+						newObject->SetColor(Vector3(0.78f, 0.08f, 0.52f));
 					}
 				}
 				else if(newObject->GetColorFlag() == true)
@@ -98,7 +98,7 @@ void Stage::Draw()
 	}
 }
 
-XMFLOAT3 Stage::GetGoalPos()
+Vector3 Stage::GetGoalPos()
 {
 	return goalPos_;
 }

@@ -17,4 +17,11 @@ namespace MathUtillty
 
 	//弧度法変換(度数法からラジアン)
 	float ToRadian(float angle);
+
+	Vector3 Vector3Subtract(Vector3 v1, Vector3 v2);
+	bool Vector3Equal(Vector3 v1, Vector3 v2);
+	Vector3 Vector3Zero();
+	float Vector3Dot(Vector3 v1, Vector3 v2);
+	Vector3 Vector3Cross(Vector3 v1, Vector3 v2);
+
 }

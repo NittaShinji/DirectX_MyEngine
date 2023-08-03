@@ -6,15 +6,15 @@ Vector3::Vector3():x(0),y(0),z(0){}
 Vector3::Vector3(float x, float y,float z): x(x), y(y), z(z){}
 
 //長さを求める
-float Vector3::length() const
+float Vector3::Length() const
 {
 	return sqrt((x * x) + (y * y) + (z * z));
 }
 
 //正規化
-Vector3& Vector3::normalize()
+Vector3& Vector3::Normalize()
 {
-	float len = length();
+	float len = Length();
 	if (len != 0)
 	{
 		return *this /= len;
@@ -24,15 +24,21 @@ Vector3& Vector3::normalize()
 }
 
 //内積
-float Vector3::dot(const Vector3& v)const
+float Vector3::Dot(const Vector3& v)const
 {
 	return  (x * v.x) + (y * v.y) + (z * v.z);
 }
 
 //外積
-Vector3 Vector3::cross(const Vector3& v)const
+Vector3 Vector3::Cross(const Vector3& v)const
 {
 	return Vector3((y * v.z) - (z * v.y), (z * v.x) - (x * v.z),(x * v.y) - (y * v.x));
+}
+
+//逆ベクトル
+Vector3 Vector3::Negate() const
+{
+	return Vector3(-x,-y,-z);
 }
 
 //単項演算子オーバーロード
@@ -113,7 +119,5 @@ const Vector3 operator/(const Vector3& v, float s)
 //線形補間
 const Vector3 lerp(const Vector3& start, const Vector3& end, const float t)
 {
-	//　float y = t;
-	// return start * (1.0f - y) + end * y
 	return start * (1.0f - t) + end * t;
 }

@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <DirectXMath.h>
+#include "Vector3.h"
 
 ///<summary>
 /// ãÖ
@@ -12,7 +13,7 @@ struct Sphere
 	//îºåa
 	float radius = 1.0f;
 
-	DirectX::XMFLOAT3 pos = { 0,0,0 };
+	Vector3 pos = { 0,0,0 };
 };
 
 ///<summary>
@@ -24,7 +25,7 @@ struct Plane
 	DirectX::XMVECTOR normal = { 0,1,0,0 };
 	//å¥ì_(0,0,0)Ç©ÇÁÇÃãóó£
 	float distance = 0.0f;
-	DirectX::XMFLOAT3 pos = { 0,0,0 };
+	Vector3 pos = { 0,0,0 };
 };
 
 ///<summary>
@@ -82,23 +83,23 @@ struct AABBRadius
 //struct AABB
 //{
 //	using XMVECTOR = DirectX::XMVECTOR;
-//	using XMFLOAT3 = DirectX::XMFLOAT3;
+//	using Vector3 = DirectX::Vector3;
 //
-//	XMFLOAT3 max;
-//	XMFLOAT3 min;
-//	XMFLOAT3 oldPos;
+//	Vector3 max;
+//	Vector3 min;
+//	Vector3 oldPos;
 //	AABB() = default;
 //	~AABB() = default;
-//	AABB(XMFLOAT3 minValue, XMFLOAT3 maxValue, XMFLOAT3 pos)
+//	AABB(Vector3 minValue, Vector3 maxValue, Vector3 pos)
 //	{
 //		min = minValue;
 //		max = maxValue;
 //		pos = oldPos;
 //	}
 //	//çXêV
-//	void Update(const XMFLOAT3& pos)
+//	void Update(const Vector3& pos)
 //	{
-//		XMFLOAT3 diff;
+//		Vector3 diff;
 //		diff.x = pos.x - oldPos.x;
 //		diff.y = pos.y - oldPos.y;
 //		diff.z = pos.z - oldPos.z;

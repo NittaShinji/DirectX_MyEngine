@@ -58,7 +58,7 @@ void Player::Initialize()
 
 	attribute_ = Attribute::pink;
 	colorFlag_ = true;
-	SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
+	SetColor(Vector3(1.0f, 0.4f, 0.7f));
 }
 
 void Player::Update(Camera* camera)
@@ -92,15 +92,15 @@ void Player::Update(Camera* camera)
 
 		if(attribute_ == Attribute::pink)
 		{
-			SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
+			SetColor(Vector3(1.0f, 0.4f, 0.7f));
 		}
 		else if(attribute_ == Attribute::yellow)
 		{
-			SetColor(XMFLOAT3(1.0f, 0.469f, 0.0f));
+			SetColor(Vector3(1.0f, 0.469f, 0.0f));
 		}
 		else
 		{
-			SetColor(XMFLOAT3(0.0f, 0.0f, 0.0f));
+			SetColor(Vector3(0.0f, 0.0f, 0.0f));
 		}
 	}
 
@@ -262,7 +262,7 @@ void Player::Reset()
 	isDead_ = false;
 	isChangeColor = false;
 	attribute_ = Attribute::pink;
-	SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
+	SetColor(Vector3(1.0f, 0.4f, 0.7f));
 }
 
 

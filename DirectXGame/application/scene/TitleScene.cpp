@@ -36,7 +36,7 @@ void TitleScene::Initialize()
 	spherPos_.z = 5.0f;
 
 	titleSphere_->SetTransform(spherPos_);
-	titleSphere_->SetScale(XMFLOAT3{ 3.0f, 3.0f, 3.0f });
+	titleSphere_->SetScale(Vector3{ 3.0f, 3.0f, 3.0f });
 
 	//‰æ‘œ
 	titleSprite_ = std::make_unique<Sprite>();
@@ -85,9 +85,9 @@ void TitleScene::Initialize()
 	//ƒJƒƒ‰
 	camera_ = std::make_unique<Camera>();
 
-	XMFLOAT3 cameraEye = { 30,15.5,-20 };
-	XMFLOAT3 cameraTarget = { 0,5,5 };
-	XMFLOAT3 cameraUp = { 0,1,0 };
+	Vector3 cameraEye = { 30,15.5,-20 };
+	Vector3 cameraTarget = { 0,5,5 };
+	Vector3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
 
@@ -154,12 +154,12 @@ void TitleScene::Update()
 	if(rotateTimer_ > (kRoateTime_ / 2))
 	{
 		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(XMFLOAT3(1.0f, 0.4f, 0.7f));
+		titleSphere_->SetColor(Vector3(1.0f, 0.4f, 0.7f));
 	}
 	else
 	{
 		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(XMFLOAT3(1.0f, 0.469f, 0.0f));
+		titleSphere_->SetColor(Vector3(1.0f, 0.469f, 0.0f));
 	}
 
 	if(isDown_ == true && isUp_ == false)
@@ -188,7 +188,7 @@ void TitleScene::Update()
 	{
 		changeTimer_--;
 		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(XMFLOAT3(1.0f, 1.0f, 1.0f));
+		titleSphere_->SetColor(Vector3(1.0f, 1.0f, 1.0f));
 		if(changeTimer_ <= 0)
 		{
 			Sound::GetInstance()->Finalize();

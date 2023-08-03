@@ -5,6 +5,7 @@
 #include <DirectXMath.h>
 #include <fstream>
 #include <vector>
+#include "Vector3.h"
 
 struct LevelData
 {
@@ -15,9 +16,9 @@ struct LevelData
 		XMMATRIX rotation;
 		XMMATRIX scaling;*/
 
-		XMFLOAT3 translation;
-		XMFLOAT3 rotation;
-		XMFLOAT3 scaling;
+		Vector3 translation;
+		Vector3 rotation;
+		Vector3 scaling;
 		std::string fileName;
 		std::string attribute;
 	};
@@ -34,7 +35,7 @@ private: //エイリアス
 	template <class T> using Comptr = Microsoft::WRL::ComPtr<T>;
 	//DirectX::を省略
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;

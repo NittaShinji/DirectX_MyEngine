@@ -165,7 +165,7 @@ void LightGroup::TransferConstBuffer()
 	}
 }
 
-void LightGroup::SetAmbientColor(const XMFLOAT3 &color)
+void LightGroup::SetAmbientColor(const Vector3 &color)
 {
 	ambientColor_ = color;
 	dirty_ = true;
@@ -184,7 +184,7 @@ void LightGroup::SetDirLightDir(int32_t index, const XMVECTOR &lightDir)
 	dirty_ = true;
 }
 
-void LightGroup::SetDirLightColor(int32_t index, const XMFLOAT3 &lightColor)
+void LightGroup::SetDirLightColor(int32_t index, const Vector3 &lightColor)
 {
 	assert(0 <= index && index < kDirLightNum_);
 	dirLights_[index].SetLightColor(lightColor);
@@ -213,7 +213,7 @@ void LightGroup::DefaultLightSetting()
 //	pointLights[index].SetActive(active);
 //}
 //
-//void LightGroup::SetPointLightPos(int32_t index, const XMFLOAT3 &lightPos)
+//void LightGroup::SetPointLightPos(int32_t index, const Vector3 &lightPos)
 //{
 //	assert(0 <= index && index < kPointLightNum_);
 //
@@ -221,7 +221,7 @@ void LightGroup::DefaultLightSetting()
 //	dirty_ = true;
 //}
 //
-//void LightGroup::SetPointLightColor(int32_t index, const XMFLOAT3 &lightColor)
+//void LightGroup::SetPointLightColor(int32_t index, const Vector3 &lightColor)
 //{
 //	assert(0 <= index && index < kPointLightNum_);
 //	
@@ -229,7 +229,7 @@ void LightGroup::DefaultLightSetting()
 //	dirty_ = true;
 //}
 //
-//void LightGroup::SetPointLightAtten(int32_t index, const XMFLOAT3 &lightAtten)
+//void LightGroup::SetPointLightAtten(int32_t index, const Vector3 &lightAtten)
 //{
 //	assert(0 <= index && index < kPointLightNum_);
 //
@@ -250,21 +250,21 @@ void LightGroup::DefaultLightSetting()
 //	dirty_ = true;
 //}
 //
-//void LightGroup::SetSpotLightPos(int32_t index, const XMFLOAT3 &lightPos)
+//void LightGroup::SetSpotLightPos(int32_t index, const Vector3 &lightPos)
 //{
 //	assert(0 <= index && index < SpotLightNum);
 //	spotLights[index].SetLightPos(lightPos);
 //	dirty_ = true;
 //}
 //
-//void LightGroup::SetSpotLightColor(int32_t index, const XMFLOAT3 &lightColor)
+//void LightGroup::SetSpotLightColor(int32_t index, const Vector3 &lightColor)
 //{
 //	assert(0 <= index && index < SpotLightNum);
 //	spotLights[index].SetLightColor(lightColor);
 //	dirty_ = true;
 //}
 //
-//void LightGroup::SetSpotLightAtten(int32_t index, const XMFLOAT3 &lightAtten)
+//void LightGroup::SetSpotLightAtten(int32_t index, const Vector3 &lightAtten)
 //{
 //	assert(0 <= index && index < SpotLightNum);
 //	spotLights[index].SetLightAtten(lightAtten);
@@ -285,7 +285,7 @@ void LightGroup::DefaultLightSetting()
 //	circleShadows[index].SetActive(active);
 //}
 //
-//void LightGroup::SetCircleShadowCasterPos(int32_t index, const XMFLOAT3 &casterPos)
+//void LightGroup::SetCircleShadowCasterPos(int32_t index, const Vector3 &casterPos)
 //{
 //	assert(0 <= index && index < CircleShadowNum);
 //
@@ -309,7 +309,7 @@ void LightGroup::DefaultLightSetting()
 //	dirty_ = true;
 //}
 //
-//void LightGroup::SetCircleShadowAtten(int32_t index, const XMFLOAT3 &lightAtten)
+//void LightGroup::SetCircleShadowAtten(int32_t index, const Vector3 &lightAtten)
 //{
 //	assert(0 <= index && index < CircleShadowNum);
 //

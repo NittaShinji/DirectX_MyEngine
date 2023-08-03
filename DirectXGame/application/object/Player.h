@@ -11,9 +11,9 @@ class Player : public Object3d
 private:
 
 	//nameSpace
-	using XMFLOAT = DirectX::XMFLOAT3;
+	//using XMFLOAT = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
@@ -40,12 +40,12 @@ private:
 
 	std::unique_ptr<Object3d> object_;
 
-	XMFLOAT3 position_ = { 0,2,0 };
+	Vector3 position_ = { 0,2,0 };
 	//XMMATRIX position_ = { 0,2,0 };
-	XMFLOAT3 rotation_ = { 0,0,0 };
-	XMFLOAT3 scale_ = { 1,1,1 };
+	Vector3 rotation_ = { 0,0,0 };
+	Vector3 scale_ = { 1,1,1 };
 
-	XMFLOAT3 move = { 0,0,0 };
+	Vector3 move = { 0,0,0 };
 
 	//ジャンプカウント
 	int32_t jumpCount;
@@ -105,7 +105,7 @@ public:
 	bool GetIsMoving() { return isMoving_; }
 	bool GetIsFinish() { return isfinish_; }
 	bool GetIsDead() { return isDead_; }
-	XMFLOAT3 GetPos() { return position_; }
+	Vector3 GetPos() { return position_; }
 	bool GetOnGround() { return onGround_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }

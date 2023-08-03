@@ -8,9 +8,9 @@ class GameCamera : public Camera
 {
 
 	//エイリアステンプレート
-	using XMFLOAT = DirectX::XMFLOAT3;
+	//using XMFLOAT = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMMATRIX = DirectX::XMMATRIX;
 	using XMVECTOR = DirectX::XMVECTOR;
 

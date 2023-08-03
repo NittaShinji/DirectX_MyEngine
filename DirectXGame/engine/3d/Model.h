@@ -17,7 +17,7 @@ class Model
 private:
 
 	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
 	using XMMATRIX = DirectX::XMMATRIX;
 
@@ -46,9 +46,9 @@ private:
 	struct Material
 	{
 		std::string name;	//マテリアル名
-		XMFLOAT3 ambient;	//アンビエント影響度
-		XMFLOAT3 diffuse;	//ディフューズ影響度
-		XMFLOAT3 specular;	//スペキュラー影響度
+		Vector3 ambient;	//アンビエント影響度
+		Vector3 diffuse;	//ディフューズ影響度
+		Vector3 specular;	//スペキュラー影響度
 		float alpha;		//アルファ
 		std::string textureFilename;	//テクスチャファイル名
 		//コンストラクタ
@@ -70,11 +70,11 @@ private:
 	//定数バッファ用データ構造体B1
 	struct ConstBufferDateB1
 	{
-		XMFLOAT3 ambient;	//アンビエント係数
+		Vector3 ambient;	//アンビエント係数
 		float pad1;
-		XMFLOAT3 diffuse;
+		Vector3 diffuse;
 		float pad2;
-		XMFLOAT3 specular;
+		Vector3 specular;
 		float alpha;
 	};
 

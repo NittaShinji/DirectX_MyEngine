@@ -39,8 +39,8 @@ void Model::Load(const std::string& path)
 	//ファイルオープン失敗をチェック
 	assert(!file.fail());
 
-	vector<XMFLOAT3>positions;	//頂点座標
-	vector<XMFLOAT3>normals;	//法線ベクトル
+	vector<Vector3>positions;	//頂点座標
+	vector<Vector3>normals;	//法線ベクトル
 	vector<Vector2>texcoords;	//テクスチャUV
 
 	//1行ずつ読み込む
@@ -58,7 +58,7 @@ void Model::Load(const std::string& path)
 		if (key == "v")
 		{
 			//X,Y,Z座標読み込み
-			XMFLOAT3 position{};
+			Vector3 position{};
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
@@ -85,7 +85,7 @@ void Model::Load(const std::string& path)
 		if (key == "vn")
 		{
 			////X,Y,Z成分読み込み
-			XMFLOAT3 normal{};
+			Vector3 normal{};
 			line_stream >> normal.x;
 			line_stream >> normal.y;
 			line_stream >> normal.z;

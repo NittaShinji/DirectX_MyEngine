@@ -7,6 +7,7 @@
 #include "SpriteCommon.h"
 #include "Input.h"
 #include "Vector2.h"
+#include "Vector3.h"
 
 //スプライト
 class Sprite
@@ -40,7 +41,7 @@ protected:
 
 	struct Vertex
 	{
-		XMFLOAT3 pos;// xyz座標
+		Vector3 pos;// xyz座標
 		Vector2 uv; // uv座標
 	};
 
@@ -58,11 +59,11 @@ protected:
 	float height_;
 
 	//スケーリング倍率
-	XMFLOAT3 scale_;
+	Vector3 scale_;
 	//回転角
 	float rotation_;
 	//座標
-	//XMFLOAT3 position;
+	//Vector3 position;
 	Vector2 moveSpeed_;
 	//色(RGBA)
 	XMFLOAT4 color_ = { 1,1,1,1 };

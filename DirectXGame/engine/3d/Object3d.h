@@ -8,6 +8,7 @@
 #include "CollisionInfo.h"
 #include <vector>
 #include <string>
+#include "Vector3.h"
 
 class BaseCollider;
 
@@ -19,9 +20,9 @@ private: //エイリアス
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 	//nameSpace
-	using XMFLOAT = DirectX::XMFLOAT3;
+	//using XMFLOAT = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMMATRIX = DirectX::XMMATRIX;
 
 public:
@@ -33,25 +34,25 @@ public:
 		//ワールド行列
 		XMMATRIX worldMatrix;
 		//カメラ座標(ワールド行列)
-		XMFLOAT3 cameraPos;
+		Vector3 cameraPos;
 		float pad1;
 	};
 
 	//定数バッファ用データ構造体(マテリアル)b1
 	struct ConstBufferDataMaterial
 	{
-		XMFLOAT3 ambient;	//アンビエント係数
+		Vector3 ambient;	//アンビエント係数
 		float pad1;
-		XMFLOAT3 diffuse;
+		Vector3 diffuse;
 		float pad2;
-		XMFLOAT3 specular;
+		Vector3 specular;
 		float alpha;
 	};
 
 	struct GSOutput
 	{
-		XMFLOAT3 pos;		// xyz座標
-		XMFLOAT3 normal;	//法線ベクトル
+		Vector3 pos;		// xyz座標
+		Vector3 normal;	//法線ベクトル
 		Vector2 uv;		// uv座標
 	};
 
@@ -106,11 +107,11 @@ protected:	//メンバ変数
 	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
 
 	//スケール
-	XMFLOAT3 scale_;
+	Vector3 scale_;
 	//回転角
-	XMFLOAT3 rotation_;
+	Vector3 rotation_;
 	//平行移動
-	XMFLOAT3 transform_;
+	Vector3 transform_;
 
 	XMMATRIX matScale_, matRot_, matTrans_;
 
@@ -122,7 +123,7 @@ protected:	//メンバ変数
 	//射影行列
 	XMMATRIX matProjection_;
 	//カメラ座標
-	XMFLOAT3 cameraPos_;
+	Vector3 cameraPos_;
 
 	//親オブジェクトのポインタ
 
@@ -150,7 +151,7 @@ protected:	//メンバ変数
 
 	static const UINT kRenderTexNum = 2;
 
-	XMFLOAT3 color_ = { 1,1,1};
+	Vector3 color_ = { 1,1,1};
 
 	//属性
 	int32_t attribute_;
@@ -160,7 +161,7 @@ public:
 	//ゲッター
 	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform_; };
 
-	XMFLOAT3 GetWorldPos() const;
+	Vector3 GetWorldPos() const;
 	/// <summary>
 	/// ワールド行列の取得
 	/// </summary>
@@ -174,18 +175,18 @@ public:
 	int32_t GetAttribute() { return attribute_; }
 
 
-	void SetTransform(const XMFLOAT3& pos) { transform_ = pos; };
-	void SetRotation(const XMFLOAT3& rotate) { rotation_ = rotate; };
-	void SetScale(const XMFLOAT3& scale) { scale_ = scale; }
+	void SetTransform(const Vector3& pos) { transform_ = pos; };
+	void SetRotation(const Vector3& rotate) { rotation_ = rotate; };
+	void SetScale(const Vector3& scale) { scale_ = scale; }
 
 	void SetMatTrans(const XMMATRIX& matTrans) { matTrans_ = matTrans; }
 	void SetMatRot(const XMMATRIX& matRot) { matRot_ = matRot; }
 	void SetMatScale(const XMMATRIX& matScale) { matScale_ = matScale; }
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
-	void SetColor(XMFLOAT3 color) { color_ = color; }
+	void SetColor(Vector3 color) { color_ = color; }
 	//void SetColorA(XMFLOAT4 colorA) { colorA_ = colorA; }
-	void SetAmbient(XMFLOAT3 color);
+	void SetAmbient(Vector3 color);
 	void SetAttribute(int32_t attribute) { attribute_ = attribute; }
 
 	/// <summary>

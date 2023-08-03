@@ -337,7 +337,7 @@ void Object3d::Update(Camera* camera)
 
 	cameraPos_ = camera_->GetEye();
 
-	XMFLOAT3 move = { 0,0,0 };
+	Vector3 move = { 0,0,0 };
 
 	//スケール、回転、平行移動の計算
 	matScale_ = XMMatrixIdentity();
@@ -452,10 +452,10 @@ void Object3d::AfterDraw()
 
 }
 
-XMFLOAT3 Object3d::GetWorldPos() const
+Vector3 Object3d::GetWorldPos() const
 {
 	//全ての壁の座標を渡す
-	XMFLOAT3 resutVec = { 0,0,0 };
+	Vector3 resutVec = { 0,0,0 };
 
 	//ワールド行列の平行移動成分を取得(ワールド座標)
 	resutVec.x = matWorld_.r[3].m128_f32[0];
@@ -465,7 +465,7 @@ XMFLOAT3 Object3d::GetWorldPos() const
 	return resutVec;
 }
 
-void Object3d::SetAmbient(XMFLOAT3 color)
+void Object3d::SetAmbient(Vector3 color)
 {
 	constMapMaterial_->ambient.x = model_.GetInfomation()->material.ambient.x * color.x;
 	constMapMaterial_->ambient.y = model_.GetInfomation()->material.ambient.x * color.y;

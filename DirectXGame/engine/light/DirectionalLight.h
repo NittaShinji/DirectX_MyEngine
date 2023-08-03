@@ -2,6 +2,7 @@
 #include <DirectXMath.h>
 #include <wrl.h>
 #include <d3d12.h>
+#include "Vector3.h"
 
 class DirectionalLight
 {
@@ -11,7 +12,7 @@ private: //エイリアステンプレート
 	template<class T>using Comptr = Microsoft::WRL::ComPtr<T>;
 	//DirectXを省略
 	//using Vector2 = DirectX::Vector2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
+	//using Vector3 = DirectX::Vector3;
 	using XMFLOAT4 = DirectX::XMFLOAT4;
 	using XMVECTOR = DirectX::XMVECTOR;
 	using XMMATRIX = DirectX::XMMATRIX;
@@ -22,7 +23,7 @@ public: //サブクラス
 	struct  ConstBufferData
 	{
 		XMVECTOR lightv;		//ライトへ方向を表すベクトル
-		XMFLOAT3 lightColor;	//ライトの色
+		Vector3 lightColor;	//ライトの色
 		bool active;	//有効フラグ
 	};
 
@@ -37,14 +38,14 @@ public: //アクセッサ
 	}
 
 	//ライト色のセット
-	void SetLightColor(const XMFLOAT3& lightColor)
+	void SetLightColor(const Vector3& lightColor)
 	{
 		this->lightColor_ = lightColor;
 		dirty_ = true;
 	}
 
 	XMVECTOR GetLightDir() { return lightDir_; };
-	XMFLOAT3 GetLightColor() { return lightColor_; };
+	Vector3 GetLightColor() { return lightColor_; };
 
 	/// <summary>
 	/// 有効フラグをセット
@@ -65,7 +66,7 @@ private: //メンバ変数
 	//ライト光線方向(単位ベクトル)
 	XMVECTOR lightDir_ = { 1,0,0,0};
 	//ライト色
-	XMFLOAT3 lightColor_ = { 1,1,1 };
+	Vector3 lightColor_ = { 1,1,1 };
 	//有効フラグ
 	bool active_ = false;
 	//ダーティフラグ(値に変更があったときだけ定数バッファに転送)
