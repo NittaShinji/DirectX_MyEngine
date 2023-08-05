@@ -123,13 +123,12 @@ void ParticleManager::Update(Camera* camera)
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 
-	nowParticleCount_ = 0;
-
 	if(SUCCEEDED(result))
 	{
 		for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 		{
-			if(nowParticleCount_ + generationNum_ >= vertexCount)
+			int32_t nowParticleCount_ = 0;
+			if(nowParticleCount_ + generationNum_ >= kVertexCount || nowParticleCount_ >= kVertexCount)
 			{
 				isMaxParticle_ = true;
 				break;
@@ -161,10 +160,10 @@ void ParticleManager::Update(Camera* camera)
 			//スケール
 			vertMap->scale = it->scale;
 
-			vertMap->color.x = it->color.x;
-			vertMap->color.y = it->color.y;
-			vertMap->color.z = it->color.z;
-			//vertMap->color.w = it->color.w;
+			vertMap->color.x = it->color.x + it->colorSpeed.x;
+			vertMap->color.y = it->color.y + it->colorSpeed.y;
+			vertMap->color.z = it->color.z + it->colorSpeed.z;
+			vertMap->color.w = it->color.w + it->colorSpeed.w;
 
 			//次の頂点へ
 			vertMap++;
@@ -200,7 +199,6 @@ void ParticleManager::Draw()
 
 	// 描画コマンド
 	//cmdList_->DrawInstanced((UINT)std::size(particles_.end()), 1, 0, 0);
-
 	cmdList_->DrawInstanced((UINT)std::distance(particles_.begin(), particles_.end()), 1, 0, 0);
 }
 
@@ -220,13 +218,12 @@ std::unique_ptr<ParticleManager> ParticleManager::Create()
 	return instance;
 }
 
-void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector3 colorSpeed, float alphaSpeed,float start_scale, float end_scale)
-
+void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 colorSpeed,float start_scale, float end_scale)
 {
-	int32_t isMaxParticle = 0;
+	int32_t isParticleNum = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
-		if(nowParticleCount_ + generationNum_ >= vertexCount)
+		if(isParticleNum + generationNum_ >= kVertexCount || isParticleNum >= kVertexCount)
 		{
 			isMaxParticle_ = true;
 			break;
@@ -235,7 +232,7 @@ void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 
 		{
 			isMaxParticle_ = false;
 		}
-		isMaxParticle++;
+		isParticleNum++;
 	}
 
 	if(isMaxParticle_ == false)
@@ -531,7 +528,7 @@ void ParticleManager::CreateModel()
 {
 	HRESULT result = S_FALSE;
 
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertexCount);
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * kVertexCount);
 
 	// ヒーププロパティ
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定

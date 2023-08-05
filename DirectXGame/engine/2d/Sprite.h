@@ -64,7 +64,7 @@ protected:
 	//Vector3 position;
 	Vector2 moveSpeed_;
 	//色(RGBA)
-	XMFLOAT4 color_ = { 1,1,1,1 };
+	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
 	//表示サイズ
 	Vector2 size_ = { 100.0f,100.0f };
 
@@ -104,7 +104,7 @@ protected:
 	//配列の要素数
 	const size_t imageDateCount_ = kTextureWidth_ * kTextureHeight_;
 	//画像イメージデータ配列
-	XMFLOAT4* imageDate_;
+	Vector4* imageDate_;
 	//テクスチャリソースデスク
 	D3D12_RESOURCE_DESC textureResourceDesc_{};
 
@@ -117,7 +117,7 @@ public:
 	//ゲッター
 	const Vector2& GetMoveSpeed_() const { return moveSpeed_; };
 	float GetRotation() const { return rotation_; };
-	const XMFLOAT4& GetColor() const { return color_; };
+	const Vector4& GetColor() const { return color_; };
 	const Vector2& GetSize() const { return size_; };
 	const Vector2& GetAnchorPoint() const { return anchorPoint_; };
 	const Vector2& GetPosition() const { return position_; };
@@ -128,7 +128,7 @@ public:
 	//セッター
 	void SetMoveSpeed_(const Vector2& moveSpeed) { moveSpeed_ = moveSpeed; };
 	void SetRotation(float rotation) { rotation_ = rotation; };
-	void SetColor(const DirectX::XMFLOAT4& color) { color_ = color; };
+	void SetColor(const Vector4& color) { color_ = color; };
 	void SetSize(const Vector2& size) { size_ = size; };
 	void SetAnchorPoint(const Vector2& anchorPoint) { anchorPoint_ = anchorPoint; }
 	void SetPosition(const Vector2& initPosition) { position_ = initPosition; }

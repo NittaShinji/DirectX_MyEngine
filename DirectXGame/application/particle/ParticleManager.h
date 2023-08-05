@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "Camera.h"
+#include "Vector4.h"
 #include <forward_list>
 
 /// <summary>
@@ -19,7 +20,7 @@ public: // サブクラス
 	{
 		Vector3 pos;		// xyz座標
 		float scale;		// 大きさ
-		Vector3 color;		// 色
+		Vector4 color;		// 色
 	};
 
 	// 定数バッファ用データ構造体
@@ -49,11 +50,11 @@ public: // サブクラス
 		//終了フレーム
 		int num_frame = 0;
 
-		Vector3 color = { 1,1,1};
-		float colorAlpha = 1.0f;
+		//Vector3 color = { 1,1,1};
+		//float colorAlpha = 1.0f;
 
-		Vector3 colorSpeed = { 0.01f,0.0f,0.0f};
-		float alphaSpeed = 1.0f;
+		Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+		Vector4 colorSpeed = { 0.0f,0.0f,0.1f,0.0f};
 	};
 
 private: // 定数
@@ -61,7 +62,7 @@ private: // 定数
 	static const float radius;				// 底面の半径
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int vertexCount = 1024;		// 頂点数
+	static const int kVertexCount = 1024;		// 頂点数
 
 public: // 静的メンバ関数
 	/// <summary>
@@ -119,7 +120,7 @@ public: // メンバ関数
 	void CreateModel();
 
 
-	void Add(int life,Vector3 position, Vector3 velocity, Vector3 accel, Vector3 colorSpeed, float alphaSpeed,float start_scale, float end_scale);
+	void Add(int life,Vector3 position, Vector3 velocity, Vector3 accel, Vector4 colorSpeed,float start_scale, float end_scale);
 
 	//static void LoadTexture();
 	static void LoadTexture(const std::string& fileName);

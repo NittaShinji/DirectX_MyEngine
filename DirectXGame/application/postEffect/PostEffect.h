@@ -1,5 +1,6 @@
 #pragma once
 #include "Sprite.h"
+#include "Vector4.h"
 
 class PostEffect : public Sprite
 {
@@ -92,7 +93,7 @@ private:
     static const float clearColor[4];
 
     //色(RGBA)
-    XMFLOAT4 color_ = { 1,1,1,1 };
+    Vector4 color_ = { 1,1,1,1 };
 
     //テクスチャ番号
     static uint32_t sTextureIndex_;

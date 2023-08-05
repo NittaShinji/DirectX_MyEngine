@@ -389,16 +389,12 @@ void Object3d::Update(Camera* camera)
 
 void Object3d::Draw()
 {
-	//頂点バッファビューの設定コマンド
-	//directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &model_.GetInfomation()->vbView);
-
-	//インデックスバッファビューの設定コマンド
-	//directXBasic_->GetCommandList()->IASetIndexBuffer(&model_.GetInfomation()->ibView);
-
 	std::vector<Mesh>::iterator it;
 	for(it = model_.GetInfomation()->meshes.begin(); it < model_.GetInfomation()->meshes.end(); it++)
 	{
+		//頂点バッファビューの設定コマンド
 		directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &it->GetVBView());
+		//インデックスバッファビューの設定コマンド
 		directXBasic_->GetCommandList()->IASetIndexBuffer(&it->GetIBView());
 	}
 
@@ -423,14 +419,11 @@ void Object3d::Draw()
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffTransform_->GetGPUVirtualAddress());
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(1, constBuffMaterial_->GetGPUVirtualAddress());
-	//directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(3, constBuffLight_->GetGPUVirtualAddress());
 
 	//ライトの描画
 	lightGroup_->Draw(directXBasic_->GetCommandList().Get(), 3);
 
 	//描画コマンド
-	//directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(model_.GetInfomation()->indices.size()), 1, 0, 0, 0);
-
 	for(it = model_.GetInfomation()->meshes.begin(); it < model_.GetInfomation()->meshes.end(); it++)
 	{
 		directXBasic_->GetCommandList()->DrawIndexedInstanced(static_cast<UINT>(it->GetIndices().size()), 1, 0, 0, 0);
@@ -447,10 +440,7 @@ void Object3d::BeforeDraw()
 	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Object3d::AfterDraw()
-{
-
-}
+void Object3d::AfterDraw(){}
 
 Vector3 Object3d::GetWorldPos() const
 {

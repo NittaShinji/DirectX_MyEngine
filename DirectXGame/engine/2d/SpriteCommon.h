@@ -7,6 +7,7 @@
 #include <string>
 #include <DirectXTex.h>
 #include <DirectXMath.h>
+#include "Vector4.h"
 #include "DirectXBasic.h"
 #include "MathUtillity.h"
 
@@ -24,7 +25,7 @@ public:
 	//定数バッファ用データ構造体(マテリアル)
 	struct ConstBufferDataMaterial
 	{
-		XMFLOAT4 color;	//色(RGBA)
+		Vector4 color;	//色(RGBA)
 	};
 	struct ConstBufferDataTransform
 	{

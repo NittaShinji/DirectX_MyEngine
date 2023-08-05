@@ -98,6 +98,7 @@
     <ClCompile Include="DirectXGame\engine\math\Quaternion.cpp" />
     <ClCompile Include="DirectXGame\engine\math\Vector2.cpp" />
     <ClCompile Include="DirectXGame\engine\math\Vector3.cpp" />
+    <ClCompile Include="DirectXGame\engine\math\Vector4.cpp" />
     <ClCompile Include="DirectXGame\engine\scene\BaseScene.cpp" />
     <ClCompile Include="DirectXGame\application\postEffect\PostEffect.cpp" />
     <ClCompile Include="DirectXGame\engine\camera\Camera.cpp" />
@@ -142,6 +143,7 @@
     <ClInclude Include="DirectXGame\engine\math\Quaternion.h" />
     <ClInclude Include="DirectXGame\engine\math\Vector2.h" />
     <ClInclude Include="DirectXGame\engine\math\Vector3.h" />
+    <ClInclude Include="DirectXGame\engine\math\Vector4.h" />
     <ClInclude Include="DirectXGame\engine\scene\AbstractSceneFactory.h" />
     <ClInclude Include="DirectXGame\engine\scene\BaseScene.h" />
     <ClInclude Include="DirectXGame\application\postEffect\PostEffect.h" />

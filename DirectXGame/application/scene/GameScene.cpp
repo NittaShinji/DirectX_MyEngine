@@ -7,6 +7,7 @@
 #include "MeshCollider.h"
 #include "TouchableObject.h"
 #include "SceneManager.h"
+#include "Vector4.h"
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -159,17 +160,12 @@ void GameScene::Update()
 			const float md_acc = 0.001f;
 			acc.y = (float)rand() / RAND_MAX * md_acc;
 			//F‚ð•Ï‰»‚³‚¹‚é
-			//XMFLOAT4 colorSpeed{};
-			Vector3 colorSpeed{};
-			colorSpeed.x = 0.0f;
-			colorSpeed.y = 0.0f;
-			colorSpeed.z = 0.0f;
-			float colorAlpha = 1.0f;
-
+			Vector4 colorSpeed{ 0.0f,0.0f,0.0f,1.0f };
+			
 			//’Ç‰Á
 			if(particleManager_->GetIsMaxParticle() == false)
 			{
-				particleManager_->Add(60, pos, vel, acc, colorSpeed, colorAlpha, 1.0f, 0.0f);
+				particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
 			}
 		}
 	}
@@ -193,16 +189,12 @@ void GameScene::Update()
 		const float md_acc = 0.001f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 		//F‚ð•Ï‰»‚³‚¹‚é
-		Vector3 colorSpeed{};
-		colorSpeed.x = 0.0f;
-		colorSpeed.y = 0.0f;
-		colorSpeed.z = 0.0f;
-		float colorAlpha = 1.0f;
-
+		Vector4 colorSpeed{0.0f,0.0f,0.0f,1.0f};
+		
 		//’Ç‰Á
 		if(particleManager_->GetIsMaxParticle() == false)
 		{
-			particleManager_->Add(60, pos, vel, acc, colorSpeed, colorAlpha, 1.0f, 0.0f);
+			particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
 		}
 	}
 
@@ -262,5 +254,5 @@ void GameScene::Draw()
 	player_->Draw();
 
 	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
-	//particleManager_->Draw();
+	particleManager_->Draw();
 }

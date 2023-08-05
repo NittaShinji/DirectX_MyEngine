@@ -51,7 +51,7 @@ void Sprite::Initialize( Vector2 position, Vector2 size)
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
 
 	//カラーの書き込みと転送
-	spriteCommon_->GetConstMapMaterial()->color = XMFLOAT4(0, 1, 0, 0.5f);
+	spriteCommon_->GetConstMapMaterial()->color = Vector4(0, 1, 0, 0.5f);
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定

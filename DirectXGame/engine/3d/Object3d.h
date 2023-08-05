@@ -180,7 +180,6 @@ public:
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 	void SetColor(Vector3 color) { color_ = color; }
-	//void SetColorA(XMFLOAT4 colorA) { colorA_ = colorA; }
 	void SetAmbient(Vector3 color);
 	void SetAttribute(int32_t attribute) { attribute_ = attribute; }
 
