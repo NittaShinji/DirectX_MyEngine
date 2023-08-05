@@ -20,9 +20,9 @@ private: //エイリアス
 	//DirectX::を省略
 	//using Vector2 = DirectX::Vector2;
 	//using Vector3 = DirectX::Vector3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMVECTOR = DirectX::XMVECTOR;
-	using XMMATRIX = DirectX::XMMATRIX;
+	//using XMFLOAT4 = DirectX::XMFLOAT4;
+	//using XMVECTOR = DirectX::XMVECTOR;
+	//using XMMATRIX = DirectX::XMMATRIX;
 
 
 public: //静的メンバ変数
@@ -80,7 +80,9 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightDir">ライト方向</param>
-	void SetDirLightDir(int32_t index, const XMVECTOR&lightDir);
+	//void SetDirLightDir(int32_t index, const XMVECTOR&lightDir);
+	void SetDirLightDir(int32_t index, const Vector3&lightDir, const float upVec);
+
 
 	/// <summary>
 	/// 平行光源のライト色をセット
@@ -89,29 +91,30 @@ public: //メンバ関数
 	/// <param name="lightColor">ライト色</param>
 	void SetDirLightColor(int32_t index, const Vector3&lightColor);
 
+
 	/// <summary>
 	/// 標準のライトの設定
 	/// </summary>
 	void DefaultLightSetting();
 
-	void SetPointLightActive(int32_t index, bool active);
-	void SetPointLightPos(int32_t index, const Vector3 &lightPos);
-	void SetPointLightColor(int32_t index, const Vector3 &lightColor);
-	void SetPointLightAtten(int32_t index, const Vector3 &lightAtten);
+	//void SetPointLightActive(int32_t index, bool active);
+	//void SetPointLightPos(int32_t index, const Vector3 &lightPos);
+	//void SetPointLightColor(int32_t index, const Vector3 &lightColor);
+	//void SetPointLightAtten(int32_t index, const Vector3 &lightAtten);
 
-	void SetSpotLightActive(int32_t index, bool active);
-	void SetSpotLightDir(int32_t index, const XMVECTOR &lightDir);
-	void SetSpotLightPos(int32_t index, const Vector3 &lightPos);
-	void SetSpotLightColor(int32_t index, const Vector3 &lightColor);
-	void SetSpotLightAtten(int32_t index, const Vector3 &lightAtten);
-	void SetSpotLightFactorAngle(int32_t index, const Vector2 &lightFactorAngle);
+	//void SetSpotLightActive(int32_t index, bool active);
+	//void SetSpotLightDir(int32_t index, const XMVECTOR &lightDir);
+	//void SetSpotLightPos(int32_t index, const Vector3 &lightPos);
+	//void SetSpotLightColor(int32_t index, const Vector3 &lightColor);
+	//void SetSpotLightAtten(int32_t index, const Vector3 &lightAtten);
+	//void SetSpotLightFactorAngle(int32_t index, const Vector2 &lightFactorAngle);
 
-	void SetCircleShadowActive(int32_t index, bool active);
-	void SetCircleShadowCasterPos(int32_t index, const Vector3& casterPos);
-	void SetCircleShadowDir(int32_t index, const XMVECTOR& lightDir);
-	void SetCircleShadowDistanceCasterLight(int32_t index, float &distanceCasterLight);
-	void SetCircleShadowAtten(int32_t index, const Vector3& lightAtten);
-	void SetCircleShadowFactorAngle(int32_t index, const Vector2& lightFactorAngle);
+	//void SetCircleShadowActive(int32_t index, bool active);
+	//void SetCircleShadowCasterPos(int32_t index, const Vector3& casterPos);
+	//void SetCircleShadowDir(int32_t index, const XMVECTOR& lightDir);
+	//void SetCircleShadowDistanceCasterLight(int32_t index, float &distanceCasterLight);
+	//void SetCircleShadowAtten(int32_t index, const Vector3& lightAtten);
+	//void SetCircleShadowFactorAngle(int32_t index, const Vector2& lightFactorAngle);
 
 
 public: //定数

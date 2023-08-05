@@ -113,17 +113,22 @@ void GameScene::Update()
 	}
 
 	//光線方向初期値
-	static XMVECTOR lightDir = { 1,-1,-10,0 };
+	//static XMVECTOR lightDir = { 1,-1,-10,0 };
+	static Vector3 lightDir = { 1,-1,-10};
+	float lightDirUp = 0.0f;
+
 	static Vector3 color = { 1, 1, 1 };
 
 	lightGroup_->SetAmbientColor(color);
-	lightGroup_->SetDirLightDir(0, lightDir);
+	lightGroup_->SetDirLightDir(0, lightDir,lightDirUp);
 	lightGroup_->SetDirLightColor(0, Vector3(1, 1, 1));
 
 	{
 		//imguiからのライトパラメータを反映
 		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
-		lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0_.x, lightDir0_.y, lightDir0_.z, 0 }));
+		//lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0_.x, lightDir0_.y, lightDir0_.z, 0 }));
+		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x, lightDir0_.y, lightDir0_.z}), 0.0f);
+
 		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
 	}
 
@@ -154,16 +159,17 @@ void GameScene::Update()
 			const float md_acc = 0.001f;
 			acc.y = (float)rand() / RAND_MAX * md_acc;
 			//色を変化させる
-			XMFLOAT4 colorSpeed{};
+			//XMFLOAT4 colorSpeed{};
+			Vector3 colorSpeed{};
 			colorSpeed.x = 0.0f;
 			colorSpeed.y = 0.0f;
 			colorSpeed.z = 0.0f;
-			colorSpeed.w = 1.0f;
+			float colorAlpha = 1.0f;
 
 			//追加
 			if(particleManager_->GetIsMaxParticle() == false)
 			{
-				particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
+				particleManager_->Add(60, pos, vel, acc, colorSpeed, colorAlpha, 1.0f, 0.0f);
 			}
 		}
 	}
@@ -187,16 +193,16 @@ void GameScene::Update()
 		const float md_acc = 0.001f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 		//色を変化させる
-		XMFLOAT4 colorSpeed{};
+		Vector3 colorSpeed{};
 		colorSpeed.x = 0.0f;
 		colorSpeed.y = 0.0f;
 		colorSpeed.z = 0.0f;
-		colorSpeed.w = 1.0f;
+		float colorAlpha = 1.0f;
 
 		//追加
 		if(particleManager_->GetIsMaxParticle() == false)
 		{
-			particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
+			particleManager_->Add(60, pos, vel, acc, colorSpeed, colorAlpha, 1.0f, 0.0f);
 		}
 	}
 

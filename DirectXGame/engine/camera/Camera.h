@@ -6,7 +6,7 @@
 #include "DirectXBasic.h"
 #include <DirectXMath.h>
 #include <wrl.h>
-#include "Vector3.h"
+#include "MathUtillity.h"
 
 class Camera
 {
@@ -16,8 +16,8 @@ private:
 	//using XMFLOAT = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
 	//using Vector3 = DirectX::Vector3;
-	using XMMATRIX = DirectX::XMMATRIX;
-	using XMVECTOR = DirectX::XMVECTOR;
+	//using XMMATRIX = DirectX::XMMATRIX;
+	//using XMVECTOR = DirectX::XMVECTOR;
 
 public:
 
@@ -36,7 +36,9 @@ protected:
 	static DirectXBasic* directXBasic_;
 
 	//ビュー変換行列
-	XMMATRIX matView_;
+	//XMMATRIX matView_;
+	Matrix4 matView_;
+
 	//ビュー行列の設定項目
 	Vector3 eye_;		//視点座標
 	Vector3 target_;	//注視点座標
@@ -45,7 +47,7 @@ protected:
 	float angle_ = 0.0f;	//カメラの回転角
 
 	//射影行列
-	XMMATRIX matProjection_;
+	Matrix4 matProjection_;
 
 	//定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff_;
@@ -53,8 +55,10 @@ protected:
 public:
 
 	//ゲッター
-	const XMMATRIX& GetMatView() const { return matView_; }
-	const XMMATRIX& GetMatProjection() const { return matProjection_; }
+	const Matrix4& GetMatView() const { return matView_; }
+	//const XMMATRIX& GetMatProjection() const { return matProjection_; }
+	const Matrix4& GetMatProjection() const { return matProjection_; }
+
 	const Vector3& GetEye() const { return eye_; }
 
 };

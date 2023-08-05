@@ -4,6 +4,7 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
+using namespace MathUtillty;
 
 SpriteCommon* Sprite::spriteCommon_ = nullptr;
 DirectXBasic* Sprite::directXBasic_ = nullptr;
@@ -141,20 +142,29 @@ void Sprite::matUpdate()
 	vertBuff_->Unmap(0, nullptr);
 
 	//ワールド変換行列
-	XMMATRIX matWorld;
+	//XMMATRIX matWorld;
+	Matrix4 matWorld;
 
-	XMMATRIX matScale;	//スケーリング行列
-	matScale = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
-	//matScale = XMMatrixScaling(100.0f, 0.5f, 100.0f);
+	Matrix4 matScale;	//スケーリング行列
+	matScale = MatrixScale(scale_);
+	//XMMATRIX matScale;	//スケーリング行列
+	//matScale = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
+	//
 
-	XMMATRIX matRot;	//回転行列
-	matRot = XMMatrixIdentity();
-	matRot *= XMMatrixRotationZ((rotation_));	//Z軸周りに回転
+	Matrix4 matRot;	//回転行列
+	matRot = MatrixIdentity();
+	matRot *= MatrixRotateZ((rotation_));	//Z軸周りに回転
+	//XMMATRIX matRot;	//回転行列
+	//matRot = XMMatrixIdentity();
+	//matRot *= XMMatrixRotationZ((rotation_));	//Z軸周りに回転
 
-	XMMATRIX matTrans;	//平行移動行列
-	matTrans = XMMatrixTranslation(moveSpeed_.x, moveSpeed_.y, 0.0f);	//平行移動
-	
-	matWorld = XMMatrixIdentity();	//単位行列を代入して変形をリセット
+	Matrix4 matTrans;	//平行移動行列
+	matTrans = MatrixTranslate(Vector3(moveSpeed_.x,moveSpeed_.y, 0.0f));	//平行移動
+	//XMMATRIX matTrans;	//平行移動行列
+	//matTrans = XMMatrixTranslation(moveSpeed_.x, moveSpeed_.y, 0.0f);	//平行移動
+	//
+	//matWorld = XMMatrixIdentity();	//単位行列を代入して変形をリセット
+	matWorld = MatrixIdentity();	//単位行列を代入して変形をリセット
 	
 	matWorld *= matRot;		//ワールド行列に回転を反映
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映

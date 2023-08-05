@@ -6,8 +6,6 @@
 #include <array>
 #include "SpriteCommon.h"
 #include "Input.h"
-#include "Vector2.h"
-#include "Vector3.h"
 
 //スプライト
 class Sprite

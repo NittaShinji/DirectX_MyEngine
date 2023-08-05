@@ -31,7 +31,8 @@ void CollisionManager::CheckAllCollisions()
 			{
 				Sphere* SphereA = dynamic_cast<Sphere*>(colA);
 				Sphere* SphereB = dynamic_cast<Sphere*>(colB);
-				DirectX::XMVECTOR inter;
+				//DirectX::XMVECTOR inter;
+				Vector3 inter;
 
 				if(Collision::CheckSphere2Sphere(*SphereA, *SphereB, &inter))
 				{
@@ -43,7 +44,9 @@ void CollisionManager::CheckAllCollisions()
 			{
 				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
 				Sphere* sphere = dynamic_cast<Sphere*>(colB);
-				DirectX::XMVECTOR inter;
+				//DirectX::XMVECTOR inter;
+				Vector3 inter;
+
 				if(meshCollider->CheckCollisionSphere(*sphere, &inter))
 				{
 					colA->OnCollison(CollisionInfo(colB->GetObject3d(), colB, inter));
@@ -54,7 +57,9 @@ void CollisionManager::CheckAllCollisions()
 			{
 				MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colB);
 				Sphere* sphere = dynamic_cast<Sphere*>(colA);
-				DirectX::XMVECTOR inter;
+				//DirectX::XMVECTOR inter;
+				Vector3 inter;
+
 				if(meshCollider->CheckCollisionSphere(*sphere, &inter))
 				{
 					colA->OnCollison(CollisionInfo(colB->GetObject3d(), colB, inter));
@@ -139,7 +144,8 @@ bool CollisionManager::Raycast(const Ray& ray, unsigned short attribute, Raycast
 	//今まで最も近いコライダーの距離を記録する変数
 	float distance = maxDistance;
 	//今までで最も近いコライダーとの交点を記録する関数
-	XMVECTOR inter;
+	//XMVECTOR inter;
+	Vector3 inter;
 
 	//全てのコライダーと総当たりチェック
 	it = colliders.begin();
@@ -158,7 +164,9 @@ bool CollisionManager::Raycast(const Ray& ray, unsigned short attribute, Raycast
 		{
 			Sphere* sphere = dynamic_cast<Sphere*>(colA);
 			float tempDistance;
-			XMVECTOR tempInter;
+			//XMVECTOR tempInter;
+			Vector3 tempInter;
+
 			//当たらなければ除外
 			if(!Collision::CheckRay2Sphere(ray, *sphere, &tempDistance, &tempInter)) continue;
 			//距離が最小でなければ除外
@@ -173,7 +181,9 @@ bool CollisionManager::Raycast(const Ray& ray, unsigned short attribute, Raycast
 		{
 			MeshCollider* meshCollider = dynamic_cast<MeshCollider*>(colA);
 			float tempDistance;
-			DirectX::XMVECTOR tempInter;
+			//DirectX::XMVECTOR tempInter;
+			Vector3 tempInter;
+
 			if(!meshCollider->CheckCollisionRay(ray, &tempDistance, &tempInter)) continue;
 			if(tempDistance >= distance) continue;
 

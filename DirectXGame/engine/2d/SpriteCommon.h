@@ -8,6 +8,8 @@
 #include <DirectXTex.h>
 #include <DirectXMath.h>
 #include "DirectXBasic.h"
+#include "MathUtillity.h"
+
 using namespace DirectX;
  
 class SpriteCommon final
@@ -26,7 +28,8 @@ public:
 	};
 	struct ConstBufferDataTransform
 	{
-		XMMATRIX mat;	
+		//XMMATRIX mat;	
+		Matrix4 mat;
 	};
 
 public:

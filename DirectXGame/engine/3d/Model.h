@@ -10,16 +10,17 @@
 #include <map>
 #include <array>
 #include "Vector2.h"
+#include "Matrix4.h"
 
 class Model
 {
 
 private:
 
-	using XMFLOAT4 = DirectX::XMFLOAT4;
+	//using XMFLOAT4 = DirectX::XMFLOAT4;
 	//using Vector3 = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
-	using XMMATRIX = DirectX::XMMATRIX;
+	//using XMMATRIX = DirectX::XMMATRIX;
 
 public:
 
@@ -64,7 +65,9 @@ private:
 	//定数バッファ用データ構造体B0
 	struct ConstBufferDateB0
 	{
-		XMMATRIX mat;	//3D変換行列
+		//XMMATRIX mat;	//3D変換行列
+		Matrix4 mat;	//3D変換行列
+
 	};
 
 	//定数バッファ用データ構造体B1

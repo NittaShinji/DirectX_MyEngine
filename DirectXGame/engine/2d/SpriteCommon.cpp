@@ -60,12 +60,19 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 	constBuffTransform_ = CrateConstBuff<ConstBufferDataTransform, DirectXBasic>(constMapTransform_, directXBasic_);
 
 	//単位行列を代入
-	constMapTransform_->mat = XMMatrixIdentity();
-	constMapTransform_->mat.r[0].m128_f32[0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
-	constMapTransform_->mat.r[1].m128_f32[1] = -2.0f / directXBasic_->GetWinHeight();	//ウインドウ縦幅
+	//constMapTransform_->mat = XMMatrixIdentity();
+	constMapTransform_->mat = MatrixIdentity();
+
+	constMapTransform_->mat.m[0][0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
+	constMapTransform_->mat.m[1][1] = -2.0f / directXBasic_->GetWinHeight();	//ウインドウ縦幅
 	//画面半分の平行移動
-	constMapTransform_->mat.r[3].m128_f32[0] = -1.0f;
-	constMapTransform_->mat.r[3].m128_f32[1] = 1.0f;
+	constMapTransform_->mat.m[3][0] = -1.0f;
+	constMapTransform_->mat.m[3][1] = 1.0f;
+	//constMapTransform_->mat.r[0].m128_f32[0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
+	//constMapTransform_->mat.r[1].m128_f32[1] = -2.0f / directXBasic_->GetWinHeight();	//ウインドウ縦幅
+	////画面半分の平行移動
+	//constMapTransform_->mat.r[3].m128_f32[0] = -1.0f;
+	//constMapTransform_->mat.r[3].m128_f32[1] = 1.0f;
 
 	//デスクリプタヒープの設定
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};

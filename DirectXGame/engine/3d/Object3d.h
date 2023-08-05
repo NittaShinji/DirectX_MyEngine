@@ -23,16 +23,16 @@ private: //エイリアス
 	//using XMFLOAT = DirectX::Vector3;
 	//using Vector2 = DirectX::Vector2;
 	//using Vector3 = DirectX::Vector3;
-	using XMMATRIX = DirectX::XMMATRIX;
+	//using XMMATRIX = DirectX::XMMATRIX;
 
 public:
 
 	//定数バッファ用データ構造体(座標系)b0
 	struct ConstBufferDateTransform
 	{
-		XMMATRIX viewProjection;
+		Matrix4 viewProjection;
 		//ワールド行列
-		XMMATRIX worldMatrix;
+		Matrix4 worldMatrix;
 		//カメラ座標(ワールド行列)
 		Vector3 cameraPos;
 		float pad1;
@@ -113,15 +113,19 @@ protected:	//メンバ変数
 	//平行移動
 	Vector3 transform_;
 
-	XMMATRIX matScale_, matRot_, matTrans_;
+	Matrix4 matScale_, matRot_, matTrans_;
 
 	//ワールド変換行列
-	XMMATRIX matWorld_;
+	Matrix4 matWorld_;
 
 	//ビュー行列
-	XMMATRIX matView_;
+	//XMMATRIX matView_;
+	Matrix4 matView_;
+
 	//射影行列
-	XMMATRIX matProjection_;
+	//XMMATRIX matProjection_;
+	Matrix4 matProjection_;
+
 	//カメラ座標
 	Vector3 cameraPos_;
 
@@ -166,7 +170,7 @@ public:
 	/// ワールド行列の取得
 	/// </summary>
 	/// <returns>ワールド行列</returns>
-	const XMMATRIX& GetMatWorld() { return matWorld_; }
+	const Matrix4& GetMatWorld() { return matWorld_; }
 
 	//モデルを取得
 	//const Model& GetModel() { return model_; }
@@ -179,9 +183,9 @@ public:
 	void SetRotation(const Vector3& rotate) { rotation_ = rotate; };
 	void SetScale(const Vector3& scale) { scale_ = scale; }
 
-	void SetMatTrans(const XMMATRIX& matTrans) { matTrans_ = matTrans; }
-	void SetMatRot(const XMMATRIX& matRot) { matRot_ = matRot; }
-	void SetMatScale(const XMMATRIX& matScale) { matScale_ = matScale; }
+	void SetMatTrans(const Matrix4& matTrans) { matTrans_ = matTrans; }
+	void SetMatRot(const Matrix4& matRot) { matRot_ = matRot; }
+	void SetMatScale(const Matrix4& matScale) { matScale_ = matScale; }
 
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 	void SetColor(Vector3 color) { color_ = color; }

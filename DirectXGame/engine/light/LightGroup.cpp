@@ -177,10 +177,12 @@ void LightGroup::SetDirLightActive(int32_t index, bool active)
 	dirLights_[index].SetActive(active);
 }
 
-void LightGroup::SetDirLightDir(int32_t index, const XMVECTOR &lightDir)
+//void LightGroup::SetDirLightDir(int32_t index, const XMVECTOR &lightDir)
+void LightGroup::SetDirLightDir(int32_t index, const Vector3&lightDir,const float upVec)
+
 {
 	assert(0 <= index && index < kDirLightNum_);
-	dirLights_[index].SetLightDir(lightDir);
+	dirLights_[index].SetLightDir(lightDir,upVec);
 	dirty_ = true;
 }
 
@@ -195,15 +197,15 @@ void LightGroup::DefaultLightSetting()
 {
 	dirLights_[0].SetActive(true);
 	dirLights_[0].SetLightColor({1.0f,1.0f,1.0f});
-	dirLights_[0].SetLightDir({0.0f,-1.0f,0.0f,0});
+	dirLights_[0].SetLightDir(Vector3{ 0.0f,-1.0f,0.0f }, 0.0f);
 
 	dirLights_[1].SetActive(true);
 	dirLights_[1].SetLightColor({1.0f,1.0f,1.0f});
-	dirLights_[1].SetLightDir({0.5f,0.1f,0.2f,0});
+	dirLights_[1].SetLightDir(Vector3{0.5f,0.1f,0.2f},0.0f);
 
 	dirLights_[2].SetActive(true);
 	dirLights_[2].SetLightColor({1.0f,1.0f,1.0f});
-	dirLights_[2].SetLightDir({ -0.5f,0.1f,-0.2f,0});	
+	dirLights_[2].SetLightDir(Vector3{-0.5f,0.1f,-0.2f},0.0f);
 }
 
 //void LightGroup::SetPointLightActive(int32_t index, bool active)

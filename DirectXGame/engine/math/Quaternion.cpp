@@ -170,7 +170,7 @@ Matrix4 Quaternion::MakeRotateMatrix()
 {
 	Matrix4 resultMat{ };
 
-	resultMat = identity();
+	resultMat = MatrixIdentity();
 
 	resultMat.m[0][0] = float(pow(this->w, 2) + pow(this->x, 2) - pow(this->y, 2) - pow(this->z, 2));
 	resultMat.m[0][1] = 2 * ((this->x * this->y) + (this->w * this->z));

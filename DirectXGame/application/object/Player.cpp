@@ -40,7 +40,9 @@ void Player::Initialize()
 
 	//コライダーの追加
 	float radius = 1.0f;
-	playerCollider_ = std::make_unique<SphereCollider>(XMVECTOR({ 0,0,0,0 }), radius);
+	//playerCollider_ = std::make_unique<SphereCollider>(XMVECTOR({ 0,0,0,0 }), radius);
+	playerCollider_ = std::make_unique<SphereCollider>(Vector3({ 0,0,0}), radius);
+
 
 	//コライダーの登録
 	SetCollider(playerCollider_.get());
@@ -113,11 +115,11 @@ void Player::Update(Camera* camera)
 		const float fallAcc = -0.015f;
 		const float fallVYMin = -0.5f;
 		//加速
-		fallVec_.m128_f32[1] = max(fallVec_.m128_f32[1] + fallAcc, fallVYMin);
+		fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
 		//移動
-		position_.x += fallVec_.m128_f32[0];
-		position_.y += fallVec_.m128_f32[1];
-		position_.z += fallVec_.m128_f32[2];
+		position_.x += fallVec_.x;
+		position_.y += fallVec_.y;
+		position_.z += fallVec_.z;
 
 		if(jumpCount > 0)
 		{
@@ -127,7 +129,7 @@ void Player::Update(Camera* camera)
 				Sound::GetInstance()->PlaySoundWave("jump.wav");
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
-				fallVec_ = { 0,jumpVYFist,0,0 };
+				fallVec_ = { 0,jumpVYFist,0};
 				jumpCount -= 1;
 			}
 			/*if(keys_->PushedKeyMoment(DIK_SPACE))
@@ -153,7 +155,7 @@ void Player::Update(Camera* camera)
 		gamePad_->ResetButton();
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
-		fallVec_ = { 0,jumpVYFist,0,0 };
+		fallVec_ = { 0,jumpVYFist,0};
 		jumpCount -= 1;
 	}
 
@@ -167,8 +169,8 @@ void Player::Update(Camera* camera)
 	//球の上端から球の下端までのレイキャスト用レイを準備
 	Ray ray;
 	ray.start = sphereCollider->center;
-	ray.start.m128_f32[1] += sphereCollider->GetRadius();
-	ray.dir = { 0,-1,0,0 };
+	ray.start.y += sphereCollider->GetRadius();
+	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
 	//接地状態
@@ -193,7 +195,7 @@ void Player::Update(Camera* camera)
 		}
 	}
 	//落下状態
-	else if(fallVec_.m128_f32[1] <= 0.0f)
+	else if(fallVec_.x <= 0.0f)
 	{
 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 		{

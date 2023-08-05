@@ -2,6 +2,7 @@
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
 #include <DirectXMath.h>
+#include "Matrix4.h"
 
 //メッシュ衝突判定オブジェクト
 class MeshCollider : public BaseCollider
@@ -32,7 +33,9 @@ public:
 	/// <param name="sphere">球</param>
 	/// <param name="inter">交点(出力用)</param>
 	/// <returns>交差している否か</returns>
-	bool CheckCollisionSphere(const Sphere& sphere, DirectX::XMVECTOR* inter = nullptr);
+	//bool CheckCollisionSphere(const Sphere& sphere, DirectX::XMVECTOR* inter = nullptr);
+	bool CheckCollisionSphere(const Sphere& sphere, Vector3* inter = nullptr);
+
 
 	/// <summary>
 	/// レイとの当たり判定
@@ -41,13 +44,17 @@ public:
 	/// <param name="distance">距離</param>
 	/// <param name="inter">交点(出力用)</param>
 	/// <returns>交差しているか否か</returns>
-	bool CheckCollisionRay(const Ray& ray, float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
+	//bool CheckCollisionRay(const Ray& ray, float* distance = nullptr, DirectX::XMVECTOR* inter = nullptr);
+	bool CheckCollisionRay(const Ray& ray, float* distance = nullptr, Vector3* inter = nullptr);
+
 
 private:
 
 	std::vector<Triangle> triangles;
 	//ワールド行列の逆行列
-	DirectX::XMMATRIX invMatWorld;
+	//DirectX::XMMATRIX invMatWorld;
+	Matrix4 invMatWorld_;
+
 
 };
 

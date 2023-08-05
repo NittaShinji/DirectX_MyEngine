@@ -13,8 +13,8 @@ struct LevelData
 	struct objectDate
 	{
 		/*XMMATRIX translation;
-		XMMATRIX rotation;
-		XMMATRIX scaling;*/
+		//XMMATRIX rotation;
+		//XMMATRIX scaling;*/
 
 		Vector3 translation;
 		Vector3 rotation;
@@ -36,9 +36,9 @@ private: //エイリアス
 	//DirectX::を省略
 	//using Vector2 = DirectX::Vector2;
 	//using Vector3 = DirectX::Vector3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMVECTOR = DirectX::XMVECTOR;
-	using XMMATRIX = DirectX::XMMATRIX;
+	//using XMFLOAT4 = DirectX::XMFLOAT4;
+	//using XMVECTOR = DirectX::XMVECTOR;
+	//using XMMATRIX = DirectX::XMMATRIX;
 
 public:
 

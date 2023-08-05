@@ -340,18 +340,18 @@ void Object3d::Update(Camera* camera)
 	Vector3 move = { 0,0,0 };
 
 	//スケール、回転、平行移動の計算
-	matScale_ = XMMatrixIdentity();
-	matScale_ = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
-	matRot_ = XMMatrixIdentity();
+	matScale_ = MatrixIdentity();
+	matScale_ = MatrixScale(scale_);
+	matRot_ = MatrixIdentity();
 
-	matRot_ *= XMMatrixRotationZ(rotation_.z);
-	matRot_ *= XMMatrixRotationX(rotation_.x);
-	matRot_ *= XMMatrixRotationY(rotation_.y);
+	matRot_ *= MatrixRotateZ(rotation_.z);
+	matRot_ *= MatrixRotateX(rotation_.x);
+	matRot_ *= MatrixRotateY(rotation_.y);
 
-	matTrans_ = XMMatrixIdentity();
-	matTrans_ = XMMatrixTranslation(transform_.x, transform_.y, transform_.z);
+	matTrans_ = MatrixIdentity();
+	matTrans_ = MatrixTranslate(transform_);
 
-	matWorld_ = XMMatrixIdentity();
+	matWorld_ = MatrixIdentity();
 	matWorld_ *= matScale_;
 	matWorld_ *= matRot_;
 	matWorld_ *= matTrans_;
@@ -458,9 +458,9 @@ Vector3 Object3d::GetWorldPos() const
 	Vector3 resutVec = { 0,0,0 };
 
 	//ワールド行列の平行移動成分を取得(ワールド座標)
-	resutVec.x = matWorld_.r[3].m128_f32[0];
-	resutVec.y = matWorld_.r[3].m128_f32[1];
-	resutVec.z = matWorld_.r[3].m128_f32[2];
+	resutVec.x = matWorld_.m[3][0];
+	resutVec.y = matWorld_.m[3][1];
+	resutVec.z = matWorld_.m[3][2];
 
 	return resutVec;
 }

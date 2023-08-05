@@ -2,7 +2,6 @@
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <string.h>
-#include <vector>
 #include <cassert>
 
 #pragma comment(lib, "d3dcompiler.lib")
@@ -79,15 +78,6 @@ ComPtr<ID3D12Resource> ParticleManager::CrateConstBuff(Type1* device)
 	return constBuff_;
 }
 
-//Vector3同士の加算処理
-const Vector3 operator+(const Vector3& lhs, const Vector3& rhs)
-{
-	Vector3 result;
-	result.x = lhs.x + rhs.x;
-	result.y = lhs.y + rhs.y;
-	result.z = lhs.z + rhs.z;
-	return result;
-};
 
 void ParticleManager::StaticInitialize(ID3D12Device* device)
 {
@@ -175,7 +165,7 @@ void ParticleManager::Update(Camera* camera)
 			vertMap->color.x = it->color.x;
 			vertMap->color.y = it->color.y;
 			vertMap->color.z = it->color.z;
-			vertMap->color.w = it->color.w;
+			//vertMap->color.w = it->color.w;
 
 			//次の頂点へ
 			vertMap++;
@@ -231,7 +221,9 @@ std::unique_ptr<ParticleManager> ParticleManager::Create()
 	return instance;
 }
 
-void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, XMFLOAT4 colorSpeed, float start_scale, float end_scale)
+//void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, XMFLOAT4 colorSpeed, float start_scale, float end_scale)
+void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector3 colorSpeed, float alphaSpeed,float start_scale, float end_scale)
+
 {
 	int32_t isMaxParticle = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)

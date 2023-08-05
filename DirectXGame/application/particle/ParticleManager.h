@@ -1,12 +1,11 @@
 ﻿#pragma once
-#include "Object3D.h"
 #include "Camera.h"
 #include <forward_list>
-#include <vector>
 
 /// <summary>
 /// 3Dオブジェクト
 /// </summary>
+ 
 class ParticleManager 
 {
 private: // エイリアス
@@ -15,8 +14,8 @@ private: // エイリアス
 	// DirectX::を省略
 	//using Vector2 = DirectX::Vector2;
 	//using Vector3 = DirectX::Vector3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMMATRIX = DirectX::XMMATRIX;
+	//using XMFLOAT4 = DirectX::XMFLOAT4;
+	//using XMMATRIX = DirectX::XMMATRIX;
 
 public: // サブクラス
 	
@@ -25,13 +24,13 @@ public: // サブクラス
 	{
 		Vector3 pos;		// xyz座標
 		float scale;		// 大きさ
-		XMFLOAT4 color;		// 色
+		Vector3 color;		// 色
 	};
 
 	// 定数バッファ用データ構造体
 	struct ConstBufferData
 	{
-		XMMATRIX viewProjection;	// ３Ｄ変換行列
+		Matrix4 viewProjection;	// ３Ｄ変換行列
 	};
 
 	struct Particle
@@ -55,9 +54,15 @@ public: // サブクラス
 		//終了フレーム
 		int num_frame = 0;
 
-		XMFLOAT4 color = { 1,1,1,1 };
+		Vector3 color = { 1,1,1};
+		float colorAlpha = 1.0f;
 
-		XMFLOAT4 colorSpeed = { 0.01f,0.0f,0.0f,1.0f };
+		Vector3 colorSpeed = { 0.01f,0.0f,0.0f};
+		float alphaSpeed = 1.0f;
+		/*XMFLOAT4 color = { 1,1,1,1 };
+
+		XMFLOAT4 colorSpeed = { 0.01f,0.0f,0.0f,1.0f };*/
+
 
 	};
 
@@ -126,7 +131,7 @@ public: // メンバ関数
 	void CreateModel();
 
 
-	void Add(int life,Vector3 position, Vector3 velocity, Vector3 accel, XMFLOAT4 colorSpeed,float start_scale, float end_scale);
+	void Add(int life,Vector3 position, Vector3 velocity, Vector3 accel, Vector3 colorSpeed, float alphaSpeed,float start_scale, float end_scale);
 
 	//static void LoadTexture();
 	static void LoadTexture(const std::string& fileName);
@@ -160,9 +165,12 @@ private: // メンバ変数
 	//ジオメトリシェーダーオブジェクト
 	
 	// ビュー行列
-	XMMATRIX matView_;
+	//XMMATRIX matView_;
+	Matrix4 matView_;
 	// 射影行列
-	XMMATRIX matProjection_;
+	//XMMATRIX matProjection_;
+	Matrix4 matProjection_;
+	
 
 	// テクスチャバッファ
 	static ComPtr<ID3D12Resource> texbuff_;

@@ -1,5 +1,6 @@
 #include "PostEffect.h"
 #include "WindowsAPI.h"
+#include "Matrix4.h"
 #include <d3dx12.h>
 #include <d3dcompiler.h>
 #pragma comment(lib,"d3dcompiler.lib")
@@ -273,7 +274,9 @@ void PostEffect::Draw(const std::string& fileName)
 	HRESULT result = this->constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform);
 	if(SUCCEEDED(result))
 	{
-		constMapTransform->mat = XMMatrixIdentity();
+		//constMapTransform->mat = XMMatrixIdentity();
+		constMapTransform->mat = MatrixIdentity();
+		
 		this->constBuffTransform_->Unmap(0, nullptr);
 	}
 	
