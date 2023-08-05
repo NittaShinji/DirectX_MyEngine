@@ -30,5 +30,6 @@ namespace MathUtillty
 	Vector3 Vector3TransformCoord(const Vector3& v, const Matrix4& m);
 	// ƒxƒNƒgƒ‹•ÏŠ·
 	Vector3 Vector3TransformNormal(const Vector3& v, const Matrix4& m);
+	Matrix4 Matrix4Orthographic(float viewLeft, float viewRight, float viewBottom, float viewTop, float nearZ, float farZ);
 
 }

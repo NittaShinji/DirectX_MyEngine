@@ -94,6 +94,7 @@
   <ItemGroup>
     <ClCompile Include="DirectXGame\application\scene\ClearScene.cpp" />
     <ClCompile Include="DirectXGame\application\particle\ParticleManager.cpp" />
+    <ClCompile Include="DirectXGame\engine\math\Easing.cpp" />
     <ClCompile Include="DirectXGame\engine\math\Matrix4.cpp" />
     <ClCompile Include="DirectXGame\engine\math\Quaternion.cpp" />
     <ClCompile Include="DirectXGame\engine\math\Vector2.cpp" />
@@ -139,6 +140,7 @@
     <ClInclude Include="DirectXGame\application\scene\ClearScene.h" />
     <ClInclude Include="DirectXGame\application\object\ObjectAttribute.h" />
     <ClInclude Include="DirectXGame\application\particle\ParticleManager.h" />
+    <ClInclude Include="DirectXGame\engine\math\Easing.h" />
     <ClInclude Include="DirectXGame\engine\math\Matrix4.h" />
     <ClInclude Include="DirectXGame\engine\math\Quaternion.h" />
     <ClInclude Include="DirectXGame\engine\math\Vector2.h" />

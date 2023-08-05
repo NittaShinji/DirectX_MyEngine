@@ -1,4 +1,6 @@
 #include "MathUtillity.h"
+#include <cmath>
+#include <cassert>
 
 float MathUtillty::ToDegree(float radian)
 {
@@ -78,4 +80,25 @@ Vector3 MathUtillty::Vector3TransformNormal(const Vector3& v, const Matrix4& m)
 	  v.x * m.m[0][2] + v.y * m.m[1][2] + v.z * m.m[2][2] };
 
 	return result;
+}
+
+Matrix4 MathUtillty::Matrix4Orthographic(float viewLeft, float viewRight, float viewBottom, float viewTop, float nearZ, float farZ)
+{
+	assert(fabsf(viewRight - viewLeft) > 0.00001f);
+	assert(fabsf(viewTop - viewBottom) > 0.00001f);
+	assert(fabsf(farZ - nearZ) > 0.00001f);
+
+	float width = 1.0f / (viewRight - viewLeft);
+	float height = 1.0f / (viewTop - viewBottom);
+	float fRange = 1.0f / (farZ - nearZ);
+	float sx = width * 2.0f;
+	float sy = height * 2.0f;
+	float sz = fRange;
+	float tx = -(viewLeft + viewRight) * width;
+	float ty = -(viewTop + viewBottom) * height;
+	float tz = -fRange * nearZ;
+
+	Matrix4 m{ sx, 0.0f, 0.0f, 0.0f, 0.0f, sy, 0.0f, 0.0f, 0.0f, 0.0f, sz, 0.0f, tx, ty, tz, 1.0f };
+
+	return m;
 }
