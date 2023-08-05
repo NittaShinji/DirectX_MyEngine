@@ -13,18 +13,12 @@ private: //エイリアステンプレート
 	//Microsoft::WRL::を省略
 	template<class T>using Comptr = Microsoft::WRL::ComPtr<T>;
 	//DirectXを省略
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMFLOAT4 = DirectX::XMFLOAT4;
-	//using XMVECTOR = DirectX::XMVECTOR;
-	//using XMMATRIX = DirectX::XMMATRIX;
 
 public: //サブクラス
 
 	//定数バッファ用データ構造体
 	struct  ConstBufferData
 	{
-		//XMVECTOR lightv;		//ライトへ方向を表すベクトル
 		Vector3 lightv;		//ライトへ方向を表すベクトル
 		float pad1;
 		Vector3 lightColor;	//ライトの色
@@ -34,16 +28,12 @@ public: //サブクラス
 public: //アクセッサ
 
 	//ライト方向をセット
-	//void SetLightDir(const XMVECTOR& lightDir) 
 	void SetLightDir(const Vector3& lightDir,const float upVec)
 	{
 		//正規化してセット
 		this->lightDir_ = Vector3Normalize(lightDir);
 		this->upVec_ = upVec_;
 		dirty_ = true;
-		/*this->lightDir_ = DirectX::XMVector3Normalize(lightDir);
-		dirty_ = true;*/
-
 	}
 
 	//ライト色のセット
@@ -53,7 +43,6 @@ public: //アクセッサ
 		dirty_ = true;
 	}
 
-	//XMVECTOR GetLightDir() { return lightDir_; };
 	Vector3 GetLightDir() { return lightDir_; };
 	float GetUpVec() { return upVec_; }
 
@@ -76,7 +65,6 @@ private: //メンバ変数
 	//定数バッファ
 	Comptr<ID3D12Resource> constBuff_;
 	//ライト光線方向(単位ベクトル)
-	//XMVECTOR lightDir_ = { 1,0,0,0};
 	Vector3 lightDir_ = {1,0,0};
 	float upVec_ = 0.0f;
 	//ライト色

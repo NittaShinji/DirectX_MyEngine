@@ -8,14 +8,6 @@
 
 class Player : public Object3d
 {
-private:
-
-	//nameSpace
-	//using XMFLOAT = DirectX::Vector3;
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMMATRIX = DirectX::XMMATRIX;
-
 public:
 
 	static std::unique_ptr<Player> Create(const std::string& path);
@@ -41,7 +33,6 @@ private:
 	std::unique_ptr<Object3d> object_;
 
 	Vector3 position_ = { 0,2,0 };
-	//XMMATRIX position_ = { 0,2,0 };
 	Vector3 rotation_ = { 0,0,0 };
 	Vector3 scale_ = { 1,1,1 };
 
@@ -88,7 +79,6 @@ private:
 	bool isDead_ = false;
 
 	//—Ž‰ºƒxƒNƒgƒ‹
-	//DirectX::XMVECTOR fallVec_;
 	Vector3 fallVec_;
 
 

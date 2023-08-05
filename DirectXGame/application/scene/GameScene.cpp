@@ -115,7 +115,6 @@ void GameScene::Update()
 	}
 
 	//光線方向初期値
-	//static XMVECTOR lightDir = { 1,-1,-10,0 };
 	static Vector3 lightDir = { 1,-1,-10};
 	float lightDirUp = 0.0f;
 
@@ -128,7 +127,6 @@ void GameScene::Update()
 	{
 		//imguiからのライトパラメータを反映
 		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
-		//lightGroup_->SetDirLightDir(0, XMVECTOR({ lightDir0_.x, lightDir0_.y, lightDir0_.z, 0 }));
 		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x, lightDir0_.y, lightDir0_.z}), 0.0f);
 
 		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
@@ -264,5 +262,5 @@ void GameScene::Draw()
 	player_->Draw();
 
 	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
-	particleManager_->Draw();
+	//particleManager_->Draw();
 }

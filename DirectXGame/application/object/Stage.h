@@ -8,14 +8,6 @@ class Player;
 
 class Stage : public TouchableObject
 {
-private:
-
-	//nameSpace
-	//using XMFLOAT = DirectX::Vector3;
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMMATRIX = DirectX::XMMATRIX;
-
 public:
 
 	void Initialize();

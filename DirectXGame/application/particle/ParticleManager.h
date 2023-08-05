@@ -11,11 +11,6 @@ class ParticleManager
 private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// DirectX::を省略
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMFLOAT4 = DirectX::XMFLOAT4;
-	//using XMMATRIX = DirectX::XMMATRIX;
 
 public: // サブクラス
 	
@@ -59,11 +54,6 @@ public: // サブクラス
 
 		Vector3 colorSpeed = { 0.01f,0.0f,0.0f};
 		float alphaSpeed = 1.0f;
-		/*XMFLOAT4 color = { 1,1,1,1 };
-
-		XMFLOAT4 colorSpeed = { 0.01f,0.0f,0.0f,1.0f };*/
-
-
 	};
 
 private: // 定数
@@ -72,8 +62,6 @@ private: // 定数
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
 	static const int vertexCount = 1024;		// 頂点数
-	//static const int indexCount = 3*2;		// インデックス数
-
 
 public: // 静的メンバ関数
 	/// <summary>
@@ -87,9 +75,9 @@ public: // 静的メンバ関数
 private: // 静的メンバ変数
 
 	//ビルボード行列
-	//static XMMATRIX matBillboard;
+	//static Matrix4 matBillboard;
 	//Y軸周りビルボード行列
-	//static XMMATRIX matBillboardY;
+	//static Matrix4 matBillboardY;
 
 private:// 静的メンバ関数
 
@@ -165,10 +153,8 @@ private: // メンバ変数
 	//ジオメトリシェーダーオブジェクト
 	
 	// ビュー行列
-	//XMMATRIX matView_;
 	Matrix4 matView_;
 	// 射影行列
-	//XMMATRIX matProjection_;
 	Matrix4 matProjection_;
 	
 
@@ -178,8 +164,6 @@ private: // メンバ変数
 	static ComPtr<ID3D12Resource> vertBuff_;
 	//頂点データ配列
 	static std::vector<Vertex> vertices_;
-	//static std::forward_list<Vertex> vertices_;
-
 
 	// デスクリプタヒープ
 	static ComPtr<ID3D12DescriptorHeap> descHeap_;
@@ -211,7 +195,6 @@ private: // メンバ変数
 	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
 
 	//パーティクル配列
-	//std::forward_list<Particle> particles_;
 	std::forward_list<Particle> particles_;
 
 	//最大限生成しているかどうか

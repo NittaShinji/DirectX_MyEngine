@@ -1,9 +1,13 @@
 #pragma once
 #include "Sprite.h"
 
-class PostEffect :
-    public Sprite
+class PostEffect : public Sprite
 {
+private:
+
+    //エイリアステンプレート
+    template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 public:
 
     /// <summary>

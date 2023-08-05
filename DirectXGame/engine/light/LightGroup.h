@@ -17,13 +17,6 @@ private: //エイリアス
 
 	//Microsoft::WRL::を省略
 	template <class T> using Comptr = Microsoft::WRL::ComPtr<T>;
-	//DirectX::を省略
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMFLOAT4 = DirectX::XMFLOAT4;
-	//using XMVECTOR = DirectX::XMVECTOR;
-	//using XMMATRIX = DirectX::XMMATRIX;
-
 
 public: //静的メンバ変数
 
@@ -80,7 +73,6 @@ public: //メンバ関数
 	/// </summary>
 	/// <param name="index">ライト番号</param>
 	/// <param name="lightDir">ライト方向</param>
-	//void SetDirLightDir(int32_t index, const XMVECTOR&lightDir);
 	void SetDirLightDir(int32_t index, const Vector3&lightDir, const float upVec);
 
 
@@ -96,26 +88,6 @@ public: //メンバ関数
 	/// 標準のライトの設定
 	/// </summary>
 	void DefaultLightSetting();
-
-	//void SetPointLightActive(int32_t index, bool active);
-	//void SetPointLightPos(int32_t index, const Vector3 &lightPos);
-	//void SetPointLightColor(int32_t index, const Vector3 &lightColor);
-	//void SetPointLightAtten(int32_t index, const Vector3 &lightAtten);
-
-	//void SetSpotLightActive(int32_t index, bool active);
-	//void SetSpotLightDir(int32_t index, const XMVECTOR &lightDir);
-	//void SetSpotLightPos(int32_t index, const Vector3 &lightPos);
-	//void SetSpotLightColor(int32_t index, const Vector3 &lightColor);
-	//void SetSpotLightAtten(int32_t index, const Vector3 &lightAtten);
-	//void SetSpotLightFactorAngle(int32_t index, const Vector2 &lightFactorAngle);
-
-	//void SetCircleShadowActive(int32_t index, bool active);
-	//void SetCircleShadowCasterPos(int32_t index, const Vector3& casterPos);
-	//void SetCircleShadowDir(int32_t index, const XMVECTOR& lightDir);
-	//void SetCircleShadowDistanceCasterLight(int32_t index, float &distanceCasterLight);
-	//void SetCircleShadowAtten(int32_t index, const Vector3& lightAtten);
-	//void SetCircleShadowFactorAngle(int32_t index, const Vector2& lightFactorAngle);
-
 
 public: //定数
 	//ライトの数
@@ -138,12 +110,6 @@ public: //サブクラス
 		float pad1;
 		//平行光源用
 		DirectionalLight::ConstBufferData dirLights[kDirLightNum_];
-		//点光源用
-		//PointLight::ConstBufferData pointLights[PointLightNum];
-		////スポットライト用
-		//SpotLight::ConstBufferData spotLights[SpotLightNum];
-		////丸影用
-		//CircleShadow::ConstBufferData circleShadows[CircleShadowNum];
 	};
 
 
@@ -160,12 +126,6 @@ private: //メンバ変数
 	Vector3 ambientColor_ = { 1,1,1};
 	//平行光源の配列
 	DirectionalLight dirLights_[kDirLightNum_];
-	//点光源の配列
-	//PointLight pointLights[PointLightNum];
-	////スポットライト配列
-	//SpotLight spotLights[SpotLightNum];
-	////丸影の配列
-	//CircleShadow circleShadows[CircleShadowNum];
 	//ダーティフラグ
 	bool dirty_ = false;
 

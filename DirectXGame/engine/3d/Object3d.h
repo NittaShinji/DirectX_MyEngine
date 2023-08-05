@@ -18,13 +18,6 @@ private: //エイリアス
 
 	//テンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	//nameSpace
-	//using XMFLOAT = DirectX::Vector3;
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMMATRIX = DirectX::XMMATRIX;
-
 public:
 
 	//定数バッファ用データ構造体(座標系)b0
@@ -119,11 +112,9 @@ protected:	//メンバ変数
 	Matrix4 matWorld_;
 
 	//ビュー行列
-	//XMMATRIX matView_;
 	Matrix4 matView_;
 
 	//射影行列
-	//XMMATRIX matProjection_;
 	Matrix4 matProjection_;
 
 	//カメラ座標

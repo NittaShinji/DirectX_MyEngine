@@ -274,7 +274,6 @@ void PostEffect::Draw(const std::string& fileName)
 	HRESULT result = this->constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform);
 	if(SUCCEEDED(result))
 	{
-		//constMapTransform->mat = XMMatrixIdentity();
 		constMapTransform->mat = MatrixIdentity();
 		
 		this->constBuffTransform_->Unmap(0, nullptr);

@@ -12,10 +12,6 @@ struct LevelData
 	//オブジェクト
 	struct objectDate
 	{
-		/*XMMATRIX translation;
-		//XMMATRIX rotation;
-		//XMMATRIX scaling;*/
-
 		Vector3 translation;
 		Vector3 rotation;
 		Vector3 scaling;
@@ -33,12 +29,6 @@ private: //エイリアス
 
 	//Microsoft::WRL::を省略
 	template <class T> using Comptr = Microsoft::WRL::ComPtr<T>;
-	//DirectX::を省略
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMFLOAT4 = DirectX::XMFLOAT4;
-	//using XMVECTOR = DirectX::XMVECTOR;
-	//using XMMATRIX = DirectX::XMMATRIX;
 
 public:
 

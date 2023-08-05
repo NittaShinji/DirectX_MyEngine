@@ -40,7 +40,6 @@ void Player::Initialize()
 
 	//コライダーの追加
 	float radius = 1.0f;
-	//playerCollider_ = std::make_unique<SphereCollider>(XMVECTOR({ 0,0,0,0 }), radius);
 	playerCollider_ = std::make_unique<SphereCollider>(Vector3({ 0,0,0}), radius);
 
 

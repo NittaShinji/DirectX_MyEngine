@@ -14,14 +14,6 @@
 
 class Model
 {
-
-private:
-
-	//using XMFLOAT4 = DirectX::XMFLOAT4;
-	//using Vector3 = DirectX::Vector3;
-	//using Vector2 = DirectX::Vector2;
-	//using XMMATRIX = DirectX::XMMATRIX;
-
 public:
 
 	static void Load(const std::string& path);
@@ -65,7 +57,6 @@ private:
 	//定数バッファ用データ構造体B0
 	struct ConstBufferDateB0
 	{
-		//XMMATRIX mat;	//3D変換行列
 		Matrix4 mat;	//3D変換行列
 
 	};

@@ -28,7 +28,6 @@ public:
 	};
 	struct ConstBufferDataTransform
 	{
-		//XMMATRIX mat;	
 		Matrix4 mat;
 	};
 

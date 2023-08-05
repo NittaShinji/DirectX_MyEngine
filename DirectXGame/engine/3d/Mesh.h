@@ -13,13 +13,6 @@ private:
 
 	//エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-	//DirectXを省略
-	//using XMFLOAT4 = DirectX::XMFLOAT4;
-	//using Vector3 = DirectX::Vector3;
-	//using Vector2 = DirectX::Vector2;
-	//using XMMATRIX = DirectX::XMMATRIX;
-
 public:
 
 	//頂点情報

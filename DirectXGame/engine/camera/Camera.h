@@ -10,15 +10,6 @@
 
 class Camera
 {
-private:
-
-	//DirectXを省略
-	//using XMFLOAT = DirectX::Vector3;
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMMATRIX = DirectX::XMMATRIX;
-	//using XMVECTOR = DirectX::XMVECTOR;
-
 public:
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
@@ -36,7 +27,6 @@ protected:
 	static DirectXBasic* directXBasic_;
 
 	//ビュー変換行列
-	//XMMATRIX matView_;
 	Matrix4 matView_;
 
 	//ビュー行列の設定項目
@@ -56,7 +46,6 @@ public:
 
 	//ゲッター
 	const Matrix4& GetMatView() const { return matView_; }
-	//const XMMATRIX& GetMatProjection() const { return matProjection_; }
 	const Matrix4& GetMatProjection() const { return matProjection_; }
 
 	const Vector3& GetEye() const { return eye_; }

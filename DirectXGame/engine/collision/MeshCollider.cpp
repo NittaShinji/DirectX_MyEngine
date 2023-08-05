@@ -37,10 +37,6 @@ void MeshCollider::ConstructTriangles(Model* model)
 			tri.p0_ = { vertices[idx0].pos.x, vertices[idx0].pos.y, vertices[idx0].pos.z, };
 			tri.p1_ = { vertices[idx1].pos.x, vertices[idx1].pos.y, vertices[idx1].pos.z, };
 			tri.p2_ = { vertices[idx2].pos.x, vertices[idx2].pos.y, vertices[idx2].pos.z, };
-
-			/*tri.p0_ = { vertices[idx0].pos.x, vertices[idx0].pos.y, vertices[idx0].pos.z, 1 };
-			tri.p1_ = { vertices[idx1].pos.x, vertices[idx1].pos.y, vertices[idx1].pos.z, 1 };
-			tri.p2_ = { vertices[idx2].pos.x, vertices[idx2].pos.y, vertices[idx2].pos.z, 1 };*/
 			//3頂点から法線を計算
 			tri.ComputeNormal();
 		}
@@ -54,21 +50,17 @@ void MeshCollider::ConstructTriangles(Model* model)
 void MeshCollider::Update()
 {
 	//ワールド行列の逆行列を計算
-	//invMatWorld_ = XMMatrixInverse(nullptr, GetObject3d()->GetMatWorld());
 	invMatWorld_ = MatrixInverse(GetObject3d()->GetMatWorld());
 
 }
 
-//bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, DirectX::XMVECTOR* inter)
 bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter)
 
 {
 	//オブジェクトのローカル座標系での球を得る(半径はXスケールを参照)
 	Sphere localSphere;
-	//localSphere.center = XMVector3Transform(sphere.center, invMatWorld_);
 	localSphere.center = Vector3Transform(sphere.center, invMatWorld_)
 		;
-	//localSphere.radius *= XMVector3Length(invMatWorld_.r[0]).m128_f32[0];
 	localSphere.radius *= invMatWorld_.m[0][0];
 
 
@@ -83,11 +75,9 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter)
 		{
 			if(inter)
 			{
-				//const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
 				const Matrix4& matWorld = GetObject3d()->GetMatWorld();
 
 				//ワールド座標系での交点を得る
-				//*inter = XMVector3Transform(*inter, matWorld);
 				*inter = Vector3Transform(*inter, matWorld);
 
 			}
@@ -100,7 +90,6 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter)
 	return false;
 }
 
-//bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, DirectX::XMVECTOR* inter)
 bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* inter)
 
 {
@@ -109,8 +98,6 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* i
 	localRay.start = Vector3Transform(ray.start, invMatWorld_);
 	localRay.dir = Vector3TransformNormal(ray.dir, invMatWorld_);
 	localRay.dir = localRay.dir.Normalize();
-	/*localRay.start = XMVector3Transform(ray.start, invMatWorld);
-	localRay.dir = XMVector3TransformNormal(ray.dir, invMatWorld);*/
 
 	//ローカル座標系で交差をチェック
 	std::vector<Triangle>::const_iterator it = triangles.cbegin();
@@ -119,27 +106,21 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* i
 	{
 		const Triangle& triangle = *it;
 
-		//XMVECTOR tempInter;
 		Vector3 tempInter;
 
 		//レイと三角形の当たり判定
 		if(Collision::CheckRay2Triangle(localRay, triangle, nullptr, &tempInter))
 		{
-			//const XMMATRIX& matWorld = GetObject3d()->GetMatWorld();
 			const Matrix4& matWorld = GetObject3d()->GetMatWorld();
 
 			//ワールド座標系での交点を得る
 			tempInter = Vector3Transform(tempInter, matWorld);
-			//tempInter = XMVector3Transform(tempInter, matWorld);
-
 
 			if(distance)
 			{
 				//交点とレイ始点の距離を計算
 				Vector3 sub = tempInter - ray.start;
 				*distance = Vector3Dot(sub, ray.dir).x;
-				/*XMVECTOR sub = tempInter - ray.start;
-				*distance = XMVector3Dot(sub, ray.dir).m128_f32[0];*/
 			}
 
 			if(inter)

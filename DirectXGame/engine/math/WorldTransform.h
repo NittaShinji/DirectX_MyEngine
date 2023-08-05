@@ -4,14 +4,10 @@
 
 class WorldTransform
 {
-	//using XMFLOAT = DirectX::Vector3;
-	//using Vector2 = DirectX::Vector2;
-	//using Vector3 = DirectX::Vector3;
-	//using XMMATRIX = DirectX::XMMATRIX;
 
 private:
 
-	//XMMATRIX worldTransform;
+	//Matrix4 worldTransform;
 
 	////スケール
 	//Vector3 scale_;
@@ -20,15 +16,15 @@ private:
 	////平行移動
 	//Vector3 transform_;
 
-	//XMMATRIX matScale_, matRot_, matTrans_;
+	//Matrix4 matScale_, matRot_, matTrans_;
 
 	////ワールド変換行列
-	//XMMATRIX matWorld_;
+	//Matrix4 matWorld_;
 
 	////ビュー行列
-	//XMMATRIX matView_;
+	//Matrix4 matView_;
 	////射影行列
-	//XMMATRIX matProjection_;
+	//Matrix4 matProjection_;
 
 };
 

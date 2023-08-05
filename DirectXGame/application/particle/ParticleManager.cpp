@@ -220,7 +220,6 @@ std::unique_ptr<ParticleManager> ParticleManager::Create()
 	return instance;
 }
 
-//void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, XMFLOAT4 colorSpeed, float start_scale, float end_scale)
 void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector3 colorSpeed, float alphaSpeed,float start_scale, float end_scale)
 
 {
