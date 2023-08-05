@@ -325,15 +325,19 @@ Vector3 TransformAffine(const Vector3& v, const Matrix4& m)
 	};	
 }
 
-Matrix4 MatrixPerspectiveFovLH(float angle, float AspectRatio, float nearZ, float farZ)
+Matrix4 MatrixPerspectiveFovLH(float angle, float aspectRatio, float nearZ, float farZ)
 {
-	Matrix4 result = { 0 };
+	assert(nearZ > 0.0f && farZ > 0.f);
+	assert(fabsf(angle) > 0.00001f * 2.0f);
+	assert(fabsf(aspectRatio) > 0.00001f);
+	assert(fabsf(farZ - nearZ) > 0.00001f);
 
-	result.m[0][0] = 1 / tan(angle);
-	result.m[1][1] = 1 / tan(angle) * AspectRatio;
+	Matrix4 result = { 0 };
+	float tanFov = std::tan(angle / 2.0f);
+	result.m[0][0] = 1.0f / (aspectRatio * tanFov);
+	result.m[1][1] = 1.0f / tanFov;
 	result.m[2][2] = (farZ + nearZ) / (farZ - nearZ);
 	result.m[2][3] = 1.0f;
-	result.m[3][2] = - (2 * farZ * nearZ) / (farZ - nearZ);
-
+	result.m[3][2] = -(2.0f * farZ * nearZ) / (farZ - nearZ);
 	return result;
 }

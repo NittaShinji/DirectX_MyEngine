@@ -84,22 +84,22 @@ void Camera::UpdateViewMatrix()
 	matCameraRot.m[0][0] = cameraAxisX.x;
 	matCameraRot.m[0][1] = cameraAxisX.y;
 	matCameraRot.m[0][2] = cameraAxisX.z;
-	matCameraRot.m[0][3] = 0;
+	matCameraRot.m[0][3] = 0.0f;
 
 	matCameraRot.m[1][0] = cameraAxisY.x;
 	matCameraRot.m[1][1] = cameraAxisY.y;
 	matCameraRot.m[1][2] = cameraAxisY.z;
-	matCameraRot.m[1][3] = 0;
+	matCameraRot.m[1][3] = 0.0f;
 
 	matCameraRot.m[2][0] = cameraAxisZ.x;
 	matCameraRot.m[2][1] = cameraAxisZ.y;
 	matCameraRot.m[2][2] = cameraAxisZ.z;
-	matCameraRot.m[2][3] = 0;
+	matCameraRot.m[2][3] = 0.0f;
 
-	matCameraRot.m[3][0] = 0;
-	matCameraRot.m[3][1] = 0;
-	matCameraRot.m[3][2] = 0;
-	matCameraRot.m[3][3] = 1;
+	matCameraRot.m[3][0] = 0.0f;
+	matCameraRot.m[3][1] = 0.0f;
+	matCameraRot.m[3][2] = 0.0f;
+	matCameraRot.m[3][3] = 1.0f;
 
 	//ì]ínÇ…ÇÊÇËãtçsóÒ(ãtâÒì])ÇåvéZ
 	//matView_ = XMMatrixTranspose(matCameraRot);
