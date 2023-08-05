@@ -86,7 +86,9 @@ void TitleScene::Initialize()
 	camera_ = std::make_unique<Camera>();
 
 	Vector3 cameraEye = { 30,15.5,-20 };
+
 	Vector3 cameraTarget = { 0,5,5 };
+	
 	Vector3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);

@@ -195,7 +195,7 @@ void Player::Update(Camera* camera)
 		}
 	}
 	//—‰ºó‘Ô
-	else if(fallVec_.x <= 0.0f)
+	else if(fallVec_.y <= 0.0f)
 	{
 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 		{

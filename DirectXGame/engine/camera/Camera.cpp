@@ -79,7 +79,7 @@ void Camera::UpdateViewMatrix()
 
 	//カメラ回転行列
 	//XMMATRIX matCameraRot;
-	Matrix4 matCameraRot;
+	Matrix4 matCameraRot = {0};
 	//カメラ座標系→ワールド座標系の変換行列
 	matCameraRot.m[0][0] = cameraAxisX.x;
 	matCameraRot.m[0][1] = cameraAxisX.y;

@@ -77,8 +77,10 @@ void GameScene::Initialize()
 
 	//ƒJƒƒ‰
 	Vector3 cameraEye = { 30,7.5,-20 };
+
 	Vector3 testCameraEye = { 0,50,-30 };
 	Vector3 cameraTarget = { 0,5,5 };
+
 	Vector3 testcameraTarget = { 0,5,5 };
 
 	Vector3 cameraUp = { 0,1,0 };

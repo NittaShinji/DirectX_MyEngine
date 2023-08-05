@@ -54,7 +54,7 @@ Matrix4 MatrixRotateX(float angle)
 }
 
 // Y ²ü‚è‚Ì‰ñ“]s—ñ‚ğ‹‚ß‚é
-Matrix4 MatrixRotateZ(float angle)
+Matrix4 MatrixRotateY(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -71,7 +71,7 @@ Matrix4 MatrixRotateZ(float angle)
 }
 
 // Z ²ü‚è‚Ì‰ñ“]s—ñ‚ğ‹‚ß‚é
-Matrix4 MatrixRotateY(float angle)
+Matrix4 MatrixRotateZ(float angle)
 {
 	float sin = std::sin(angle);
 	float cos = std::cos(angle);
@@ -122,12 +122,15 @@ Vector3 MatrixTransform(const Vector3& v, const Matrix4& m)
 Matrix4 MatrixTranspose(const Matrix4& m)
 {
 	Matrix4 result{ 0 };
-	result.m[0][1] = m.m[1][0];
-	result.m[0][2] = m.m[2][0];
-	result.m[1][0] = m.m[0][1];
-	result.m[1][2] = m.m[2][1];
-	result.m[2][0] = m.m[0][2];
-	result.m[2][1] = m.m[1][2];
+
+	for(size_t i = 0; i < 4; i++)
+	{
+		for(size_t j = 0; j < 4; j++)
+		{
+			result.m[i][j] = m.m[j][i];
+		}
+	}
+
 	return result;
 }
 
