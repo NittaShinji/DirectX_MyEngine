@@ -78,7 +78,6 @@ ComPtr<ID3D12Resource> ParticleManager::CrateConstBuff(Type1* device)
 	return constBuff_;
 }
 
-
 void ParticleManager::StaticInitialize(ID3D12Device* device)
 {
 	ParticleManager::device_ = device;
