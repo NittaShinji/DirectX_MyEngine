@@ -98,6 +98,10 @@ void TitleScene::Initialize()
 	isChangeColor_ = false;
 	rotateAcc_ = 0.0f;
 	moveRotate_ = 0.0f;
+
+	bool isJump = false;
+	Vector3 jumpVec = {0.0f,0.0f,0.0f};
+	float jumpAcc = 0.0f;
 }
 
 void TitleScene::Update()
@@ -123,7 +127,7 @@ void TitleScene::Update()
 		//sphereRotate.y -= 0.01f;
 		//rotateAcc_ -= PlayEaseIn(rotateTimer_, 0.0f, 1.0f, kRotateTime_);
 		//sphereRotate.y += rotateAcc_;
-		float angle = ToRadian(360);
+		float angle = ToRadian(360.0f);
 		sphereRotate.y -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
 		titleSphere_->SetRotation(sphereRotate);
 	}
@@ -145,6 +149,10 @@ void TitleScene::Update()
 	else
 	{
 		rotateTimer_ = kRotateTime_;
+
+		isJump = true;
+		moveTimer_ = kActionTime_;
+
 		if(isChangeColor_ == false)
 		{
 			isChangeColor_ = true;
@@ -154,15 +162,46 @@ void TitleScene::Update()
 			isChangeColor_ = false;
 		}
 	}
+
+	if(isJump == true)
+	{
+		////‰ºŒü‚«‰Á‘¬“x@
+		//const float fallAcc = -0.015f;
+		//const float fallVYMin = -0.5f;
+		////‰Á‘¬
+		//move_.y = max(move_.y + fallAcc, fallVYMin);
+		////ˆÚ“®
+		//spherPos_.x += move_.x;
+		//spherPos_.y += move_.y;
+		//spherPos_.z += move_.z;
+
+
+		//jumpAcc += PlayEaseIn(moveTimer_, 0.0, 1.0, kActionTime_);
+		//spherPos_.y += jumpAcc;
+		spherPos_.y += PlayEaseIn(moveTimer_, 0.0, 1.0, kActionTime_);
+
+		//spherPos_.y += 1.0f;
+
+		titleSphere_->SetTransform(spherPos_);
+	}
 	
 	//ˆÚ“®ˆ—
-	if(moveTimer_ >= 0)
+	if(moveTimer_ > 0)
 	{
 		moveTimer_--;
 	}
 	else
 	{
-		moveTimer_ = kActionTime_;
+		isJump = false;
+	}
+
+	if(isJump == false)
+	{
+		if(spherPos_.y >= 5.0f)
+		{
+			spherPos_.y -= easeInCubic(0.75f);
+		}
+		titleSphere_->SetTransform(spherPos_);
 	}
 
 	if(moveTimer_ > (kActionTime_ / 2))

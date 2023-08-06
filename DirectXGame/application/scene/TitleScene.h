@@ -41,9 +41,11 @@ private:
 	static const int32_t waitTime = 40;
 
 	Vector3 sphereRotate = { 0,0,0 };
+	Vector3 spherPos_;
+
 	//1周回る時間
 	const float kRotateTime_ = 90.0f;
-	const float kActionTime_ = 60.0f;
+	const float kActionTime_ = 20.0f;
 
 	const float kChangeWhiteTime_ = 10.0f;
 	const float kChangeColorTime_ = 1080.0f;
@@ -59,10 +61,14 @@ private:
 	bool isChangeScene_;
 	Vector3 move_ = { 0,0,0 };
 
-	Vector3 spherPos_;
+
 
 	float rotateAcc_;
 	float moveRotate_;
+
+	bool isJump;
+	Vector3 jumpVec;
+	float jumpAcc;
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
