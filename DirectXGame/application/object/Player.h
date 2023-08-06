@@ -92,6 +92,9 @@ private:
 
 	Attribute attribute_;
 
+	//ƒWƒƒƒ“ƒvŽž‚Ì‰Á‘¬“x
+	float jumpAcc = 0.0f;
+
 public:
 
 	bool GetIsMoving() { return isMoving_; }

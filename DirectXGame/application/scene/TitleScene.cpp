@@ -3,6 +3,7 @@
 #include "Sound.h"
 #include "WindowsAPI.h"
 #include "Vector2.h"
+#include "Easing.h"
 
 DirectXBasic* TitleScene::directXBasic_ = nullptr;
 ImGuiManager* TitleScene::imGuiManager_ = nullptr;
@@ -94,6 +95,9 @@ void TitleScene::Initialize()
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
 
 	isChangeScene_ = false;
+	isChangeColor_ = false;
+	rotateAcc_ = 0.0f;
+	moveRotate_ = 0.0f;
 }
 
 void TitleScene::Update()
@@ -116,8 +120,39 @@ void TitleScene::Update()
 	//‰ñ“]ˆ—
 	if(isChangeScene_ == false)
 	{
-		sphereRotate.y -= 0.01f;
+		//sphereRotate.y -= 0.01f;
+		//rotateAcc_ -= PlayEaseIn(rotateTimer_, 0.0f, 1.0f, kRotateTime_);
+		//sphereRotate.y += rotateAcc_;
+		float angle = ToRadian(360);
+		sphereRotate.y -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
 		titleSphere_->SetRotation(sphereRotate);
+	}
+
+	/*if(rotateTimer_ >= kRotateTime_)
+	{
+		rotateTimer_ = 0.0f;
+		rotateAcc_ = 0.0f;
+	}
+	else
+	{
+		rotateTimer_++;
+	}*/
+
+	if(rotateTimer_ >= 0)
+	{
+		rotateTimer_--;
+	}
+	else
+	{
+		rotateTimer_ = kRotateTime_;
+		if(isChangeColor_ == false)
+		{
+			isChangeColor_ = true;
+		}
+		else
+		{
+			isChangeColor_ = false;
+		}
 	}
 	
 	//ˆÚ“®ˆ—
@@ -144,16 +179,35 @@ void TitleScene::Update()
 	}
 
 	//F‚ð•Ï‚¦‚éˆ—
-	if(rotateTimer_ >= 0)
+	if(changeColorTimer_ >= 0)
 	{
-		rotateTimer_--;
+		changeColorTimer_--;
+
 	}
 	else
 	{
-		rotateTimer_ = kRoateTime_;
+		changeColorTimer_ = kChangeColorTime_;
 	}
 
-	if(rotateTimer_ > (kRoateTime_ / 2))
+	//if(changeColorTimer >= 0)
+	//{
+	//	changeColorTimer -= PlayEaseIn(rotateTimer_, 0.0f, 1.0f, kRoateTime_);
+	//}
+	//else
+	//{
+	//	changeColorTimer = kRoateTime_;
+	//	if(isChangeColor_ == true)
+	//	{
+	//		isChangeColor_ = false;
+	//	}
+	//	else
+	//	{
+	//		isChangeColor_ = true;
+	//	}
+	//}
+	
+
+	if(isChangeColor_ == false)
 	{
 		titleSphere_->SetColorFlag(true);
 		titleSphere_->SetColor(Vector3(1.0f, 0.4f, 0.7f));
@@ -163,6 +217,18 @@ void TitleScene::Update()
 		titleSphere_->SetColorFlag(true);
 		titleSphere_->SetColor(Vector3(1.0f, 0.469f, 0.0f));
 	}
+	/*if(changeColorTimer_ > (kChangeColorTime_ / 2))
+	{
+		titleSphere_->SetColorFlag(true);
+		titleSphere_->SetColor(Vector3(1.0f, 0.4f, 0.7f));
+	}
+	else
+	{
+		titleSphere_->SetColorFlag(true);
+		titleSphere_->SetColor(Vector3(1.0f, 0.469f, 0.0f));
+	}*/
+
+
 
 	if(isDown_ == true && isUp_ == false)
 	{
@@ -188,10 +254,10 @@ void TitleScene::Update()
 
 	if(isChangeScene_ == true)
 	{
-		changeTimer_--;
+		changeWhiteTimer_--;
 		titleSphere_->SetColorFlag(true);
 		titleSphere_->SetColor(Vector3(1.0f, 1.0f, 1.0f));
-		if(changeTimer_ <= 0)
+		if(changeWhiteTimer_ <= 0)
 		{
 			Sound::GetInstance()->Finalize();
 			SceneManager::GetInstance()->ChangeScene("GAME");

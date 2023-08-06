@@ -3,6 +3,7 @@
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 #include "Sound.h"
+#include "Easing.h"
 
 using namespace std;
 
