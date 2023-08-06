@@ -92,7 +92,6 @@ protected:
 	D3D12_VERTEX_BUFFER_VIEW vbView_{};
 	
 	// 頂点データ全体のサイズ
-	
 	HRESULT result_;
 	ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 	

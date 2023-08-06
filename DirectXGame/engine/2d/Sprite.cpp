@@ -141,8 +141,7 @@ void Sprite::matUpdate()
 	// 繋がりを解除
 	vertBuff_->Unmap(0, nullptr);
 
-	//ワールド変換行列
-	Matrix4 matWorld;
+
 
 	Matrix4 matScale;	//スケーリング行列
 	matScale = MatrixScale(scale_);
@@ -152,13 +151,17 @@ void Sprite::matUpdate()
 	matRot *= MatrixRotateZ((rotation_));	//Z軸周りに回転
 
 	Matrix4 matTrans;	//平行移動行列
+	matTrans = MatrixIdentity();
 	matTrans = MatrixTranslate(Vector3(moveSpeed_.x,moveSpeed_.y, 0.0f));	//平行移動
+
+	//ワールド変換行列
+	Matrix4 matWorld;
 	matWorld = MatrixIdentity();	//単位行列を代入して変形をリセット
-	
 	matWorld *= matRot;		//ワールド行列に回転を反映
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映
 	//定数バッファにデータ転送
-	spriteCommon_->GetConstMapTransform()->mat = matWorld * spriteCommon_->GetConstMapTransform()->mat;
+	//spriteCommon_->GetConstMapTransform()->mat = matWorld * spriteCommon_->GetConstMapTransform()->mat;
+	spriteCommon_->GetConstMapTransform()->mat *= matWorld;
 	spriteCommon_->GetConstMapMaterial()->color = color_;
 
 	moveSpeed_.x = 0.0f;

@@ -147,6 +147,4 @@ public:
 	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
 	ComPtr<ID3D12PipelineState> GetPipelineState() { return pipelineState_; };
 	ComPtr<ID3D12RootSignature> GetRootSignature_() { return rootSignature_; };
-
-
 };

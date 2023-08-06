@@ -124,23 +124,10 @@ void TitleScene::Update()
 	//‰ñ“]ˆ—
 	if(isChangeScene_ == false)
 	{
-		//sphereRotate.y -= 0.01f;
-		//rotateAcc_ -= PlayEaseIn(rotateTimer_, 0.0f, 1.0f, kRotateTime_);
-		//sphereRotate.y += rotateAcc_;
 		float angle = ToRadian(360.0f);
 		sphereRotate.y -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
 		titleSphere_->SetRotation(sphereRotate);
 	}
-
-	/*if(rotateTimer_ >= kRotateTime_)
-	{
-		rotateTimer_ = 0.0f;
-		rotateAcc_ = 0.0f;
-	}
-	else
-	{
-		rotateTimer_++;
-	}*/
 
 	if(rotateTimer_ >= 0)
 	{
@@ -165,23 +152,7 @@ void TitleScene::Update()
 
 	if(isJump == true)
 	{
-		////‰ºŒü‚«‰Á‘¬“x@
-		//const float fallAcc = -0.015f;
-		//const float fallVYMin = -0.5f;
-		////‰Á‘¬
-		//move_.y = max(move_.y + fallAcc, fallVYMin);
-		////ˆÚ“®
-		//spherPos_.x += move_.x;
-		//spherPos_.y += move_.y;
-		//spherPos_.z += move_.z;
-
-
-		//jumpAcc += PlayEaseIn(moveTimer_, 0.0, 1.0, kActionTime_);
-		//spherPos_.y += jumpAcc;
 		spherPos_.y += PlayEaseIn(moveTimer_, 0.0, 1.0, kActionTime_);
-
-		//spherPos_.y += 1.0f;
-
 		titleSphere_->SetTransform(spherPos_);
 	}
 	
@@ -228,24 +199,6 @@ void TitleScene::Update()
 		changeColorTimer_ = kChangeColorTime_;
 	}
 
-	//if(changeColorTimer >= 0)
-	//{
-	//	changeColorTimer -= PlayEaseIn(rotateTimer_, 0.0f, 1.0f, kRoateTime_);
-	//}
-	//else
-	//{
-	//	changeColorTimer = kRoateTime_;
-	//	if(isChangeColor_ == true)
-	//	{
-	//		isChangeColor_ = false;
-	//	}
-	//	else
-	//	{
-	//		isChangeColor_ = true;
-	//	}
-	//}
-	
-
 	if(isChangeColor_ == false)
 	{
 		titleSphere_->SetColorFlag(true);
@@ -256,18 +209,6 @@ void TitleScene::Update()
 		titleSphere_->SetColorFlag(true);
 		titleSphere_->SetColor(Vector3(1.0f, 0.469f, 0.0f));
 	}
-	/*if(changeColorTimer_ > (kChangeColorTime_ / 2))
-	{
-		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(Vector3(1.0f, 0.4f, 0.7f));
-	}
-	else
-	{
-		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(Vector3(1.0f, 0.469f, 0.0f));
-	}*/
-
-
 
 	if(isDown_ == true && isUp_ == false)
 	{
@@ -312,7 +253,6 @@ void TitleScene::Draw()
 	clickSprite_->Draw("click.png");
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
-
 
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();
