@@ -141,8 +141,6 @@ void Sprite::matUpdate()
 	// 繋がりを解除
 	vertBuff_->Unmap(0, nullptr);
 
-
-
 	Matrix4 matScale;	//スケーリング行列
 	matScale = MatrixScale(scale_);
 
@@ -160,7 +158,6 @@ void Sprite::matUpdate()
 	matWorld *= matRot;		//ワールド行列に回転を反映
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映
 	//定数バッファにデータ転送
-	//spriteCommon_->GetConstMapTransform()->mat = matWorld * spriteCommon_->GetConstMapTransform()->mat;
 	spriteCommon_->GetConstMapTransform()->mat *= matWorld;
 	spriteCommon_->GetConstMapMaterial()->color = color_;
 

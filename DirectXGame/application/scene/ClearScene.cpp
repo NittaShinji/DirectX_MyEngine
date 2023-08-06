@@ -65,8 +65,6 @@ void ClearScene::Update()
 
 	checkPosition_.y += move_.y;
 	check_->SetPosition(checkPosition_);
-	//check_->SetMoveSpeed_(move_);
-	//check_->
 	check_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
