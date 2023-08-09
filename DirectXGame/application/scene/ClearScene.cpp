@@ -71,10 +71,11 @@ void ClearScene::Update()
 	if(gamePad_->IsConnected(Player1)) {}
 	//‰Ÿ‚µ‚½uŠÔ‚Ì”»’è‚ðŽæ‚é
 	gamePad_->PushedButtonMoment();
-	if(gamePad_->GetButtonA())
+	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		Sound::GetInstance()->PlaySoundWave("touch.wav");
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		//SceneManager::GetInstance()->ChangeScene("TITLE");
+		SceneManager::GetInstance()->ChangeScene("StageSelect");
 	}
 }
 

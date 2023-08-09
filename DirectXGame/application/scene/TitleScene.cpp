@@ -240,7 +240,8 @@ void TitleScene::Update()
 		if(changeWhiteTimer_ <= 0)
 		{
 			Sound::GetInstance()->Finalize();
-			SceneManager::GetInstance()->ChangeScene("GAME");
+			//SceneManager::GetInstance()->ChangeScene("GAME");
+			SceneManager::GetInstance()->ChangeScene("StageSelect");
 		}
 	}
 }

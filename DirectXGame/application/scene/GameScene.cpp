@@ -247,12 +247,12 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
+	particleManager_->Draw();
+
 	//ƒ‚ƒfƒ‹•`‰æ
 	Object3d::BeforeDraw();
 	skydome_->Draw();
 	stage_->Draw();
-	player_->Draw();
-
-	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
-	particleManager_->Draw();
+	player_->Draw();	
 }
