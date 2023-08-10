@@ -27,6 +27,8 @@ private:
 	static ImGuiManager* imGuiManager_;
 
 	std::unique_ptr<Sprite> selectSprite_ = nullptr;
+	std::unique_ptr<Sprite> BackGroundLeft = nullptr;
+
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
@@ -36,6 +38,4 @@ private:
 	
 	const float kChangeSceneTime_ = 10.0f;
 	float changeSceneTimer_ = kChangeSceneTime_;
-
-
 };
