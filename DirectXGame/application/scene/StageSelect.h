@@ -27,8 +27,8 @@ private:
 	static ImGuiManager* imGuiManager_;
 
 	std::unique_ptr<Sprite> selectSprite_ = nullptr;
-	std::unique_ptr<Sprite> BackGroundLeft = nullptr;
-
+	std::unique_ptr<Sprite> BackGroundLeft_ = nullptr;
+	std::unique_ptr<Sprite> BackGroundRight_ = nullptr;
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;

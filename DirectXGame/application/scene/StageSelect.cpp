@@ -23,7 +23,8 @@ void StageSelectScene::Initialize()
 
 	//画像
 	selectSprite_ = std::make_unique<Sprite>();
-	BackGroundLeft = std::make_unique<Sprite>();
+	BackGroundLeft_ = std::make_unique<Sprite>();
+	BackGroundRight_ = std::make_unique<Sprite>();
 	
 	SpriteCommon::GetInstance()->LoadTexture("StageSelect.png");
 	SpriteCommon::GetInstance()->LoadTexture("SelectBackGround.png");
@@ -32,9 +33,11 @@ void StageSelectScene::Initialize()
 	const Vector2 selectSize = { 1280.0f,720.0f };
 	selectSprite_->Initialize(selectPosition, selectSize);
 
-	Vector2 backGroundPosition = { 40.0f,180.0f };
+	Vector2 backGroundPositionL = { 20.0f,180.0f };
+	Vector2 backGroundPositionR = { 660.0f,180.0f };
 	const Vector2 backGroundSize = { 600.0f,360.0f };
-	BackGroundLeft->Initialize(backGroundPosition, backGroundSize);
+	BackGroundLeft_->Initialize(backGroundPositionL, backGroundSize);
+	BackGroundRight_->Initialize(backGroundPositionR, backGroundSize);
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -51,7 +54,8 @@ void StageSelectScene::Update()
 {
 	//画像の更新
 	selectSprite_->matUpdate();
-	BackGroundLeft->matUpdate();
+	BackGroundLeft_->matUpdate();
+	BackGroundRight_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
 	if(gamePad_->IsConnected(Player1)) {}
@@ -80,6 +84,6 @@ void StageSelectScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
 	selectSprite_->Draw("StageSelect.png");
-	BackGroundLeft->Draw("SelectBackGround.png");
-
+	BackGroundLeft_->Draw("SelectBackGround.png");
+	BackGroundRight_->Draw("SelectBackGround.png");
 }
