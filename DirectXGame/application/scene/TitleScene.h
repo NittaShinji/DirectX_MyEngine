@@ -31,7 +31,7 @@ private:
 	std::unique_ptr<Sprite> clickSprite_ = nullptr;
 	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
-
+	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
 
 	std::unique_ptr<Object3d> titleSphere_ = nullptr;
 	std::unique_ptr<Camera> camera_ = nullptr;

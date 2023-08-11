@@ -8,7 +8,7 @@ void ClearScene::Initialize()
 	check_ = std::make_unique<Sprite>();
 	aButton_ = std::make_unique<Sprite>();
 
-	SpriteCommon::GetInstance()->LoadTexture("end.png");
+	//SpriteCommon::GetInstance()->LoadTexture("end.png");
 	SpriteCommon::GetInstance()->LoadTexture("check.png");
 	SpriteCommon::GetInstance()->LoadTexture("A.png");
 
@@ -18,7 +18,9 @@ void ClearScene::Initialize()
 
 	Vector2 checkSize = { 157.0f,112.0f };
 	checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) - (checkSize.x / 2);
-	checkPosition_.y = (WindowsAPI::kWindow_height_ / 2) - (checkSize.y);
+	//checkPosition_.y = (WindowsAPI::kWindow_height_ / 2) - (checkSize.y);
+	checkPosition_.y = 0.0f;
+
 	check_->Initialize(checkPosition_, checkSize);
 
 	Vector2 aButtonSize = { 128.0f,128.0f };
@@ -58,12 +60,12 @@ void ClearScene::Update()
 	check_->SetAnchorPoint(anchorPoint);
 
 	
-	if(checkPosition_.y <= WindowsAPI::kWindow_height_ / 2)
+	if(checkPosition_.y <= (WindowsAPI::kWindow_height_ / 2) - 112.0f)
 	{
 		move_.y += 0.1f;
+		checkPosition_.y += move_.y;
 	}
 
-	checkPosition_.y += move_.y;
 	check_->SetPosition(checkPosition_);
 	check_->matUpdate();
 
@@ -83,7 +85,7 @@ void ClearScene::Draw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
-	end_->Draw("end.png");
+	end_->Draw("WhiteTex");
 	check_->Draw("check.png");
 	aButton_->Draw("A.png");
 

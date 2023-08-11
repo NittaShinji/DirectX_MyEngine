@@ -1,5 +1,6 @@
 #include "MyGame.h"
 #include "SceneFactory.h"
+#include "Vector4.h"
 #include <wrl.h>
 #pragma comment(lib,"xaudio2.lib")
 
@@ -26,7 +27,8 @@ void MyGame::Initialize()
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
 	//ポストエフェクト用テクスチャの読み込み
-	SpriteCommon::GetInstance()->LoadTexture("postEffect.png");
+	SpriteCommon::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, Vector4(1.0f, 0.0f, 0.0f, 1.0f), "RedTex");
+	//SpriteCommon::GetInstance()->LoadTexture("postEffect.png");
 	postEffect_->Initialize(directXBasic_.get());
 
 }
@@ -56,7 +58,7 @@ void MyGame::Draw()
 	//描画開始
 	directXBasic_->BeforeDraw();
 	//ポストエフェクトの描画
-	postEffect_->Draw("postEffect.png");
+	postEffect_->Draw("RedTex");
 	imGuiManager_->Draw();
 
 	//描画終了

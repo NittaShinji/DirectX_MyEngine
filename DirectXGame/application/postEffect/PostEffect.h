@@ -44,8 +44,6 @@ public:
     /// <param name="cmdList"></param>
     void PostDrawScene();
 
-    void LoadTexture(const std::string& fileName);
-
 private:
 
     DirectXBasic* directXBasic_;
@@ -101,7 +99,5 @@ private:
     static std::map<const std::string, uint32_t, std::less<>> textureMap_;
     //デフォルトテクスチャ格納ディレクトリ
     static std::string kDefaultTextureDirectoryPath_;
-
-
 };
 

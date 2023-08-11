@@ -29,7 +29,7 @@ private:
 	std::unique_ptr<Sprite> selectSprite_ = nullptr;
 	std::unique_ptr<Sprite> BackGroundLeft_ = nullptr;
 	std::unique_ptr<Sprite> BackGroundRight_ = nullptr;
-	std::unique_ptr<Sprite> BackGroundTest_ = nullptr;
+	std::unique_ptr<Sprite> BackGroundWhite_ = nullptr;
 
 
 	//ゲームパッド

@@ -74,7 +74,7 @@ public:
 	static void LoadTexture(const std::string& fileName);
 
 	//画像生成
-	void TexMapping(int32_t texWidth, int32_t texHeight, const std::string& fileName);
+	void TexMapping(int32_t texWidth, int32_t texHeight, Vector4 color, const std::string& fileName);
 
 	//テンプレートコンストラクタ
 	template <typename Type1, typename Type2>

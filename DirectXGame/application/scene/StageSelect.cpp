@@ -25,25 +25,31 @@ void StageSelectScene::Initialize()
 	selectSprite_ = std::make_unique<Sprite>();
 	BackGroundLeft_ = std::make_unique<Sprite>();
 	BackGroundRight_ = std::make_unique<Sprite>();
-	BackGroundTest_ = std::make_unique<Sprite>();
+	BackGroundWhite_ = std::make_unique<Sprite>();
 
-	SpriteCommon::GetInstance()->LoadTexture("StageSelect.png");
-	SpriteCommon::GetInstance()->LoadTexture("SelectBackGround.png");
-	SpriteCommon::GetInstance()->TexMapping(128, 128,"RedTex");
+	//SpriteCommon::GetInstance()->LoadTexture("StageSelect.png");
+	//SpriteCommon::GetInstance()->LoadTexture("SelectBackGround.png");
+
+	const int32_t selectWidth = 640;
+	const int32_t selectHeight = 400;
+	const Vector2 selectSize = { selectWidth,selectHeight };
+	SpriteCommon::GetInstance()->TexMapping(selectWidth, selectHeight,Vector4(0.0f,0.0f,1.0f,1.0f),"CursorTex");
+	//灰色のテクスチャ―
+	SpriteCommon::GetInstance()->TexMapping(600, 360,Vector4(0.746f,0.746f,0.746f,1.0f),"BackGroundTex");
 	
-	Vector2 selectPosition = { 0.0f,0.0f };
-	const Vector2 selectSize = { 1280.0f,720.0f };
+	Vector2 selectPosition = { 0.0f,160.0f };
 	selectSprite_->Initialize(selectPosition, selectSize);
 
-	Vector2 testPosition = { 640.0f,0.0f };
+	Vector2 testPosition = { 0.0f,0.0f };
 	const Vector2 testSize = { 128.0f,128.0f };
-	BackGroundTest_->Initialize(testPosition, testSize);
+	//BackGroundTest_->Initialize(testPosition, testSize);
 
 	Vector2 backGroundPositionL = { 20.0f,180.0f };
 	Vector2 backGroundPositionR = { 660.0f,180.0f };
 	const Vector2 backGroundSize = { 600.0f,360.0f };
 	BackGroundLeft_->Initialize(backGroundPositionL, backGroundSize);
 	BackGroundRight_->Initialize(backGroundPositionR, backGroundSize);
+	BackGroundWhite_->Initialize(Vector2(0.0f,0.0f),Vector2(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_));
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -52,7 +58,6 @@ void StageSelectScene::Initialize()
 	Sound::GetInstance()->Initialize();
 	//Sound::GetInstance()->LoadSoundWave("title.wav");
 	Sound::GetInstance()->LoadSoundWave("touch.wav");
-
 	//Sound::GetInstance()->PlaySoundWave("title.wav");
 }
 
@@ -62,7 +67,7 @@ void StageSelectScene::Update()
 	selectSprite_->matUpdate();
 	BackGroundLeft_->matUpdate();
 	BackGroundRight_->matUpdate();
-	BackGroundTest_->matUpdate();
+	BackGroundWhite_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
 	if(gamePad_->IsConnected(Player1)) {}
@@ -77,11 +82,17 @@ void StageSelectScene::Update()
 
 	if(keys_->PushedKeyMoment(DIK_RIGHT))
 	{
-
+		if(selectSprite_->GetPosition().x == 0.0f)
+		{
+			selectSprite_->SetPosition(Vector2(WindowsAPI::kWindow_width_ / 2, 160.0));
+		}
 	}
 	else if(keys_->PushedKeyMoment(DIK_LEFT))
 	{
-
+		if(selectSprite_->GetPosition().x == WindowsAPI::kWindow_width_ / 2)
+		{
+			selectSprite_->SetPosition(Vector2(0.0f, 160.0f));
+		}
 	}
 
 	if(isChangeScene_ == true)
@@ -99,8 +110,8 @@ void StageSelectScene::Draw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
-	selectSprite_->Draw("StageSelect.png");
-	//BackGroundLeft_->Draw("SelectBackGround.png");
-	//BackGroundRight_->Draw("SelectBackGround.png");
-	BackGroundTest_->Draw("RedTex");
+	BackGroundWhite_->Draw("WhiteTex");
+	selectSprite_->Draw("CursorTex");
+	BackGroundLeft_->Draw("BackGroundTex");
+	BackGroundRight_->Draw("BackGroundTex");
 }

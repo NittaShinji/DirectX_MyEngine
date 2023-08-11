@@ -44,14 +44,22 @@ void TitleScene::Initialize()
 	clickSprite_= std::make_unique<Sprite>();
 	aButtonSprite_ = std::make_unique<Sprite>();
 	bButtonSprite_ = std::make_unique<Sprite>();
+	backGroundSprite_ = std::make_unique<Sprite>();
 
-	SpriteCommon::GetInstance()->LoadTexture("title.png");
+	SpriteCommon::GetInstance()->LoadTexture("TitleFont.png");
 	SpriteCommon::GetInstance()->LoadTexture("A.png");
 	SpriteCommon::GetInstance()->LoadTexture("B.png");
 	SpriteCommon::GetInstance()->LoadTexture("click.png");
 
-	Vector2 titlePosition = { 0.0f,0.0f };
-	const Vector2 titleSize = { 1280.0f,720.0f };
+	Vector2 backGroundPosition = { 0.0f,0.0f };
+	const int32_t backGroundWidth = 1280;
+	const int32_t backGroundHeight = 720;
+	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight};
+
+	SpriteCommon::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");
+
+	Vector2 titlePosition = { 400.0f,33.0f };
+	const Vector2 titleSize = { 480.0f,103.0f };
 	titleSprite_->Initialize(titlePosition, titleSize);
 
 	const Vector2 clickButtonSize = { 128.0f,128.0f };
@@ -72,6 +80,7 @@ void TitleScene::Initialize()
 	clickSprite_->Initialize(clickButtonPosition, clickButtonSize);
 	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
 	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
+	backGroundSprite_->Initialize(backGroundPosition, backGroundSize);
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -108,16 +117,11 @@ void TitleScene::Update()
 {
 	camera_->Update();
 
-	//アンカーポイントの設定
-	Vector2 anchorPoint = { 0.0f,0.0f };
-	titleSprite_->SetAnchorPoint(anchorPoint);
 	titleSprite_->matUpdate();
-	clickSprite_->SetAnchorPoint(anchorPoint);
 	clickSprite_->matUpdate();
-	aButtonSprite_->SetAnchorPoint(anchorPoint);
 	aButtonSprite_->matUpdate();
-	bButtonSprite_->SetAnchorPoint(anchorPoint);
 	bButtonSprite_->matUpdate();
+	backGroundSprite_->matUpdate();
 
 	titleSphere_->Update(camera_.get());
 
@@ -250,7 +254,10 @@ void TitleScene::Draw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
-	titleSprite_->Draw("title.png");
+	//titleSprite_->Draw("WhiteTex");
+	backGroundSprite_->Draw("WhiteTex");
+	titleSprite_->Draw("TitleFont.png");
+
 	clickSprite_->Draw("click.png");
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");

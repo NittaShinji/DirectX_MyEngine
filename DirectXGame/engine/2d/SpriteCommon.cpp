@@ -543,7 +543,7 @@ void SpriteCommon::BeforeDraw()
 
 void SpriteCommon::AfterDraw() {}
 
-void SpriteCommon::TexMapping(int32_t texWidth, int32_t texHeight, const std::string& fileName)
+void SpriteCommon::TexMapping(int32_t texWidth, int32_t texHeight, Vector4 color, const std::string& fileName)
 {
 	//画像の文字列と画像番号を格納
 	textureMap_.emplace(fileName, sTextureIndex_);
@@ -558,10 +558,10 @@ void SpriteCommon::TexMapping(int32_t texWidth, int32_t texHeight, const std::st
 	//全ピクセルの色を初期化
 	for(size_t i = 0; i < imageDateCount_; i++)
 	{
-		imageDate[i].x = 1.0f; // R
-		imageDate[i].y = 0.0f; // G
-		imageDate[i].z = 0.0f; // B
-		imageDate[i].w = 1.0f; // A
+		imageDate[i].x = color.x; // R
+		imageDate[i].y = color.y; // G
+		imageDate[i].z = color.z; // B
+		imageDate[i].w = color.w; // A
 	}
 
 	//ヒープ設定
