@@ -27,6 +27,10 @@ public:
 	//描画
 	void Draw(const std::string& fileName);
 
+	//void TexMapping();
+
+
+
 protected:
 
 	enum VertexNumber
@@ -97,11 +101,11 @@ protected:
 	
 	//テクスチャマッピング用の変数
 	//横方向ピクセル数
-	const size_t kTextureWidth_ = 256;
+	//const size_t kTextureWidth_ = 256;
 	//縦方向ピクセル数
-	const size_t kTextureHeight_ = 256;
+	//const size_t kTextureHeight_ = 256;
 	//配列の要素数
-	const size_t imageDateCount_ = kTextureWidth_ * kTextureHeight_;
+	//const size_t imageDateCount_ = kTextureWidth_ * kTextureHeight_;
 	//画像イメージデータ配列
 	Vector4* imageDate_;
 	//テクスチャリソースデスク
