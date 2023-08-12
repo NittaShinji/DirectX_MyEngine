@@ -549,11 +549,11 @@ void SpriteCommon::TexMapping(int32_t texWidth, int32_t texHeight, Vector4 color
 	textureMap_.emplace(fileName, sTextureIndex_);
 
 	//画像イメージデータ配列
-	XMFLOAT4* imageDate;
+	Vector4* imageDate;
 	//配列の要素数
 	const int32_t imageDateCount_ = texWidth * texHeight;
 	//画像イメージデータ配列
-	imageDate = new XMFLOAT4[imageDateCount_];
+	imageDate = new Vector4[imageDateCount_];
 
 	//全ピクセルの色を初期化
 	for(size_t i = 0; i < imageDateCount_; i++)
