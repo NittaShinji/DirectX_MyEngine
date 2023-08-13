@@ -33,5 +33,10 @@ private:
 	const int32_t kActionTime_ = 60;
 	int32_t moveTimer_ = kActionTime_;
 	Vector2 move_;
+	float rotate_;
+
+	//1Žü‰ñ‚éŽžŠÔ
+	const float kRotateTime_ = 90.0f;
+	float rotateTimer_ = kRotateTime_;
 };
 

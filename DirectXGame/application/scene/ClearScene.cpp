@@ -1,6 +1,10 @@
 #include "ClearScene.h"
 #include "SceneManager.h"
 #include "Sound.h"
+#include "Easing.h"
+#include "MathUtillity.h"
+
+using namespace MathUtillty;
 
 void ClearScene::Initialize()
 {
@@ -62,8 +66,18 @@ void ClearScene::Update()
 	
 	if(checkPosition_.y <= (WindowsAPI::kWindow_height_ / 2) - 112.0f)
 	{
-		move_.y += 0.1f;
+		float angle = ToRadian(360.0f);
+		rotate_ -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
+		//move_.y += PlayEaseIn();
 		checkPosition_.y += move_.y;
+	}
+
+	if(rotateTimer_ >= 0)
+	{
+		rotateTimer_--;
+	}
+	else
+	{
 	}
 
 	check_->SetPosition(checkPosition_);
