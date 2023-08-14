@@ -117,6 +117,7 @@ void TitleScene::Update()
 {
 	camera_->Update();
 
+	
 	titleSprite_->matUpdate();
 	clickSprite_->matUpdate();
 	aButtonSprite_->matUpdate();
@@ -255,6 +256,12 @@ void TitleScene::Draw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
+	titleSprite_->Update();
+	clickSprite_->Update();
+	aButtonSprite_->Update();
+	bButtonSprite_->Update();
+	backGroundSprite_->Update();
+
 	//titleSprite_->Draw("WhiteTex");
 	backGroundSprite_->Draw("WhiteTex");
 	titleSprite_->Draw("TitleFont.png");

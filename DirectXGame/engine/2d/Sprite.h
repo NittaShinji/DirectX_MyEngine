@@ -29,7 +29,14 @@ public:
 
 	//void TexMapping();
 
+	void TransferVertices();
 
+	void Update();
+
+	//テンプレートコンストラクタ
+	template <typename Type1, typename Type2>
+	//定数バッファの生成
+	ComPtr<ID3D12Resource> CrateConstBuff(Type1*& constMapData, Type2* directXBasic_);
 
 protected:
 
@@ -57,8 +64,8 @@ protected:
 	float winHeight_;
 
 	//スプライトの長さ
-	float wide_;
-	float height_;
+	UINT width_;
+	UINT height_;
 
 	//スケーリング倍率
 	Vector3 scale_;
@@ -113,6 +120,24 @@ protected:
 
 	D3D12_RESOURCE_DESC resDesc_{};
 
+	// 射影行列
+	static Matrix4 matProjection_;
+
+	// 頂点バッファマップ
+	Vertex* vertMap_ = nullptr;
+
+	//色用の定数バッファ
+	ComPtr<ID3D12Resource> constBuffMaterial_ = nullptr;
+	//ID3D12Resource* constBuffMaterial = nullptr;
+	//座標用の定数バッファ
+	ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
+
+	//定数バッファのGPUリソースのポインタ
+	SpriteCommon::ConstBufferDataMaterial* constMapMaterial_ = nullptr;
+	//定数バッファのマッピング用ポインタ
+	SpriteCommon::ConstBufferDataTransform* constMapTransform_ = nullptr;
+
+
 public:
 
 	std::array <Vertex, kVertexCount_> GetterVertex() { return vertices_; };
@@ -138,4 +163,6 @@ public:
 	void SetIsFlipX(bool isFlipX) { isFlipX_ = isFlipX; };
 	void SetIsFlipY(bool isFlipY) { isFlipY_ = isFlipY; };
 	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
+	void SetWidth(UINT width) { width_ = width; }
+	void SetHeight(UINT height) { height_ = height; }
 };

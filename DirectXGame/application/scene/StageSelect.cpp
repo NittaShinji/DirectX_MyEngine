@@ -110,6 +110,11 @@ void StageSelectScene::Draw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
+	BackGroundWhite_->Update();
+	selectSprite_->Update();
+	BackGroundLeft_->Update();
+	BackGroundRight_->Update();
+
 	BackGroundWhite_->Draw("WhiteTex");
 	selectSprite_->Draw("CursorTex");
 	BackGroundLeft_->Draw("BackGroundTex");

@@ -55,20 +55,15 @@ void ClearScene::Initialize()
 void ClearScene::Update()
 {
 	//アンカーポイントの設定
-	Vector2 anchorPoint = { 0.0f,0.0f };
-	end_->SetAnchorPoint(anchorPoint);
 	end_->matUpdate();
-	aButton_->SetAnchorPoint(anchorPoint);
 	aButton_->matUpdate();
-
-	check_->SetAnchorPoint(anchorPoint);
 
 	
 	if(checkPosition_.y <= (WindowsAPI::kWindow_height_ / 2) - 112.0f)
 	{
 		float angle = ToRadian(360.0f);
-		rotate_ -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
-		//move_.y += PlayEaseIn();
+		//rotate_ -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
+		move_.y += 0.1f;
 		checkPosition_.y += move_.y;
 	}
 
@@ -81,6 +76,7 @@ void ClearScene::Update()
 	}
 
 	check_->SetPosition(checkPosition_);
+	check_->SetRotation(ToRadian(180.0f));
 	check_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
@@ -99,6 +95,10 @@ void ClearScene::Draw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
+	end_->Update();
+	check_->Update();
+	aButton_->Update();
+
 	end_->Draw("WhiteTex");
 	check_->Draw("check.png");
 	aButton_->Draw("A.png");

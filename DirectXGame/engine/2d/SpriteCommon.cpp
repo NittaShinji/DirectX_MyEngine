@@ -56,17 +56,17 @@ void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 	directXBasic_ = directXBasic;
 
 	//定数バッファの生成
-	constBuffMaterial_ = CrateConstBuff<ConstBufferDataMaterial, DirectXBasic>(constMapMaterial_, directXBasic_);
-	constBuffTransform_ = CrateConstBuff<ConstBufferDataTransform, DirectXBasic>(constMapTransform_, directXBasic_);
+	//constBuffMaterial_ = CrateConstBuff<ConstBufferDataMaterial, DirectXBasic>(constMapMaterial_, directXBasic_);
+	//constBuffTransform_ = CrateConstBuff<ConstBufferDataTransform, DirectXBasic>(constMapTransform_, directXBasic_);
 
-	//単位行列を代入
-	constMapTransform_->mat = MatrixIdentity();
+	////単位行列を代入
+	//constMapTransform_->mat = MatrixIdentity();
 
-	constMapTransform_->mat.m[0][0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
-	constMapTransform_->mat.m[1][1] = -2.0f / directXBasic_->GetWinHeight();	//ウインドウ縦幅
-	//画面半分の平行移動
-	constMapTransform_->mat.m[3][0] = -1.0f;
-	constMapTransform_->mat.m[3][1] = 1.0f;
+	//constMapTransform_->mat.m[0][0] = 2.0f / directXBasic_->GetWinWidth();		//ウインドウ横幅
+	//constMapTransform_->mat.m[1][1] = -2.0f / directXBasic_->GetWinHeight();	//ウインドウ縦幅
+	////画面半分の平行移動
+	//constMapTransform_->mat.m[3][0] = -1.0f;
+	//constMapTransform_->mat.m[3][1] = 1.0f;
 
 	//デスクリプタヒープの設定
 	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
@@ -411,7 +411,7 @@ void SpriteCommon::LoadTexture(const std::string& fileName)
 void SpriteCommon::Update()
 {
 	//定数バッファビュー(CBV)の設定コマンド
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial_->GetGPUVirtualAddress());
+	/*directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial_->GetGPUVirtualAddress());*/
 }
 
 void SpriteCommon::VertexLayoutSet()
