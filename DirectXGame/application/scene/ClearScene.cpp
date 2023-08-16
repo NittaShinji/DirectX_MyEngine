@@ -21,9 +21,11 @@ void ClearScene::Initialize()
 	end_->Initialize(titlePosition, titleSize);
 
 	Vector2 checkSize = { 157.0f,112.0f };
-	checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) - (checkSize.x / 2);
-	//checkPosition_.y = (WindowsAPI::kWindow_height_ / 2) - (checkSize.y);
-	checkPosition_.y = 0.0f;
+	//checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) - (checkSize.x / 2);
+	checkPosition_.x = (WindowsAPI::kWindow_width_ / 2);
+
+	checkPosition_.y = (WindowsAPI::kWindow_height_ / 2) - (checkSize.y);
+	//checkPosition_.y = 0.0f;
 
 	check_->Initialize(checkPosition_, checkSize);
 
@@ -50,16 +52,19 @@ void ClearScene::Initialize()
 
 	//変数
 	move_ = {0.0f,0.0f};
+
+	//アンカーポイントの設定
+	Vector2 checkAnchorPoint = { 0.5f,0.5f };
+	check_->SetAnchorPoint(checkAnchorPoint);
 }
 
 void ClearScene::Update()
 {
-	//アンカーポイントの設定
 	end_->matUpdate();
 	aButton_->matUpdate();
 
 	
-	if(checkPosition_.y <= (WindowsAPI::kWindow_height_ / 2) - 112.0f)
+	if(checkPosition_.y <= (WindowsAPI::kWindow_height_ / 2))
 	{
 		float angle = ToRadian(360.0f);
 		//rotate_ -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
@@ -75,8 +80,8 @@ void ClearScene::Update()
 	{
 	}
 
-	check_->SetPosition(checkPosition_);
-	check_->SetRotation(ToRadian(180.0f));
+	//check_->SetPosition(checkPosition_);
+	check_->SetRotation(ToRadian(360.0f));
 	check_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
