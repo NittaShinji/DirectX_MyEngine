@@ -19,6 +19,7 @@
 #include "BaseScene.h"
 #include "Stage.h"
 #include "ParticleManager.h"
+#include "BackGround.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -78,6 +79,8 @@ private:
 
 	//”wŒi
 	std::unique_ptr<Object3d> skydome_ = nullptr;
+	std::unique_ptr<BackGround> backGround_ = nullptr;
+	
 
 	//ƒQ[ƒ€ƒpƒbƒh
 	std::unique_ptr<GamePad> gamePad_ = nullptr;

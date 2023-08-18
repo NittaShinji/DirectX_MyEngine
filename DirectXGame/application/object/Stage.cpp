@@ -24,6 +24,7 @@ void Stage::Initialize()
 			newObject = TouchableObject::Create(objectData.fileName);
 
 			Vector3 pos;
+
 			pos = objectData.translation;
 			newObject->SetTransform(pos);
 

@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\application\object\BackGround.cpp" />
     <ClCompile Include="DirectXGame\application\scene\ClearScene.cpp" />
     <ClCompile Include="DirectXGame\application\particle\ParticleManager.cpp" />
     <ClCompile Include="DirectXGame\application\scene\StageSelect.cpp" />
@@ -138,6 +139,7 @@
     <ClCompile Include="DirectXGame\application\object\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\application\object\BackGround.h" />
     <ClInclude Include="DirectXGame\application\scene\ClearScene.h" />
     <ClInclude Include="DirectXGame\application\object\ObjectAttribute.h" />
     <ClInclude Include="DirectXGame\application\particle\ParticleManager.h" />

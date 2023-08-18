@@ -54,15 +54,21 @@ void GameScene::Initialize()
 	const string testStage0 = "testStage0";
 	const string ground = "ground";
 	const string skydome = "skydome";
+	const string cube = "Cube";
+
 
 	Model::Load(sphere);
 	Model::Load(testStage0);
 	Model::Load(skydome);
+	Model::Load(cube);
 
 	//3Dオブジェクトの生成
 
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize();
+
+	backGround_ = std::make_unique<BackGround>();
+	backGround_->Initialize();
 
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
@@ -208,6 +214,8 @@ void GameScene::Update()
 	stage_->Update(gameCamera_.get());
 	player_->Update(gameCamera_.get());
 	skydome_->Update(gameCamera_.get());
+	backGround_->Update(gameCamera_.get());
+
 	particleManager_->Update(gameCamera_.get());
 
 #ifdef _DEBUG
@@ -256,6 +264,7 @@ void GameScene::Draw()
 	//モデル描画
 	Object3d::BeforeDraw();
 	//skydome_->Draw();
+	backGround_->Draw();
 	stage_->Draw();
 	player_->Draw();
 
