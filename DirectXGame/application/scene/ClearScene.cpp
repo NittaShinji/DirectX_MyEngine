@@ -24,8 +24,8 @@ void ClearScene::Initialize()
 	//checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) - (checkSize.x / 2);
 	checkPosition_.x = (WindowsAPI::kWindow_width_ / 2);
 
-	checkPosition_.y = (WindowsAPI::kWindow_height_ / 2) - (checkSize.y);
-	//checkPosition_.y = 0.0f;
+	//checkPosition_.y = (WindowsAPI::kWindow_height_ / 2) - (checkSize.y);
+	checkPosition_.y = 0.0f;
 
 	check_->Initialize(checkPosition_, checkSize);
 
@@ -80,7 +80,7 @@ void ClearScene::Update()
 	{
 	}
 
-	//check_->SetPosition(checkPosition_);
+	check_->SetPosition(checkPosition_);
 	check_->SetRotation(ToRadian(360.0f));
 	check_->matUpdate();
 

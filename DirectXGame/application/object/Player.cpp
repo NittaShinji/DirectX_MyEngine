@@ -29,7 +29,6 @@ void Player::Initialize()
 	Object3d::Initialize();
 	Sound::GetInstance()->LoadSoundWave("jump.wav");
 
-
 	position_ = { 0,2,2 };
 	rotation_ = { 0,0,0 };
 	scale_ = { 1.0,1.0,1.0 };
@@ -73,7 +72,7 @@ void Player::Update(Camera* camera)
 
 	gamePad_->PushedButtonMoment();
 	
-	if(gamePad_->GetButtonB())
+	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		gamePad_->ResetButton();
 		//‘®«‚Ì•ÏX
@@ -132,23 +131,24 @@ void Player::Update(Camera* camera)
 				fallVec_ = { 0,jumpVYFist,0};
 				jumpCount -= 1;
 			}
-			/*if(keys_->PushedKeyMoment(DIK_SPACE))
+			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
-				fallVec_ = { 0,jumpVYFist,0,0 };
+				fallVec_ = { 0,jumpVYFist,0 };
 				jumpCount -= 1;
-			}	*/
+			}	
 		}
 	}
 	//ƒWƒƒƒ“ƒv‘€ì
-	/*else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
+	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
+		Sound::GetInstance()->PlaySoundWave("jump.wav");
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
-		fallVec_ = { 0,jumpVYFist,0,0 };
+		fallVec_ = { 0,jumpVYFist,0};
 		jumpCount -= 1;
-	}*/
+	}
 	else if(gamePad_->GetButtonA() && jumpCount > 0)
 	{
 		Sound::GetInstance()->PlaySoundWave("jump.wav");

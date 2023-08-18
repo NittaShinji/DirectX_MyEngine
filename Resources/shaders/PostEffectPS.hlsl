@@ -15,9 +15,8 @@ float4 main(VSOutput input) : SV_TARGET
 {
     //色反転
     //float4 colortex0 = float4(1 - tex0.Sample(smp, input.uv).rgb,1);
-    float4 colortex0 = float4(tex0.Sample(smp, input.uv).rgb,1);
+    float4 colortex0 = float4(tex0.Sample(smp, input.uv).rgb, 1);
     
-   
     //ガウシアンブラー
     float totalWeight = 0, _Sigma = 0.005, _StepWidth = 0.001;
     float4 colortex1 = float4(0, 0, 0, 0);
@@ -45,5 +44,21 @@ float4 main(VSOutput input) : SV_TARGET
     
     return float4(color.rgb, 1);
     
-    
+    //float totalWeight = 0, _Sigma = 0.005, _StepWidth = 0.001;
+    //float4 texcolor = float4(0, 0, 0, 0);
+
+    //for (float py = -_Sigma * 2; py <= _Sigma * 2; py += _StepWidth)
+    //{
+    //    for (float px = -_Sigma * 2; px <= _Sigma * 2; px += _StepWidth)
+    //    {
+    //        float2 pickUV = input.uv + float2(px, py);
+    //        float weight = Gaussian(input.uv, pickUV, _Sigma);
+    //        texcolor += tex0.Sample(smp, pickUV) * weight;
+    //        totalWeight += weight;
+    //    }
+    //}
+
+    //texcolor.rgb = texcolor.rgb / totalWeight;
+    //texcolor.a = 1;
+    //return texcolor;
 }
