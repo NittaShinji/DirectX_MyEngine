@@ -17,7 +17,7 @@ void Stage::Initialize()
 		if(it != models_.end()) { model = &it->second; }
 		//モデルを指定して3Dオブジェクトを作成
 
-		if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "skydome")
+		if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "skydome" || objectData.fileName == "Plane")
 		{
 			//3Dオブジェクトの生成
 			std::unique_ptr<TouchableObject> newObject = nullptr;

@@ -102,6 +102,7 @@ public:
 	bool GetIsDead() { return isDead_; }
 	Vector3 GetPos() { return position_; }
 	bool GetOnGround() { return onGround_; }
+	Attribute GetAttribute() { return attribute_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }

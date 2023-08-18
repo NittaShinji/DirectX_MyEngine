@@ -56,9 +56,9 @@ void StageSelectScene::Initialize()
 	SpriteCommon::GetInstance()->SemiTransparent();
 	//ƒTƒEƒ“ƒh
 	Sound::GetInstance()->Initialize();
-	//Sound::GetInstance()->LoadSoundWave("title.wav");
+	Sound::GetInstance()->LoadSoundWave("title.wav");
 	Sound::GetInstance()->LoadSoundWave("touch.wav");
-	//Sound::GetInstance()->PlaySoundWave("title.wav");
+	Sound::GetInstance()->PlaySoundWave("title.wav");
 }
 
 void StageSelectScene::Update()

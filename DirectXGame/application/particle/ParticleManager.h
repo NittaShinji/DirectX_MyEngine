@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Camera.h"
 #include "Vector4.h"
+#include "ObjectAttribute.h"
 #include <forward_list>
 
 /// <summary>
@@ -105,7 +106,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update(Camera* camera);
+	void Update(Camera* camera, Attribute attribute);
 
 	/// <summary>
 	/// 描画

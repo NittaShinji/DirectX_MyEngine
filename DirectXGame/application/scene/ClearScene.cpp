@@ -66,10 +66,14 @@ void ClearScene::Update()
 	
 	if(checkPosition_.y <= (WindowsAPI::kWindow_height_ / 2))
 	{
-		float angle = ToRadian(360.0f);
-		//rotate_ -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
-		move_.y += 0.1f;
+		move_.y += 0.6f;
 		checkPosition_.y += move_.y;
+	}
+
+	if(rotate_ <= ToRadian(360.0f))
+	{
+		float angle = ToRadian(360.0f);
+		rotate_ -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
 	}
 
 	if(rotateTimer_ >= 0)
@@ -81,7 +85,7 @@ void ClearScene::Update()
 	}
 
 	check_->SetPosition(checkPosition_);
-	check_->SetRotation(ToRadian(360.0f));
+	check_->SetRotation(rotate_);
 	check_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか

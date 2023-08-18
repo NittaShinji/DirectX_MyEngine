@@ -36,7 +36,7 @@ private:
 	float rotate_;
 
 	//1ü‰ñ‚éŠÔ
-	const float kRotateTime_ = 90.0f;
+	const float kRotateTime_ = 30.0f;
 	float rotateTimer_ = kRotateTime_;
 };
 

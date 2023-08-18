@@ -55,12 +55,13 @@ void GameScene::Initialize()
 	const string ground = "ground";
 	const string skydome = "skydome";
 	const string cube = "Cube";
-
+	const string plane = "Plane";
 
 	Model::Load(sphere);
 	Model::Load(testStage0);
 	Model::Load(skydome);
 	Model::Load(cube);
+	Model::Load(plane);
 
 	//3Dオブジェクトの生成
 
@@ -171,13 +172,24 @@ void GameScene::Update()
 			Vector3 acc{};
 			const float md_acc = 0.001f;
 			acc.y = (float)rand() / RAND_MAX * md_acc;
+
 			//色を変化させる
-			Vector4 colorSpeed{ 0.0f,0.0f,0.0f,1.0f };
+			if(player_->GetAttribute() == Attribute::pink)
+			{
+				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
+			}
+			else if(player_->GetAttribute() == Attribute::yellow)
+			{
+				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
+			}
 			
+			//色を変化させる
+			Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
 			//追加
 			if(particleManager_->GetIsMaxParticle() == false)
 			{
-				particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
+				particleManager_->Add(60, pos, vel, acc, colorSpeed, 2.0f, 1.0f);
 			}
 		}
 	}
@@ -198,10 +210,10 @@ void GameScene::Update()
 		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 		Vector3 acc{};
-		const float md_acc = 0.001f;
+		const float md_acc = 0.01f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 		//色を変化させる
-		Vector4 colorSpeed{0.0f,0.0f,0.0f,1.0f};
+		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f};
 		
 		//追加
 		if(particleManager_->GetIsMaxParticle() == false)
@@ -216,7 +228,7 @@ void GameScene::Update()
 	skydome_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	particleManager_->Update(gameCamera_.get());
+	particleManager_->Update(gameCamera_.get(),player_->GetAttribute());
 
 #ifdef _DEBUG
 

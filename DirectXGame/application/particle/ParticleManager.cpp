@@ -102,7 +102,7 @@ void ParticleManager::SetScale()
 	}
 }
 
-void ParticleManager::Update(Camera* camera)
+void ParticleManager::Update(Camera* camera, Attribute attribute)
 {
 	HRESULT result;
 
@@ -160,11 +160,55 @@ void ParticleManager::Update(Camera* camera)
 			//スケール
 			vertMap->scale = it->scale;
 
-			vertMap->color.x = it->color.x + it->colorSpeed.x;
-			vertMap->color.y = it->color.y + it->colorSpeed.y;
-			vertMap->color.z = it->color.z + it->colorSpeed.z;
-			vertMap->color.w = it->color.w + it->colorSpeed.w;
+			if(attribute == Attribute::pink)
+			{
+				vertMap->color.x = it->color.x + it->colorSpeed.x;
+				vertMap->color.y = it->color.y + it->colorSpeed.y;
+				vertMap->color.z = it->color.z + it->colorSpeed.z;
+				vertMap->color.w = it->color.w + it->colorSpeed.w;
 
+				
+				if(vertMap->color.x <= 0.965f)
+				{
+					vertMap->color.x = 0.965f;
+				}
+				if(vertMap->color.y <= 0.122f)
+				{
+					vertMap->color.y = 0.122f;
+				}
+				if(vertMap->color.z <= 0.325f)
+				{
+					vertMap->color.z = 0.325f;
+				}
+			}
+			else if(attribute == Attribute::yellow)
+			{
+				vertMap->color.x = it->color.x + it->colorSpeed.x;
+				vertMap->color.y = it->color.y + it->colorSpeed.y;
+				vertMap->color.z = it->color.z + it->colorSpeed.z;
+				vertMap->color.w = it->color.w + it->colorSpeed.w;
+
+				if(vertMap->color.x <= 0.957f)
+				{
+					vertMap->color.x = 0.957f;
+				}
+				if(vertMap->color.y <= 0.596f)
+				{
+					vertMap->color.y = 0.596f;
+				}
+				if(vertMap->color.z <= 0.333f)
+				{
+					vertMap->color.z = 0.1f;
+				}
+			}
+			else
+			{
+				/*vertMap->color.x = it->color.x + it->colorSpeed.x;
+				vertMap->color.y = it->color.y + it->colorSpeed.y;
+				vertMap->color.z = it->color.z + it->colorSpeed.z;
+				vertMap->color.w = it->color.w + it->colorSpeed.w;*/
+			}
+			
 			//次の頂点へ
 			vertMap++;
 		}
@@ -174,7 +218,6 @@ void ParticleManager::Update(Camera* camera)
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
-	//constMap->color = color;// 行列の合成
 	constMap->viewProjection = matView_ * matProjection_;	// 行列の合成
 	//constMap->matBillboard = matBillboard;
 	constBuff_->Unmap(0, nullptr);
