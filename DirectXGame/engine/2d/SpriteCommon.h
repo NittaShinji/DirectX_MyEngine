@@ -95,17 +95,6 @@ private:
 	//頂点レイアウト
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout_{};
 
-	////色用の定数バッファ
-	//ComPtr<ID3D12Resource> constBuffMaterial_ = nullptr;
-	////ID3D12Resource* constBuffMaterial = nullptr;
-	////座標用の定数バッファ
-	//ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
-
-	////定数バッファのGPUリソースのポインタ
-	//ConstBufferDataMaterial* constMapMaterial_ = nullptr;
-	////定数バッファのマッピング用ポインタ
-	//ConstBufferDataTransform* constMapTransform_ = nullptr;
-
 	//グラフィックスパイプライン
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
 
@@ -142,10 +131,6 @@ public:
 
 	//ゲッター
 	DirectXBasic* GetDirectXBasic() const { return directXBasic_; };
-	//ComPtr<ID3D12Resource> GetConstBuffMaterial() const { return constBuffMaterial_; };
-	//ConstBufferDataMaterial* GetConstMapMaterial() const { return constMapMaterial_; };
-	//ComPtr<ID3D12Resource> GetConstBuffTransform() const { return constBuffTransform_; };
-	//ConstBufferDataTransform* GetConstMapTransform() const { return constMapTransform_; };
 	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
 	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
 	ComPtr<ID3D12PipelineState> GetPipelineState() { return pipelineState_; };
