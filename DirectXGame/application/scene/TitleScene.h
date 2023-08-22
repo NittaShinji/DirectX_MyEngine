@@ -61,8 +61,6 @@ private:
 	bool isChangeScene_;
 	Vector3 move_ = { 0,0,0 };
 
-
-
 	float rotateAcc_;
 	float moveRotate_;
 

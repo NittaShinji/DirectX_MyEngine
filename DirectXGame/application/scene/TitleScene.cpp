@@ -13,6 +13,7 @@ void TitleScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGu
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
+	TextureManager::StaticInitialize(directXBasic_->GetDevice().Get());
 	Sprite::StaticInitialize();
 	Model::StaticInitialize(directXBasic_);
 	Object3d::StaticInitialize(directXBasic_);
@@ -23,6 +24,7 @@ void TitleScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGu
 
 void TitleScene::Initialize()
 {
+	TextureManager::GetInstance()->Initialize();
 	gamePad_ = std::make_unique<GamePad>();
 	gamePad_->Initialzie(Player1);
 
@@ -46,17 +48,23 @@ void TitleScene::Initialize()
 	bButtonSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_ = std::make_unique<Sprite>();
 
-	SpriteCommon::GetInstance()->LoadTexture("TitleFont.png");
+	TextureManager::GetInstance()->LoadTexture("TitleFont.png");
+	TextureManager::GetInstance()->LoadTexture("A.png");
+	TextureManager::GetInstance()->LoadTexture("B.png");
+	TextureManager::GetInstance()->LoadTexture("click.png");
+	/*SpriteCommon::GetInstance()->LoadTexture("TitleFont.png");
 	SpriteCommon::GetInstance()->LoadTexture("A.png");
 	SpriteCommon::GetInstance()->LoadTexture("B.png");
-	SpriteCommon::GetInstance()->LoadTexture("click.png");
+	SpriteCommon::GetInstance()->LoadTexture("click.png");*/
 
 	Vector2 backGroundPosition = { 0.0f,0.0f };
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
 	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight};
 
-	SpriteCommon::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");
+	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");
+	/*SpriteCommon::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");*/
+
 
 	Vector2 titlePosition = { 400.0f,33.0f };
 	const Vector2 titleSize = { 480.0f,103.0f };

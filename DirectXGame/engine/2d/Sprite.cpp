@@ -8,6 +8,7 @@ using namespace Microsoft::WRL;
 using namespace MathUtillty;
 
 SpriteCommon* Sprite::spriteCommon_ = nullptr;
+TextureManager* Sprite::textureManager_ = nullptr;
 DirectXBasic* Sprite::directXBasic_ = nullptr;
 KeyInput* Sprite::keys_ = nullptr;
 Matrix4 Sprite::matProjection_;
@@ -50,6 +51,7 @@ void Sprite::StaticInitialize()
 {
 	keys_ = KeyInput::GetInstance();
 	spriteCommon_ = SpriteCommon::GetInstance();
+	textureManager_ = TextureManager::GetInstance();
 }
 
 void Sprite::Initialize( Vector2 position, Vector2 size)
@@ -254,16 +256,22 @@ void Sprite::Draw(const std::string& fileName)
 	spriteCommon_->Update();
 
 	uint32_t textureIndex;
-	textureIndex = spriteCommon_->GetTextureMap().at(fileName);
+	//textureIndex = spriteCommon_->GetTextureMap().at(fileName);
+	textureIndex = textureManager_->GetTextureMap().at(fileName);
+
 
 	//頂点バッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView_);
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* heaps[] = { spriteCommon_->GetSRVHeap() };
+	//ID3D12DescriptorHeap* heaps[] = { spriteCommon_->GetSRVHeap() };
+	ID3D12DescriptorHeap* heaps[] = { textureManager_->GetSRVHeap() };
+
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, heaps);
 
 	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = spriteCommon_->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = spriteCommon_->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = textureManager_->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+
 
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);

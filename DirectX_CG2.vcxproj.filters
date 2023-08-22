@@ -276,7 +276,7 @@
     <ClCompile Include="DirectXGame\application\object\BackGround.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\TextureManager.cpp">
+    <ClCompile Include="DirectXGame\engine\2d\TextureManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -440,7 +440,7 @@
     <ClInclude Include="DirectXGame\application\object\BackGround.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="DirectXGame\engine\TextureManager.h">
+    <ClInclude Include="DirectXGame\engine\2d\TextureManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

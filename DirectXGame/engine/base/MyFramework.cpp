@@ -36,6 +36,10 @@ void MyFramework::Initialize()
 	HRESULT result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	//マスターボイスの生成
 	result = xAudio2->CreateMasteringVoice(&masterVoice);
+
+	//テクスチャマネージャ初期化
+	TextureManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get());
+	TextureManager::GetInstance()->Initialize();
 	
 	//スプライト
 	SpriteCommon::GetInstance()->Initialize(directXBasic_.get());

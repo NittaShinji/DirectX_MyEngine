@@ -27,7 +27,9 @@ void MyGame::Initialize()
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
 	//ポストエフェクト用テクスチャの読み込み
-	SpriteCommon::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, Vector4(1.0f, 0.0f, 0.0f, 1.0f), "RedTex");
+	//SpriteCommon::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, Vector4(1.0f, 0.0f, 0.0f, 1.0f), "RedTex");
+	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, Vector4(1.0f, 0.0f, 0.0f, 1.0f), "RedTex");
+
 	//SpriteCommon::GetInstance()->LoadTexture("postEffect.png");
 	postEffect_->Initialize(directXBasic_.get());
 

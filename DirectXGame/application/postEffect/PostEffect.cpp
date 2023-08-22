@@ -304,7 +304,9 @@ void PostEffect::Draw(const std::string& fileName)
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	uint32_t textureIndex;
-	textureIndex = spriteCommon_->GetTextureMap().at(fileName);
+	//textureIndex = spriteCommon_->GetTextureMap().at(fileName);
+	textureIndex = textureManager_->GetTextureMap().at(fileName);
+
 
 	//取得したサイズを使用してハンドルを進める
 	for(uint32_t i = 0; i < textureIndex; i++)

@@ -54,6 +54,7 @@ protected:
 		Vector2 uv; // uvç¿ïW
 	};
 
+	static TextureManager* textureManager_;
 	static SpriteCommon* spriteCommon_;
 
 	static DirectXBasic* directXBasic_;

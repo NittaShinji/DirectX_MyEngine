@@ -5,14 +5,25 @@
 #include <array>
 #include <map>
 
-class TextureManager
+class TextureManager final
 {
 private:
 
 	//エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+private:
+
+	TextureManager();
+	~TextureManager();
+
 public:
+
+	static TextureManager* GetInstance()
+	{
+		static TextureManager textureManager;
+		return &textureManager;
+	}
 
 	//静的初期化
 	static void StaticInitialize(ID3D12Device* device);
@@ -49,6 +60,13 @@ private:
 
 	static ID3D12Device* device_;
 	static ID3D12GraphicsCommandList* cmdList_;
+
+public:
+
+	//コピーコンストラクタを無効
+	TextureManager(const TextureManager& textureManager) = delete;
+	//代入演算子を無効
+	TextureManager& operator= (const TextureManager& textureManager) = delete;
 
 public:
 
