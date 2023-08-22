@@ -92,6 +92,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp" />
     <ClCompile Include="DirectXGame\application\object\BackGround.cpp" />
     <ClCompile Include="DirectXGame\application\scene\ClearScene.cpp" />
     <ClCompile Include="DirectXGame\application\particle\ParticleManager.cpp" />
@@ -111,7 +112,6 @@
     <ClCompile Include="DirectXGame\engine\collision\CollisionManager.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\SphereCollider.cpp" />
     <ClCompile Include="DirectXGame\application\scene\GameScene.cpp" />
-    <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp" />
     <ClCompile Include="DirectXGame\engine\io\Input.cpp" />
     <ClCompile Include="DirectXGame\engine\io\KeyInput.cpp" />
     <ClCompile Include="DirectXGame\engine\light\LightGroup.cpp" />
@@ -140,6 +140,7 @@
     <ClCompile Include="DirectXGame\engine\2d\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h" />
     <ClInclude Include="DirectXGame\application\object\BackGround.h" />
     <ClInclude Include="DirectXGame\application\scene\ClearScene.h" />
     <ClInclude Include="DirectXGame\application\object\ObjectAttribute.h" />
@@ -167,7 +168,6 @@
     <ClInclude Include="DirectXGame\engine\light\DirectionalLight.h" />
     <ClInclude Include="DirectXGame\engine\base\DirectXBasic.h" />
     <ClInclude Include="DirectXGame\application\scene\GameScene.h" />
-    <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h" />
     <ClInclude Include="DirectXGame\engine\io\Input.h" />
     <ClInclude Include="DirectXGame\engine\io\KeyInput.h" />
     <ClInclude Include="DirectXGame\engine\light\LightGroup.h" />
