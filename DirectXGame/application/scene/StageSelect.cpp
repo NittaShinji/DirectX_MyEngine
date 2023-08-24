@@ -4,6 +4,7 @@
 #include "WindowsAPI.h"
 #include "Vector2.h"
 #include "Easing.h"
+#include "TextureManager.h"
 
 DirectXBasic* StageSelectScene::directXBasic_ = nullptr;
 ImGuiManager* StageSelectScene::imGuiManager_ = nullptr;
@@ -33,10 +34,13 @@ void StageSelectScene::Initialize()
 	const int32_t selectWidth = 640;
 	const int32_t selectHeight = 400;
 	const Vector2 selectSize = { selectWidth,selectHeight };
-	SpriteCommon::GetInstance()->TexMapping(selectWidth, selectHeight,Vector4(0.0f,0.0f,1.0f,1.0f),"CursorTex");
+	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight,Vector4(0.0f,0.0f,1.0f,1.0f),"CursorTex");
 	//灰色のテクスチャ―
-	SpriteCommon::GetInstance()->TexMapping(600, 360,Vector4(0.746f,0.746f,0.746f,1.0f),"BackGroundTex");
-	
+	TextureManager::GetInstance()->TexMapping(600, 360,Vector4(0.746f,0.746f,0.746f,1.0f),"BackGroundTex");
+	//SpriteCommon::GetInstance()->TexMapping(selectWidth, selectHeight,Vector4(0.0f,0.0f,1.0f,1.0f),"CursorTex");
+	////灰色のテクスチャ―
+	//SpriteCommon::GetInstance()->TexMapping(600, 360,Vector4(0.746f,0.746f,0.746f,1.0f),"BackGroundTex");
+	//
 	Vector2 selectPosition = { 0.0f,160.0f };
 	selectSprite_->Initialize(selectPosition, selectSize);
 

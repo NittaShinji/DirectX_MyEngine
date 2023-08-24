@@ -15,7 +15,7 @@ const size_t kMaxSRVCount_ = 2056;
 //テクスチャバッファ
 std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> TextureManager::textureBuffers_;
 //デフォルトテクスチャ格納ディレクトリ
-std::string TextureManager::kDefaultTextureDirectoryPath_;
+std::string TextureManager::kDefaultTextureDirectoryPath_ = "Resources/Sprite/";
 //テクスチャ番号
 uint32_t TextureManager::sTextureIndex_;
 //画像に結び付いたテクスチャ番号格納用map

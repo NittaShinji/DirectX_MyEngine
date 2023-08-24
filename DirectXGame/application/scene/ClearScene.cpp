@@ -3,6 +3,7 @@
 #include "Sound.h"
 #include "Easing.h"
 #include "MathUtillity.h"
+#include "TextureManager.h"
 
 using namespace MathUtillty;
 
@@ -13,8 +14,8 @@ void ClearScene::Initialize()
 	aButton_ = std::make_unique<Sprite>();
 
 	//SpriteCommon::GetInstance()->LoadTexture("end.png");
-	SpriteCommon::GetInstance()->LoadTexture("check.png");
-	SpriteCommon::GetInstance()->LoadTexture("A.png");
+	TextureManager::GetInstance()->LoadTexture("check.png");
+	TextureManager::GetInstance()->LoadTexture("A.png");
 
 	Vector2 titlePosition = { 0.0f,0.0f };
 	Vector2 titleSize = { 1280.0f,720.0f };
