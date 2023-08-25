@@ -27,5 +27,17 @@ private: //メンバ変数
 
 	//ポストエフェクト
 	std::unique_ptr<PostEffect> postEffect_ = nullptr;
+
+	//ライト
+	LightGroup* lightGroup_ = nullptr;
+
+	//背景
+	std::unique_ptr<BackGround> backGround_ = nullptr;
+	//std::unique_ptr<Object3d> titleSphere_ = nullptr;
+
+	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
+
+	std::unique_ptr<Camera> testCamera_ = nullptr;
+
 };
 

@@ -42,17 +42,29 @@ void PostEffect::Initialize(DirectXBasic* directXBasic)
 
 	//頂点データ
 	vertices[LB] = {
-		{ -1.0f , -1.0f, 0.0f }, {0.0f,1.0f}//左下
+		{ -0.5f , -0.5f, 0.0f }, {0.0f,1.0f}//左下
 	};
 	vertices[LT] = {
-		{ -1.0f ,+1.0f, 0.0f }, {0.0f,0.0f}//左上
+		{ -0.5f ,+0.5f, 0.0f }, {0.0f,0.0f}//左上
 	};
 	vertices[RB] = {
-		{ +1.0f, -1.0f, 0.0f }, {1.0f,1.0f}//右下
+		{ +0.5f, -0.5f, 0.0f }, {1.0f,1.0f}//右下
 	};
 	vertices[RT] = {
-		{ +1.0f, +1.0f, 0.0f }, {1.0f,0.0f}//右上
+		{ +0.5f, +0.5f, 0.0f }, {1.0f,0.0f}//右上
 	};
+	//vertices[LB] = {
+	//	{ -1.0f , -1.0f, 0.0f }, {0.0f,1.0f}//左下
+	//};
+	//vertices[LT] = {
+	//	{ -1.0f ,+1.0f, 0.0f }, {0.0f,0.0f}//左上
+	//};
+	//vertices[RB] = {
+	//	{ +1.0f, -1.0f, 0.0f }, {1.0f,1.0f}//右下
+	//};
+	//vertices[RT] = {
+	//	{ +1.0f, +1.0f, 0.0f }, {1.0f,0.0f}//右上
+	//};
 
 	//頂点バッファへのデータ転送
 	Vertex* vertMap = nullptr;
@@ -253,21 +265,6 @@ void PostEffect::Initialize(DirectXBasic* directXBasic)
 
 void PostEffect::Draw(const std::string& fileName)
 {
-	//いずれかのキーを押していたら
-	//座標を移動する処理(Z座標)
-	if(keys_->HasPushedKey(DIK_UP)) { moveSpeed_.y -= 0.1f; }
-	else if(keys_->HasPushedKey(DIK_DOWN)) { moveSpeed_.y += 0.1f; }
-	else
-	{
-		moveSpeed_.y = 0.0f;
-	}
-	if(keys_->HasPushedKey(DIK_RIGHT)) { moveSpeed_.x += 0.1f; }
-	else if(keys_->HasPushedKey(DIK_LEFT)) { moveSpeed_.x -= 0.1f; }
-	else
-	{
-		moveSpeed_.x = 0.0f;
-	}
-
 	//定数バッファにデータ転送
 	SpriteCommon::ConstBufferDataTransform* constMapTransform = nullptr;
 	HRESULT result = this->constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform);
