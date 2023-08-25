@@ -28,6 +28,8 @@ public:
 
 	void Reset();
 
+	void ImGuiUpdate();
+
 private:
 
 	std::unique_ptr<Object3d> object_;

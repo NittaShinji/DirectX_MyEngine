@@ -4,6 +4,7 @@
 #include "CollisionAttribute.h"
 #include "Sound.h"
 #include "Easing.h"
+#include "ImGuiManager.h"
 
 using namespace std;
 
@@ -40,7 +41,7 @@ void Player::Initialize()
 
 	//コライダーの追加
 	float radius = 1.0f;
-	playerCollider_ = std::make_unique<SphereCollider>(Vector3({ 0,0,0}), radius);
+	playerCollider_ = std::make_unique<SphereCollider>(Vector3({ 0,0,0 }), radius);
 
 
 	//コライダーの登録
@@ -71,7 +72,7 @@ void Player::Update(Camera* camera)
 	}
 
 	gamePad_->PushedButtonMoment();
-	
+
 	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		gamePad_->ResetButton();
@@ -88,7 +89,7 @@ void Player::Update(Camera* camera)
 		{
 			attribute_ = Attribute::black;
 		}
-		
+
 		colorFlag_ = true;
 
 		if(attribute_ == Attribute::pink)
@@ -128,7 +129,7 @@ void Player::Update(Camera* camera)
 				Sound::GetInstance()->PlaySoundWave("jump.wav");
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
-				fallVec_ = { 0,jumpVYFist,0};
+				fallVec_ = { 0,jumpVYFist,0 };
 				jumpCount -= 1;
 			}
 			if(keys_->PushedKeyMoment(DIK_SPACE))
@@ -137,7 +138,7 @@ void Player::Update(Camera* camera)
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0 };
 				jumpCount -= 1;
-			}	
+			}
 		}
 	}
 	//ジャンプ操作
@@ -146,7 +147,7 @@ void Player::Update(Camera* camera)
 		Sound::GetInstance()->PlaySoundWave("jump.wav");
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
-		fallVec_ = { 0,jumpVYFist,0};
+		fallVec_ = { 0,jumpVYFist,0 };
 		jumpCount -= 1;
 	}
 	else if(gamePad_->GetButtonA() && jumpCount > 0)
@@ -155,7 +156,7 @@ void Player::Update(Camera* camera)
 		gamePad_->ResetButton();
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
-		fallVec_ = { 0,jumpVYFist,0};
+		fallVec_ = { 0,jumpVYFist,0 };
 		jumpCount -= 1;
 	}
 
@@ -176,7 +177,7 @@ void Player::Update(Camera* camera)
 	//接地状態
 	if(onGround_)
 	{
-		
+
 		//スムーズに坂を下る為の吸着距離
 		const float adsDistance = 0.2f;
 		//接地を維持
@@ -265,6 +266,20 @@ void Player::Reset()
 	isChangeColor = false;
 	attribute_ = Attribute::pink;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
+}
+
+void Player::ImGuiUpdate()
+{
+	//スプライトの編集ウインドウの表示
+
+	ImGui::Begin("Player");
+	ImGui::SetWindowPos(ImVec2(0, 0));
+	ImGui::SetWindowSize(ImVec2(300, 100));
+
+	ImGui::SliderFloat("PlayerPosY", &position_.y, -100.0f, 50.0f);
+	ImGui::SliderFloat("PlayerPosZ", &position_.z, -100.0f, 1000.0f);
+
+	ImGui::End();
 }
 
 

@@ -36,7 +36,7 @@ float4 main(VSOutput input) : SV_TARGET
     colortex1.rgb = colortex1.rgb / totalWeight;
     colortex1.a = 1;
     
-    float4 color = colortex1;
+    float4 color = colortex0;
     //if (fmod(input.uv.y, 0.1f) < 0.05f)
     //{
     //    color = colortex1;

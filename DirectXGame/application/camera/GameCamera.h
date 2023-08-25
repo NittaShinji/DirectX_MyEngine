@@ -11,5 +11,7 @@ public:
 	void Update(bool isPlayerMoving);
 
 	void Reset();
+
+	void ImGuiUpdate();
 };
 

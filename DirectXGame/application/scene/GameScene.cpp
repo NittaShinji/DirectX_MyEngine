@@ -48,6 +48,41 @@ void GameScene::Initialize()
 	collisionManager_ = CollisionManager::GetInstance();
 	sphereCollider_ = std::make_unique<SphereCollider>();
 
+	//スプライト
+	aButtonSprite_ = std::make_unique<Sprite>();
+	bButtonSprite_ = std::make_unique<Sprite>();
+	jumpSprite_ = std::make_unique<Sprite>();
+	arrowSprite_ = std::make_unique<Sprite>();
+
+	TextureManager::GetInstance()->LoadTexture("jump.png");
+	TextureManager::GetInstance()->LoadTexture("arrow.png");
+
+	const Vector2 aButtonSize = { 64.0f,64.0f };
+	Vector2 aButtonPosition;
+	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
+	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y * 4) + (aButtonSize.y / 2);
+
+	const Vector2 bButtonSize = { 64.0f,64.0f };
+	Vector2 bButtonPosition;
+	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
+	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y * 4) + (bButtonSize.y / 2);
+
+	const Vector2 jumpSpriteSize = { 64.0f,64.0f };
+	Vector2 jumpSpritePosition;
+	jumpSpritePosition.x = (WindowsAPI::kWindow_width_)-(jumpSpriteSize.x * 2);
+	jumpSpritePosition.y = (WindowsAPI::kWindow_height_ / 2) + (jumpSpriteSize.y * 3) + (jumpSpriteSize.y / 2);
+
+	const Vector2 arrowSize = { 64.0f,64.0f };
+	Vector2 arrowPosition;
+	arrowPosition.x = (WindowsAPI::kWindow_width_)-(arrowSize.x);
+	arrowPosition.y = (WindowsAPI::kWindow_height_ / 2) + (arrowSize.y * 3) + (arrowSize.y / 2);
+
+	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
+	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
+	jumpSprite_->Initialize(jumpSpritePosition, jumpSpriteSize);
+	arrowSprite_->Initialize(arrowPosition, arrowSize);
+
+
 	//モデル読み込み
 	const string sphere = "sphere";
 	const string test = "NoImageModel";
@@ -106,6 +141,16 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
+	playerPosX = player_->GetPos().x;
+	playerPosY = player_->GetPos().y;
+	playerPosZ = player_->GetPos().z;
+
+	//スプライト
+	aButtonSprite_->matUpdate();
+	bButtonSprite_->matUpdate();
+	jumpSprite_->matUpdate();
+	arrowSprite_->matUpdate();
+
 	if(gamePad_->IsConnected(Player1)) {}
 
 	gamePad_->PushedButtonMoment();
@@ -232,18 +277,27 @@ void GameScene::Update()
 
 #ifdef _DEBUG
 
-	//スプライトの編集ウインドウの表示
-	/*{
-		ImGui::Begin("Light");
-		ImGui::SetWindowPos(ImVec2(0, 0));
-		ImGui::SetWindowSize(ImVec2(500, 200));
+	gameCamera_->ImGuiUpdate();
+	player_->ImGuiUpdate();
 
-		ImGui::ColorEdit3("ambientColor", ambientColor0_, ImGuiColorEditFlags_Float);
-		ImGui::InputFloat3("lightDir0", lightDir0_);
-		ImGui::ColorEdit3("lightColor0", lightColor0_, ImGuiColorEditFlags_Float);
+	////スプライトの編集ウインドウの表示
+	//{
+	//	ImGui::Begin("Player");
+	//	ImGui::SetWindowPos(ImVec2(0, 0));
+	//	ImGui::SetWindowSize(ImVec2(500, 200));
 
-		ImGui::End();
-	}*/
+	//	//ImGui::ColorEdit3("ambientColor", ambientColor0_, ImGuiColorEditFlags_Float);
+	//	ImGui::SliderFloat("PlayerPosX", &playerPosX, 0.0f, 50.0f);
+	//	ImGui::SliderFloat("PlayerPosY", &playerPosY, 0.0f, 50.0f);
+	//	ImGui::SliderFloat("PlayerPosZ", &playerPosZ, 0.0f, 50.0f);
+
+	//	//ImGui::InputFloat3("PlayerPos", player_.get()->GetPos());
+	//	//ImGui::ColorEdit3("lightColor0", lightColor0_, ImGuiColorEditFlags_Float);
+
+	//	ImGui::End();
+	//}
+
+	//player_->SetTransform(Vector3(playerPosX, playerPosY, playerPosZ));
 
 #endif
 
@@ -282,5 +336,17 @@ void GameScene::Draw()
 
 	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
 	particleManager_->Draw();
+
+	SpriteCommon::GetInstance()->BeforeDraw();
+	SpriteCommon::GetInstance()->Update();
+	aButtonSprite_->Update();
+	bButtonSprite_->Update();
+	jumpSprite_->Update();
+	arrowSprite_->Update();
+
+	aButtonSprite_->Draw("A.png");
+	bButtonSprite_->Draw("B.png");
+	jumpSprite_->Draw("jump.png");
+	arrowSprite_->Draw("arrow.png");
 
 }

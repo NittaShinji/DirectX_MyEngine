@@ -112,5 +112,18 @@ private:
 	//パーティクル
 	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
 	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
+
+	//UIスプライト
+	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
+	std::unique_ptr<Sprite> jumpSprite_ = nullptr;
+
+	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
+	std::unique_ptr<Sprite> arrowSprite_ = nullptr;
+
+	float playerPosX;
+	float playerPosY;
+	float playerPosZ;
+
+
 };
 

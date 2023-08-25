@@ -92,8 +92,9 @@ void MyGame::Draw()
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
 	//モデル描画
-	Object3d::BeforeDraw();
-	backGround_->Draw();
+	/*Object3d::BeforeDraw();
+	backGround_->Draw();*/
+	SceneManager::GetInstance()->Draw();
 
 	postEffect_->PostDrawScene();
 
@@ -104,8 +105,7 @@ void MyGame::Draw()
 	postEffect_->Draw("RedTex");
 	
 	imGuiManager_->Draw();
-	SceneManager::GetInstance()->Draw();
-
+	
 	//描画終了
 	directXBasic_->AfterDraw();
 }
