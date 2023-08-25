@@ -263,7 +263,7 @@ void PostEffect::Initialize(DirectXBasic* directXBasic)
 	CreateGraphicsPipelineState();
 }
 
-void PostEffect::Draw(const std::string& fileName)
+void PostEffect::Draw()
 {
 	//定数バッファにデータ転送
 	SpriteCommon::ConstBufferDataTransform* constMapTransform = nullptr;
@@ -294,22 +294,8 @@ void PostEffect::Draw(const std::string& fileName)
 	ID3D12DescriptorHeap* heaps[] = { descHeapSRV.Get()};
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, heaps);
 
-	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descHeapSRV->GetGPUDescriptorHandleForHeapStart();
-
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-	uint32_t textureIndex;
-	//textureIndex = spriteCommon_->GetTextureMap().at(fileName);
-	textureIndex = textureManager_->GetTextureMap().at(fileName);
-
-
-	//取得したサイズを使用してハンドルを進める
-	for(uint32_t i = 0; i < textureIndex; i++)
-	{
-		srvGpuHandle.ptr += incrementSize;
-	}
 
 	//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(1,

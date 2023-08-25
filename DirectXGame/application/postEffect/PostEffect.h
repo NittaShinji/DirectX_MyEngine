@@ -25,7 +25,7 @@ public:
     /// 描画コマンドの発行
     /// </summary>
     /// <param name="cmdList">コマンドリスト</param>
-    void Draw(const std::string& fileName);
+    void Draw();
 
     /// <summary>
     /// パイプライン生成

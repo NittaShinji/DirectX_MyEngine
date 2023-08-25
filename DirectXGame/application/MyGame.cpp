@@ -76,7 +76,7 @@ void MyGame::Draw()
 	directXBasic_->BeforeDraw();
 
 	//ポストエフェクトの描画
-	postEffect_->Draw("RedTex");
+	postEffect_->Draw();
 	
 	//ゲームシーンの描画
 	SceneManager::GetInstance()->Draw();
