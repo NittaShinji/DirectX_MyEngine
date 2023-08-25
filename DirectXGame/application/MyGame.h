@@ -33,10 +33,7 @@ private: //メンバ変数
 
 	//背景
 	std::unique_ptr<BackGround> backGround_ = nullptr;
-	//std::unique_ptr<Object3d> titleSphere_ = nullptr;
-
-	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
-
+	//背景オブジェクト用のカメラ
 	std::unique_ptr<Camera> testCamera_ = nullptr;
 
 };
