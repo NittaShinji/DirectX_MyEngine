@@ -31,9 +31,6 @@ void GameScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGui
 
 void GameScene::Initialize()
 {
-	//ポストエフェクト初期化処理
-	postEffect_ = std::make_unique<PostEffect>();
-	postEffect_->Initialize(directXBasic_);
 
 	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
@@ -331,36 +328,26 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-
-	////レンダーテクスチャの描画
-	//postEffect_->PreDrawScene();
-	////モデル描画
-	//Object3d::BeforeDraw();
-	//backGround_->Draw();
-	//postEffect_->PostDrawScene();
-
-	//postEffect_->Draw();
-
 	//モデル描画
 	Object3d::BeforeDraw();
 	//skydome_->Draw();
 	//backGround_->Draw();
 	stage_->Draw();
-	//player_->Draw();
+	player_->Draw();
 
 	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
-	//particleManager_->Draw();
+	particleManager_->Draw();
 
-	SpriteCommon::GetInstance()->BeforeDraw();
-	SpriteCommon::GetInstance()->Update();
-	aButtonSprite_->Update();
-	bButtonSprite_->Update();
-	jumpSprite_->Update();
-	arrowSprite_->Update();
+	//SpriteCommon::GetInstance()->BeforeDraw();
+	//SpriteCommon::GetInstance()->Update();
+	//aButtonSprite_->Update();
+	//bButtonSprite_->Update();
+	//jumpSprite_->Update();
+	//arrowSprite_->Update();
 
-	aButtonSprite_->Draw("A.png");
-	bButtonSprite_->Draw("B.png");
-	jumpSprite_->Draw("jump.png");
-	arrowSprite_->Draw("arrow.png");
+	//aButtonSprite_->Draw("A.png");
+	//bButtonSprite_->Draw("B.png");
+	//jumpSprite_->Draw("jump.png");
+	//arrowSprite_->Draw("arrow.png");
 
 }
