@@ -25,6 +25,11 @@ public:
 	//描画後処理
 	void AfterDraw();
 
+	/// <summary>
+	/// 深度バッファのクリア
+	/// </summary>
+	void ClearDepthBuffer();
+
 private:
 
 	//FPS固定初期化

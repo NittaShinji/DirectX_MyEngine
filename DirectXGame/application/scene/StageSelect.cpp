@@ -48,8 +48,7 @@ void StageSelectScene::Initialize()
 
 	Vector2 testPosition = { 0.0f,0.0f };
 	const Vector2 testSize = { 128.0f,128.0f };
-	//BackGroundTest_->Initialize(testPosition, testSize);
-
+	
 	Vector2 backGroundPositionL = { 20.0f,180.0f };
 	Vector2 backGroundPositionR = { 660.0f,180.0f };
 	const Vector2 backGroundSize = { 600.0f,360.0f };

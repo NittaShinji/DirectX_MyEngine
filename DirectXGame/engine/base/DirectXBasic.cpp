@@ -182,6 +182,15 @@ void DirectXBasic::AfterDraw()
 	UpdateFixFPS();
 }
 
+void DirectXBasic::ClearDepthBuffer()
+{
+	// 深度ステンシルビュー用デスクリプタヒープのハンドルを取得
+	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = dsvHeap_->GetCPUDescriptorHandleForHeapStart();
+
+	// 深度バッファのクリア
+	commandList_->ClearDepthStencilView(dsvH, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
+}
+
 void DirectXBasic::InitializeDevice()
 {
 #pragma region アダプタの列挙

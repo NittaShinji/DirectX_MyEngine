@@ -20,6 +20,7 @@
 #include "Stage.h"
 #include "ParticleManager.h"
 #include "BackGround.h"
+#include "PostEffect.h"
 
 class CollisionManager;
 class TouchableObject;
