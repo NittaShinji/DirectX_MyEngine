@@ -49,7 +49,7 @@ PSOutput main(GSOutput input)
     //陰影とテクスチャの色を合成
     output.target0 = shadeColor * texcolor;
     
-    output.target1 = shadeColor * texcolor;
+    output.target1 = float4((shadeColor * texcolor).rgb, 1);
     
 	//シェーディングによる色で描画
     return output;

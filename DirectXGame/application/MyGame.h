@@ -27,6 +27,8 @@ private: //メンバ変数
 
 	//ポストエフェクト
 	std::unique_ptr<PostEffect> postEffect_ = nullptr;
+	std::unique_ptr<PostEffect> postEffect2_ = nullptr;
+
 
 	//ライト
 	LightGroup* lightGroup_ = nullptr;

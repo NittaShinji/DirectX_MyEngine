@@ -1028,29 +1028,6 @@
                 ]
             },
             "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "平面",
-            "transform": {
-                "translation": [
-                    0.0,
-                    0.0,
-                    -10.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1500.0,
-                    1000.0,
-                    1.0
-                ]
-            },
-            "file_name": "Plane",
-            "attribute": "black"
         }
     ]
 }

@@ -26,9 +26,7 @@ void MyGame::Initialize()
 
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
-	//ポストエフェクト用テクスチャの読み込み
-	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, Vector4(1.0f, 0.0f, 0.0f, 1.0f), "RedTex");
-
+	
 	postEffect_->Initialize(directXBasic_.get());
 
 	//背景オブジェクトのテスト用に仮カメラを配置
@@ -66,9 +64,8 @@ void MyGame::Draw()
 {
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
-	//モデル描画
-	Object3d::BeforeDraw();
 	//背景オブジェクトの描画
+	Object3d::BeforeDraw();
 	backGround_->Draw();
 	postEffect_->PostDrawScene();
 
@@ -77,10 +74,14 @@ void MyGame::Draw()
 
 	//ポストエフェクトの描画
 	postEffect_->Draw();
+
+	//深度値クリア
+	directXBasic_->ClearDepthBuffer();
 	
 	//ゲームシーンの描画
 	SceneManager::GetInstance()->Draw();
 
+	//デバッグテキストの描画
 	imGuiManager_->Draw();
 
 	//描画終了

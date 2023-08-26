@@ -41,30 +41,30 @@ void PostEffect::Initialize(DirectXBasic* directXBasic)
 	assert(SUCCEEDED(result));
 
 	//頂点データ
-	vertices[LB] = {
-		{ -0.5f , -0.5f, 0.0f }, {0.0f,1.0f}//左下
-	};
-	vertices[LT] = {
-		{ -0.5f ,+0.5f, 0.0f }, {0.0f,0.0f}//左上
-	};
-	vertices[RB] = {
-		{ +0.5f, -0.5f, 0.0f }, {1.0f,1.0f}//右下
-	};
-	vertices[RT] = {
-		{ +0.5f, +0.5f, 0.0f }, {1.0f,0.0f}//右上
-	};
 	//vertices[LB] = {
-	//	{ -1.0f , -1.0f, 0.0f }, {0.0f,1.0f}//左下
+	//	{ -0.5f , -0.5f, 0.0f }, {0.0f,1.0f}//左下
 	//};
 	//vertices[LT] = {
-	//	{ -1.0f ,+1.0f, 0.0f }, {0.0f,0.0f}//左上
+	//	{ -0.5f ,+0.5f, 0.0f }, {0.0f,0.0f}//左上
 	//};
 	//vertices[RB] = {
-	//	{ +1.0f, -1.0f, 0.0f }, {1.0f,1.0f}//右下
+	//	{ +0.5f, -0.5f, 0.0f }, {1.0f,1.0f}//右下
 	//};
 	//vertices[RT] = {
-	//	{ +1.0f, +1.0f, 0.0f }, {1.0f,0.0f}//右上
+	//	{ +0.5f, +0.5f, 0.0f }, {1.0f,0.0f}//右上
 	//};
+	vertices[LB] = {
+		{ -1.0f , -1.0f, 0.0f }, {0.0f,1.0f}//左下
+	};
+	vertices[LT] = {
+		{ -1.0f ,+1.0f, 0.0f }, {0.0f,0.0f}//左上
+	};
+	vertices[RB] = {
+		{ +1.0f, -1.0f, 0.0f }, {1.0f,1.0f}//右下
+	};
+	vertices[RT] = {
+		{ +1.0f, +1.0f, 0.0f }, {1.0f,0.0f}//右上
+	};
 
 	//頂点バッファへのデータ転送
 	Vertex* vertMap = nullptr;
@@ -197,7 +197,7 @@ void PostEffect::Initialize(DirectXBasic* directXBasic)
 	//RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
-	rtvDescHeapDesc.NumDescriptors = 2;
+	rtvDescHeapDesc.NumDescriptors = kRenderTexNum;
 	//RTV用デスクリプタヒープを生成
 	result = directXBasic_->GetDevice()->CreateDescriptorHeap(&rtvDescHeapDesc, IID_PPV_ARGS(&descHeapRTV));
 	assert(SUCCEEDED(result));
@@ -461,8 +461,11 @@ void PostEffect::CreateGraphicsPipelineState()
 
 	//スタティックサンプラー
 	CD3DX12_STATIC_SAMPLER_DESC samplerDesc = CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER_MIN_MAG_MIP_POINT);
-	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
-	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	//samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	//samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_BORDER;
+	samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+	samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
+
 
 	//ルートシグネチャの設定
 	CD3DX12_VERSIONED_ROOT_SIGNATURE_DESC rootSignatureDesc;
@@ -489,7 +492,6 @@ void PostEffect::CreateGraphicsPipelineState()
 
 void PostEffect::PreDrawScene()
 {
-
 	//リソースバリアを変更(シェーダーリソース描画可能)
 	for(UINT i = 0; i < kRenderTexNum; i++)
 	{
@@ -502,7 +504,7 @@ void PostEffect::PreDrawScene()
 	}
 	
 	//レンダーターゲットビュー用デスクリプタヒープのハンドルを取得
-	D3D12_CPU_DESCRIPTOR_HANDLE rtvHs[2];
+	D3D12_CPU_DESCRIPTOR_HANDLE rtvHs[kRenderTexNum];
 	for(UINT i = 0; i < kRenderTexNum; i++)
 	{
 		rtvHs[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(
@@ -516,8 +518,8 @@ void PostEffect::PreDrawScene()
 	//レンダーターゲットをセット
 	directXBasic_->GetCommandList()->OMSetRenderTargets(2, rtvHs, false, &dsvH);
 
-	D3D12_VIEWPORT viewPort[2];
-	D3D12_RECT rect[2];
+	D3D12_VIEWPORT viewPort[kRenderTexNum];
+	D3D12_RECT rect[kRenderTexNum];
 
 	for(UINT i = 0; i < kRenderTexNum; i++)
 	{
