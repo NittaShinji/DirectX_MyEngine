@@ -19,7 +19,7 @@ void MyGame::Initialize()
 	sceneFactory_ = std::make_unique<SceneFactory>();
 	SceneManager::GetInstance()->SetSceneFactory(std::move(sceneFactory_));
 	//シーンマネージャに最初のシーンをセット
-	SceneManager::GetInstance()->ChangeScene("TITLE");
+	SceneManager::GetInstance()->ChangeScene("GAME");
 	//一度のみ初期化
 	TitleScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	GameScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());
@@ -33,8 +33,8 @@ void MyGame::Initialize()
 	Vector3 cameraEye = { 30,7.5,-20 };
 	Vector3 cameraTarget = { 0,5,5 };
 	Vector3 cameraUp = { 0,1,0 };
-	testCamera_ = std::make_unique<Camera>();
-	testCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
+	gameCamera_ = std::make_unique<Camera>();
+	gameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
 
 	//ブラー用の背景オブジェクト
 	backGround_ = std::make_unique<BackGround>();
@@ -52,8 +52,8 @@ void MyGame::Update()
 	postEffect_->SetAnchorPoint(Vector2(0.0f, 0.0f));
 
 	//カメラ、背景オブジェクトの更新
-	testCamera_->Update();
-	backGround_->Update(testCamera_.get());
+	gameCamera_->Update();
+	backGround_->Update(gameCamera_.get());
 
 	SceneManager::GetInstance()->Update();
 
