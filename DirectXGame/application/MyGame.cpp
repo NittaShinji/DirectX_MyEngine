@@ -19,7 +19,7 @@ void MyGame::Initialize()
 	sceneFactory_ = std::make_unique<SceneFactory>();
 	SceneManager::GetInstance()->SetSceneFactory(std::move(sceneFactory_));
 	//シーンマネージャに最初のシーンをセット
-	SceneManager::GetInstance()->ChangeScene("GAME");
+	SceneManager::GetInstance()->ChangeScene("TITLE");
 	//一度のみ初期化
 	TitleScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	GameScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());

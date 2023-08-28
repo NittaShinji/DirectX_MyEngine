@@ -338,16 +338,16 @@ void GameScene::Draw()
 	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
 	particleManager_->Draw();
 
-	//SpriteCommon::GetInstance()->BeforeDraw();
-	//SpriteCommon::GetInstance()->Update();
-	//aButtonSprite_->Update();
-	//bButtonSprite_->Update();
-	//jumpSprite_->Update();
-	//arrowSprite_->Update();
+	SpriteCommon::GetInstance()->BeforeDraw();
+	SpriteCommon::GetInstance()->Update();
+	aButtonSprite_->Update();
+	bButtonSprite_->Update();
+	jumpSprite_->Update();
+	arrowSprite_->Update();
 
-	//aButtonSprite_->Draw("A.png");
-	//bButtonSprite_->Draw("B.png");
-	//jumpSprite_->Draw("jump.png");
-	//arrowSprite_->Draw("arrow.png");
+	aButtonSprite_->Draw("A.png");
+	bButtonSprite_->Draw("B.png");
+	jumpSprite_->Draw("jump.png");
+	arrowSprite_->Draw("arrow.png");
 
 }
