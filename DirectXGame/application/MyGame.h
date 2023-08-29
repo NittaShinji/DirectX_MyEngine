@@ -27,15 +27,13 @@ private: //メンバ変数
 
 	//ポストエフェクト
 	std::unique_ptr<PostEffect> postEffect_ = nullptr;
-	std::unique_ptr<PostEffect> postEffect2_ = nullptr;
-
 
 	//ライト
 	LightGroup* lightGroup_ = nullptr;
 
-	//背景
-	std::unique_ptr<BackGround> backGround_ = nullptr;
-	//背景オブジェクト用のカメラ
+	////背景
+	//std::unique_ptr<BackGround> backGround_ = nullptr;
+	//ゲーム内カメラ
 	std::unique_ptr<Camera> gameCamera_ = nullptr;
 
 };

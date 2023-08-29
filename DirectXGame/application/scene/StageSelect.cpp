@@ -14,6 +14,7 @@ void StageSelectScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
+	TextureManager::StaticInitialize(directXBasic_->GetDevice().Get());
 	Sprite::StaticInitialize();
 }
 
@@ -119,6 +120,9 @@ void StageSelectScene::Update()
 
 void StageSelectScene::Draw()
 {
+	//•`‰æŠJŽn
+	directXBasic_->BeforeDraw();
+
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
 	BackGroundWhite_->Update();
@@ -135,5 +139,8 @@ void StageSelectScene::Draw()
 	BackGroundRight_->Draw("BackGroundTex");
 	gameSceneSprite1_->Draw("GameScene1.png");
 	gameSceneSprite2_->Draw("GameScene2.png");
+
+	//•`‰æI—¹
+	directXBasic_->AfterDraw();
 
 }

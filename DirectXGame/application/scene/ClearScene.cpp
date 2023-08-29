@@ -7,6 +7,9 @@
 
 using namespace MathUtillty;
 
+DirectXBasic* ClearScene::directXBasic_ = nullptr;
+ImGuiManager* ClearScene::imGuiManager_ = nullptr;
+
 void ClearScene::Initialize()
 {
 	end_ = std::make_unique<Sprite>();
@@ -103,6 +106,9 @@ void ClearScene::Update()
 
 void ClearScene::Draw()
 {
+	//•`‰æŠJŽn
+	directXBasic_->BeforeDraw();
+
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
 	end_->Update();
@@ -113,4 +119,12 @@ void ClearScene::Draw()
 	check_->Draw("check.png");
 	aButton_->Draw("A.png");
 
+	//•`‰æI—¹
+	directXBasic_->AfterDraw();
+}
+
+void ClearScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
+{
+	directXBasic_ = BaseScene::directXBasic_;
+	imGuiManager_ = BaseScene::imGuiManager_;
 }

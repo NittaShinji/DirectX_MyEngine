@@ -49,6 +49,10 @@ void GameScene::Initialize()
 	collisionManager_ = CollisionManager::GetInstance();
 	sphereCollider_ = std::make_unique<SphereCollider>();
 
+	//ポストエフェクト初期化処理
+	postEffect_ = std::make_unique<PostEffect>();
+	postEffect_->Initialize(directXBasic_);
+
 	//スプライト
 	aButtonSprite_ = std::make_unique<Sprite>();
 	bButtonSprite_ = std::make_unique<Sprite>();
@@ -328,6 +332,22 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
+	//レンダーテクスチャの描画
+	postEffect_->PreDrawScene();
+	//背景オブジェクトの描画
+	Object3d::BeforeDraw();
+	backGround_->Draw();
+	postEffect_->PostDrawScene();
+
+	//描画開始
+	directXBasic_->BeforeDraw();
+
+	//ポストエフェクトの描画
+	postEffect_->Draw();
+
+	//深度値クリア
+	directXBasic_->ClearDepthBuffer();
+
 	//モデル描画
 	Object3d::BeforeDraw();
 	//skydome_->Draw();
@@ -349,5 +369,11 @@ void GameScene::Draw()
 	//bButtonSprite_->Draw("B.png");
 	//jumpSprite_->Draw("jump.png");
 	//arrowSprite_->Draw("arrow.png");
+
+	//デバッグテキストの描画
+	imGuiManager_->Draw();
+
+	//描画終了
+	directXBasic_->AfterDraw();
 
 }

@@ -40,19 +40,9 @@ void PostEffect::Initialize(DirectXBasic* directXBasic)
 		IID_PPV_ARGS(&this->vertBuff_));
 	assert(SUCCEEDED(result));
 
+	anchorPoint_ = { 0.0f,0.0f };
+
 	//頂点データ
-	//vertices[LB] = {
-	//	{ -0.5f , -0.5f, 0.0f }, {0.0f,1.0f}//左下
-	//};
-	//vertices[LT] = {
-	//	{ -0.5f ,+0.5f, 0.0f }, {0.0f,0.0f}//左上
-	//};
-	//vertices[RB] = {
-	//	{ +0.5f, -0.5f, 0.0f }, {1.0f,1.0f}//右下
-	//};
-	//vertices[RT] = {
-	//	{ +0.5f, +0.5f, 0.0f }, {1.0f,0.0f}//右上
-	//};
 	vertices[LB] = {
 		{ -1.0f , -1.0f, 0.0f }, {0.0f,1.0f}//左下
 	};

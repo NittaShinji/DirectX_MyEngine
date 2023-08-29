@@ -63,6 +63,9 @@ private:
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
 	static ImGuiManager* imGuiManager_;
+
+	//ポストエフェクト
+	std::unique_ptr<PostEffect> postEffect_ = nullptr;
 	
 	//ライト
 	LightGroup* lightGroup_ = nullptr;
@@ -124,7 +127,5 @@ private:
 	float playerPosX;
 	float playerPosY;
 	float playerPosZ;
-
-
 };
 

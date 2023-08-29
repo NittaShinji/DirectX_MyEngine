@@ -262,6 +262,9 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
+	//•`‰æŠJŽn
+	directXBasic_->BeforeDraw();
+
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
 	titleSprite_->Update();
@@ -281,4 +284,7 @@ void TitleScene::Draw()
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();
 	titleSphere_->Draw();
+
+	//•`‰æI—¹
+	directXBasic_->AfterDraw();
 }

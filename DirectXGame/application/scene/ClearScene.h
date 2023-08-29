@@ -18,11 +18,16 @@ public:
 	//描画
 	void Draw() override;
 
+	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
+
 private:
 
 	std::unique_ptr<Sprite> end_ = nullptr;
 	std::unique_ptr<Sprite> check_ = nullptr;
 	std::unique_ptr<Sprite> aButton_ = nullptr;
+
+	static DirectXBasic* directXBasic_;
+	static ImGuiManager* imGuiManager_;
 
 	static KeyInput* keys_;
 	//ゲームパッド
