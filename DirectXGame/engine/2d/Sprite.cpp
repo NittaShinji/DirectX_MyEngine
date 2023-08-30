@@ -191,16 +191,6 @@ void Sprite::matUpdate()
 	vertices_[RB].pos = { right,bottom ,0.0f };
 	vertices_[RT].pos = { right,top ,0.0f };
 
-	/*vertices_[LB].pos = { left,bottom ,0.0f };
-	vertices_[LT].pos = { left,top ,0.0f };
-	vertices_[RB].pos = { right,bottom ,0.0f };
-	vertices_[RT].pos = { right,top ,0.0f };*/
-
-	/*vertices_[LB].pos = { left + position_.x , bottom + position_.y,0.0f };
-	vertices_[LT].pos = { left + position_.x, top + position_.y,0.0f };
-	vertices_[RB].pos = { right + position_.x,bottom + position_.y,0.0f };
-	vertices_[RT].pos = { right + position_.x,top + position_.y,0.0f };
-	*/
 	// テクスチャ情報取得
 	
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
@@ -211,22 +201,13 @@ void Sprite::matUpdate()
 	for (int32_t i = 0; i < vertices_.size(); i++) {
 		vertMap[i] = vertices_[i]; // 座標をコピー
 	}
-	// 繋がりを解除
-	//vertBuff_->Unmap(0, nullptr);
-
-	// 頂点バッファへのデータ転送
-	//memcpy(vertMap_, vertices, sizeof(vertices));
-
 
 	Matrix4 matScale;	//スケーリング行列
 	matScale = MatrixScale(scale_);
 
 	Matrix4 matRot;	//回転行列
 	matRot = MatrixIdentity();
-	//matRot *= MatrixRotateZ(ToRadian(180.0f));	//Z軸周りに回転
 	matRot *= MatrixRotateZ(rotation_);	//Z軸周りに回転
-	//matRot *= MatrixRotateX(ToRadian(0.0f));	//X軸周りに回転
-	//matRot *= MatrixRotateY(ToRadian(0.0f));	//Y軸周りに回転
 
 	Matrix4 matTrans;	//平行移動行列
 	matTrans = MatrixIdentity();
@@ -242,10 +223,6 @@ void Sprite::matUpdate()
 	//定数バッファにデータ転送
 	constMapTransform_->mat = matWorld * matProjection_;
 	constMapMaterial_->color = color_;
-	/*spriteCommon_->GetConstMapTransform()->mat = matWorld * matProjection_;
-	spriteCommon_->GetConstMapMaterial()->color = color_;*/
-
-
 
 	moveSpeed_.x = 0.0f;
 	moveSpeed_.y = 0.0f;
@@ -256,22 +233,17 @@ void Sprite::Draw(const std::string& fileName)
 	spriteCommon_->Update();
 
 	uint32_t textureIndex;
-	//textureIndex = spriteCommon_->GetTextureMap().at(fileName);
 	textureIndex = textureManager_->GetTextureMap().at(fileName);
-
 
 	//頂点バッファビューの設定コマンド
 	directXBasic_->GetCommandList()->IASetVertexBuffers(0, 1, &vbView_);
 	//SRVヒープの設定コマンド
-	//ID3D12DescriptorHeap* heaps[] = { spriteCommon_->GetSRVHeap() };
 	ID3D12DescriptorHeap* heaps[] = { textureManager_->GetSRVHeap() };
 
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, heaps);
 
 	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
-	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = spriteCommon_->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = textureManager_->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
-
 
 	//デスクリプタのサイズを取得
 	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -287,8 +259,6 @@ void Sprite::Draw(const std::string& fileName)
 
 	//定数バッファビュー(CBV)の設定コマンド
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, constBuffTransform_->GetGPUVirtualAddress());
-	/*directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(2, spriteCommon_->GetConstBuffTransform()->GetGPUVirtualAddress());*/
-
 
 	if(isInvisible_)
 	{
@@ -329,19 +299,6 @@ void Sprite::TransferVertices()
 	vertices[LT].pos = { left, top, 0.0f };     // 左上
 	vertices[RB].pos = { right, bottom, 0.0f }; // 右下
 	vertices[RT].pos = { right, top, 0.0f };    // 右上
-
-	//// テクスチャ情報取得
-	//{
-	//	float tex_left = texBase_.x / resourceDesc_.Width;
-	//	float tex_right = (texBase_.x + texSize_.x) / resourceDesc_.Width;
-	//	float tex_top = texBase_.y / resourceDesc_.Height;
-	//	float tex_bottom = (texBase_.y + texSize_.y) / resourceDesc_.Height;
-
-	//	vertices[LB].uv = { tex_left, tex_bottom };  // 左下
-	//	vertices[LT].uv = { tex_left, tex_top };     // 左上
-	//	vertices[RB].uv = { tex_right, tex_bottom }; // 右下
-	//	vertices[RT].uv = { tex_right, tex_top };    // 右上
-	//}
 
 	// 頂点バッファへのデータ転送
 	memcpy(vertMap_, vertices, sizeof(vertices));

@@ -31,16 +31,16 @@ void MyGame::Initialize()
 
 
 	//ポストエフェクト初期化処理
-	postEffect_ = std::make_unique<PostEffect>();
+	//postEffect_ = std::make_unique<PostEffect>();
 	
-	postEffect_->Initialize(directXBasic_.get());
+	//postEffect_->Initialize(directXBasic_.get());
 
 	//背景オブジェクトのテスト用に仮カメラを配置
 	Vector3 cameraEye = { 30,7.5,-20 };
 	Vector3 cameraTarget = { 0,5,5 };
 	Vector3 cameraUp = { 0,1,0 };
-	gameCamera_ = std::make_unique<Camera>();
-	gameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
+	//gameCamera_ = std::make_unique<Camera>();
+	//gameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
 
 	//ブラー用の背景オブジェクト
 	//backGround_ = std::make_unique<BackGround>();
@@ -66,30 +66,8 @@ void MyGame::Update()
 
 void MyGame::Draw()
 {
-	////レンダーテクスチャの描画
-	//postEffect_->PreDrawScene();
-	////背景オブジェクトの描画
-	//Object3d::BeforeDraw();
-	//backGround_->Draw();
-	//postEffect_->PostDrawScene();
-
-	////描画開始
-	//directXBasic_->BeforeDraw();
-
-	////ポストエフェクトの描画
-	//postEffect_->Draw();
-
-	////深度値クリア
-	//directXBasic_->ClearDepthBuffer();
-	//
 	//ゲームシーンの描画
 	SceneManager::GetInstance()->Draw();
-
-	////デバッグテキストの描画
-	//imGuiManager_->Draw();
-
-	////描画終了
-	//directXBasic_->AfterDraw();
 }
 
 void MyGame::Finalize()

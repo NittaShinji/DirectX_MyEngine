@@ -12,13 +12,12 @@ using namespace Microsoft::WRL;
 /// <summary>
 /// 静的メンバ変数の実体
 /// </summary>
+
 ComPtr<ID3D12Resource> ParticleManager::texbuff_;
 // 頂点バッファ
 ComPtr<ID3D12Resource> ParticleManager::vertBuff_;
 //頂点データ配列
-//ParticleManager::Vertex ParticleManager::vertices_[vertexCount];
-//std::vector<ParticleManager::Vertex> ParticleManager::vertices_;
-//std::forward_list<ParticleManager::Vertex> ParticleManager::vertices_;
+std::vector<ParticleManager::Vertex> ParticleManager::vertices_;
 
 //SRV用のデスクリプタヒープ
 ComPtr<ID3D12DescriptorHeap> ParticleManager::descHeap_;
@@ -42,9 +41,6 @@ ID3D12GraphicsCommandList* ParticleManager::cmdList_;
 ID3D12Device* ParticleManager::device_ = nullptr;
 
 ComPtr<ID3D12RootSignature> ParticleManager::rootSignature_;
-
-std::vector<ParticleManager::Vertex> ParticleManager::vertices_;
-//std::forward_list<ParticleManager::Vertex> ParticleManager::vertices_;
 
 //定数バッファの生成
 template <typename Type1>

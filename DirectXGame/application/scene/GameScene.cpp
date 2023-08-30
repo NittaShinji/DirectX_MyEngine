@@ -285,25 +285,6 @@ void GameScene::Update()
 	gameCamera_->ImGuiUpdate();
 	player_->ImGuiUpdate();
 
-	////スプライトの編集ウインドウの表示
-	//{
-	//	ImGui::Begin("Player");
-	//	ImGui::SetWindowPos(ImVec2(0, 0));
-	//	ImGui::SetWindowSize(ImVec2(500, 200));
-
-	//	//ImGui::ColorEdit3("ambientColor", ambientColor0_, ImGuiColorEditFlags_Float);
-	//	ImGui::SliderFloat("PlayerPosX", &playerPosX, 0.0f, 50.0f);
-	//	ImGui::SliderFloat("PlayerPosY", &playerPosY, 0.0f, 50.0f);
-	//	ImGui::SliderFloat("PlayerPosZ", &playerPosZ, 0.0f, 50.0f);
-
-	//	//ImGui::InputFloat3("PlayerPos", player_.get()->GetPos());
-	//	//ImGui::ColorEdit3("lightColor0", lightColor0_, ImGuiColorEditFlags_Float);
-
-	//	ImGui::End();
-	//}
-
-	//player_->SetTransform(Vector3(playerPosX, playerPosY, playerPosZ));
-
 #endif
 
 	if(keyTimer_ < 0)

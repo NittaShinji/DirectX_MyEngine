@@ -132,7 +132,6 @@ void StageSelectScene::Draw()
 	gameSceneSprite1_->Update();
 	gameSceneSprite2_->Update();
 
-
 	BackGroundWhite_->Draw("WhiteTex");
 	selectSprite_->Draw("CursorTex");
 	BackGroundLeft_->Draw("BackGroundTex");
