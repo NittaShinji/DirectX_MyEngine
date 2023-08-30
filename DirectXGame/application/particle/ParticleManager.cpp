@@ -83,7 +83,7 @@ void ParticleManager::Initialize()
 {
 	InitializeGraphicsPipeline();
 
-	LoadTexture("effect1.png");
+	LoadTexture("effect2.png");
 
 	CreateModel();
 
@@ -114,6 +114,10 @@ void ParticleManager::Update(Camera* camera, Attribute attribute)
 	matView_ = camera->GetMatView();
 	//射影変換行列
 	matProjection_ = camera->GetMatProjection();
+
+	//ビルボード行列
+	Matrix4 matBillboard = MatrixIdentity();
+	matBillboard = camera->GetMatBillboard();
 
 	//頂点バッファへデータ転送
 	Vertex* vertMap = nullptr;
@@ -215,7 +219,7 @@ void ParticleManager::Update(Camera* camera, Attribute attribute)
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	constMap->viewProjection = matView_ * matProjection_;	// 行列の合成
-	//constMap->matBillboard = matBillboard;
+	constMap->matBillboard = matBillboard;
 	constBuff_->Unmap(0, nullptr);
 }
 

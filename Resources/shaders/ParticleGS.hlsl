@@ -32,9 +32,10 @@ void main(
     for (uint i = 0; i < vnum; i++)
     {
 		//中心からのオフセットをスケーリング
-        float4 offset = offset_array[i] * input[0].scale;
+        //float4 offset = offset_array[i] * input[0].scale;
 		//中心からのオフセットをビルボード回転(モデル座標)
         //offset = mul(matBillboard, offset);
+        float4 offset = mul(matBillboard, offset_array[i]);
 		
 		//オフセット分ずらす(ワールド座標)
         element.svpos = input[0].pos + offset;
@@ -43,8 +44,6 @@ void main(
         element.uv = uv_array[i];
         element.color = input[0].color;
         output.Append(element);
-
     }
-	
 }
 

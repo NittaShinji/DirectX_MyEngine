@@ -28,6 +28,7 @@ public: // サブクラス
 	struct ConstBufferData
 	{
 		Matrix4 viewProjection;	// ３Ｄ変換行列
+		Matrix4 matBillboard;	// ビルボード行列
 	};
 
 	struct Particle
@@ -209,6 +210,5 @@ private: // メンバ変数
 
 	//一度に生成する数
 	int32_t generationNum_;
-
 };
 

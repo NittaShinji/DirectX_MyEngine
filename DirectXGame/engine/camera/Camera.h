@@ -39,6 +39,11 @@ protected:
 	//射影行列
 	Matrix4 matProjection_;
 
+	//ビルボード行列
+	Matrix4 matBillboard;
+	//Y軸ビルボード行列
+	Matrix4 matBillboardY;
+
 	//定数バッファ
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff_;
 
@@ -47,8 +52,7 @@ public:
 	//ゲッター
 	const Matrix4& GetMatView() const { return matView_; }
 	const Matrix4& GetMatProjection() const { return matProjection_; }
-
 	const Vector3& GetEye() const { return eye_; }
-
+	const Matrix4& GetMatBillboard() const { return matBillboard; }
 };
 
