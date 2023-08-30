@@ -28,23 +28,6 @@ void MyGame::Initialize()
 	GameScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());
 	StageSelectScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	ClearScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-
-
-	//ポストエフェクト初期化処理
-	//postEffect_ = std::make_unique<PostEffect>();
-	
-	//postEffect_->Initialize(directXBasic_.get());
-
-	//背景オブジェクトのテスト用に仮カメラを配置
-	Vector3 cameraEye = { 30,7.5,-20 };
-	Vector3 cameraTarget = { 0,5,5 };
-	Vector3 cameraUp = { 0,1,0 };
-	//gameCamera_ = std::make_unique<Camera>();
-	//gameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
-
-	//ブラー用の背景オブジェクト
-	//backGround_ = std::make_unique<BackGround>();
-	//backGround_->Initialize();
 }
 
 void MyGame::Update()
@@ -54,10 +37,6 @@ void MyGame::Update()
 
 	//基底クラスの更新処理
 	MyFramework::Update();
-
-	//カメラ、背景オブジェクトの更新
-	//gameCamera_->Update();
-	//backGround_->Update(gameCamera_.get());
 
 	SceneManager::GetInstance()->Update();
 

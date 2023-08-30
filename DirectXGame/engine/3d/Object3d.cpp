@@ -199,7 +199,6 @@ void Object3d::Initialize()
 
 	// 頂点レイアウトの設定
 	pipelineDesc_.InputLayout.pInputElementDescs = inputLayout;
-	//pipelineDesc.InputLayout.NumElements = _countof(inputLayout);
 	pipelineDesc_.InputLayout.NumElements = _countof(inputLayout);
 
 	// 図形の形状設定
@@ -478,7 +477,6 @@ std::unique_ptr<Object3d> Object3d::Create(const std::string& path)
 	std::unique_ptr<Object3d> instance = nullptr;
 	instance = std::make_unique<Object3d>();
 
-	//Object3d* instance = new Object3d();
 	if(instance == nullptr)
 	{
 		return nullptr;

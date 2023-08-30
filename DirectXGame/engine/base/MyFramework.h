@@ -40,7 +40,6 @@ public: //ƒƒ“ƒoŠÖ”
 protected: //ƒƒ“ƒo•Ï”
 
 	//WindowsApi
-	//std::unique_ptr<WindowsAPI> winApi_ = nullptr;
 	WindowsAPI* winApi_ = nullptr;
 
 	//DirectXŠî”Õ

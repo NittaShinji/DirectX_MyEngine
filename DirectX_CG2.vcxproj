@@ -126,7 +126,6 @@
     <ClCompile Include="DirectXGame\engine\math\MathUtillity.cpp" />
     <ClCompile Include="DirectXGame\engine\io\GamePad.cpp" />
     <ClCompile Include="DirectXGame\application\object\Player.cpp" />
-    <ClCompile Include="DirectXGame\engine\math\WorldTransform.cpp" />
     <ClCompile Include="DirectXGame\application\camera\GameCamera.cpp" />
     <ClCompile Include="DirectXGame\engine\3d\Mesh.cpp" />
     <ClCompile Include="DirectXGame\engine\collision\MeshCollider.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="DirectXGame\engine\math\MathUtillity.h" />
     <ClInclude Include="DirectXGame\engine\io\GamePad.h" />
     <ClInclude Include="DirectXGame\application\object\Player.h" />
-    <ClInclude Include="DirectXGame\engine\math\WorldTransform.h" />
     <ClInclude Include="DirectXGame\application\camera\GameCamera.h" />
     <ClInclude Include="DirectXGame\engine\3d\Mesh.h" />
     <ClInclude Include="DirectXGame\engine\collision\MeshCollider.h" />

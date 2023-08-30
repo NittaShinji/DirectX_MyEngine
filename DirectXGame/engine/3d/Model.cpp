@@ -292,7 +292,6 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 		const Image* img = scratchImg.GetImage(i, 0, 0);
 
 		//テクスチャバッファにデータ転送
-
 		result = model.infomation_.textureBuffers[sTextureIndex_]->WriteToSubresource(
 
 			(UINT)i,
@@ -338,7 +337,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 	directXBasic_->GetDevice()->CreateShaderResourceView(model.infomation_.textureBuffers[sTextureIndex_].Get(), &srvDesc, sSrvHandle_);
 	
 	//画像番号を進める
-	//textureIndex_++;
+	//sTextureIndex_++;
 }
 
 //検索キー(パス)から値を検索

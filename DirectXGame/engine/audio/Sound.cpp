@@ -2,8 +2,6 @@
 
 #pragma comment(lib,"xaudio2.lib")
 
-//Microsoft::WRL::ComPtr<IXAudio2> Sound::xAudio2_;
-
 Sound::Sound(){}
 
 Sound::~Sound(){}
@@ -112,8 +110,9 @@ void Sound::LoadSoundWave(const std::string& fileName)
 void Sound::UnloadSound(SoundData* soundData)
 {
 	//バッファのメモリを解放
-	//soundData->bufferSize = 0;
-	//soundData->wfex = {};
+	soundData->pBuffer = { 0 };
+	soundData->bufferSize = 0;
+	soundData->wfex = {};
 }
 
 //音声再生

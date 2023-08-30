@@ -107,13 +107,6 @@ protected:
 	HRESULT result_;
 	ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 	
-	//テクスチャマッピング用の変数
-	//横方向ピクセル数
-	//const size_t kTextureWidth_ = 256;
-	//縦方向ピクセル数
-	//const size_t kTextureHeight_ = 256;
-	//配列の要素数
-	//const size_t imageDateCount_ = kTextureWidth_ * kTextureHeight_;
 	//画像イメージデータ配列
 	Vector4* imageDate_;
 	//テクスチャリソースデスク
@@ -137,7 +130,6 @@ protected:
 	SpriteCommon::ConstBufferDataMaterial* constMapMaterial_ = nullptr;
 	//定数バッファのマッピング用ポインタ
 	SpriteCommon::ConstBufferDataTransform* constMapTransform_ = nullptr;
-
 
 public:
 

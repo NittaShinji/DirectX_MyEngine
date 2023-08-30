@@ -186,9 +186,6 @@
     <ClCompile Include="DirectXGame\application\postEffect\PostEffect.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\engine\math\WorldTransform.cpp">
-      <Filter>ソース ファイル\engine\3d</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\engine\math\MathUtillity.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
@@ -325,9 +322,6 @@
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\loader\LevelManager.h">
       <Filter>ヘッダー ファイル\engine\loader</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\engine\math\WorldTransform.h">
-      <Filter>ヘッダー ファイル\engine\3d</Filter>
     </ClInclude>
     <ClInclude Include="DirectXGame\engine\math\MathUtillity.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>

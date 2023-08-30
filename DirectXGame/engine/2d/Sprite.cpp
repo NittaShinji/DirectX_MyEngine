@@ -211,7 +211,6 @@ void Sprite::matUpdate()
 
 	Matrix4 matTrans;	//平行移動行列
 	matTrans = MatrixIdentity();
-	//matTrans *= MatrixTranslate(Vector3(moveSpeed_.x,moveSpeed_.y, 0.0f));	//平行移動
 	matTrans *= MatrixTranslate(Vector3(position_.x,position_.y, 0.0f));	//平行移動
 
 

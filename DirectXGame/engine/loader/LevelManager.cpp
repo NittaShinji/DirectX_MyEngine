@@ -10,9 +10,6 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 
 	//種別を取得
 	std::string type = object["type"].get<std::string>();
-	//bool visible = object["visible"].get<bool>();
-
-	//種類ごとの処理
 
 	//タイプが"MESH"だった場合
 	if(type.compare("MESH") == 0)
@@ -32,12 +29,6 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 			//属性
 			objectData.attribute = object["attribute"];
 		}
-
-		//else if(visible == true)
-		//{
-		//	//ファイル名
-		//	objectData.fileName = object["visible"];
-		//}
 
 		//トランスフォームのパラメータ読み込み
 		nlohmann::json& transform = object["transform"];

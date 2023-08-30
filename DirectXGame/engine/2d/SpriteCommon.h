@@ -54,8 +54,6 @@ public:
 	void PipelineSet();
 	//ルートシグネチャ設定
 	void RootSignatureSet();
-	//デスクリプタヒープの設定
-	void DescriptorHeapSet();
 
 	//描画開始前
 	void BeforeDraw();
@@ -71,12 +69,6 @@ public:
 	//色反転
 	void InvertColor();
 	
-	//画像読み込み
-	static void LoadTexture(const std::string& fileName);
-
-	//画像生成
-	void TexMapping(int32_t texWidth, int32_t texHeight, Vector4 color, const std::string& fileName);
-
 	//テンプレートコンストラクタ
 	template <typename Type1, typename Type2>
 	//定数バッファの生成

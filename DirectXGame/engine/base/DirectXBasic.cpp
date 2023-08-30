@@ -73,15 +73,6 @@ void DirectXBasic::BeforeDraw()
 	// 3.画面クリア R G B A
 	FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f }; // 青っぽい色
 
-	//背景色を変更
-	//keyInput->ChangeColor(clearColor);
-	//if (keyInput->HasPushedKey(DIK_SPACE))
-	//{
-	//	//画面クリアカラーの数値を書き換える
-	//	clearColor[0] = 1.0f;
-	//	clearColor[1] = 0.1f;
-	//}
-
 	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 #pragma endregion
@@ -363,7 +354,6 @@ void DirectXBasic::InitializeTargetView()
 		rtvDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2D;
 		// レンダーターゲットビューの生成
 		device_->CreateRenderTargetView(backBuffers_[i].Get(), &rtvDesc, rtvHandle);
-		//device->CreateRenderTargetView(backBuffers[i].Get(), &rtvDesc, rtvHandle);
 	}
 #pragma endregion 
 }
@@ -412,7 +402,6 @@ void DirectXBasic::InitializeDepthBuffer()
 	D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc{};
 	dsvHeapDesc.NumDescriptors = 1;	//深度ビューは1つ
 	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;	//デプスステンシルビュー
-	//ID3D12DescriptorHeap* dsvHeap = nullptr;
 
 	// デスクリプタヒープの作成
 	result_ = device_->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap_));

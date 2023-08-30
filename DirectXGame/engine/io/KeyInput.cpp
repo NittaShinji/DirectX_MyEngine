@@ -118,13 +118,6 @@ bool KeyInput::ReleasedKeyMoment(BYTE keyNumber)
 }
 #pragma endregion 
 
-
-
-//BOOL KeyInput::DeviceFindCallBack(LPCDIDEVICEINSTANCE ipddi, LPVOID pvRef)
-//{
-//	return DIENUM_CONTINUE;
-//}
-
 void KeyInput::KeyAssert(){
 	for (int32_t i = 0; i < 255; i++)
 	{

@@ -10,23 +10,19 @@ void MyFramework::Initialize()
 {
 	//WindowsApi‰Šú‰»ˆ—
 	winApi_ = WindowsAPI::GetInstance();
-	//winApi_ = std::make_unique<WindowsAPI>();
 	winApi_->Initialize();
 
 	//DirectX‰Šú‰»ˆ—
 	directXBasic_ = std::make_unique<DirectXBasic>();
-	//directXBasic_->Initialize(winApi_.get());
 	directXBasic_->Initialize(winApi_);
 
 	
 	//Input‰Šú‰»ˆ—
 	input_ = std::make_unique<Input>();
-	//input_->Initialize(winApi_.get());
 	input_->Initialize(winApi_);
 
 	//ImGui‰Šú‰»ˆ—
 	imGuiManager_ = std::make_unique<ImGuiManager>();
-	//imGuiManager_->Initialize(winApi_.get(), directXBasic_.get());
 	imGuiManager_->Initialize(winApi_, directXBasic_.get());
 
 	//ƒTƒEƒ“ƒhˆ—

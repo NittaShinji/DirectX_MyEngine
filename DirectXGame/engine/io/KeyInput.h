@@ -51,9 +51,6 @@ public:
 	//キーを離した瞬間か
 	static bool ReleasedKeyMoment(BYTE keyNumber);
 
-	//デバイス発見時に実行される
-	//BOOL CALLBACK DeviceFindCallBack(LPCDIDEVICEINSTANCE ipddi, LPVOID pvRef);
-	
 private:
 
 	//コンストラクタ
@@ -71,6 +68,4 @@ private:
 	ComPtr<IDirectInput8> directInput_ = nullptr;
 	//キーボードデバイス
 	static ComPtr<IDirectInputDevice8> keyboard_;
-	//コントローラー
-	static ComPtr<IDirectInputDevice8> gamePad_;
 };
