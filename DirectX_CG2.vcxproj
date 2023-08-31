@@ -137,6 +137,7 @@
     <ClCompile Include="DirectXGame\application\scene\SceneFactory.cpp" />
     <ClCompile Include="DirectXGame\application\object\Stage.cpp" />
     <ClCompile Include="DirectXGame\engine\2d\TextureManager.cpp" />
+    <ClCompile Include="DirectXGame\application\scene\TutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h" />
@@ -191,6 +192,7 @@
     <ClInclude Include="DirectXGame\application\scene\SceneFactory.h" />
     <ClInclude Include="DirectXGame\application\object\Stage.h" />
     <ClInclude Include="DirectXGame\engine\2d\TextureManager.h" />
+    <ClInclude Include="DirectXGame\application\scene\TutorialScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\shaders\Basic.hlsli" />

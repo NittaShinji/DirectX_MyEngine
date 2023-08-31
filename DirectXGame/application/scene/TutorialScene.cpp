@@ -1,4 +1,4 @@
-#include "GameScene.h"
+#include "TutorialScene.h"
 #include "Collision.h"
 #include "SphereCollider.h"
 #include "CollisionManager.h"
@@ -15,13 +15,13 @@
 using namespace std;
 using namespace DirectX;
 
-DirectXBasic* GameScene::directXBasic_ = nullptr;
-ImGuiManager* GameScene::imGuiManager_ = nullptr;
+DirectXBasic* TutorialScene::directXBasic_ = nullptr;
+ImGuiManager* TutorialScene::imGuiManager_ = nullptr;
 
-GameScene::GameScene() {}
-GameScene::~GameScene() {}
+TutorialScene::TutorialScene() {}
+TutorialScene::~TutorialScene() {}
 
-void GameScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
+void TutorialScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
 {
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
@@ -29,9 +29,8 @@ void GameScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGui
 	ParticleManager::StaticInitialize(directXBasic_->GetDevice().Get());
 }
 
-void GameScene::Initialize()
+void TutorialScene::Initialize()
 {
-
 	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLightGroup(lightGroup_);
@@ -52,40 +51,6 @@ void GameScene::Initialize()
 	//ポストエフェクト初期化処理
 	postEffect_ = std::make_unique<PostEffect>();
 	postEffect_->Initialize(directXBasic_);
-
-	//スプライト
-	aButtonSprite_ = std::make_unique<Sprite>();
-	bButtonSprite_ = std::make_unique<Sprite>();
-	jumpSprite_ = std::make_unique<Sprite>();
-	arrowSprite_ = std::make_unique<Sprite>();
-
-	TextureManager::GetInstance()->LoadTexture("jump.png");
-	TextureManager::GetInstance()->LoadTexture("arrow.png");
-
-	const Vector2 aButtonSize = { 64.0f,64.0f };
-	Vector2 aButtonPosition;
-	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
-	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y * 4) + (aButtonSize.y / 2);
-
-	const Vector2 bButtonSize = { 64.0f,64.0f };
-	Vector2 bButtonPosition;
-	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
-	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y * 4) + (bButtonSize.y / 2);
-
-	const Vector2 jumpSpriteSize = { 64.0f,64.0f };
-	Vector2 jumpSpritePosition;
-	jumpSpritePosition.x = (WindowsAPI::kWindow_width_)-(jumpSpriteSize.x * 2);
-	jumpSpritePosition.y = (WindowsAPI::kWindow_height_ / 2) + (jumpSpriteSize.y * 3) + (jumpSpriteSize.y / 2);
-
-	const Vector2 arrowSize = { 64.0f,64.0f };
-	Vector2 arrowPosition;
-	arrowPosition.x = (WindowsAPI::kWindow_width_)-(arrowSize.x);
-	arrowPosition.y = (WindowsAPI::kWindow_height_ / 2) + (arrowSize.y * 3) + (arrowSize.y / 2);
-
-	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
-	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
-	jumpSprite_->Initialize(jumpSpritePosition, jumpSpriteSize);
-	arrowSprite_->Initialize(arrowPosition, arrowSize);
 
 	//モデル読み込み
 	const string sphere = "sphere";
@@ -124,36 +89,24 @@ void GameScene::Initialize()
 
 	//カメラ
 	Vector3 cameraEye = { 30,7.5,-20 };
-
-	Vector3 testCameraEye = { 0,50,-30 };
 	Vector3 cameraTarget = { 0,5,5 };
-
-	Vector3 testcameraTarget = { 0,5,5 };
-
 	Vector3 cameraUp = { 0,1,0 };
 
-	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize(testCameraEye, testcameraTarget, cameraUp);
-	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
+	gameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
 
 	//パーティクル
 	particleManager_ = ParticleManager::Create();
 	particleManager_->SetGenerationNum(50);
 	playerRunEffect_ = ParticleManager::Create();
 	playerRunEffect_->SetGenerationNum(50);
+
 }
 
-void GameScene::Update()
+void TutorialScene::Update()
 {
 	playerPosX = player_->GetPos().x;
 	playerPosY = player_->GetPos().y;
 	playerPosZ = player_->GetPos().z;
-
-	//スプライト
-	aButtonSprite_->matUpdate();
-	bButtonSprite_->matUpdate();
-	jumpSprite_->matUpdate();
-	arrowSprite_->matUpdate();
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -178,27 +131,24 @@ void GameScene::Update()
 	}
 
 	//光線方向初期値
-	static Vector3 lightDir = { 1,-1,-10};
+	static Vector3 lightDir = { 1,-1,-10 };
 	float lightDirUp = 0.0f;
 
 	static Vector3 color = { 1, 1, 1 };
 
 	lightGroup_->SetAmbientColor(color);
-	lightGroup_->SetDirLightDir(0, lightDir,lightDirUp);
+	lightGroup_->SetDirLightDir(0, lightDir, lightDirUp);
 	lightGroup_->SetDirLightColor(0, Vector3(1, 1, 1));
 
 	{
 		//imguiからのライトパラメータを反映
 		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
-		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x, lightDir0_.y, lightDir0_.z}), 0.0f);
+		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x, lightDir0_.y, lightDir0_.z }), 0.0f);
 
 		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
 	}
 
 	lightGroup_->Update();
-
-	camera_->Update();
-	testCamera_->Update();
 	gameCamera_->Update(player_->GetIsMoving());
 
 	if(player_->GetOnGround() == true)
@@ -231,7 +181,7 @@ void GameScene::Update()
 			{
 				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
 			}
-			
+
 			//色を変化させる
 			Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
@@ -262,8 +212,8 @@ void GameScene::Update()
 		const float md_acc = 0.01f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
 		//色を変化させる
-		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f};
-		
+		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
 		//追加
 		if(particleManager_->GetIsMaxParticle() == false)
 		{
@@ -277,7 +227,7 @@ void GameScene::Update()
 	skydome_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	particleManager_->Update(gameCamera_.get(),player_->GetAttribute());
+	particleManager_->Update(gameCamera_.get(), player_->GetAttribute());
 
 #ifdef _DEBUG
 
@@ -310,7 +260,7 @@ void GameScene::Update()
 	}
 }
 
-void GameScene::Draw()
+void TutorialScene::Draw()
 {
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
@@ -330,30 +280,15 @@ void GameScene::Draw()
 
 	//モデル描画
 	Object3d::BeforeDraw();
-	//skydome_->Draw();
-	//backGround_->Draw();
 	stage_->Draw();
 	player_->Draw();
 
 	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
 	particleManager_->Draw();
 
-	//SpriteCommon::GetInstance()->BeforeDraw();
-	//SpriteCommon::GetInstance()->Update();
-	//aButtonSprite_->Update();
-	//bButtonSprite_->Update();
-	//jumpSprite_->Update();
-	//arrowSprite_->Update();
-
-	//aButtonSprite_->Draw("A.png");
-	//bButtonSprite_->Draw("B.png");
-	//jumpSprite_->Draw("jump.png");
-	//arrowSprite_->Draw("arrow.png");
-
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
 
 	//描画終了
 	directXBasic_->AfterDraw();
-
 }

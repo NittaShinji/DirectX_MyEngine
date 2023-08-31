@@ -1,6 +1,7 @@
 #include "MyGame.h"
 #include "SceneFactory.h"
 #include "StageSelect.h"
+#include "TutorialScene.h"
 #include "ClearScene.h"
 
 #include "Vector4.h"
@@ -27,6 +28,7 @@ void MyGame::Initialize()
 	TitleScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	GameScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());
 	StageSelectScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
+	TutorialScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	ClearScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 }
 

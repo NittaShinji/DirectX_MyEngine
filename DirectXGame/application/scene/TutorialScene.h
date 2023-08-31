@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Sprite.h"
 #include "Object3d.h"
 #include "Sound.h"
@@ -20,36 +19,23 @@ class CollisionManager;
 class TouchableObject;
 class Player;
 
-class GameScene : public BaseScene
+class TutorialScene : public BaseScene
 {
-
 public:
 
-	/// <summary>
-	/// コンストラクタ
-	/// </summary>
-	GameScene();
+	TutorialScene();
+	~TutorialScene();
 
-	/// <summary>
-	/// デストラクタ
-	/// </summary>
-	~GameScene();
-
+	//静的初期化
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
 
-	/// <summary>
-	/// 初期化
-	/// </summary>
+	//初期化
 	void Initialize() override;
 
-	/// <summary>
-	/// 毎フレーム処理
-	/// </summary>
+	//毎フレーム更新
 	void Update() override;
 
-	/// <summary>
-	/// 描画
-	/// </summary>
+	//描画
 	void Draw() override;
 
 private:
@@ -60,7 +46,7 @@ private:
 
 	//ポストエフェクト
 	std::unique_ptr<PostEffect> postEffect_ = nullptr;
-	
+
 	//ライト
 	LightGroup* lightGroup_ = nullptr;
 
@@ -78,7 +64,7 @@ private:
 	//背景
 	std::unique_ptr<Object3d> skydome_ = nullptr;
 	std::unique_ptr<BackGround> backGround_ = nullptr;
-	
+
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
@@ -90,33 +76,20 @@ private:
 	//衝突マネージャー
 	CollisionManager* collisionManager_ = nullptr;
 
+	//パーティクル
+	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
+	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
+
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;
 	//キー入力の時間管理
 	int32_t keyTimer_ = 60;
 
-	//float ambientColor0_[3] = { 1,1,1 };
 	Vector3 ambientColor0_ = { 1,1,1 };
 	//光線方向初期値
-	//float lightDir0_[3] = { 1,-5,-5 };
 	Vector3 lightDir0_ = { 1,-5,-5 };
-
-	//float lightColor0_[3] = { 1,1,1 };
 	Vector3 lightColor0_ = { 1,1,1 };
-
-	//float whiteColor_[3] = { 1,1,1 };
 	Vector3 whiteColor_ = { 1,1,1 };
-
-	//パーティクル
-	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
-	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
-
-	//UIスプライト
-	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
-	std::unique_ptr<Sprite> jumpSprite_ = nullptr;
-
-	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
-	std::unique_ptr<Sprite> arrowSprite_ = nullptr;
 
 	float playerPosX;
 	float playerPosY;
