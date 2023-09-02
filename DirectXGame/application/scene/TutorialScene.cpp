@@ -52,6 +52,23 @@ void TutorialScene::Initialize()
 	postEffect_ = std::make_unique<PostEffect>();
 	postEffect_->Initialize(directXBasic_);
 
+	//スプライト
+	aButtonSprite_ = std::make_unique<Sprite>();
+	bButtonSprite_ = std::make_unique<Sprite>();
+
+	const Vector2 aButtonSize = { 64.0f,64.0f };
+	Vector2 aButtonPosition;
+	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
+	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y * 4) + (aButtonSize.y / 2);
+
+	const Vector2 bButtonSize = { 64.0f,64.0f };
+	Vector2 bButtonPosition;
+	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
+	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y * 4) + (bButtonSize.y / 2);
+
+	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
+	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
+
 	//モデル読み込み
 	const string sphere = "sphere";
 	const string test = "NoImageModel";
@@ -83,8 +100,6 @@ void TutorialScene::Initialize()
 	skydome_->SetScale(skydomeScale);
 
 	//------------カメラ----------
-	camera_ = std::make_unique<Camera>();
-	testCamera_ = std::make_unique<Camera>();
 	gameCamera_ = std::make_unique<GameCamera>();
 
 	//カメラ
@@ -100,10 +115,18 @@ void TutorialScene::Initialize()
 	playerRunEffect_ = ParticleManager::Create();
 	playerRunEffect_->SetGenerationNum(50);
 
+	isShowingButtonA = false;
 }
 
 void TutorialScene::Update()
 {
+	Tutorial1();
+
+	//スプライト更新処理
+	aButtonSprite_->matUpdate();
+	bButtonSprite_->matUpdate();
+
+
 	playerPosX = player_->GetPos().x;
 	playerPosY = player_->GetPos().y;
 	playerPosZ = player_->GetPos().z;
@@ -286,9 +309,27 @@ void TutorialScene::Draw()
 	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
 	particleManager_->Draw();
 
+	SpriteCommon::GetInstance()->BeforeDraw();
+	SpriteCommon::GetInstance()->Update();
+	aButtonSprite_->Update();
+	bButtonSprite_->Update();
+	
+	aButtonSprite_->Draw("A.png");
+	bButtonSprite_->Draw("B.png");
+	
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
 
 	//描画終了
 	directXBasic_->AfterDraw();
+}
+
+void TutorialScene::Tutorial1()
+{
+	Vector3 cameraEye = gameCamera_->GetEye();
+	if(cameraEye.z > 50 && cameraEye.z < 90)
+	{
+		isShowingButtonA = true;
+	}
+
 }

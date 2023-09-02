@@ -38,6 +38,9 @@ public:
 	//描画
 	void Draw() override;
 
+	//チュートリアル1
+	void Tutorial1();
+
 private:
 
 	static DirectXBasic* directXBasic_;
@@ -51,8 +54,6 @@ private:
 	LightGroup* lightGroup_ = nullptr;
 
 	//カメラ
-	std::unique_ptr<Camera> camera_ = nullptr;
-	std::unique_ptr<Camera> testCamera_ = nullptr;
 	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
 
 	//プレイヤー
@@ -94,5 +95,15 @@ private:
 	float playerPosX;
 	float playerPosY;
 	float playerPosZ;
+
+	//UIスプライト
+	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
+	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
+
+	//画像ボタンの表示
+	bool isShowingButtonA;
+	bool isShowingButtonB;
+	//スロー用のフラグ
+	bool isSlowing;
 };
 
