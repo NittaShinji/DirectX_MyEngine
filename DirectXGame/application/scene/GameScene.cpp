@@ -323,9 +323,6 @@ void GameScene::Draw()
 	//”wŒiƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
 	Object3d::BeforeDraw();
 	plane_->Draw();
-	//[“x’lƒNƒŠƒA
-	directXBasic_->ClearDepthBuffer();
-
 	backGround_->Draw();
 	postEffect_->PostDrawScene();
 
@@ -340,8 +337,6 @@ void GameScene::Draw()
 
 	//ƒ‚ƒfƒ‹•`‰æ
 	Object3d::BeforeDraw();
-	//skydome_->Draw();
-	//backGround_->Draw();
 	stage_->Draw();
 	player_->Draw();
 
@@ -365,5 +360,4 @@ void GameScene::Draw()
 
 	//•`‰æI—¹
 	directXBasic_->AfterDraw();
-
 }
