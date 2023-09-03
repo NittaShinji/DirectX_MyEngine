@@ -309,11 +309,13 @@ void GameScene::Update()
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
 
+#ifdef _DEBUG
 	if(player_->GetIsFinish() == true || keys_->PushedKeyMoment(DIK_G))
 	{
 		Sound::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
+#endif
 }
 
 void GameScene::Draw()
