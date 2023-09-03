@@ -77,6 +77,8 @@ private:
 
 	//îwåi
 	std::unique_ptr<Object3d> skydome_ = nullptr;
+	std::unique_ptr<Object3d> plane_ = nullptr;
+
 	std::unique_ptr<BackGround> backGround_ = nullptr;
 	
 

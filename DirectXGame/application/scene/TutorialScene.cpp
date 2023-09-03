@@ -85,9 +85,8 @@ void TutorialScene::Initialize()
 	Model::Load(plane);
 
 	//3Dオブジェクトの生成
-
 	stage_ = std::make_unique<Stage>();
-	stage_->Initialize();
+	stage_->Initialize("Stage0.json");
 
 	backGround_ = std::make_unique<BackGround>();
 	backGround_->Initialize();
@@ -216,7 +215,7 @@ void TutorialScene::Update()
 		}
 	}
 
-	for(int i = 0; i < 50; i++)
+	for(int i = 0; i < 10; i++)
 	{
 		//x,y,z全て[-2.0f,+2.0f]でランダムに分布
 		const float md_pos = 4.0f;
@@ -331,5 +330,4 @@ void TutorialScene::Tutorial1()
 	{
 		isShowingButtonA = true;
 	}
-
 }

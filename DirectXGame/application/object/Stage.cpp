@@ -2,12 +2,13 @@
 #include <string>
 #include <DirectXMath.h>
 
-void Stage::Initialize()
+void Stage::Initialize(const std::string& fileName)
 {
 	goalPos_ = { 0,0,0 };
 
 	//レベルデータからオブジェクトを生成、配置
-	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
+	//levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
+	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
 
 	for(auto& objectData : levelData_->objects)
 	{

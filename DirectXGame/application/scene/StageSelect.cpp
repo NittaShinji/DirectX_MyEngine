@@ -113,8 +113,8 @@ void StageSelectScene::Update()
 		if(changeSceneTimer_ <= 0)
 		{
 			Sound::GetInstance()->Finalize();
-			SceneManager::GetInstance()->ChangeScene("Tutorial");
-			//SceneManager::GetInstance()->ChangeScene("GAME");
+			//SceneManager::GetInstance()->ChangeScene("Tutorial");
+			SceneManager::GetInstance()->ChangeScene("GAME");
 		}
 	}
 }

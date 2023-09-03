@@ -105,7 +105,7 @@ void GameScene::Initialize()
 	//3Dオブジェクトの生成
 
 	stage_ = std::make_unique<Stage>();
-	stage_->Initialize();
+	stage_->Initialize("Stage0.json");
 
 	backGround_ = std::make_unique<BackGround>();
 	backGround_->Initialize();
@@ -116,6 +116,11 @@ void GameScene::Initialize()
 	skydome_ = Object3d::Create(skydome);
 	Vector3 skydomeScale = { 5,5,10 };
 	skydome_->SetScale(skydomeScale);
+
+	plane_ = Object3d::Create(plane);
+	Vector3 planeScale = { 500,1000,1000 };
+	plane_->SetScale(planeScale);
+
 
 	//------------カメラ----------
 	camera_ = std::make_unique<Camera>();
@@ -243,7 +248,7 @@ void GameScene::Update()
 		}
 	}
 
-	for(int i = 0; i < 50; i++)
+	for(int i = 0; i < 5; i++)
 	{
 		//x,y,z全て[-2.0f,+2.0f]でランダムに分布
 		const float md_pos = 4.0f;
@@ -275,6 +280,7 @@ void GameScene::Update()
 	stage_->Update(gameCamera_.get());
 	player_->Update(gameCamera_.get());
 	skydome_->Update(gameCamera_.get());
+	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
 	particleManager_->Update(gameCamera_.get(),player_->GetAttribute());
@@ -316,6 +322,10 @@ void GameScene::Draw()
 	postEffect_->PreDrawScene();
 	//背景オブジェクトの描画
 	Object3d::BeforeDraw();
+	plane_->Draw();
+	//深度値クリア
+	directXBasic_->ClearDepthBuffer();
+
 	backGround_->Draw();
 	postEffect_->PostDrawScene();
 
@@ -338,17 +348,17 @@ void GameScene::Draw()
 	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
 	particleManager_->Draw();
 
-	//SpriteCommon::GetInstance()->BeforeDraw();
-	//SpriteCommon::GetInstance()->Update();
-	//aButtonSprite_->Update();
-	//bButtonSprite_->Update();
-	//jumpSprite_->Update();
-	//arrowSprite_->Update();
+	SpriteCommon::GetInstance()->BeforeDraw();
+	SpriteCommon::GetInstance()->Update();
+	aButtonSprite_->Update();
+	bButtonSprite_->Update();
+	jumpSprite_->Update();
+	arrowSprite_->Update();
 
-	//aButtonSprite_->Draw("A.png");
-	//bButtonSprite_->Draw("B.png");
-	//jumpSprite_->Draw("jump.png");
-	//arrowSprite_->Draw("arrow.png");
+	aButtonSprite_->Draw("A.png");
+	bButtonSprite_->Draw("B.png");
+	jumpSprite_->Draw("jump.png");
+	arrowSprite_->Draw("arrow.png");
 
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
