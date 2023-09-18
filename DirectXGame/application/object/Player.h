@@ -20,6 +20,9 @@ public:
 
 	void OnCollision(const CollisionInfo& info) override;
 
+	//‰Á‘¬‚·‚é
+	void Accelerate();
+
 	void SetNextState();
 
 	void Draw();

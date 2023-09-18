@@ -232,6 +232,10 @@ void Player::OnCollision(const CollisionInfo& info)
 	}
 }
 
+void Player::Accelerate()
+{
+}
+
 void Player::SetNextState()
 {
 
