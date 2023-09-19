@@ -21,6 +21,8 @@ public:
 	void OnCollision(const CollisionInfo& info) override;
 
 	//加速する
+	void AccelerateChangeColor(Camera* camera);
+
 	void Accelerate();
 
 	void SetNextState();
@@ -98,7 +100,10 @@ private:
 	Attribute attribute_;
 
 	//ジャンプ時の加速度
-	float jumpAcc = 0.0f;
+	float jumpAcc_ = 0.0f;
+
+	//加速フラグ
+	bool isAxcell_;
 
 public:
 

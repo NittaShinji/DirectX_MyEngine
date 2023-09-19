@@ -116,6 +116,12 @@ void Player::Update(Camera* camera)
 		const float fallVYMin = -0.5f;
 		//加速
 		fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+
+		if(isAxcell_ == true)
+		{
+			fallVec_.z = max(fallVec_.z + fallAcc, fallVYMin);
+		}
+		
 		//移動
 		position_.x += fallVec_.x;
 		position_.y += fallVec_.y;
@@ -177,7 +183,6 @@ void Player::Update(Camera* camera)
 	//接地状態
 	if(onGround_)
 	{
-
 		//スムーズに坂を下る為の吸着距離
 		const float adsDistance = 0.2f;
 		//接地を維持
@@ -210,6 +215,7 @@ void Player::Update(Camera* camera)
 		}
 	}
 
+
 	if(position_.y <= -5)
 	{
 		isDead_ = true;
@@ -232,8 +238,48 @@ void Player::OnCollision(const CollisionInfo& info)
 	}
 }
 
+void Player::AccelerateChangeColor(Camera* camera)
+{
+	//オブジェクトと接触する際の距離を計算
+	//ギリギリのところでスペースを押すと加速する
+
+	//球コライダーを取得
+	SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
+	assert(sphereCollider);
+
+	//球の上端から球の下端までのレイキャスト用レイを準備
+	Ray ray;
+	ray.start = sphereCollider->center;
+	//下方向への方向を球1個分ずらす
+	ray.start.y += sphereCollider->GetRadius() * 3;
+	ray.dir = { 0,-1,0 };
+	RaycastHit raycastHit;
+
+	//スムーズに坂を下る為の吸着距離
+	const float adsDistance = 0.2f;
+
+	//地面と衝突しているかどうか
+	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+	{
+		//色を変える
+		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+		{
+			//加速していなかったら加速フラグを立てる
+			if(isAxcell_ == false)
+			{
+				isAxcell_ = true;
+			}
+		}
+	}
+}
+
 void Player::Accelerate()
 {
+	if(isAxcell_ == true)
+	{
+		
+	}
+
 }
 
 void Player::SetNextState()
