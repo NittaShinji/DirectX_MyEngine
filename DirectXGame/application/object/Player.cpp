@@ -120,6 +120,8 @@ void Player::Update(Camera* camera)
 		if(isAxcell_ == true)
 		{
 			fallVec_.z = max(fallVec_.z + fallAcc, fallVYMin);
+			
+
 		}
 		
 		//ˆÚ“®
@@ -203,6 +205,8 @@ void Player::Update(Camera* camera)
 	//—‰ºó‘Ô
 	else if(fallVec_.y <= 0.0f)
 	{
+		AccelerateChangeColor(camera_);
+
 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 		{
 			//’…’n
@@ -251,7 +255,7 @@ void Player::AccelerateChangeColor(Camera* camera)
 	Ray ray;
 	ray.start = sphereCollider->center;
 	//‰º•ûŒü‚Ö‚Ì•ûŒü‚ğ‹…1ŒÂ•ª‚¸‚ç‚·
-	ray.start.y += sphereCollider->GetRadius() * 3;
+	ray.start.y -= sphereCollider->GetRadius() + sphereCollider->GetRadius() * 2;
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
@@ -261,6 +265,8 @@ void Player::AccelerateChangeColor(Camera* camera)
 	//’n–Ê‚ÆÕ“Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 	{
+
+		int a = 0;
 		//F‚ğ•Ï‚¦‚é
 		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
