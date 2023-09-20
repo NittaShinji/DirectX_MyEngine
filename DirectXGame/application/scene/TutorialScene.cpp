@@ -171,7 +171,7 @@ void TutorialScene::Update()
 	}
 
 	lightGroup_->Update();
-	gameCamera_->Update(player_->GetIsMoving());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell(), player_->GetPlayerInitPos());
 
 	if(player_->GetOnGround() == true)
 	{

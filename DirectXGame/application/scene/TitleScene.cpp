@@ -203,14 +203,14 @@ void TitleScene::Update()
 	}
 
 	//F‚ð•Ï‚¦‚éˆ—
-	if(changeColorTimer_ >= 0)
+	if(changecolorTimer__ >= 0)
 	{
-		changeColorTimer_--;
+		changecolorTimer__--;
 
 	}
 	else
 	{
-		changeColorTimer_ = kChangeColorTime_;
+		changecolorTimer__ = kChangeColorTime_;
 	}
 
 	if(isChangeColor_ == false)

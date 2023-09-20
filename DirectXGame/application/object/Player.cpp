@@ -30,7 +30,8 @@ void Player::Initialize()
 	Object3d::Initialize();
 	Sound::GetInstance()->LoadSoundWave("jump.wav");
 
-	position_ = { 0,2,2 };
+	playerInitPos_ = { 0.0f,2.0f,2.0f };
+	position_ = playerInitPos_;
 	rotation_ = { 0,0,0 };
 	scale_ = { 1.0,1.0,1.0 };
 
@@ -42,7 +43,6 @@ void Player::Initialize()
 	//コライダーの追加
 	float radius = 1.0f;
 	playerCollider_ = std::make_unique<SphereCollider>(Vector3({ 0,0,0 }), radius);
-
 
 	//コライダーの登録
 	SetCollider(playerCollider_.get());
@@ -58,6 +58,10 @@ void Player::Initialize()
 	isMoving_ = false;
 	isChangeColor = false;
 
+	fallVec_ = { 0.0f,0.0f,0.0f };
+	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
+	totalAxcell_ = { 0.0f,0.0f,0.0f };
+
 	attribute_ = Attribute::pink;
 	colorFlag_ = true;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
@@ -65,10 +69,18 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
+	//if(isMoving_ == true)
+	//{
+	//	move.z = 0.5f;
+	//	position_.z += move.z;
+	//}
+
+	//合計加速度をリセット
+	totalAxcell_ = { 0.0f,0.0f,0.0f };
 	if(isMoving_ == true)
 	{
-		move.z = 0.5f;
-		position_.z += move.z;
+		totalAxcell_.z += kMoveAxcellZ_;
+		Accelerate();
 	}
 
 	gamePad_->PushedButtonMoment();
@@ -117,18 +129,9 @@ void Player::Update(Camera* camera)
 		//加速
 		fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
 
-		if(isAxcell_ == true)
-		{
-			fallVec_.z = max(fallVec_.z + fallAcc, fallVYMin);
-			
-
-		}
+		//合計加速度に落下中の速度を加算
+		totalAxcell_ += fallVec_;
 		
-		//移動
-		position_.x += fallVec_.x;
-		position_.y += fallVec_.y;
-		position_.z += fallVec_.z;
-
 		if(jumpCount > 0)
 		{
 			if(gamePad_->GetButtonA())
@@ -168,6 +171,7 @@ void Player::Update(Camera* camera)
 		jumpCount -= 1;
 	}
 
+	position_ += totalAxcell_;
 	Object3d::SetTransform(position_);
 	Object3d::Update(camera);
 
@@ -255,7 +259,7 @@ void Player::AccelerateChangeColor(Camera* camera)
 	Ray ray;
 	ray.start = sphereCollider->center;
 	//下方向への方向を球1個分ずらす
-	ray.start.y -= sphereCollider->GetRadius() + sphereCollider->GetRadius() * 2;
+	ray.start.y -= sphereCollider->GetRadius() + sphereCollider->GetRadius() / 2;
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
@@ -265,15 +269,15 @@ void Player::AccelerateChangeColor(Camera* camera)
 	//地面と衝突しているかどうか
 	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 	{
-
 		int a = 0;
 		//色を変える
 		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
 			//加速していなかったら加速フラグを立てる
-			if(isAxcell_ == false)
+			if(isRightAxcell_ == false)
 			{
-				isAxcell_ = true;
+				isRightAxcell_ = true;
+				axcellTimer_ = kAxcellTime_;
 			}
 		}
 	}
@@ -281,11 +285,30 @@ void Player::AccelerateChangeColor(Camera* camera)
 
 void Player::Accelerate()
 {
-	if(isAxcell_ == true)
-	{
-		
-	}
+	//横向き加速度　
+	const float rightAcc = 0.015f;
+	const float rightVZMin = 0.5f;
 
+	if(isRightAxcell_ == true)
+	{
+		axcellTimer_--;
+		if(axcellTimer_ > 0)
+		{
+			rightAxcellVec_.z = max(rightAxcellVec_.z + rightAcc, rightVZMin);
+		}
+		else
+		{
+			rightAxcellVec_.z = 0;
+			isRightAxcell_ = false;
+		}
+	}
+	/*else
+	{
+		rightAxcellVec_.z = 0;
+		isRightAxcell_ = false;
+	}*/
+
+	totalAxcell_.z += rightAxcellVec_.z;
 }
 
 void Player::SetNextState()

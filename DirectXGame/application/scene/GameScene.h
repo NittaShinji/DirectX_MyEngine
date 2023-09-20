@@ -119,9 +119,5 @@ private:
 
 	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> arrowSprite_ = nullptr;
-
-	float playerPosX;
-	float playerPosY;
-	float playerPosZ;
 };
 

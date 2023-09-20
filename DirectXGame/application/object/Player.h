@@ -39,7 +39,10 @@ private:
 
 	std::unique_ptr<Object3d> object_;
 
-	Vector3 position_ = { 0,2,0 };
+	//初期位置
+	Vector3 playerInitPos_;
+	//位置
+	Vector3 position_;
 	Vector3 rotation_ = { 0,0,0 };
 	Vector3 scale_ = { 1,1,1 };
 
@@ -93,7 +96,7 @@ private:
 
 	const int32_t pushTime = 1;
 
-	int32_t colorTimer = pushTime;
+	int32_t colorTimer_ = pushTime;
 
 	bool pushMoment_ = false;
 
@@ -102,8 +105,21 @@ private:
 	//ジャンプ時の加速度
 	float jumpAcc_ = 0.0f;
 
+	//合計加速度
+	Vector3 totalAxcell_;
+
+	//通常加速度
+	const float kMoveAxcellZ_ = 0.5f;
+
+	//右向き加速ベクトル
+	Vector3 rightAxcellVec_;
+
 	//加速フラグ
-	bool isAxcell_;
+	bool isRightAxcell_;
+	//加速時間
+	const int32_t kAxcellTime_ = 30;
+	//加速計測時間
+	int32_t axcellTimer_ = kAxcellTime_;
 
 public:
 
@@ -113,6 +129,9 @@ public:
 	Vector3 GetPos() { return position_; }
 	bool GetOnGround() { return onGround_; }
 	Attribute GetAttribute() { return attribute_; }
+	Vector3 GetPlayerInitPos() { return playerInitPos_; }
+	Vector3 GetTotalAxcell() { return totalAxcell_; }
+
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }

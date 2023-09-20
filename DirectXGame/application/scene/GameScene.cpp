@@ -150,10 +150,6 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	playerPosX = player_->GetPos().x;
-	playerPosY = player_->GetPos().y;
-	playerPosZ = player_->GetPos().z;
-
 	//スプライト
 	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();
@@ -204,7 +200,7 @@ void GameScene::Update()
 
 	camera_->Update();
 	testCamera_->Update();
-	gameCamera_->Update(player_->GetIsMoving());
+	gameCamera_->Update(player_->GetIsMoving(),player_->GetTotalAxcell(), player_->GetPlayerInitPos());
 
 	if(player_->GetOnGround() == true)
 	{

@@ -52,7 +52,7 @@ private:
 
 	float moveTimer_ = kActionTime_;
 	float rotateTimer_ = kRotateTime_;
-	float changeColorTimer_ = kChangeColorTime_;
+	float changecolorTimer__ = kChangeColorTime_;
 	float changeWhiteTimer_ = kChangeWhiteTime_;
 
 	bool isUp_ = false;

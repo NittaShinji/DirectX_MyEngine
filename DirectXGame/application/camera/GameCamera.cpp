@@ -2,12 +2,13 @@
 #include "ImGuiManager.h"
 
 
-void GameCamera::Update(bool isPlayerMoving)
+void GameCamera::Update(bool isPlayerMoving, Vector3 playerAxcell_, Vector3 pInitPos)
 {
 	if(isPlayerMoving == true)
 	{
-		target_.z += 0.5f;
-		eye_.z += 0.5f;
+		//プレイヤーのポジションを代入(動いた分だけ進むように初期位置を引く)
+		target_.z += playerAxcell_.z ;
+		eye_.z += playerAxcell_.z;
 	}
 	 
 	UpdateViewMatrix();
