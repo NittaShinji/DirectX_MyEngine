@@ -29,6 +29,7 @@ void Player::Initialize()
 {
 	Object3d::Initialize();
 	Sound::GetInstance()->LoadSoundWave("jump.wav");
+	Sound::GetInstance()->LoadSoundWave("doubleJump.wav");
 
 	playerInitPos_ = { 0.0f,2.0f,2.0f };
 	position_ = playerInitPos_;
@@ -137,7 +138,7 @@ void Player::Update(Camera* camera)
 			if(gamePad_->GetButtonA())
 			{
 				gamePad_->ResetButton();
-				Sound::GetInstance()->PlaySoundWave("jump.wav");
+				Sound::GetInstance()->PlaySoundWave("doubleJump.wav");
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0 };
@@ -145,7 +146,7 @@ void Player::Update(Camera* camera)
 			}
 			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
-				Sound::GetInstance()->PlaySoundWave("jump.wav");
+				Sound::GetInstance()->PlaySoundWave("doubleJump.wav");
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0 };
