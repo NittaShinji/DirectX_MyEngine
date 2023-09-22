@@ -145,6 +145,7 @@ void Player::Update(Camera* camera)
 			}
 			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
+				Sound::GetInstance()->PlaySoundWave("jump.wav");
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0 };
