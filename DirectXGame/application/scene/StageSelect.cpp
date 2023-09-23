@@ -67,7 +67,7 @@ void StageSelectScene::Initialize()
 	Sound::GetInstance()->Initialize();
 	Sound::GetInstance()->LoadSoundWave("title.wav");
 	Sound::GetInstance()->LoadSoundWave("touch.wav");
-	Sound::GetInstance()->PlaySoundWave("title.wav");
+	Sound::GetInstance()->PlaySoundWave("title.wav",false);
 }
 
 void StageSelectScene::Update()
@@ -88,7 +88,7 @@ void StageSelectScene::Update()
 
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		Sound::GetInstance()->PlaySoundWave("touch.wav");
+		Sound::GetInstance()->PlaySoundWave("touch.wav",false);
 		isChangeScene_ = true;
 	}
 

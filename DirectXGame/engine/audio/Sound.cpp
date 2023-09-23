@@ -116,7 +116,7 @@ void Sound::UnloadSound(SoundData* soundData)
 }
 
 //音声再生
-void Sound::PlaySoundWave(const std::string& fileName)
+void Sound::PlaySoundWave(const std::string& fileName, bool isLoop)
 {
 	HRESULT result;
 
@@ -136,6 +136,12 @@ void Sound::PlaySoundWave(const std::string& fileName)
 	buf.pAudioData = soundData.pBuffer.data();
 	buf.AudioBytes = soundData.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
+	
+	//ループ処理
+	if(isLoop)
+	{
+		buf.LoopCount = XAUDIO2_LOOP_INFINITE;
+	}
 
 	//波形データの再生
 	result = pSourceVoice->SubmitSourceBuffer(&buf);

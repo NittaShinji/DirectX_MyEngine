@@ -39,7 +39,7 @@ void GameScene::Initialize()
 	//------------サウンド----------
 	Sound::GetInstance()->Initialize();
 	Sound::GetInstance()->LoadSoundWave("gamescene.wav");
-	Sound::GetInstance()->PlaySoundWave("gamescene.wav");
+	Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();
@@ -150,6 +150,7 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
+	
 	//スプライト
 	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();

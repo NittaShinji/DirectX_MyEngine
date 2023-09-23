@@ -50,7 +50,7 @@ void ClearScene::Initialize()
 	//ƒTƒEƒ“ƒh
 	Sound::GetInstance()->Initialize();
 	Sound::GetInstance()->LoadSoundWave("clear.wav");
-	Sound::GetInstance()->PlaySoundWave("clear.wav");
+	Sound::GetInstance()->PlaySoundWave("clear.wav",false);
 
 	Sound::GetInstance()->LoadSoundWave("touch.wav");
 
@@ -98,7 +98,7 @@ void ClearScene::Update()
 	gamePad_->PushedButtonMoment();
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		Sound::GetInstance()->PlaySoundWave("touch.wav");
+		Sound::GetInstance()->PlaySoundWave("touch.wav",false);
 		//SceneManager::GetInstance()->ChangeScene("TITLE");
 		SceneManager::GetInstance()->ChangeScene("StageSelect");
 	}

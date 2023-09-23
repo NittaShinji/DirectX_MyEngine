@@ -138,7 +138,7 @@ void Player::Update(Camera* camera)
 			if(gamePad_->GetButtonA())
 			{
 				gamePad_->ResetButton();
-				Sound::GetInstance()->PlaySoundWave("doubleJump.wav");
+				Sound::GetInstance()->PlaySoundWave("doubleJump.wav",false);
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0 };
@@ -146,7 +146,7 @@ void Player::Update(Camera* camera)
 			}
 			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
-				Sound::GetInstance()->PlaySoundWave("doubleJump.wav");
+				Sound::GetInstance()->PlaySoundWave("doubleJump.wav",false);
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0 };
@@ -157,7 +157,7 @@ void Player::Update(Camera* camera)
 	//ƒWƒƒƒ“ƒv‘€ì
 	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
-		Sound::GetInstance()->PlaySoundWave("jump.wav");
+		Sound::GetInstance()->PlaySoundWave("jump.wav",false);
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0 };
@@ -165,7 +165,7 @@ void Player::Update(Camera* camera)
 	}
 	else if(gamePad_->GetButtonA() && jumpCount > 0)
 	{
-		Sound::GetInstance()->PlaySoundWave("jump.wav");
+		Sound::GetInstance()->PlaySoundWave("jump.wav", false);
 		gamePad_->ResetButton();
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;

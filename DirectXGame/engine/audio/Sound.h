@@ -81,7 +81,7 @@ public: //ƒƒ“ƒoŠÖ”
 	void Finalize();
 
 	//‰¹ºÄ¶
-	void PlaySoundWave(const std::string& fileName);
+	void PlaySoundWave(const std::string& fileName, bool isLoop);
 
 private:
 

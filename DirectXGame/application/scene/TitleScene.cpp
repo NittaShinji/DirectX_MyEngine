@@ -98,7 +98,7 @@ void TitleScene::Initialize()
 	Sound::GetInstance()->LoadSoundWave("title.wav");
 	Sound::GetInstance()->LoadSoundWave("touch.wav");
 
-	Sound::GetInstance()->PlaySoundWave("title.wav");
+	Sound::GetInstance()->PlaySoundWave("title.wav",true);
 
 	//ƒJƒƒ‰
 	camera_ = std::make_unique<Camera>();
@@ -242,7 +242,7 @@ void TitleScene::Update()
 
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		Sound::GetInstance()->PlaySoundWave("touch.wav");
+		Sound::GetInstance()->PlaySoundWave("touch.wav",false);
 		isChangeScene_ = true;	
 	}
 
