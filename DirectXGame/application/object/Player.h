@@ -35,6 +35,8 @@ public:
 
 	void ImGuiUpdate();
 
+	void JumpRotation();
+
 private:
 
 	std::unique_ptr<Object3d> object_;

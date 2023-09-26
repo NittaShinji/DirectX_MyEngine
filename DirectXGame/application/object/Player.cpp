@@ -363,4 +363,16 @@ void Player::ImGuiUpdate()
 	ImGui::End();
 }
 
+void Player::JumpRotation()
+{
+	Vector3 rotation = { 0.0f,0.0f,0.0f };
+
+	if(!onGround_)
+	{
+		rotation.y += 0.1f;
+	}
+
+	Object3d::SetRotation(rotation);
+}
+
 
