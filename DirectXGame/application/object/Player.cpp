@@ -367,9 +367,14 @@ void Player::JumpRotation()
 {
 	Vector3 rotation = { 0.0f,0.0f,0.0f };
 
-	if(!onGround_)
+	//地面についていなければ二段ジャンプの時に回転する
+	if(onGround_ == false && jumpCount == 1)
 	{
 		rotation.y += 0.1f;
+		if(rotation.y > 1.0f)
+		{
+			rotation.y = 0.0f;
+		}
 	}
 
 	Object3d::SetRotation(rotation);
