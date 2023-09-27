@@ -58,6 +58,7 @@ void Player::Initialize()
 	isfinish_ = false;
 	isMoving_ = false;
 	isChangeColor = false;
+	isJumpRotate_ = false;
 
 	fallVec_ = { 0.0f,0.0f,0.0f };
 	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
@@ -70,12 +71,6 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
-	//if(isMoving_ == true)
-	//{
-	//	move.z = 0.5f;
-	//	position_.z += move.z;
-	//}
-
 	//合計加速度をリセット
 	totalAxcell_ = { 0.0f,0.0f,0.0f };
 	if(isMoving_ == true)
@@ -133,12 +128,14 @@ void Player::Update(Camera* camera)
 		//合計加速度に落下中の速度を加算
 		totalAxcell_ += fallVec_;
 		
+		//二段ジャンプ時
 		if(jumpCount > 0)
 		{
 			if(gamePad_->GetButtonA())
 			{
 				gamePad_->ResetButton();
 				Sound::GetInstance()->PlaySoundWave("doubleJump.wav",false);
+				isJumpRotate_ = true;
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0 };
@@ -147,12 +144,16 @@ void Player::Update(Camera* camera)
 			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
 				Sound::GetInstance()->PlaySoundWave("doubleJump.wav",false);
+				isJumpRotate_ = true;
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
 				fallVec_ = { 0,jumpVYFist,0 };
 				jumpCount -= 1;
 			}
 		}
+
+		//二段ジャンプ時の回転処理
+		JumpRotation();
 	}
 	//ジャンプ操作
 	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
@@ -225,13 +226,10 @@ void Player::Update(Camera* camera)
 		}
 	}
 
-
-	if(position_.y <= -5)
+	if(position_.y <= deadLine_)
 	{
 		isDead_ = true;
 	}
-
-	finish();
 }
 
 void Player::OnCollision(const CollisionInfo& info)
@@ -304,31 +302,13 @@ void Player::Accelerate()
 			isRightAxcell_ = false;
 		}
 	}
-	/*else
-	{
-		rightAxcellVec_.z = 0;
-		isRightAxcell_ = false;
-	}*/
 
 	totalAxcell_.z += rightAxcellVec_.z;
-}
-
-void Player::SetNextState()
-{
-
 }
 
 void Player::Draw()
 {
 	Object3d::Draw();
-}
-
-void Player::finish()
-{
-	/*if(position_.z > 235.0f)
-	{
-		isDead_ = true;
-	}*/
 }
 
 void Player::Reset()
@@ -340,6 +320,8 @@ void Player::Reset()
 	move = { 0,0,0 };
 
 	jumpCount = 2;
+	onGround_ = true;
+	isJumpRotate_ = false;
 	isFlying_ = 0;
 	isfinish_ = false;
 	isMoving_ = false;
@@ -365,19 +347,28 @@ void Player::ImGuiUpdate()
 
 void Player::JumpRotation()
 {
-	Vector3 rotation = { 0.0f,0.0f,0.0f };
-
 	//地面についていなければ二段ジャンプの時に回転する
-	if(onGround_ == false && jumpCount == 1)
+	if(isJumpRotate_ == true)
 	{
-		rotation.y += 0.1f;
-		if(rotation.y > 1.0f)
+		float angle = ToRadian(360.0f);
+		rotation_.x -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
+		
+		if(rotateTimer_ >= 0)
 		{
-			rotation.y = 0.0f;
+			rotateTimer_--;
+		}
+		else
+		{
+			rotateTimer_ = kRotateTime_;
+			isJumpRotate_ = false;
 		}
 	}
+	/*else
+	{
+		rotateTimer_ = kRotateTime_;
+	}*/
 
-	Object3d::SetRotation(rotation);
+	Object3d::SetRotation(rotation_);
 }
 
 

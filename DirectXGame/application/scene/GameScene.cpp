@@ -171,7 +171,6 @@ void GameScene::Update()
 		{
 			player_->SetIsMoving(true);
 		}
-
 	}
 	else
 	{

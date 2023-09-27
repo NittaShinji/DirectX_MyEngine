@@ -25,11 +25,7 @@ public:
 
 	void Accelerate();
 
-	void SetNextState();
-
 	void Draw();
-
-	void finish();
 
 	void Reset();
 
@@ -93,7 +89,7 @@ private:
 	//落下ベクトル
 	Vector3 fallVec_;
 
-
+	//色変えフラグ
 	bool isChangeColor = false;
 
 	const int32_t pushTime = 1;
@@ -122,6 +118,16 @@ private:
 	const int32_t kAxcellTime_ = 30;
 	//加速計測時間
 	int32_t axcellTimer_ = kAxcellTime_;
+
+	//プレイヤー死亡ライン
+	const float deadLine_ = 0.5f;
+
+	//1周回る時間
+	const float kRotateTime_ = 60.0f;
+	//回転時間
+	float rotateTimer_ = kRotateTime_;
+	//回転フラグ
+	bool isJumpRotate_ = false;
 
 public:
 

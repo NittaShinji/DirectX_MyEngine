@@ -52,10 +52,6 @@ void TitleScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("A.png");
 	TextureManager::GetInstance()->LoadTexture("B.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
-	/*SpriteCommon::GetInstance()->LoadTexture("TitleFont.png");
-	SpriteCommon::GetInstance()->LoadTexture("A.png");
-	SpriteCommon::GetInstance()->LoadTexture("B.png");
-	SpriteCommon::GetInstance()->LoadTexture("click.png");*/
 
 	Vector2 backGroundPosition = { 0.0f,0.0f };
 	const int32_t backGroundWidth = 1280;
@@ -63,8 +59,6 @@ void TitleScene::Initialize()
 	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight};
 
 	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");
-	/*SpriteCommon::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");*/
-
 
 	Vector2 titlePosition = { 400.0f,33.0f };
 	const Vector2 titleSize = { 480.0f,103.0f };
@@ -137,7 +131,6 @@ void TitleScene::Update()
 	//‰ñ“]ˆ—
 	if(isChangeScene_ == false)
 	{
-
 		float angle = ToRadian(360.0f);
 		sphereRotate.y -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
 		titleSphere_->SetRotation(sphereRotate);
@@ -254,7 +247,6 @@ void TitleScene::Update()
 		if(changeWhiteTimer_ <= 0)
 		{
 			Sound::GetInstance()->Finalize();
-			//SceneManager::GetInstance()->ChangeScene("GAME");
 			SceneManager::GetInstance()->ChangeScene("StageSelect");
 		}
 	}
@@ -273,7 +265,6 @@ void TitleScene::Draw()
 	bButtonSprite_->Update();
 	backGroundSprite_->Update();
 
-	//titleSprite_->Draw("WhiteTex");
 	backGroundSprite_->Draw("WhiteTex");
 	titleSprite_->Draw("TitleFont.png");
 
