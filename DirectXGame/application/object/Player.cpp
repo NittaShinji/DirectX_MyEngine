@@ -30,6 +30,7 @@ void Player::Initialize()
 	Object3d::Initialize();
 	Sound::GetInstance()->LoadSoundWave("jump.wav");
 	Sound::GetInstance()->LoadSoundWave("doubleJump.wav");
+	Sound::GetInstance()->LoadSoundWave("playerDead.wav");
 
 	playerInitPos_ = { 0.0f,2.0f,2.0f };
 	position_ = playerInitPos_;
@@ -228,6 +229,7 @@ void Player::Update(Camera* camera)
 
 	if(position_.y <= deadLine_)
 	{
+		Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		isDead_ = true;
 	}
 }
