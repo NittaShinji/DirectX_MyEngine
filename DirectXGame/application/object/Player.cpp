@@ -244,6 +244,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	//F‚ªˆá‚¤ê‡AŽ€–S”»’è‚É‚·‚é
 	if(info.object->GetAttribute() != attribute_)
 	{
+		Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		isDead_ = true;
 	}
 
