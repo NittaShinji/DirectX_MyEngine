@@ -289,7 +289,7 @@ void Player::Accelerate()
 {
 	//‰¡Œü‚«‰Á‘¬“x@
 	const float rightAcc = 0.015f;
-	const float rightVZMin = 0.5f;
+	const float rightVZMin = 0.3f;
 
 	if(isRightAxcell_ == true)
 	{

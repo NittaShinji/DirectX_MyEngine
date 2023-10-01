@@ -7,7 +7,6 @@ void Stage::Initialize(const std::string& fileName)
 	goalPos_ = { 0,0,0 };
 
 	//レベルデータからオブジェクトを生成、配置
-	//levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("Stage0.json");
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
 
 	for(auto& objectData : levelData_->objects)
@@ -17,8 +16,7 @@ void Stage::Initialize(const std::string& fileName)
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
 		//モデルを指定して3Dオブジェクトを作成
-
-		if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "skydome" || objectData.fileName == "Plane")
+		if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0")
 		{
 			//3Dオブジェクトの生成
 			std::unique_ptr<TouchableObject> newObject = nullptr;

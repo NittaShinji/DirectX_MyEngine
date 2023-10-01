@@ -78,9 +78,7 @@ private:
 	//”wŒi
 	std::unique_ptr<Object3d> skydome_ = nullptr;
 	std::unique_ptr<Object3d> plane_ = nullptr;
-
 	std::unique_ptr<BackGround> backGround_ = nullptr;
-	
 
 	//ƒQ[ƒ€ƒpƒbƒh
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
