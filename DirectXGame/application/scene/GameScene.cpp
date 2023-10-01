@@ -150,7 +150,6 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	
 	//スプライト
 	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();

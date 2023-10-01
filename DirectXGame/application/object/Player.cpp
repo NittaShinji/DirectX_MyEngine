@@ -72,6 +72,9 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
+	//どのボタンが瞬間的に押されたか
+	gamePad_->PushedButtonMoment();
+
 	//合計加速度をリセット
 	totalAxcell_ = { 0.0f,0.0f,0.0f };
 	if(isMoving_ == true)
@@ -80,11 +83,9 @@ void Player::Update(Camera* camera)
 		Accelerate();
 	}
 
-	gamePad_->PushedButtonMoment();
-
+	//色変え処理
 	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		gamePad_->ResetButton();
 		//属性の変更
 		if(attribute_ == Attribute::pink)
 		{
@@ -130,11 +131,10 @@ void Player::Update(Camera* camera)
 		totalAxcell_ += fallVec_;
 		
 		//二段ジャンプ時
-		if(jumpCount > 0)
+		if(jumpCount > 0 && jumpCount < 2)
 		{
 			if(gamePad_->GetButtonA())
 			{
-				gamePad_->ResetButton();
 				Sound::GetInstance()->PlaySoundWave("doubleJump.wav",false);
 				isJumpRotate_ = true;
 				onGround_ = false;
@@ -168,13 +168,13 @@ void Player::Update(Camera* camera)
 	else if(gamePad_->GetButtonA() && jumpCount > 0)
 	{
 		Sound::GetInstance()->PlaySoundWave("jump.wav", false);
-		gamePad_->ResetButton();
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0 };
 		jumpCount -= 1;
 	}
 
+	//加速を座標に反映
 	position_ += totalAxcell_;
 	Object3d::SetTransform(position_);
 	Object3d::Update(camera);
@@ -232,6 +232,9 @@ void Player::Update(Camera* camera)
 		Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		isDead_ = true;
 	}
+
+	//ゲームパッドのボタン情報をリセット
+	gamePad_->ResetButton();
 }
 
 void Player::OnCollision(const CollisionInfo& info)
@@ -271,7 +274,6 @@ void Player::AccelerateChangeColor(Camera* camera)
 	//地面と衝突しているかどうか
 	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 	{
-		int a = 0;
 		//色を変える
 		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
@@ -365,10 +367,6 @@ void Player::JumpRotation()
 			isJumpRotate_ = false;
 		}
 	}
-	/*else
-	{
-		rotateTimer_ = kRotateTime_;
-	}*/
 
 	Object3d::SetRotation(rotation_);
 }
