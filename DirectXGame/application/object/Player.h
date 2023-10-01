@@ -33,6 +33,8 @@ public:
 
 	void JumpRotation();
 
+	void GroundRotation();
+
 private:
 
 	std::unique_ptr<Object3d> object_;
@@ -123,9 +125,14 @@ private:
 	const float deadLine_ = 0.5f;
 
 	//1Žü‰ñ‚éŽžŠÔ
-	const float kRotateTime_ = 60.0f;
+	const float kRotateXTime_ = 60.0f;
+	const float kRotateYTime_ = 360.0f;
+
 	//‰ñ“]ŽžŠÔ
-	float rotateTimer_ = kRotateTime_;
+	float rotateXTimer_ = kRotateXTime_;
+	float rotateYTimer_ = kRotateYTime_;
+
+
 	//‰ñ“]ƒtƒ‰ƒO
 	bool isJumpRotate_ = false;
 

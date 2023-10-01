@@ -129,13 +129,13 @@ void Player::Update(Camera* camera)
 
 		//合計加速度に落下中の速度を加算
 		totalAxcell_ += fallVec_;
-		
+
 		//二段ジャンプ時
 		if(jumpCount > 0 && jumpCount < 2)
 		{
 			if(gamePad_->GetButtonA())
 			{
-				Sound::GetInstance()->PlaySoundWave("doubleJump.wav",false);
+				Sound::GetInstance()->PlaySoundWave("doubleJump.wav", false);
 				isJumpRotate_ = true;
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
@@ -144,7 +144,7 @@ void Player::Update(Camera* camera)
 			}
 			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
-				Sound::GetInstance()->PlaySoundWave("doubleJump.wav",false);
+				Sound::GetInstance()->PlaySoundWave("doubleJump.wav", false);
 				isJumpRotate_ = true;
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
@@ -159,7 +159,7 @@ void Player::Update(Camera* camera)
 	//ジャンプ操作
 	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
-		Sound::GetInstance()->PlaySoundWave("jump.wav",false);
+		Sound::GetInstance()->PlaySoundWave("jump.wav", false);
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0 };
@@ -193,6 +193,8 @@ void Player::Update(Camera* camera)
 	//接地状態
 	if(onGround_)
 	{
+		GroundRotation();
+
 		//スムーズに坂を下る為の吸着距離
 		const float adsDistance = 0.2f;
 		//接地を維持
@@ -355,18 +357,40 @@ void Player::JumpRotation()
 	if(isJumpRotate_ == true)
 	{
 		float angle = ToRadian(360.0f);
-		rotation_.x -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
-		
-		if(rotateTimer_ >= 0)
+		rotation_.x -= PlayEaseIn(rotateXTimer_, 0.0f, angle, kRotateXTime_);
+
+		if(rotateXTimer_ >= 0)
 		{
-			rotateTimer_--;
+			rotateXTimer_--;
 		}
 		else
 		{
-			rotateTimer_ = kRotateTime_;
+			rotateXTimer_ = kRotateXTime_;
 			isJumpRotate_ = false;
 		}
 	}
+
+	Object3d::SetRotation(rotation_);
+}
+
+void Player::GroundRotation()
+{
+
+	float angle = ToRadian(360.0f);
+	float rotateYVec = 0.10f;
+
+	if(rotateYTimer_ >= 0)
+	{
+		rotateYTimer_ -= rotateYVec;
+		float angle = ToRadian(rotateYTimer_);
+		rotation_.y -= angle;
+	}
+	else
+	{
+		rotateYTimer_ = kRotateYTime_;
+		isJumpRotate_ = false;
+	}
+
 
 	Object3d::SetRotation(rotation_);
 }
