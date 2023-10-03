@@ -88,7 +88,7 @@ void TitleScene::Initialize()
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
 	//ƒTƒEƒ“ƒh
-	Sound::GetInstance()->Initialize();
+	//Sound::GetInstance()->Initialize();
 	Sound::GetInstance()->LoadSoundWave("title.wav");
 	Sound::GetInstance()->LoadSoundWave("touch.wav");
 
@@ -250,7 +250,8 @@ void TitleScene::Update()
 			titleSphere_->SetColor(Vector3(1.0f, 1.0f, 1.0f));
 			if(changeWhiteTimer_ <= 0)
 			{
-				Sound::GetInstance()->Finalize();
+				Sound::GetInstance()->PauseSound("title.wav");
+				/*Sound::GetInstance()->Finalize();*/
 				SceneManager::GetInstance()->ChangeScene("StageSelect");
 			}
 		}

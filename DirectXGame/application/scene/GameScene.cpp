@@ -37,9 +37,9 @@ void GameScene::Initialize()
 	Object3d::SetLightGroup(lightGroup_);
 
 	//------------サウンド----------
-	Sound::GetInstance()->Initialize();
+	/*Sound::GetInstance()->Initialize();*/
 	Sound::GetInstance()->LoadSoundWave("gamescene.wav");
-	Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);
+	//Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();

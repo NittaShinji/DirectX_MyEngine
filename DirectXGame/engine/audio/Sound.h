@@ -7,6 +7,7 @@
 #include <string>
 #include <stdint.h>
 #include <vector>
+#include <set>
 
 class Sound final
 {
@@ -57,6 +58,14 @@ public:
 		uint32_t bufferSize;
 	};
 
+	// 再生データ
+	struct Voice
+	{
+		//uint32_t handle = 0u;
+		std::string fileName;
+		IXAudio2SourceVoice* sourceVoice = nullptr;
+	};
+
 public: //メンバ関数
 
 	static Sound* GetInstance()
@@ -82,13 +91,32 @@ public: //メンバ関数
 	//音声再生
 	void PlaySoundWave(const std::string& fileName, bool isLoop);
 
+	//音声停止
+	void StopSound(const std::string& fileName);
+
+	//音声一時停止
+	void PauseSound(const std::string& fileName);
+
+	//一時停止からの再開
+	void ResumeWave(const std::string& fileName);
+
+	//音量調節
+	void SetVolume(const std::string& fileName, float volume);
+
 private:
 
 	//XAudio2のインスタンス
 	Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
 	
-	//サウンドデータ
+	//サウンドデータコンテナ
 	std::map<std::string, SoundData> soundDates_;
 	
+	//再生中サウンドデータコンテナ
+	std::set<Voice*> voices_;
+
+	// 次に使う再生中データの番号
+	uint32_t indexVoice_ = 0u;
+
+	std::mutex voiceMutex_;
 };
 

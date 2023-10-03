@@ -1,4 +1,5 @@
 #include "Sound.h"
+#include <mutex>
 
 #pragma comment(lib,"xaudio2.lib")
 
@@ -15,6 +16,8 @@ void Sound::Initialize()
 	IXAudio2MasteringVoice* masterVoice_;
 	result = xAudio2_->CreateMasteringVoice(&masterVoice_);
 	assert(SUCCEEDED(result));
+
+	indexVoice_ = 0u;
 }
 
 void Sound::LoadSoundWave(const std::string& fileName)
@@ -126,10 +129,26 @@ void Sound::PlaySoundWave(const std::string& fileName, bool isLoop)
 	//サウンドデータの参照を取得
 	SoundData& soundData = it->second;
 
+	uint32_t handle = indexVoice_;
+
 	//波形フォーマットを元にSourceVoiceの生成
 	IXAudio2SourceVoice* pSourceVoice = nullptr;
 	result = xAudio2_->CreateSourceVoice(&pSourceVoice, &soundData.wfex);
 	assert(SUCCEEDED(result));
+
+	// 再生中データ
+	std::unique_ptr<Voice> voice = std::make_unique<Voice>();
+	voice->fileName = fileName;
+	voice->sourceVoice = pSourceVoice;
+	
+	//// 再生中データコンテナに登録
+	//voices_.insert(voice.get());
+
+	{
+		std::unique_lock<std::mutex> guard(voiceMutex_);
+		// 再生中データコンテナに登録
+		voices_.insert(voice.get());
+	}
 
 	//再生する波形データの設定
 	XAUDIO2_BUFFER buf{};
@@ -146,7 +165,58 @@ void Sound::PlaySoundWave(const std::string& fileName, bool isLoop)
 	//波形データの再生
 	result = pSourceVoice->SubmitSourceBuffer(&buf);
 	result = pSourceVoice->Start();
+}
 
+void Sound::StopSound(const std::string& fileName)
+{
+	// 再生中リストから検索
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) { return voice->fileName == fileName; });
+	// 発見
+	if(it != voices_.end())
+	{
+		(*it)->sourceVoice->DestroyVoice();
+
+		voices_.erase(it);
+	}
+}
+
+void Sound::PauseSound(const std::string& fileName)
+{
+	// 再生中リストから検索
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) { return voice->fileName == fileName; });
+	// 発見
+	if(it != voices_.end())
+	{
+		// 再生停止
+		(*it)->sourceVoice->Stop();
+	}
+}
+
+void Sound::ResumeWave(const std::string& fileName)
+{
+	// 再生中リストから検索
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) { return voice->fileName == fileName; });
+	// 発見
+	if(it != voices_.end())
+	{
+		// 再生再開
+		(*it)->sourceVoice->Start();
+	}
+}
+
+void Sound::SetVolume(const std::string& fileName, float volume)
+{
+	// 再生中リストから検索
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) { return voice->fileName == fileName; });
+	// 発見
+	if(it != voices_.end())
+	{
+		(*it)->sourceVoice->SetVolume(volume);
+	}
 }
 
 void Sound::Finalize()
