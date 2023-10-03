@@ -116,7 +116,5 @@ private:
 
 	// 次に使う再生中データの番号
 	uint32_t indexVoice_ = 0u;
-
-	std::mutex voiceMutex_;
 };
 
