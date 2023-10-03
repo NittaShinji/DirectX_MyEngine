@@ -109,17 +109,13 @@ void TitleScene::Initialize()
 	isChangeColor_ = false;
 	rotateAcc_ = 0.0f;
 	moveRotate_ = 0.0f;
-
-	bool isJump = false;
-	Vector3 jumpVec = {0.0f,0.0f,0.0f};
-	float jumpAcc = 0.0f;
+	isFinishAnimetion = false;
 }
 
 void TitleScene::Update()
 {
 	camera_->Update();
 
-	
 	titleSprite_->matUpdate();
 	clickSprite_->matUpdate();
 	aButtonSprite_->matUpdate();
@@ -142,22 +138,26 @@ void TitleScene::Update()
 	}
 	else
 	{
-		rotateTimer_ = kRotateTime_;
-
-		isJump = true;
-		moveTimer_ = kActionTime_;
-
-		if(isChangeColor_ == false)
+		//シーン切替アニメーションが始まっていなかったら
+		if(sceneAnimeTimer_ == 0)
 		{
-			isChangeColor_ = true;
-		}
-		else
-		{
-			isChangeColor_ = false;
+			rotateTimer_ = kRotateTime_;
+
+			isJump_ = true;
+			moveTimer_ = kActionTime_;
+
+			if(isChangeColor_ == false)
+			{
+				isChangeColor_ = true;
+			}
+			else
+			{
+				isChangeColor_ = false;
+			}
 		}
 	}
 
-	if(isJump == true)
+	if(isJump_ == true && sceneAnimeTimer_ == 0)
 	{
 		spherPos_.y += PlayEaseIn(moveTimer_, 0.0, 1.0, kActionTime_);
 		titleSphere_->SetTransform(spherPos_);
@@ -170,10 +170,10 @@ void TitleScene::Update()
 	}
 	else
 	{
-		isJump = false;
+		isJump_ = false;
 	}
 
-	if(isJump == false)
+	if(isJump_ == false)
 	{
 		if(spherPos_.y >= 5.0f)
 		{
@@ -241,13 +241,18 @@ void TitleScene::Update()
 
 	if(isChangeScene_ == true)
 	{
-		changeWhiteTimer_--;
-		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(Vector3(1.0f, 1.0f, 1.0f));
-		if(changeWhiteTimer_ <= 0)
+		SceneAnimation();
+
+		if(isFinishAnimetion == true)
 		{
-			Sound::GetInstance()->Finalize();
-			SceneManager::GetInstance()->ChangeScene("StageSelect");
+			changeWhiteTimer_--;
+			titleSphere_->SetColorFlag(true);
+			titleSphere_->SetColor(Vector3(1.0f, 1.0f, 1.0f));
+			if(changeWhiteTimer_ <= 0)
+			{
+				Sound::GetInstance()->Finalize();
+				SceneManager::GetInstance()->ChangeScene("StageSelect");
+			}
 		}
 	}
 }
@@ -278,4 +283,31 @@ void TitleScene::Draw()
 
 	//描画終了
 	directXBasic_->AfterDraw();
+}
+
+//シーン遷移アニメーション
+void TitleScene::SceneAnimation()
+{
+	if(sceneAnimeTimer_ < kSceneAnimeTime_)
+	{
+		sceneAnimeTimer_++;
+	}
+	else
+	{
+		sceneAnimeTimer_ = 0;
+		isFinishAnimetion = true;
+	}
+
+	//変化量
+	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
+	animationMoveVec2.y += easeOutQuint(x);
+
+	//画像を動かす処理
+	titleSprite_->MovePos(animationMoveVec2);
+	clickSprite_->MovePos(animationMoveVec2);
+	aButtonSprite_->MovePos(animationMoveVec2);
+	bButtonSprite_->MovePos(animationMoveVec2);
+
+	//オブジェクトを動かす処理
+	titleSphere_->MovePos(Vector3(animationMoveVec2.x, -animationMoveVec2.y, 0.0f));
 }

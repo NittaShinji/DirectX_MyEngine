@@ -27,8 +27,6 @@ public:
 	//描画
 	void Draw(const std::string& fileName);
 
-	//void TexMapping();
-
 	void TransferVertices();
 
 	void Update();
@@ -37,6 +35,9 @@ public:
 	template <typename Type1, typename Type2>
 	//定数バッファの生成
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1*& constMapData, Type2* directXBasic_);
+
+	//移動
+	void MovePos(Vector2 moveVec);
 
 protected:
 

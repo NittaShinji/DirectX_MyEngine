@@ -206,7 +206,6 @@ void Sprite::matUpdate()
 	matTrans = MatrixIdentity();
 	matTrans *= MatrixTranslate(Vector3(position_.x,position_.y, 0.0f));	//平行移動
 
-
 	//ワールド変換行列
 	Matrix4 matWorld;
 	matWorld = MatrixIdentity();	//単位行列を代入して変形をリセット
@@ -299,4 +298,10 @@ void Sprite::TransferVertices()
 void Sprite::Update()
 {
 	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial_->GetGPUVirtualAddress());
+}
+
+void Sprite::MovePos(Vector2 moveVec)
+{
+	position_ += moveVec;
+	matUpdate();
 }

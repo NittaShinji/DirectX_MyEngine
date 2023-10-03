@@ -324,6 +324,11 @@ void Object3d::SetModel(const std::string& path)
 	model_.SetInfomation(*Model::GetMODELVALUE(path));
 }
 
+void Object3d::MovePos(Vector3 moveVec)
+{
+	transform_ += moveVec;
+}
+
 void Object3d::Update(Camera* camera)
 {
 	//使用するカメラをセット

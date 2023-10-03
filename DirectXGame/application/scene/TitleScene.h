@@ -21,6 +21,9 @@ public:
 	//描画
 	void Draw() override;
 
+	//シーン遷移
+	void SceneAnimation();
+
 private:
 
 	static DirectXBasic* directXBasic_;
@@ -64,11 +67,20 @@ private:
 	float rotateAcc_;
 	float moveRotate_;
 
-	bool isJump;
-	Vector3 jumpVec;
-	float jumpAcc;
+	bool isJump_;
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
+
+	//シーンアニメーション時間
+	const float kSceneAnimeTime_ = 45.0f;
+	//アニメーション時間の変化量
+	float sceneAnimeTimer_ = 0;
+	//シーンアニメーション用変化量
+	Vector2 animationMoveVec2;
+	Vector3 animationMoveVec3;
+
+	//アニメーションが終わったかどうか
+	bool isFinishAnimetion;
 };
 

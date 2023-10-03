@@ -78,6 +78,8 @@ public:
 	/// <param name="info">衝突情報</param>
 	virtual void OnCollision(const CollisionInfo& info) {}
 
+	void MovePos(Vector3 moveVec);
+
 protected:	//メンバ変数
 
 	//クラス名(デバッグ用)

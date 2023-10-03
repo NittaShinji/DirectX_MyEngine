@@ -1,4 +1,5 @@
 #include "Easing.h"
+#include <cmath>
 
 float PlayEaseIn(float time, float startPos, float endDistance, float totalTime)
 {
@@ -12,6 +13,20 @@ float PlayEaseIn(float time, float startPos, float endDistance, float totalTime)
 float easeInCubic(float x)
 {
 	return x * x * x;
+}
+
+float PlayEaseOutQuint(float time, float startPos, float endDistance, float totalTime)
+{
+	float x = time / totalTime;
+	float v = easeOutQuint(x);
+	float ret = endDistance * v + startPos;
+
+	return ret;
+}
+
+float easeOutQuint(float x)
+{
+	return static_cast <float> (1 - pow(1 - x, 5));
 }
 
 float PlayEaseOutBouce(float time, float startPos, float endDistance, float totalTime)

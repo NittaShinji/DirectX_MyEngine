@@ -4,5 +4,8 @@
 float PlayEaseIn(float time, float startPos, float endDistance, float totalTime);
 float easeInCubic(float x);
 
+float PlayEaseOutQuint(float time, float startPos, float endDistance, float totalTime);
+float easeOutQuint(float x);
+
 float PlayEaseOutBouce(float time, float startPos, float endDistance, float totalTime);
 float easeOutBouce(float x);
