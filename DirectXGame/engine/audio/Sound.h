@@ -71,7 +71,6 @@ public: //メンバ関数
 	/// WAV音声読み込み
 	/// </sumary>
 	/// <param name="filename">WAVファイル名</param>
-	//void LoadSoundWave(const char* fileName);
 	void LoadSoundWave(const std::string& fileName);
 
 	//音声データ解放

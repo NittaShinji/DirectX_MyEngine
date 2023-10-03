@@ -12,7 +12,6 @@ public:
 	/// </summary>
 	/// <param name="model"></param>
 	/// <returns></returns>
-	//static TouchableObject* Create(const std::string& path);
 	static std::unique_ptr<TouchableObject> Create(const std::string& path);
 
 	/// <summary>

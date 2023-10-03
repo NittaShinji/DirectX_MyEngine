@@ -103,9 +103,7 @@ void Sprite::Initialize( Vector2 position, Vector2 size)
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
 
 	//カラーの書き込みと転送
-	//spriteCommon_->GetConstMapMaterial()->color = Vector4(0, 1, 0, 0.5f);
 	constMapMaterial_->color = Vector4(0, 1, 0, 0.5f);
-
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -141,11 +139,6 @@ void Sprite::Initialize( Vector2 position, Vector2 size)
 	for (int32_t i = 0; i < vertices_.size(); i++) {
 		vertMap[i] = vertices_[i]; // 座標をコピー
 	}
-
-	//TransferVertices();
-
-	// 繋がりを解除
-	//vertBuff_->Unmap(0, nullptr);
 
 #pragma region 頂点バッファビューの作成
 
