@@ -144,11 +144,11 @@ void Sound::PlaySoundWave(const std::string& fileName, bool isLoop)
 	//// 再生中データコンテナに登録
 	//voices_.insert(voice.get());
 
-	{
-		std::unique_lock<std::mutex> guard(voiceMutex_);
-		// 再生中データコンテナに登録
-		voices_.insert(voice.get());
-	}
+	
+	//std::unique_lock<std::mutex> guard(voiceMutex_);
+	// 再生中データコンテナに登録
+	voices_.insert(voice.get());
+	
 
 	//再生する波形データの設定
 	XAUDIO2_BUFFER buf{};
