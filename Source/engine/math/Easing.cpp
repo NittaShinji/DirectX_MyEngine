@@ -59,5 +59,4 @@ float easeOutBouce(float x)
 	{
 		return (n1 * (x -= float(2.625) / d1) * x + float(0.984375));
 	}
-	return 0.0f;
 }
