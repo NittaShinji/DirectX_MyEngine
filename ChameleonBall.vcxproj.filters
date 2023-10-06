@@ -28,9 +28,6 @@
     <Filter Include="ソース ファイル\engine\base">
       <UniqueIdentifier>{b34b5f4d-8da2-4c76-a768-a587dbbd0fb4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\engine\audio">
-      <UniqueIdentifier>{2c701f22-383e-465a-bb63-811b8756a2be}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\engine\3d">
       <UniqueIdentifier>{7cc5e634-48bf-4dde-b765-a443a760db8a}</UniqueIdentifier>
     </Filter>
@@ -45,9 +42,6 @@
     </Filter>
     <Filter Include="ソース ファイル\engine\camera">
       <UniqueIdentifier>{ebb94f90-f5dd-45d7-8f60-f5f13f99b580}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\engine\debugText">
-      <UniqueIdentifier>{8ebb9597-1bb9-409a-a6b1-5c66f19cff47}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\engine\loader">
       <UniqueIdentifier>{b905bd47-3e67-4a41-a7a4-a37ebd6e5dd5}</UniqueIdentifier>
@@ -82,14 +76,8 @@
     <Filter Include="ヘッダー ファイル\engine\scene">
       <UniqueIdentifier>{d0477c18-d864-4a22-aa23-5653377e8bc5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ヘッダー ファイル\application">
-      <UniqueIdentifier>{9f38b880-1998-4459-9265-0d079e608bb2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\engine\light">
       <UniqueIdentifier>{9cd8da69-ed02-4bcb-aa70-d3777a04b8ce}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\engine\debugText">
-      <UniqueIdentifier>{abf853a1-6492-40c9-baa1-f410e0008f45}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\engine\loader">
       <UniqueIdentifier>{03b0b1a0-e313-46ff-95fb-4b4264402177}</UniqueIdentifier>
@@ -99,21 +87,6 @@
     </Filter>
     <Filter Include="ソース ファイル\engine\math">
       <UniqueIdentifier>{7fe90c76-6023-4b5c-9951-116bf1d5c1fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ソース ファイル\scene">
-      <UniqueIdentifier>{91d74808-cd57-4878-bf08-793cdec1c5f9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\application\object">
-      <UniqueIdentifier>{e58ec66c-ecb5-43e1-a941-a3468bbe0a4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\application\scene">
-      <UniqueIdentifier>{d34ee322-17f4-4255-9492-0a646d9a162c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\application\camera">
-      <UniqueIdentifier>{73a18352-eec5-4aaf-ab9b-75ac6697d364}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\application\postEffect">
-      <UniqueIdentifier>{303b80e0-8b7c-433e-a048-4c9fcd9f2010}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\application\scene">
       <UniqueIdentifier>{cdbe2102-9691-4b16-9334-ba37df464fbe}</UniqueIdentifier>
@@ -127,14 +100,35 @@
     <Filter Include="ソース ファイル\application\particle">
       <UniqueIdentifier>{38efeb82-2c41-412a-bd43-7ecb74020315}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\application\debug">
+      <UniqueIdentifier>{2bec686b-86aa-41ee-ac7e-63c494813b6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application">
+      <UniqueIdentifier>{9f38b880-1998-4459-9265-0d079e608bb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\object">
+      <UniqueIdentifier>{e58ec66c-ecb5-43e1-a941-a3468bbe0a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\scene">
+      <UniqueIdentifier>{d34ee322-17f4-4255-9492-0a646d9a162c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\camera">
+      <UniqueIdentifier>{73a18352-eec5-4aaf-ab9b-75ac6697d364}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\postEffect">
+      <UniqueIdentifier>{303b80e0-8b7c-433e-a048-4c9fcd9f2010}</UniqueIdentifier>
+    </Filter>
     <Filter Include="ヘッダー ファイル\application\particle">
       <UniqueIdentifier>{19fc2173-1364-4484-a04d-8bd3707dfd53}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\application\debug">
       <UniqueIdentifier>{b57c3464-f3b3-4bd4-99ef-13ff67068078}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\application\debug">
-      <UniqueIdentifier>{2bec686b-86aa-41ee-ac7e-63c494813b6e}</UniqueIdentifier>
+    <Filter Include="リソース ファイル\Shaders">
+      <UniqueIdentifier>{ae37a6d1-e1db-40fb-a852-fee2fd14a170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\engine\base\audio">
+      <UniqueIdentifier>{2c701f22-383e-465a-bb63-811b8756a2be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -154,7 +148,7 @@
       <Filter>ソース ファイル\engine\3d</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\audio\Sound.cpp">
-      <Filter>ソース ファイル\engine\audio</Filter>
+      <Filter>ソース ファイル\engine\base\audio</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\collision\Collision.cpp">
       <Filter>ソース ファイル\engine\collision</Filter>
@@ -258,29 +252,29 @@
     <ClCompile Include="Source\engine\math\Vector2.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
-    <ClCompile Include="Source\engine\math\Vector4.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\engine\math\Easing.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\scene\StageSelect.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\object\BackGround.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\engine\2d\TextureManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\scene\TutorialScene.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Source\engine\2d\TextureManager.cpp">
+      <Filter>ソース ファイル\engine\2d</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\engine\math\Vector4.cpp">
+      <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\audio\SoundManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\engine\base\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\scene\TutorialScene.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\scene\StageSelect.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\BackGround.cpp">
+      <Filter>ソース ファイル\engine\3d</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\engine\math\Easing.cpp">
+      <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -425,29 +419,29 @@
     <ClInclude Include="Source\engine\math\Vector2.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\engine\math\Vector4.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\engine\math\Easing.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\application\scene\StageSelect.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\application\object\BackGround.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\engine\2d\TextureManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\scene\TutorialScene.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Source\engine\2d\TextureManager.h">
+      <Filter>ヘッダー ファイル\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\engine\math\Vector4.h">
+      <Filter>ヘッダー ファイル\engine\math</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\audio\SoundManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\engine\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\scene\TutorialScene.h">
+      <Filter>ヘッダー ファイル\engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\object\BackGround.h">
+      <Filter>ヘッダー ファイル\application\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\engine\math\Easing.h">
+      <Filter>ヘッダー ファイル\engine\math</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\scene\StageSelect.h">
+      <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -463,8 +457,10 @@
     <None Include="Resources\Shaders\PostEffect.hlsli">
       <Filter>シェーダーファイル</Filter>
     </None>
-    <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include=".editorconfig" />
+    <None Include="Resources\Shaders\Particle.hlsli">
+      <Filter>リソース ファイル\Shaders</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
@@ -491,9 +487,17 @@
     <FxCompile Include="Resources\Shaders\PostEffectVS.hlsl">
       <Filter>シェーダーファイル</Filter>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\Object3DGS.hlsl" />
-    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl" />
-    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl" />
-    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\Object3DGS.hlsl">
+      <Filter>リソース ファイル\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleGS.hlsl">
+      <Filter>リソース ファイル\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticlePS.hlsl">
+      <Filter>リソース ファイル\Shaders</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
+      <Filter>リソース ファイル\Shaders</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
