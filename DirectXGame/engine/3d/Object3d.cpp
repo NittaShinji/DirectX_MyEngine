@@ -101,7 +101,7 @@ void Object3d::Initialize()
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/Object3DVS.hlsl", // シェーダファイル名
+		L"Resources/Shaders/Object3DVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -153,7 +153,7 @@ void Object3d::Initialize()
 #pragma region ピクセルシェーダーの読み込み
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/shaders/Object3DPS.hlsl", // シェーダファイル名
+		L"Resources/Shaders/Object3DPS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定

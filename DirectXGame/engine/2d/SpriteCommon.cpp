@@ -49,16 +49,6 @@ ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff(Type1*& constMapData, Type2*
 void SpriteCommon::Initialize(DirectXBasic* directXBasic)
 {
 	directXBasic_ = directXBasic;
-
-	////デスクリプタヒープの設定
-	//D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-	//srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	//srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
-	//srvHeapDesc.NumDescriptors = kMaxSRVCount;
-
-	////設定を本にSRV用デスクリプタヒープを生成
-	//HRESULT result_ = directXBasic_->GetDevice()->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
-	//assert(SUCCEEDED(result_));
 }
 
 void SpriteCommon::ShaderLoad()
@@ -68,7 +58,7 @@ void SpriteCommon::ShaderLoad()
 
 	// 頂点シェーダの読み込みとコンパイル
 	HRESULT result_ = D3DCompileFromFile(
-		L"Resources/shaders/SpriteVS.hlsl", // シェーダファイル名
+		L"Resources/Shaders/SpriteVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -94,7 +84,7 @@ void SpriteCommon::ShaderLoad()
 #pragma region ピクセルシェーダーの読み込み
 	// ピクセルシェーダの読み込みとコンパイル
 	result_ = D3DCompileFromFile(
-		L"Resources/shaders/SpritePS.hlsl", // シェーダファイル名
+		L"Resources/Shaders/SpritePS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0", // エントリーポイント名、シェーダーモデル指定
@@ -157,7 +147,6 @@ void SpriteCommon::SemiTransparent()
 	//ID3D12PipelineState *pipelineState = nullptr;
 	HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result_));
-
 }
 
 //加算合成
@@ -197,7 +186,6 @@ void SpriteCommon::Add()
 	//ID3D12PipelineState *pipelineState = nullptr;
 	HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result_));
-
 }
 
 //減算合成
