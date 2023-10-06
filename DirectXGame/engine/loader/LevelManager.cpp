@@ -66,7 +66,7 @@ void LevelManager::Return(nlohmann::json& object, LevelData* levelData)
 LevelData* LevelManager::LoadJSONFile(const std::string& fileName)
 {
 	//デフォルトJSON格納ディレクトリ
-	std::string kDefaultJSONDirectoryPath_ = "Resources/";
+	std::string kDefaultJSONDirectoryPath_ = "Resources/JsonFile/";
 
 	//連結してフルパスを得る
 	const std::string fullPath = kDefaultJSONDirectoryPath_ + fileName;

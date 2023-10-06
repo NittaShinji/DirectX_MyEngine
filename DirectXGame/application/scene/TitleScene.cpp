@@ -253,7 +253,7 @@ void TitleScene::Update()
 			{
 				//Sound::GetInstance()->PauseSound("title.wav");
 				/*Sound::GetInstance()->Finalize();*/
-				//SceneManager::GetInstance()->ChangeScene("StageSelect");
+				SceneManager::GetInstance()->ChangeScene("StageSelect");
 			}
 		}
 	}
