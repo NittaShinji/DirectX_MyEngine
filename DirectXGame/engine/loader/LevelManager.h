@@ -9,7 +9,7 @@
 
 struct LevelData
 {
-	//ƒIƒuƒWƒFƒNƒg
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	struct objectDate
 	{
 		Vector3 translation;
@@ -25,32 +25,32 @@ struct LevelData
 class LevelManager
 {
 
-private: //ƒGƒCƒŠƒAƒX
+private: //ã‚¨ã‚¤ãƒªã‚¢ã‚¹
 
-	//Microsoft::WRL::‚ğÈ—ª
+	//Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using Comptr = Microsoft::WRL::ComPtr<T>;
 
 public:
 
-	//JSONƒtƒ@ƒCƒ‹“Ç‚İ‚İ
+	//JSONãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿
 	LevelData* LoadJSONFile(const std::string& fileName);
-	//Ä‹AŠÖ”
+	//å†å¸°é–¢æ•°
 	void Return(nlohmann::json& deserialized, LevelData* levelData);
 
 	LevelData GetLevelData() { return levelData_; };
 
-	static LevelManager* GetLevelManager() 
+	static LevelManager* GetLevelManager()
 	{
 		static LevelManager levelManager;
 		return &levelManager;
 	};
 
-	
+
 private:
 
 	LevelManager() {};
 	~LevelManager() {};
-	
+
 	LevelData levelData_;
 };
 

@@ -3,15 +3,15 @@
 #include <string>
 
 /// <summary>
-/// ƒV[ƒ“Hê(ŠT”O)
+/// ã‚·ãƒ¼ãƒ³å·¥å ´(æ¦‚å¿µ)
 /// </summary>
 class AbstractSceneFactory
 {
 public:
 
-	//‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+	//ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~AbstractSceneFactory() = default;
-	//ƒV[ƒ“¶¬
+	//ã‚·ãƒ¼ãƒ³ç”Ÿæˆ
 	virtual std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) = 0;
 };
 

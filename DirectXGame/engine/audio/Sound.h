@@ -9,51 +9,51 @@
 #include <vector>
 #include <set>
 
-class Sound 
+class Sound
 {
 
 public:
 
-	//ƒ`ƒƒƒ“ƒNƒwƒbƒ_
+	//ãƒãƒ£ãƒ³ã‚¯ãƒ˜ãƒƒãƒ€
 	struct ChunkHeader
 	{
-		char id[4];			//ƒ`ƒƒƒ“ƒN–ˆ‚ÌID
-		int32_t size;		//ƒ`ƒƒƒ“ƒNƒTƒCƒY
+		char id[4];			//ãƒãƒ£ãƒ³ã‚¯æ¯ã®ID
+		int32_t size;		//ãƒãƒ£ãƒ³ã‚¯ã‚µã‚¤ã‚º
 	};
 
-	//RIFFƒwƒbƒ_ƒ`ƒƒƒ“ƒN
+	//RIFFãƒ˜ãƒƒãƒ€ãƒãƒ£ãƒ³ã‚¯
 	struct RiffHeader
 	{
 		ChunkHeader chunk;	//"RIFF"
 		char type[4];		//"WAVE"
 	};
 
-	//FMTƒ`ƒƒƒ“ƒN
+	//FMTãƒãƒ£ãƒ³ã‚¯
 	struct FormatChunk
 	{
 		ChunkHeader chunk;	//"FMT"
-		WAVEFORMATEX fmt;	//”gŒ`ƒtƒH[ƒ}ƒbƒg
+		WAVEFORMATEX fmt;	//æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 	};
 
-	//‰¹Šyƒf[ƒ^
+	//éŸ³æ¥½ãƒ‡ãƒ¼ã‚¿
 	struct SoundData
 	{
-		//”gŒ`ƒtƒH[ƒ}ƒbƒg
+		//æ³¢å½¢ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 		WAVEFORMATEX wfex;
-		//ƒoƒbƒtƒ@‚Ìæ“ªƒAƒhƒŒƒX
+		//ãƒãƒƒãƒ•ã‚¡ã®å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
 		std::vector<BYTE> pBuffer;
-		//ƒoƒbƒtƒ@‚ÌƒTƒCƒY
+		//ãƒãƒƒãƒ•ã‚¡ã®ã‚µã‚¤ã‚º
 		uint32_t bufferSize;
 	};
 
-	// Ä¶ƒf[ƒ^
+	// å†ç”Ÿãƒ‡ãƒ¼ã‚¿
 	struct Voice
 	{
 		std::string fileName;
 		IXAudio2SourceVoice* sourceVoice = nullptr;
 	};
 
-public: //ƒƒ“ƒoŠÖ”
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
 
 	Sound();
 	~Sound();
@@ -65,37 +65,37 @@ public: //ƒƒ“ƒoŠÖ”
 	}
 
 	/// <sumary>
-	/// WAV‰¹º“Ç‚İ‚İ
+	/// WAVéŸ³å£°èª­ã¿è¾¼ã¿
 	/// </sumary>
-	/// <param name="filename">WAVƒtƒ@ƒCƒ‹–¼</param>
+	/// <param name="filename">WAVãƒ•ã‚¡ã‚¤ãƒ«å</param>
 	//void LoadSoundWave(const std::string& fileName);
 
-	//‰¹ºƒf[ƒ^‰ğ•ú
+	//éŸ³å£°ãƒ‡ãƒ¼ã‚¿è§£æ”¾
 	//void UnloadSound(SoundData* soundData);
 
-	//I—¹ˆ—
+	//çµ‚äº†å‡¦ç†
 	//void Finalize();
 
 	void Initialize(const std::string& fileName);
 
-	//‰¹ºÄ¶
+	//éŸ³å£°å†ç”Ÿ
 	void PlaySoundWave(const std::string& fileName, bool isLoop);
 
-	//‰¹º’â~
+	//éŸ³å£°åœæ­¢
 	void StopSound(const std::string& fileName);
 
-	//‰¹ºˆê’â~
+	//éŸ³å£°ä¸€æ™‚åœæ­¢
 	void PauseSound(const std::string& fileName);
 
-	//ˆê’â~‚©‚ç‚ÌÄŠJ
+	//ä¸€æ™‚åœæ­¢ã‹ã‚‰ã®å†é–‹
 	void ResumeWave(const std::string& fileName);
 
-	//‰¹—Ê’²ß
+	//éŸ³é‡èª¿ç¯€
 	void SetVolume(const std::string& fileName, float volume);
 
 private:
 
-	//ƒTƒEƒ“ƒhƒf[ƒ^
+	//ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿
 	SoundData soundData_;
 };
 

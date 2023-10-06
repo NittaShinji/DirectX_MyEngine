@@ -26,19 +26,19 @@ public:
 	TutorialScene();
 	~TutorialScene();
 
-	//Ã“I‰Šú‰»
+	//é™çš„åˆæœŸåŒ–
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize() override;
 
-	//–ˆƒtƒŒ[ƒ€XV
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update() override;
 
-	//•`‰æ
+	//æç”»
 	void Draw() override;
 
-	//ƒ`ƒ…[ƒgƒŠƒAƒ‹1
+	//ãƒãƒ¥ãƒ¼ãƒˆãƒªã‚¢ãƒ«1
 	void Tutorial1();
 
 private:
@@ -47,47 +47,47 @@ private:
 	static KeyInput* keys_;
 	static ImGuiManager* imGuiManager_;
 
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<PostEffect> postEffect_ = nullptr;
 
-	//ƒ‰ƒCƒg
+	//ãƒ©ã‚¤ãƒˆ
 	LightGroup* lightGroup_ = nullptr;
 
-	//ƒJƒƒ‰
+	//ã‚«ãƒ¡ãƒ©
 	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
 
-	//ƒvƒŒƒCƒ„[
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	std::unique_ptr<Player> player_ = nullptr;
 
-	//3DƒIƒuƒWƒFƒNƒg
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<Stage> stage_ = nullptr;
 
-	//”wŒi
+	//èƒŒæ™¯
 	std::unique_ptr<Object3d> skydome_ = nullptr;
 	std::unique_ptr<BackGround> backGround_ = nullptr;
 
 
-	//ƒQ[ƒ€ƒpƒbƒh
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
-	//ƒRƒ‰ƒCƒ_[
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::unique_ptr<SphereCollider> sphereCollider_ = nullptr;
 	std::unique_ptr<TouchableObject> objGround_ = nullptr;
 
-	//Õ“Ëƒ}ƒl[ƒWƒƒ[
+	//è¡çªãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 	CollisionManager* collisionManager_ = nullptr;
 
-	//ƒp[ƒeƒBƒNƒ‹
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
 	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
 
-	//‘Ò‚¿ŠÔ
+	//å¾…ã¡æ™‚é–“
 	static const int32_t kWaitTime_ = 40;
-	//ƒL[“ü—Í‚ÌŠÔŠÇ—
+	//ã‚­ãƒ¼å…¥åŠ›ã®æ™‚é–“ç®¡ç†
 	int32_t keyTimer_ = 60;
 
 	Vector3 ambientColor0_ = { 1,1,1 };
-	//Œõü•ûŒü‰Šú’l
+	//å…‰ç·šæ–¹å‘åˆæœŸå€¤
 	Vector3 lightDir0_ = { 1,-5,-5 };
 	Vector3 lightColor0_ = { 1,1,1 };
 	Vector3 whiteColor_ = { 1,1,1 };
@@ -96,14 +96,14 @@ private:
 	float playerPosY;
 	float playerPosZ;
 
-	//UIƒXƒvƒ‰ƒCƒg
+	//UIã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
 
-	//‰æ‘œƒ{ƒ^ƒ“‚Ì•\¦
+	//ç”»åƒãƒœã‚¿ãƒ³ã®è¡¨ç¤º
 	bool isShowingButtonA;
 	bool isShowingButtonB;
-	//ƒXƒ[—p‚Ìƒtƒ‰ƒO
+	//ã‚¹ãƒ­ãƒ¼ç”¨ã®ãƒ•ãƒ©ã‚°
 	bool isSlowing;
 };
 

@@ -8,42 +8,42 @@ class BaseCollider;
 
 class CollisionManager
 {
-public: //Ã“Iƒƒ“ƒo•Ï”
+public: //é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 
 	static CollisionManager* GetInstance();
 
-public: //ƒƒ“ƒoŠÖ”
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
 
 	/// <summary>
-	/// ƒRƒ‰ƒCƒ_[‚Ì’Ç‰Á
+	/// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¿½åŠ 
 	/// </summary>
-	/// <param name="collider">ƒRƒ‰ƒCƒ_[</param>
+	/// <param name="collider">ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼</param>
 	inline void AddCollider(BaseCollider* collider)
 	{
 		colliders.push_front(collider);
 	}
 
 	/// <summary>
-	/// ƒRƒ‰ƒCƒ_[‚Ìíœ
+	/// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®å‰Šé™¤
 	/// </summary>
-	/// <param name="collider">ƒRƒ‰ƒCƒ_[</param>
+	/// <param name="collider">ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼</param>
 	inline void RemoveCollider(BaseCollider* collider)
 	{
 		colliders.remove(collider);
 	}
 
 	/// <summary>
-	/// ‘S‚Ä‚ÌÕ“Ë‚ğƒ`ƒFƒbƒN
+	/// å…¨ã¦ã®è¡çªã‚’ãƒã‚§ãƒƒã‚¯
 	/// </summary>
 	void CheckAllCollisions();
 
 	/// <summary>
-	/// ƒŒƒCƒLƒƒƒXƒg
+	/// ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆ
 	/// </summary>
-	/// <param name="ray">ƒŒƒC</param>
-	/// <param name="hitInfo">Õ“Ëî•ñ</param>
-	/// <param name="maxDistance">Å‘å‹——£</param>
-	/// <returns>ƒŒƒC‚ª”CˆÓ‚ÌƒRƒ‰ƒCƒ_[‚ÆŒğ‚í‚éê‡‚ÍtrueA‚»‚êˆÈŠO‚Ífalse</returns>
+	/// <param name="ray">ãƒ¬ã‚¤</param>
+	/// <param name="hitInfo">è¡çªæƒ…å ±</param>
+	/// <param name="maxDistance">æœ€å¤§è·é›¢</param>
+	/// <returns>ãƒ¬ã‚¤ãŒä»»æ„ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨äº¤ã‚ã‚‹å ´åˆã¯trueã€ãã‚Œä»¥å¤–ã¯false</returns>
 	bool Raycast(const Ray& ray, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
 
 	bool Raycast(const Ray& ray, unsigned short attribute, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
@@ -54,6 +54,6 @@ private:
 	~CollisionManager() = default;
 	CollisionManager& operator = (const CollisionManager&) = delete;
 
-	//ƒRƒ‰ƒCƒ_[‚ÌƒŠƒXƒg
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ãƒªã‚¹ãƒˆ
 	std::forward_list<BaseCollider*> colliders;
 };

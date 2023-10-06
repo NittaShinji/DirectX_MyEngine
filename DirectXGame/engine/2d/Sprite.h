@@ -7,52 +7,52 @@
 #include "SpriteCommon.h"
 #include "Input.h"
 
-//ƒXƒvƒ‰ƒCƒg
+//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 class Sprite
 {
 private:
 
-	//ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	//ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
-	
-	//Ã“I‰Šú‰»
+
+	//é™çš„åˆæœŸåŒ–
 	static void StaticInitialize();
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(Vector2 position, Vector2 size);
-	//s—ñXV
+	//è¡Œåˆ—æ›´æ–°
 	void matUpdate();
-	//•`‰æ
+	//æç”»
 	void Draw(const std::string& fileName);
 
 	void TransferVertices();
 
 	void Update();
 
-	//ƒeƒ“ƒvƒŒ[ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	template <typename Type1, typename Type2>
-	//’è”ƒoƒbƒtƒ@‚Ì¶¬
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1*& constMapData, Type2* directXBasic_);
 
-	//ˆÚ“®
+	//ç§»å‹•
 	void MovePos(Vector2 moveVec);
 
 protected:
 
 	enum VertexNumber
 	{
-		LB,//‰Eã
-		LT,//¶ã
-		RB,//‰E‰º
-		RT,//‰Eã
+		LB,//å³ä¸Š
+		LT,//å·¦ä¸Š
+		RB,//å³ä¸‹
+		RT,//å³ä¸Š
 	};
 
 	struct Vertex
 	{
-		Vector3 pos;// xyzÀ•W
-		Vector2 uv; // uvÀ•W
+		Vector3 pos;// xyzåº§æ¨™
+		Vector2 uv; // uvåº§æ¨™
 	};
 
 	static TextureManager* textureManager_;
@@ -61,82 +61,82 @@ protected:
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
 
-	//ƒEƒCƒ“ƒhƒE‚Ì’·‚³
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®é•·ã•
 	float winWide_;
 	float winHeight_;
 
-	//ƒXƒvƒ‰ƒCƒg‚Ì’·‚³
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®é•·ã•
 	UINT width_;
 	UINT height_;
 
-	//ƒXƒP[ƒŠƒ“ƒO”{—¦
+	//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°å€ç‡
 	Vector3 scale_;
-	//‰ñ“]Šp
+	//å›è»¢è§’
 	float rotation_;
-	//À•W
+	//åº§æ¨™
 	//Vector3 position;
 	Vector2 moveSpeed_;
-	//F(RGBA)
+	//è‰²(RGBA)
 	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
-	//•\¦ƒTƒCƒY
+	//è¡¨ç¤ºã‚µã‚¤ã‚º
 	Vector2 size_ = { 100.0f,100.0f };
 
-	//¶‰EƒtƒŠƒbƒv
+	//å·¦å³ãƒ•ãƒªãƒƒãƒ—
 	bool isFlipX_ = false;
-	//ã‰ºƒtƒŠƒbƒv
+	//ä¸Šä¸‹ãƒ•ãƒªãƒƒãƒ—
 	bool isFlipY_ = false;
 
-	//’¸“_‚Ì”
+	//é ‚ç‚¹ã®æ•°
 	static const int32_t kVertexCount_ = 4;
 
-	//ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg
+	//ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆ
 	Vector2 anchorPoint_;
 
-	//”ñ•\¦ƒtƒ‰ƒO
+	//éè¡¨ç¤ºãƒ•ãƒ©ã‚°
 	bool isInvisible_ = false;
-	
-	//‰Šúƒ|ƒWƒVƒ‡ƒ“
+
+	//åˆæœŸãƒã‚¸ã‚·ãƒ§ãƒ³
 	Vector2 position_;
 
-	//’¸“_”z—ñ
+	//é ‚ç‚¹é…åˆ—
 	std::array<Vertex, kVertexCount_> vertices_{};
 
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 	D3D12_VERTEX_BUFFER_VIEW vbView_{};
-	
-	// ’¸“_ƒf[ƒ^‘S‘Ì‚ÌƒTƒCƒY
+
+	// é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿å…¨ä½“ã®ã‚µã‚¤ã‚º
 	HRESULT result_;
 	ComPtr<ID3D12Resource> vertBuff_ = nullptr;
-	
-	//‰æ‘œƒCƒ[ƒWƒf[ƒ^”z—ñ
+
+	//ç”»åƒã‚¤ãƒ¡ãƒ¼ã‚¸ãƒ‡ãƒ¼ã‚¿é…åˆ—
 	Vector4* imageDate_;
-	//ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒXƒfƒXƒN
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ã‚¹ã‚¯
 	D3D12_RESOURCE_DESC textureResourceDesc_{};
 
 	D3D12_RESOURCE_DESC resDesc_{};
 
-	// Ë‰es—ñ
+	// å°„å½±è¡Œåˆ—
 	static Matrix4 matProjection_;
 
-	// ’¸“_ƒoƒbƒtƒ@ƒ}ƒbƒv
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒãƒƒãƒ—
 	Vertex* vertMap_ = nullptr;
 
-	//F—p‚Ì’è”ƒoƒbƒtƒ@
+	//è‰²ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> constBuffMaterial_ = nullptr;
 	//ID3D12Resource* constBuffMaterial = nullptr;
-	//À•W—p‚Ì’è”ƒoƒbƒtƒ@
+	//åº§æ¨™ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
 
-	//’è”ƒoƒbƒtƒ@‚ÌGPUƒŠƒ\[ƒX‚Ìƒ|ƒCƒ“ƒ^
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®GPUãƒªã‚½ãƒ¼ã‚¹ã®ãƒã‚¤ãƒ³ã‚¿
 	SpriteCommon::ConstBufferDataMaterial* constMapMaterial_ = nullptr;
-	//’è”ƒoƒbƒtƒ@‚Ìƒ}ƒbƒsƒ“ƒO—pƒ|ƒCƒ“ƒ^
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ”ãƒ³ã‚°ç”¨ãƒã‚¤ãƒ³ã‚¿
 	SpriteCommon::ConstBufferDataTransform* constMapTransform_ = nullptr;
 
 public:
 
 	std::array <Vertex, kVertexCount_> GetterVertex() { return vertices_; };
 
-	//ƒQƒbƒ^[
+	//ã‚²ãƒƒã‚¿ãƒ¼
 	const Vector2& GetMoveSpeed_() const { return moveSpeed_; };
 	float GetRotation() const { return rotation_; };
 	const Vector4& GetColor() const { return color_; };
@@ -147,7 +147,7 @@ public:
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
 
-	//ƒZƒbƒ^[
+	//ã‚»ãƒƒã‚¿ãƒ¼
 	void SetMoveSpeed_(const Vector2& moveSpeed) { moveSpeed_ = moveSpeed; };
 	void SetRotation(float rotation) { rotation_ = rotation; };
 	void SetColor(const Vector4& color) { color_ = color; };

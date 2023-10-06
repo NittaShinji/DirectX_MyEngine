@@ -8,68 +8,68 @@ public:
 	Collision();
 	~Collision();
 
-	//‹…‚Æ•½–Ê‚ÌÕ“Ë”»’è
+	//çƒã¨å¹³é¢ã®è¡çªåˆ¤å®š
 	static bool CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vector3* inter = nullptr);
 
 	/// <summary>
-	///“_‚ÆOŠpŒ`‚ÌÅ‹ßÚ“_‚ğ‹‚ß‚é 
+	///ç‚¹ã¨ä¸‰è§’å½¢ã®æœ€è¿‘æ¥ç‚¹ã‚’æ±‚ã‚ã‚‹ 
 	/// </summary>
-	/// <param name = "point">“_</param>
-	/// <param name = "triangle">OŠpŒ`</param>
-	/// <param name = "closest">Å‹ßÚ“_(o—Í—p)</param>
+	/// <param name = "point">ç‚¹</param>
+	/// <param name = "triangle">ä¸‰è§’å½¢</param>
+	/// <param name = "closest">æœ€è¿‘æ¥ç‚¹(å‡ºåŠ›ç”¨)</param>
 	static void ClosetPtPoint2Triangle(const Vector3& point, const Triangle& triangle, Vector3* closest);
 
 
 	/// <summary>
-	/// ‹…‚Æ–@ü•t‚«OŠpŒ`‚Ì“–‚½‚èƒ`ƒFƒbƒN
+	/// çƒã¨æ³•ç·šä»˜ãä¸‰è§’å½¢ã®å½“ãŸã‚Šãƒã‚§ãƒƒã‚¯
 	/// </summary>
-	/// <param name="sphere">‹…</param>
-	/// <param name="triangle">OŠpŒ`</param>
-	/// <param name="inter">Œğ“_(OŠpŒ`ã‚ÌÅ‹ßÚ“_)</param>
-	/// <returns>Œğ·‚µ‚Ä‚¢‚é‚©”Û‚©</returns>
+	/// <param name="sphere">çƒ</param>
+	/// <param name="triangle">ä¸‰è§’å½¢</param>
+	/// <param name="inter">äº¤ç‚¹(ä¸‰è§’å½¢ä¸Šã®æœ€è¿‘æ¥ç‚¹)</param>
+	/// <returns>äº¤å·®ã—ã¦ã„ã‚‹ã‹å¦ã‹</returns>
 	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr);
 
 
 	/// <summary>
-	/// ‹…‚Æ‹…‚Ì“–‚½‚è”»’è
+	/// çƒã¨çƒã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
-	/// <param name="sphereA">‹…</param>
-	/// <param name="sphereB">‹…</param>
-	/// <param name="inter">Œğ“_(o—Í—p)</param>
-	/// <returns>Œğ·‚µ‚Ä‚¢‚é‚©”Û‚©</returns>
+	/// <param name="sphereA">çƒ</param>
+	/// <param name="sphereB">çƒ</param>
+	/// <param name="inter">äº¤ç‚¹(å‡ºåŠ›ç”¨)</param>
+	/// <returns>äº¤å·®ã—ã¦ã„ã‚‹ã‹å¦ã‹</returns>
 	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, Vector3* inter = nullptr);
 
 
 	/// <summary>
-	/// ƒŒƒC‚Æ•½–Ê‚Ì“–‚½‚è”»’è
+	/// ãƒ¬ã‚¤ã¨å¹³é¢ã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
-	/// <param name="ray">ƒŒƒC</param>
-	/// <param name="plane">•½–Ê</param>
-	/// <param name="distance">‹——£(o—Í—p)</param>
-	/// <param name="inter">Œğ“_—p(o—Í—p)</param>
-	/// <returns>Œğ·‚µ‚Ä‚¢‚é‚©”Û‚©</returns>
+	/// <param name="ray">ãƒ¬ã‚¤</param>
+	/// <param name="plane">å¹³é¢</param>
+	/// <param name="distance">è·é›¢(å‡ºåŠ›ç”¨)</param>
+	/// <param name="inter">äº¤ç‚¹ç”¨(å‡ºåŠ›ç”¨)</param>
+	/// <returns>äº¤å·®ã—ã¦ã„ã‚‹ã‹å¦ã‹</returns>
 	static bool CheckRay2Plane(const Ray& ray, const Plane& plane, float* distance = nullptr, Vector3* inter = nullptr);
 
 	/// <summary>
-	/// ƒŒƒC‚Æ–@ü•t‚«OŠpŒ`‚Ì“–‚½‚è”»’è
+	/// ãƒ¬ã‚¤ã¨æ³•ç·šä»˜ãä¸‰è§’å½¢ã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
-	/// <param name="ray">ƒŒƒC</param>
-	/// <param name="triangle">OŠpŒ`</param>
-	/// <param name="distance">‹——£(o—Í—p)</param>
-	/// <param name="inter">Œğ“_(o—Í—p)</param>
-	/// <returns>Œğ·‚µ‚Ä‚¢‚é‚©”Û‚©</returns>
+	/// <param name="ray">ãƒ¬ã‚¤</param>
+	/// <param name="triangle">ä¸‰è§’å½¢</param>
+	/// <param name="distance">è·é›¢(å‡ºåŠ›ç”¨)</param>
+	/// <param name="inter">äº¤ç‚¹(å‡ºåŠ›ç”¨)</param>
+	/// <returns>äº¤å·®ã—ã¦ã„ã‚‹ã‹å¦ã‹</returns>
 	static bool CheckRay2Triangle(const Ray& ray, const Triangle& triangle,
 		float* distance = nullptr, Vector3* inter = nullptr);
 
 
 	/// <summary>
-	/// ƒŒƒC‚Æ‹…‚Ì“–‚½‚è”»’è
+	/// ãƒ¬ã‚¤ã¨çƒã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
-	/// <param name="ray">ƒŒƒC</param>
-	/// <param name="sphere">‹…</param>
-	/// <param name="distance">‹——£(o—Í—p)</param>
-	/// <param name="inter">Œğ“_(o—Í—p)</param>
-	/// <returns>Œğ·‚µ‚Ä‚¢‚é‚©”Û‚©</returns>
+	/// <param name="ray">ãƒ¬ã‚¤</param>
+	/// <param name="sphere">çƒ</param>
+	/// <param name="distance">è·é›¢(å‡ºåŠ›ç”¨)</param>
+	/// <param name="inter">äº¤ç‚¹(å‡ºåŠ›ç”¨)</param>
+	/// <returns>äº¤å·®ã—ã¦ã„ã‚‹ã‹å¦ã‹</returns>
 	static bool CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* distance = nullptr, Vector3* inter = nullptr);
 };
 

@@ -6,7 +6,7 @@ using namespace Microsoft::WRL;
 
 void Input::Initialize(WindowsAPI* winApi)
 {
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	KeyInput::GetInstance();
 	KeyInput::GetInstance()->Initialize(winApi);
 }
@@ -16,6 +16,6 @@ void Input::Update()
 	KeyInput::KeyUpdate();
 }
 
-Input::Input(){};
+Input::Input() {};
 Input::~Input() {};
 

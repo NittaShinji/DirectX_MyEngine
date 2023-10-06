@@ -5,10 +5,10 @@ using namespace MathUtillty;
 
 void SphereCollider::Update()
 {
-	//ワールド行列から座標を抽出
+	//繝ｯ繝ｼ繝ｫ繝芽｡悟�励°繧牙ｺｧ讓吶ｒ謚ｽ蜃ｺ
 	const Matrix4& matWorld = objcet3d_->GetMatWorld();
 
-	//球のメンバ変数を更新
+	//逅�縺ｮ繝｡繝ｳ繝仙､画焚繧呈峩譁ｰ
 	Sphere::center = Vector3Transform(offset_, matWorld);
 	Sphere::radius = radius;
 	Sphere::pos = Vector3TransformNormal(Sphere::pos, matWorld);

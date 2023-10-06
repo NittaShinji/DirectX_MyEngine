@@ -23,7 +23,7 @@ void StageSelectScene::Initialize()
 	gamePad_ = std::make_unique<GamePad>();
 	gamePad_->Initialzie(Player1);
 
-	//‰æ‘œ
+	//ç”»åƒ
 	selectSprite_ = std::make_unique<Sprite>();
 	BackGroundLeft_ = std::make_unique<Sprite>();
 	BackGroundRight_ = std::make_unique<Sprite>();
@@ -34,9 +34,9 @@ void StageSelectScene::Initialize()
 	const int32_t selectWidth = 640;
 	const int32_t selectHeight = 400;
 	const Vector2 selectSize = { selectWidth,selectHeight };
-	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight,Vector4(0.8f,0.8f,0.8f,1.0f),"CursorTex");
-	//ŠDF‚ÌƒeƒNƒXƒ`ƒƒ\
-	TextureManager::GetInstance()->TexMapping(600, 360,Vector4(0.746f,0.746f,0.746f,1.0f),"BackGroundTex");
+	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight, Vector4(0.8f, 0.8f, 0.8f, 1.0f), "CursorTex");
+	//ç°è‰²ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£â€•
+	TextureManager::GetInstance()->TexMapping(600, 360, Vector4(0.746f, 0.746f, 0.746f, 1.0f), "BackGroundTex");
 
 	TextureManager::GetInstance()->LoadTexture("GameScene1.png");
 	TextureManager::GetInstance()->LoadTexture("GameScene2.png");
@@ -46,20 +46,20 @@ void StageSelectScene::Initialize()
 
 	Vector2 testPosition = { 0.0f,0.0f };
 	const Vector2 testSize = { 128.0f,128.0f };
-	
+
 	Vector2 backGroundPositionL = { 20.0f,180.0f };
 	Vector2 backGroundPositionR = { 660.0f,180.0f };
 	const Vector2 backGroundSize = { 600.0f,360.0f };
 	BackGroundLeft_->Initialize(backGroundPositionL, backGroundSize);
 	BackGroundRight_->Initialize(backGroundPositionR, backGroundSize);
-	BackGroundWhite_->Initialize(Vector2(0.0f,0.0f),Vector2(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_));
+	BackGroundWhite_->Initialize(Vector2(0.0f, 0.0f), Vector2(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_));
 	gameSceneSprite1_->Initialize(backGroundPositionL, backGroundSize);
 	gameSceneSprite2_->Initialize(backGroundPositionR, backGroundSize);
 
-	//ƒVƒF[ƒ_[“Ç‚İ‚İ
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼èª­ã¿è¾¼ã¿
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
-	//ƒTƒEƒ“ƒh
+	//ã‚µã‚¦ãƒ³ãƒ‰
 	//Sound::GetInstance()->LoadSoundWave("title.wav");
 	//Sound::GetInstance()->LoadSoundWave("touch.wav");
 	//Sound::GetInstance()->PlaySoundWave("title.wav",false);
@@ -67,7 +67,7 @@ void StageSelectScene::Initialize()
 
 void StageSelectScene::Update()
 {
-	//‰æ‘œ‚ÌXV
+	//ç”»åƒã®æ›´æ–°
 	selectSprite_->matUpdate();
 	BackGroundLeft_->matUpdate();
 	BackGroundRight_->matUpdate();
@@ -76,9 +76,9 @@ void StageSelectScene::Update()
 	gameSceneSprite2_->matUpdate();
 
 
-	//ƒQ[ƒ€ƒpƒbƒh‚ªŒq‚ª‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ãŒç¹‹ãŒã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	if(gamePad_->IsConnected(Player1)) {}
-	//‰Ÿ‚µ‚½uŠÔ‚Ì”»’è‚ğæ‚é
+	//æŠ¼ã—ãŸç¬é–“ã®åˆ¤å®šã‚’å–ã‚‹
 	gamePad_->PushedButtonMoment();
 
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
@@ -116,7 +116,7 @@ void StageSelectScene::Update()
 
 void StageSelectScene::Draw()
 {
-	//•`‰æŠJn
+	//æç”»é–‹å§‹
 	directXBasic_->BeforeDraw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
@@ -135,7 +135,7 @@ void StageSelectScene::Draw()
 	gameSceneSprite1_->Draw("GameScene1.png");
 	gameSceneSprite2_->Draw("GameScene2.png");
 
-	//•`‰æI—¹
+	//æç”»çµ‚äº†
 	directXBasic_->AfterDraw();
 
 }

@@ -20,17 +20,17 @@ public:
 
 private:
 
-	//ƒXƒe[ƒWî•ñ
+	//ã‚¹ãƒ†ãƒ¼ã‚¸æƒ…å ±
 	LevelData* levelData_ = nullptr;
 
 	using MODELKEY = std::string;
 	MODELKEY name_;
 	std::unordered_map<MODELKEY, Model> models_;
 
-	//blender“Ç‚İ‚İƒIƒuƒWƒFƒNƒg
+	//blenderèª­ã¿è¾¼ã¿ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
 
-	//ƒS[ƒ‹À•W
+	//ã‚´ãƒ¼ãƒ«åº§æ¨™
 	Vector3 goalPos_;
 };
 

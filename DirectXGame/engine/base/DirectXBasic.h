@@ -8,38 +8,38 @@
 #include <chrono>
 #include "WindowsAPI.h"
 
-//DirectXŠî”Õ
+//DirectXåŸºç›¤
 class DirectXBasic
 {
-	
+
 public:
 
-	//ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	//ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(WindowsAPI* winApi);
-	
-	//•`‰æ‘Oˆ—
+
+	//æç”»å‰å‡¦ç†
 	void BeforeDraw();
-	//•`‰æŒãˆ—
+	//æç”»å¾Œå‡¦ç†
 	void AfterDraw();
 
 	/// <summary>
-	/// [“xƒoƒbƒtƒ@‚ÌƒNƒŠƒA
+	/// æ·±åº¦ãƒãƒƒãƒ•ã‚¡ã®ã‚¯ãƒªã‚¢
 	/// </summary>
 	void ClearDepthBuffer();
 
 private:
 
-	//FPSŒÅ’è‰Šú‰»
+	//FPSå›ºå®šåˆæœŸåŒ–
 	void InitializeFixFPS();
 
-	//FPSŒÅ’èXV
+	//FPSå›ºå®šæ›´æ–°
 	void UpdateFixFPS();
 
 	std::chrono::steady_clock::time_point reference_;
-	
+
 	WindowsAPI* winApi_ = nullptr;
 
 	HRESULT result_;
@@ -53,21 +53,21 @@ private:
 	ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
 	ComPtr<ID3D12Resource> depthBuff_;
 
-	//ƒtƒFƒ“ƒX
+	//ãƒ•ã‚§ãƒ³ã‚¹
 	ComPtr<ID3D12Fence> fence_;
 	UINT64 fenceVal_ = 0;
 
-	//ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	ComPtr<ID3D12DescriptorHeap> dsvHeap_;
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
 
 	std::vector<ComPtr<ID3D12Resource>> backBuffers_;
 
-	//ƒŠƒ\[ƒXƒoƒŠƒA
+	//ãƒªã‚½ãƒ¼ã‚¹ãƒãƒªã‚¢
 	D3D12_RESOURCE_BARRIER barrierDesc_{};
 
-	//‰Šú‰»ŠÖ”
+	//åˆæœŸåŒ–é–¢æ•°
 	void InitializeDevice();
 	void InitializeCommand();
 	void InitializeSwapChain();
@@ -75,7 +75,7 @@ private:
 	void InitializeDepthBuffer();
 	void InitializeFence();
 
-public:	//ƒAƒNƒZƒbƒT
+public:	//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 
 	const HRESULT& GetResult() const { return result_; };
 

@@ -9,7 +9,7 @@ class TextureManager final
 {
 private:
 
-	//ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	//ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 private:
@@ -25,37 +25,37 @@ public:
 		return &textureManager;
 	}
 
-	//Ã“I‰Šú‰»
+	//é™çš„åˆæœŸåŒ–
 	static void StaticInitialize(ID3D12Device* device);
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize();
 
-	//ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	static void LoadTexture(const std::string& fileName);
 
-	//ƒeƒNƒXƒ`ƒƒ¶¬
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ç”Ÿæˆ
 	void TexMapping(int32_t texWidth, int32_t texHeight, Vector4 color, const std::string& fileName);
 
 public:
 
-	//SRV‚ÌÅ‘åŒÂ”
+	//SRVã®æœ€å¤§å€‹æ•°
 	static const size_t kMaxSRVCount_ = 2056;
 
 private:
 
-	//ƒVƒF[ƒ_[ƒŠƒ\[ƒX—p‚ÌƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ç”¨ã®ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
-	//ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
 
-	//ƒfƒtƒHƒ‹ƒgƒeƒNƒXƒ`ƒƒŠi”[ƒfƒBƒŒƒNƒgƒŠ
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ†ã‚¯ã‚¹ãƒãƒ£æ ¼ç´ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	static std::string kDefaultTextureDirectoryPath_;
 
-	//ƒeƒNƒXƒ`ƒƒ”Ô†
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·
 	static uint32_t sTextureIndex_;
-	//‰æ‘œ‚ÉŒ‹‚Ñ•t‚¢‚½ƒeƒNƒXƒ`ƒƒ”Ô†Ši”[—pmap
+	//ç”»åƒã«çµã³ä»˜ã„ãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·æ ¼ç´ç”¨map
 	static std::map<const std::string, uint32_t, std::less<>> textureMap_;
 
 	static ID3D12Device* device_;
@@ -63,14 +63,14 @@ private:
 
 public:
 
-	//ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğ–³Œø
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ç„¡åŠ¹
 	TextureManager(const TextureManager& textureManager) = delete;
-	//‘ã“ü‰‰Zq‚ğ–³Œø
+	//ä»£å…¥æ¼”ç®—å­ã‚’ç„¡åŠ¹
 	TextureManager& operator= (const TextureManager& textureManager) = delete;
 
 public:
 
-	//ƒQƒbƒ^[
+	//ã‚²ãƒƒã‚¿ãƒ¼
 	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
 	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
 };

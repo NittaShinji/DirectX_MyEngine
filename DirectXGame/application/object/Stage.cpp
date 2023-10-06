@@ -6,19 +6,19 @@ void Stage::Initialize(const std::string& fileName)
 {
 	goalPos_ = { 0,0,0 };
 
-	//ƒŒƒxƒ‹ƒf[ƒ^‚©‚çƒIƒuƒWƒFƒNƒg‚ğ¶¬A”z’u
+	//ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã€é…ç½®
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
 
 	for(auto& objectData : levelData_->objects)
 	{
-		//ƒtƒ@ƒCƒ‹–¼‚©‚ç“o˜^Ï‚İƒ‚ƒfƒ‹‚ğŒŸõ
+		//ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ç™»éŒ²æ¸ˆã¿ãƒ¢ãƒ‡ãƒ«ã‚’æ¤œç´¢
 		Model* model = nullptr;
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
-		//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğì¬
+		//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆ
 		if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0")
 		{
-			//3DƒIƒuƒWƒFƒNƒg‚Ì¶¬
+			//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 			std::unique_ptr<TouchableObject> newObject = nullptr;
 			newObject = TouchableObject::Create(objectData.fileName);
 
@@ -27,12 +27,12 @@ void Stage::Initialize(const std::string& fileName)
 			pos = objectData.translation;
 			newObject->SetTransform(pos);
 
-			//‰ñ“]Šp
+			//å›è»¢è§’
 			Vector3 rot;
 			rot = objectData.rotation;
 			newObject->SetRotation(rot);
 
-			//‘å‚«‚³
+			//å¤§ãã•
 			Vector3 scale;
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
@@ -76,7 +76,7 @@ void Stage::Initialize(const std::string& fileName)
 				}
 			}
 
-			//”z—ñ‚É“o˜^
+			//é…åˆ—ã«ç™»éŒ²
 			objects_.push_back(std::move(newObject));
 		}
 	}

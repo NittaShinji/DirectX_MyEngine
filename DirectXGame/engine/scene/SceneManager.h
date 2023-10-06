@@ -5,7 +5,7 @@
 class SceneManager final
 {
 
-public: //ƒƒ“ƒoŠÖ”
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
 
 	static SceneManager* GetInstance()
 	{
@@ -20,29 +20,29 @@ public: //ƒƒ“ƒoŠÖ”
 	void Draw();
 
 	/// <summary>
-	/// ƒV[ƒ“—\–ñ
+	/// ã‚·ãƒ¼ãƒ³äºˆç´„
 	/// </summary>
-	/// <param name="sceneName">ƒV[ƒ“–¼</param>
+	/// <param name="sceneName">ã‚·ãƒ¼ãƒ³å</param>
 	void ChangeScene(const std::string& sceneName);
 
-	//ƒV[ƒ“ƒtƒ@ƒNƒgƒŠ[‚ÌƒZƒbƒ^[
+	//ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¼ã®ã‚»ãƒƒã‚¿ãƒ¼
 	void SetSceneFactory(std::unique_ptr<AbstractSceneFactory> sceneFactory) { sceneFactory_ = std::move(sceneFactory); }
 
 private:
 
 	SceneManager();
 	~SceneManager();
-	//ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ì–³Œø
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã®ç„¡åŠ¹
 	SceneManager(const SceneManager& sceneManager) = delete;
-	//‘ã“ü‰‰Zq‚Ì–³Œø
+	//ä»£å…¥æ¼”ç®—å­ã®ç„¡åŠ¹
 	SceneManager& operator=(const SceneManager& sceneManager) = delete;
 
-	//ƒV[ƒ“ƒtƒ@ƒNƒgƒŠ[
+	//ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¼
 	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
 
-	//Ÿ‚ÌƒV[ƒ“
+	//æ¬¡ã®ã‚·ãƒ¼ãƒ³
 	std::unique_ptr<BaseScene> nextScene_ = nullptr;
-	//¡‚ÌƒV[ƒ“(Às’†ƒV[ƒ“)
+	//ä»Šã®ã‚·ãƒ¼ãƒ³(å®Ÿè¡Œä¸­ã‚·ãƒ¼ãƒ³)
 	std::unique_ptr<BaseScene> scene_ = nullptr;
 
 };

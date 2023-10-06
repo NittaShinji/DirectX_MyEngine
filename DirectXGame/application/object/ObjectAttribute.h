@@ -1,13 +1,13 @@
 #pragma once
 
 /// <summary>
-/// ƒQ[ƒ€“àƒIƒuƒWƒFƒNƒg‚Ì‘®«ŠÖ˜A‚ÌŒ^’è‹`
+/// ã‚²ãƒ¼ãƒ å†…ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å±žæ€§é–¢é€£ã®åž‹å®šç¾©
 /// </summary>
 
-enum Attribute 
+enum Attribute
 {
-	pink,		//ƒsƒ“ƒN
-	yellow,		//‰©F
-	black,		//ƒvƒŒƒCƒ„[‚ªæ‚ê‚È‚¢F
-	Goal,		//ƒS[ƒ‹
+	pink,		//ãƒ”ãƒ³ã‚¯
+	yellow,		//é»„è‰²
+	black,		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒä¹—ã‚Œãªã„è‰²
+	Goal,		//ã‚´ãƒ¼ãƒ«
 };

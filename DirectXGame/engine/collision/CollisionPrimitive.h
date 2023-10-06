@@ -4,50 +4,50 @@
 #include "MathUtillity.h"
 
 ///<summary>
-/// ‹…
+/// çƒ
 ///</summary>
 struct Sphere
 {
-	//’†SÀ•W
-	Vector3 center = { 0,0,0};
+	//ä¸­å¿ƒåº§æ¨™
+	Vector3 center = { 0,0,0 };
 	float upVec = 1.0f;
 
-	//”¼Œa
+	//åŠå¾„
 	float radius = 1.0f;
 
 	Vector3 pos = { 0,0,0 };
 };
 
 ///<summary>
-/// •½–Ê
+/// å¹³é¢
 ///</summary>
 struct Plane
 {
-	//–@üƒxƒNƒgƒ‹
+	//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 normal = { 0,1,0 };
 	float upVec = 0.0f;
 
-	//Œ´“_(0,0,0)‚©‚ç‚Ì‹——£
+	//åŸç‚¹(0,0,0)ã‹ã‚‰ã®è·é›¢
 	float distance = 0.0f;
 	Vector3 pos = { 0,0,0 };
 };
 
 ///<summary>
-/// ƒŒƒC
+/// ãƒ¬ã‚¤
 ///</summary>
 struct Ray
 {
-	//n“_À•W
+	//å§‹ç‚¹åº§æ¨™
 	Vector3 start = { 0,0,0 };
 	float upVec = 0.0f;
 
-	//•ûŒü(’PˆÊƒxƒNƒgƒ‹)
-	Vector3 dir = { 1,0,0};
+	//æ–¹å‘(å˜ä½ãƒ™ã‚¯ãƒˆãƒ«)
+	Vector3 dir = { 1,0,0 };
 	float dirUpVec = 0.0f;
 };
 
 /// <summary>
-/// –@ü•t‚«OŠpŒ`(Œv‰ñ‚è‚ª•\–Ê)
+/// æ³•ç·šä»˜ãä¸‰è§’å½¢(æ™‚è¨ˆå›ã‚ŠãŒè¡¨é¢)
 /// </summary>
 class  Triangle
 {
@@ -56,11 +56,11 @@ public:
 	void ComputeNormal();
 
 public:
-	//’¸“_À•W3‚Â
+	//é ‚ç‚¹åº§æ¨™3ã¤
 	Vector3 p0_;
 	Vector3 p1_;
 	Vector3 p2_;
-	//–@üƒxƒNƒgƒ‹
+	//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 normal_;
 };
 

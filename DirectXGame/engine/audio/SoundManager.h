@@ -11,14 +11,14 @@ private:
 
 public:
 
-	//ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Ì–³Œø
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã®ç„¡åŠ¹
 	SoundManager(const SoundManager& soundManager) = delete;
-	//‘ã“ü‰‰Zq‚Ì–³Œø
+	//ä»£å…¥æ¼”ç®—å­ã®ç„¡åŠ¹
 	SoundManager& operator=(const SoundManager& soundManager) = delete;
 
 public:
 
-	// Ä¶ƒf[ƒ^
+	// å†ç”Ÿãƒ‡ãƒ¼ã‚¿
 	struct Voice
 	{
 		std::string fileName;
@@ -36,27 +36,27 @@ public:
 	void Initialize();
 
 	/// <sumary>
-	/// WAV‰¹º“Ç‚İ‚İ
+	/// WAVéŸ³å£°èª­ã¿è¾¼ã¿
 	/// </sumary>
-	/// <param name="filename">WAVƒtƒ@ƒCƒ‹–¼</param>
+	/// <param name="filename">WAVãƒ•ã‚¡ã‚¤ãƒ«å</param>
 	void LoadSoundWave(const std::string& fileName);
 
-	//‰¹ºƒf[ƒ^‰ğ•ú
+	//éŸ³å£°ãƒ‡ãƒ¼ã‚¿è§£æ”¾
 	void UnloadSound(Sound::SoundData* soundData);
 
-	//I—¹ˆ—
+	//çµ‚äº†å‡¦ç†
 	void Finalize();
 
 private:
 
-	//XAudio2‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	//XAudio2ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
-	//ƒTƒEƒ“ƒhƒf[ƒ^ƒRƒ“ƒeƒi
+	//ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ³ãƒ†ãƒŠ
 	std::map<std::string, Sound::SoundData> soundDatas_;
 
-	////ƒTƒEƒ“ƒh
+	////ã‚µã‚¦ãƒ³ãƒ‰
 	//std::unique_ptr<SoundData> sound_;
-	//Ä¶’†‚ÌƒTƒEƒ“ƒhƒf[ƒ^ƒRƒ“ƒeƒi
+	//å†ç”Ÿä¸­ã®ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚³ãƒ³ãƒ†ãƒŠ
 	std::map<char, Voice> voices_;
 
 public:

@@ -2,15 +2,15 @@
 
 #include "AbstractSceneFactory.h"
 
-//ƒQ[ƒ€—p‚ÌƒV[ƒ“Hê
+//ã‚²ãƒ¼ãƒ ç”¨ã®ã‚·ãƒ¼ãƒ³å·¥å ´
 class SceneFactory : public AbstractSceneFactory
 {
 public:
 	/// <summary>
-	/// ƒV[ƒ“¶¬
+	/// ã‚·ãƒ¼ãƒ³ç”Ÿæˆ
 	/// </summary>
-	/// <param name="sceneName">ƒV[ƒ“–¼</param>
-	/// <returns>¶¬‚µ‚½ƒV[ƒ“</returns>
+	/// <param name="sceneName">ã‚·ãƒ¼ãƒ³å</param>
+	/// <returns>ç”Ÿæˆã—ãŸã‚·ãƒ¼ãƒ³</returns>
 	std::unique_ptr<BaseScene> CreateScene(const std::string& sceneName) override;
 };
 

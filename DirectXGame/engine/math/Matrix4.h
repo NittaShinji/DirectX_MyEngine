@@ -2,42 +2,42 @@
 
 #include "Vector3.h"
 
-// Matrix4 \‘¢‘Ì
+// Matrix4 æ§‹é€ ä½“
 struct Matrix4
 {
 	float m[4][4];
 };
 
-//’PˆÊs—ñ‚ğ‹‚ß‚é
+//å˜ä½è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 Matrix4 MatrixIdentity();
 
-// Šg‘åk¬s—ñ‚Ìİ’è
+// æ‹¡å¤§ç¸®å°è¡Œåˆ—ã®è¨­å®š
 Matrix4 MatrixScale(const Vector3& s);
 
-// ‰ñ“]s—ñ‚Ìİ’è
+// å›è»¢è¡Œåˆ—ã®è¨­å®š
 Matrix4 MatrixRotateX(float angle);
 Matrix4 MatrixRotateY(float angle);
 Matrix4 MatrixRotateZ(float angle);
 
-// •½sˆÚ“®s—ñ‚Ìì¬
+// å¹³è¡Œç§»å‹•è¡Œåˆ—ã®ä½œæˆ
 Matrix4 MatrixTranslate(const Vector3& t);
- 
-// À•W•ÏŠ·(ƒxƒNƒgƒ‹‚Æs—ñ‚ÌŠ|‚¯Z‚ğ‚·‚é)
+
+// åº§æ¨™å¤‰æ›(ãƒ™ã‚¯ãƒˆãƒ«ã¨è¡Œåˆ—ã®æ›ã‘ç®—ã‚’ã™ã‚‹)
 //Vector3 MatrixTransform(const Vector3& v, const Matrix4& m);
 
-//“]’u‚µ‚Äs‚Æ—ñ‚ğ“ü‚ê‘Ö‚¦‚½‚à‚Ì‚ğ‹‚ß‚é
+//è»¢ç½®ã—ã¦è¡Œã¨åˆ—ã‚’å…¥ã‚Œæ›¿ãˆãŸã‚‚ã®ã‚’æ±‚ã‚ã‚‹
 Matrix4 MatrixTranspose(const Matrix4& m);
 
-//‹ts—ñ‚ğ‹‚ß‚é
+//é€†è¡Œåˆ—ã‚’æ±‚ã‚ã‚‹
 Matrix4 MatrixInverse(const Matrix4& m);
 
-// ‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+// ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 Matrix4& operator*=(Matrix4& m1, const Matrix4& m2);
 
-// 2€‰‰ZqƒI[ƒo[ƒ[ƒh
+// 2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 const Matrix4 operator*(const Matrix4& m1, const Matrix4& m2);
 const Vector3 operator*(const Vector3& v, const Matrix4& m);
-//ƒAƒtƒBƒ“•ÏŠ·
+//ã‚¢ãƒ•ã‚£ãƒ³å¤‰æ›
 Vector3 TransformAffine(const Vector3& v, const Matrix4& m);
 
 Matrix4 MatrixPerspectiveFovLH(float angle, float AspectRatio, float nearZ, float farZ);

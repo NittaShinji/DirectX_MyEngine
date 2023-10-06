@@ -13,20 +13,20 @@
 #include "TextureManager.h"
 
 using namespace DirectX;
- 
+
 class SpriteCommon final
 {
 private:
 
-	//ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	//ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì(ƒ}ƒeƒŠƒAƒ‹)
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“(ãƒãƒ†ãƒªã‚¢ãƒ«)
 	struct ConstBufferDataMaterial
 	{
-		Vector4 color;	//F(RGBA)
+		Vector4 color;	//è‰²(RGBA)
 	};
 	struct ConstBufferDataTransform
 	{
@@ -35,9 +35,9 @@ public:
 
 public:
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize(DirectXBasic* directXBasic);
-	//XV
+	//æ›´æ–°
 	void Update();
 
 	static SpriteCommon* GetInstance()
@@ -46,66 +46,66 @@ public:
 		return &spriteCommon;
 	}
 
-	//’¸“_ƒŒƒCƒAƒEƒgİ’è
+	//é ‚ç‚¹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®š
 	void VertexLayoutSet();
-	//ƒVƒF[ƒ_[‚Ì“Ç‚İ‚İ
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã®èª­ã¿è¾¼ã¿
 	void ShaderLoad();
-	//ƒpƒCƒvƒ‰ƒCƒ“İ’è
+	//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³è¨­å®š
 	void PipelineSet();
-	//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒİ’è
+	//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£è¨­å®š
 	void RootSignatureSet();
 
-	//•`‰æŠJn‘O
+	//æç”»é–‹å§‹å‰
 	void BeforeDraw();
-	//•`‰æI—¹Œã
+	//æç”»çµ‚äº†å¾Œ
 	void AfterDraw();
 
-	//”¼“§–¾‡¬
+	//åŠé€æ˜åˆæˆ
 	void SemiTransparent();
-	//‰ÁZ‡¬
+	//åŠ ç®—åˆæˆ
 	void Add();
-	//Œ¸Z‡¬
+	//æ¸›ç®—åˆæˆ
 	void Sub();
-	//F”½“]
+	//è‰²åè»¢
 	void InvertColor();
-	
-	//ƒeƒ“ƒvƒŒ[ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+
+	//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	template <typename Type1, typename Type2>
-	//’è”ƒoƒbƒtƒ@‚Ì¶¬
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1*& constMapData, Type2* directXBasic_);
 
 private:
 
 	static DirectXBasic* directXBasic_;
 
-	ID3DBlob* vsBlob_ = nullptr; // ’¸“_ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
-	ID3DBlob* psBlob_ = nullptr; // ƒsƒNƒZƒ‹ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
-	ID3DBlob* errorBlob_ = nullptr; // ƒGƒ‰[ƒIƒuƒWƒFƒNƒg
+	ID3DBlob* vsBlob_ = nullptr; // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ID3DBlob* psBlob_ = nullptr; // ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ID3DBlob* errorBlob_ = nullptr; // ã‚¨ãƒ©ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 	ComPtr<ID3D12PipelineState> pipelineState_ = nullptr;
 	ComPtr<ID3D12RootSignature> rootSignature_ = nullptr;
-	
-	//’¸“_ƒŒƒCƒAƒEƒg
+
+	//é ‚ç‚¹ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
 	std::vector<D3D12_INPUT_ELEMENT_DESC> inputLayout_{};
 
-	//ƒOƒ‰ƒtƒBƒbƒNƒXƒpƒCƒvƒ‰ƒCƒ“
+	//ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
 
-	////ƒVƒF[ƒ_[ƒŠƒ\[ƒX—p‚ÌƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	////ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ç”¨ã®ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	//static ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
-	////SRV‚ÌÅ‘åŒÂ”
+	////SRVã®æœ€å¤§å€‹æ•°
 	//static const size_t kMaxSRVCount_ = 2056;
 
-	////ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	////ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	//static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
 
-	////ƒfƒtƒHƒ‹ƒgƒeƒNƒXƒ`ƒƒŠi”[ƒfƒBƒŒƒNƒgƒŠ
+	////ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ†ã‚¯ã‚¹ãƒãƒ£æ ¼ç´ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	//static std::string kDefaultTextureDirectoryPath_;
 
-	////ƒeƒNƒXƒ`ƒƒ”Ô†
+	////ãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·
 	//static uint32_t sTextureIndex_;
-	////‰æ‘œ‚ÉŒ‹‚Ñ•t‚¢‚½ƒeƒNƒXƒ`ƒƒ”Ô†Ši”[—pmap
+	////ç”»åƒã«çµã³ä»˜ã„ãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·æ ¼ç´ç”¨map
 	//static std::map<const std::string, uint32_t, std::less<>> textureMap_;
 
 private:
@@ -115,14 +115,14 @@ private:
 
 public:
 
-	//ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğ–³Œø
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ç„¡åŠ¹
 	SpriteCommon(const SpriteCommon& spritecommon) = delete;
-	//‘ã“ü‰‰Zq‚ğ–³Œø
+	//ä»£å…¥æ¼”ç®—å­ã‚’ç„¡åŠ¹
 	SpriteCommon& operator= (const SpriteCommon& spritecommon) = delete;
 
 public:
 
-	//ƒQƒbƒ^[
+	//ã‚²ãƒƒã‚¿ãƒ¼
 	DirectXBasic* GetDirectXBasic() const { return directXBasic_; };
 	//ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
 	//const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }

@@ -8,35 +8,35 @@ using namespace MathUtillty;
 
 class DirectionalLight
 {
-private: //ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+private: //ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 
-	//Microsoft::WRL::‚ğÈ—ª
+	//Microsoft::WRL::ã‚’çœç•¥
 	template<class T>using Comptr = Microsoft::WRL::ComPtr<T>;
-	//DirectX‚ğÈ—ª
+	//DirectXã‚’çœç•¥
 
-public: //ƒTƒuƒNƒ‰ƒX
+public: //ã‚µãƒ–ã‚¯ãƒ©ã‚¹
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct  ConstBufferData
 	{
-		Vector3 lightv;		//ƒ‰ƒCƒg‚Ö•ûŒü‚ğ•\‚·ƒxƒNƒgƒ‹
+		Vector3 lightv;		//ãƒ©ã‚¤ãƒˆã¸æ–¹å‘ã‚’è¡¨ã™ãƒ™ã‚¯ãƒˆãƒ«
 		float pad1;
-		Vector3 lightColor;	//ƒ‰ƒCƒg‚ÌF
-		bool active;	//—LŒøƒtƒ‰ƒO
+		Vector3 lightColor;	//ãƒ©ã‚¤ãƒˆã®è‰²
+		bool active;	//æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	};
 
-public: //ƒAƒNƒZƒbƒT
+public: //ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 
-	//ƒ‰ƒCƒg•ûŒü‚ğƒZƒbƒg
-	void SetLightDir(const Vector3& lightDir,const float upVec)
+	//ãƒ©ã‚¤ãƒˆæ–¹å‘ã‚’ã‚»ãƒƒãƒˆ
+	void SetLightDir(const Vector3& lightDir, const float upVec)
 	{
-		//³‹K‰»‚µ‚ÄƒZƒbƒg
+		//æ­£è¦åŒ–ã—ã¦ã‚»ãƒƒãƒˆ
 		this->lightDir_ = Vector3Normalize(lightDir);
 		this->upVec_ = upVec_;
 		dirty_ = true;
 	}
 
-	//ƒ‰ƒCƒgF‚ÌƒZƒbƒg
+	//ãƒ©ã‚¤ãƒˆè‰²ã®ã‚»ãƒƒãƒˆ
 	void SetLightColor(const Vector3& lightColor)
 	{
 		this->lightColor_ = lightColor;
@@ -49,28 +49,28 @@ public: //ƒAƒNƒZƒbƒT
 	Vector3 GetLightColor() { return lightColor_; };
 
 	/// <summary>
-	/// —LŒøƒtƒ‰ƒO‚ğƒZƒbƒg
+	/// æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
 	/// </summary>
-	/// <param name="active">—LŒøƒtƒ‰ƒO</param>
+	/// <param name="active">æœ‰åŠ¹ãƒ•ãƒ©ã‚°</param>
 	inline void SetActive(bool active) { this->active_ = active; }
 
 	/// <summary>
-	/// —LŒøƒ`ƒFƒbƒN
+	/// æœ‰åŠ¹ãƒã‚§ãƒƒã‚¯
 	/// </summary>
-	/// <returns>—LŒøƒtƒ‰ƒO</returns>
+	/// <returns>æœ‰åŠ¹ãƒ•ãƒ©ã‚°</returns>
 	inline bool IsActive() { return active_; }
 
-private: //ƒƒ“ƒo•Ï”
+private: //ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	//’è”ƒoƒbƒtƒ@
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	Comptr<ID3D12Resource> constBuff_;
-	//ƒ‰ƒCƒgŒõü•ûŒü(’PˆÊƒxƒNƒgƒ‹)
-	Vector3 lightDir_ = {1,0,0};
+	//ãƒ©ã‚¤ãƒˆå…‰ç·šæ–¹å‘(å˜ä½ãƒ™ã‚¯ãƒˆãƒ«)
+	Vector3 lightDir_ = { 1,0,0 };
 	float upVec_ = 0.0f;
-	//ƒ‰ƒCƒgF
+	//ãƒ©ã‚¤ãƒˆè‰²
 	Vector3 lightColor_ = { 1,1,1 };
-	//—LŒøƒtƒ‰ƒO
+	//æœ‰åŠ¹ãƒ•ãƒ©ã‚°
 	bool active_ = false;
-	//ƒ_[ƒeƒBƒtƒ‰ƒO(’l‚É•ÏX‚ª‚ ‚Á‚½‚Æ‚«‚¾‚¯’è”ƒoƒbƒtƒ@‚É“]‘—)
+	//ãƒ€ãƒ¼ãƒ†ã‚£ãƒ•ãƒ©ã‚°(å€¤ã«å¤‰æ›´ãŒã‚ã£ãŸã¨ãã ã‘å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«è»¢é€)
 	bool dirty_ = false;
 };

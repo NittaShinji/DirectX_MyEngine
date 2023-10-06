@@ -4,7 +4,7 @@
 
 std::unique_ptr<TouchableObject> TouchableObject::Create(const std::string& path)
 {
-	//ƒIƒuƒWƒFƒNƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	std::unique_ptr<TouchableObject> instance = nullptr;
 	instance = std::make_unique<TouchableObject>();
 	if(instance == nullptr)
@@ -15,7 +15,7 @@ std::unique_ptr<TouchableObject> TouchableObject::Create(const std::string& path
 	instance->Initialize();
 	instance->SetModel(path);
 	instance->AddCollider(instance->GetModel());
-	//‘®«‚ğİ’è
+	//å±æ€§ã‚’è¨­å®š
 	instance->collider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	return instance;
 }
@@ -27,7 +27,7 @@ void TouchableObject::Initialize()
 
 void TouchableObject::AddCollider(Model* model)
 {
-	//ƒRƒ‰ƒCƒ_[‚Ì’Ç‰Á
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¿½åŠ 
 	objMeshCollider_ = std::make_unique<MeshCollider>();
 	SetCollider(objMeshCollider_.get());
 	objMeshCollider_->ConstructTriangles(model);

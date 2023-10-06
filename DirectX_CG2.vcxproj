@@ -61,6 +61,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\particle;$(ProjectDir)\DirectXGame\application\object;$(ProjectDir)\DirectXGame\application\camera;$(ProjectDir)\DirectXGame\application\postEffect;$(ProjectDir)\DirectXGame\application\debug;%(AdditionalIncludeDirectories);$(ProjectDir)\DirectXGame\application\particle</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -81,6 +83,8 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
       <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\particle;$(ProjectDir)\DirectXGame\application\object;$(ProjectDir)\DirectXGame\application\camera;$(ProjectDir)\DirectXGame\application\postEffect;$(ProjectDir)\DirectXGame\application\debug;$(ProjectDir)\DirectXGame\application\scene;%(AdditionalIncludeDirectories);$(ProjectDir)\DirectXGame\application\particle</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -197,6 +201,7 @@
     <ClInclude Include="DirectXGame\engine\audio\SoundManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".editorconfig" />
     <None Include="Resources\shaders\Basic.hlsli" />
     <None Include="Resources\shaders\Object3D.hlsli" />
     <None Include="Resources\shaders\Particle.hlsli" />

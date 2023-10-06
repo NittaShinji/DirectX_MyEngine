@@ -7,47 +7,47 @@ class WindowsAPI final
 {
 public:
 
-	//ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚ğ–³Œø‚É‚·‚é
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã‚’ç„¡åŠ¹ã«ã™ã‚‹
 	WindowsAPI(const WindowsAPI& windowsApi) = delete;
-	//‘ã“ü‰‰Zq‚ğ–³Œø
+	//ä»£å…¥æ¼”ç®—å­ã‚’ç„¡åŠ¹
 	WindowsAPI& operator=(const WindowsAPI& windowsApi) = delete;
 
 	static WindowsAPI* GetInstance();
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize();
-	
-	//Ã“Iƒƒ“ƒoŠÖ”
+
+	//é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
 	static LRESULT WindowProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
-	//ƒQƒbƒ^[
-	const WNDCLASSEX& GetWindosClass() const { return w_;}
-	const HWND& GetHwndClass()const{ return hwnd_;}
-	const RECT& GetWrcClass() const {return wrc_;}
-	const HINSTANCE& GetHInstance()const { return w_.hInstance;}
-	int32_t GetWinWidth() const { return kWindow_width_;}
-	int32_t GetWinHeight() const { return kWindow_height_;}
+	//ã‚²ãƒƒã‚¿ãƒ¼
+	const WNDCLASSEX& GetWindosClass() const { return w_; }
+	const HWND& GetHwndClass()const { return hwnd_; }
+	const RECT& GetWrcClass() const { return wrc_; }
+	const HINSTANCE& GetHInstance()const { return w_.hInstance; }
+	int32_t GetWinWidth() const { return kWindow_width_; }
+	int32_t GetWinHeight() const { return kWindow_height_; }
 
-	//I—¹
+	//çµ‚äº†
 	void Finalize();
 
-	//ƒƒbƒZ[ƒW‚Ìˆ—
+	//ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®å‡¦ç†
 	bool ProcessMessage();
 
-	//’è”
-	//ƒEƒCƒ“ƒhƒEƒTƒCƒY
-	static constexpr int32_t kWindow_width_ = 1280; //‰¡•
-	static constexpr int32_t kWindow_height_ = 720; //c•
+	//å®šæ•°
+	//ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º
+	static constexpr int32_t kWindow_width_ = 1280; //æ¨ªå¹…
+	static constexpr int32_t kWindow_height_ = 720; //ç¸¦å¹…
 
 private:
 
 	WindowsAPI() {};
 	~WindowsAPI() {};
 
-	// ƒEƒBƒ“ƒhƒE
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦
 	WNDCLASSEX w_{};
-	// ƒEƒBƒ“ƒhƒEƒIƒuƒWƒFƒNƒg
+	// ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	HWND hwnd_;
-	// ƒEƒCƒ“ƒhƒEƒTƒCƒY{XÀ•W@YÀ•W@‰¡•@c•}
+	// ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã‚µã‚¤ã‚º{Xåº§æ¨™ã€€Yåº§æ¨™ã€€æ¨ªå¹…ã€€ç¸¦å¹…}
 	RECT wrc_;
 };

@@ -1,18 +1,18 @@
 #pragma once
 
 /// <summary>
-/// 4ŽŸŒ³ƒxƒNƒgƒ‹
+/// 4æ¬¡å…ƒãƒ™ã‚¯ãƒˆãƒ«
 /// </summary>
 class Vector4
 {
 public:
-	float x; // x¬•ª
-	float y; // y¬•ª
-	float z; // z¬•ª
-	float w; // w¬•ª
+	float x; // xæˆåˆ†
+	float y; // yæˆåˆ†
+	float z; // zæˆåˆ†
+	float w; // wæˆåˆ†
 
 public:
-	// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Vector4();                                   // —ëƒxƒNƒgƒ‹‚Æ‚·‚é
-	Vector4(float x, float y, float z, float w); // x¬•ª, y¬•ª, z¬•ª ‚ðŽw’è‚µ‚Ä‚Ì¶¬
+	// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Vector4();                                   // é›¶ãƒ™ã‚¯ãƒˆãƒ«ã¨ã™ã‚‹
+	Vector4(float x, float y, float z, float w); // xæˆåˆ†, yæˆåˆ†, zæˆåˆ† ã‚’æŒ‡å®šã—ã¦ã®ç”Ÿæˆ
 };

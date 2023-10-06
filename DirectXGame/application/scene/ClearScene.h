@@ -9,13 +9,13 @@ class ClearScene : public BaseScene
 
 public:
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize() override;
 
-	//–ˆƒtƒŒ[ƒ€XV
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update() override;
 
-	//•`‰æ
+	//æç”»
 	void Draw() override;
 
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
@@ -30,7 +30,7 @@ private:
 	static ImGuiManager* imGuiManager_;
 
 	static KeyInput* keys_;
-	//ƒQ[ƒ€ƒpƒbƒh
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
 	Vector2 checkPosition_;
@@ -40,7 +40,7 @@ private:
 	Vector2 move_;
 	float rotate_;
 
-	//1ü‰ñ‚éŠÔ
+	//1å‘¨å›ã‚‹æ™‚é–“
 	const float kRotateTime_ = 30.0f;
 	float rotateTimer_ = kRotateTime_;
 };

@@ -1,4 +1,4 @@
-﻿#include "ParticleManager.h"
+#include "ParticleManager.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <string.h>
@@ -167,7 +167,7 @@ void ParticleManager::Update(Camera* camera, Attribute attribute)
 				vertMap->color.z = it->color.z + it->colorSpeed.z;
 				vertMap->color.w = it->color.w + it->colorSpeed.w;
 
-				
+
 				if(vertMap->color.x <= 0.965f)
 				{
 					vertMap->color.x = 0.965f;
@@ -208,7 +208,7 @@ void ParticleManager::Update(Camera* camera, Attribute attribute)
 				vertMap->color.z = it->color.z + it->colorSpeed.z;
 				vertMap->color.w = it->color.w + it->colorSpeed.w;*/
 			}
-			
+
 			//次の頂点へ
 			vertMap++;
 		}
@@ -261,7 +261,7 @@ std::unique_ptr<ParticleManager> ParticleManager::Create()
 	return instance;
 }
 
-void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 colorSpeed,float start_scale, float end_scale)
+void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 colorSpeed, float start_scale, float end_scale)
 {
 	int32_t isParticleNum = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
@@ -294,7 +294,7 @@ void ParticleManager::Add(int life, Vector3 position, Vector3 velocity, Vector3 
 		p.e_scale = end_scale;
 		p.colorSpeed = colorSpeed;
 	}
-	
+
 }
 
 void  ParticleManager::InitializeGraphicsPipeline()

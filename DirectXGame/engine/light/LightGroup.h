@@ -8,125 +8,125 @@
 #include "Vector3.h"
 
 ///<summary>
-/// ƒ‰ƒCƒg
+/// ãƒ©ã‚¤ãƒˆ
 ///<summary>
 class LightGroup
 {
 
-private: //ƒGƒCƒŠƒAƒX
+private: //ã‚¨ã‚¤ãƒªã‚¢ã‚¹
 
-	//Microsoft::WRL::‚ğÈ—ª
+	//Microsoft::WRL::ã‚’çœç•¥
 	template <class T> using Comptr = Microsoft::WRL::ComPtr<T>;
 
-public: //Ã“Iƒƒ“ƒo•Ï”
+public: //é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 
 	/// <summary>
-	/// Ã“I‰Šú‰»
+	/// é™çš„åˆæœŸåŒ–
 	/// </summary>
-	/// <param name="device">ƒfƒoƒCƒX</param>
-	static void StaticInitialize(ID3D12Device *device);
+	/// <param name="device">ãƒ‡ãƒã‚¤ã‚¹</param>
+	static void StaticInitialize(ID3D12Device* device);
 
-public: //ƒƒ“ƒoŠÖ”
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	
+
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize();
-	
+
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
-	void Draw(ID3D12GraphicsCommandList *cmdList, UINT rootParameterIndex);
+	void Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex);
 
 	/// <summary>
-	/// ƒCƒ“ƒXƒ^ƒ“ƒX¶¬
+	/// ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ç”Ÿæˆ
 	/// </summary>
-	/// <retums>ƒCƒ“ƒXƒ^ƒ“ƒX</retums>
+	/// <retums>ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹</retums>
 	static LightGroup* Create();
 
 	/// <summary>
-	/// ’è”ƒoƒbƒtƒ@“]‘—
+	/// å®šæ•°ãƒãƒƒãƒ•ã‚¡è»¢é€
 	/// </summary>
 	void TransferConstBuffer();
 
 	/// <summary>
-	/// ŠÂ‹«Œõ‚Ìƒ‰ƒCƒgF‚ğƒZƒbƒg
+	/// ç’°å¢ƒå…‰ã®ãƒ©ã‚¤ãƒˆè‰²ã‚’ã‚»ãƒƒãƒˆ
 	/// </summary>
-	/// <param name="color">ƒ‰ƒCƒgF</param>
+	/// <param name="color">ãƒ©ã‚¤ãƒˆè‰²</param>
 	void SetAmbientColor(const Vector3& color);
 
 	/// <summary>
-	/// •½sŒõŒ¹‚Ì—LŒøƒtƒ‰ƒO‚ğƒZƒbƒg
+	/// å¹³è¡Œå…‰æºã®æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã‚’ã‚»ãƒƒãƒˆ
 	/// </summary>
-	///  <param name="index">ƒ‰ƒCƒg”Ô†</param>
-	///  <param name="active">—LŒøƒtƒ‰ƒO</param>
+	///  <param name="index">ãƒ©ã‚¤ãƒˆç•ªå·</param>
+	///  <param name="active">æœ‰åŠ¹ãƒ•ãƒ©ã‚°</param>
 	void SetDirLightActive(int32_t index, bool active);
 
 	/// <summary>
-	/// •½sŒõŒ¹‚Ìƒ‰ƒCƒg‚ğƒZƒbƒg
+	/// å¹³è¡Œå…‰æºã®ãƒ©ã‚¤ãƒˆã‚’ã‚»ãƒƒãƒˆ
 	/// </summary>
-	/// <param name="index">ƒ‰ƒCƒg”Ô†</param>
-	/// <param name="lightDir">ƒ‰ƒCƒg•ûŒü</param>
-	void SetDirLightDir(int32_t index, const Vector3&lightDir, const float upVec);
+	/// <param name="index">ãƒ©ã‚¤ãƒˆç•ªå·</param>
+	/// <param name="lightDir">ãƒ©ã‚¤ãƒˆæ–¹å‘</param>
+	void SetDirLightDir(int32_t index, const Vector3& lightDir, const float upVec);
 
 
 	/// <summary>
-	/// •½sŒõŒ¹‚Ìƒ‰ƒCƒgF‚ğƒZƒbƒg
+	/// å¹³è¡Œå…‰æºã®ãƒ©ã‚¤ãƒˆè‰²ã‚’ã‚»ãƒƒãƒˆ
 	/// </summary>
-	/// <param name="index">ƒ‰ƒCƒg”Ô†</param>
-	/// <param name="lightColor">ƒ‰ƒCƒgF</param>
-	void SetDirLightColor(int32_t index, const Vector3&lightColor);
+	/// <param name="index">ãƒ©ã‚¤ãƒˆç•ªå·</param>
+	/// <param name="lightColor">ãƒ©ã‚¤ãƒˆè‰²</param>
+	void SetDirLightColor(int32_t index, const Vector3& lightColor);
 
 
 	/// <summary>
-	/// •W€‚Ìƒ‰ƒCƒg‚Ìİ’è
+	/// æ¨™æº–ã®ãƒ©ã‚¤ãƒˆã®è¨­å®š
 	/// </summary>
 	void DefaultLightSetting();
 
-public: //’è”
-	//ƒ‰ƒCƒg‚Ì”
+public: //å®šæ•°
+	//ãƒ©ã‚¤ãƒˆã®æ•°
 	static const int32_t kDirLightNum_ = 3;
-	//“_ŒõŒ¹‚Ì”
+	//ç‚¹å…‰æºã®æ•°
 	static const int32_t kPointLightNum_ = 3;
-	//ƒXƒ|ƒbƒgƒ‰ƒCƒg‚Ì”
+	//ã‚¹ãƒãƒƒãƒˆãƒ©ã‚¤ãƒˆã®æ•°
 	static const int32_t kSpotLightNum_ = 3;
-	//ŠÛ‰e‚Ì”
+	//ä¸¸å½±ã®æ•°
 	static const int32_t kCircleShadowNum_ = 1;
 
 
-public: //ƒTƒuƒNƒ‰ƒX
+public: //ã‚µãƒ–ã‚¯ãƒ©ã‚¹
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“
 	struct ConstBufferData
 	{
-		//ŠÂ‹«Œõ‚ÌF
+		//ç’°å¢ƒå…‰ã®è‰²
 		Vector3 ambientColor;
 		float pad1;
-		//•½sŒõŒ¹—p
+		//å¹³è¡Œå…‰æºç”¨
 		DirectionalLight::ConstBufferData dirLights[kDirLightNum_];
 	};
 
 
-private: //Ã“Iƒƒ“ƒo•Ï”
+private: //é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	//ƒfƒoƒCƒX
-	static ID3D12Device *device_;
+	//ãƒ‡ãƒã‚¤ã‚¹
+	static ID3D12Device* device_;
 
-private: //ƒƒ“ƒo•Ï”
+private: //ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	//’è”ƒoƒbƒtƒ@
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	Comptr<ID3D12Resource> constBuff_;
-	//ŠÂ‹«Œõ‚ÌF
-	Vector3 ambientColor_ = { 1,1,1};
-	//•½sŒõŒ¹‚Ì”z—ñ
+	//ç’°å¢ƒå…‰ã®è‰²
+	Vector3 ambientColor_ = { 1,1,1 };
+	//å¹³è¡Œå…‰æºã®é…åˆ—
 	DirectionalLight dirLights_[kDirLightNum_];
-	//ƒ_[ƒeƒBƒtƒ‰ƒO
+	//ãƒ€ãƒ¼ãƒ†ã‚£ãƒ•ãƒ©ã‚°
 	bool dirty_ = false;
 
 };

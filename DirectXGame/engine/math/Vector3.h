@@ -4,27 +4,27 @@ class Vector3
 {
 public:
 
-	float x; //x¬•ª
-	float y; //x¬•ª
-	float z; //x¬•ª
+	float x; //xæˆåˆ†
+	float y; //xæˆåˆ†
+	float z; //xæˆåˆ†
 
 public:
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-	Vector3();							//—ëƒxƒNƒgƒ‹‚Æ‚·‚é
-	Vector3(float x, float y, float z);	//x¬•ª,y¬•ª,z¬•ª@‚ğw’è‚µ‚Ä‚Ì¶¬
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+	Vector3();							//é›¶ãƒ™ã‚¯ãƒˆãƒ«ã¨ã™ã‚‹
+	Vector3(float x, float y, float z);	//xæˆåˆ†,yæˆåˆ†,zæˆåˆ†ã€€ã‚’æŒ‡å®šã—ã¦ã®ç”Ÿæˆ
 
-	//ƒƒ“ƒoŠÖ”
-	float Length() const;					//ƒmƒ‹ƒ€(’·‚³)‚ğ‹‚ß‚é
-	Vector3& Normalize();					//³‹K‰»‚·‚é
-	float Dot(const Vector3& v) const;		//“àÏ‚ğ‹‚ß‚é
-	Vector3 Cross(const Vector3& v) const;	//ŠOÏ‚ğ‹‚ß‚é
-	Vector3 Negate() const;			//‹tƒxƒNƒgƒ‹‚ğ‹‚ß‚é
+	//ãƒ¡ãƒ³ãƒé–¢æ•°
+	float Length() const;					//ãƒãƒ«ãƒ (é•·ã•)ã‚’æ±‚ã‚ã‚‹
+	Vector3& Normalize();					//æ­£è¦åŒ–ã™ã‚‹
+	float Dot(const Vector3& v) const;		//å†…ç©ã‚’æ±‚ã‚ã‚‹
+	Vector3 Cross(const Vector3& v) const;	//å¤–ç©ã‚’æ±‚ã‚ã‚‹
+	Vector3 Negate() const;			//é€†ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ±‚ã‚ã‚‹
 
-	//’P€‰‰ZqƒI[ƒo[ƒ[ƒh
+	//å˜é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector3 operator+() const;
 	Vector3 operator-() const;
 
-	//‘ã“ü‰‰ZqƒI[ƒo[ƒ[ƒh
+	//ä»£å…¥æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
 	Vector3& operator+=(const Vector3& v);
 	Vector3& operator-=(const Vector3& v);
 	Vector3& operator*=(float s);
@@ -32,14 +32,14 @@ public:
 
 };
 
-//@2€‰‰ZqƒI[ƒo[ƒ[ƒh
-//@¦‚¢‚ë‚ñ‚Èˆø”(ˆø”‚ÌŒ^‚Æ‡˜)‚Ìƒpƒ^[ƒ“‚É‘Î‰‚·‚é‚½‚ß
+//ã€€2é …æ¼”ç®—å­ã‚ªãƒ¼ãƒãƒ¼ãƒ­ãƒ¼ãƒ‰
+//ã€€â€»ã„ã‚ã‚“ãªå¼•æ•°(å¼•æ•°ã®å‹ã¨é †åº)ã®ãƒ‘ã‚¿ãƒ¼ãƒ³ã«å¯¾å¿œã™ã‚‹ãŸã‚
 const Vector3 operator+(const Vector3& v1, const Vector3& v2);
 const Vector3 operator-(const Vector3& v1, const Vector3& v2);
 const Vector3 operator*(const Vector3& v, float s);
 const Vector3 operator*(float s, const Vector3& v);
 const Vector3 operator/(const Vector3& v, float s);
 
-// •âŠÔŠÖ”
-// üŒ`•âŠÔ(1ŸŠÖ”•âŠÔ)
+// è£œé–“é–¢æ•°
+// ç·šå½¢è£œé–“(1æ¬¡é–¢æ•°è£œé–“)
 const Vector3 lerp(const Vector3& start, const Vector3& end, const float t);

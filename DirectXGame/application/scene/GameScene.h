@@ -26,29 +26,29 @@ class GameScene : public BaseScene
 public:
 
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	GameScene();
 
 	/// <summary>
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	~GameScene();
 
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize() override;
 
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	/// </summary>
 	void Update() override;
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw() override;
 
@@ -58,46 +58,46 @@ private:
 	static KeyInput* keys_;
 	static ImGuiManager* imGuiManager_;
 
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<PostEffect> postEffect_ = nullptr;
-	
-	//ƒ‰ƒCƒg
+
+	//ãƒ©ã‚¤ãƒˆ
 	LightGroup* lightGroup_ = nullptr;
 
-	//ƒJƒƒ‰
+	//ã‚«ãƒ¡ãƒ©
 	std::unique_ptr<Camera> camera_ = nullptr;
 	std::unique_ptr<Camera> testCamera_ = nullptr;
 	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
 
-	//ƒvƒŒƒCƒ„[
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
 	std::unique_ptr<Player> player_ = nullptr;
 
-	//3DƒIƒuƒWƒFƒNƒg
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	std::unique_ptr<Stage> stage_ = nullptr;
 
-	//”wŒi
+	//èƒŒæ™¯
 	std::unique_ptr<Object3d> skydome_ = nullptr;
 	std::unique_ptr<Object3d> plane_ = nullptr;
 	std::unique_ptr<BackGround> backGround_ = nullptr;
 
-	//ƒQ[ƒ€ƒpƒbƒh
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
-	//ƒRƒ‰ƒCƒ_[
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::unique_ptr<SphereCollider> sphereCollider_ = nullptr;
 	std::unique_ptr<TouchableObject> objGround_ = nullptr;
 
-	//Õ“Ëƒ}ƒl[ƒWƒƒ[
+	//è¡çªãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼
 	CollisionManager* collisionManager_ = nullptr;
 
-	//‘Ò‚¿ŠÔ
+	//å¾…ã¡æ™‚é–“
 	static const int32_t kWaitTime_ = 40;
-	//ƒL[“ü—Í‚ÌŠÔŠÇ—
+	//ã‚­ãƒ¼å…¥åŠ›ã®æ™‚é–“ç®¡ç†
 	int32_t keyTimer_ = 60;
 
 	//float ambientColor0_[3] = { 1,1,1 };
 	Vector3 ambientColor0_ = { 1,1,1 };
-	//Œõü•ûŒü‰Šú’l
+	//å…‰ç·šæ–¹å‘åˆæœŸå€¤
 	//float lightDir0_[3] = { 1,-5,-5 };
 	Vector3 lightDir0_ = { 1,-5,-5 };
 
@@ -107,11 +107,11 @@ private:
 	//float whiteColor_[3] = { 1,1,1 };
 	Vector3 whiteColor_ = { 1,1,1 };
 
-	//ƒp[ƒeƒBƒNƒ‹
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
 	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
 
-	//UIƒXƒvƒ‰ƒCƒg
+	//UIã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> jumpSprite_ = nullptr;
 

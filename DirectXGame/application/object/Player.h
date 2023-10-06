@@ -20,7 +20,7 @@ public:
 
 	void OnCollision(const CollisionInfo& info) override;
 
-	//‰Á‘¬‚·‚é
+	//åŠ é€Ÿã™ã‚‹
 	void AccelerateChangeColor(Camera* camera);
 
 	void Accelerate();
@@ -39,59 +39,59 @@ private:
 
 	std::unique_ptr<Object3d> object_;
 
-	//‰ŠúˆÊ’u
+	//åˆæœŸä½ç½®
 	Vector3 playerInitPos_;
-	//ˆÊ’u
+	//ä½ç½®
 	Vector3 position_;
 	Vector3 rotation_ = { 0,0,0 };
 	Vector3 scale_ = { 1,1,1 };
 
 	Vector3 move = { 0,0,0 };
 
-	//ƒWƒƒƒ“ƒvƒJƒEƒ“ƒg
+	//ã‚¸ãƒ£ãƒ³ãƒ—ã‚«ã‚¦ãƒ³ãƒˆ
 	int32_t jumpCount;
 
-	// “™‘¬ƒWƒƒƒ“ƒv‚Ì1ƒtƒŒ[ƒ€‚²‚Æ‚ÌƒWƒƒƒ“ƒv‚Ìã‚ª‚è•
+	// ç­‰é€Ÿã‚¸ãƒ£ãƒ³ãƒ—ã®1ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã®ã‚¸ãƒ£ãƒ³ãƒ—ã®ä¸ŠãŒã‚Šå¹…
 	float jumpHeight;
 
-	//jumpheight‚ÌÅ‘å’l
+	//jumpheightã®æœ€å¤§å€¤
 	const float kMaxJump = 0.1f;
 
-	//Å‘åƒWƒƒƒ“ƒv‰ñ”
+	//æœ€å¤§ã‚¸ãƒ£ãƒ³ãƒ—å›æ•°
 	int32_t kMaxJumpNum = 2;;
 
-	//‹ó’†‚É‚¢‚é‚©‚Ç‚¤‚©
+	//ç©ºä¸­ã«ã„ã‚‹ã‹ã©ã†ã‹
 	bool isFlying_;
 
-	//d—Í
+	//é‡åŠ›
 	float gravitySpeed = 0.0f;
 
-	//“®‚¢‚Ä‚¢‚é‚©
+	//å‹•ã„ã¦ã„ã‚‹ã‹
 	bool isMoving_;
 
-	//ƒS[ƒ‹‚µ‚½‚©‚Ç‚¤‚©
+	//ã‚´ãƒ¼ãƒ«ã—ãŸã‹ã©ã†ã‹
 	bool isfinish_;
 
-	//”¼Œa
+	//åŠå¾„
 	float radius = 0.6f;
 
-	//ƒvƒŒƒCƒ„[‚ÌƒRƒ‰ƒCƒ_[
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	std::unique_ptr<SphereCollider> playerCollider_ = nullptr;
 
-	//ƒvƒŒƒCƒ„[—p‚ÌƒRƒ“ƒgƒ[ƒ‰[
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç”¨ã®ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼
 	//std::unique_ptr<GamePad> player_ = nullptr;
 	GamePad* gamePad_ = nullptr;
 
-	//Ú’nƒtƒ‰ƒO
+	//æ¥åœ°ãƒ•ãƒ©ã‚°
 	bool onGround_ = false;
 
-	//€–Sƒtƒ‰ƒO
+	//æ­»äº¡ãƒ•ãƒ©ã‚°
 	bool isDead_ = false;
 
-	//—‰ºƒxƒNƒgƒ‹
+	//è½ä¸‹ãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 fallVec_;
 
-	//F•Ï‚¦ƒtƒ‰ƒO
+	//è‰²å¤‰ãˆãƒ•ãƒ©ã‚°
 	bool isChangeColor = false;
 
 	const int32_t pushTime = 1;
@@ -102,38 +102,38 @@ private:
 
 	Attribute attribute_;
 
-	//ƒWƒƒƒ“ƒv‚Ì‰Á‘¬“x
+	//ã‚¸ãƒ£ãƒ³ãƒ—æ™‚ã®åŠ é€Ÿåº¦
 	float jumpAcc_ = 0.0f;
 
-	//‡Œv‰Á‘¬“x
+	//åˆè¨ˆåŠ é€Ÿåº¦
 	Vector3 totalAxcell_;
 
-	//’Êí‰Á‘¬“x
+	//é€šå¸¸åŠ é€Ÿåº¦
 	const float kMoveAxcellZ_ = 0.5f;
 
-	//‰EŒü‚«‰Á‘¬ƒxƒNƒgƒ‹
+	//å³å‘ãåŠ é€Ÿãƒ™ã‚¯ãƒˆãƒ«
 	Vector3 rightAxcellVec_;
 
-	//‰Á‘¬ƒtƒ‰ƒO
+	//åŠ é€Ÿãƒ•ãƒ©ã‚°
 	bool isRightAxcell_;
-	//‰Á‘¬ŠÔ
+	//åŠ é€Ÿæ™‚é–“
 	const int32_t kAxcellTime_ = 30;
-	//‰Á‘¬Œv‘ªŠÔ
+	//åŠ é€Ÿè¨ˆæ¸¬æ™‚é–“
 	int32_t axcellTimer_ = kAxcellTime_;
 
-	//ƒvƒŒƒCƒ„[€–Sƒ‰ƒCƒ“
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ­»äº¡ãƒ©ã‚¤ãƒ³
 	const float deadLine_ = 0.5f;
 
-	//1ü‰ñ‚éŠÔ
+	//1å‘¨å›ã‚‹æ™‚é–“
 	const float kRotateXTime_ = 60.0f;
 	const float kRotateYTime_ = 360.0f;
 
-	//‰ñ“]ŠÔ
+	//å›è»¢æ™‚é–“
 	float rotateXTimer_ = kRotateXTime_;
 	float rotateYTimer_ = kRotateYTime_;
 
 
-	//‰ñ“]ƒtƒ‰ƒO
+	//å›è»¢ãƒ•ãƒ©ã‚°
 	bool isJumpRotate_ = false;
 
 public:

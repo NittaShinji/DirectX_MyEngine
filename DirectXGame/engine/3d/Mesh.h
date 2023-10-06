@@ -11,69 +11,69 @@ class Mesh
 
 private:
 
-	//ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+	//ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public:
 
-	//’¸“_î•ñ
+	//é ‚ç‚¹æƒ…å ±
 	struct Vertex
 	{
-		Vector3 pos;		// xyzÀ•W
-		Vector3 normal;	//–@üƒxƒNƒgƒ‹
-		Vector2 uv;		// uvÀ•W
+		Vector3 pos;		// xyzåº§æ¨™
+		Vector3 normal;	//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+		Vector2 uv;		// uvåº§æ¨™
 	};
 
 public:
 
 	static void StaticInitialize(DirectXBasic* directXbasic);
 
-	//’¸“_î•ñ‚ğƒZƒbƒg
+	//é ‚ç‚¹æƒ…å ±ã‚’ã‚»ãƒƒãƒˆ
 	void SetVertices(const Vertex& vertex);
 
-	//’¸“_ƒCƒ“ƒfƒbƒNƒX‚ğƒZƒbƒg
+	//é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ã‚»ãƒƒãƒˆ
 	void SetIndices(const unsigned short& index);
 
 	void CrateBuffer();
 
 	/// <summary>
-	/// ’¸“_”z—ñ‚ğæ“¾
+	/// é ‚ç‚¹é…åˆ—ã‚’å–å¾—
 	/// </summary>
-	/// <returns>’¸“_”z—ñ</returns>
+	/// <returns>é ‚ç‚¹é…åˆ—</returns>
 	inline const std::vector<Vertex>& GetVertices() { return vertices_; }
 
 	/// <summary>
-	/// ƒCƒ“ƒfƒbƒNƒX”z—ñ‚ğæ“¾
+	/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—ã‚’å–å¾—
 	/// </summary>
-	/// <returns>ƒCƒ“ƒfƒbƒNƒX”z—ñ</returns>
+	/// <returns>ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—</returns>
 	inline const std::vector<unsigned short>& GetIndices() { return indices_; }
 
 	/// <summary>
-	/// ’¸“_ƒoƒbƒtƒ@æ“¾
+	/// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡å–å¾—
 	/// </summary>
-	/// <returns>’¸“_ƒoƒbƒtƒ@</returns>
+	/// <returns>é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡</returns>
 	inline const D3D12_VERTEX_BUFFER_VIEW& GetVBView() { return vbView_; }
 
 	/// <summary>
-	/// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@æ“¾
+	/// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡å–å¾—
 	/// </summary>
-	/// <returns>ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@</returns>
+	/// <returns>ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡</returns>
 	inline const D3D12_INDEX_BUFFER_VIEW& GetIBView() { return ibView_; }
 
 private:
 
 	static DirectXBasic* directXBasic_;
 
-	// ’¸“_ƒoƒbƒtƒ@
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> vertBuff_;
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 	ComPtr<ID3D12Resource> indexBuff_;
-	// ’¸“_ƒoƒbƒtƒ@ƒrƒ…[
+	// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
-	// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[
+	// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼
 	D3D12_INDEX_BUFFER_VIEW ibView_ = {};
-	//’¸“_ƒf[ƒ^”z—ñ
+	//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿é…åˆ—
 	std::vector<Vertex> vertices_;
-	//’¸“_ƒCƒ“ƒfƒbƒNƒX”z—ñ
+	//é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
 	std::vector<unsigned short> indices_;
 
 };

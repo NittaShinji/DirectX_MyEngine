@@ -29,10 +29,10 @@ void TitleScene::Initialize()
 	gamePad_->Initialzie(Player1);
 
 	lightGroup_ = LightGroup::Create();
-	//3DƒIƒuƒWƒFƒNƒg‚Éƒ‰ƒCƒg‚ğƒZƒbƒg
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ©ã‚¤ãƒˆã‚’ã‚»ãƒƒãƒˆ
 	Object3d::SetLightGroup(lightGroup_);
 
-	//3DƒIƒuƒWƒFƒNƒg
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	titleSphere_ = Object3d::Create("sphere");
 	spherPos_.x = 0.0f;
 	spherPos_.y = 5.0f;
@@ -41,9 +41,9 @@ void TitleScene::Initialize()
 	titleSphere_->SetTransform(spherPos_);
 	titleSphere_->SetScale(Vector3{ 3.0f, 3.0f, 3.0f });
 
-	//‰æ‘œ
+	//ç”»åƒ
 	titleSprite_ = std::make_unique<Sprite>();
-	clickSprite_= std::make_unique<Sprite>();
+	clickSprite_ = std::make_unique<Sprite>();
 	aButtonSprite_ = std::make_unique<Sprite>();
 	bButtonSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_ = std::make_unique<Sprite>();
@@ -56,7 +56,7 @@ void TitleScene::Initialize()
 	Vector2 backGroundPosition = { 0.0f,0.0f };
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
-	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight};
+	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight };
 
 	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");
 
@@ -66,17 +66,17 @@ void TitleScene::Initialize()
 
 	const Vector2 clickButtonSize = { 128.0f,128.0f };
 	Vector2 clickButtonPosition;
-	clickButtonPosition.x = (WindowsAPI::kWindow_width_  / 2) - (clickButtonSize.x / 2);
+	clickButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (clickButtonSize.x / 2);
 	clickButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (clickButtonSize.y) + (clickButtonSize.y / 3);
 
 	const Vector2 aButtonSize = { 128.0f,128.0f };
 	Vector2 aButtonPosition;
-	aButtonPosition.x = (WindowsAPI::kWindow_width_) - (aButtonSize.x * 2);
+	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
 	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y) + (aButtonSize.y / 3);
 
 	const Vector2 bButtonSize = { 128.0f,128.0f };
 	Vector2 bButtonPosition;
-	bButtonPosition.x = (WindowsAPI::kWindow_width_) - (bButtonSize.x);
+	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
 	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y) + (bButtonSize.y / 3);
 
 	clickSprite_->Initialize(clickButtonPosition, clickButtonSize);
@@ -84,23 +84,23 @@ void TitleScene::Initialize()
 	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
 	backGroundSprite_->Initialize(backGroundPosition, backGroundSize);
 
-	//ƒVƒF[ƒ_[“Ç‚İ‚İ
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼èª­ã¿è¾¼ã¿
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
-	//ƒTƒEƒ“ƒh
+	//ã‚µã‚¦ãƒ³ãƒ‰
 	//Sound::GetInstance()->Initialize();
 	//Sound::GetInstance()->LoadSoundWave("title.wav");
 	//Sound::GetInstance()->LoadSoundWave("touch.wav");
 
 	//Sound::GetInstance()->PlaySoundWave("title.wav",true);
 
-	//ƒJƒƒ‰
+	//ã‚«ãƒ¡ãƒ©
 	camera_ = std::make_unique<Camera>();
 
 	Vector3 cameraEye = { 30,15.5,-20 };
 
 	Vector3 cameraTarget = { 0,5,5 };
-	
+
 	Vector3 cameraUp = { 0,1,0 };
 
 	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
@@ -124,7 +124,7 @@ void TitleScene::Update()
 
 	titleSphere_->Update(camera_.get());
 
-	//‰ñ“]ˆ—
+	//å›è»¢å‡¦ç†
 	if(isChangeScene_ == false)
 	{
 		float angle = ToRadian(360.0f);
@@ -138,7 +138,7 @@ void TitleScene::Update()
 	}
 	else
 	{
-		//ƒV[ƒ“Ø‘ÖƒAƒjƒ[ƒVƒ‡ƒ“‚ªn‚Ü‚Á‚Ä‚¢‚È‚©‚Á‚½‚ç
+		//ã‚·ãƒ¼ãƒ³åˆ‡æ›¿ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå§‹ã¾ã£ã¦ã„ãªã‹ã£ãŸã‚‰
 		if(sceneAnimeTimer_ == 0)
 		{
 			rotateTimer_ = kRotateTime_;
@@ -162,8 +162,8 @@ void TitleScene::Update()
 		spherPos_.y += PlayEaseIn(moveTimer_, 0.0, 1.0, kActionTime_);
 		titleSphere_->SetTransform(spherPos_);
 	}
-	
-	//ˆÚ“®ˆ—
+
+	//ç§»å‹•å‡¦ç†
 	if(moveTimer_ > 0)
 	{
 		moveTimer_--;
@@ -195,7 +195,7 @@ void TitleScene::Update()
 		move_.y = 0;
 	}
 
-	//F‚ğ•Ï‚¦‚éˆ—
+	//è‰²ã‚’å¤‰ãˆã‚‹å‡¦ç†
 	if(changecolorTimer__ >= 0)
 	{
 		changecolorTimer__--;
@@ -228,16 +228,16 @@ void TitleScene::Update()
 
 	titleSphere_->SetTransform(spherPos_);
 
-	//ƒQ[ƒ€ƒpƒbƒh‚ªŒq‚ª‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ãŒç¹‹ãŒã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	if(gamePad_->IsConnected(Player1)) {}
-	//‰Ÿ‚µ‚½uŠÔ‚Ì”»’è‚ğæ‚é
+	//æŠ¼ã—ãŸç¬é–“ã®åˆ¤å®šã‚’å–ã‚‹
 	gamePad_->PushedButtonMoment();
 
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		//Sound::GetInstance()->PlaySoundWave("touch.wav",false);
 		//Sound::GetInstance()->PauseSound("Resources/Sound/title.wav");
-		isChangeScene_ = true;	
+		isChangeScene_ = true;
 	}
 
 	if(isChangeScene_ == true)
@@ -261,7 +261,7 @@ void TitleScene::Update()
 
 void TitleScene::Draw()
 {
-	//•`‰æŠJn
+	//æç”»é–‹å§‹
 	directXBasic_->BeforeDraw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
@@ -283,11 +283,11 @@ void TitleScene::Draw()
 	titleSphere_->BeforeDraw();
 	titleSphere_->Draw();
 
-	//•`‰æI—¹
+	//æç”»çµ‚äº†
 	directXBasic_->AfterDraw();
 }
 
-//ƒV[ƒ“‘JˆÚƒAƒjƒ[ƒVƒ‡ƒ“
+//ã‚·ãƒ¼ãƒ³é·ç§»ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 void TitleScene::SceneAnimation()
 {
 	if(sceneAnimeTimer_ < kSceneAnimeTime_)
@@ -300,16 +300,16 @@ void TitleScene::SceneAnimation()
 		isFinishAnimetion = true;
 	}
 
-	//•Ï‰»—Ê
+	//å¤‰åŒ–é‡
 	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
 	animationMoveVec2.y += easeOutQuint(x);
 
-	//‰æ‘œ‚ğ“®‚©‚·ˆ—
+	//ç”»åƒã‚’å‹•ã‹ã™å‡¦ç†
 	titleSprite_->MovePos(animationMoveVec2);
 	clickSprite_->MovePos(animationMoveVec2);
 	aButtonSprite_->MovePos(animationMoveVec2);
 	bButtonSprite_->MovePos(animationMoveVec2);
 
-	//ƒIƒuƒWƒFƒNƒg‚ğ“®‚©‚·ˆ—
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å‹•ã‹ã™å‡¦ç†
 	titleSphere_->MovePos(Vector3(animationMoveVec2.x, -animationMoveVec2.y, 0.0f));
 }

@@ -14,27 +14,27 @@ class BaseCollider;
 
 class Object3d
 {
-private: //ƒGƒCƒŠƒAƒX
+private: //ã‚¨ã‚¤ãƒªã‚¢ã‚¹
 
-	//ƒeƒ“ƒvƒŒ[ƒg
+	//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public:
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì(À•WŒn)b0
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“(åº§æ¨™ç³»)b0
 	struct ConstBufferDateTransform
 	{
 		Matrix4 viewProjection;
-		//ƒ[ƒ‹ƒhs—ñ
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 		Matrix4 worldMatrix;
-		//ƒJƒƒ‰À•W(ƒ[ƒ‹ƒhs—ñ)
+		//ã‚«ãƒ¡ãƒ©åº§æ¨™(ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—)
 		Vector3 cameraPos;
 		float pad1;
 	};
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘Ì(ƒ}ƒeƒŠƒAƒ‹)b1
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“(ãƒãƒ†ãƒªã‚¢ãƒ«)b1
 	struct ConstBufferDataMaterial
 	{
-		Vector3 ambient;	//ƒAƒ“ƒrƒGƒ“ƒgŒW”
+		Vector3 ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆä¿‚æ•°
 		float pad1;
 		Vector3 diffuse;
 		float pad2;
@@ -44,20 +44,20 @@ public:
 
 	struct GSOutput
 	{
-		Vector3 pos;		// xyzÀ•W
-		Vector3 normal;	//–@üƒxƒNƒgƒ‹
-		Vector2 uv;		// uvÀ•W
+		Vector3 pos;		// xyzåº§æ¨™
+		Vector3 normal;	//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ«
+		Vector2 uv;		// uvåº§æ¨™
 	};
 
 public:
 
 	/// <summary>
-	/// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	/// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	Object3d() = default;
 
 	/// <summary>
-	/// ƒfƒXƒgƒ‰ƒNƒ^
+	/// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	/// </summary>
 	virtual ~Object3d();
 
@@ -73,18 +73,18 @@ public:
 	void SetModel(const std::string& path);
 
 	/// <summary>
-	/// Õ“ËƒR[ƒ‹ƒoƒbƒNŠÖ”
+	/// è¡çªæ™‚ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	/// </summary>
-	/// <param name="info">Õ“Ëî•ñ</param>
+	/// <param name="info">è¡çªæƒ…å ±</param>
 	virtual void OnCollision(const CollisionInfo& info) {}
 
 	void MovePos(Vector3 moveVec);
 
-protected:	//ƒƒ“ƒo•Ï”
+protected:	//ãƒ¡ãƒ³ãƒå¤‰æ•°
 
-	//ƒNƒ‰ƒX–¼(ƒfƒoƒbƒO—p)
+	//ã‚¯ãƒ©ã‚¹å(ãƒ‡ãƒãƒƒã‚°ç”¨)
 	const char* name = nullptr;
-	//ƒRƒ‰ƒCƒ_[
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼
 	BaseCollider* collider = nullptr;
 
 	static DirectXBasic* directXBasic_;
@@ -93,79 +93,79 @@ protected:	//ƒƒ“ƒo•Ï”
 	Model model_;
 	Camera* camera_ = nullptr;
 
-	//’è”ƒoƒbƒtƒ@
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_;
 
-	//’è”ƒoƒbƒtƒ@‚Ìƒ}ƒbƒsƒ“ƒO—pƒ|ƒCƒ“ƒ^
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ”ãƒ³ã‚°ç”¨ãƒã‚¤ãƒ³ã‚¿
 	ConstBufferDateTransform* constMapTransform_ = nullptr;
 	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
 
-	//ƒXƒP[ƒ‹
+	//ã‚¹ã‚±ãƒ¼ãƒ«
 	Vector3 scale_;
-	//‰ñ“]Šp
+	//å›è»¢è§’
 	Vector3 rotation_;
-	//•½sˆÚ“®
+	//å¹³è¡Œç§»å‹•
 	Vector3 transform_;
 
 	Matrix4 matScale_, matRot_, matTrans_;
 
-	//ƒ[ƒ‹ƒh•ÏŠ·s—ñ
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰å¤‰æ›è¡Œåˆ—
 	Matrix4 matWorld_;
 
-	//ƒrƒ…[s—ñ
+	//ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
 	Matrix4 matView_;
 
-	//Ë‰es—ñ
+	//å°„å½±è¡Œåˆ—
 	Matrix4 matProjection_;
 
-	//ƒJƒƒ‰À•W
+	//ã‚«ãƒ¡ãƒ©åº§æ¨™
 	Vector3 cameraPos_;
 
-	//eƒIƒuƒWƒFƒNƒg‚Ìƒ|ƒCƒ“ƒ^
+	//è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒã‚¤ãƒ³ã‚¿
 
-	ID3DBlob* vsBlob_ = nullptr; // ’¸“_ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
-	ID3DBlob* psBlob_ = nullptr; // ƒsƒNƒZƒ‹ƒVƒF[ƒ_ƒIƒuƒWƒFƒNƒg
-	ID3DBlob* gsBlob_ = nullptr;	//ƒWƒIƒƒgƒŠƒVƒF[ƒ_[ƒIƒuƒWƒFƒNƒg
-	ID3DBlob* errorBlob_ = nullptr; // ƒGƒ‰[ƒIƒuƒWƒFƒNƒg
+	ID3DBlob* vsBlob_ = nullptr; // é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ID3DBlob* psBlob_ = nullptr; // ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ID3DBlob* gsBlob_ = nullptr;	//ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	ID3DBlob* errorBlob_ = nullptr; // ã‚¨ãƒ©ãƒ¼ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState_;
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
 
-	//ƒOƒ‰ƒtƒBƒbƒNƒXƒpƒCƒvƒ‰ƒCƒ“
+	//ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
 
-	//SRV‚ÌÅ‘åŒÂ”
+	//SRVã®æœ€å¤§å€‹æ•°
 	static const size_t kMaxSRVCount_ = 2056;
 
-	//ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 	std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
 
-	//ƒfƒtƒHƒ‹ƒgƒeƒNƒXƒ`ƒƒŠi”[ƒfƒBƒŒƒNƒgƒŠ
+	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ†ã‚¯ã‚¹ãƒãƒ£æ ¼ç´ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
 	static std::string kDefaultTextureDirectoryPath_;
 
 	bool colorFlag_ = false;
 
 	static const UINT kRenderTexNum = 2;
 
-	Vector3 color_ = { 1,1,1};
+	Vector3 color_ = { 1,1,1 };
 
-	//‘®«
+	//å±æ€§
 	int32_t attribute_;
 
 public:
 
-	//ƒQƒbƒ^[
+	//ã‚²ãƒƒã‚¿ãƒ¼
 	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform_; };
 
 	Vector3 GetWorldPos() const;
 	/// <summary>
-	/// ƒ[ƒ‹ƒhs—ñ‚Ìæ“¾
+	/// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®å–å¾—
 	/// </summary>
-	/// <returns>ƒ[ƒ‹ƒhs—ñ</returns>
+	/// <returns>ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—</returns>
 	const Matrix4& GetMatWorld() { return matWorld_; }
 
-	//ƒ‚ƒfƒ‹‚ğæ“¾
+	//ãƒ¢ãƒ‡ãƒ«ã‚’å–å¾—
 	//const Model& GetModel() { return model_; }
 	Model* GetModel() { return &model_; }
 	bool GetColorFlag() { return colorFlag_; }
@@ -186,18 +186,18 @@ public:
 	void SetAttribute(int32_t attribute) { attribute_ = attribute; }
 
 	/// <summary>
-	/// ƒRƒ‰ƒCƒ_[‚ÌƒZƒbƒg
+	/// ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ã‚»ãƒƒãƒˆ
 	/// </summary>
-	/// <param name="collider">ƒRƒ‰ƒCƒ_[</param>
+	/// <param name="collider">ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼</param>
 	void SetCollider(BaseCollider* collider);
 
-	//ƒeƒ“ƒvƒŒ[ƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	template <typename Type1>
-	//’è”ƒoƒbƒtƒ@‚Ì¶¬
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
 
 
-public: //Ã“Iƒƒ“ƒoŠÖ”
+public: //é™çš„ãƒ¡ãƒ³ãƒé–¢æ•°
 
 	static void SetLightGroup(LightGroup* lightGroup) { Object3d::lightGroup_ = lightGroup; }
 

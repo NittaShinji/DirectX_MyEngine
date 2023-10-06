@@ -39,25 +39,25 @@ void ClearScene::Initialize()
 	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y);
 	aButton_->Initialize(aButtonPosition, aButtonSize);
 
-	//ƒVƒF[ƒ_[“Ç‚İ‚İ
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼èª­ã¿è¾¼ã¿
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
 
-	//ƒRƒ“ƒgƒ[ƒ‰
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©
 	gamePad_ = std::make_unique<GamePad>();
 	gamePad_->Initialzie(Player1);
 
-	//ƒTƒEƒ“ƒh
+	//ã‚µã‚¦ãƒ³ãƒ‰
 	/*Sound::GetInstance()->Initialize();
 	Sound::GetInstance()->LoadSoundWave("clear.wav");
 	Sound::GetInstance()->PlaySoundWave("clear.wav",false);
 
 	Sound::GetInstance()->LoadSoundWave("touch.wav");*/
 
-	//•Ï”
-	move_ = {0.0f,0.0f};
+	//å¤‰æ•°
+	move_ = { 0.0f,0.0f };
 
-	//ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg‚Ìİ’è
+	//ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆã®è¨­å®š
 	Vector2 checkAnchorPoint = { 0.5f,0.5f };
 	check_->SetAnchorPoint(checkAnchorPoint);
 }
@@ -67,7 +67,7 @@ void ClearScene::Update()
 	end_->matUpdate();
 	aButton_->matUpdate();
 
-	
+
 	if(checkPosition_.y <= (WindowsAPI::kWindow_height_ / 2))
 	{
 		move_.y += 0.6f;
@@ -92,9 +92,9 @@ void ClearScene::Update()
 	check_->SetRotation(rotate_);
 	check_->matUpdate();
 
-	//ƒQ[ƒ€ƒpƒbƒh‚ªŒq‚ª‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ãŒç¹‹ãŒã£ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	if(gamePad_->IsConnected(Player1)) {}
-	//‰Ÿ‚µ‚½uŠÔ‚Ì”»’è‚ğæ‚é
+	//æŠ¼ã—ãŸç¬é–“ã®åˆ¤å®šã‚’å–ã‚‹
 	gamePad_->PushedButtonMoment();
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
@@ -106,7 +106,7 @@ void ClearScene::Update()
 
 void ClearScene::Draw()
 {
-	//•`‰æŠJn
+	//æç”»é–‹å§‹
 	directXBasic_->BeforeDraw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
@@ -119,7 +119,7 @@ void ClearScene::Draw()
 	check_->Draw("check.png");
 	aButton_->Draw("A.png");
 
-	//•`‰æI—¹
+	//æç”»çµ‚äº†
 	directXBasic_->AfterDraw();
 }
 

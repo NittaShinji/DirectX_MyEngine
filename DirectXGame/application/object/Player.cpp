@@ -10,7 +10,7 @@ using namespace std;
 
 std::unique_ptr<Player> Player::Create(const std::string& path)
 {
-	//3DƒIƒuƒWƒFƒNƒg‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	std::unique_ptr<Player> instance = std::make_unique<Player>();
 	if(instance == nullptr)
 	{
@@ -37,19 +37,19 @@ void Player::Initialize()
 	rotation_ = { 0,0,0 };
 	scale_ = { 1.0,1.0,1.0 };
 
-	//À•Wî•ñ‚ğİ’è
+	//åº§æ¨™æƒ…å ±ã‚’è¨­å®š
 	SetTransform(position_);
 	SetRotation(rotation_);
 	SetScale(scale_);
 
-	//ƒRƒ‰ƒCƒ_[‚Ì’Ç‰Á
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¿½åŠ 
 	float radius = 1.0f;
 	playerCollider_ = std::make_unique<SphereCollider>(Vector3({ 0,0,0 }), radius);
 
-	//ƒRƒ‰ƒCƒ_[‚Ì“o˜^
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®ç™»éŒ²
 	SetCollider(playerCollider_.get());
 
-	//‘®«‚ğw’è
+	//å±æ€§ã‚’æŒ‡å®š
 	playerCollider_->SetAttribute(COLLISION_ATTR_ALLIES);
 
 	move = { 0,0,0 };
@@ -72,10 +72,10 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
-	//‚Ç‚Ìƒ{ƒ^ƒ“‚ªuŠÔ“I‚É‰Ÿ‚³‚ê‚½‚©
+	//ã©ã®ãƒœã‚¿ãƒ³ãŒç¬é–“çš„ã«æŠ¼ã•ã‚ŒãŸã‹
 	gamePad_->PushedButtonMoment();
 
-	//‡Œv‰Á‘¬“x‚ğƒŠƒZƒbƒg
+	//åˆè¨ˆåŠ é€Ÿåº¦ã‚’ãƒªã‚»ãƒƒãƒˆ
 	totalAxcell_ = { 0.0f,0.0f,0.0f };
 	if(isMoving_ == true)
 	{
@@ -83,10 +83,10 @@ void Player::Update(Camera* camera)
 		Accelerate();
 	}
 
-	//F•Ï‚¦ˆ—
+	//è‰²å¤‰ãˆå‡¦ç†
 	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		//‘®«‚Ì•ÏX
+		//å±æ€§ã®å¤‰æ›´
 		if(attribute_ == Attribute::pink)
 		{
 			attribute_ = Attribute::yellow;
@@ -118,19 +118,19 @@ void Player::Update(Camera* camera)
 
 	Object3d::SetColorFlag(colorFlag_);
 
-	//—‰ºˆ—
+	//è½ä¸‹å‡¦ç†
 	if(!onGround_)
 	{
-		//‰ºŒü‚«‰Á‘¬“x@
+		//ä¸‹å‘ãåŠ é€Ÿåº¦ã€€
 		const float fallAcc = -0.015f;
 		const float fallVYMin = -0.5f;
-		//‰Á‘¬
+		//åŠ é€Ÿ
 		fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
 
-		//‡Œv‰Á‘¬“x‚É—‰º’†‚Ì‘¬“x‚ğ‰ÁZ
+		//åˆè¨ˆåŠ é€Ÿåº¦ã«è½ä¸‹ä¸­ã®é€Ÿåº¦ã‚’åŠ ç®—
 		totalAxcell_ += fallVec_;
 
-		//“ñ’iƒWƒƒƒ“ƒv
+		//äºŒæ®µã‚¸ãƒ£ãƒ³ãƒ—æ™‚
 		if(jumpCount > 0 && jumpCount < 2)
 		{
 			if(gamePad_->GetButtonA())
@@ -153,10 +153,10 @@ void Player::Update(Camera* camera)
 			}
 		}
 
-		//“ñ’iƒWƒƒƒ“ƒv‚Ì‰ñ“]ˆ—
+		//äºŒæ®µã‚¸ãƒ£ãƒ³ãƒ—æ™‚ã®å›è»¢å‡¦ç†
 		JumpRotation();
 	}
-	//ƒWƒƒƒ“ƒv‘€ì
+	//ã‚¸ãƒ£ãƒ³ãƒ—æ“ä½œ
 	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
 		//Sound::GetInstance()->PlaySoundWave("jump.wav", false);
@@ -174,30 +174,30 @@ void Player::Update(Camera* camera)
 		jumpCount -= 1;
 	}
 
-	//‰Á‘¬‚ğÀ•W‚É”½‰f
+	//åŠ é€Ÿã‚’åº§æ¨™ã«åæ˜ 
 	position_ += totalAxcell_;
 	Object3d::SetTransform(position_);
 	Object3d::Update(camera);
 
-	//‹…ƒRƒ‰ƒCƒ_[‚ğæ“¾
+	//çƒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å–å¾—
 	SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 	assert(sphereCollider);
 
-	//‹…‚Ìã’[‚©‚ç‹…‚Ì‰º’[‚Ü‚Å‚ÌƒŒƒCƒLƒƒƒXƒg—pƒŒƒC‚ğ€”õ
+	//çƒã®ä¸Šç«¯ã‹ã‚‰çƒã®ä¸‹ç«¯ã¾ã§ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆç”¨ãƒ¬ã‚¤ã‚’æº–å‚™
 	Ray ray;
 	ray.start = sphereCollider->center;
 	ray.start.y += sphereCollider->GetRadius();
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
-	//Ú’nó‘Ô
+	//æ¥åœ°çŠ¶æ…‹
 	if(onGround_)
 	{
 		GroundRotation();
 
-		//ƒXƒ€[ƒY‚Éâ‚ğ‰º‚éˆ×‚Ì‹z’…‹——£
+		//ã‚¹ãƒ ãƒ¼ã‚ºã«å‚ã‚’ä¸‹ã‚‹ç‚ºã®å¸ç€è·é›¢
 		const float adsDistance = 0.2f;
-		//Ú’n‚ğˆÛ
+		//æ¥åœ°ã‚’ç¶­æŒ
 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 		{
 			onGround_ = true;
@@ -205,25 +205,25 @@ void Player::Update(Camera* camera)
 			Object3d::SetTransform(position_);
 			Object3d::Update(camera);
 		}
-		//’n–Ê‚ª‚È‚¢‚Ì‚Å—‰º
+		//åœ°é¢ãŒãªã„ã®ã§è½ä¸‹
 		else
 		{
 			onGround_ = false;
 			fallVec_ = { 0,0,0 };
 		}
 	}
-	//—‰ºó‘Ô
+	//è½ä¸‹çŠ¶æ…‹
 	else if(fallVec_.y <= 0.0f)
 	{
 		AccelerateChangeColor(camera_);
 
 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 		{
-			//’…’n
+			//ç€åœ°
 			onGround_ = true;
 			position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 			jumpCount = kMaxJumpNum;
-			//s—ñ‚ÌXV‚È‚Ç
+			//è¡Œåˆ—ã®æ›´æ–°ãªã©
 			Object3d::SetTransform(position_);
 			Object3d::Update(camera);
 		}
@@ -235,13 +235,13 @@ void Player::Update(Camera* camera)
 		isDead_ = true;
 	}
 
-	//ƒQ[ƒ€ƒpƒbƒh‚Ìƒ{ƒ^ƒ“î•ñ‚ğƒŠƒZƒbƒg
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰ã®ãƒœã‚¿ãƒ³æƒ…å ±ã‚’ãƒªã‚»ãƒƒãƒˆ
 	gamePad_->ResetButton();
 }
 
 void Player::OnCollision(const CollisionInfo& info)
 {
-	//F‚ªˆá‚¤ê‡A€–S”»’è‚É‚·‚é
+	//è‰²ãŒé•ã†å ´åˆã€æ­»äº¡åˆ¤å®šã«ã™ã‚‹
 	if(info.object->GetAttribute() != attribute_)
 	{
 		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
@@ -256,31 +256,31 @@ void Player::OnCollision(const CollisionInfo& info)
 
 void Player::AccelerateChangeColor(Camera* camera)
 {
-	//ƒIƒuƒWƒFƒNƒg‚ÆÚG‚·‚éÛ‚Ì‹——£‚ğŒvZ
-	//ƒMƒŠƒMƒŠ‚Ì‚Æ‚±‚ë‚ÅƒXƒy[ƒX‚ğ‰Ÿ‚·‚Æ‰Á‘¬‚·‚é
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨æ¥è§¦ã™ã‚‹éš›ã®è·é›¢ã‚’è¨ˆç®—
+	//ã‚®ãƒªã‚®ãƒªã®ã¨ã“ã‚ã§ã‚¹ãƒšãƒ¼ã‚¹ã‚’æŠ¼ã™ã¨åŠ é€Ÿã™ã‚‹
 
-	//‹…ƒRƒ‰ƒCƒ_[‚ğæ“¾
+	//çƒã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’å–å¾—
 	SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 	assert(sphereCollider);
 
-	//‹…‚Ìã’[‚©‚ç‹…‚Ì‰º’[‚Ü‚Å‚ÌƒŒƒCƒLƒƒƒXƒg—pƒŒƒC‚ğ€”õ
+	//çƒã®ä¸Šç«¯ã‹ã‚‰çƒã®ä¸‹ç«¯ã¾ã§ã®ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆç”¨ãƒ¬ã‚¤ã‚’æº–å‚™
 	Ray ray;
 	ray.start = sphereCollider->center;
-	//‰º•ûŒü‚Ö‚Ì•ûŒü‚ğ‹…1ŒÂ•ª‚¸‚ç‚·
+	//ä¸‹æ–¹å‘ã¸ã®æ–¹å‘ã‚’çƒ1å€‹åˆ†ãšã‚‰ã™
 	ray.start.y -= sphereCollider->GetRadius() + sphereCollider->GetRadius() / 2;
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
-	//ƒXƒ€[ƒY‚Éâ‚ğ‰º‚éˆ×‚Ì‹z’…‹——£
+	//ã‚¹ãƒ ãƒ¼ã‚ºã«å‚ã‚’ä¸‹ã‚‹ç‚ºã®å¸ç€è·é›¢
 	const float adsDistance = 0.2f;
 
-	//’n–Ê‚ÆÕ“Ë‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	//åœ°é¢ã¨è¡çªã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
 	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 	{
-		//F‚ğ•Ï‚¦‚é
+		//è‰²ã‚’å¤‰ãˆã‚‹
 		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
-			//‰Á‘¬‚µ‚Ä‚¢‚È‚©‚Á‚½‚ç‰Á‘¬ƒtƒ‰ƒO‚ğ—§‚Ä‚é
+			//åŠ é€Ÿã—ã¦ã„ãªã‹ã£ãŸã‚‰åŠ é€Ÿãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 			if(isRightAxcell_ == false)
 			{
 				isRightAxcell_ = true;
@@ -292,7 +292,7 @@ void Player::AccelerateChangeColor(Camera* camera)
 
 void Player::Accelerate()
 {
-	//‰¡Œü‚«‰Á‘¬“x@
+	//æ¨ªå‘ãåŠ é€Ÿåº¦ã€€
 	const float rightAcc = 0.015f;
 	const float rightVZMin = 0.3f;
 
@@ -340,7 +340,7 @@ void Player::Reset()
 
 void Player::ImGuiUpdate()
 {
-	//ƒXƒvƒ‰ƒCƒg‚Ì•ÒWƒEƒCƒ“ƒhƒE‚Ì•\¦
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ç·¨é›†ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
 
 	ImGui::Begin("Player");
 	ImGui::SetWindowPos(ImVec2(0, 0));
@@ -354,7 +354,7 @@ void Player::ImGuiUpdate()
 
 void Player::JumpRotation()
 {
-	//’n–Ê‚É‚Â‚¢‚Ä‚¢‚È‚¯‚ê‚Î“ñ’iƒWƒƒƒ“ƒv‚Ì‚É‰ñ“]‚·‚é
+	//åœ°é¢ã«ã¤ã„ã¦ã„ãªã‘ã‚Œã°äºŒæ®µã‚¸ãƒ£ãƒ³ãƒ—ã®æ™‚ã«å›è»¢ã™ã‚‹
 	if(isJumpRotate_ == true)
 	{
 		float angle = ToRadian(360.0f);

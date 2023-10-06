@@ -8,7 +8,7 @@ class BaseCollider
 {
 public:
 	BaseCollider() = default;
-	//‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+	//ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~BaseCollider() = default;
 
 	friend class CollisionManager;
@@ -39,11 +39,11 @@ public:
 	}
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	virtual void Update() = 0;
 
-	//Œ`óƒ^ƒCƒvæ“¾
+	//å½¢çŠ¶ã‚¿ã‚¤ãƒ—å–å¾—
 	inline CollisionShapeType GetShapeType() { return shapeType_; }
 
 	inline void OnCollison(const CollisionInfo& info)
@@ -54,10 +54,10 @@ public:
 protected:
 
 	Object3d* objcet3d_ = nullptr;
-	//Œ`óƒ^ƒCƒv
+	//å½¢çŠ¶ã‚¿ã‚¤ãƒ—
 	CollisionShapeType shapeType_ = SHAPE_UNKNOWN;
 
-	//“–‚½‚è”»’è‘®«
+	//å½“ãŸã‚Šåˆ¤å®šå±æ€§
 	unsigned short attribute = 0b1111111111111111;
 
 };

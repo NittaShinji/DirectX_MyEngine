@@ -6,10 +6,10 @@ SoundManager::~SoundManager() {}
 
 void SoundManager::Initialize()
 {
-	//XAudio2ƒGƒ“ƒWƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	//XAudio2ã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	HRESULT result = XAudio2Create(&xAudio2_, 0, XAUDIO2_DEFAULT_PROCESSOR);
 	assert(SUCCEEDED(result));
-	//ƒ}ƒXƒ^[ƒ{ƒCƒX‚Ì¶¬
+	//ãƒã‚¹ã‚¿ãƒ¼ãƒœã‚¤ã‚¹ã®ç”Ÿæˆ
 	IXAudio2MasteringVoice* masterVoice_;
 	result = xAudio2_->CreateMasteringVoice(&masterVoice_);
 	assert(SUCCEEDED(result));
@@ -17,66 +17,66 @@ void SoundManager::Initialize()
 
 void SoundManager::LoadSoundWave(const std::string& fileName)
 {
-	//d•¡“Ç‚İ‚İƒ`ƒFƒbƒN
+	//é‡è¤‡èª­ã¿è¾¼ã¿ãƒã‚§ãƒƒã‚¯
 	if(soundDatas_.find(fileName) != soundDatas_.end())
 	{
 		return;
 	}
 
-	//--ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“
-	//ƒfƒBƒŒƒNƒgƒŠƒpƒX‚Æƒtƒ@ƒCƒ‹–¼‚ğ˜AŒ‹‚µ‚Äƒtƒ‹ƒpƒX‚ğ“¾‚é
+	//--ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³
+	//ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ‘ã‚¹ã¨ãƒ•ã‚¡ã‚¤ãƒ«åã‚’é€£çµã—ã¦ãƒ•ãƒ«ãƒ‘ã‚¹ã‚’å¾—ã‚‹
 	const std::string directoryPath = "Resources/Sound/";
 	std::string fullPath = directoryPath + fileName;
-	//ƒtƒ@ƒCƒ‹“ü—ÍƒXƒgƒŠ[ƒ€‚ÌƒCƒ“ƒXƒ^ƒ“ƒX
+	//ãƒ•ã‚¡ã‚¤ãƒ«å…¥åŠ›ã‚¹ãƒˆãƒªãƒ¼ãƒ ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	std::ifstream file;
-	//.wavƒtƒ@ƒCƒ‹‚ğƒoƒCƒiƒŠƒ‚[ƒh‚ÅŠJ‚­
+	//.wavãƒ•ã‚¡ã‚¤ãƒ«ã‚’ãƒã‚¤ãƒŠãƒªãƒ¢ãƒ¼ãƒ‰ã§é–‹ã
 	file.open(fullPath, std::ios_base::binary);
-	//ƒtƒ@ƒCƒ‹ƒI[ƒvƒ“¸”s‚ğŒŸo‚·‚é
+	//ãƒ•ã‚¡ã‚¤ãƒ«ã‚ªãƒ¼ãƒ—ãƒ³å¤±æ•—ã‚’æ¤œå‡ºã™ã‚‹
 	assert(file.is_open());
 
-	//--.wavƒf[ƒ^“Ç‚İ‚İ
+	//--.wavãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿
 
-#pragma region RIFFƒ`ƒƒƒ“ƒN“Ç‚İ‚İ
-	//RIFFƒwƒbƒ_[‚Ì“Ç‚İ‚İ
+#pragma region RIFFãƒãƒ£ãƒ³ã‚¯èª­ã¿è¾¼ã¿
+	//RIFFãƒ˜ãƒƒãƒ€ãƒ¼ã®èª­ã¿è¾¼ã¿
 	Sound::RiffHeader riff;
 	file.read((char*)&riff, sizeof(riff));
-	//ƒtƒ@ƒCƒ‹‚ªRIFF‚©ƒ`ƒFƒbƒN
+	//ãƒ•ã‚¡ã‚¤ãƒ«ãŒRIFFã‹ãƒã‚§ãƒƒã‚¯
 	if(strncmp(riff.chunk.id, "RIFF", 4) != 0)
 	{
 		assert(0);
 	}
-	//ƒ^ƒCƒv‚ªWAVE‚©ƒ`ƒFƒbƒN
+	//ã‚¿ã‚¤ãƒ—ãŒWAVEã‹ãƒã‚§ãƒƒã‚¯
 	if(strncmp(riff.type, "WAVE", 4) != 0)
 	{
 		assert(0);
 	}
 #pragma endregion
 
-#pragma region FORMATƒ`ƒƒƒ“ƒN“Ç‚İ‚İ
-	//FORMATƒ`ƒƒƒ“ƒN‚Ì“Ç‚İ‚İ
+#pragma region FORMATãƒãƒ£ãƒ³ã‚¯èª­ã¿è¾¼ã¿
+	//FORMATãƒãƒ£ãƒ³ã‚¯ã®èª­ã¿è¾¼ã¿
 	Sound::FormatChunk format = {};
-	//ƒ`ƒƒƒ“ƒNƒwƒbƒ_[‚ÌŠm”F
+	//ãƒãƒ£ãƒ³ã‚¯ãƒ˜ãƒƒãƒ€ãƒ¼ã®ç¢ºèª
 	file.read((char*)&format, sizeof(Sound::ChunkHeader));
 	if(strncmp(format.chunk.id, "fmt ", 4) != 0)
 	{
 		assert(0);
 	}
 
-	//ƒ`ƒƒƒ“ƒN–{‘Ì‚Ì“Ç‚İ‚İ
+	//ãƒãƒ£ãƒ³ã‚¯æœ¬ä½“ã®èª­ã¿è¾¼ã¿
 	assert(format.chunk.size <= sizeof(format.fmt));
 	file.read((char*)&format.fmt, format.chunk.size);
 #pragma endregion
 
-#pragma region DATAƒ`ƒƒƒ“ƒN“Ç‚İ‚İ
+#pragma region DATAãƒãƒ£ãƒ³ã‚¯èª­ã¿è¾¼ã¿
 
 	Sound::ChunkHeader data;
 	file.read((char*)&data, sizeof(data));
-	//JUNKƒ`ƒƒƒ“ƒN‚ğŒŸo‚µ‚½ê‡
+	//JUNKãƒãƒ£ãƒ³ã‚¯ã‚’æ¤œå‡ºã—ãŸå ´åˆ
 	if(strncmp(data.id, "JUNK", 4) == 0)
 	{
-		//“Ç‚İæ‚èˆÊ’u‚ğJUNKƒ`ƒƒƒ“ƒN‚ÌI‚í‚è‚Ü‚Åi‚ß‚é
+		//èª­ã¿å–ã‚Šä½ç½®ã‚’JUNKãƒãƒ£ãƒ³ã‚¯ã®çµ‚ã‚ã‚Šã¾ã§é€²ã‚ã‚‹
 		file.seekg(data.size, std::ios_base::cur);
-		//Ä“Ç‚İ‚İ
+		//å†èª­ã¿è¾¼ã¿
 		file.read((char*)&data, sizeof(data));
 	}
 	if(strncmp(data.id, "data", 4) != 0)
@@ -84,27 +84,27 @@ void SoundManager::LoadSoundWave(const std::string& fileName)
 		assert(0);
 	}
 
-	//DATAƒ`ƒƒƒ“ƒN‚Ìƒf[ƒ^•”(”gŒ`ƒf[ƒ^)‚Ì“Ç‚İ‚İ
+	//DATAãƒãƒ£ãƒ³ã‚¯ã®ãƒ‡ãƒ¼ã‚¿éƒ¨(æ³¢å½¢ãƒ‡ãƒ¼ã‚¿)ã®èª­ã¿è¾¼ã¿
 	std::vector<char> pBuffer(data.size);
 	file.read(pBuffer.data(), data.size);
 
 #pragma endregion
 
-	//--ƒtƒ@ƒCƒ‹‚ğ•Â‚¶‚é
+	//--ãƒ•ã‚¡ã‚¤ãƒ«ã‚’é–‰ã˜ã‚‹
 	file.close();
 
-	//--“Ç‚İ‚ñ‚¾‰¹ºƒf[ƒ^‚ğreturn
+	//--èª­ã¿è¾¼ã‚“ã éŸ³å£°ãƒ‡ãƒ¼ã‚¿ã‚’return
 	Sound::SoundData soundData = {};
 
 	soundData.wfex = format.fmt;
 	soundData.pBuffer = std::vector<BYTE>(pBuffer.begin(), pBuffer.end());
 	soundData.bufferSize = data.size;
 
-	//ƒTƒEƒ“ƒhƒf[ƒ^‚ğ˜A‘z”z—ñ(map)‚ÉŠi”[
+	//ã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚’é€£æƒ³é…åˆ—(map)ã«æ ¼ç´
 	soundDatas_.insert(std::make_pair(fileName, soundData));
 }
 
-//ƒL[‚É‘Î‰‚µ‚½ƒTƒEƒ“ƒhƒf[ƒ^‚ğ•Ô‚·
+//ã‚­ãƒ¼ã«å¯¾å¿œã—ãŸã‚µã‚¦ãƒ³ãƒ‰ãƒ‡ãƒ¼ã‚¿ã‚’è¿”ã™
 Sound::SoundData SoundManager::GetSoundData(std::string fileName)
 {
 	Sound::SoundData soundData = soundDatas_.at(fileName);

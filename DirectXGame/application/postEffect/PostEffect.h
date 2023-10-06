@@ -6,40 +6,40 @@ class PostEffect : public Sprite
 {
 private:
 
-    //ƒGƒCƒŠƒAƒXƒeƒ“ƒvƒŒ[ƒg
+    //ã‚¨ã‚¤ãƒªã‚¢ã‚¹ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ
     template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public:
 
     /// <summary>
-    /// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+    /// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
     /// </summary>
     PostEffect();
 
     /// <summary>
-    /// ‰Šú‰»
+    /// åˆæœŸåŒ–
     /// </summary>
     void Initialize(DirectXBasic* directXBasic);
 
     /// <summary>
-    /// •`‰æƒRƒ}ƒ“ƒh‚Ì”­s
+    /// æç”»ã‚³ãƒãƒ³ãƒ‰ã®ç™ºè¡Œ
     /// </summary>
-    /// <param name="cmdList">ƒRƒ}ƒ“ƒhƒŠƒXƒg</param>
+    /// <param name="cmdList">ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ</param>
     void Draw();
 
     /// <summary>
-    /// ƒpƒCƒvƒ‰ƒCƒ“¶¬
+    /// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ç”Ÿæˆ
     /// </summary>
     void CreateGraphicsPipelineState();
 
     /// <summary>
-    /// ƒV[ƒ“•`‰æ‘Oˆ—
+    /// ã‚·ãƒ¼ãƒ³æç”»å‰å‡¦ç†
     /// </summary>
     /// <param name="cmdList"></param>
     void PreDrawScene();
 
     /// <summary>
-    /// ƒV[ƒ“•`‰æŒãˆ—
+    /// ã‚·ãƒ¼ãƒ³æç”»å¾Œå‡¦ç†
     /// </summary>
     /// <param name="cmdList"></param>
     void PostDrawScene();
@@ -50,54 +50,54 @@ private:
 
     static const UINT kRenderTexNum = 2;
 
-    //ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+    //ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
     ComPtr<ID3D12Resource> texBuff[kRenderTexNum];
 
-    //SRV‚ÌÅ‘åŒÂ”
+    //SRVã®æœ€å¤§å€‹æ•°
     static const size_t kMaxSRVCount_ = 2056;
-    //ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+    //ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
     static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
 
-    //[“xƒoƒbƒtƒ@
+    //æ·±åº¦ãƒãƒƒãƒ•ã‚¡
     ComPtr<ID3D12Resource> depthBuff;
-    //’¸“_ƒoƒbƒtƒ@
+    //é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
     ComPtr<ID3D12Resource> vertBuff_ = nullptr;
 
-    //SRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+    //SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
     ComPtr<ID3D12DescriptorHeap> descHeapSRV;
-    //RTN—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+    //RTNç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
     ComPtr<ID3D12DescriptorHeap> descHeapRTV;
-    //DSV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+    //DSVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
     ComPtr<ID3D12DescriptorHeap> descHeapDSV;
 
-    //F—p‚Ì’è”ƒoƒbƒtƒ@
+    //è‰²ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡
     ComPtr<ID3D12Resource> constBuffMaterial_ = nullptr;
-    //À•W—p‚Ì’è”ƒoƒbƒtƒ@
+    //åº§æ¨™ç”¨ã®å®šæ•°ãƒãƒƒãƒ•ã‚¡
     ComPtr<ID3D12Resource> constBuffTransform_ = nullptr;
 
-    //ƒOƒ‰ƒtƒBƒbƒNƒXƒpƒCƒvƒ‰ƒCƒ“
+    //ã‚°ãƒ©ãƒ•ã‚£ãƒƒã‚¯ã‚¹ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³
     ComPtr<ID3D12PipelineState> pipelineState;
-    //ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+    //ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
     ComPtr<ID3D12RootSignature> rootSignature;
 
-    //’¸“_”z—ñ
+    //é ‚ç‚¹é…åˆ—
     //std::array<Vertex, kVertexCount_> vertices_{};
     Vertex vertices[kVertexCount_];
 
-    // ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìì¬
+    // é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
     D3D12_VERTEX_BUFFER_VIEW vbView_{};
 
-    //‰æ–ÊƒNƒŠƒAƒJƒ‰[
+    //ç”»é¢ã‚¯ãƒªã‚¢ã‚«ãƒ©ãƒ¼
     static const float clearColor[4];
 
-    //F(RGBA)
+    //è‰²(RGBA)
     Vector4 color_ = { 1,1,1,1 };
 
-    //ƒeƒNƒXƒ`ƒƒ”Ô†
+    //ãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·
     static uint32_t sTextureIndex_;
-    //‰æ‘œ‚ÉŒ‹‚Ñ•t‚¢‚½ƒeƒNƒXƒ`ƒƒ”Ô†Ši”[—pmap
+    //ç”»åƒã«çµã³ä»˜ã„ãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·æ ¼ç´ç”¨map
     static std::map<const std::string, uint32_t, std::less<>> textureMap_;
-    //ƒfƒtƒHƒ‹ƒgƒeƒNƒXƒ`ƒƒŠi”[ƒfƒBƒŒƒNƒgƒŠ
+    //ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆãƒ†ã‚¯ã‚¹ãƒãƒ£æ ¼ç´ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒª
     static std::string kDefaultTextureDirectoryPath_;
 };
 

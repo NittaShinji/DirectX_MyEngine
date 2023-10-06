@@ -9,7 +9,7 @@ float MathUtillty::ToDegree(float radian)
 
 float MathUtillty::ToRadian(float angle)
 {
-	return angle *  (PI/ 180);
+	return angle * (PI / 180);
 }
 
 Vector3 MathUtillty::Vector3Subtract(Vector3 v1, Vector3 v2)
@@ -35,7 +35,7 @@ Vector3 MathUtillty::Vector3Normalize(Vector3 v1)
 
 Vector3 MathUtillty::Vector3Zero()
 {
-	return Vector3(0.0f,0.0f,0.0f);
+	return Vector3(0.0f, 0.0f, 0.0f);
 }
 
 Vector3 MathUtillty::Vector3Dot(Vector3 v1, Vector3 v2)

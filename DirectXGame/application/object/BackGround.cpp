@@ -10,20 +10,20 @@ BackGround::~BackGround()
 
 void BackGround::Initialize()
 {
-	//ƒŒƒxƒ‹ƒf[ƒ^‚©‚çƒIƒuƒWƒFƒNƒg‚ğ¶¬A”z’u
+	//ãƒ¬ãƒ™ãƒ«ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã€é…ç½®
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("backGround.json");
 
 	for(auto& objectData : levelData_->objects)
 	{
-		//ƒtƒ@ƒCƒ‹–¼‚©‚ç“o˜^Ï‚İƒ‚ƒfƒ‹‚ğŒŸõ
+		//ãƒ•ã‚¡ã‚¤ãƒ«åã‹ã‚‰ç™»éŒ²æ¸ˆã¿ãƒ¢ãƒ‡ãƒ«ã‚’æ¤œç´¢
 		Model* model = nullptr;
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
-		//ƒ‚ƒfƒ‹‚ğw’è‚µ‚Ä3DƒIƒuƒWƒFƒNƒg‚ğì¬
+		//ãƒ¢ãƒ‡ãƒ«ã‚’æŒ‡å®šã—ã¦3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ä½œæˆ
 
 		if(objectData.fileName == "Cube")
 		{
-			//3DƒIƒuƒWƒFƒNƒg‚Ì¶¬
+			//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 			std::unique_ptr<Object3d> newObject = nullptr;
 			newObject = Object3d::Create(objectData.fileName);
 
@@ -31,20 +31,20 @@ void BackGround::Initialize()
 			pos = objectData.translation;
 			newObject->SetTransform(pos);
 
-			//‰ñ“]Šp
+			//å›è»¢è§’
 			Vector3 rot;
 			rot = objectData.rotation;
 			newObject->SetRotation(rot);
 
-			//‘å‚«‚³
+			//å¤§ãã•
 			Vector3 scale;
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
 
-			//Fw’è
+			//è‰²æŒ‡å®š
 			newObject->SetColorFlag(false);
 
-			//”z—ñ‚É“o˜^
+			//é…åˆ—ã«ç™»éŒ²
 			objects_.push_back(std::move(newObject));
 		}
 	}

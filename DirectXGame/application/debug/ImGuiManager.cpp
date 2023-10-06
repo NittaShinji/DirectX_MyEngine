@@ -2,26 +2,26 @@
 
 void ImGuiManager::Initialize(WindowsAPI* winApi, DirectXBasic* directXBasic)
 {
-	//directXBasic‚ğƒZƒbƒg
+	//directXBasicã‚’ã‚»ãƒƒãƒˆ
 	directXBasic_ = directXBasic;
 
-	//ImGui‚ÌƒRƒ“ƒeƒLƒXƒg‚ğ¶¬
+	//ImGuiã®ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ç”Ÿæˆ
 	ImGui::CreateContext();
-	//ImGui‚ÌƒXƒ^ƒCƒ‹‚ğİ’è
+	//ImGuiã®ã‚¹ã‚¿ã‚¤ãƒ«ã‚’è¨­å®š
 	ImGui::StyleColorsDark();
 
-	//ƒfƒXƒNƒŠƒvƒ^ƒq[ƒvİ’è
+	//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—è¨­å®š
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	desc.NumDescriptors = 1;
 	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	//ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv¶¬
+	//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ç”Ÿæˆ
 	HRESULT result = directXBasic_->GetDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 
-	//Win32—p‰Šú‰»
+	//Win32ç”¨åˆæœŸåŒ–
 	ImGui_ImplWin32_Init(winApi->GetHwndClass());
-	//DirectX12—p‰Šú‰»
+	//DirectX12ç”¨åˆæœŸåŒ–
 	ImGui_ImplDX12_Init(directXBasic_->GetDevice().Get(),
 		directXBasic_->GetBackBuffersCount(),
 		DXGI_FORMAT_R8G8B8A8_UNORM_SRGB,
@@ -29,25 +29,25 @@ void ImGuiManager::Initialize(WindowsAPI* winApi, DirectXBasic* directXBasic)
 		srvHeap_->GetGPUDescriptorHandleForHeapStart());
 
 	ImGuiIO& io = ImGui::GetIO();
-	//•W€ƒtƒHƒ“ƒg‚ğ’Ç‰Á‚·‚é
+	//æ¨™æº–ãƒ•ã‚©ãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹
 	io.Fonts->AddFontDefault();
 
 }
 
 void ImGuiManager::Finalize()
 {
-	//Œãn––
+	//å¾Œå§‹æœ«
 	ImGui_ImplDX12_Shutdown();
 	ImGui_ImplWin32_Shutdown();
 	ImGui::DestroyContext();
 
-	//ƒfƒXƒNƒŠƒvƒ^‚ğ‰ğ•ú
+	//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ã‚’è§£æ”¾
 	srvHeap_.Reset();
 }
 
 void ImGuiManager::Begin()
 {
-	//ImGuiƒtƒŒ[ƒ€ŠJn
+	//ImGuiãƒ•ãƒ¬ãƒ¼ãƒ é–‹å§‹
 	ImGui_ImplDX12_NewFrame();
 	ImGui_ImplWin32_NewFrame();
 	ImGui::NewFrame();
@@ -62,9 +62,9 @@ void ImGuiManager::Draw()
 {
 	ID3D12GraphicsCommandList* commandList = directXBasic_->GetCommandList().Get();
 
-	//ƒfƒXƒNƒŠƒvƒ^ƒq[ƒv”z—ñ‚ğƒZƒbƒg‚·‚éƒRƒ}ƒ“ƒh
+	//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—é…åˆ—ã‚’ã‚»ãƒƒãƒˆã™ã‚‹ã‚³ãƒãƒ³ãƒ‰
 	ID3D12DescriptorHeap* ppheaps[] = { srvHeap_.Get() };
 	commandList->SetDescriptorHeaps(_countof(ppheaps), ppheaps);
-	//•`‰æƒRƒ}ƒ“ƒh‚ğ”­s
+	//æç”»ã‚³ãƒãƒ³ãƒ‰ã‚’ç™ºè¡Œ
 	ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), commandList);
 }

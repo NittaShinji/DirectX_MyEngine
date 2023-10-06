@@ -14,7 +14,7 @@ public:
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
-	virtual void Initialize(Vector3& eye, Vector3& target,Vector3& up);
+	virtual void Initialize(Vector3& eye, Vector3& target, Vector3& up);
 
 	void Update();
 
@@ -26,30 +26,30 @@ protected:
 
 	static DirectXBasic* directXBasic_;
 
-	//ƒrƒ…[•ÏŠ·s—ñ
+	//ãƒ“ãƒ¥ãƒ¼å¤‰æ›è¡Œåˆ—
 	Matrix4 matView_;
 
-	//ƒrƒ…[s—ñ‚Ìİ’è€–Ú
-	Vector3 eye_;		//‹“_À•W
-	Vector3 target_;	//’‹“_À•W
-	Vector3 up_;		//ã•ûŒüƒxƒNƒgƒ‹
-	
-	float angle_ = 0.0f;	//ƒJƒƒ‰‚Ì‰ñ“]Šp
+	//ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®è¨­å®šé …ç›®
+	Vector3 eye_;		//è¦–ç‚¹åº§æ¨™
+	Vector3 target_;	//æ³¨è¦–ç‚¹åº§æ¨™
+	Vector3 up_;		//ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 
-	//Ë‰es—ñ
+	float angle_ = 0.0f;	//ã‚«ãƒ¡ãƒ©ã®å›è»¢è§’
+
+	//å°„å½±è¡Œåˆ—
 	Matrix4 matProjection_;
 
-	//ƒrƒ‹ƒ{[ƒhs—ñ
+	//ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 	Matrix4 matBillboard;
-	//Y²ƒrƒ‹ƒ{[ƒhs—ñ
+	//Yè»¸ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 	Matrix4 matBillboardY;
 
-	//’è”ƒoƒbƒtƒ@
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
 	Microsoft::WRL::ComPtr<ID3D12Resource> constBuff_;
 
 public:
 
-	//ƒQƒbƒ^[
+	//ã‚²ãƒƒã‚¿ãƒ¼
 	const Matrix4& GetMatView() const { return matView_; }
 	const Matrix4& GetMatProjection() const { return matProjection_; }
 	const Vector3& GetEye() const { return eye_; }

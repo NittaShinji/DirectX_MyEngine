@@ -17,27 +17,27 @@ void SceneManager::Initialize()
 
 void SceneManager::Update()
 {
-	//ƒV[ƒ“Ø‘Ö‹@\
+	//ã‚·ãƒ¼ãƒ³åˆ‡æ›¿æ©Ÿæ§‹
 	if(nextScene_)
 	{
-		//‹ŒƒV[ƒ“‚ÌI—¹
+		//æ—§ã‚·ãƒ¼ãƒ³ã®çµ‚äº†
 		if(scene_)
 		{
 			scene_->Finalize();
 		}
 
-		//ƒV[ƒ“Ø‘Ö
+		//ã‚·ãƒ¼ãƒ³åˆ‡æ›¿
 		scene_ = std::move(nextScene_);
 		nextScene_ = nullptr;
 
-		//ƒV[ƒ“ƒ}ƒl[ƒWƒƒ‚ðƒZƒbƒg
+		//ã‚·ãƒ¼ãƒ³ãƒžãƒãƒ¼ã‚¸ãƒ£ã‚’ã‚»ãƒƒãƒˆ
 		scene_->SetSceneManager(this);
 
-		//ŽŸƒV[ƒ“‚ð‰Šú‰»‚·‚é
+		//æ¬¡ã‚·ãƒ¼ãƒ³ã‚’åˆæœŸåŒ–ã™ã‚‹
 		scene_->Initialize();
 	}
 
-	//ŽÀs’†ƒV[ƒ“‚ðXV‚·‚é
+	//å®Ÿè¡Œä¸­ã‚·ãƒ¼ãƒ³ã‚’æ›´æ–°ã™ã‚‹
 	scene_->Update();
 }
 
@@ -51,6 +51,6 @@ void SceneManager::ChangeScene(const std::string& sceneName)
 	assert(sceneFactory_);
 	assert(nextScene_ == nullptr);
 
-	//ŽŸƒV[ƒ“‚ð¶¬
+	//æ¬¡ã‚·ãƒ¼ãƒ³ã‚’ç”Ÿæˆ
 	nextScene_ = std::move(sceneFactory_->CreateScene(sceneName));
 }

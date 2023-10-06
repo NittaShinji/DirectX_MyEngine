@@ -8,16 +8,16 @@ class StageSelectScene : public BaseScene
 
 public:
 
-	//Ã“I‰Šú‰»
+	//é™çš„åˆæœŸåŒ–
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize() override;
 
-	//–ˆƒtƒŒ[ƒ€XV
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update() override;
 
-	//•`‰æ
+	//æç”»
 	void Draw() override;
 
 private:
@@ -33,12 +33,12 @@ private:
 	std::unique_ptr<Sprite> gameSceneSprite1_ = nullptr;
 	std::unique_ptr<Sprite> gameSceneSprite2_ = nullptr;
 
-	//ƒQ[ƒ€ƒpƒbƒh
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
-	//ƒV[ƒ“‚ğ•Ï‚¦‚é‚©‚Ç‚¤‚©
+	//ã‚·ãƒ¼ãƒ³ã‚’å¤‰ãˆã‚‹ã‹ã©ã†ã‹
 	bool isChangeScene_;
-	
+
 	const float kChangeSceneTime_ = 10.0f;
 	float changeSceneTimer_ = kChangeSceneTime_;
 };

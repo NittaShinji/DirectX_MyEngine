@@ -7,65 +7,65 @@
 class KeyInput
 {
 public:
-	
+
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	//ƒRƒs[ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ”ãƒ¼ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	KeyInput(const KeyInput&) = delete;
-	//ƒRƒs[‘ã“ü‰‰Zq
+	//ã‚³ãƒ”ãƒ¼ä»£å…¥æ¼”ç®—å­
 	KeyInput& operator=(const KeyInput&) = delete;
-	//ƒ€[ƒuƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ãƒ ãƒ¼ãƒ–ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	KeyInput(KeyInput&&) = delete;
-	//ƒ€[ƒu‘ã“ü‰‰Zq
+	//ãƒ ãƒ¼ãƒ–ä»£å…¥æ¼”ç®—å­
 	KeyInput& operator = (KeyInput&&) = delete;
 
-	//Ã“IƒIƒuƒWƒFƒNƒg‚Æ‚µ‚ÄƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	//é™çš„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã—ã¦ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	static KeyInput* GetInstance()
 	{
 		static KeyInput instance;
 		return &instance;
 	}
 
-	//ƒAƒNƒZƒbƒT
-	BYTE GetKeys(uint8_t keynumber) const ;
+	//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
+	BYTE GetKeys(uint8_t keynumber) const;
 	BYTE GetOldKeys(uint8_t oldKeyNumber) const;
 
-	//DirectInput‚Ì‰Šú‰»
+	//DirectInputã®åˆæœŸåŒ–
 	void Initialize(WindowsAPI* winApi);
-	
-	//ŒxŠÖ”
+
+	//è­¦å‘Šé–¢æ•°
 	static void KeyAssert();
 
-	//ƒL[ƒ{[ƒh‚ÌXV
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®æ›´æ–°
 	static void KeyUpdate();
-	//‘OƒtƒŒ[ƒ€‚ğ•Û‘¶‚·‚éŠÖ”
+	//å‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’ä¿å­˜ã™ã‚‹é–¢æ•°
 	static void SaveFrameKey();
 
-	//ƒgƒŠƒK[ˆ—ŠÖ”
-	//ƒL[‚ğ‰Ÿ‚µ‚½ó‘Ô‚©
+	//ãƒˆãƒªã‚¬ãƒ¼å‡¦ç†é–¢æ•°
+	//ã‚­ãƒ¼ã‚’æŠ¼ã—ãŸçŠ¶æ…‹ã‹
 	static bool HasPushedKey(BYTE keyNumber);
-	//ƒL[‚ğ—£‚µ‚½ó‘Ô‚©
+	//ã‚­ãƒ¼ã‚’é›¢ã—ãŸçŠ¶æ…‹ã‹
 	static bool HasReleasedKey(BYTE keyNumber);
-	//ƒL[‚ğ‰Ÿ‚µ‚½uŠÔ‚©
+	//ã‚­ãƒ¼ã‚’æŠ¼ã—ãŸç¬é–“ã‹
 	static bool PushedKeyMoment(BYTE keyNumber);
-	//ƒL[‚ğ—£‚µ‚½uŠÔ‚©
+	//ã‚­ãƒ¼ã‚’é›¢ã—ãŸç¬é–“ã‹
 	static bool ReleasedKeyMoment(BYTE keyNumber);
 
 private:
 
-	//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+	//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	KeyInput() = default;
-	//ƒfƒXƒgƒ‰ƒNƒ^
+	//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	~KeyInput() = default;
-	//ƒCƒ“ƒXƒ^ƒ“ƒX
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	static KeyInput* instance;
 
-	//ŠeíƒL[‚Ì•Û‘¶—p•Ï”
+	//å„ç¨®ã‚­ãƒ¼ã®ä¿å­˜ç”¨å¤‰æ•°
 	static BYTE sKeys_[256];
 	static BYTE sOldKeys_[256];
 
-	//ƒCƒ“ƒXƒ^ƒ“ƒX
+	//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹
 	ComPtr<IDirectInput8> directInput_ = nullptr;
-	//ƒL[ƒ{[ƒhƒfƒoƒCƒX
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ãƒ‡ãƒã‚¤ã‚¹
 	static ComPtr<IDirectInputDevice8> keyboard_;
 };

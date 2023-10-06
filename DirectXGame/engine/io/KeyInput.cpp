@@ -12,7 +12,7 @@ BYTE KeyInput::sKeys_[256];
 BYTE KeyInput::sOldKeys_[256];
 Microsoft::WRL::ComPtr<IDirectInputDevice8> KeyInput::keyboard_;
 
-//ƒAƒNƒZƒbƒT
+//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 BYTE KeyInput::GetKeys(uint8_t keyNumber) const
 {
 	return sKeys_[keyNumber];
@@ -27,20 +27,20 @@ void KeyInput::Initialize(WindowsAPI* winApi)
 {
 	HRESULT result;
 
-	//DirectInput‚Ì‰Šú‰»
+	//DirectInputã®åˆæœŸåŒ–
 	result = DirectInput8Create(
 		winApi->GetHInstance(), DIRECTINPUT_VERSION, IID_IDirectInput8, (void**)&directInput_, nullptr);
 	assert(SUCCEEDED(result));
-	
-	//ƒL[ƒ{[ƒh‚ÌƒfƒoƒCƒX‚Ì¶¬
+
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®ãƒ‡ãƒã‚¤ã‚¹ã®ç”Ÿæˆ
 	result = directInput_->CreateDevice(GUID_SysKeyboard, &keyboard_, NULL);
 	assert(SUCCEEDED(result));
 
-	//“ü—Íƒf[ƒ^Œ`®‚ÌƒZƒbƒg
-	result = keyboard_->SetDataFormat(&c_dfDIKeyboard);//•W€Œ`®
+	//å…¥åŠ›ãƒ‡ãƒ¼ã‚¿å½¢å¼ã®ã‚»ãƒƒãƒˆ
+	result = keyboard_->SetDataFormat(&c_dfDIKeyboard);//æ¨™æº–å½¢å¼
 	assert(SUCCEEDED(result));
 
-	//”r‘¼§ŒäƒŒƒxƒ‹‚ÌƒZƒbƒg
+	//æ’ä»–åˆ¶å¾¡ãƒ¬ãƒ™ãƒ«ã®ã‚»ãƒƒãƒˆ
 	result = keyboard_->SetCooperativeLevel(
 		winApi->GetHwndClass(), DISCL_FOREGROUND | DISCL_NONEXCLUSIVE | DISCL_NOWINKEY);
 	assert(SUCCEEDED(result));
@@ -52,65 +52,65 @@ void KeyInput::KeyUpdate()
 
 	SaveFrameKey();
 
-	//ƒL[ƒ{[ƒhî•ñ‚Ìæ“¾ŠJn
+	//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰æƒ…å ±ã®å–å¾—é–‹å§‹
 	keyboard_->Acquire();
-	//‘S‚Ä‚ÌƒL[‚Ì“ü—Íî•ñ‚ğæ“¾‚·‚é
+	//å…¨ã¦ã®ã‚­ãƒ¼ã®å…¥åŠ›æƒ…å ±ã‚’å–å¾—ã™ã‚‹
 	keyboard_->GetDeviceState(sizeof(sKeys_), sKeys_);
 }
 
 void KeyInput::SaveFrameKey()
 {
-	//1ƒtƒŒ[ƒ€‘O‚Ìî•ñ‚ğ•Û‘¶‚·‚é
-	for (int i = 0; i < 256; i++)
+	//1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®æƒ…å ±ã‚’ä¿å­˜ã™ã‚‹
+	for(int i = 0; i < 256; i++)
 	{
 		sOldKeys_[i] = sKeys_[i];
 	}
 }
 
-#pragma region ƒgƒŠƒK[ˆ—ŠÖ”
+#pragma region ãƒˆãƒªã‚¬ãƒ¼å‡¦ç†é–¢æ•°
 
-//ƒL[‚ğ‰Ÿ‚µ‚½ó‘Ô‚©
+//ã‚­ãƒ¼ã‚’æŠ¼ã—ãŸçŠ¶æ…‹ã‹
 bool KeyInput::HasPushedKey(BYTE keyNumber)
 {
 	KeyAssert();
 
-	if (sKeys_[keyNumber] != 0 && sOldKeys_[keyNumber] != 0)
+	if(sKeys_[keyNumber] != 0 && sOldKeys_[keyNumber] != 0)
 	{
 		return true;
 	}
 	return false;
 }
 
-//ƒL[‚ğ—£‚µ‚½ó‘Ô‚©
+//ã‚­ãƒ¼ã‚’é›¢ã—ãŸçŠ¶æ…‹ã‹
 bool KeyInput::HasReleasedKey(BYTE keyNumber)
 {
 	KeyAssert();
 
-	if (sKeys_[keyNumber] == 0 && sOldKeys_[keyNumber] == 0)
+	if(sKeys_[keyNumber] == 0 && sOldKeys_[keyNumber] == 0)
 	{
 		return true;
 	}
 	return false;
 }
 
-//ƒL[‚ğ‰Ÿ‚µ‚½uŠÔ‚©
+//ã‚­ãƒ¼ã‚’æŠ¼ã—ãŸç¬é–“ã‹
 bool KeyInput::PushedKeyMoment(BYTE keyNumber)
 {
 	KeyAssert();
 
-	if (sKeys_[keyNumber] != 0 && sOldKeys_[keyNumber] == 0)
+	if(sKeys_[keyNumber] != 0 && sOldKeys_[keyNumber] == 0)
 	{
 		return true;
 	}
 	return false;
 }
 
-//ƒL[‚ğ—£‚µ‚½uŠÔ‚©
+//ã‚­ãƒ¼ã‚’é›¢ã—ãŸç¬é–“ã‹
 bool KeyInput::ReleasedKeyMoment(BYTE keyNumber)
 {
 	KeyAssert();
 
-	if (sKeys_[keyNumber] == 0 && sOldKeys_[keyNumber] != 0)
+	if(sKeys_[keyNumber] == 0 && sOldKeys_[keyNumber] != 0)
 	{
 		return true;
 	}
@@ -118,8 +118,9 @@ bool KeyInput::ReleasedKeyMoment(BYTE keyNumber)
 }
 #pragma endregion 
 
-void KeyInput::KeyAssert(){
-	for (int32_t i = 0; i < 255; i++)
+void KeyInput::KeyAssert()
+{
+	for(int32_t i = 0; i < 255; i++)
 	{
 		assert(SUCCEEDED(sKeys_[i]));
 		assert(SUCCEEDED(sOldKeys_[i]));

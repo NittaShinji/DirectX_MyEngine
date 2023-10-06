@@ -33,27 +33,27 @@ void GameScene::Initialize()
 {
 
 	lightGroup_ = LightGroup::Create();
-	//3DƒIƒuƒWƒFƒNƒg‚Éƒ‰ƒCƒg‚ğƒZƒbƒg
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ãƒ©ã‚¤ãƒˆã‚’ã‚»ãƒƒãƒˆ
 	Object3d::SetLightGroup(lightGroup_);
 
-	//------------ƒTƒEƒ“ƒh----------
+	//------------ã‚µã‚¦ãƒ³ãƒ‰----------
 	/*Sound::GetInstance()->Initialize();*/
 	//Sound::GetInstance()->LoadSoundWave("gamescene.wav");
 	//Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);
 
-	//ƒQ[ƒ€ƒpƒbƒh
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰
 	gamePad_ = std::make_unique<GamePad>();
 	gamePad_->Initialzie(Player1);
 
-	//------------ƒRƒ‰ƒCƒ_[----------
+	//------------ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼----------
 	collisionManager_ = CollisionManager::GetInstance();
 	sphereCollider_ = std::make_unique<SphereCollider>();
 
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‰Šú‰»ˆ—
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆåˆæœŸåŒ–å‡¦ç†
 	postEffect_ = std::make_unique<PostEffect>();
 	postEffect_->Initialize(directXBasic_);
 
-	//ƒXƒvƒ‰ƒCƒg
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	aButtonSprite_ = std::make_unique<Sprite>();
 	bButtonSprite_ = std::make_unique<Sprite>();
 	jumpSprite_ = std::make_unique<Sprite>();
@@ -87,7 +87,7 @@ void GameScene::Initialize()
 	jumpSprite_->Initialize(jumpSpritePosition, jumpSpriteSize);
 	arrowSprite_->Initialize(arrowPosition, arrowSize);
 
-	//ƒ‚ƒfƒ‹“Ç‚İ‚İ
+	//ãƒ¢ãƒ‡ãƒ«èª­ã¿è¾¼ã¿
 	const string sphere = "sphere";
 	const string test = "NoImageModel";
 	const string testStage0 = "testStage0";
@@ -102,7 +102,7 @@ void GameScene::Initialize()
 	Model::Load(cube);
 	Model::Load(plane);
 
-	//3DƒIƒuƒWƒFƒNƒg‚Ì¶¬
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize("Stage0.json");
@@ -122,12 +122,12 @@ void GameScene::Initialize()
 	plane_->SetScale(planeScale);
 
 
-	//------------ƒJƒƒ‰----------
+	//------------ã‚«ãƒ¡ãƒ©----------
 	camera_ = std::make_unique<Camera>();
 	testCamera_ = std::make_unique<Camera>();
 	gameCamera_ = std::make_unique<GameCamera>();
 
-	//ƒJƒƒ‰
+	//ã‚«ãƒ¡ãƒ©
 	Vector3 cameraEye = { 30,7.5,-20 };
 
 	Vector3 testCameraEye = { 0,50,-30 };
@@ -141,7 +141,7 @@ void GameScene::Initialize()
 	testCamera_->Initialize(testCameraEye, testcameraTarget, cameraUp);
 	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 
-	//ƒp[ƒeƒBƒNƒ‹
+	//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
 	particleManager_ = ParticleManager::Create();
 	particleManager_->SetGenerationNum(50);
 	playerRunEffect_ = ParticleManager::Create();
@@ -150,7 +150,7 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
-	//ƒXƒvƒ‰ƒCƒg
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();
 	jumpSprite_->matUpdate();
@@ -177,20 +177,20 @@ void GameScene::Update()
 		gameCamera_->Reset();
 	}
 
-	//Œõü•ûŒü‰Šú’l
-	static Vector3 lightDir = { 1,-1,-10};
+	//å…‰ç·šæ–¹å‘åˆæœŸå€¤
+	static Vector3 lightDir = { 1,-1,-10 };
 	float lightDirUp = 0.0f;
 
 	static Vector3 color = { 1, 1, 1 };
 
 	lightGroup_->SetAmbientColor(color);
-	lightGroup_->SetDirLightDir(0, lightDir,lightDirUp);
+	lightGroup_->SetDirLightDir(0, lightDir, lightDirUp);
 	lightGroup_->SetDirLightColor(0, Vector3(1, 1, 1));
 
 	{
-		//imgui‚©‚ç‚Ìƒ‰ƒCƒgƒpƒ‰ƒ[ƒ^‚ğ”½‰f
+		//imguiã‹ã‚‰ã®ãƒ©ã‚¤ãƒˆãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’åæ˜ 
 		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
-		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x, lightDir0_.y, lightDir0_.z}), 0.0f);
+		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x, lightDir0_.y, lightDir0_.z }), 0.0f);
 
 		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
 	}
@@ -199,30 +199,30 @@ void GameScene::Update()
 
 	camera_->Update();
 	testCamera_->Update();
-	gameCamera_->Update(player_->GetIsMoving(),player_->GetTotalAxcell(), player_->GetPlayerInitPos());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell(), player_->GetPlayerInitPos());
 
 	if(player_->GetOnGround() == true)
 	{
 		for(int i = 0; i < 5; i++)
 		{
-			//x,y,z‘S‚Ä[-1.0f,+1.0f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+			//x,y,zå…¨ã¦[-1.0f,+1.0f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 			const float md_pos = 2.0f;
 			Vector3 pos{};
 			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f + player_->GetPos().y - 1.0f;
 			pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().z;
-			//x,y,z‘S‚Ä[-0.05f,+0.05f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+			//x,y,zå…¨ã¦[-0.05f,+0.05f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 			const float md_vel = 0.1f;
 			Vector3 vel{};
 			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			//d—Í‚ÉŒ©—§‚Ä‚ÄY‚Ì‚İ{-0.001f,0}‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+			//é‡åŠ›ã«è¦‹ç«‹ã¦ã¦Yã®ã¿{-0.001f,0}ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 			Vector3 acc{};
 			const float md_acc = 0.001f;
 			acc.y = (float)rand() / RAND_MAX * md_acc;
 
-			//F‚ğ•Ï‰»‚³‚¹‚é
+			//è‰²ã‚’å¤‰åŒ–ã•ã›ã‚‹
 			if(player_->GetAttribute() == Attribute::pink)
 			{
 				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
@@ -231,11 +231,11 @@ void GameScene::Update()
 			{
 				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
 			}
-			
-			//F‚ğ•Ï‰»‚³‚¹‚é
+
+			//è‰²ã‚’å¤‰åŒ–ã•ã›ã‚‹
 			Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
-			//’Ç‰Á
+			//è¿½åŠ 
 			if(particleManager_->GetIsMaxParticle() == false)
 			{
 				particleManager_->Add(60, pos, vel, acc, colorSpeed, 2.0f, 1.0f);
@@ -245,40 +245,40 @@ void GameScene::Update()
 
 	for(int i = 0; i < 5; i++)
 	{
-		//x,y,z‘S‚Ä[-2.0f,+2.0f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+		//x,y,zå…¨ã¦[-2.0f,+2.0f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 		const float md_pos = 4.0f;
 		Vector3 pos{};
 		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + 2.0f;
 		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + stage_->GetGoalPos().z;
-		//x,y,z‘S‚Ä[-0.05f,+0.05f]‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+		//x,y,zå…¨ã¦[-0.05f,+0.05f]ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 		const float md_vel = 0.1f;
 		Vector3 vel{};
 		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		//d—Í‚ÉŒ©—§‚Ä‚ÄY‚Ì‚İ{-0.001f,0}‚Åƒ‰ƒ“ƒ_ƒ€‚É•ª•z
+		//é‡åŠ›ã«è¦‹ç«‹ã¦ã¦Yã®ã¿{-0.001f,0}ã§ãƒ©ãƒ³ãƒ€ãƒ ã«åˆ†å¸ƒ
 		Vector3 acc{};
 		const float md_acc = 0.01f;
 		acc.y = (float)rand() / RAND_MAX * md_acc;
-		//F‚ğ•Ï‰»‚³‚¹‚é
-		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f};
-		
-		//’Ç‰Á
+		//è‰²ã‚’å¤‰åŒ–ã•ã›ã‚‹
+		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
+		//è¿½åŠ 
 		if(particleManager_->GetIsMaxParticle() == false)
 		{
 			particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
 		}
 	}
 
-	//ƒJƒƒ‰‚ÌØ‚è‘Ö‚¦
+	//ã‚«ãƒ¡ãƒ©ã®åˆ‡ã‚Šæ›¿ãˆ
 	stage_->Update(gameCamera_.get());
 	player_->Update(gameCamera_.get());
 	skydome_->Update(gameCamera_.get());
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	particleManager_->Update(gameCamera_.get(),player_->GetAttribute());
+	particleManager_->Update(gameCamera_.get(), player_->GetAttribute());
 
 #ifdef _DEBUG
 
@@ -301,7 +301,7 @@ void GameScene::Update()
 		keyTimer_--;
 	}
 
-	//‘S‚Ä‚ÌÕ“Ë‚ğƒ`ƒFƒbƒN
+	//å…¨ã¦ã®è¡çªã‚’ãƒã‚§ãƒƒã‚¯
 	collisionManager_->CheckAllCollisions();
 
 	if(player_->GetIsFinish() == true)
@@ -321,24 +321,24 @@ void GameScene::Update()
 
 void GameScene::Draw()
 {
-	//ƒŒƒ“ƒ_[ƒeƒNƒXƒ`ƒƒ‚Ì•`‰æ
+	//ãƒ¬ãƒ³ãƒ€ãƒ¼ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®æç”»
 	postEffect_->PreDrawScene();
-	//”wŒiƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
+	//èƒŒæ™¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
 	Object3d::BeforeDraw();
 	plane_->Draw();
 	backGround_->Draw();
 	postEffect_->PostDrawScene();
 
-	//•`‰æŠJn
+	//æç”»é–‹å§‹
 	directXBasic_->BeforeDraw();
 
-	//ƒ|ƒXƒgƒGƒtƒFƒNƒg‚Ì•`‰æ
+	//ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æç”»
 	postEffect_->Draw();
 
-	//[“x’lƒNƒŠƒA
+	//æ·±åº¦å€¤ã‚¯ãƒªã‚¢
 	directXBasic_->ClearDepthBuffer();
 
-	//ƒ‚ƒfƒ‹•`‰æ
+	//ãƒ¢ãƒ‡ãƒ«æç”»
 	Object3d::BeforeDraw();
 	stage_->Draw();
 	player_->Draw();
@@ -358,9 +358,9 @@ void GameScene::Draw()
 	jumpSprite_->Draw("jump.png");
 	arrowSprite_->Draw("arrow.png");
 
-	//ƒfƒoƒbƒOƒeƒLƒXƒg‚Ì•`‰æ
+	//ãƒ‡ãƒãƒƒã‚°ãƒ†ã‚­ã‚¹ãƒˆã®æç”»
 	imGuiManager_->Draw();
 
-	//•`‰æI—¹
+	//æç”»çµ‚äº†
 	directXBasic_->AfterDraw();
 }

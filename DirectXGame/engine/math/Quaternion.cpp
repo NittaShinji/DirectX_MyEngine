@@ -1,9 +1,9 @@
 #include "Quaternion.h"
 #include <cmath>
 
-#pragma region ���Z�q�I�[�o�[���[�h
+#pragma region 演算子オーバーロード
 
-//�P�����Z�q�I�[�o�[���[�h
+//単項演算子オーバーロード
 Quaternion Quaternion::operator+() const
 {
 	return *this;
@@ -14,8 +14,8 @@ Quaternion Quaternion::operator-() const
 	return Quaternion{ -x, -y, -z, -w };
 }
 
-//������Z�q�I�[�o�[���[�h
-Quaternion &Quaternion::operator+=(const Quaternion &q)
+//代入演算子オーバーロード
+Quaternion& Quaternion::operator+=(const Quaternion& q)
 {
 	x += q.x;
 	y += q.y;
@@ -24,7 +24,7 @@ Quaternion &Quaternion::operator+=(const Quaternion &q)
 	return *this;
 }
 
-Quaternion &Quaternion::operator-=(const Quaternion &q)
+Quaternion& Quaternion::operator-=(const Quaternion& q)
 {
 	x -= q.x;
 	y -= q.y;
@@ -33,7 +33,7 @@ Quaternion &Quaternion::operator-=(const Quaternion &q)
 	return *this;
 }
 
-Quaternion &Quaternion::operator*=(float s)
+Quaternion& Quaternion::operator*=(float s)
 {
 	x *= s;
 	y *= s;
@@ -42,7 +42,7 @@ Quaternion &Quaternion::operator*=(float s)
 	return *this;
 }
 
-Quaternion &Quaternion::operator/=(float s)
+Quaternion& Quaternion::operator/=(float s)
 {
 	x /= s;
 	y /= s;
@@ -51,43 +51,43 @@ Quaternion &Quaternion::operator/=(float s)
 	return *this;
 }
 
-#pragma endregion ���Z�q�I�[�o�[���[�h
+#pragma endregion 演算子オーバーロード
 
-#pragma region �񍀉��Z�q
-// �񍀉��Z�q
-const Quaternion operator+(const Quaternion &q1, const Quaternion &q2)
+#pragma region 二項演算子
+// 二項演算子
+const Quaternion operator+(const Quaternion& q1, const Quaternion& q2)
 {
 	Quaternion temp(q1);
 	return temp += q2;
 }
 
-const Quaternion operator-(const Quaternion &v1, const Quaternion &q2)
+const Quaternion operator-(const Quaternion& v1, const Quaternion& q2)
 {
 	Quaternion temp(v1);
 	return temp -= q2;
 }
 
-const Quaternion operator*(const Quaternion &q, float s)
+const Quaternion operator*(const Quaternion& q, float s)
 {
 	Quaternion temp(q);
 	return  temp *= s;
 }
 
-const Quaternion operator*(float s, const Quaternion &q)
+const Quaternion operator*(float s, const Quaternion& q)
 {
 	return q * s;
 }
 
-const Quaternion operator/(const Quaternion &q, float s)
+const Quaternion operator/(const Quaternion& q, float s)
 {
 	Quaternion temp(q);
 	return temp /= s;
 }
 
-#pragma endregion �񍀉��Z�q
+#pragma endregion 二項演算子
 
-//Quaternion�̐�
-Quaternion Quaternion::Multiply(const Quaternion &rhs) const
+//Quaternionの積
+Quaternion Quaternion::Multiply(const Quaternion& rhs) const
 {
 	return Quaternion
 	{ (this->x * rhs.w + this->w * rhs.x - this->z * rhs.y + this->y * rhs.z),
@@ -96,26 +96,26 @@ Quaternion Quaternion::Multiply(const Quaternion &rhs) const
 	  (this->w * rhs.w - this->x * rhs.x - this->y * rhs.y - this->z * rhs.z) };
 }
 
-//�P��Quaternion��Ԃ�(���̒l��ς��Ȃ��֐�)
+//単位Quaternionを返す(元の値を変えない関数)
 Quaternion Quaternion::IdentityQuaternion()
 {
 	return Quaternion{ 0,0,0,1 };
 }
 
-//����Quaternion��Ԃ�
+//共役Quaternionを返す
 Quaternion Quaternion::Conjugate() const
 {
 	return Quaternion{ -this->x ,-this->y,-this->z,this->w };
 }
 
-//Quaternion�̃m����(����)��Ԃ�
+//Quaternionのノルム(長さ)を返す
 float Quaternion::Norm()
 {
 	return sqrt((this->w * this->w) + (this->x * this->x)
 		+ (this->y * this->y) + (this->z * this->z));
 }
 
-//���K������Quaternion��Ԃ�
+//正規化したQuaternionを返す
 Quaternion Quaternion::Normalize()
 {
 	return Quaternion{ this->x / Norm(),
@@ -124,7 +124,7 @@ Quaternion Quaternion::Normalize()
 		this->w / Norm() };
 }
 
-//�tQuaternion��Ԃ�(����Quaternion�Ƃ̐ς�1�ƂȂ�)
+//逆Quaternionを返す(元のQuaternionとの積が1となる)
 Quaternion Quaternion::Inverse()
 {
 	return Quaternion{ Conjugate().x / (Norm() * Norm()),
@@ -133,8 +133,8 @@ Quaternion Quaternion::Inverse()
 		Conjugate().w / (Norm() * Norm()) };
 }
 
-//�C�ӎ���]
-Quaternion MakeAxisAngle(const Vector3 &axis, float angle)
+//任意軸回転
+Quaternion MakeAxisAngle(const Vector3& axis, float angle)
 {
 	Vector3 axisNorm = axis;
 	axisNorm.Normalize();
@@ -151,13 +151,13 @@ Quaternion MakeAxisAngle(const Vector3 &axis, float angle)
 	return result;
 }
 
-//�x�N�g����Quaternion�ŉ�]���������ʂ̃x�N�g�������߂�
-Vector3 RotateVector(const Vector3 &vector, const Quaternion &quaternion)
+//ベクトルをQuaternionで回転させた結果のベクトルを求める
+Vector3 RotateVector(const Vector3& vector, const Quaternion& quaternion)
 {
-	//�x�N�g����Quaternion�ɕύX
+	//ベクトルをQuaternionに変更
 	Quaternion vecToQuaternion = { vector.x, vector.y, vector.z, 0 };
 
-	//��]��̃x�N�g�������߂�(r' = qrq*)
+	//回転後のベクトルを求める(r' = qrq*)
 	Quaternion resultQuaternion = quaternion.Multiply(vecToQuaternion);
 
 	resultQuaternion = resultQuaternion.Multiply(quaternion.Conjugate());
@@ -165,7 +165,7 @@ Vector3 RotateVector(const Vector3 &vector, const Quaternion &quaternion)
 	return Vector3(resultQuaternion.x, resultQuaternion.y, resultQuaternion.z);
 }
 
-//Quaternion�����]�s������߂�
+//Quaternionから回転行列を求める
 Matrix4 Quaternion::MakeRotateMatrix()
 {
 	Matrix4 resultMat{ };
@@ -187,48 +187,48 @@ Matrix4 Quaternion::MakeRotateMatrix()
 	return resultMat;
 }
 
-//���ʐ��`���
-Quaternion Quaternion::Slerp(const Quaternion &q1, float t)
+//球面線形補間
+Quaternion Quaternion::Slerp(const Quaternion& q1, float t)
 {
-	//Quaternion�̓���
+	//Quaternionの内積
 	float dot = this->x * q1.x + this->y * q1.y + this->z * q1.z + this->w * q1.w;
 
-	//�V�[�^��
+	//シータθ
 	float theta = std::acos(dot);
 
-	//���ςŋ߂������ǂ����𔻒f
+	//内積で近しいかどうかを判断
 	if(dot < 0)
 	{
-		*this = -(*this);   //�����Е��̉�]�𗘗p����
-		dot = -dot;     //���ς����]
+		*this = -(*this);   //もう片方の回転を利用する
+		dot = -dot;     //内積も反転
 	}
 
-	//��ԌW�������߂�
+	//補間係数を求める
 	float scale0;
 	float scale1;
 
 	scale0 = sin((1 - t) * theta) / sin(theta);
 	scale1 = sin(t * theta) / sin(theta);
 
-	//0���Z������邽�߁A��=0?���ς�1�ɋ߂��ꍇ�A���`��Ԃ𗘗p����
+	//0除算を避けるため、θ=0?内積が1に近い場合、線形補間を利用する
 	const float EPSILON = 0.0005f;
 
 	if(dot >= 1.0f - EPSILON)
 	{
-		//���`���
+		//線形補間
 		return (1.0f - t) * (*this) + t * q1;
 	}
 	else
 	{
-		//���ʐ��`
+		//球面線形
 		return scale0 * (*this) + scale1 * q1;
 	}
 }
 
-//u����v�ւ̉�]�𐶐�
+//uからvへの回転を生成
 Quaternion DirectionToDirection(const Vector3& u, const Vector3& v)
 {
-	//u��v�𐳋K�����ē��ς����߂�,u,v��P�ʃx�N�g���O��Ƃ���Ȃ琳�K���͕s�v
+	//uとvを正規化して内積を求める,u,vを単位ベクトル前提とするなら正規化は不要
 	Vector3 before = u;
 	before.Normalize();
 
@@ -237,17 +237,17 @@ Quaternion DirectionToDirection(const Vector3& u, const Vector3& v)
 
 	float dot = before.Dot(after);
 
-	//u,v�̊O�ς��Ƃ�
+	//u,vの外積をとる
 	Vector3 cross = u.Cross(v);
 
-	//���͒P�ʃx�N�g���ł���K�v������̂Ő��K��
-	//u,v���P�ʃx�N�g���ł����Ă��A�O�ς��P�ʃx�N�g���Ƃ͌���Ȃ��̂ł����̐��K���͕K�{
+	//軸は単位ベクトルである必要があるので正規化
+	//u,vが単位ベクトルであっても、外積が単位ベクトルとは限らないのでここの正規化は必須
 	Vector3 axis = cross.Normalize();
 
-	//�P�ʃx�N�g���œ��ς�����Ă���̂�acos�Ŋp�x�����߂�
+	//単位ベクトルで内積を取っているのでacosで角度を求める
 	float theta = std::acosf(dot);
 
-	//axis��theta�ŔC�ӎ���]������ĕԂ�
+	//axisとthetaで任意軸回転を作って返す
 	Quaternion result = MakeAxisAngle(axis, theta);
 
 	return result;

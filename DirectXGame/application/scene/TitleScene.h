@@ -9,19 +9,19 @@ class TitleScene : public BaseScene
 {
 public:
 
-	//Ã“I‰Šú‰»
+	//é™çš„åˆæœŸåŒ–
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize() override;
 
-	//–ˆƒtƒŒ[ƒ€XV
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update() override;
 
-	//•`‰æ
+	//æç”»
 	void Draw() override;
 
-	//ƒV[ƒ“‘JˆÚ
+	//ã‚·ãƒ¼ãƒ³é·ç§»
 	void SceneAnimation();
 
 private:
@@ -40,13 +40,13 @@ private:
 	std::unique_ptr<Camera> camera_ = nullptr;
 	LightGroup* lightGroup_ = nullptr;
 
-	//‘Ò‚¿ŠÔ
+	//å¾…ã¡æ™‚é–“
 	static const int32_t waitTime = 40;
 
 	Vector3 sphereRotate = { 0,0,0 };
 	Vector3 spherPos_;
 
-	//1ü‰ñ‚éŠÔ
+	//1å‘¨å›ã‚‹æ™‚é–“
 	const float kRotateTime_ = 90.0f;
 	const float kActionTime_ = 20.0f;
 
@@ -69,18 +69,18 @@ private:
 
 	bool isJump_;
 
-	//ƒQ[ƒ€ƒpƒbƒh
+	//ã‚²ãƒ¼ãƒ ãƒ‘ãƒƒãƒ‰
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
-	//ƒV[ƒ“ƒAƒjƒ[ƒVƒ‡ƒ“ŠÔ
+	//ã‚·ãƒ¼ãƒ³ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ™‚é–“
 	const float kSceneAnimeTime_ = 45.0f;
-	//ƒAƒjƒ[ƒVƒ‡ƒ“ŠÔ‚Ì•Ï‰»—Ê
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ™‚é–“ã®å¤‰åŒ–é‡
 	float sceneAnimeTimer_ = 0;
-	//ƒV[ƒ“ƒAƒjƒ[ƒVƒ‡ƒ“—p•Ï‰»—Ê
+	//ã‚·ãƒ¼ãƒ³ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ç”¨å¤‰åŒ–é‡
 	Vector2 animationMoveVec2;
 	Vector3 animationMoveVec3;
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI‚í‚Á‚½‚©‚Ç‚¤‚©
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚ã‚ã£ãŸã‹ã©ã†ã‹
 	bool isFinishAnimetion;
 };
 

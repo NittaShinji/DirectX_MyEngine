@@ -6,16 +6,16 @@
 
 namespace MathUtillty
 {
-	//‰~ü—¦
+	//å††å‘¨ç‡
 	const float PI = 3.141592654f;
 
-	//d—Í
+	//é‡åŠ›
 	const float gravity = 0.098f;
 
-	//“x”–@•ÏŠ·(ƒ‰ƒWƒAƒ“‚©‚ç“x”–@)
+	//åº¦æ•°æ³•å¤‰æ›(ãƒ©ã‚¸ã‚¢ãƒ³ã‹ã‚‰åº¦æ•°æ³•)
 	float ToDegree(float radian);
 
-	//ŒÊ“x–@•ÏŠ·(“x”–@‚©‚çƒ‰ƒWƒAƒ“)
+	//å¼§åº¦æ³•å¤‰æ›(åº¦æ•°æ³•ã‹ã‚‰ãƒ©ã‚¸ã‚¢ãƒ³)
 	float ToRadian(float angle);
 
 	Vector3 Vector3Subtract(Vector3 v1, Vector3 v2);
@@ -24,11 +24,11 @@ namespace MathUtillty
 	Vector3 Vector3Zero();
 	Vector3 Vector3Dot(Vector3 v1, Vector3 v2);
 	Vector3 Vector3Cross(Vector3 v1, Vector3 v2);
-	// À•W•ÏŠ·iwœZ‚È‚µj
+	// åº§æ¨™å¤‰æ›ï¼ˆwé™¤ç®—ãªã—ï¼‰
 	Vector3 Vector3Transform(const Vector3& v, const Matrix4& m);
-	// À•W•ÏŠ·iwœZ‚ ‚èj
+	// åº§æ¨™å¤‰æ›ï¼ˆwé™¤ç®—ã‚ã‚Šï¼‰
 	Vector3 Vector3TransformCoord(const Vector3& v, const Matrix4& m);
-	// ƒxƒNƒgƒ‹•ÏŠ·
+	// ãƒ™ã‚¯ãƒˆãƒ«å¤‰æ›
 	Vector3 Vector3TransformNormal(const Vector3& v, const Matrix4& m);
 	Matrix4 Matrix4Orthographic(float viewLeft, float viewRight, float viewBottom, float viewTop, float nearZ, float farZ);
 

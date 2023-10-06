@@ -3,16 +3,16 @@
 using namespace DirectX;
 
 /// <summary>
-/// Ã“Iƒƒ“ƒo•Ï”‚ÌÀ‘Ì
+/// é™çš„ãƒ¡ãƒ³ãƒå¤‰æ•°ã®å®Ÿä½“
 /// </summary>
 ID3D12Device* LightGroup::device_ = nullptr;
 
-void LightGroup::StaticInitialize(ID3D12Device *device)
+void LightGroup::StaticInitialize(ID3D12Device* device)
 {
-	//Ä‰Šú‰»ƒ`ƒFƒbƒN
+	//å†åˆæœŸåŒ–ãƒã‚§ãƒƒã‚¯
 	assert(!LightGroup::device_);
 
-	//nullptrƒ`ƒFƒbƒN
+	//nullptrãƒã‚§ãƒƒã‚¯
 	assert(device);
 
 	LightGroup::device_ = device;
@@ -20,38 +20,38 @@ void LightGroup::StaticInitialize(ID3D12Device *device)
 
 void LightGroup::Initialize()
 {
-	//•W€‚Ìƒ‰ƒCƒg‚Ìİ’è
+	//æ¨™æº–ã®ãƒ©ã‚¤ãƒˆã®è¨­å®š
 	DefaultLightSetting();
 
-	//ƒq[ƒvİ’è
-	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPU‚Ö‚Ì“]‘——p
+	//ãƒ’ãƒ¼ãƒ—è¨­å®š
+	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUã¸ã®è»¢é€ç”¨
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;
-	//ƒŠƒ\[ƒXİ’è
+	//ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 	D3D12_RESOURCE_DESC cbResourceDesc{};
 	cbResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	cbResourceDesc.Width = (sizeof(ConstBufferData) + 0xff) & ~0xff;	//256ƒoƒCƒgƒAƒ‰ƒCƒ“ƒƒ“ƒg
+	cbResourceDesc.Width = (sizeof(ConstBufferData) + 0xff) & ~0xff;	//256ãƒã‚¤ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
 	cbResourceDesc.Height = 1;
 	cbResourceDesc.DepthOrArraySize = 1;
 	cbResourceDesc.MipLevels = 1;
 	cbResourceDesc.SampleDesc.Count = 1;
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-	///’è”ƒoƒbƒtƒ@‚Ì¶¬
+	///å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ç”Ÿæˆ
 	HRESULT result = device_->CreateCommittedResource(
-		&cbHeapProp,//ƒq[ƒvİ’è
+		&cbHeapProp,//ãƒ’ãƒ¼ãƒ—è¨­å®š
 		D3D12_HEAP_FLAG_NONE,
-		&cbResourceDesc,//ƒŠƒ\[ƒXİ’è
+		&cbResourceDesc,//ãƒªã‚½ãƒ¼ã‚¹è¨­å®š
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff_));
 	assert(SUCCEEDED(result));
 
-	//’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
 	TransferConstBuffer();
 }
 
 void LightGroup::Update()
 {
-	//’l‚ÌXV‚ª‚ ‚Á‚½‚Æ‚«‚¾‚¯’è”ƒoƒbƒtƒ@‚É“]‘—‚·‚é
+	//å€¤ã®æ›´æ–°ãŒã‚ã£ãŸã¨ãã ã‘å®šæ•°ãƒãƒƒãƒ•ã‚¡ã«è»¢é€ã™ã‚‹
 	if(dirty_ == true)
 	{
 		TransferConstBuffer();
@@ -59,15 +59,15 @@ void LightGroup::Update()
 	}
 }
 
-void LightGroup::Draw(ID3D12GraphicsCommandList *cmdList, UINT rootParameterIndex)
+void LightGroup::Draw(ID3D12GraphicsCommandList* cmdList, UINT rootParameterIndex)
 {
-	//’è”ƒoƒbƒtƒ@ƒrƒ…[‚ğƒZƒbƒg
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ã‚»ãƒƒãƒˆ
 	cmdList->SetGraphicsRootConstantBufferView(rootParameterIndex, constBuff_->GetGPUVirtualAddress());
 }
 
-LightGroup *LightGroup::Create()
+LightGroup* LightGroup::Create()
 {
-	//3DƒIƒuƒWƒFƒNƒg‚ÌÃ“IƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é™çš„ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	static LightGroup instance;
 	instance.Initialize();
 
@@ -77,18 +77,18 @@ LightGroup *LightGroup::Create()
 void LightGroup::TransferConstBuffer()
 {
 	HRESULT result;
-	//’è”ƒoƒbƒtƒ@‚Öƒf[ƒ^“]‘—
-	ConstBufferData *constMap = nullptr;
-	result = constBuff_->Map(0, nullptr, (void **)&constMap);
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã¸ãƒ‡ãƒ¼ã‚¿è»¢é€
+	ConstBufferData* constMap = nullptr;
+	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	if(SUCCEEDED(result))
 	{
-		//ŠÂ‹«Œõ
+		//ç’°å¢ƒå…‰
 		constMap->ambientColor = ambientColor_;
-		
-		//•½sŒõŒ¹
+
+		//å¹³è¡Œå…‰æº
 		for(int32_t i = 0; i < kDirLightNum_; i++)
 		{
-			//ƒ‰ƒCƒg‚ª—LŒø‚È‚çİ’è‚ğ“]‘—
+			//ãƒ©ã‚¤ãƒˆãŒæœ‰åŠ¹ãªã‚‰è¨­å®šã‚’è»¢é€
 			if(dirLights_[i].IsActive())
 			{
 				constMap->dirLights[i].active = true;
@@ -96,7 +96,7 @@ void LightGroup::TransferConstBuffer()
 				constMap->dirLights[i].lightColor = dirLights_[i].GetLightColor();
 
 			}
-			//ƒ‰ƒCƒg‚ª–³Œø‚È‚ç“]‘—‚µ‚È‚¢
+			//ãƒ©ã‚¤ãƒˆãŒç„¡åŠ¹ãªã‚‰è»¢é€ã—ãªã„
 			else
 			{
 				constMap->dirLights[i].active = 0;
@@ -107,7 +107,7 @@ void LightGroup::TransferConstBuffer()
 	}
 }
 
-void LightGroup::SetAmbientColor(const Vector3 &color)
+void LightGroup::SetAmbientColor(const Vector3& color)
 {
 	ambientColor_ = color;
 	dirty_ = true;
@@ -119,15 +119,15 @@ void LightGroup::SetDirLightActive(int32_t index, bool active)
 	dirLights_[index].SetActive(active);
 }
 
-void LightGroup::SetDirLightDir(int32_t index, const Vector3&lightDir,const float upVec)
+void LightGroup::SetDirLightDir(int32_t index, const Vector3& lightDir, const float upVec)
 
 {
 	assert(0 <= index && index < kDirLightNum_);
-	dirLights_[index].SetLightDir(lightDir,upVec);
+	dirLights_[index].SetLightDir(lightDir, upVec);
 	dirty_ = true;
 }
 
-void LightGroup::SetDirLightColor(int32_t index, const Vector3 &lightColor)
+void LightGroup::SetDirLightColor(int32_t index, const Vector3& lightColor)
 {
 	assert(0 <= index && index < kDirLightNum_);
 	dirLights_[index].SetLightColor(lightColor);
@@ -137,14 +137,14 @@ void LightGroup::SetDirLightColor(int32_t index, const Vector3 &lightColor)
 void LightGroup::DefaultLightSetting()
 {
 	dirLights_[0].SetActive(true);
-	dirLights_[0].SetLightColor({1.0f,1.0f,1.0f});
+	dirLights_[0].SetLightColor({ 1.0f,1.0f,1.0f });
 	dirLights_[0].SetLightDir(Vector3{ 0.0f,-1.0f,0.0f }, 0.0f);
 
 	dirLights_[1].SetActive(true);
-	dirLights_[1].SetLightColor({1.0f,1.0f,1.0f});
-	dirLights_[1].SetLightDir(Vector3{0.5f,0.1f,0.2f},0.0f);
+	dirLights_[1].SetLightColor({ 1.0f,1.0f,1.0f });
+	dirLights_[1].SetLightDir(Vector3{ 0.5f,0.1f,0.2f }, 0.0f);
 
 	dirLights_[2].SetActive(true);
-	dirLights_[2].SetLightColor({1.0f,1.0f,1.0f});
-	dirLights_[2].SetLightDir(Vector3{-0.5f,0.1f,-0.2f},0.0f);
+	dirLights_[2].SetLightColor({ 1.0f,1.0f,1.0f });
+	dirLights_[2].SetLightDir(Vector3{ -0.5f,0.1f,-0.2f }, 0.0f);
 }

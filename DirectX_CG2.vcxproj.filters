@@ -464,6 +464,7 @@
       <Filter>シェーダーファイル</Filter>
     </None>
     <None Include="Resources\shaders\Particle.hlsli" />
+    <None Include=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\BasicPS.hlsl">

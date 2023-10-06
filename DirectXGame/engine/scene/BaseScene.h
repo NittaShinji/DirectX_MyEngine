@@ -3,29 +3,29 @@
 #include "ImGuiManager.h"
 #include "Input.h"
 
-//‘O•ûéŒ¾
+//å‰æ–¹å®£è¨€
 class SceneManager;
 
-//ƒV[ƒ“Šî’êƒNƒ‰ƒX
+//ã‚·ãƒ¼ãƒ³åŸºåº•ã‚¯ãƒ©ã‚¹
 class BaseScene
 {
 public:
 
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	virtual void Initialize();
 
-	//–ˆƒtƒŒ[ƒ€XV
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	virtual void Update();
 
-	//I—¹
+	//çµ‚äº†
 	virtual void Finalize();
 
-	//•`‰æ
+	//æç”»
 	virtual void Draw();
 
-public: //ƒƒ“ƒoŠÖ”
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
 
 	virtual ~BaseScene() = default;
 	virtual void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
@@ -41,7 +41,7 @@ protected:
 
 	static ImGuiManager* imGuiManager_;
 
-	//ƒV[ƒ“ƒ}ƒl[ƒWƒƒ
+	//ã‚·ãƒ¼ãƒ³ãƒãƒãƒ¼ã‚¸ãƒ£
 	SceneManager* sceneManager_ = nullptr;
 };
 

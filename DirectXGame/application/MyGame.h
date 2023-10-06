@@ -10,20 +10,20 @@
 class MyGame : public MyFramework
 {
 
-public: //ƒƒ“ƒoŠÖ”
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
 
 	MyGame();
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void Initialize() override;
-	//I—¹
+	//çµ‚äº†
 	void Finalize() override;
-	//–ˆƒtƒŒ[ƒ€XV
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	void Update() override;
-	//•`‰æ
+	//æç”»
 	void Draw() override;
 
-private: //ƒƒ“ƒo•Ï”
+private: //ãƒ¡ãƒ³ãƒå¤‰æ•°
 
 };
 

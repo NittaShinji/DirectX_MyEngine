@@ -11,22 +11,22 @@
 using namespace DirectX;
 using namespace Microsoft::WRL;
 
-MyGame::MyGame(){}
+MyGame::MyGame() {}
 
 void MyGame::Initialize()
 {
-	//Šî’êƒNƒ‰ƒX‚Ì‰Šú‰»ˆ—
+	//åŸºåº•ã‚¯ãƒ©ã‚¹ã®åˆæœŸåŒ–å‡¦ç†
 	MyFramework::Initialize();
-	
-	//ƒQ[ƒ€ƒV[ƒ“‰Šú‰»ˆ—
-	//ƒV[ƒ“ƒtƒ@ƒNƒgƒŠ[‚ð¶¬‚µAƒ}ƒl[ƒWƒƒ‚ÉƒZƒbƒg
+
+	//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³åˆæœŸåŒ–å‡¦ç†
+	//ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¼ã‚’ç”Ÿæˆã—ã€ãƒžãƒãƒ¼ã‚¸ãƒ£ã«ã‚»ãƒƒãƒˆ
 	sceneFactory_ = std::make_unique<SceneFactory>();
 	SceneManager::GetInstance()->SetSceneFactory(std::move(sceneFactory_));
-	//ƒV[ƒ“ƒ}ƒl[ƒWƒƒ‚ÉÅ‰‚ÌƒV[ƒ“‚ðƒZƒbƒg
+	//ã‚·ãƒ¼ãƒ³ãƒžãƒãƒ¼ã‚¸ãƒ£ã«æœ€åˆã®ã‚·ãƒ¼ãƒ³ã‚’ã‚»ãƒƒãƒˆ
 	SceneManager::GetInstance()->ChangeScene("TITLE");
-	//ˆê“x‚Ì‚Ý‰Šú‰»
+	//ä¸€åº¦ã®ã¿åˆæœŸåŒ–
 	TitleScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	GameScene::StaticInitialize(directXBasic_.get(),imGuiManager_.get());
+	GameScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	StageSelectScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	TutorialScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 	ClearScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
@@ -35,10 +35,10 @@ void MyGame::Initialize()
 
 void MyGame::Update()
 {
-	// DirectX–ˆƒtƒŒ[ƒ€ˆ— ‚±‚±‚©‚ç
+	// DirectXæ¯Žãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç† ã“ã“ã‹ã‚‰
 	imGuiManager_->Begin();
 
-	//Šî’êƒNƒ‰ƒX‚ÌXVˆ—
+	//åŸºåº•ã‚¯ãƒ©ã‚¹ã®æ›´æ–°å‡¦ç†
 	MyFramework::Update();
 
 	SceneManager::GetInstance()->Update();
@@ -48,18 +48,18 @@ void MyGame::Update()
 
 void MyGame::Draw()
 {
-	//ƒQ[ƒ€ƒV[ƒ“‚Ì•`‰æ
+	//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®æç”»
 	SceneManager::GetInstance()->Draw();
 }
 
 void MyGame::Finalize()
 {
-	//ƒQ[ƒ€‘S‘Ì‚ÌI—¹ˆ—
+	//ã‚²ãƒ¼ãƒ å…¨ä½“ã®çµ‚äº†å‡¦ç†
 	imGuiManager_->Finalize();
 
-	//ƒTƒEƒ“ƒh‚ÌI—¹ˆ—
+	//ã‚µã‚¦ãƒ³ãƒ‰ã®çµ‚äº†å‡¦ç†
 	//Sound::GetInstance()->Finalize();
 
-	//Šî’êƒNƒ‰ƒX‚ÌI—¹ˆ—
+	//åŸºåº•ã‚¯ãƒ©ã‚¹ã®çµ‚äº†å‡¦ç†
 	MyFramework::Finalize();
 }

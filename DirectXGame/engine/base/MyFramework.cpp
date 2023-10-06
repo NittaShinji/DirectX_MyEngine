@@ -8,49 +8,49 @@ using namespace Microsoft::WRL;
 
 void MyFramework::Initialize()
 {
-	//WindowsApi‰Šú‰»ˆ—
+	//WindowsApiåˆæœŸåŒ–å‡¦ç†
 	winApi_ = WindowsAPI::GetInstance();
 	winApi_->Initialize();
 
-	//DirectX‰Šú‰»ˆ—
+	//DirectXåˆæœŸåŒ–å‡¦ç†
 	directXBasic_ = std::make_unique<DirectXBasic>();
 	directXBasic_->Initialize(winApi_);
 
-	
-	//Input‰Šú‰»ˆ—
+
+	//InputåˆæœŸåŒ–å‡¦ç†
 	input_ = std::make_unique<Input>();
 	input_->Initialize(winApi_);
 
-	//ImGui‰Šú‰»ˆ—
+	//ImGuiåˆæœŸåŒ–å‡¦ç†
 	imGuiManager_ = std::make_unique<ImGuiManager>();
 	imGuiManager_->Initialize(winApi_, directXBasic_.get());
 
-	//ƒTƒEƒ“ƒhˆ—
+	//ã‚µã‚¦ãƒ³ãƒ‰å‡¦ç†
 	//ComPtr<IXAudio2> xAudio2;
 	//IXAudio2MasteringVoice* masterVoice;
-	////XAudio2ƒGƒ“ƒWƒ“‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚ğ¶¬
+	////XAudio2ã‚¨ãƒ³ã‚¸ãƒ³ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç”Ÿæˆ
 	//HRESULT result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
-	////ƒ}ƒXƒ^[ƒ{ƒCƒX‚Ì¶¬
+	////ãƒã‚¹ã‚¿ãƒ¼ãƒœã‚¤ã‚¹ã®ç”Ÿæˆ
 	//result = xAudio2->CreateMasteringVoice(&masterVoice);
 
-	//ƒeƒNƒXƒ`ƒƒƒ}ƒl[ƒWƒƒ‰Šú‰»
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒãƒ¼ã‚¸ãƒ£åˆæœŸåŒ–
 	TextureManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get());
 	TextureManager::GetInstance()->Initialize();
-	
-	//ƒXƒvƒ‰ƒCƒg
+
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	SpriteCommon::GetInstance()->Initialize(directXBasic_.get());
 	Sprite::StaticInitialize();
 
-	//ƒV[ƒ“Ã“I‰Šú‰»
+	//ã‚·ãƒ¼ãƒ³é™çš„åˆæœŸåŒ–
 	BaseScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
 }
 
 void MyFramework::Update()
 {
-	//windowsƒƒbƒZ[ƒWˆ—
+	//windowsãƒ¡ãƒƒã‚»ãƒ¼ã‚¸å‡¦ç†
 	if(winApi_->ProcessMessage())
 	{
-		//I—¹ƒƒbƒZ[ƒW‚ª—ˆ‚½‚çƒQ[ƒ€ƒ‹[ƒv‚ğ”²‚¯‚éƒtƒ‰ƒO‚ğON‚É‚µ‚½
+		//çµ‚äº†ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ãŒæ¥ãŸã‚‰ã‚²ãƒ¼ãƒ ãƒ«ãƒ¼ãƒ—ã‚’æŠœã‘ã‚‹ãƒ•ãƒ©ã‚°ã‚’ONã«ã—ãŸ
 		endRequst_ = true;
 	}
 
@@ -60,26 +60,27 @@ void MyFramework::Update()
 void MyFramework::Finalize()
 {
 	//Sound::GetInstance()->Finalize();
-	//ƒQ[ƒ€‘S‘Ì‚ÌI—¹ˆ—
+	//ã‚²ãƒ¼ãƒ å…¨ä½“ã®çµ‚äº†å‡¦ç†
 	winApi_->Finalize();
 }
 
 void MyFramework::Run()
 {
-	//ƒQ[ƒ€‚Ì‰Šú‰»
+	//ã‚²ãƒ¼ãƒ ã®åˆæœŸåŒ–
 	Initialize();
 
 	while(true)
 	{
-		//–ˆƒtƒŒ[ƒ€XV
+		//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 		Update();
-		//I—¹ƒŠƒNƒGƒXƒg‚ª—ˆ‚½‚ç”²‚¯‚é
-		if(IsEndRequst()){
+		//çµ‚äº†ãƒªã‚¯ã‚¨ã‚¹ãƒˆãŒæ¥ãŸã‚‰æŠœã‘ã‚‹
+		if(IsEndRequst())
+		{
 			break;
 		}
-		//•`‰æ
+		//æç”»
 		Draw();
 	}
-	//ƒQ[ƒ€‚ÌI—¹
+	//ã‚²ãƒ¼ãƒ ã®çµ‚äº†
 	Finalize();
 }

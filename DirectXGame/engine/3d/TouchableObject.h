@@ -8,20 +8,20 @@ class TouchableObject : public Object3d
 public:
 
 	/// <summary>
-	/// ƒIƒuƒWƒFƒNƒg¶¬
+	/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 	/// </summary>
 	/// <param name="model"></param>
 	/// <returns></returns>
 	static std::unique_ptr<TouchableObject> Create(const std::string& path);
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	/// <param name="model"></param>
 	/// <returns></returns>
 	void Initialize();
 
-	//ƒRƒ‰ƒCƒ_[‚Ì’Ç‰Á
+	//ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã®è¿½åŠ 
 	void AddCollider(Model* model);
 
 	void ColliderUpdate();

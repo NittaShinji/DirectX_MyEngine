@@ -1,8 +1,8 @@
 #include "MyGame.h"
 
-//WindowsƒAƒvƒŠ‚Å‚ÌƒGƒ“ƒgƒŠ[ƒ|ƒCƒ“ƒg(mainŠÖ”)
+//Windowsã‚¢ãƒ—ãƒªã§ã®ã‚¨ãƒ³ãƒˆãƒªãƒ¼ãƒã‚¤ãƒ³ãƒˆ(mainé–¢æ•°)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
-{	
+{
 	std::unique_ptr<MyGame> gameManager = std::make_unique<MyGame>();
 	gameManager->Run();
 	return 0;

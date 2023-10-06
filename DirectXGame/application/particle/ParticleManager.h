@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "Camera.h"
 #include "Vector4.h"
 #include "ObjectAttribute.h"
@@ -7,15 +7,15 @@
 /// <summary>
 /// 3Dオブジェクト
 /// </summary>
- 
-class ParticleManager 
+
+class ParticleManager
 {
 private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 public: // サブクラス
-	
+
 	//頂点情報
 	struct Vertex
 	{
@@ -56,7 +56,7 @@ public: // サブクラス
 		//float colorAlpha = 1.0f;
 
 		Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
-		Vector4 colorSpeed = { 0.0f,0.0f,0.1f,0.0f};
+		Vector4 colorSpeed = { 0.0f,0.0f,0.1f,0.0f };
 	};
 
 private: // 定数
@@ -122,7 +122,7 @@ public: // メンバ関数
 	void CreateModel();
 
 
-	void Add(int life,Vector3 position, Vector3 velocity, Vector3 accel, Vector4 colorSpeed,float start_scale, float end_scale);
+	void Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 colorSpeed, float start_scale, float end_scale);
 
 	//static void LoadTexture();
 	static void LoadTexture(const std::string& fileName);
@@ -144,7 +144,7 @@ public: // メンバ関数
 private: // メンバ変数
 
 	//定数バッファ
-	ComPtr<ID3D12Resource> constBuff_; 
+	ComPtr<ID3D12Resource> constBuff_;
 	//定数バッファのマッピング用ポインタ
 	ConstBufferData* constMapData_ = nullptr;
 
@@ -154,12 +154,12 @@ private: // メンバ変数
 	static ComPtr<ID3D12PipelineState> pipelineState_;
 
 	//ジオメトリシェーダーオブジェクト
-	
+
 	// ビュー行列
 	Matrix4 matView_;
 	// 射影行列
 	Matrix4 matProjection_;
-	
+
 
 	// テクスチャバッファ
 	static ComPtr<ID3D12Resource> texbuff_;

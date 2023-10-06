@@ -18,18 +18,18 @@ public:
 
 	static void Load(const std::string& path);
 	void Update();
-	
+
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
 	/// <summary>
-	/// ƒ}ƒeƒŠƒAƒ‹“Ç‚İ‚İ
+	/// ãƒãƒ†ãƒªã‚¢ãƒ«èª­ã¿è¾¼ã¿
 	/// </summary>
 	static void LoadMaterial(const std::string& directoryPath, const std::string& fileName, Model& model);
 
 	/// <summary>
-	/// ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	/// </summary>
-	/// <returns>¬”Û</returns>
+	/// <returns>æˆå¦</returns>
 	static void LoadTexture(const std::string& directoryPath, const std::string& fileName, Model& model);
 
 private:
@@ -38,13 +38,13 @@ private:
 
 	struct Material
 	{
-		std::string name;	//ƒ}ƒeƒŠƒAƒ‹–¼
-		Vector3 ambient;	//ƒAƒ“ƒrƒGƒ“ƒg‰e‹¿“x
-		Vector3 diffuse;	//ƒfƒBƒtƒ…[ƒY‰e‹¿“x
-		Vector3 specular;	//ƒXƒyƒLƒ…ƒ‰[‰e‹¿“x
-		float alpha;		//ƒAƒ‹ƒtƒ@
-		std::string textureFilename;	//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹–¼
-		//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		std::string name;	//ãƒãƒ†ãƒªã‚¢ãƒ«å
+		Vector3 ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆå½±éŸ¿åº¦
+		Vector3 diffuse;	//ãƒ‡ã‚£ãƒ•ãƒ¥ãƒ¼ã‚ºå½±éŸ¿åº¦
+		Vector3 specular;	//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼å½±éŸ¿åº¦
+		float alpha;		//ã‚¢ãƒ«ãƒ•ã‚¡
+		std::string textureFilename;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«å
+		//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		Material()
 		{
 			ambient = { 1.0f,1.0f,1.0f };
@@ -54,17 +54,17 @@ private:
 		}
 	};
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘ÌB0
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“B0
 	struct ConstBufferDateB0
 	{
-		Matrix4 mat;	//3D•ÏŠ·s—ñ
+		Matrix4 mat;	//3Då¤‰æ›è¡Œåˆ—
 
 	};
 
-	//’è”ƒoƒbƒtƒ@—pƒf[ƒ^\‘¢‘ÌB1
+	//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿æ§‹é€ ä½“B1
 	struct ConstBufferDateB1
 	{
-		Vector3 ambient;	//ƒAƒ“ƒrƒGƒ“ƒgŒW”
+		Vector3 ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆä¿‚æ•°
 		float pad1;
 		Vector3 diffuse;
 		float pad2;
@@ -76,40 +76,40 @@ public:
 
 	using MODELKEY = std::string;
 
-	//SRV‚ÌÅ‘åŒÂ”
+	//SRVã®æœ€å¤§å€‹æ•°
 	static const size_t kMaxSRVCount_ = 256;
 
 	struct MODELVALUE
 	{
-		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1;	//’è”ƒoƒbƒtƒ@
+		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1;	//å®šæ•°ãƒãƒƒãƒ•ã‚¡
 
-		//’è”ƒoƒbƒtƒ@‚Ìƒ}ƒbƒsƒ“ƒO—pƒ|ƒCƒ“ƒ^
+		//å®šæ•°ãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ”ãƒ³ã‚°ç”¨ãƒã‚¤ãƒ³ã‚¿
 		ConstBufferDateB0* constMapTransform = nullptr;
 
-		//’è”ƒoƒbƒtƒ@—pƒf[ƒ^
+		//å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”¨ãƒ‡ãƒ¼ã‚¿
 		ConstBufferDateB1* constMap1 = nullptr;
 
-		//ƒ}ƒeƒŠƒAƒ‹
+		//ãƒãƒ†ãƒªã‚¢ãƒ«
 		Material material;
 
-		//ƒƒbƒVƒ…
+		//ãƒ¡ãƒƒã‚·ãƒ¥
 		std::vector<Mesh> meshes;
 
-		//SRV—p‚ÌƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+		//SRVç”¨ã®ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 		Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap = nullptr;
 
-		//ƒeƒNƒXƒ`ƒƒƒoƒbƒtƒ@
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒƒãƒ•ã‚¡
 		std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers;
-	};	
+	};
 
 	static const MODELVALUE* GetMODELVALUE(const MODELKEY path);
 
 private:
 
-	//ƒfƒXƒNƒŠƒvƒ^ƒq[ƒvƒnƒ“ƒhƒ‹
+	//ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ãƒãƒ³ãƒ‰ãƒ«
 	static D3D12_CPU_DESCRIPTOR_HANDLE sSrvHandle_;
 
-	//ƒeƒNƒXƒ`ƒƒ”Ô†
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ç•ªå·
 	static uint32_t sTextureIndex_;
 
 	MODELKEY name_;
@@ -118,14 +118,14 @@ private:
 
 public:
 
-	//ƒQƒbƒ^[
+	//ã‚²ãƒƒã‚¿ãƒ¼
 	MODELKEY* GetName() { return &name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
 	uint32_t const GetTexIndex() { return sTextureIndex_; };
 	const std::vector<Mesh>& GetMeshes() { return infomation_.meshes; }
 
-	//ƒZƒbƒ^[
+	//ã‚»ãƒƒã‚¿ãƒ¼
 	void SetName(const MODELKEY& name) { name_ = name; };
-	void SetInfomation (const MODELVALUE& infomation) { infomation_ = infomation; };
+	void SetInfomation(const MODELVALUE& infomation) { infomation_ = infomation; };
 };
 

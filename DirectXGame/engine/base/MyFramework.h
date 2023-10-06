@@ -9,55 +9,55 @@
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"
 
-//ƒQ[ƒ€‘S‘Ì
+//ã‚²ãƒ¼ãƒ å…¨ä½“
 class MyFramework
 {
-public:	//ƒƒ“ƒoŠÖ”
+public:	//ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	virtual void Initialize();
 
-	//–ˆƒtƒŒ[ƒ€XV
+	//æ¯ãƒ•ãƒ¬ãƒ¼ãƒ æ›´æ–°
 	virtual void Update();
 
-	//I—¹
+	//çµ‚äº†
 	virtual void Finalize();
 
-	//•`‰æ
+	//æç”»
 	virtual void Draw() = 0;
 
-	//I—¹ƒ`ƒFƒbƒN
+	//çµ‚äº†ãƒã‚§ãƒƒã‚¯
 	virtual bool IsEndRequst() { return endRequst_; }
 
-	//Às
+	//å®Ÿè¡Œ
 	void Run();
 
-public: //ƒƒ“ƒoŠÖ”
+public: //ãƒ¡ãƒ³ãƒé–¢æ•°
 
-	//‰¼‘zƒfƒXƒgƒ‰ƒNƒ^
+	//ä»®æƒ³ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 	virtual ~MyFramework() = default;
 
-protected: //ƒƒ“ƒo•Ï”
+protected: //ãƒ¡ãƒ³ãƒå¤‰æ•°
 
 	//WindowsApi
 	WindowsAPI* winApi_ = nullptr;
 
-	//DirectXŠî”Õ
+	//DirectXåŸºç›¤
 	std::unique_ptr<DirectXBasic> directXBasic_ = nullptr;
 
-	//“ü—Íˆ—
+	//å…¥åŠ›å‡¦ç†
 	std::unique_ptr<Input> input_ = nullptr;
 
-	//ImGui‰Šú‰»ˆ—
+	//ImGuiåˆæœŸåŒ–å‡¦ç†
 	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;
 
-	//ƒXƒvƒ‰ƒCƒg
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 	SpriteCommon* spriteCommon_ = nullptr;
 
-	//ƒV[ƒ“ƒtƒ@ƒNƒgƒŠ[
+	//ã‚·ãƒ¼ãƒ³ãƒ•ã‚¡ã‚¯ãƒˆãƒªãƒ¼
 	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
 
-	//ƒQ[ƒ€I—¹ƒtƒ‰ƒO
+	//ã‚²ãƒ¼ãƒ çµ‚äº†ãƒ•ãƒ©ã‚°
 	bool endRequst_ = false;
 
 };

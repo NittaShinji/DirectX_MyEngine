@@ -6,11 +6,11 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerAxcell_, Vector3 pIni
 {
 	if(isPlayerMoving == true)
 	{
-		//ƒvƒŒƒCƒ„[‚Ìƒ|ƒWƒVƒ‡ƒ“‚ð‘ã“ü(“®‚¢‚½•ª‚¾‚¯i‚Þ‚æ‚¤‚É‰ŠúˆÊ’u‚ðˆø‚­)
-		target_.z += playerAxcell_.z ;
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ãƒã‚¸ã‚·ãƒ§ãƒ³ã‚’ä»£å…¥(å‹•ã„ãŸåˆ†ã ã‘é€²ã‚€ã‚ˆã†ã«åˆæœŸä½ç½®ã‚’å¼•ã)
+		target_.z += playerAxcell_.z;
 		eye_.z += playerAxcell_.z;
 	}
-	 
+
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
 }
@@ -23,7 +23,7 @@ void GameCamera::Reset()
 
 void GameCamera::ImGuiUpdate()
 {
-	//ƒXƒvƒ‰ƒCƒg‚Ì•ÒWƒEƒCƒ“ƒhƒE‚Ì•\Ž¦
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®ç·¨é›†ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®è¡¨ç¤º
 
 	ImGui::Begin("Camera");
 	ImGui::SetWindowPos(ImVec2(300, 0));

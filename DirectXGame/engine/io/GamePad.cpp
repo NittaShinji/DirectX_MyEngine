@@ -10,7 +10,7 @@ bool GamePad::IsConnected(UINT padNum)
 {
 	DWORD dwResult;
 
-	//‰ß‹î•ñ‚ğ•Û‘¶
+	//éå»æƒ…å ±ã‚’ä¿å­˜
 	oldState_ = state_;
 
 	ZeroMemory(&state_, sizeof(XINPUT_STATE));
@@ -32,27 +32,27 @@ void GamePad::CheckDeadZone()
 	float LX = state_.Gamepad.sThumbLX;
 	float LY = state_.Gamepad.sThumbLY;
 
-	//ƒRƒ“ƒgƒ[ƒ‰[‚ª‚Ç‚±‚Ü‚Å‰Ÿ‚³‚ê‚Ä‚¢‚é‚©
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒã©ã“ã¾ã§æŠ¼ã•ã‚Œã¦ã„ã‚‹ã‹
 	float magnitude = static_cast<float>(sqrt(LX * LX + LY * LY));
-	//ƒRƒ“ƒgƒ[ƒ‰[‚ª‰Ÿ‚³‚ê‚é•ûŒü‚ğŒˆ’è‚·‚éB
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒæŠ¼ã•ã‚Œã‚‹æ–¹å‘ã‚’æ±ºå®šã™ã‚‹ã€‚
 	float normalizedLX = LX / magnitude;
 	float normalizedLY = LY / magnitude;
 
 	float normalizedMagnitude = 0;
 
-	//ƒRƒ“ƒgƒ[ƒ‰‚ª‰~Œ`‚Ìƒfƒbƒhƒ][ƒ“‚ÌŠO‚É‚ ‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN‚·‚éB
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãŒå††å½¢ã®ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®å¤–ã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
 	if(magnitude > XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE)
 	{
-		//—\‘z‚³‚ê‚éÅ‘å’l‚Å‘å‚«‚³‚ğƒNƒŠƒbƒv‚·‚éB
+		//äºˆæƒ³ã•ã‚Œã‚‹æœ€å¤§å€¤ã§å¤§ãã•ã‚’ã‚¯ãƒªãƒƒãƒ—ã™ã‚‹ã€‚
 		if(magnitude > 32767) magnitude = 32767;
-		//ƒfƒbƒhƒ][ƒ“‚ÌI‚í‚è‚ğŠî€‚É‘å‚«‚³‚ğ’²®‚·‚é
+		//ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®çµ‚ã‚ã‚Šã‚’åŸºæº–ã«å¤§ãã•ã‚’èª¿æ•´ã™ã‚‹
 		magnitude -= XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
 
-		//ƒIƒvƒVƒ‡ƒ“‚ÅA—\‘z‚³‚ê‚é”ÍˆÍ‚ÉŠÖ‚µ‚Ä‘å‚«‚³‚ğ³‹K‰»‚·‚éB
-		//0.0`1.0‚Ìƒ}ƒOƒjƒ`ƒ…[ƒh‚ğ—^‚¦‚éB
+		//ã‚ªãƒ—ã‚·ãƒ§ãƒ³ã§ã€äºˆæƒ³ã•ã‚Œã‚‹ç¯„å›²ã«é–¢ã—ã¦å¤§ãã•ã‚’æ­£è¦åŒ–ã™ã‚‹ã€‚
+		//0.0ï½1.0ã®ãƒã‚°ãƒ‹ãƒãƒ¥ãƒ¼ãƒ‰ã‚’ä¸ãˆã‚‹ã€‚
 		normalizedMagnitude = magnitude / (32767 - XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE);
 	}
-	//ƒRƒ“ƒgƒ[ƒ‰[‚ªƒfƒbƒhƒ][ƒ“‚É‚ ‚éê‡‚ÍAƒ}ƒOƒjƒ`ƒ…[ƒh‚ğƒ[ƒ‚É‚·‚éB
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼ãŒãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã«ã‚ã‚‹å ´åˆã¯ã€ãƒã‚°ãƒ‹ãƒãƒ¥ãƒ¼ãƒ‰ã‚’ã‚¼ãƒ­ã«ã™ã‚‹ã€‚
 	else
 	{
 		magnitude = 0.0f;
@@ -74,7 +74,7 @@ void GamePad::SetVibration()
 
 void GamePad::SaveOldButton()
 {
-	//1ƒtƒŒ[ƒ€‘O‚Ìî•ñ‚ğ•Û‘¶‚·‚é
+	//1ãƒ•ãƒ¬ãƒ¼ãƒ å‰ã®æƒ…å ±ã‚’ä¿å­˜ã™ã‚‹
 	oldState_ = state_;
 }
 
@@ -94,7 +94,7 @@ void GamePad::ResetButton()
 	padButton_.RT = false;
 }
 
-//‰Ÿ‚µ‚½ó‘Ô‚©‚Ç‚¤‚©
+//æŠ¼ã—ãŸçŠ¶æ…‹ã‹ã©ã†ã‹
 void GamePad::HasPushedButton()
 {
 	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
@@ -108,7 +108,7 @@ void GamePad::HasPushedButton()
 			padButton_.A = false;
 		}
 	}
-	
+
 	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
 	{
 		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
@@ -120,7 +120,7 @@ void GamePad::HasPushedButton()
 			padButton_.B = false;
 		}
 	}
-	
+
 	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_X)
 	{
 		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_X)
@@ -180,7 +180,7 @@ void GamePad::HasPushedButton()
 
 }
 
-//—£‚µ‚½ó‘Ô‚©‚Ç‚¤‚©
+//é›¢ã—ãŸçŠ¶æ…‹ã‹ã©ã†ã‹
 void GamePad::HasReleasedButton()
 {
 	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
@@ -216,7 +216,7 @@ void GamePad::HasReleasedButton()
 	}
 }
 
-//‰Ÿ‚µ‚½uŠÔ‚©‚Ç‚¤‚©
+//æŠ¼ã—ãŸç¬é–“ã‹ã©ã†ã‹
 void GamePad::PushedButtonMoment()
 {
 	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
@@ -252,7 +252,7 @@ void GamePad::PushedButtonMoment()
 	}
 }
 
-//—£‚µ‚½uŠÔ‚©‚Ç‚¤‚©
+//é›¢ã—ãŸç¬é–“ã‹ã©ã†ã‹
 void GamePad::ReleaseButtonMoment()
 {
 	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A))

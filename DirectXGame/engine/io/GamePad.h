@@ -28,21 +28,21 @@ public:
 
 	void Initialzie(UINT padNum);
 
-	//XV
+	//æ›´æ–°
 	bool IsConnected(UINT padNum);
 
-	//ƒfƒbƒhƒ][ƒ“‚Ìİ’è
+	//ãƒ‡ãƒƒãƒ‰ã‚¾ãƒ¼ãƒ³ã®è¨­å®š
 	void CheckDeadZone();
 
-	//U“®‚Ìİ’è
+	//æŒ¯å‹•ã®è¨­å®š
 	void SetVibration();
 
-	XINPUT_STATE GetState() {return state_; }
+	XINPUT_STATE GetState() { return state_; }
 	WORD GetButton() { return state_.Gamepad.wButtons; };
 
 	void SaveOldButton();
 
-	//Šeƒ{ƒ^ƒ“‚Ì”»’è
+	//å„ãƒœã‚¿ãƒ³ã®åˆ¤å®š
 	bool GetButtonA() { return padButton_.A; };
 	bool GetButtonB() { return padButton_.B; }
 	bool GetButtonX() { return padButton_.X; }
@@ -56,19 +56,19 @@ public:
 	bool GetButtonRB() { return padButton_.RB; }
 	bool GetButtonRT() { return padButton_.RT; }
 
-	//ƒ{ƒ^ƒ“î•ñ‚ğƒŠƒZƒbƒg‚·‚é
+	//ãƒœã‚¿ãƒ³æƒ…å ±ã‚’ãƒªã‚»ãƒƒãƒˆã™ã‚‹
 	void ResetButton();
 
-	//‰Ÿ‚µ‚½uŠÔ
+	//æŠ¼ã—ãŸç¬é–“
 	void HasPushedButton();
 
-	//—£‚µ‚½uŠÔ
+	//é›¢ã—ãŸç¬é–“
 	void HasReleasedButton();
 
-	//‰Ÿ‚µ‘±‚¯‚Ä‚¢‚é
+	//æŠ¼ã—ç¶šã‘ã¦ã„ã‚‹
 	void PushedButtonMoment();
 
-	//—£‚µ‚Ä‚¢‚é
+	//é›¢ã—ã¦ã„ã‚‹
 	void ReleaseButtonMoment();
 
 	PadButton GetPadButton() { return padButton_; }
@@ -79,10 +79,10 @@ private:
 	XINPUT_STATE state_;
 	XINPUT_STATE oldState_;
 
-	//ƒRƒ“ƒgƒ[ƒ‰‚Ì”Ô†
+	//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®ç•ªå·
 	UINT padNum_;
 
-	//Šeƒ{ƒ^ƒ“‚Ì\‘¢‘Ì
+	//å„ãƒœã‚¿ãƒ³ã®æ§‹é€ ä½“
 	PadButton padButton_;
 
 };

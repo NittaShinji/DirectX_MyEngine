@@ -5,41 +5,41 @@
 #include <imgui_impl_dx12.h>
 #include <imgui_impl_win32.h>
 
-//ImGui‚ÌŠÇ—
+//ImGuiã®ç®¡ç†
 class ImGuiManager
 {
 
 public:
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
 	void Initialize(WindowsAPI* winApi, DirectXBasic* directXBasic);
 
 	/// <summary>
-	/// I—¹ˆ—
+	/// çµ‚äº†å‡¦ç†
 	/// </summary>
 	void Finalize();
 
 	/// <summary>
-	/// ImGuió•tŠJn
+	/// ImGuiå—ä»˜é–‹å§‹
 	/// </summary>
 	void Begin();
 
 	/// <summary>
-	/// ImGuió•tI—¹
+	/// ImGuiå—ä»˜çµ‚äº†
 	/// </summary>
 	void End();
 
 	/// <summary>
-	/// ‰æ–Ê‚Ö‚Ì•`‰æ
+	/// ç”»é¢ã¸ã®æç”»
 	/// </summary>
 	void Draw();
 
 private:
 
 	DirectXBasic* directXBasic_ = nullptr;
-	//SRV—pƒfƒXƒNƒŠƒvƒ^ƒq[ƒv
+	//SRVç”¨ãƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—
 	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
 };

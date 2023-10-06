@@ -4,7 +4,7 @@
 #include <DirectXMath.h>
 #include "Matrix4.h"
 
-//ƒƒbƒVƒ…Õ“Ë”»’èƒIƒuƒWƒFƒNƒg
+//ãƒ¡ãƒƒã‚·ãƒ¥è¡çªåˆ¤å®šã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 class MeshCollider : public BaseCollider
 {
 
@@ -12,44 +12,44 @@ public:
 
 	MeshCollider()
 	{
-		//ƒƒbƒVƒ…Œ`ó‚ğƒZƒbƒg
+		//ãƒ¡ãƒƒã‚·ãƒ¥å½¢çŠ¶ã‚’ã‚»ãƒƒãƒˆ
 		shapeType_ = COLLISIONSHAPE_MESH;
 	}
 
 	/// <summary>
-	/// OŠpŒ`‚Ì”z—ñ‚ğ\’z‚·‚é
+	/// ä¸‰è§’å½¢ã®é…åˆ—ã‚’æ§‹ç¯‰ã™ã‚‹
 	/// </summary>
 	/// <param name="model"></param>
 	void ConstructTriangles(Model* model);
 
 	/// <summary>
-	/// XV
+	/// æ›´æ–°
 	/// </summary>
 	void Update() override;
 
 	/// <summary>
-	/// ‹…‚Æ‚Ì“–‚½‚è”»’è
+	/// çƒã¨ã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
-	/// <param name="sphere">‹…</param>
-	/// <param name="inter">Œğ“_(o—Í—p)</param>
-	/// <returns>Œğ·‚µ‚Ä‚¢‚é”Û‚©</returns>
+	/// <param name="sphere">çƒ</param>
+	/// <param name="inter">äº¤ç‚¹(å‡ºåŠ›ç”¨)</param>
+	/// <returns>äº¤å·®ã—ã¦ã„ã‚‹å¦ã‹</returns>
 	bool CheckCollisionSphere(const Sphere& sphere, Vector3* inter = nullptr);
 
 
 	/// <summary>
-	/// ƒŒƒC‚Æ‚Ì“–‚½‚è”»’è
+	/// ãƒ¬ã‚¤ã¨ã®å½“ãŸã‚Šåˆ¤å®š
 	/// </summary>
-	/// <param name="ray">ƒŒƒC</param>
-	/// <param name="distance">‹——£</param>
-	/// <param name="inter">Œğ“_(o—Í—p)</param>
-	/// <returns>Œğ·‚µ‚Ä‚¢‚é‚©”Û‚©</returns>
+	/// <param name="ray">ãƒ¬ã‚¤</param>
+	/// <param name="distance">è·é›¢</param>
+	/// <param name="inter">äº¤ç‚¹(å‡ºåŠ›ç”¨)</param>
+	/// <returns>äº¤å·®ã—ã¦ã„ã‚‹ã‹å¦ã‹</returns>
 	bool CheckCollisionRay(const Ray& ray, float* distance = nullptr, Vector3* inter = nullptr);
 
 
 private:
 
 	std::vector<Triangle> triangles;
-	//ƒ[ƒ‹ƒhs—ñ‚Ì‹ts—ñ
+	//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®é€†è¡Œåˆ—
 	Matrix4 invMatWorld_;
 
 

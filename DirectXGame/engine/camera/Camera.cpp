@@ -15,17 +15,17 @@ void Camera::StaticInitialize(DirectXBasic* directXBasic)
 
 void Camera::Initialize(Vector3& eye, Vector3& target, Vector3& up)
 {
-	eye_	= eye;
+	eye_ = eye;
 	target_ = target;
-	up_		= up;
+	up_ = up;
 }
 
 void Camera::Update()
 {
-	//ƒrƒ…[s—ñ‚Ì¶¬
+	//ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®ç”Ÿæˆ
 	UpdateViewMatrix();
 
-	//ŽË‰es—ñ(“§Ž‹“Š‰e)‚Ì¶¬
+	//å°„å½±è¡Œåˆ—(é€è¦–æŠ•å½±)ã®ç”Ÿæˆ
 	UpdateProjectionMatrix();
 }
 
@@ -35,36 +35,36 @@ void Camera::UpdateViewMatrix()
 	Vector3 vecTarget = target_;
 	Vector3 vecUp = up_;
 
-	//ã•ûŒüƒxƒNƒgƒ‹
+	//ä¸Šæ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«
 
-	//ƒJƒƒ‰ZŽ²(Ž‹ü•ûŒü)
+	//ã‚«ãƒ¡ãƒ©Zè»¸(è¦–ç·šæ–¹å‘)
 	Vector3 cameraAxisZ = Vector3Subtract(vecTarget, vecEye);
 
-	//0ƒxƒNƒgƒ‹‚¾‚ÆŒü‚«‚ª’è‚Ü‚ç‚È‚¢‚Ì‚ÅœŠO
+	//0ãƒ™ã‚¯ãƒˆãƒ«ã ã¨å‘ããŒå®šã¾ã‚‰ãªã„ã®ã§é™¤å¤–
 	assert(!Vector3Equal(cameraAxisZ, Vector3Zero()));
 	//assert(std::isinf(cameraAxisZ));
 	assert(!Vector3Equal(vecUp, Vector3Zero()));
 	//assert(std::isinf(vecUp));
 
-	//ƒxƒNƒgƒ‹‚ð³‹K‰»
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–
 	cameraAxisZ.Normalize();
 
-	//ƒJƒƒ‰‚ÌXŽ²(‰E•ûŒü)
+	//ã‚«ãƒ¡ãƒ©ã®Xè»¸(å³æ–¹å‘)
 	Vector3 cameraAxisX;
-	//XŽ²‚Íã•ûŒü¨ZŽ²‚ÌŠOÏ‚Å‹‚Ü‚é
+	//Xè»¸ã¯ä¸Šæ–¹å‘â†’Zè»¸ã®å¤–ç©ã§æ±‚ã¾ã‚‹
 	cameraAxisX = Vector3Cross(vecUp, cameraAxisZ);
-	
-	//ƒxƒNƒgƒ‹‚ð³‹K‰»
+
+	//ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–
 	cameraAxisX.Normalize();
 
-	//ƒJƒƒ‰‚ÌYŽ²(ã•ûŒü)
+	//ã‚«ãƒ¡ãƒ©ã®Yè»¸(ä¸Šæ–¹å‘)
 	Vector3 cameraAxisY;
-	//YŽ²‚ÍZŽ²¨XŽ²‚ÌŠOÏ‚Å‹‚Ü‚é
+	//Yè»¸ã¯Zè»¸â†’Xè»¸ã®å¤–ç©ã§æ±‚ã¾ã‚‹
 	cameraAxisY = Vector3Cross(cameraAxisZ, cameraAxisX);
 
-	//ƒJƒƒ‰‰ñ“]s—ñ
-	Matrix4 matCameraRot = {0};
-	//ƒJƒƒ‰À•WŒn¨ƒ[ƒ‹ƒhÀ•WŒn‚Ì•ÏŠ·s—ñ
+	//ã‚«ãƒ¡ãƒ©å›žè»¢è¡Œåˆ—
+	Matrix4 matCameraRot = { 0 };
+	//ã‚«ãƒ¡ãƒ©åº§æ¨™ç³»â†’ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ç³»ã®å¤‰æ›è¡Œåˆ—
 	matCameraRot.m[0][0] = cameraAxisX.x;
 	matCameraRot.m[0][1] = cameraAxisX.y;
 	matCameraRot.m[0][2] = cameraAxisX.z;
@@ -85,27 +85,27 @@ void Camera::UpdateViewMatrix()
 	matCameraRot.m[3][2] = 0.0f;
 	matCameraRot.m[3][3] = 1.0f;
 
-	//“]’n‚É‚æ‚è‹ts—ñ(‹t‰ñ“])‚ðŒvŽZ
+	//è»¢åœ°ã«ã‚ˆã‚Šé€†è¡Œåˆ—(é€†å›žè»¢)ã‚’è¨ˆç®—
 	matView_ = MatrixTranspose(matCameraRot);
 
-	//Ž‹“_À•W‚É-1‚ðŠ|‚¯‚½À•W
+	//è¦–ç‚¹åº§æ¨™ã«-1ã‚’æŽ›ã‘ãŸåº§æ¨™
 	Vector3 reverseEyePosition = vecEye.Negate();
 
-	//ƒJƒƒ‰‚ÌˆÊ’u‚©‚çƒ[ƒ‹ƒhÀ•W‚Ö‚ÌƒxƒNƒgƒ‹(ƒJƒƒ‰À•WŒn)
-	Vector3 tX = Vector3Dot(cameraAxisX, reverseEyePosition); //X¬•ª
-	Vector3 tY = Vector3Dot(cameraAxisY, reverseEyePosition); //Y¬•ª
-	Vector3 tZ = Vector3Dot(cameraAxisZ, reverseEyePosition);//Z¬•ª
+	//ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‹ã‚‰ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«(ã‚«ãƒ¡ãƒ©åº§æ¨™ç³»)
+	Vector3 tX = Vector3Dot(cameraAxisX, reverseEyePosition); //Xæˆåˆ†
+	Vector3 tY = Vector3Dot(cameraAxisY, reverseEyePosition); //Yæˆåˆ†
+	Vector3 tZ = Vector3Dot(cameraAxisZ, reverseEyePosition);//Zæˆåˆ†
 
-	//ˆê‚Â‚ÌƒxƒNƒgƒ‹‚É‚Ü‚Æ‚ß‚é
-	Vector3 translation = { tX.x, tY.y, tZ.z};
-	//ƒrƒ…[s—ñ‚É•½sˆÚ“®¬•ª‚ðŽw’è
+	//ä¸€ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã«ã¾ã¨ã‚ã‚‹
+	Vector3 translation = { tX.x, tY.y, tZ.z };
+	//ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã«å¹³è¡Œç§»å‹•æˆåˆ†ã‚’æŒ‡å®š
 	matView_.m[3][0] = translation.x;
 	matView_.m[3][1] = translation.y;
 	matView_.m[3][2] = translation.z;
 	matView_.m[3][3] = 1.0f;
 
-#pragma region ‘S•ûŒüƒrƒ‹ƒ{[ƒhs—ñ‚ÌŒvŽZ
-	//ƒrƒ‹ƒ{[ƒhs—ñ
+#pragma region å…¨æ–¹å‘ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—ã®è¨ˆç®—
+	//ãƒ“ãƒ«ãƒœãƒ¼ãƒ‰è¡Œåˆ—
 	matBillboard = MatrixIdentity();
 	matBillboardY = MatrixIdentity();
 
@@ -131,8 +131,8 @@ void Camera::UpdateViewMatrix()
 
 void Camera::UpdateProjectionMatrix()
 {
-	matProjection_ = MatrixPerspectiveFovLH(ToRadian(45.0f),					//ã‰º‰æŠp45“x
-		(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//ƒAƒXƒyƒNƒg”ä(‰æ–Ê‰¡•/‰æ–Êc•)
-		0.1f, 1100.0f															//‘O’[,‰œ’[
+	matProjection_ = MatrixPerspectiveFovLH(ToRadian(45.0f),					//ä¸Šä¸‹ç”»è§’45åº¦
+		(float)directXBasic_->GetWinWidth() / directXBasic_->GetWinHeight(),	//ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”(ç”»é¢æ¨ªå¹…/ç”»é¢ç¸¦å¹…)
+		0.1f, 1100.0f															//å‰ç«¯,å¥¥ç«¯
 	);
 }
