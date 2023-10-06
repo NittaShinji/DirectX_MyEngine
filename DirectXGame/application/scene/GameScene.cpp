@@ -38,7 +38,7 @@ void GameScene::Initialize()
 
 	//------------サウンド----------
 	/*Sound::GetInstance()->Initialize();*/
-	Sound::GetInstance()->LoadSoundWave("gamescene.wav");
+	//Sound::GetInstance()->LoadSoundWave("gamescene.wav");
 	//Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);
 
 	//ゲームパッド
@@ -306,14 +306,14 @@ void GameScene::Update()
 
 	if(player_->GetIsFinish() == true)
 	{
-		Sound::GetInstance()->Finalize();
+		//Sound::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
 
 #ifdef _DEBUG
 	if(keys_->PushedKeyMoment(DIK_G))
 	{
-		Sound::GetInstance()->Finalize();
+		//Sound::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
 #endif

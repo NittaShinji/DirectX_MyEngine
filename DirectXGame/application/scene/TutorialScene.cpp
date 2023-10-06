@@ -36,9 +36,9 @@ void TutorialScene::Initialize()
 	Object3d::SetLightGroup(lightGroup_);
 
 	//------------サウンド----------
-	Sound::GetInstance()->Initialize();
+	/*Sound::GetInstance()->Initialize();
 	Sound::GetInstance()->LoadSoundWave("gamescene.wav");
-	Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);
+	Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);*/
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();
@@ -277,7 +277,7 @@ void TutorialScene::Update()
 
 	if(player_->GetIsFinish() == true || keys_->PushedKeyMoment(DIK_G))
 	{
-		Sound::GetInstance()->Finalize();
+		//Sound::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
 }

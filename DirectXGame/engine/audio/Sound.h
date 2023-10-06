@@ -9,20 +9,8 @@
 #include <vector>
 #include <set>
 
-class Sound final
+class Sound 
 {
-
-private:
-
-	Sound();
-	~Sound();
-
-public:
-
-	//コピーコンストラクタの無効
-	Sound(const Sound& sound) = delete;
-	//代入演算子の無効
-	Sound& operator=(const Sound& sound) = delete;
 
 public:
 
@@ -61,12 +49,14 @@ public:
 	// 再生データ
 	struct Voice
 	{
-		//uint32_t handle = 0u;
 		std::string fileName;
 		IXAudio2SourceVoice* sourceVoice = nullptr;
 	};
 
 public: //メンバ関数
+
+	Sound();
+	~Sound();
 
 	static Sound* GetInstance()
 	{
@@ -74,19 +64,19 @@ public: //メンバ関数
 		return &instance;
 	}
 
-	void Initialize();
-	
 	/// <sumary>
 	/// WAV音声読み込み
 	/// </sumary>
 	/// <param name="filename">WAVファイル名</param>
-	void LoadSoundWave(const std::string& fileName);
+	//void LoadSoundWave(const std::string& fileName);
 
 	//音声データ解放
-	void UnloadSound(SoundData* soundData);
+	//void UnloadSound(SoundData* soundData);
 
 	//終了処理
-	void Finalize();
+	//void Finalize();
+
+	void Initialize(const std::string& fileName);
 
 	//音声再生
 	void PlaySoundWave(const std::string& fileName, bool isLoop);
@@ -105,16 +95,7 @@ public: //メンバ関数
 
 private:
 
-	//XAudio2のインスタンス
-	Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
-	
-	//サウンドデータコンテナ
-	std::map<std::string, SoundData> soundDates_;
-	
-	//再生中サウンドデータコンテナ
-	std::set<Voice*> voices_;
-
-	// 次に使う再生中データの番号
-	uint32_t indexVoice_ = 0u;
+	//サウンドデータ
+	SoundData soundData_;
 };
 

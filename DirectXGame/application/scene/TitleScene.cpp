@@ -89,10 +89,10 @@ void TitleScene::Initialize()
 	SpriteCommon::GetInstance()->SemiTransparent();
 	//サウンド
 	//Sound::GetInstance()->Initialize();
-	Sound::GetInstance()->LoadSoundWave("title.wav");
-	Sound::GetInstance()->LoadSoundWave("touch.wav");
+	//Sound::GetInstance()->LoadSoundWave("title.wav");
+	//Sound::GetInstance()->LoadSoundWave("touch.wav");
 
-	Sound::GetInstance()->PlaySoundWave("title.wav",true);
+	//Sound::GetInstance()->PlaySoundWave("title.wav",true);
 
 	//カメラ
 	camera_ = std::make_unique<Camera>();
@@ -235,7 +235,8 @@ void TitleScene::Update()
 
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		Sound::GetInstance()->PlaySoundWave("touch.wav",false);
+		//Sound::GetInstance()->PlaySoundWave("touch.wav",false);
+		//Sound::GetInstance()->PauseSound("Resources/Sound/title.wav");
 		isChangeScene_ = true;	
 	}
 
@@ -250,9 +251,9 @@ void TitleScene::Update()
 			titleSphere_->SetColor(Vector3(1.0f, 1.0f, 1.0f));
 			if(changeWhiteTimer_ <= 0)
 			{
-				Sound::GetInstance()->PauseSound("title.wav");
+				//Sound::GetInstance()->PauseSound("title.wav");
 				/*Sound::GetInstance()->Finalize();*/
-				SceneManager::GetInstance()->ChangeScene("StageSelect");
+				//SceneManager::GetInstance()->ChangeScene("StageSelect");
 			}
 		}
 	}

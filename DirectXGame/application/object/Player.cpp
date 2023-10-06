@@ -28,9 +28,9 @@ std::unique_ptr<Player> Player::Create(const std::string& path)
 void Player::Initialize()
 {
 	Object3d::Initialize();
-	Sound::GetInstance()->LoadSoundWave("jump.wav");
+	/*Sound::GetInstance()->LoadSoundWave("jump.wav");
 	Sound::GetInstance()->LoadSoundWave("doubleJump.wav");
-	Sound::GetInstance()->LoadSoundWave("playerDead.wav");
+	Sound::GetInstance()->LoadSoundWave("playerDead.wav");*/
 
 	playerInitPos_ = { 0.0f,2.0f,2.0f };
 	position_ = playerInitPos_;
@@ -135,7 +135,7 @@ void Player::Update(Camera* camera)
 		{
 			if(gamePad_->GetButtonA())
 			{
-				Sound::GetInstance()->PlaySoundWave("doubleJump.wav", false);
+				//Sound::GetInstance()->PlaySoundWave("doubleJump.wav", false);
 				isJumpRotate_ = true;
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
@@ -144,7 +144,7 @@ void Player::Update(Camera* camera)
 			}
 			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
-				Sound::GetInstance()->PlaySoundWave("doubleJump.wav", false);
+				//Sound::GetInstance()->PlaySoundWave("doubleJump.wav", false);
 				isJumpRotate_ = true;
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
@@ -159,7 +159,7 @@ void Player::Update(Camera* camera)
 	//ジャンプ操作
 	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
-		Sound::GetInstance()->PlaySoundWave("jump.wav", false);
+		//Sound::GetInstance()->PlaySoundWave("jump.wav", false);
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0 };
@@ -167,7 +167,7 @@ void Player::Update(Camera* camera)
 	}
 	else if(gamePad_->GetButtonA() && jumpCount > 0)
 	{
-		Sound::GetInstance()->PlaySoundWave("jump.wav", false);
+		//Sound::GetInstance()->PlaySoundWave("jump.wav", false);
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0 };
@@ -231,7 +231,7 @@ void Player::Update(Camera* camera)
 
 	if(position_.y <= deadLine_)
 	{
-		Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
+		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		isDead_ = true;
 	}
 
@@ -244,7 +244,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	//色が違う場合、死亡判定にする
 	if(info.object->GetAttribute() != attribute_)
 	{
-		Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
+		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		isDead_ = true;
 	}
 

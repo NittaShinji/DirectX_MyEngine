@@ -26,12 +26,12 @@ void MyFramework::Initialize()
 	imGuiManager_->Initialize(winApi_, directXBasic_.get());
 
 	//サウンド処理
-	ComPtr<IXAudio2> xAudio2;
-	IXAudio2MasteringVoice* masterVoice;
-	//XAudio2エンジンのインスタンスを生成
-	HRESULT result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
-	//マスターボイスの生成
-	result = xAudio2->CreateMasteringVoice(&masterVoice);
+	//ComPtr<IXAudio2> xAudio2;
+	//IXAudio2MasteringVoice* masterVoice;
+	////XAudio2エンジンのインスタンスを生成
+	//HRESULT result = XAudio2Create(&xAudio2, 0, XAUDIO2_DEFAULT_PROCESSOR);
+	////マスターボイスの生成
+	//result = xAudio2->CreateMasteringVoice(&masterVoice);
 
 	//テクスチャマネージャ初期化
 	TextureManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get());
@@ -59,7 +59,7 @@ void MyFramework::Update()
 
 void MyFramework::Finalize()
 {
-	Sound::GetInstance()->Finalize();
+	//Sound::GetInstance()->Finalize();
 	//ゲーム全体の終了処理
 	winApi_->Finalize();
 }

@@ -31,7 +31,6 @@ void StageSelectScene::Initialize()
 	gameSceneSprite1_ = std::make_unique<Sprite>();
 	gameSceneSprite2_ = std::make_unique<Sprite>();
 
-
 	const int32_t selectWidth = 640;
 	const int32_t selectHeight = 400;
 	const Vector2 selectSize = { selectWidth,selectHeight };
@@ -42,8 +41,6 @@ void StageSelectScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("GameScene1.png");
 	TextureManager::GetInstance()->LoadTexture("GameScene2.png");
 
-
-	//
 	Vector2 selectPosition = { 0.0f,160.0f };
 	selectSprite_->Initialize(selectPosition, selectSize);
 
@@ -59,13 +56,12 @@ void StageSelectScene::Initialize()
 	gameSceneSprite1_->Initialize(backGroundPositionL, backGroundSize);
 	gameSceneSprite2_->Initialize(backGroundPositionR, backGroundSize);
 
-
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
 	//サウンド
 	//Sound::GetInstance()->LoadSoundWave("title.wav");
-	Sound::GetInstance()->LoadSoundWave("touch.wav");
+	//Sound::GetInstance()->LoadSoundWave("touch.wav");
 	//Sound::GetInstance()->PlaySoundWave("title.wav",false);
 }
 
@@ -87,7 +83,7 @@ void StageSelectScene::Update()
 
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		Sound::GetInstance()->PlaySoundWave("touch.wav",false);
+		//Sound::GetInstance()->PlaySoundWave("touch.wav",false);
 		isChangeScene_ = true;
 	}
 
@@ -111,7 +107,7 @@ void StageSelectScene::Update()
 		changeSceneTimer_--;
 		if(changeSceneTimer_ <= 0)
 		{
-			Sound::GetInstance()->Finalize();
+			//Sound::GetInstance()->Finalize();
 			//SceneManager::GetInstance()->ChangeScene("Tutorial");
 			SceneManager::GetInstance()->ChangeScene("GAME");
 		}
