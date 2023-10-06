@@ -16,7 +16,7 @@
     <ProjectGuid>{40d198f6-3465-4a4f-b3f9-e2c16cbbbdfb}</ProjectGuid>
     <RootNamespace>DirectXCG2</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>DirectXGame</ProjectName>
+    <ProjectName>ChameleonBall</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -60,7 +60,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\particle;$(ProjectDir)\DirectXGame\application\object;$(ProjectDir)\DirectXGame\application\camera;$(ProjectDir)\DirectXGame\application\postEffect;$(ProjectDir)\DirectXGame\application\debug;%(AdditionalIncludeDirectories);$(ProjectDir)\DirectXGame\application\particle</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -82,7 +82,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DirectXGame\engine\2d;$(ProjectDir)\DirectXGame\engine\3d;$(ProjectDir)\DirectXGame\engine\audio;$(ProjectDir)\DirectXGame\engine\base;$(ProjectDir)\DirectXGame\engine\camera;$(ProjectDir)\DirectXGame\engine\collision;$(ProjectDir)\DirectXGame\engine\debugText;$(ProjectDir)\DirectXGame\engine\io;$(ProjectDir)\DirectXGame\engine\light;$(ProjectDir)\DirectXGame\engine\loader;$(ProjectDir)\DirectXGame\engine\scene;$(ProjectDir)\DirectXGame\engine\math;$(ProjectDir)DirectXGame\engine\scene;$(ProjectDir)\External;$(ProjectDir)\DirectXGame\application;$(ProjectDir)\DirectXGame\application\scene;$(ProjectDir)\DirectXGame\application\particle;$(ProjectDir)\DirectXGame\application\object;$(ProjectDir)\DirectXGame\application\camera;$(ProjectDir)\DirectXGame\application\postEffect;$(ProjectDir)\DirectXGame\application\debug;$(ProjectDir)\DirectXGame\application\scene;%(AdditionalIncludeDirectories);$(ProjectDir)\DirectXGame\application\particle</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debug;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -96,109 +96,109 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp" />
-    <ClCompile Include="DirectXGame\application\object\BackGround.cpp" />
-    <ClCompile Include="DirectXGame\application\scene\ClearScene.cpp" />
-    <ClCompile Include="DirectXGame\application\particle\ParticleManager.cpp" />
-    <ClCompile Include="DirectXGame\application\scene\StageSelect.cpp" />
-    <ClCompile Include="DirectXGame\engine\math\Easing.cpp" />
-    <ClCompile Include="DirectXGame\engine\math\Matrix4.cpp" />
-    <ClCompile Include="DirectXGame\engine\math\Quaternion.cpp" />
-    <ClCompile Include="DirectXGame\engine\math\Vector2.cpp" />
-    <ClCompile Include="DirectXGame\engine\math\Vector3.cpp" />
-    <ClCompile Include="DirectXGame\engine\math\Vector4.cpp" />
-    <ClCompile Include="DirectXGame\engine\scene\BaseScene.cpp" />
-    <ClCompile Include="DirectXGame\application\postEffect\PostEffect.cpp" />
-    <ClCompile Include="DirectXGame\engine\camera\Camera.cpp" />
-    <ClCompile Include="DirectXGame\engine\collision\Collision.cpp" />
-    <ClCompile Include="DirectXGame\engine\collision\CollisionPrimitive.cpp" />
-    <ClCompile Include="DirectXGame\engine\base\DirectXBasic.cpp" />
-    <ClCompile Include="DirectXGame\engine\collision\CollisionManager.cpp" />
-    <ClCompile Include="DirectXGame\engine\collision\SphereCollider.cpp" />
-    <ClCompile Include="DirectXGame\application\scene\GameScene.cpp" />
-    <ClCompile Include="DirectXGame\engine\io\Input.cpp" />
-    <ClCompile Include="DirectXGame\engine\io\KeyInput.cpp" />
-    <ClCompile Include="DirectXGame\engine\light\LightGroup.cpp" />
-    <ClCompile Include="DirectXGame\engine\loader\LevelManager.cpp" />
-    <ClCompile Include="DirectXGame\main.cpp" />
-    <ClCompile Include="DirectXGame\engine\3d\Model.cpp" />
-    <ClCompile Include="DirectXGame\engine\3d\Object3d.cpp" />
-    <ClCompile Include="DirectXGame\engine\audio\Sound.cpp" />
-    <ClCompile Include="DirectXGame\engine\2d\Sprite.cpp" />
-    <ClCompile Include="DirectXGame\engine\2d\SpriteCommon.cpp" />
-    <ClCompile Include="DirectXGame\engine\base\WindowsAPI.cpp" />
-    <ClCompile Include="DirectXGame\engine\math\MathUtillity.cpp" />
-    <ClCompile Include="DirectXGame\engine\io\GamePad.cpp" />
-    <ClCompile Include="DirectXGame\application\object\Player.cpp" />
-    <ClCompile Include="DirectXGame\application\camera\GameCamera.cpp" />
-    <ClCompile Include="DirectXGame\engine\3d\Mesh.cpp" />
-    <ClCompile Include="DirectXGame\engine\collision\MeshCollider.cpp" />
-    <ClCompile Include="DirectXGame\engine\3d\TouchableObject.cpp" />
-    <ClCompile Include="DirectXGame\application\MyGame.cpp" />
-    <ClCompile Include="DirectXGame\engine\base\MyFramework.cpp" />
-    <ClCompile Include="DirectXGame\application\scene\TitleScene.cpp" />
-    <ClCompile Include="DirectXGame\engine\scene\SceneManager.cpp" />
-    <ClCompile Include="DirectXGame\application\scene\SceneFactory.cpp" />
-    <ClCompile Include="DirectXGame\application\object\Stage.cpp" />
-    <ClCompile Include="DirectXGame\engine\2d\TextureManager.cpp" />
-    <ClCompile Include="DirectXGame\application\scene\TutorialScene.cpp" />
-    <ClCompile Include="DirectXGame\engine\audio\SoundManager.cpp" />
+    <ClCompile Include="Source\application\debug\ImGuiManager.cpp" />
+    <ClCompile Include="Source\application\object\BackGround.cpp" />
+    <ClCompile Include="Source\application\scene\ClearScene.cpp" />
+    <ClCompile Include="Source\application\particle\ParticleManager.cpp" />
+    <ClCompile Include="Source\application\scene\StageSelect.cpp" />
+    <ClCompile Include="Source\engine\math\Easing.cpp" />
+    <ClCompile Include="Source\engine\math\Matrix4.cpp" />
+    <ClCompile Include="Source\engine\math\Quaternion.cpp" />
+    <ClCompile Include="Source\engine\math\Vector2.cpp" />
+    <ClCompile Include="Source\engine\math\Vector3.cpp" />
+    <ClCompile Include="Source\engine\math\Vector4.cpp" />
+    <ClCompile Include="Source\engine\scene\BaseScene.cpp" />
+    <ClCompile Include="Source\application\postEffect\PostEffect.cpp" />
+    <ClCompile Include="Source\engine\camera\Camera.cpp" />
+    <ClCompile Include="Source\engine\collision\Collision.cpp" />
+    <ClCompile Include="Source\engine\collision\CollisionPrimitive.cpp" />
+    <ClCompile Include="Source\engine\base\DirectXBasic.cpp" />
+    <ClCompile Include="Source\engine\collision\CollisionManager.cpp" />
+    <ClCompile Include="Source\engine\collision\SphereCollider.cpp" />
+    <ClCompile Include="Source\application\scene\GameScene.cpp" />
+    <ClCompile Include="Source\engine\io\Input.cpp" />
+    <ClCompile Include="Source\engine\io\KeyInput.cpp" />
+    <ClCompile Include="Source\engine\light\LightGroup.cpp" />
+    <ClCompile Include="Source\engine\loader\LevelManager.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\engine\3d\Model.cpp" />
+    <ClCompile Include="Source\engine\3d\Object3d.cpp" />
+    <ClCompile Include="Source\engine\audio\Sound.cpp" />
+    <ClCompile Include="Source\engine\2d\Sprite.cpp" />
+    <ClCompile Include="Source\engine\2d\SpriteCommon.cpp" />
+    <ClCompile Include="Source\engine\base\WindowsAPI.cpp" />
+    <ClCompile Include="Source\engine\math\MathUtillity.cpp" />
+    <ClCompile Include="Source\engine\io\GamePad.cpp" />
+    <ClCompile Include="Source\application\object\Player.cpp" />
+    <ClCompile Include="Source\application\camera\GameCamera.cpp" />
+    <ClCompile Include="Source\engine\3d\Mesh.cpp" />
+    <ClCompile Include="Source\engine\collision\MeshCollider.cpp" />
+    <ClCompile Include="Source\engine\3d\TouchableObject.cpp" />
+    <ClCompile Include="Source\application\MyGame.cpp" />
+    <ClCompile Include="Source\engine\base\MyFramework.cpp" />
+    <ClCompile Include="Source\application\scene\TitleScene.cpp" />
+    <ClCompile Include="Source\engine\scene\SceneManager.cpp" />
+    <ClCompile Include="Source\application\scene\SceneFactory.cpp" />
+    <ClCompile Include="Source\application\object\Stage.cpp" />
+    <ClCompile Include="Source\engine\2d\TextureManager.cpp" />
+    <ClCompile Include="Source\application\scene\TutorialScene.cpp" />
+    <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h" />
-    <ClInclude Include="DirectXGame\application\object\BackGround.h" />
-    <ClInclude Include="DirectXGame\application\scene\ClearScene.h" />
-    <ClInclude Include="DirectXGame\application\object\ObjectAttribute.h" />
-    <ClInclude Include="DirectXGame\application\particle\ParticleManager.h" />
-    <ClInclude Include="DirectXGame\application\scene\StageSelect.h" />
-    <ClInclude Include="DirectXGame\engine\math\Easing.h" />
-    <ClInclude Include="DirectXGame\engine\math\Matrix4.h" />
-    <ClInclude Include="DirectXGame\engine\math\Quaternion.h" />
-    <ClInclude Include="DirectXGame\engine\math\Vector2.h" />
-    <ClInclude Include="DirectXGame\engine\math\Vector3.h" />
-    <ClInclude Include="DirectXGame\engine\math\Vector4.h" />
-    <ClInclude Include="DirectXGame\engine\scene\AbstractSceneFactory.h" />
-    <ClInclude Include="DirectXGame\engine\scene\BaseScene.h" />
-    <ClInclude Include="DirectXGame\application\postEffect\PostEffect.h" />
-    <ClInclude Include="DirectXGame\engine\camera\Camera.h" />
-    <ClInclude Include="DirectXGame\engine\collision\BaseCollider.h" />
-    <ClInclude Include="DirectXGame\engine\collision\Collision.h" />
-    <ClInclude Include="DirectXGame\engine\collision\CollisionAttribute.h" />
-    <ClInclude Include="DirectXGame\engine\collision\CollisionInfo.h" />
-    <ClInclude Include="DirectXGame\engine\collision\CollisionPrimitive.h" />
-    <ClInclude Include="DirectXGame\engine\collision\CollisionTypes.h" />
-    <ClInclude Include="DirectXGame\engine\collision\CollisionManager.h" />
-    <ClInclude Include="DirectXGame\engine\collision\RaycastHit.h" />
-    <ClInclude Include="DirectXGame\engine\collision\SphereCollider.h" />
-    <ClInclude Include="DirectXGame\engine\light\DirectionalLight.h" />
-    <ClInclude Include="DirectXGame\engine\base\DirectXBasic.h" />
-    <ClInclude Include="DirectXGame\application\scene\GameScene.h" />
-    <ClInclude Include="DirectXGame\engine\io\Input.h" />
-    <ClInclude Include="DirectXGame\engine\io\KeyInput.h" />
-    <ClInclude Include="DirectXGame\engine\light\LightGroup.h" />
-    <ClInclude Include="DirectXGame\engine\loader\LevelManager.h" />
-    <ClInclude Include="DirectXGame\engine\3d\Model.h" />
-    <ClInclude Include="DirectXGame\engine\3d\Object3d.h" />
-    <ClInclude Include="DirectXGame\engine\audio\Sound.h" />
-    <ClInclude Include="DirectXGame\engine\2d\Sprite.h" />
-    <ClInclude Include="DirectXGame\engine\2d\SpriteCommon.h" />
-    <ClInclude Include="DirectXGame\engine\base\WindowsAPI.h" />
-    <ClInclude Include="DirectXGame\engine\math\MathUtillity.h" />
-    <ClInclude Include="DirectXGame\engine\io\GamePad.h" />
-    <ClInclude Include="DirectXGame\application\object\Player.h" />
-    <ClInclude Include="DirectXGame\application\camera\GameCamera.h" />
-    <ClInclude Include="DirectXGame\engine\3d\Mesh.h" />
-    <ClInclude Include="DirectXGame\engine\collision\MeshCollider.h" />
-    <ClInclude Include="DirectXGame\engine\3d\TouchableObject.h" />
-    <ClInclude Include="DirectXGame\application\MyGame.h" />
-    <ClInclude Include="DirectXGame\engine\base\MyFramework.h" />
-    <ClInclude Include="DirectXGame\application\scene\TitleScene.h" />
-    <ClInclude Include="DirectXGame\engine\scene\SceneManager.h" />
-    <ClInclude Include="DirectXGame\application\scene\SceneFactory.h" />
-    <ClInclude Include="DirectXGame\application\object\Stage.h" />
-    <ClInclude Include="DirectXGame\engine\2d\TextureManager.h" />
-    <ClInclude Include="DirectXGame\application\scene\TutorialScene.h" />
-    <ClInclude Include="DirectXGame\engine\audio\SoundManager.h" />
+    <ClInclude Include="Source\application\debug\ImGuiManager.h" />
+    <ClInclude Include="Source\application\object\BackGround.h" />
+    <ClInclude Include="Source\application\scene\ClearScene.h" />
+    <ClInclude Include="Source\application\object\ObjectAttribute.h" />
+    <ClInclude Include="Source\application\particle\ParticleManager.h" />
+    <ClInclude Include="Source\application\scene\StageSelect.h" />
+    <ClInclude Include="Source\engine\math\Easing.h" />
+    <ClInclude Include="Source\engine\math\Matrix4.h" />
+    <ClInclude Include="Source\engine\math\Quaternion.h" />
+    <ClInclude Include="Source\engine\math\Vector2.h" />
+    <ClInclude Include="Source\engine\math\Vector3.h" />
+    <ClInclude Include="Source\engine\math\Vector4.h" />
+    <ClInclude Include="Source\engine\scene\AbstractSceneFactory.h" />
+    <ClInclude Include="Source\engine\scene\BaseScene.h" />
+    <ClInclude Include="Source\application\postEffect\PostEffect.h" />
+    <ClInclude Include="Source\engine\camera\Camera.h" />
+    <ClInclude Include="Source\engine\collision\BaseCollider.h" />
+    <ClInclude Include="Source\engine\collision\Collision.h" />
+    <ClInclude Include="Source\engine\collision\CollisionAttribute.h" />
+    <ClInclude Include="Source\engine\collision\CollisionInfo.h" />
+    <ClInclude Include="Source\engine\collision\CollisionPrimitive.h" />
+    <ClInclude Include="Source\engine\collision\CollisionTypes.h" />
+    <ClInclude Include="Source\engine\collision\CollisionManager.h" />
+    <ClInclude Include="Source\engine\collision\RaycastHit.h" />
+    <ClInclude Include="Source\engine\collision\SphereCollider.h" />
+    <ClInclude Include="Source\engine\light\DirectionalLight.h" />
+    <ClInclude Include="Source\engine\base\DirectXBasic.h" />
+    <ClInclude Include="Source\application\scene\GameScene.h" />
+    <ClInclude Include="Source\engine\io\Input.h" />
+    <ClInclude Include="Source\engine\io\KeyInput.h" />
+    <ClInclude Include="Source\engine\light\LightGroup.h" />
+    <ClInclude Include="Source\engine\loader\LevelManager.h" />
+    <ClInclude Include="Source\engine\3d\Model.h" />
+    <ClInclude Include="Source\engine\3d\Object3d.h" />
+    <ClInclude Include="Source\engine\audio\Sound.h" />
+    <ClInclude Include="Source\engine\2d\Sprite.h" />
+    <ClInclude Include="Source\engine\2d\SpriteCommon.h" />
+    <ClInclude Include="Source\engine\base\WindowsAPI.h" />
+    <ClInclude Include="Source\engine\math\MathUtillity.h" />
+    <ClInclude Include="Source\engine\io\GamePad.h" />
+    <ClInclude Include="Source\application\object\Player.h" />
+    <ClInclude Include="Source\application\camera\GameCamera.h" />
+    <ClInclude Include="Source\engine\3d\Mesh.h" />
+    <ClInclude Include="Source\engine\collision\MeshCollider.h" />
+    <ClInclude Include="Source\engine\3d\TouchableObject.h" />
+    <ClInclude Include="Source\application\MyGame.h" />
+    <ClInclude Include="Source\engine\base\MyFramework.h" />
+    <ClInclude Include="Source\application\scene\TitleScene.h" />
+    <ClInclude Include="Source\engine\scene\SceneManager.h" />
+    <ClInclude Include="Source\application\scene\SceneFactory.h" />
+    <ClInclude Include="Source\application\object\Stage.h" />
+    <ClInclude Include="Source\engine\2d\TextureManager.h" />
+    <ClInclude Include="Source\application\scene\TutorialScene.h" />
+    <ClInclude Include="Source\engine\audio\SoundManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
