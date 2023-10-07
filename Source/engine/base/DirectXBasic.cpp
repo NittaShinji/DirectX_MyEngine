@@ -110,11 +110,8 @@ void DirectXBasic::BeforeDraw()
 
 void DirectXBasic::AfterDraw()
 {
-	// バックバッファの番号を取得(2つなので0番か1番)
-	UINT bbIndex = swapChain_->GetCurrentBackBufferIndex();
-
 #pragma region リソースバリアの変更コマンド
-	// 5.リソースバリアを戻す
+	//リソースバリアを戻す
 	barrierDesc_.Transition.StateBefore = D3D12_RESOURCE_STATE_RENDER_TARGET; // 描画状態から
 	barrierDesc_.Transition.StateAfter = D3D12_RESOURCE_STATE_PRESENT; // 表示状態へ
 	commandList_->ResourceBarrier(1, &barrierDesc_);
