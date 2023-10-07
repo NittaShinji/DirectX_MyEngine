@@ -35,9 +35,8 @@ public:
 	/// </summary>
 	/// <param name="sphereA">球</param>
 	/// <param name="sphereB">球</param>
-	/// <param name="inter">交点(出力用)</param>
 	/// <returns>交差しているか否か</returns>
-	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, Vector3* inter = nullptr);
+	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB);
 
 
 	/// <summary>

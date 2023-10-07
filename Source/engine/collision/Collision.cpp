@@ -134,8 +134,7 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 	return true;
 }
 
-bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, Vector3* inter)
-
+bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB)
 {
 	//球と球の距離
 	float distance = (sphereB.pos.x - sphereA.pos.x) * (sphereB.pos.x - sphereA.pos.x) +

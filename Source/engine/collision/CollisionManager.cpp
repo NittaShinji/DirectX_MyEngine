@@ -33,7 +33,7 @@ void CollisionManager::CheckAllCollisions()
 				Sphere* SphereB = dynamic_cast<Sphere*>(colB);
 				Vector3 inter;
 
-				if(Collision::CheckSphere2Sphere(*SphereA, *SphereB, &inter))
+				if(Collision::CheckSphere2Sphere(*SphereA, *SphereB))
 				{
 					colA->OnCollison(CollisionInfo(colB->GetObject3d(), colB, inter));
 					colB->OnCollison(CollisionInfo(colA->GetObject3d(), colA, inter));
