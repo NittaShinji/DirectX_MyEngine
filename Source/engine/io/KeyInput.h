@@ -1,8 +1,11 @@
 #pragma once
 #define DIRECTINPUT_VERSION  0x0800
-#include <dinput.h>
 #include <cstdint>
 #include <wrl.h>
+#pragma warning(push)
+#pragma warning(disable:4820)
+#include <dinput.h>
+#pragma warning(pop)
 
 class KeyInput
 {

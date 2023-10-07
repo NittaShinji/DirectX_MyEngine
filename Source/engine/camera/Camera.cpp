@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <d3d12.h>
 #include <cmath>
 #include <cassert>
 

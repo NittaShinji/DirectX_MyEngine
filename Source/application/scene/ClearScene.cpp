@@ -123,7 +123,7 @@ void ClearScene::Draw()
 	directXBasic_->AfterDraw();
 }
 
-void ClearScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
+void ClearScene::StaticInitialize()
 {
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;

@@ -1,11 +1,7 @@
 
 #pragma once
 #include "DirectionalLight.h"
-#include <wrl.h>
-#include <d3d12.h>
 #include <cstdint>
-#include "Vector2.h"
-#include "Vector3.h"
 
 ///<summary>
 /// ライト

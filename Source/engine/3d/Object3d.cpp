@@ -3,11 +3,11 @@
 #include "MathUtillity.h"
 #include "BaseCollider.h"
 #include "CollisionManager.h"
+#include <cassert>
 
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
-using namespace DirectX;
 
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/Model/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;

@@ -9,7 +9,7 @@ class StageSelectScene : public BaseScene
 public:
 
 	//静的初期化
-	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
+	static void StaticInitialize();
 
 	//初期化
 	void Initialize() override;

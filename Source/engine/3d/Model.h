@@ -1,11 +1,6 @@
 #pragma once
 #include "DirectXBasic.h"
 #include "Mesh.h"
-#include <string>
-#include <Vector>
-#include <d3d12.h>
-#include <dxgi1_6.h>
-#include <wrl.h>
 #include <map>
 #include <array>
 #include "Vector2.h"

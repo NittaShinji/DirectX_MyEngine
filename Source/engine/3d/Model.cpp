@@ -3,10 +3,14 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include "Mesh.h"
 
+#pragma warning(push)
+#pragma warning(disable:4061)
+#pragma warning(disable:4820)
 #include <DirectXTex.h>
 #include <D3dx12.h>
-#include "Mesh.h"
+#pragma warning(pop)
 
 using namespace std;
 using namespace DirectX;

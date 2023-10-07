@@ -1,6 +1,5 @@
 #include "SphereCollider.h"
 
-using namespace DirectX;
 using namespace MathUtillty;
 
 void SphereCollider::Update()

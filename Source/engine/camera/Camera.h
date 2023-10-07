@@ -1,10 +1,7 @@
 #pragma once
 
-#include <d3d12.h>
-#include <dxgi1_6.h>
 #include "Input.h"
 #include "DirectXBasic.h"
-#include <wrl.h>
 #include "MathUtillity.h"
 
 class Camera

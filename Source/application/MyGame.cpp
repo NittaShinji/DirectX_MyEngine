@@ -8,7 +8,6 @@
 #include <wrl.h>
 #pragma comment(lib,"xaudio2.lib")
 
-using namespace DirectX;
 using namespace Microsoft::WRL;
 
 MyGame::MyGame() {}
@@ -25,11 +24,11 @@ void MyGame::Initialize()
 	//シーンマネージャに最初のシーンをセット
 	SceneManager::GetInstance()->ChangeScene("TITLE");
 	//一度のみ初期化
-	TitleScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	GameScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	StageSelectScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	TutorialScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
-	ClearScene::StaticInitialize(directXBasic_.get(), imGuiManager_.get());
+	TitleScene::StaticInitialize();
+	GameScene::StaticInitialize();
+	StageSelectScene::StaticInitialize();
+	TutorialScene::StaticInitialize();
+	ClearScene::StaticInitialize();
 	//Sound::GetInstance()->Initialize();
 }
 

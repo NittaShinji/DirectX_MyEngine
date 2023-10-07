@@ -9,7 +9,7 @@
 DirectXBasic* StageSelectScene::directXBasic_ = nullptr;
 ImGuiManager* StageSelectScene::imGuiManager_ = nullptr;
 
-void StageSelectScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
+void StageSelectScene::StaticInitialize()
 {
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;

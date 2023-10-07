@@ -1,13 +1,13 @@
 #pragma once
 #include "WindowsAPI.h"
 #include "DirectXBasic.h"
-#include "ImGuiManager.h"
 #include "Sprite.h"
 #include "SpriteCommon.h"
 #include "Sound.h"
 #include "Input.h"
 #include "SceneManager.h"
 #include "AbstractSceneFactory.h"
+#include "ImGuiManager.h"
 
 //ゲーム全体
 class MyFramework

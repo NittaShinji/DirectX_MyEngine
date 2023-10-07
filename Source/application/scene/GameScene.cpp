@@ -13,7 +13,6 @@
 #include <string>
 
 using namespace std;
-using namespace DirectX;
 
 DirectXBasic* GameScene::directXBasic_ = nullptr;
 ImGuiManager* GameScene::imGuiManager_ = nullptr;
@@ -21,7 +20,7 @@ ImGuiManager* GameScene::imGuiManager_ = nullptr;
 GameScene::GameScene() {}
 GameScene::~GameScene() {}
 
-void GameScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager)
+void GameScene::StaticInitialize()
 {
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;

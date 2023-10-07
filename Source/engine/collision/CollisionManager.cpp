@@ -3,8 +3,6 @@
 #include "Collision.h"
 #include "MeshCollider.h"
 
-using namespace DirectX;
-
 CollisionManager* CollisionManager::GetInstance()
 {
 	static CollisionManager instance;

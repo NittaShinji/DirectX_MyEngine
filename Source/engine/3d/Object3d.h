@@ -6,8 +6,6 @@
 #include "Input.h"
 #include "LightGroup.h"
 #include "CollisionInfo.h"
-#include <vector>
-#include <string>
 #include "Vector3.h"
 
 class BaseCollider;

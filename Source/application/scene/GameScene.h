@@ -35,7 +35,7 @@ public:
 	/// </summary>
 	~GameScene();
 
-	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
+	static void StaticInitialize();
 
 	/// <summary>
 	/// 初期化

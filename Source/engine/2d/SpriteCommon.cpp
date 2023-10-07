@@ -1,9 +1,9 @@
 #include "SpriteCommon.h"
 #include <d3dcompiler.h>
+#include <cassert>
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
-using namespace DirectX;
 
 const size_t kMaxSRVCount = 2056;
 DirectXBasic* SpriteCommon::directXBasic_;

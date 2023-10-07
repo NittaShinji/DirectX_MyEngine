@@ -1,7 +1,7 @@
 #pragma once
 #include "DirectXBasic.h"
-#include "ImGuiManager.h"
 #include "Input.h"
+#include "ImGuiManager.h"
 
 //前方宣言
 class SceneManager;
@@ -34,7 +34,7 @@ protected:
 
 	enum PadNum
 	{
-		Player1 = 1,
+		Player1 = 0,
 	};
 
 	static DirectXBasic* directXBasic_;

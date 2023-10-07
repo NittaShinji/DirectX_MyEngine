@@ -1,5 +1,4 @@
 #pragma once
-#include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
 #include <memory>
@@ -7,6 +6,10 @@
 #include <string>
 #include <chrono>
 #include "WindowsAPI.h"
+#pragma warning(push)
+#pragma warning(disable:4820)
+#include <d3d12.h>
+#pragma warning(pop)
 
 //DirectX基盤
 class DirectXBasic

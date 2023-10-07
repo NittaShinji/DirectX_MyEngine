@@ -18,7 +18,7 @@ public:
 	//描画
 	void Draw() override;
 
-	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
+	static void StaticInitialize();
 
 private:
 

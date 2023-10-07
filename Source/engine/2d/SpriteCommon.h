@@ -1,17 +1,13 @@
 #pragma once
-#include <d3d12.h>
 #include <dxgi1_6.h>
 #include <wrl.h>
 #include <array>
 #include <map>
 #include <string>
-#include <DirectXTex.h>
 #include "Vector4.h"
 #include "DirectXBasic.h"
 #include "MathUtillity.h"
 #include "TextureManager.h"
-
-using namespace DirectX;
 
 class SpriteCommon final
 {

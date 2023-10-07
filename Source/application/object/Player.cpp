@@ -376,8 +376,6 @@ void Player::JumpRotation()
 
 void Player::GroundRotation()
 {
-
-	float angle = ToRadian(360.0f);
 	float rotateYVec = 0.10f;
 
 	if(rotateYTimer_ >= 0)

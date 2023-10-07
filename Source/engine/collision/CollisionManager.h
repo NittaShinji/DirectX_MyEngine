@@ -1,7 +1,6 @@
 #pragma once
 #include "CollisionPrimitive.h"
 #include "RaycastHit.h"
-#include <d3d12.h>
 #include <forward_list>
 
 class BaseCollider;

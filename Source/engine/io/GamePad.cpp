@@ -4,7 +4,7 @@
 
 void GamePad::Initialzie(UINT padNum)
 {
-	padNum_ = padNum - 1;
+	padNum_ = padNum;
 }
 
 bool GamePad::IsConnected(UINT padNum)
@@ -16,7 +16,7 @@ bool GamePad::IsConnected(UINT padNum)
 
 	ZeroMemory(&state_, sizeof(XINPUT_STATE));
 
-	dwResult = XInputGetState(padNum_, &state_);
+	dwResult = XInputGetState(padNum, &state_);
 
 	if(dwResult == ERROR_SUCCESS)
 	{
@@ -35,9 +35,6 @@ void GamePad::CheckDeadZone()
 
 	//コントローラーがどこまで押されているか
 	float magnitude = static_cast<float>(sqrt(LX * LX + LY * LY));
-	//コントローラーが押される方向を決定する。
-	float normalizedLX = LX / magnitude;
-	float normalizedLY = LY / magnitude;
 
 	float normalizedMagnitude = 0;
 

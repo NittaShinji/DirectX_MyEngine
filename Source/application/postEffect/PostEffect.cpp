@@ -1,11 +1,15 @@
 #include "PostEffect.h"
 #include "WindowsAPI.h"
 #include "Matrix4.h"
-#include <d3dx12.h>
 #include <d3dcompiler.h>
-#pragma comment(lib,"d3dcompiler.lib")
+#include <cassert>
 
-using namespace DirectX;
+#pragma warning(push)
+#pragma warning(disable:4820)
+#include <d3dx12.h>
+#pragma warning(pop)
+
+#pragma comment(lib,"d3dcompiler.lib")
 
 //静的メンバ変数の実態
 std::string PostEffect::kDefaultTextureDirectoryPath_ = "Resources/";

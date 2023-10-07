@@ -1,7 +1,11 @@
 #include "TextureManager.h"
-#include <DirectXTex.h>
 #include <d3dcompiler.h>
 #include <string.h>
+#pragma warning(push)
+#pragma warning(disable:4061)
+#pragma warning(disable:4820)
+#include <DirectXTex.h>
+#pragma warning(pop)
 
 #pragma comment(lib, "d3dcompiler.lib")
 

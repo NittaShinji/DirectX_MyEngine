@@ -1,7 +1,10 @@
 #pragma once
 #include <wrl.h>
-#include <d3d12.h>
 #include "MathUtillity.h"
+#pragma warning(push)
+#pragma warning(disable:4820)
+#include <d3d12.h>
+#pragma warning(pop)
 
 using namespace MathUtillty;
 
@@ -31,7 +34,7 @@ public: //アクセッサ
 	{
 		//正規化してセット
 		this->lightDir_ = Vector3Normalize(lightDir);
-		this->upVec_ = upVec_;
+		this->upVec_ = upVec;
 		dirty_ = true;
 	}
 

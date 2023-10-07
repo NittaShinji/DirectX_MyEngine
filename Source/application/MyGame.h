@@ -1,11 +1,11 @@
 #pragma once
-#include "ImGuiManager.h"
 #include "GameScene.h"
 #include "PostEffect.h"
 #include "MyFramework.h"
 #include "TitleScene.h"
 #include <fstream>
 #include <memory>
+#include "ImGuiManager.h"
 
 class MyGame : public MyFramework
 {

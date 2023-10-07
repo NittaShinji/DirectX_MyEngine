@@ -1,5 +1,4 @@
 #pragma once
-
 #include "CollisionTypes.h"
 #include "Object3d.h"
 #include "CollisionInfo.h"

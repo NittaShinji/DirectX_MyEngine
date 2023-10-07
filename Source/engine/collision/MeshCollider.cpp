@@ -1,7 +1,6 @@
 #include "MeshCollider.h"
 #include "Collision.h"
 
-using namespace DirectX;
 using namespace MathUtillty;
 
 void MeshCollider::ConstructTriangles(Model* model)

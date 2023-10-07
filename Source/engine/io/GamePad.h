@@ -1,6 +1,9 @@
 #pragma once
 #include "windows.h"
+#pragma warning(push)
+#pragma warning(disable:4023)
 #include "xinput.h"
+#pragma warning(pop)
 
 #pragma comment(lib, "XInput.lib")
 
