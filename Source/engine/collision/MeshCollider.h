@@ -1,7 +1,6 @@
 #pragma once
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
-//#include <DirectXMath.h>
 #include "Matrix4.h"
 
 //メッシュ衝突判定オブジェクト

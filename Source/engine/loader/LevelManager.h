@@ -2,7 +2,6 @@
 #include "json.hpp"
 #include "Object3d.h"
 #include "Model.h"
-//#include <DirectXMath.h>
 #include <fstream>
 #include <vector>
 #include "Vector3.h"

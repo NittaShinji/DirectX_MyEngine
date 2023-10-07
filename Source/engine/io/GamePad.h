@@ -1,6 +1,5 @@
 #pragma once
 #include "windows.h"
-#include <directXMath.h>
 #include "xinput.h"
 
 #pragma comment(lib, "XInput.lib")

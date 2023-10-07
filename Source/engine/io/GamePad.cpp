@@ -1,4 +1,5 @@
 #include "GamePad.h"
+#include <directXMath.h>
 #include <wrl.h>
 
 void GamePad::Initialzie(UINT padNum)

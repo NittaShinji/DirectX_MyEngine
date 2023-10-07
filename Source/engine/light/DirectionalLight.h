@@ -1,5 +1,4 @@
 #pragma once
-//#include <DirectXMath.h>
 #include <wrl.h>
 #include <d3d12.h>
 #include "MathUtillity.h"

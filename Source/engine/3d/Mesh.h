@@ -2,7 +2,6 @@
 #include "DirectXBasic.h"
 #include "Vector2.h"
 #include "Vector3.h"
-//#include <DirectXMath.h>
 #include <vector>
 #include <wrl.h>
 

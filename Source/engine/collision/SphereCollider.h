@@ -2,7 +2,6 @@
 
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
-//#include <DirectXMath.h>
 
 class SphereCollider : public BaseCollider, public Sphere
 {

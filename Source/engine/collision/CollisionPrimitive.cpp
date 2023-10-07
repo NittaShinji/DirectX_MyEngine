@@ -1,6 +1,5 @@
 #include "CollisionPrimitive.h"
 
-using namespace DirectX;
 using namespace MathUtillty;
 
 void Triangle::ComputeNormal()

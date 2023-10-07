@@ -1,4 +1,5 @@
 #include "Collision.h"
+#include <DirectXMath.h>
 
 using namespace DirectX;
 using namespace MathUtillty;
