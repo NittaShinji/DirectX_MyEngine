@@ -6,7 +6,7 @@ class GameCamera : public Camera
 {
 public:
 
-	void Update(bool isPlayerMoving, Vector3 playerAxcell_, Vector3 pInitPos);
+	void Update(bool isPlayerMoving, Vector3 playerAxcell_);
 
 	void Reset();
 

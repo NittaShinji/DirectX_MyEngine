@@ -2,7 +2,7 @@
 #include "ImGuiManager.h"
 
 
-void GameCamera::Update(bool isPlayerMoving, Vector3 playerAxcell_, Vector3 pInitPos)
+void GameCamera::Update(bool isPlayerMoving, Vector3 playerAxcell_)
 {
 	if(isPlayerMoving == true)
 	{

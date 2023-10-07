@@ -198,7 +198,7 @@ void GameScene::Update()
 
 	camera_->Update();
 	testCamera_->Update();
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell(), player_->GetPlayerInitPos());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell());
 
 	if(player_->GetOnGround() == true)
 	{
@@ -222,11 +222,11 @@ void GameScene::Update()
 			acc.y = (float)rand() / RAND_MAX * md_acc;
 
 			//色を変化させる
-			if(player_->GetAttribute() == Attribute::pink)
+			if(player_->GetAttributeColor() == Attribute::pink)
 			{
 				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
 			}
-			else if(player_->GetAttribute() == Attribute::yellow)
+			else if(player_->GetAttributeColor() == Attribute::yellow)
 			{
 				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
 			}
@@ -277,7 +277,7 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	particleManager_->Update(gameCamera_.get(), player_->GetAttribute());
+	particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
 
 #ifdef _DEBUG
 

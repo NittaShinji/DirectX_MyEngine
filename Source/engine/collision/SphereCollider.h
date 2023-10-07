@@ -21,13 +21,13 @@ public:
 	/// </summary>
 	void Update() override;
 
-	inline void SetRadius(float radius) { this->radius = radius; }
+	inline void SetRadius(float radius) { radius_ = radius; }
 
 	inline const Vector3& GetOffset() { return offset_; }
 
 	inline void SetOffset(const Vector3& offset) { this->offset_ = offset; }
 
-	inline float GetRadius() { return radius; }
+	inline float GetRadius() { return SphereRadius; }
 
 private:
 	//オブジェクト中心からのオフセット

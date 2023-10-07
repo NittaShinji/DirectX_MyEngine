@@ -90,7 +90,7 @@ bool CollisionManager::Raycast(const Ray& ray, unsigned short attribute, Raycast
 		BaseCollider* colA = *it;
 
 		//属性が合わなければスキップ
-		if(!(colA->attribute & attribute))
+		if(!(colA->attribute_ & attribute))
 		{
 			continue;
 		}

@@ -60,7 +60,7 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter)
 	Sphere localSphere;
 	localSphere.center = Vector3Transform(sphere.center, invMatWorld_)
 		;
-	localSphere.radius *= invMatWorld_.m[0][0];
+	localSphere.SphereRadius *= invMatWorld_.m[0][0];
 
 
 	//ローカル座標系で交差をチェック

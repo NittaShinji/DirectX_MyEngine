@@ -50,8 +50,6 @@ ComPtr<ID3D12RootSignature> ParticleManager::rootSignature_;
 template <typename Type1>
 ComPtr<ID3D12Resource> ParticleManager::CrateConstBuff(Type1* device)
 {
-	ComPtr<ID3D12Resource> constBuff_;
-
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
 	cbHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD;

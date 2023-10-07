@@ -65,7 +65,7 @@ void Player::Initialize()
 	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
 	totalAxcell_ = { 0.0f,0.0f,0.0f };
 
-	attribute_ = Attribute::pink;
+	attributeColor_ = Attribute::pink;
 	colorFlag_ = true;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
 }
@@ -87,26 +87,26 @@ void Player::Update(Camera* camera)
 	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		//属性の変更
-		if(attribute_ == Attribute::pink)
+		if(attributeColor_ == Attribute::pink)
 		{
-			attribute_ = Attribute::yellow;
+			attributeColor_ = Attribute::yellow;
 		}
-		else if(attribute_ == Attribute::yellow)
+		else if(attributeColor_ == Attribute::yellow)
 		{
-			attribute_ = Attribute::pink;
+			attributeColor_ = Attribute::pink;
 		}
 		else
 		{
-			attribute_ = Attribute::black;
+			attributeColor_ = Attribute::black;
 		}
 
 		colorFlag_ = true;
 
-		if(attribute_ == Attribute::pink)
+		if(attributeColor_ == Attribute::pink)
 		{
 			SetColor(Vector3(1.0f, 0.4f, 0.7f));
 		}
-		else if(attribute_ == Attribute::yellow)
+		else if(attributeColor_ == Attribute::yellow)
 		{
 			SetColor(Vector3(1.0f, 0.469f, 0.0f));
 		}
@@ -215,7 +215,7 @@ void Player::Update(Camera* camera)
 	//落下状態
 	else if(fallVec_.y <= 0.0f)
 	{
-		AccelerateChangeColor(camera_);
+		AccelerateChangeColor();
 
 		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 		{
@@ -242,19 +242,19 @@ void Player::Update(Camera* camera)
 void Player::OnCollision(const CollisionInfo& info)
 {
 	//色が違う場合、死亡判定にする
-	if(info.object->GetAttribute() != attribute_)
+	if(info.object->GetAttributeColor() != attributeColor_)
 	{
 		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		isDead_ = true;
 	}
 
-	if(info.object->GetAttribute() == Attribute::Goal)
+	if(info.object->GetAttributeColor() == Attribute::Goal)
 	{
 		isfinish_ = true;
 	}
 }
 
-void Player::AccelerateChangeColor(Camera* camera)
+void Player::AccelerateChangeColor()
 {
 	//オブジェクトと接触する際の距離を計算
 	//ギリギリのところでスペースを押すと加速する
@@ -334,7 +334,7 @@ void Player::Reset()
 	isMoving_ = false;
 	isDead_ = false;
 	isChangeColor = false;
-	attribute_ = Attribute::pink;
+	attributeColor_ = Attribute::pink;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
 }
 

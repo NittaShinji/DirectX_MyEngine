@@ -310,10 +310,10 @@ void Object3d::Initialize()
 
 Object3d::~Object3d()
 {
-	if(collider)
+	if(collider_)
 	{
 		//コリジョンマネージャーから登録を解除する
-		CollisionManager::GetInstance()->RemoveCollider(collider);
+		CollisionManager::GetInstance()->RemoveCollider(collider_);
 	}
 }
 
@@ -385,9 +385,9 @@ void Object3d::Update(Camera* camera)
 	constBuffMaterial_->Unmap(0, nullptr);
 
 	//当たり判定更新
-	if(collider)
+	if(collider_)
 	{
-		collider->Update();
+		collider_->Update();
 	}
 }
 
@@ -469,7 +469,7 @@ void Object3d::SetAmbient(Vector3 color)
 void Object3d::SetCollider(BaseCollider* collider)
 {
 	collider->SetObject(this);
-	this->collider = collider;
+	collider_ = collider;
 	//コリジョンマネージャーに登録
 	CollisionManager::GetInstance()->AddCollider(collider);
 	//コライダーを更新しておく
@@ -494,4 +494,9 @@ std::unique_ptr<Object3d> Object3d::Create(const std::string& path)
 	instance->SetModel(path);
 
 	return instance;
+}
+
+void Object3d::OnCollision(const CollisionInfo& info)
+{
+	static_cast<void>(info);
 }

@@ -203,9 +203,6 @@ private: // メンバ変数
 	//最大限生成しているかどうか
 	bool isMaxParticle_;
 
-	//生成済みのパーティクルの数
-	int32_t nowParticleCount_ = 0;
-
 	bool isFinish_ = 0;
 
 	//一度に生成する数

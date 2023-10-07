@@ -21,7 +21,7 @@ public:
 	void OnCollision(const CollisionInfo& info) override;
 
 	//加速する
-	void AccelerateChangeColor(Camera* camera);
+	void AccelerateChangeColor();
 
 	void Accelerate();
 
@@ -72,9 +72,6 @@ private:
 	//ゴールしたかどうか
 	bool isfinish_;
 
-	//半径
-	float radius = 0.6f;
-
 	//プレイヤーのコライダー
 	std::unique_ptr<SphereCollider> playerCollider_ = nullptr;
 
@@ -100,7 +97,7 @@ private:
 
 	bool pushMoment_ = false;
 
-	Attribute attribute_;
+	Attribute attributeColor_;
 
 	//ジャンプ時の加速度
 	float jumpAcc_ = 0.0f;
@@ -143,7 +140,7 @@ public:
 	bool GetIsDead() { return isDead_; }
 	Vector3 GetPos() { return position_; }
 	bool GetOnGround() { return onGround_; }
-	Attribute GetAttribute() { return attribute_; }
+	Attribute GetAttributeColor() { return attributeColor_; }
 	Vector3 GetPlayerInitPos() { return playerInitPos_; }
 	Vector3 GetTotalAxcell() { return totalAxcell_; }
 

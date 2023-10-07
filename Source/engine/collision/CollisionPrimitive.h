@@ -12,7 +12,7 @@ struct Sphere
 	float upVec = 1.0f;
 
 	//半径
-	float radius = 1.0f;
+	float SphereRadius = 1.0f;
 
 	Vector3 pos = { 0,0,0 };
 };

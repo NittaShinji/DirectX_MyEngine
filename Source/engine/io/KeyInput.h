@@ -60,9 +60,7 @@ private:
 	KeyInput() = default;
 	//デストラクタ
 	~KeyInput() = default;
-	//インスタンス
-	static KeyInput* instance;
-
+	
 	//各種キーの保存用変数
 	static BYTE sKeys_[256];
 	static BYTE sOldKeys_[256];
