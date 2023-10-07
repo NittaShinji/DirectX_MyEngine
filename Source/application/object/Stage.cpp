@@ -1,6 +1,6 @@
 #include "Stage.h"
 #include <string>
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 
 void Stage::Initialize(const std::string& fileName)
 {

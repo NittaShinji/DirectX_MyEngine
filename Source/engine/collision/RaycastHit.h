@@ -1,6 +1,6 @@
 #pragma once
 #include "BaseCollider.h"
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 
 class  Object3d;
 

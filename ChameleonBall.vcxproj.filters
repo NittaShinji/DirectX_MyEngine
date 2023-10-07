@@ -127,7 +127,7 @@
     <Filter Include="リソース ファイル\Shaders">
       <UniqueIdentifier>{ae37a6d1-e1db-40fb-a852-fee2fd14a170}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\engine\base\audio">
+    <Filter Include="ソース ファイル\engine\audio">
       <UniqueIdentifier>{2c701f22-383e-465a-bb63-811b8756a2be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -148,7 +148,7 @@
       <Filter>ソース ファイル\engine\3d</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\audio\Sound.cpp">
-      <Filter>ソース ファイル\engine\base\audio</Filter>
+      <Filter>ソース ファイル\engine\audio</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\collision\Collision.cpp">
       <Filter>ソース ファイル\engine\collision</Filter>
@@ -252,9 +252,6 @@
     <ClCompile Include="Source\engine\math\Vector2.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
-    <ClCompile Include="DirectXGame\application\debug\ImGuiManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Source\engine\2d\TextureManager.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
     </ClCompile>
@@ -262,7 +259,7 @@
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\audio\SoundManager.cpp">
-      <Filter>ソース ファイル\engine\base\audio</Filter>
+      <Filter>ソース ファイル\engine\audio</Filter>
     </ClCompile>
     <ClCompile Include="Source\application\scene\TutorialScene.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
@@ -418,9 +415,6 @@
     </ClInclude>
     <ClInclude Include="Source\engine\math\Vector2.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectXGame\application\debug\ImGuiManager.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\2d\TextureManager.h">
       <Filter>ヘッダー ファイル\engine\2d</Filter>

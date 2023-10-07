@@ -6,7 +6,7 @@
 #include <map>
 #include <string>
 #include <DirectXTex.h>
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 #include "Vector4.h"
 #include "DirectXBasic.h"
 #include "MathUtillity.h"

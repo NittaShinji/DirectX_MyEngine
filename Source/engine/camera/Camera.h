@@ -4,7 +4,7 @@
 #include <dxgi1_6.h>
 #include "Input.h"
 #include "DirectXBasic.h"
-#include <DirectXMath.h>
+//#include <DirectXMath.h>
 #include <wrl.h>
 #include "MathUtillity.h"
 

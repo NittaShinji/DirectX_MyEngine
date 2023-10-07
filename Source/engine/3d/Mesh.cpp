@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include <cassert>
 
 DirectXBasic* Mesh::directXBasic_ = nullptr;
 

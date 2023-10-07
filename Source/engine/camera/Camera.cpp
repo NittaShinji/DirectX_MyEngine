@@ -1,11 +1,11 @@
 #include "Camera.h"
-#include <DirectXMath.h>
 #include <d3d12.h>
 #include <cmath>
+#include <cassert>
 
 DirectXBasic* Camera::directXBasic_ = nullptr;
 
-using namespace DirectX;
+//using namespace DirectX;
 using namespace MathUtillty;
 
 void Camera::StaticInitialize(DirectXBasic* directXBasic)
