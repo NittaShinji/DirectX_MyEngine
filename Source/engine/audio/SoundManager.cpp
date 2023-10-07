@@ -105,10 +105,40 @@ void SoundManager::LoadSoundWave(const std::string& fileName)
 }
 
 //キーに対応したサウンドデータを返す
-Sound::SoundData SoundManager::GetSoundData(std::string fileName)
+Sound::SoundData& SoundManager::GetSoundData(std::string fileName)
 {
-	Sound::SoundData soundData = soundDatas_.at(fileName);
+	std::map<std::string, Sound::SoundData>::iterator it = soundDatas_.find(fileName);
+	//見読み込みの検出
+	assert(it != soundDatas_.end());
+	//サウンドデータの参照を取得
+	Sound::SoundData& soundData = it->second;
 
 	return soundData;
 }
+
+//音声データ解放
+void SoundManager::UnloadSound(Sound::SoundData* soundData)
+{
+	//バッファのメモリを解放
+	soundData->pBuffer = { 0 };
+	soundData->bufferSize = 0;
+	soundData->wfex = {};
+}
+
+void SoundManager::Finalize()
+{
+	//XAudio2解放
+	xAudio2_.Reset();
+
+	//音声データ解放
+	//イテレーターを回す
+	std::map<std::string, Sound::SoundData>::iterator it = soundDatas_.begin();
+	for(; it != soundDatas_.end(); it++)
+	{
+		UnloadSound(&it->second);
+	}
+
+	soundDatas_.clear();
+}
+
 

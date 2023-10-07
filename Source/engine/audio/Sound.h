@@ -79,7 +79,7 @@ public: //メンバ関数
 	void Initialize(const std::string& fileName);
 
 	//音声再生
-	void PlaySoundWave(const std::string& fileName, bool isLoop);
+	void PlaySoundWave(bool isLoop);
 
 	//音声停止
 	void StopSound(const std::string& fileName);
@@ -97,5 +97,7 @@ private:
 
 	//サウンドデータ
 	SoundData soundData_;
+	//サウンドデータマップ
+	//std::map<std::string, Sound::SoundData> soundDataMap_;
 };
 

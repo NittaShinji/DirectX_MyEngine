@@ -4,6 +4,7 @@
 #include "Object3d.h"
 #include "Camera.h"
 #include "GamePad.h"
+#include "SoundManager.h"
 
 class TitleScene : public BaseScene
 {
@@ -82,5 +83,8 @@ private:
 
 	//アニメーションが終わったかどうか
 	bool isFinishAnimetion;
+
+	//サウンド
+	std::unique_ptr<Sound> titleSound_ = nullptr;
 };
 

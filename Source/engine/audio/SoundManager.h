@@ -6,6 +6,9 @@ class SoundManager final
 {
 private:
 
+	//エイリアステンプレート
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
 	SoundManager();
 	~SoundManager();
 
@@ -50,7 +53,7 @@ public:
 private:
 
 	//XAudio2のインスタンス
-	Microsoft::WRL::ComPtr<IXAudio2> xAudio2_;
+	ComPtr<IXAudio2> xAudio2_;
 	//サウンドデータコンテナ
 	std::map<std::string, Sound::SoundData> soundDatas_;
 
@@ -61,7 +64,9 @@ private:
 
 public:
 
-	Sound::SoundData GetSoundData(std::string fileName);
+	Sound::SoundData& GetSoundData(std::string fileName);
+	std::map<std::string, Sound::SoundData> GetSoundDataMap() { return soundDatas_; }
+
+	ComPtr<IXAudio2> GetXAudio2() { return xAudio2_.Get(); };
 
 };
-

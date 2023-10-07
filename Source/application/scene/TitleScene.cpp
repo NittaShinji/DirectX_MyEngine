@@ -1,6 +1,6 @@
 #include "TitleScene.h"
 #include "SceneManager.h"
-#include "Sound.h"
+
 #include "WindowsAPI.h"
 #include "Vector2.h"
 #include "Easing.h"
@@ -88,6 +88,11 @@ void TitleScene::Initialize()
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
 	//サウンド
+	SoundManager::GetInstance()->Initialize();
+	SoundManager::GetInstance()->LoadSoundWave("title.wav");
+	titleSound_ = std::make_unique<Sound>();
+	titleSound_->Initialize("title.wav");
+	titleSound_->PlaySoundWave(false);
 	//Sound::GetInstance()->Initialize();
 	//Sound::GetInstance()->LoadSoundWave("title.wav");
 	//Sound::GetInstance()->LoadSoundWave("touch.wav");
@@ -253,6 +258,7 @@ void TitleScene::Update()
 			{
 				//Sound::GetInstance()->PauseSound("title.wav");
 				/*Sound::GetInstance()->Finalize();*/
+				SoundManager::GetInstance()->Finalize();
 				SceneManager::GetInstance()->ChangeScene("StageSelect");
 			}
 		}
