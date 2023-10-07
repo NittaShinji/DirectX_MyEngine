@@ -2,7 +2,6 @@
 #include "Sprite.h"
 #include "Object3d.h"
 #include "Sound.h"
-#include "CollisionPrimitive.h"
 #include "ImGuiManager.h"
 #include "DirectionalLight.h"
 #include "LevelManager.h"

@@ -24,17 +24,17 @@ public:
 
 	inline void SetAttribute(unsigned short attribute)
 	{
-		this->attribute = attribute;
+		attribute_ = attribute;
 	}
 
 	inline void AddAttribute(unsigned short attribute)
 	{
-		this->attribute |= attribute;
+		attribute_ |= attribute;
 	}
 
 	inline void RemoveAttribute(unsigned short attribute)
 	{
-		this->attribute &= !attribute;
+		attribute_ &= !attribute;
 	}
 
 	/// <summary>
@@ -57,6 +57,6 @@ protected:
 	CollisionShapeType shapeType_ = SHAPE_UNKNOWN;
 
 	//当たり判定属性
-	unsigned short attribute = 0b1111111111111111;
+	unsigned short attribute_ = 0b1111111111111111;
 
 };

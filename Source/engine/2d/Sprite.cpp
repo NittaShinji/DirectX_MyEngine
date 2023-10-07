@@ -127,7 +127,7 @@ void Sprite::Initialize(Vector2 position, Vector2 size)
 
 	// 頂点バッファの生成
 	//ComPtr<ID3D12Resource> vertBuff_ = nullptr;
-	result_ = directXBasic_->GetResult();
+	HRESULT result_ = directXBasic_->GetResult();
 	result_ = directXBasic_->GetDevice()->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
@@ -196,7 +196,7 @@ void Sprite::matUpdate()
 
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
+	HRESULT result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result_));
 	// 全頂点に対して
 	for(int32_t i = 0; i < vertices_.size(); i++)
@@ -271,7 +271,7 @@ void Sprite::Draw(const std::string& fileName)
 
 void Sprite::TransferVertices()
 {
-	HRESULT result = S_FALSE;
+	//HRESULT result = S_FALSE;
 
 	// 左下、左上、右下、右上
 	enum { LB, LT, RB, RT };

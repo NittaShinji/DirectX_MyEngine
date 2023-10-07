@@ -16,7 +16,7 @@ std::unique_ptr<TouchableObject> TouchableObject::Create(const std::string& path
 	instance->SetModel(path);
 	instance->AddCollider(instance->GetModel());
 	//属性を設定
-	instance->collider->SetAttribute(COLLISION_ATTR_LANDSHAPE);
+	instance->collider_->SetAttribute(COLLISION_ATTR_LANDSHAPE);
 	return instance;
 }
 

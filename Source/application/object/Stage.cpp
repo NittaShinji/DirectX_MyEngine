@@ -38,20 +38,20 @@ void Stage::Initialize(const std::string& fileName)
 
 			if(objectData.attribute == "Pink")
 			{
-				newObject->SetAttribute(Attribute::pink);
+				newObject->SetAttributeColor(Attribute::pink);
 			}
 			else if(objectData.attribute == "Yellow")
 			{
-				newObject->SetAttribute(Attribute::yellow);
+				newObject->SetAttributeColor(Attribute::yellow);
 			}
 			else if(objectData.attribute == "Goal")
 			{
 				goalPos_ = pos;
-				newObject->SetAttribute(Attribute::Goal);
+				newObject->SetAttributeColor(Attribute::Goal);
 			}
 			else
 			{
-				newObject->SetAttribute(Attribute::black);
+				newObject->SetAttributeColor(Attribute::black);
 			}
 
 			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0")
@@ -60,11 +60,11 @@ void Stage::Initialize(const std::string& fileName)
 				{
 					newObject->SetColorFlag(true);
 
-					if(newObject->GetAttribute() == Attribute::yellow)
+					if(newObject->GetAttributeColor() == Attribute::yellow)
 					{
 						newObject->SetColor(Vector3(1.0f, 0.469f, 0.0f));
 					}
-					else if(newObject->GetAttribute() == Attribute::pink)
+					else if(newObject->GetAttributeColor() == Attribute::pink)
 					{
 						newObject->SetColor(Vector3(0.78f, 0.08f, 0.52f));
 					}

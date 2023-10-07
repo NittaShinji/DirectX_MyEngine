@@ -9,6 +9,6 @@ void SphereCollider::Update()
 
 	//球のメンバ変数を更新
 	Sphere::center = Vector3Transform(offset_, matWorld);
-	Sphere::radius = radius;
+	Sphere::SphereRadius = SphereRadius;
 	Sphere::pos = Vector3TransformNormal(Sphere::pos, matWorld);
 }

@@ -7,7 +7,6 @@
 #pragma comment(lib,"dinput8.lib")
 #pragma comment(lib,"dxguid.lib")
 
-KeyInput* KeyInput::instance = nullptr;
 BYTE KeyInput::sKeys_[256];
 BYTE KeyInput::sOldKeys_[256];
 Microsoft::WRL::ComPtr<IDirectInputDevice8> KeyInput::keyboard_;

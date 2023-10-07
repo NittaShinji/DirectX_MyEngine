@@ -74,7 +74,7 @@ public:
 	/// 衝突時コールバック関数
 	/// </summary>
 	/// <param name="info">衝突情報</param>
-	virtual void OnCollision(const CollisionInfo& info) {}
+	virtual void OnCollision(const CollisionInfo& info);
 
 	void MovePos(Vector3 moveVec);
 
@@ -83,7 +83,7 @@ protected:	//メンバ変数
 	//クラス名(デバッグ用)
 	const char* name = nullptr;
 	//コライダー
-	BaseCollider* collider = nullptr;
+	BaseCollider* collider_ = nullptr;
 
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
@@ -149,7 +149,7 @@ protected:	//メンバ変数
 	Vector3 color_ = { 1,1,1 };
 
 	//属性
-	int32_t attribute_;
+	int32_t attributeColor_;
 
 public:
 
@@ -167,7 +167,7 @@ public:
 	//const Model& GetModel() { return model_; }
 	Model* GetModel() { return &model_; }
 	bool GetColorFlag() { return colorFlag_; }
-	int32_t GetAttribute() { return attribute_; }
+	int32_t GetAttributeColor() { return attributeColor_; }
 
 
 	void SetTransform(const Vector3& pos) { transform_ = pos; };
@@ -181,7 +181,7 @@ public:
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
 	void SetColor(Vector3 color) { color_ = color; }
 	void SetAmbient(Vector3 color);
-	void SetAttribute(int32_t attribute) { attribute_ = attribute; }
+	void SetAttributeColor(int32_t attribute) { attributeColor_ = attribute; }
 
 	/// <summary>
 	/// コライダーのセット

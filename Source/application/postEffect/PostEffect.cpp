@@ -288,9 +288,6 @@ void PostEffect::Draw()
 	ID3D12DescriptorHeap* heaps[] = { descHeapSRV.Get() };
 	directXBasic_->GetCommandList()->SetDescriptorHeaps(1, heaps);
 
-	//デスクリプタのサイズを取得
-	UINT incrementSize = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
 	//SRVヒープの先頭にあるSRVをルートパラメータ1番に設定
 	directXBasic_->GetCommandList()->SetGraphicsRootDescriptorTable(1,
 		CD3DX12_GPU_DESCRIPTOR_HANDLE(
