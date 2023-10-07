@@ -1,6 +1,5 @@
 #include "LightGroup.h"
-
-using namespace DirectX;
+#include <cassert>
 
 /// <summary>
 /// 静的メンバ変数の実体

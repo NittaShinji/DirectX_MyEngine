@@ -1,7 +1,6 @@
 #include "Collision.h"
-#include <DirectXMath.h>
+#include <cmath>
 
-using namespace DirectX;
 using namespace MathUtillty;
 
 Collision::Collision() {}
