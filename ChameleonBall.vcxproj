@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GroundParticle.cpp" />
     <ClCompile Include="Source\application\debug\ImGuiManager.cpp" />
     <ClCompile Include="Source\application\object\BackGround.cpp" />
     <ClCompile Include="Source\application\scene\ClearScene.cpp" />
@@ -145,6 +146,8 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GroundParticle.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="Source\application\debug\ImGuiManager.h" />
     <ClInclude Include="Source\application\object\BackGround.h" />
     <ClInclude Include="Source\application\scene\ClearScene.h" />
@@ -285,6 +288,9 @@
     <ProjectReference Include="External\imgui\imgui.vcxproj">
       <Project>{26fa002b-ec0d-4d7a-a69f-8eaa7662802e}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ChameleonBall.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

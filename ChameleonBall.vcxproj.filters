@@ -273,6 +273,9 @@
     <ClCompile Include="Source\engine\math\Easing.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
+    <ClCompile Include="GroundParticle.cpp">
+      <Filter>ソース ファイル\application\particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -437,6 +440,12 @@
     <ClInclude Include="Source\application\scene\StageSelect.h">
       <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundParticle.h">
+      <Filter>ヘッダー ファイル\application\particle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -493,5 +502,10 @@
     <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
       <Filter>リソース ファイル\Shaders</Filter>
     </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="ChameleonBall.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
