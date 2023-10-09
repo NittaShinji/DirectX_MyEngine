@@ -237,9 +237,7 @@ void SpriteCommon::InvertColor()
 	PipelineSet();
 
 #pragma region ブレンド設定()
-	// ブレンドステート
-	//pipelineDesc.BlendState.RenderTarget[0].RenderTargetWriteMask
-	//	= D3D12_COLOR_WRITE_ENABLE_ALL; // RBGA全てのチャンネルを描画
+
 	//レンダーターゲットのブレンド設定
 	D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[0];
 	blenddesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;// RBGA全てのチャンネルを描画
