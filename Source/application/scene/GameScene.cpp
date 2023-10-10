@@ -145,6 +145,15 @@ void GameScene::Initialize()
 	particleManager_->SetGenerationNum(50);
 	playerRunEffect_ = ParticleManager::Create();
 	playerRunEffect_->SetGenerationNum(50);
+
+	startScale = 0.5f;
+	endScale = 2.0f;
+
+
+	imGuiPos[0] = 0.0f;
+	imGuiPos[1] = 0.0f;
+	imGuiPos[2] = 0.0f;
+
 }
 
 void GameScene::Update()
@@ -200,26 +209,78 @@ void GameScene::Update()
 	testCamera_->Update();
 	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell());
 
+	//const float md_vel = 0.1f;
+
+	//float imGuiPos[3]{ player_->GetPos().x ,player_->GetPos().y - 0.8f,player_->GetPos().z };
+	//float imGuiVel[3]{ 0.0f,(float)rand() / RAND_MAX * md_vel - md_vel / 2.0f ,0.0f };
+	//float imGuiVel[3]{ 0.0f,0.0f,0.0f };
+
+
+	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+	//const float md_acc = 0.001f;
+	//float imGuiacc[3]{ 0.0f,-(float)rand() / RAND_MAX * md_acc ,0.0f };
+	//float imGuiacc[3]{ 0.0f,0.0f,0.0f };
+
+	ImGui::Begin("Particle");
+	ImGui::SetWindowPos(ImVec2(600, 0));
+	ImGui::SetWindowSize(ImVec2(300, 300));
+
+	ImGui::SliderFloat("StartScale", &startScale, 0.0f, 50.0f);
+	ImGui::SliderFloat("EndScale", &endScale, 0.0f, 50.0f);
+	ImGui::SliderFloat3("pos", imGuiPos, -3.0f, 3.0f);
+	ImGui::SliderFloat3("vel", imGuiVel, -1.0f, 1.0f);
+	ImGui::SliderFloat3("acc", imGuiAcc, -0.05f, 0.05f);
+
+
+	ImGui::End();
+
 	if(player_->GetOnGround() == true)
 	{
-		for(int i = 0; i < 5; i++)
+		//Vector3 pos = { imGuiPos[0] + player_->GetPos().x,imGuiPos[1] + player_->GetPos().y ,imGuiPos[2] + player_->GetPos().z};
+		Vector3 pos = { 0.0f,0.0f,0.0f};
+
+		Vector3 vel = { imGuiVel[0],imGuiVel[1] ,imGuiVel[2] };
+		//Vector3 acc = { imGuiacc[0],imGuiacc[1] ,imGuiacc[2] };
+
+		for(int i = 0; i < 3; i++)
 		{
-			//x,y,z全て[-1.0f,+1.0f]でランダムに分布
 			const float md_pos = 2.0f;
-			Vector3 pos{};
-			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f + player_->GetPos().y - 1.0f;
-			pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().z;
+			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().x + imGuiPos[0];
+			const float shiftY = -0.8f;
+			pos.y = player_->GetPos().y + shiftY + imGuiPos[1];
+			pos.z = player_->GetPos().z + imGuiPos[2];
+
+			//x,y,z全て[-1.0f,+1.0f]でランダムに分布
+			/*Vector3 pos{};*/
+			//pos.x = player_->GetPos().x;
+			//pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f + player_->GetPos().y - 1.5f;
+
+			//pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().z;
+
 			//x,y,z全て[-0.05f,+0.05f]でランダムに分布
-			const float md_vel = 0.1f;
-			Vector3 vel{};
-			vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			//const float md_vel = 0.1f;
+			//Vector3 vel{};
+			//vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			//vel.x = 0.0f;
+			//vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+			//vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
+
+			vel.x = 0.0f + imGuiVel[0];
+
+			const float md_velY = 0.174f;
+			vel.y = md_velY + imGuiVel[1];
+
+			const float md_velZ = -0.68f;
+			vel.z = md_velZ + imGuiVel[2];
+
+
 			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+			//acc.y = -(float)rand() / RAND_MAX * md_acc;
 			Vector3 acc{};
-			const float md_acc = 0.001f;
-			acc.y = (float)rand() / RAND_MAX * md_acc;
+			const float md_acc = -0.017f;
+			acc.x = imGuiAcc[0];
+			acc.y = md_acc + imGuiAcc[1];
+			acc.z = md_acc + imGuiAcc[2];
 
 			//色を変化させる
 			if(player_->GetAttributeColor() == Attribute::pink)
@@ -237,36 +298,8 @@ void GameScene::Update()
 			//追加
 			if(particleManager_->GetIsMaxParticle() == false)
 			{
-				particleManager_->Add(60, pos, vel, acc, colorSpeed, 2.0f, 1.0f);
+				particleManager_->Add(60, pos, vel, acc, colorSpeed, startScale, endScale);
 			}
-		}
-	}
-
-	for(int i = 0; i < 5; i++)
-	{
-		//x,y,z全て[-2.0f,+2.0f]でランダムに分布
-		const float md_pos = 4.0f;
-		Vector3 pos{};
-		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + 2.0f;
-		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + stage_->GetGoalPos().z;
-		//x,y,z全て[-0.05f,+0.05f]でランダムに分布
-		const float md_vel = 0.1f;
-		Vector3 vel{};
-		vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-		//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-		Vector3 acc{};
-		const float md_acc = 0.01f;
-		acc.y = (float)rand() / RAND_MAX * md_acc;
-		//色を変化させる
-		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
-
-		//追加
-		if(particleManager_->GetIsMaxParticle() == false)
-		{
-			particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
 		}
 	}
 

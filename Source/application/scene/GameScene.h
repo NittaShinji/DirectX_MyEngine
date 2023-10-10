@@ -116,5 +116,14 @@ private:
 
 	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> arrowSprite_ = nullptr;
+
+	float startScale = 1.0f;
+	float endScale = 2.0f;
+
+	float imGuiPos[3]{ 0.0f,0.0f,0.0f };
+	float imGuiVel[3]{ 0.0f,0.0f,0.0f };
+	float imGuiAcc[3]{ 0.0f,0.0f,0.0f };
+
+
 };
 

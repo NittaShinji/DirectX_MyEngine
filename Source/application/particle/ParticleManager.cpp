@@ -1,4 +1,5 @@
 #include "ParticleManager.h"
+#include "ImGuiManager.h"
 #include <d3dcompiler.h>
 #include <string.h>
 #include <cassert>
@@ -125,11 +126,14 @@ void ParticleManager::Update(Camera* camera, Attribute attribute)
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 
+	nowParticleCount_ = 0;
+
+	
+
 	if(SUCCEEDED(result))
 	{
 		for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 		{
-			int32_t nowParticleCount_ = 0;
 			if(nowParticleCount_ + generationNum_ >= kVertexCount || nowParticleCount_ >= kVertexCount)
 			{
 				isMaxParticle_ = true;
@@ -203,19 +207,16 @@ void ParticleManager::Update(Camera* camera, Attribute attribute)
 					vertMap->color.z = 0.1f;
 				}
 			}
-			else
-			{
-				/*vertMap->color.x = it->color.x + it->colorSpeed.x;
-				vertMap->color.y = it->color.y + it->colorSpeed.y;
-				vertMap->color.z = it->color.z + it->colorSpeed.z;
-				vertMap->color.w = it->color.w + it->colorSpeed.w;*/
-			}
+			else{}
 
 			//次の頂点へ
 			vertMap++;
 		}
+
 		vertBuff_->Unmap(0, nullptr);
 	}
+
+	
 
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;

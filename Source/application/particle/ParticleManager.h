@@ -207,5 +207,8 @@ private: // メンバ変数
 
 	//一度に生成する数
 	int32_t generationNum_;
+
+	//現在のパーティクルの数
+	int32_t nowParticleCount_ = 0;
 };
 
