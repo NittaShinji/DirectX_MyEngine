@@ -276,6 +276,9 @@
     <ClCompile Include="GroundParticle.cpp">
       <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
+    <ClCompile Include="HitWall.cpp">
+      <Filter>ソース ファイル\application\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -445,6 +448,9 @@
     </ClInclude>
     <ClInclude Include="GroundParticle.h">
       <Filter>ヘッダー ファイル\application\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="HitWall.h">
+      <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

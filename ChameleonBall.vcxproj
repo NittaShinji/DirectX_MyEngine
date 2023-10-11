@@ -97,6 +97,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GroundParticle.cpp" />
+    <ClCompile Include="HitWall.cpp" />
     <ClCompile Include="Source\application\debug\ImGuiManager.cpp" />
     <ClCompile Include="Source\application\object\BackGround.cpp" />
     <ClCompile Include="Source\application\scene\ClearScene.cpp" />
@@ -147,6 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GroundParticle.h" />
+    <ClInclude Include="HitWall.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\application\debug\ImGuiManager.h" />
     <ClInclude Include="Source\application\object\BackGround.h" />

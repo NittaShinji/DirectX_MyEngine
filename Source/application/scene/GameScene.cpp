@@ -94,12 +94,15 @@ void GameScene::Initialize()
 	const string skydome = "skydome";
 	const string cube = "Cube";
 	const string plane = "Plane";
+	const string wall = "wall";
+
 
 	Model::Load(sphere);
 	Model::Load(testStage0);
 	Model::Load(skydome);
 	Model::Load(cube);
 	Model::Load(plane);
+	Model::Load(wall);
 
 	//3Dオブジェクトの生成
 
@@ -119,7 +122,6 @@ void GameScene::Initialize()
 	plane_ = Object3d::Create(plane);
 	Vector3 planeScale = { 500,1000,1000 };
 	plane_->SetScale(planeScale);
-
 
 	//------------カメラ----------
 	camera_ = std::make_unique<Camera>();
@@ -209,39 +211,22 @@ void GameScene::Update()
 	testCamera_->Update();
 	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell());
 
-	//const float md_vel = 0.1f;
-
-	//float imGuiPos[3]{ player_->GetPos().x ,player_->GetPos().y - 0.8f,player_->GetPos().z };
-	//float imGuiVel[3]{ 0.0f,(float)rand() / RAND_MAX * md_vel - md_vel / 2.0f ,0.0f };
-	//float imGuiVel[3]{ 0.0f,0.0f,0.0f };
-
-
-	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-	//const float md_acc = 0.001f;
-	//float imGuiacc[3]{ 0.0f,-(float)rand() / RAND_MAX * md_acc ,0.0f };
-	//float imGuiacc[3]{ 0.0f,0.0f,0.0f };
-
 	ImGui::Begin("Particle");
 	ImGui::SetWindowPos(ImVec2(600, 0));
 	ImGui::SetWindowSize(ImVec2(300, 300));
-
 	ImGui::SliderFloat("StartScale", &startScale, 0.0f, 50.0f);
 	ImGui::SliderFloat("EndScale", &endScale, 0.0f, 50.0f);
 	ImGui::SliderFloat3("pos", imGuiPos, -3.0f, 3.0f);
 	ImGui::SliderFloat3("vel", imGuiVel, -1.0f, 1.0f);
 	ImGui::SliderFloat3("acc", imGuiAcc, -0.05f, 0.05f);
-
-
 	ImGui::End();
 
 	if(player_->GetOnGround() == true)
 	{
-		//Vector3 pos = { imGuiPos[0] + player_->GetPos().x,imGuiPos[1] + player_->GetPos().y ,imGuiPos[2] + player_->GetPos().z};
 		Vector3 pos = { 0.0f,0.0f,0.0f};
 
 		Vector3 vel = { imGuiVel[0],imGuiVel[1] ,imGuiVel[2] };
-		//Vector3 acc = { imGuiacc[0],imGuiacc[1] ,imGuiacc[2] };
-
+		
 		for(int i = 0; i < 3; i++)
 		{
 			const float md_pos = 2.0f;
@@ -249,21 +234,6 @@ void GameScene::Update()
 			const float shiftY = -0.8f;
 			pos.y = player_->GetPos().y + shiftY + imGuiPos[1];
 			pos.z = player_->GetPos().z + imGuiPos[2];
-
-			//x,y,z全て[-1.0f,+1.0f]でランダムに分布
-			/*Vector3 pos{};*/
-			//pos.x = player_->GetPos().x;
-			//pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f + player_->GetPos().y - 1.5f;
-
-			//pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().z;
-
-			//x,y,z全て[-0.05f,+0.05f]でランダムに分布
-			//const float md_vel = 0.1f;
-			//Vector3 vel{};
-			//vel.x = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			//vel.x = 0.0f;
-			//vel.y = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
-			//vel.z = (float)rand() / RAND_MAX * md_vel - md_vel / 2.0f;
 
 			vel.x = 0.0f + imGuiVel[0];
 
@@ -273,9 +243,7 @@ void GameScene::Update()
 			const float md_velZ = -0.68f;
 			vel.z = md_velZ + imGuiVel[2];
 
-
 			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-			//acc.y = -(float)rand() / RAND_MAX * md_acc;
 			Vector3 acc{};
 			const float md_acc = -0.017f;
 			acc.x = imGuiAcc[0];
