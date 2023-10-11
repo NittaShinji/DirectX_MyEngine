@@ -6,9 +6,9 @@
             "name": "Light",
             "transform": {
                 "translation": [
-                    4.076245307922363,
-                    1.0054539442062378,
-                    5.903861999511719
+                    21.368955612182617,
+                    -10.23479175567627,
+                    2.2199201583862305
                 ],
                 "rotation": [
                     37.261043548583984,
@@ -64,19 +64,6 @@
                 ]
             },
             "file_name": "sphere",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Goal"
         },
         {
@@ -100,20 +87,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "visible": true,
             "attribute": "Pink"
         },
         {
@@ -137,20 +110,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "visible": false,
             "attribute": "Yellow"
         },
         {
@@ -174,19 +133,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Yellow"
         },
         {
@@ -210,19 +156,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -246,19 +179,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -282,19 +202,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -341,20 +248,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "visible": true,
             "attribute": "Pink"
         },
         {
@@ -401,19 +294,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -437,19 +317,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -457,7 +324,7 @@
             "name": "立方体.012",
             "transform": {
                 "translation": [
-                    -240.1688232421875,
+                    -240.0,
                     0.0,
                     0.0
                 ],
@@ -473,19 +340,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -493,7 +347,7 @@
             "name": "立方体.013",
             "transform": {
                 "translation": [
-                    -220.1688232421875,
+                    -220.0,
                     0.0,
                     0.0
                 ],
@@ -509,19 +363,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -545,19 +386,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -581,19 +409,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -617,19 +432,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -653,19 +455,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Yellow"
         },
         {
@@ -689,19 +478,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Yellow"
         },
         {
@@ -725,20 +501,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "visible": false,
             "attribute": "Yellow"
         },
         {
@@ -762,19 +524,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -798,19 +547,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -834,19 +570,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Yellow"
         },
         {
@@ -870,19 +593,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Yellow"
         },
         {
@@ -906,20 +616,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
-            "visible": true,
             "attribute": "Pink"
         },
         {
@@ -943,19 +639,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -979,19 +662,6 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
@@ -1015,29 +685,16 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
-                ]
-            },
             "attribute": "Pink"
         },
         {
             "type": "MESH",
-            "name": "立方体.029",
+            "name": "立方体",
             "transform": {
                 "translation": [
-                    -51.85454559326172,
+                    -100.0,
                     0.0,
-                    1.9586102962493896
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -1051,21 +708,53 @@
                 ]
             },
             "file_name": "testStage0",
-            "collider": {
-                "type": "BOX",
-                "center": [
-                    0.0,
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.028",
+            "transform": {
+                "translation": [
+                    -180.0,
                     0.0,
                     0.0
                 ],
-                "size": [
-                    2.0,
-                    2.0,
-                    2.0
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
                 ]
             },
-            "visible": false,
-            "attribute": "Yellow"
+            "file_name": "testStage0",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.029",
+            "transform": {
+                "translation": [
+                    -200.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -1074,7 +763,30 @@
                 "translation": [
                     -100.0,
                     0.0,
-                    4.0
+                    5.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "wall",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.002",
+            "transform": {
+                "translation": [
+                    -700.0,
+                    0.0,
+                    5.0
                 ],
                 "rotation": [
                     0.0,

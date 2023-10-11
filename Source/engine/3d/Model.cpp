@@ -31,7 +31,6 @@ void Model::Load(const std::string& path)
 	Model model;
 	model.name_ = path;
 
-
 	//ファイルストリーム
 	std::ifstream file;
 	// .OBJファイルを開く
@@ -66,8 +65,7 @@ void Model::Load(const std::string& path)
 			line_stream >> position.x;
 			line_stream >> position.y;
 			line_stream >> position.z;
-			//右手系のモデルデータを左手系に変換(X反転)
-			//position.x = -position.x;
+
 			//座標データに追加
 			positions.emplace_back(position);
 		}
