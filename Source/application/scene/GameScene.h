@@ -14,6 +14,7 @@
 #include "ParticleManager.h"
 #include "BackGround.h"
 #include "PostEffect.h"
+#include "SoundManager.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -124,6 +125,8 @@ private:
 	float imGuiVel[3]{ 0.0f,0.0f,0.0f };
 	float imGuiAcc[3]{ 0.0f,0.0f,0.0f };
 
-
+	//サウンド
+	std::unique_ptr<Sound> gameSound_ = nullptr;
+	
 };
 

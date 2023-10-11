@@ -36,9 +36,17 @@ void GameScene::Initialize()
 	Object3d::SetLightGroup(lightGroup_);
 
 	//------------サウンド----------
-	/*Sound::GetInstance()->Initialize();*/
+	//Sound::GetInstance()->Initialize();
 	//Sound::GetInstance()->LoadSoundWave("gamescene.wav");
 	//Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);
+
+	//サウンド
+	SoundManager::GetInstance()->Initialize();
+	SoundManager::GetInstance()->LoadSoundWave("gamescene.wav");
+	
+	gameSound_ = std::make_unique<Sound>();
+	gameSound_->Initialize("gamescene.wav");
+	gameSound_->PlaySoundWave(true);
 
 	//ゲームパッド
 	gamePad_ = std::make_unique<GamePad>();
@@ -307,14 +315,14 @@ void GameScene::Update()
 
 	if(player_->GetIsFinish() == true)
 	{
-		//Sound::GetInstance()->Finalize();
+		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
 
 #ifdef _DEBUG
 	if(keys_->PushedKeyMoment(DIK_G))
 	{
-		//Sound::GetInstance()->Finalize();
+		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
 #endif

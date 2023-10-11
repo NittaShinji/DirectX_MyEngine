@@ -1,6 +1,5 @@
 #include "ClearScene.h"
 #include "SceneManager.h"
-#include "Sound.h"
 #include "Easing.h"
 #include "MathUtillity.h"
 #include "TextureManager.h"
@@ -48,11 +47,11 @@ void ClearScene::Initialize()
 	gamePad_->Initialzie(Player1);
 
 	//サウンド
-	/*Sound::GetInstance()->Initialize();
-	Sound::GetInstance()->LoadSoundWave("clear.wav");
-	Sound::GetInstance()->PlaySoundWave("clear.wav",false);
-
-	Sound::GetInstance()->LoadSoundWave("touch.wav");*/
+	SoundManager::GetInstance()->Initialize();
+	SoundManager::GetInstance()->LoadSoundWave("clear.wav");
+	checkSound_ = std::make_unique<Sound>();
+	checkSound_->Initialize("clear.wav");
+	checkSound_->PlaySoundWave(false);
 
 	//変数
 	move_ = { 0.0f,0.0f };
@@ -98,8 +97,7 @@ void ClearScene::Update()
 	gamePad_->PushedButtonMoment();
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		//Sound::GetInstance()->PlaySoundWave("touch.wav",false);
-		//SceneManager::GetInstance()->ChangeScene("TITLE");
+		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("StageSelect");
 	}
 }

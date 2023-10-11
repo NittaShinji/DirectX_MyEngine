@@ -1,6 +1,5 @@
 #include "TitleScene.h"
 #include "SceneManager.h"
-
 #include "WindowsAPI.h"
 #include "Vector2.h"
 #include "Easing.h"
@@ -90,14 +89,12 @@ void TitleScene::Initialize()
 	//サウンド
 	SoundManager::GetInstance()->Initialize();
 	SoundManager::GetInstance()->LoadSoundWave("title.wav");
+	SoundManager::GetInstance()->LoadSoundWave("touch.wav");
 	titleSound_ = std::make_unique<Sound>();
+	touchSound_ = std::make_unique<Sound>();
 	titleSound_->Initialize("title.wav");
-	titleSound_->PlaySoundWave(false);
-	//Sound::GetInstance()->Initialize();
-	//Sound::GetInstance()->LoadSoundWave("title.wav");
-	//Sound::GetInstance()->LoadSoundWave("touch.wav");
-
-	//Sound::GetInstance()->PlaySoundWave("title.wav",true);
+	touchSound_->Initialize("touch.wav");
+	titleSound_->PlaySoundWave(true);
 
 	//カメラ
 	camera_ = std::make_unique<Camera>();
@@ -242,6 +239,7 @@ void TitleScene::Update()
 	{
 		//Sound::GetInstance()->PlaySoundWave("touch.wav",false);
 		//Sound::GetInstance()->PauseSound("Resources/Sound/title.wav");
+		touchSound_->PlaySoundWave(false);
 		isChangeScene_ = true;
 	}
 

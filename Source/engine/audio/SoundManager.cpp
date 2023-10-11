@@ -104,13 +104,26 @@ void SoundManager::LoadSoundWave(const std::string& fileName)
 	soundDatas_.insert(std::make_pair(fileName, soundData));
 }
 
+void SoundManager::UnloadParticularSound(const std::string& fileName)
+{
+	std::map<std::string, Sound::SoundData>::iterator it = soundDatas_.find(fileName);
+	//見読み込みの検出
+	assert(it != soundDatas_.end());
+	//サウンドデータを取得
+	Sound::SoundData* soundData = &it->second;
+	//バッファのメモリを解放
+	soundData->pBuffer = { 0 };
+	soundData->bufferSize = 0;
+	soundData->wfex = {};
+}
+
 //キーに対応したサウンドデータを返す
 Sound::SoundData& SoundManager::GetSoundData(std::string fileName)
 {
 	std::map<std::string, Sound::SoundData>::iterator it = soundDatas_.find(fileName);
 	//見読み込みの検出
 	assert(it != soundDatas_.end());
-	//サウンドデータの参照を取得
+	//サウンドデータを取得
 	Sound::SoundData& soundData = it->second;
 
 	return soundData;

@@ -60,9 +60,14 @@ void StageSelectScene::Initialize()
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
 	//サウンド
-	//Sound::GetInstance()->LoadSoundWave("title.wav");
-	//Sound::GetInstance()->LoadSoundWave("touch.wav");
-	//Sound::GetInstance()->PlaySoundWave("title.wav",false);
+	SoundManager::GetInstance()->Initialize();
+	SoundManager::GetInstance()->LoadSoundWave("title.wav");
+	SoundManager::GetInstance()->LoadSoundWave("touch.wav");
+	bgmSound_ = std::make_unique<Sound>();
+	touchSound_ = std::make_unique<Sound>();
+	bgmSound_->Initialize("title.wav");
+	touchSound_->Initialize("touch.wav");
+	bgmSound_->PlaySoundWave(true);
 }
 
 void StageSelectScene::Update()
@@ -83,7 +88,7 @@ void StageSelectScene::Update()
 
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		//Sound::GetInstance()->PlaySoundWave("touch.wav",false);
+		touchSound_->PlaySoundWave(false);
 		isChangeScene_ = true;
 	}
 
@@ -107,8 +112,7 @@ void StageSelectScene::Update()
 		changeSceneTimer_--;
 		if(changeSceneTimer_ <= 0)
 		{
-			//Sound::GetInstance()->Finalize();
-			//SceneManager::GetInstance()->ChangeScene("Tutorial");
+			SoundManager::GetInstance()->Finalize();
 			SceneManager::GetInstance()->ChangeScene("GAME");
 		}
 	}

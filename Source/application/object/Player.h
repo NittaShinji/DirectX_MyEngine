@@ -5,6 +5,7 @@
 #include "GamePad.h"
 #include "SphereCollider.h"
 #include "ObjectAttribute.h"
+#include "SoundManager.h"
 
 class Player : public Object3d
 {
@@ -129,9 +130,12 @@ private:
 	float rotateXTimer_ = kRotateXTime_;
 	float rotateYTimer_ = kRotateYTime_;
 
-
 	//回転フラグ
 	bool isJumpRotate_ = false;
+
+	std::unique_ptr<Sound> jumpSound_ = nullptr;
+	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
+
 
 public:
 

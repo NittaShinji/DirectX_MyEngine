@@ -29,7 +29,6 @@ void MyGame::Initialize()
 	StageSelectScene::StaticInitialize();
 	TutorialScene::StaticInitialize();
 	ClearScene::StaticInitialize();
-	//Sound::GetInstance()->Initialize();
 }
 
 void MyGame::Update()
@@ -55,9 +54,6 @@ void MyGame::Finalize()
 {
 	//ゲーム全体の終了処理
 	imGuiManager_->Finalize();
-
-	//サウンドの終了処理
-	//Sound::GetInstance()->Finalize();
 
 	//基底クラスの終了処理
 	MyFramework::Finalize();

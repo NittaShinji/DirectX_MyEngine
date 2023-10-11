@@ -86,5 +86,6 @@ private:
 
 	//サウンド
 	std::unique_ptr<Sound> titleSound_ = nullptr;
+	std::unique_ptr<Sound> touchSound_ = nullptr;
 };
 

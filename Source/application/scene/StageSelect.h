@@ -1,6 +1,7 @@
 #include "BaseScene.h"
 #include "Sprite.h"
 #include "GamePad.h"
+#include "SoundManager.h"
 #pragma once
 
 class StageSelectScene : public BaseScene
@@ -41,4 +42,8 @@ private:
 
 	const float kChangeSceneTime_ = 10.0f;
 	float changeSceneTimer_ = kChangeSceneTime_;
+
+	//サウンド
+	std::unique_ptr<Sound> bgmSound_ = nullptr;
+	std::unique_ptr<Sound> touchSound_ = nullptr;
 };

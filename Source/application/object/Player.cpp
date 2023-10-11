@@ -31,6 +31,12 @@ void Player::Initialize()
 	/*Sound::GetInstance()->LoadSoundWave("jump.wav");
 	Sound::GetInstance()->LoadSoundWave("doubleJump.wav");
 	Sound::GetInstance()->LoadSoundWave("playerDead.wav");*/
+	SoundManager::GetInstance()->LoadSoundWave("jump.wav");
+	SoundManager::GetInstance()->LoadSoundWave("doubleJump.wav");
+	jumpSound_ = std::make_unique<Sound>();
+	doubleJumpSound_ = std::make_unique<Sound>();
+	jumpSound_->Initialize("jump.wav");
+	doubleJumpSound_->Initialize("doubleJump.wav");
 
 	playerInitPos_ = { 0.0f,2.0f,2.0f };
 	position_ = playerInitPos_;
@@ -135,7 +141,8 @@ void Player::Update(Camera* camera)
 		{
 			if(gamePad_->GetButtonA())
 			{
-				//Sound::GetInstance()->PlaySoundWave("doubleJump.wav", false);
+				jumpSound_->PlaySoundWave(false);
+				
 				isJumpRotate_ = true;
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
@@ -144,7 +151,7 @@ void Player::Update(Camera* camera)
 			}
 			if(keys_->PushedKeyMoment(DIK_SPACE))
 			{
-				//Sound::GetInstance()->PlaySoundWave("doubleJump.wav", false);
+				jumpSound_->PlaySoundWave(false);
 				isJumpRotate_ = true;
 				onGround_ = false;
 				const float jumpVYFist = 0.4f;
@@ -159,7 +166,7 @@ void Player::Update(Camera* camera)
 	//ジャンプ操作
 	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 	{
-		//Sound::GetInstance()->PlaySoundWave("jump.wav", false);
+		jumpSound_->PlaySoundWave(false);
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0 };
@@ -167,7 +174,7 @@ void Player::Update(Camera* camera)
 	}
 	else if(gamePad_->GetButtonA() && jumpCount > 0)
 	{
-		//Sound::GetInstance()->PlaySoundWave("jump.wav", false);
+		jumpSound_->PlaySoundWave(false);
 		onGround_ = false;
 		const float jumpVYFist = 0.4f;
 		fallVec_ = { 0,jumpVYFist,0 };

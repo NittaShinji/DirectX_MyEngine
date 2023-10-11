@@ -44,6 +44,9 @@ public:
 	/// <param name="filename">WAVファイル名</param>
 	void LoadSoundWave(const std::string& fileName);
 
+	//特定の音声データを解放
+	void UnloadParticularSound(const std::string& fileName);
+
 	//音声データ解放
 	void UnloadSound(Sound::SoundData* soundData);
 

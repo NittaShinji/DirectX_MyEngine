@@ -222,9 +222,6 @@
     <ClCompile Include="Source\application\particle\ParticleManager.cpp">
       <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\scene\SceneFactory.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\engine\scene\SceneManager.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
@@ -261,12 +258,6 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp">
       <Filter>ソース ファイル\engine\audio</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\scene\TutorialScene.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\scene\StageSelect.cpp">
-      <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\application\object\BackGround.cpp">
       <Filter>ソース ファイル\engine\3d</Filter>
     </ClCompile>
@@ -278,6 +269,15 @@
     </ClCompile>
     <ClCompile Include="HitWall.cpp">
       <Filter>ソース ファイル\application\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\scene\StageSelect.cpp">
+      <Filter>ソース ファイル\application\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\scene\TutorialScene.cpp">
+      <Filter>ソース ファイル\application\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\scene\SceneFactory.cpp">
+      <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -374,9 +374,6 @@
     <ClInclude Include="Source\engine\scene\SceneManager.h">
       <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\scene\SceneFactory.h">
-      <Filter>ヘッダー ファイル\engine\scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\engine\scene\AbstractSceneFactory.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
@@ -428,20 +425,11 @@
     <ClInclude Include="Source\engine\math\Vector4.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\engine\audio\SoundManager.h">
-      <Filter>ヘッダー ファイル\engine\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\application\scene\TutorialScene.h">
-      <Filter>ヘッダー ファイル\engine\scene</Filter>
-    </ClInclude>
     <ClInclude Include="Source\application\object\BackGround.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\math\Easing.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\application\scene\StageSelect.h">
-      <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
@@ -451,6 +439,18 @@
     </ClInclude>
     <ClInclude Include="HitWall.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\scene\StageSelect.h">
+      <Filter>ヘッダー ファイル\application\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\scene\TutorialScene.h">
+      <Filter>ヘッダー ファイル\application\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\scene\SceneFactory.h">
+      <Filter>ヘッダー ファイル\application\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\engine\audio\SoundManager.h">
+      <Filter>ヘッダー ファイル\engine\base</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

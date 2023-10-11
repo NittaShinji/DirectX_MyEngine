@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include"GamePad.h"
 #include "Vector2.h"
+#include "SoundManager.h"
 
 class ClearScene : public BaseScene
 {
@@ -43,5 +44,8 @@ private:
 	//1周回る時間
 	const float kRotateTime_ = 30.0f;
 	float rotateTimer_ = kRotateTime_;
+
+	//サウンド
+	std::unique_ptr<Sound> checkSound_ = nullptr;
 };
 
