@@ -101,6 +101,12 @@ void ParticleManager::SetScale()
 	}
 }
 
+void ParticleManager::AllRemove()
+{
+	//パーティクルを全削除
+	particles_.clear();
+}
+
 void ParticleManager::Update(Camera* camera, Attribute attribute)
 {
 	HRESULT result;
@@ -127,8 +133,6 @@ void ParticleManager::Update(Camera* camera, Attribute attribute)
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 
 	nowParticleCount_ = 0;
-
-	
 
 	if(SUCCEEDED(result))
 	{

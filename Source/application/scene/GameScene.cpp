@@ -185,6 +185,7 @@ void GameScene::Update()
 	{
 		player_->Reset();
 		gameCamera_->Reset();
+		particleManager_->AllRemove();
 	}
 
 	//光線方向初期値

@@ -137,6 +137,8 @@ public: // メンバ関数
 
 	void SetScale();
 
+	void AllRemove();
+
 	std::forward_list<Particle> GetPaticles() { return particles_; }
 
 	void SetGenerationNum(int32_t generationNum) { generationNum_ = generationNum; }
@@ -159,7 +161,6 @@ private: // メンバ変数
 	Matrix4 matView_;
 	// 射影行列
 	Matrix4 matProjection_;
-
 
 	// テクスチャバッファ
 	static ComPtr<ID3D12Resource> texbuff_;
