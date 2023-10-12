@@ -1,4 +1,5 @@
 #include "Stage.h"
+#include "HitWall.h"
 #include <string>
 
 void Stage::Initialize(const std::string& fileName)
@@ -15,14 +16,14 @@ void Stage::Initialize(const std::string& fileName)
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
 		//モデルを指定して3Dオブジェクトを作成
-		if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0" || objectData.fileName == "Cube"|| objectData.fileName == "wall")
+		if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0" || objectData.fileName == "Cube")
 		{
 			//3Dオブジェクトの生成
 			std::unique_ptr<TouchableObject> newObject = nullptr;
 			newObject = TouchableObject::Create(objectData.fileName);
-
+			
+			//座標
 			Vector3 pos;
-
 			pos = objectData.translation;
 			newObject->SetTransform(pos);
 
@@ -54,7 +55,7 @@ void Stage::Initialize(const std::string& fileName)
 				newObject->SetAttributeColor(Attribute::black);
 			}
 
-			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube"|| objectData.fileName == "wall")
+			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube")
 			{
 				if(newObject->GetColorFlag() == false)
 				{
@@ -82,6 +83,35 @@ void Stage::Initialize(const std::string& fileName)
 			//配列に登録
 			objects_.push_back(std::move(newObject));
 		}
+
+		if(objectData.fileName == "wall")
+		{
+			//衝突壁オブジェクトの生成
+			std::unique_ptr<HitWall> newWall = nullptr;
+			newWall = HitWall::Create(objectData.fileName);
+
+			//座標
+			Vector3 pos;
+			pos = objectData.translation;
+			newWall->SetTransform(pos);
+
+			//回転角
+			Vector3 rot;
+			rot = objectData.rotation;
+			newWall->SetRotation(rot);
+
+			//大きさ
+			Vector3 scale;
+			scale = objectData.scaling;
+			newWall->SetScale(scale);
+
+			newWall->SetAttributeColor(Attribute::black);
+
+			newWall->SetColor(Vector3(0.78f, 0.78f, 0.78f));
+
+			//配列に登録
+			walls_.push_back(std::move(newWall));
+		}
 	}
 }
 
@@ -91,6 +121,20 @@ void Stage::Update(Camera* camera)
 	{
 		object->Update(camera);
 	}
+
+	for(size_t i = 0; i < walls_.size(); i++)
+	{
+		if(walls_[i]->GetIsBreak_())
+		{
+			walls_.erase(walls_.begin() + i);
+			i = (size_t)-1;
+		}
+	}
+
+	for(auto& wall : walls_)
+	{
+		wall->Update(camera);
+	}	
 }
 
 void Stage::Draw()
@@ -99,6 +143,12 @@ void Stage::Draw()
 	{
 		object->Draw();
 	}
+
+	for(auto& wall : walls_)
+	{
+		wall->Draw();
+	}
+
 }
 
 Vector3 Stage::GetGoalPos()

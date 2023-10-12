@@ -133,6 +133,14 @@ private:
 	//回転フラグ
 	bool isJumpRotate_ = false;
 
+	//スケールアニメーション時間
+	const float kScaleTime_ = 60.0f;
+	//スケールタイマー
+	float scaleTime_ = kScaleTime_;
+
+	//スケールアニメーションフラグ
+	bool isScaleAnimetion_ = false;
+
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
 

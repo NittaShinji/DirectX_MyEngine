@@ -1,5 +1,6 @@
 #pragma once
 #include "TouchableObject.h"
+#include "HitWall.h"
 #include "LevelManager.h"
 #include "ObjectAttribute.h"
 
@@ -29,6 +30,8 @@ private:
 
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
+	std::vector<std::unique_ptr<HitWall>> walls_;
+
 
 	//ゴール座標
 	Vector3 goalPos_;

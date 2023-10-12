@@ -92,6 +92,8 @@ void Player::Update(Camera* camera)
 	//色変え処理
 	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
+		//isScaleAnimetion_ = true;
+
 		//属性の変更
 		if(attributeColor_ == Attribute::pink)
 		{
@@ -121,6 +123,8 @@ void Player::Update(Camera* camera)
 			SetColor(Vector3(0.0f, 0.0f, 0.0f));
 		}
 	}
+
+	//if(isScaleAnimetion_ == true && scaleTime_)
 
 	Object3d::SetColorFlag(colorFlag_);
 

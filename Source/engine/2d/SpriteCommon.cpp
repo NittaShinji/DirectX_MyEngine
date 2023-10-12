@@ -322,6 +322,12 @@ void SpriteCommon::PipelineSet()
 	pipelineDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
 	pipelineDesc_.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
 
+	//デプスステンシルステートの設定
+	pipelineDesc_.DepthStencilState.DepthEnable = false;	//深度テストを行う
+	pipelineDesc_.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;	//書き込み許可
+	pipelineDesc_.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;		//小さければ合格
+	pipelineDesc_.DSVFormat = DXGI_FORMAT_D32_FLOAT;		//深度値フォーマット
+
 }
 
 void SpriteCommon::RootSignatureSet()

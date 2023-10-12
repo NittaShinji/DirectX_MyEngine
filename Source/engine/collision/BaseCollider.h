@@ -26,8 +26,8 @@ public:
 	{
 		attribute_ = attribute;
 	}
-
-	inline void AddAttribute(unsigned short attribute)
+	
+	inline void AddAttribute(unsigned short attribute) 
 	{
 		attribute_ |= attribute;
 	}

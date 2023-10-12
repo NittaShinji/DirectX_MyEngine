@@ -65,6 +65,7 @@ void Sprite::Initialize(Vector2 position, Vector2 size)
 {
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 
+
 	winWide_ = static_cast<float>(directXBasic_->GetWinWidth());
 	winHeight_ = static_cast<float>(directXBasic_->GetWinHeight());
 

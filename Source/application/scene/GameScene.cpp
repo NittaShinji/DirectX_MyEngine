@@ -65,9 +65,14 @@ void GameScene::Initialize()
 	bButtonSprite_ = std::make_unique<Sprite>();
 	jumpSprite_ = std::make_unique<Sprite>();
 	arrowSprite_ = std::make_unique<Sprite>();
+	backGroundSprite_ = std::make_unique<Sprite>();
 
 	TextureManager::GetInstance()->LoadTexture("jump.png");
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
+
+	const int32_t backGroundWidth = 1280;
+	const int32_t backGroundHeight = 720;
+	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight };
 
 	const Vector2 aButtonSize = { 64.0f,64.0f };
 	Vector2 aButtonPosition;
@@ -93,6 +98,7 @@ void GameScene::Initialize()
 	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
 	jumpSprite_->Initialize(jumpSpritePosition, jumpSpriteSize);
 	arrowSprite_->Initialize(arrowPosition, arrowSize);
+	backGroundSprite_->Initialize(Vector2(0.0f, 0.0f), backGroundSize);
 
 	//モデル読み込み
 	const string sphere = "sphere";
@@ -173,6 +179,7 @@ void GameScene::Update()
 	bButtonSprite_->matUpdate();
 	jumpSprite_->matUpdate();
 	arrowSprite_->matUpdate();
+	backGroundSprite_->matUpdate();
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -222,7 +229,7 @@ void GameScene::Update()
 
 	ImGui::Begin("Particle");
 	ImGui::SetWindowPos(ImVec2(600, 0));
-	ImGui::SetWindowSize(ImVec2(300, 300));
+	ImGui::SetWindowSize(ImVec2(300, 150));
 	ImGui::SliderFloat("StartScale", &startScale, 0.0f, 50.0f);
 	ImGui::SliderFloat("EndScale", &endScale, 0.0f, 50.0f);
 	ImGui::SliderFloat3("pos", imGuiPos, -3.0f, 3.0f);
@@ -332,7 +339,7 @@ void GameScene::Draw()
 {
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
-	//背景オブジェクトの描画
+	
 	Object3d::BeforeDraw();
 	plane_->Draw();
 	backGround_->Draw();
@@ -361,12 +368,13 @@ void GameScene::Draw()
 	bButtonSprite_->Update();
 	jumpSprite_->Update();
 	arrowSprite_->Update();
+	
 
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
 	jumpSprite_->Draw("jump.png");
 	arrowSprite_->Draw("arrow.png");
-
+	
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
 
