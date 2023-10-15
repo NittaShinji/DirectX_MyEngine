@@ -6,6 +6,10 @@ void Stage::Initialize(const std::string& fileName)
 {
 	goalPos_ = { 0,0,0 };
 
+	////ファイル名をmapに保存
+	//fileNames_.insert(std::make_pair(totalStageNum, fileName));
+	//totalStageNum++;
+
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
 
@@ -105,6 +109,8 @@ void Stage::Initialize(const std::string& fileName)
 			scale = objectData.scaling;
 			newWall->SetScale(scale);
 
+			newWall->SetIsBreak(false);
+
 			newWall->SetAttributeColor(Attribute::black);
 
 			newWall->SetColor(Vector3(0.78f, 0.78f, 0.78f));
@@ -124,17 +130,15 @@ void Stage::Update(Camera* camera)
 
 	for(size_t i = 0; i < walls_.size(); i++)
 	{
+		walls_[i]->Update(camera);
+
+		//壁が壊れていたら削除
 		if(walls_[i]->GetIsBreak_())
 		{
 			walls_.erase(walls_.begin() + i);
 			i = (size_t)-1;
 		}
 	}
-
-	for(auto& wall : walls_)
-	{
-		wall->Update(camera);
-	}	
 }
 
 void Stage::Draw()
@@ -148,7 +152,51 @@ void Stage::Draw()
 	{
 		wall->Draw();
 	}
+}
 
+void Stage::Reset(const std::string& fileName)
+{
+	//レベルデータからオブジェクトを生成、配置
+	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
+
+	for(auto& objectData : levelData_->objects)
+	{
+		//ファイル名から登録済みモデルを検索
+		Model* model = nullptr;
+		decltype(models_)::iterator it = models_.find(objectData.fileName);
+		if(it != models_.end()) { model = &it->second; }
+
+		if(objectData.fileName == "wall")
+		{
+			//衝突壁オブジェクトの生成
+			std::unique_ptr<HitWall> newWall = nullptr;
+			newWall = HitWall::Create(objectData.fileName);
+
+			//座標
+			Vector3 pos;
+			pos = objectData.translation;
+			newWall->SetTransform(pos);
+
+			//回転角
+			Vector3 rot;
+			rot = objectData.rotation;
+			newWall->SetRotation(rot);
+
+			//大きさ
+			Vector3 scale;
+			scale = objectData.scaling;
+			newWall->SetScale(scale);
+
+			newWall->SetIsBreak(false);
+
+			newWall->SetAttributeColor(Attribute::black);
+
+			newWall->SetColor(Vector3(0.78f, 0.78f, 0.78f));
+
+			//配列に登録
+			walls_.push_back(std::move(newWall));
+		}
+	}
 }
 
 Vector3 Stage::GetGoalPos()

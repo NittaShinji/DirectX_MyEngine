@@ -164,7 +164,6 @@ public:
 	const Matrix4& GetMatWorld() { return matWorld_; }
 
 	//モデルを取得
-	//const Model& GetModel() { return model_; }
 	Model* GetModel() { return &model_; }
 	bool GetColorFlag() { return colorFlag_; }
 	int32_t GetAttributeColor() { return attributeColor_; }

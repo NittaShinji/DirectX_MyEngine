@@ -17,6 +17,8 @@ public:
 
 	void Draw();
 
+	void Reset(const std::string& fileName);
+
 	Vector3 GetGoalPos();
 
 private:
@@ -32,6 +34,9 @@ private:
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
 	std::vector<std::unique_ptr<HitWall>> walls_;
 
+
+	//static uint32_t totalStageNum;
+	//std::map<uint32_t, std::string> fileNames_;
 
 	//ゴール座標
 	Vector3 goalPos_;

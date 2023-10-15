@@ -43,7 +43,7 @@ void GameScene::Initialize()
 	//サウンド
 	SoundManager::GetInstance()->Initialize();
 	SoundManager::GetInstance()->LoadSoundWave("gamescene.wav");
-	
+
 	gameSound_ = std::make_unique<Sound>();
 	gameSound_->Initialize("gamescene.wav");
 	gameSound_->PlaySoundWave(true);
@@ -165,11 +165,9 @@ void GameScene::Initialize()
 	startScale = 0.5f;
 	endScale = 2.0f;
 
-
 	imGuiPos[0] = 0.0f;
 	imGuiPos[1] = 0.0f;
 	imGuiPos[2] = 0.0f;
-
 }
 
 void GameScene::Update()
@@ -239,10 +237,10 @@ void GameScene::Update()
 
 	if(player_->GetOnGround() == true)
 	{
-		Vector3 pos = { 0.0f,0.0f,0.0f};
+		Vector3 pos = { 0.0f,0.0f,0.0f };
 
 		Vector3 vel = { imGuiVel[0],imGuiVel[1] ,imGuiVel[2] };
-		
+
 		for(int i = 0; i < 3; i++)
 		{
 			const float md_pos = 2.0f;
@@ -303,22 +301,15 @@ void GameScene::Update()
 
 #endif
 
-	if(keyTimer_ < 0)
-	{
-		if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
-		{
-			player_->Reset();
-			gameCamera_->Reset();
-			keyTimer_ = kWaitTime_;
-		}
-	}
-	else
-	{
-		keyTimer_--;
-	}
-
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
+
+	if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
+	{
+		stage_->Initialize("Stage0.json");
+		player_->Reset();
+		gameCamera_->Reset();
+	}
 
 	if(player_->GetIsFinish() == true)
 	{
@@ -339,7 +330,7 @@ void GameScene::Draw()
 {
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
-	
+
 	Object3d::BeforeDraw();
 	plane_->Draw();
 	backGround_->Draw();
@@ -368,13 +359,13 @@ void GameScene::Draw()
 	bButtonSprite_->Update();
 	jumpSprite_->Update();
 	arrowSprite_->Update();
-	
+
 
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
 	jumpSprite_->Draw("jump.png");
 	arrowSprite_->Draw("arrow.png");
-	
+
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
 

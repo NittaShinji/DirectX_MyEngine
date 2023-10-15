@@ -92,8 +92,6 @@ private:
 
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;
-	//キー入力の時間管理
-	int32_t keyTimer_ = 60;
 
 	//float ambientColor0_[3] = { 1,1,1 };
 	Vector3 ambientColor0_ = { 1,1,1 };
