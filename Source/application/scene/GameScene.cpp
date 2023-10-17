@@ -25,7 +25,8 @@ void GameScene::StaticInitialize()
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
-	ParticleManager::StaticInitialize(directXBasic_->GetDevice().Get());
+	ParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
+	//ParticleManager::StaticInitialize(directXBasic_->GetDevice().Get(),directXBasic_->GetCommandList().Get());
 }
 
 void GameScene::Initialize()
@@ -157,13 +158,11 @@ void GameScene::Initialize()
 	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 
 	//パーティクル
-	particleManager_ = ParticleManager::Create();
-	particleManager_->SetGenerationNum(50);
-	playerRunEffect_ = ParticleManager::Create();
-	playerRunEffect_->SetGenerationNum(50);
-
-	startScale = 0.5f;
-	endScale = 2.0f;
+	ParticleManager::GetInstance()->AddEmitter();
+	ParticleManager::GetInstance()->Initialize();
+	/*particleManager_->AddEmitter();*/
+	/*startScale = 0.5f;
+	endScale = 2.0f;*/
 
 	imGuiPos[0] = 0.0f;
 	imGuiPos[1] = 0.0f;
@@ -219,7 +218,7 @@ void GameScene::Update()
 	testCamera_->Update();
 	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell());
 
-	ImGui::Begin("Particle");
+	/*ImGui::Begin("Particle");
 	ImGui::SetWindowPos(ImVec2(600, 0));
 	ImGui::SetWindowSize(ImVec2(300, 150));
 	ImGui::SliderFloat("StartScale", &startScale, 0.0f, 50.0f);
@@ -227,56 +226,57 @@ void GameScene::Update()
 	ImGui::SliderFloat3("pos", imGuiPos, -3.0f, 3.0f);
 	ImGui::SliderFloat3("vel", imGuiVel, -1.0f, 1.0f);
 	ImGui::SliderFloat3("acc", imGuiAcc, -0.05f, 0.05f);
-	ImGui::End();
+	ImGui::End();*/
 
 	if(player_->GetOnGround() == true)
 	{
-		Vector3 pos = { 0.0f,0.0f,0.0f };
+		//Vector3 pos = { 0.0f,0.0f,0.0f };
 
-		Vector3 vel = { imGuiVel[0],imGuiVel[1] ,imGuiVel[2] };
+		//Vector3 vel = { imGuiVel[0],imGuiVel[1] ,imGuiVel[2] };
 
-		for(int i = 0; i < 3; i++)
-		{
-			const float md_pos = 2.0f;
-			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().x + imGuiPos[0];
-			const float shiftY = -0.8f;
-			pos.y = player_->GetPos().y + shiftY + imGuiPos[1];
-			pos.z = player_->GetPos().z + imGuiPos[2];
+		//for(int i = 0; i < 3; i++)
+		//{
+		//	const float md_pos = 2.0f;
+		//	pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().x + imGuiPos[0];
+		//	const float shiftY = -0.8f;
+		//	pos.y = player_->GetPos().y + shiftY + imGuiPos[1];
+		//	pos.z = player_->GetPos().z + imGuiPos[2];
 
-			vel.x = 0.0f + imGuiVel[0];
+		//	vel.x = 0.0f + imGuiVel[0];
 
-			const float md_velY = 0.174f;
-			vel.y = md_velY + imGuiVel[1];
+		//	const float md_velY = 0.174f;
+		//	vel.y = md_velY + imGuiVel[1];
 
-			const float md_velZ = -0.68f;
-			vel.z = md_velZ + imGuiVel[2];
+		//	const float md_velZ = -0.68f;
+		//	vel.z = md_velZ + imGuiVel[2];
 
-			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-			Vector3 acc{};
-			const float md_acc = -0.017f;
-			acc.x = imGuiAcc[0];
-			acc.y = md_acc + imGuiAcc[1];
-			acc.z = md_acc + imGuiAcc[2];
+		//	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+		//	Vector3 acc{};
+		//	const float md_acc = -0.017f;
+		//	acc.x = imGuiAcc[0];
+		//	acc.y = md_acc + imGuiAcc[1];
+		//	acc.z = md_acc + imGuiAcc[2];
 
-			//色を変化させる
-			if(player_->GetAttributeColor() == Attribute::pink)
-			{
-				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
-			}
-			else if(player_->GetAttributeColor() == Attribute::yellow)
-			{
-				Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
-			}
+		//	//色を変化させる
+		//	if(player_->GetAttributeColor() == Attribute::pink)
+		//	{
+		//		Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
+		//	}
+		//	else if(player_->GetAttributeColor() == Attribute::yellow)
+		//	{
+		//		Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
+		//	}
 
-			//色を変化させる
-			Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+		//	//色を変化させる
+		//	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
-			//追加
-			if(particleManager_->GetIsMaxParticle() == false)
-			{
-				particleManager_->Add(60, pos, vel, acc, colorSpeed, startScale, endScale);
-			}
-		}
+		//	//追加
+		//	if(particleManager_->GetIsMaxParticle() == false)
+		//	{
+		//		particleManager_->Add(60, pos, vel, acc, colorSpeed, startScale, endScale);
+		//	}
+		//}
+		
 	}
 
 	//カメラの切り替え
@@ -286,7 +286,8 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
+	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
+	//particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
 
 #ifdef _DEBUG
 
@@ -300,7 +301,7 @@ void GameScene::Update()
 
 	if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
 	{
-		particleManager_->AllRemove();
+		ParticleManager::GetInstance()->AllRemove();
 		stage_->Reset("Stage0.json");
 		player_->Reset();
 		gameCamera_->Reset();
@@ -345,8 +346,10 @@ void GameScene::Draw()
 	stage_->Draw();
 	player_->Draw();
 
-	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
-	particleManager_->Draw();
+	/*ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
+	particleManager_->Draw();*/
+
+	ParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();

@@ -106,8 +106,8 @@ private:
 	Vector3 whiteColor_ = { 1,1,1 };
 
 	//パーティクル
-	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
-	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
+	/*std::unique_ptr<ParticleManager> particleManager_ = nullptr;
+	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;*/
 
 	//UIスプライト
 	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
@@ -117,9 +117,6 @@ private:
 	std::unique_ptr<Sprite> arrowSprite_ = nullptr;
 
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
-
-	float startScale = 1.0f;
-	float endScale = 2.0f;
 
 	float imGuiPos[3]{ 0.0f,0.0f,0.0f };
 	float imGuiVel[3]{ 0.0f,0.0f,0.0f };

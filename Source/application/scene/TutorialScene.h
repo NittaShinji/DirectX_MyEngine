@@ -77,8 +77,8 @@ private:
 	CollisionManager* collisionManager_ = nullptr;
 
 	//パーティクル
-	std::unique_ptr<ParticleManager> particleManager_ = nullptr;
-	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;
+	/*std::unique_ptr<ParticleManager> particleManager_ = nullptr;
+	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;*/
 
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;

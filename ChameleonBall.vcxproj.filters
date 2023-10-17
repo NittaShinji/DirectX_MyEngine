@@ -279,6 +279,9 @@
     <ClCompile Include="Source\application\scene\SceneFactory.cpp">
       <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\application\particle\ParticleEmitter..cpp">
+      <Filter>ソース ファイル\application\particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -449,8 +452,11 @@
     <ClInclude Include="Source\application\scene\SceneFactory.h">
       <Filter>ヘッダー ファイル\application\scene</Filter>
     </ClInclude>
+    <ClInclude Include="Source\application\particle\ParticleEmitter.h">
+      <Filter>ヘッダー ファイル\application\particle</Filter>
+    </ClInclude>
     <ClInclude Include="Source\engine\audio\SoundManager.h">
-      <Filter>ヘッダー ファイル\engine\base</Filter>
+      <Filter>ヘッダー ファイル\engine\audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

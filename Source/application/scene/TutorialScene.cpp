@@ -25,7 +25,7 @@ void TutorialScene::StaticInitialize()
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
-	ParticleManager::StaticInitialize(directXBasic_->GetDevice().Get());
+	//ParticleManager::StaticInitialize(directXBasic_->GetDevice().Get());
 }
 
 void TutorialScene::Initialize()
@@ -108,10 +108,10 @@ void TutorialScene::Initialize()
 	gameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
 
 	//パーティクル
-	particleManager_ = ParticleManager::Create();
+	/*particleManager_ = ParticleManager::Create();
 	particleManager_->SetGenerationNum(50);
 	playerRunEffect_ = ParticleManager::Create();
-	playerRunEffect_->SetGenerationNum(50);
+	playerRunEffect_->SetGenerationNum(50);*/
 
 	isShowingButtonA = false;
 }
@@ -207,10 +207,10 @@ void TutorialScene::Update()
 			Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
 			//追加
-			if(particleManager_->GetIsMaxParticle() == false)
+			/*if(particleManager_->GetIsMaxParticle() == false)
 			{
 				particleManager_->Add(60, pos, vel, acc, colorSpeed, 2.0f, 1.0f);
-			}
+			}*/
 		}
 	}
 
@@ -236,10 +236,10 @@ void TutorialScene::Update()
 		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
 		//追加
-		if(particleManager_->GetIsMaxParticle() == false)
+		/*if(particleManager_->GetIsMaxParticle() == false)
 		{
 			particleManager_->Add(60, pos, vel, acc, colorSpeed, 1.0f, 0.0f);
-		}
+		}*/
 	}
 
 	//カメラの切り替え
@@ -248,7 +248,7 @@ void TutorialScene::Update()
 	skydome_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
+	//particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
 
 #ifdef _DEBUG
 
@@ -304,8 +304,8 @@ void TutorialScene::Draw()
 	stage_->Draw();
 	player_->Draw();
 
-	ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
-	particleManager_->Draw();
+	//ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
+	//particleManager_->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
