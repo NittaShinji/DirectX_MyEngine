@@ -300,8 +300,8 @@ void GameScene::Update()
 
 	if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
 	{
-		//stage_->Initialize("Stage0.json");
 		particleManager_->AllRemove();
+		stage_->Reset("Stage0.json");
 		player_->Reset();
 		gameCamera_->Reset();
 	}

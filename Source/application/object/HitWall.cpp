@@ -14,7 +14,7 @@ std::unique_ptr<HitWall> HitWall::Create(const std::string& fileName)
 		return nullptr;
 	}
 
-	instance->Initialize();
+	instance->Object3d::Initialize();
 	instance->SetModel(fileName);
 	instance->SetIsBreak(false);
 	instance->AddCollider(instance->GetModel());
@@ -34,11 +34,17 @@ void HitWall::OnCollision(const CollisionInfo& info)
 	}
 }
 
+void HitWall::Initialize()
+{
+	isBreak_ = false;
+	Object3d::SetAttributeColor(Attribute::black);
+	Object3d::SetColor(Vector3(0.78f, 0.78f, 0.78f));
+}
+
 void HitWall::Update(Camera* camera)
 {
 	Object3d::Update(camera);
 }
-
 
 void HitWall::Draw()
 {	

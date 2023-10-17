@@ -6,10 +6,6 @@ void Stage::Initialize(const std::string& fileName)
 {
 	goalPos_ = { 0,0,0 };
 
-	////ファイル名をmapに保存
-	//fileNames_.insert(std::make_pair(totalStageNum, fileName));
-	//totalStageNum++;
-
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
 
@@ -109,11 +105,8 @@ void Stage::Initialize(const std::string& fileName)
 			scale = objectData.scaling;
 			newWall->SetScale(scale);
 
-			newWall->SetIsBreak(false);
-
-			newWall->SetAttributeColor(Attribute::black);
-
-			newWall->SetColor(Vector3(0.78f, 0.78f, 0.78f));
+			//その他の初期化
+			newWall->Initialize();
 
 			//配列に登録
 			walls_.push_back(std::move(newWall));
@@ -156,6 +149,10 @@ void Stage::Draw()
 
 void Stage::Reset(const std::string& fileName)
 {
+	//壁を削除
+	walls_.clear();
+
+	//壁を再配置
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
 
@@ -187,12 +184,9 @@ void Stage::Reset(const std::string& fileName)
 			scale = objectData.scaling;
 			newWall->SetScale(scale);
 
-			newWall->SetIsBreak(false);
-
-			newWall->SetAttributeColor(Attribute::black);
-
-			newWall->SetColor(Vector3(0.78f, 0.78f, 0.78f));
-
+			//その他の初期化
+			newWall->Initialize();
+			
 			//配列に登録
 			walls_.push_back(std::move(newWall));
 		}

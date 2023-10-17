@@ -11,6 +11,8 @@ public:
 
 	void OnCollision(const CollisionInfo& info) override;
 
+	void Initialize();
+
 	void Update(Camera* camera) override;
 
 	void Draw() override;
