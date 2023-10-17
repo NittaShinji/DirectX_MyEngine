@@ -256,7 +256,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	if(info.object->GetAttributeColor() != attributeColor_)
 	{
 		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
-		isDead_ = true;
+ 		isDead_ = true;
 	}
 
 	if(info.object->GetAttributeColor() == Attribute::Goal)

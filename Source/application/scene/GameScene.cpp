@@ -173,7 +173,7 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 	//スプライト
-	aButtonSprite_->matUpdate();
+ 	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();
 	jumpSprite_->matUpdate();
 	arrowSprite_->matUpdate();
@@ -193,12 +193,6 @@ void GameScene::Update()
 		{
 			player_->SetIsMoving(true);
 		}
-	}
-	else
-	{
-		player_->Reset();
-		gameCamera_->Reset();
-		particleManager_->AllRemove();
 	}
 
 	//光線方向初期値
@@ -306,7 +300,8 @@ void GameScene::Update()
 
 	if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
 	{
-		stage_->Initialize("Stage0.json");
+		//stage_->Initialize("Stage0.json");
+		particleManager_->AllRemove();
 		player_->Reset();
 		gameCamera_->Reset();
 	}

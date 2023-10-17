@@ -2,6 +2,7 @@
 #include "BaseCollider.h"
 #include "MeshCollider.h"
 #include "CollisionAttribute.h"
+#include "CollisionManager.h"
 
 std::unique_ptr<HitWall> HitWall::Create(const std::string& fileName)
 {
@@ -32,6 +33,12 @@ void HitWall::OnCollision(const CollisionInfo& info)
 		isBreak_ = true;
 	}
 }
+
+void HitWall::Update(Camera* camera)
+{
+	Object3d::Update(camera);
+}
+
 
 void HitWall::Draw()
 {	
