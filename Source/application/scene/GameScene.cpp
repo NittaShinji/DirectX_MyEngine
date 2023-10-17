@@ -280,8 +280,8 @@ void GameScene::Update()
 	}
 
 	//カメラの切り替え
-	stage_->Update(gameCamera_.get());
 	player_->Update(gameCamera_.get());
+	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());
 	skydome_->Update(gameCamera_.get());
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());

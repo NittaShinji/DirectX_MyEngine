@@ -114,7 +114,7 @@ void Stage::Initialize(const std::string& fileName)
 	}
 }
 
-void Stage::Update(Camera* camera)
+void Stage::Update(Camera* camera, bool isPlayerAccelerating)
 {
 	for(auto& object : objects_)
 	{
@@ -123,7 +123,7 @@ void Stage::Update(Camera* camera)
 
 	for(size_t i = 0; i < walls_.size(); i++)
 	{
-		walls_[i]->Update(camera);
+		walls_[i]->Update(camera, isPlayerAccelerating);
 
 		//壁が壊れていたら削除
 		if(walls_[i]->GetIsBreak_())

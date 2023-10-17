@@ -13,7 +13,7 @@ public:
 
 	void Initialize(const std::string& fileName);
 
-	void Update(Camera* camera);
+	void Update(Camera* camera, bool isPlayerAxcell);
 
 	void Draw();
 

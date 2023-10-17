@@ -243,7 +243,7 @@ void TutorialScene::Update()
 	}
 
 	//カメラの切り替え
-	stage_->Update(gameCamera_.get());
+	stage_->Update(gameCamera_.get(),player_->GetRightAxcell());
 	player_->Update(gameCamera_.get());
 	skydome_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());

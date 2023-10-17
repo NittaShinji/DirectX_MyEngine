@@ -155,6 +155,7 @@ public:
 	Attribute GetAttributeColor() { return attributeColor_; }
 	Vector3 GetPlayerInitPos() { return playerInitPos_; }
 	Vector3 GetTotalAxcell() { return totalAxcell_; }
+	bool GetRightAxcell() { return isRightAxcell_; }
 
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }

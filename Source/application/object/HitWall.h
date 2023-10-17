@@ -13,7 +13,7 @@ public:
 
 	void Initialize();
 
-	void Update(Camera* camera) override;
+	void Update(Camera* camera, bool isPlayerAccelerating);
 
 	void Draw() override;
 
@@ -24,6 +24,9 @@ private:
 
 	//壁が壊れているか
 	bool isBreak_;
+
+	//プレイヤーが加速しているか
+	bool isPlayerAccelerating_;
 
 	////リセット用の座標
 	//Vector3 resetPos_;

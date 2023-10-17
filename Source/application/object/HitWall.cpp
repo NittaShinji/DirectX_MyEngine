@@ -27,10 +27,26 @@ void HitWall::OnCollision(const CollisionInfo& info)
 {
 	BaseCollider* baseCollider = info.collider;
 
+	info.object->GetAttributeColor();
+
 	//球と当たった時
 	if(baseCollider->GetShapeType() == COLLISIONSHAPE_SPHERE)
 	{
-		isBreak_ = true;
+		//プレイヤーが加速している場合
+		if(isPlayerAccelerating_ == true)
+		{
+			//壁の属性を対応する属性色に変更し、壊れるように
+			if(info.object->GetAttributeColor() == pink)
+			{
+				Object3d::SetAttributeColor(Attribute::pink);
+			}
+			else
+			{
+				Object3d::SetAttributeColor(Attribute::yellow);
+			}
+			
+			isBreak_ = true;
+		}
 	}
 }
 
@@ -41,9 +57,10 @@ void HitWall::Initialize()
 	Object3d::SetColor(Vector3(0.78f, 0.78f, 0.78f));
 }
 
-void HitWall::Update(Camera* camera)
+void HitWall::Update(Camera* camera, bool isPlayerAccelerating)
 {
 	Object3d::Update(camera);
+	isPlayerAccelerating_ = isPlayerAccelerating;
 }
 
 void HitWall::Draw()
