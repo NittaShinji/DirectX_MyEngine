@@ -264,7 +264,7 @@
     <ClCompile Include="Source\engine\math\Easing.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
-    <ClCompile Include="GroundParticle.cpp">
+    <ClCompile Include="Source\application\particle\GroundParticle.cpp">
       <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
     <ClCompile Include="Source\application\object\HitWall.cpp">
@@ -434,7 +434,7 @@
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="GroundParticle.h">
+    <ClInclude Include="Source\application\particle\GroundParticle.h">
       <Filter>ヘッダー ファイル\application\particle</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\object\HitWall.h">

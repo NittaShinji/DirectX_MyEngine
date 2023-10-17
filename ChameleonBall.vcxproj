@@ -96,7 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GroundParticle.cpp" />
+    <ClCompile Include="Source\application\particle\GroundParticle.cpp" />
     <ClCompile Include="Source\application\object\HitWall.cpp" />
     <ClCompile Include="Source\application\debug\ImGuiManager.cpp" />
     <ClCompile Include="Source\application\object\BackGround.cpp" />
@@ -147,7 +147,7 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GroundParticle.h" />
+    <ClInclude Include="Source\application\particle\GroundParticle.h" />
     <ClInclude Include="Source\application\object\HitWall.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Source\application\debug\ImGuiManager.h" />
