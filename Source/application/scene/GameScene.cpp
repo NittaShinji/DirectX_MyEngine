@@ -111,7 +111,6 @@ void GameScene::Initialize()
 	const string plane = "Plane";
 	const string wall = "wall";
 
-
 	Model::Load(sphere);
 	Model::Load(testStage0);
 	Model::Load(skydome);
@@ -158,7 +157,9 @@ void GameScene::Initialize()
 	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 
 	//パーティクル
-	ParticleManager::GetInstance()->AddEmitter();
+	//groundParticle_ = std::make_unique<GroundParticle>();
+	groundParticle_ = GroundParticle::Create();
+	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->Initialize();
 	/*particleManager_->AddEmitter();*/
 	/*startScale = 0.5f;
@@ -286,6 +287,7 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
+	groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
 	//particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
 
@@ -301,7 +303,7 @@ void GameScene::Update()
 
 	if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
 	{
-		ParticleManager::GetInstance()->AllRemove();
+		ParticleManager::GetInstance()->ParticleRemove();
 		stage_->Reset("Stage0.json");
 		player_->Reset();
 		gameCamera_->Reset();

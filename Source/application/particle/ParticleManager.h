@@ -61,13 +61,21 @@ public: // メンバ関数
 
 	//static std::unique_ptr<ParticleManager> Create();
 
-	void AddEmitter();
+	void AddEmitter(ParticleEmitter* particleEmitter);
+	//void AddEmitter(std::unique_ptr<ParticleEmitter> particleEmitter);
+
 
 	//static void LoadTexture();
 	//static void LoadTexture(const std::string& fileName);
 
 	//パーティクルとエミッターを全て削除
 	void AllRemove();
+
+	void ParticleRemove();
+
+	void EmitterRemove();
+
+
 
 private: // 定数
 	static const int division = 50;					// 分割数
@@ -81,7 +89,9 @@ private: // メンバ変数
 	static ID3D12GraphicsCommandList* cmdList_;
 	static ID3D12Device* device_;
 
-	std::vector<std::unique_ptr<ParticleEmitter>> emitters_;
+	std::vector<ParticleEmitter*> emitters_;
+	//std::vector<std::unique_ptr<ParticleEmitter>> emitters_;
+
 
 };
 

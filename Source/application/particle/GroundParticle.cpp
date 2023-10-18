@@ -1,6 +1,20 @@
 #include "GroundParticle.h"
 #include "ImGuiManager.h"
 
+std::unique_ptr<GroundParticle> GroundParticle::Create()
+{
+	// 3Dオブジェクトのインスタンスを生成
+	std::unique_ptr<GroundParticle> instance = nullptr;
+	instance = std::make_unique<GroundParticle>();
+
+	if(instance == nullptr)
+	{
+		return nullptr;
+	}
+
+	return instance;
+}
+
 void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 {
 	for(int i = 0; i < 3; i++)
@@ -47,7 +61,8 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 	}
 }
 
-void GroundParticle::Update(Camera* camera, Attribute attribute)
-{
-	ParticleManager::GetInstance()->Update(camera,attribute);
-}
+//void GroundParticle::Update(Camera* camera, Attribute attribute)
+//{
+//	/*Preparation()*/
+//	ParticleEmitter::Update(camera,attribute);
+//}

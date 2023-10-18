@@ -5,9 +5,11 @@ class GroundParticle : public ParticleEmitter
 {
 public:
 
+	static std::unique_ptr<GroundParticle> Create();
+
 	void Preparation(Vector3 playerPos, Attribute playerColor);
 
-	void Update(Camera* camera, Attribute attribute) override;
+	//void Update(Camera* camera, Attribute attribute) override;
 
 private:
 

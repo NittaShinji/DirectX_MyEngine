@@ -48,6 +48,21 @@ void ParticleManager::AllRemove()
 	emitters_.clear();
 }
 
+void ParticleManager::ParticleRemove()
+{
+	//パーティクルを全削除
+	for(auto& emitter : emitters_)
+	{
+		emitter->AllRemove();
+	}
+}
+
+void ParticleManager::EmitterRemove()
+{
+	//エミッターの全削除
+	emitters_.clear();
+}
+
 void ParticleManager::Update(Camera* camera, Attribute attribute)
 {
 	for(auto& emitter : emitters_)
@@ -81,12 +96,18 @@ void ParticleManager::Draw()
 //	return instance;
 //}
 
-void ParticleManager::AddEmitter()
+//void ParticleManager::AddEmitter(std::unique_ptr<ParticleEmitter> particleEmitter)
+//{
+//	emitters_.push_back(std::move(particleEmitter));
+//}
+
+void ParticleManager::AddEmitter(ParticleEmitter* particleEmitter)
 {
-	std::unique_ptr<ParticleEmitter> emitter = nullptr;
-	emitter = ParticleEmitter::Create();
-	emitters_.push_back(std::move(emitter));
+	emitters_.push_back(particleEmitter);
 }
+
+
+
 //
 //void ParticleManager::PreDraw(ID3D12GraphicsCommandList* cmdList)
 //{

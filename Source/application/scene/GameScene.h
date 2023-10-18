@@ -15,6 +15,7 @@
 #include "BackGround.h"
 #include "PostEffect.h"
 #include "SoundManager.h"
+#include "GroundParticle.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -124,6 +125,8 @@ private:
 
 	//サウンド
 	std::unique_ptr<Sound> gameSound_ = nullptr;
+
+	std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
 	
 };
 

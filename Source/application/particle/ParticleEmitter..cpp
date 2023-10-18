@@ -98,11 +98,6 @@ void ParticleEmitter::SetScale()
 	}
 }
 
-void ParticleEmitter::Preparation()
-{
-
-}
-
 void ParticleEmitter::AllRemove()
 {
 	//パーティクルを全削除
