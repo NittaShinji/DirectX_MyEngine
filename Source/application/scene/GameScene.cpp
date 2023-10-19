@@ -277,6 +277,8 @@ void GameScene::Update()
 		//		particleManager_->Add(60, pos, vel, acc, colorSpeed, startScale, endScale);
 		//	}
 		//}
+
+		groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
 		
 	}
 
@@ -287,7 +289,7 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
+	
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
 	//particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
 

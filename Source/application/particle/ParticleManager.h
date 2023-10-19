@@ -7,7 +7,7 @@
 #include <forward_list>
 
 /// <summary>
-/// 3Dオブジェクト
+/// 2Dパーティクル
 /// </summary>
 
 class ParticleManager final
@@ -74,8 +74,6 @@ public: // メンバ関数
 	void ParticleRemove();
 
 	void EmitterRemove();
-
-
 
 private: // 定数
 	static const int division = 50;					// 分割数

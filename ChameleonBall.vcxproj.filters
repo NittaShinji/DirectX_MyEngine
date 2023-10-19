@@ -282,6 +282,15 @@
     <ClCompile Include="Source\application\particle\ParticleEmitter..cpp">
       <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
+    <ClCompile Include="BlockParticle.cpp">
+      <Filter>ソース ファイル\application\object</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjParticleManager.cpp">
+      <Filter>ソース ファイル\application\particle</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjParticleEmitter.cpp">
+      <Filter>ソース ファイル\application\particle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -457,6 +466,15 @@
     </ClInclude>
     <ClInclude Include="Source\engine\audio\SoundManager.h">
       <Filter>ヘッダー ファイル\engine\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockParticle.h">
+      <Filter>ヘッダー ファイル\application\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjParticleManager.h">
+      <Filter>ヘッダー ファイル\application\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjParticleEmitter.h">
+      <Filter>ヘッダー ファイル\application\particle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
