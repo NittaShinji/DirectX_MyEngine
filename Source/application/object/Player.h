@@ -41,7 +41,7 @@ private:
 	std::unique_ptr<Object3d> object_;
 
 	//初期位置
-	Vector3 playerInitPos_;
+	const Vector3 kPlayerInitPos_ = { 0.0f,2.0f,2.0f };
 	//位置
 	Vector3 position_;
 	Vector3 rotation_ = { 0,0,0 };
@@ -143,8 +143,6 @@ private:
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
-
-
 public:
 
 	bool GetIsMoving() { return isMoving_; }
@@ -153,10 +151,9 @@ public:
 	Vector3 GetPos() { return position_; }
 	bool GetOnGround() { return onGround_; }
 	Attribute GetAttributeColor() { return attributeColor_; }
-	Vector3 GetPlayerInitPos() { return playerInitPos_; }
+	Vector3 GetPlayerInitPos() { return kPlayerInitPos_; }
 	Vector3 GetTotalAxcell() { return totalAxcell_; }
 	bool GetRightAxcell() { return isRightAxcell_; }
-
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }

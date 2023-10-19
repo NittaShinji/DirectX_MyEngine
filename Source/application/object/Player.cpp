@@ -38,8 +38,7 @@ void Player::Initialize()
 	jumpSound_->Initialize("jump.wav");
 	doubleJumpSound_->Initialize("doubleJump.wav");
 
-	playerInitPos_ = { 0.0f,2.0f,2.0f };
-	position_ = playerInitPos_;
+	position_ = kPlayerInitPos_;
 	rotation_ = { 0,0,0 };
 	scale_ = { 1.0,1.0,1.0 };
 
@@ -66,6 +65,7 @@ void Player::Initialize()
 	isMoving_ = false;
 	isChangeColor = false;
 	isJumpRotate_ = false;
+	onGround_ = true;
 
 	fallVec_ = { 0.0f,0.0f,0.0f };
 	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
@@ -128,61 +128,65 @@ void Player::Update(Camera* camera)
 
 	Object3d::SetColorFlag(colorFlag_);
 
+
 	//落下処理
-	if(!onGround_)
+	if(isMoving_ == true)
 	{
-		//下向き加速度　
-		const float fallAcc = -0.015f;
-		const float fallVYMin = -0.5f;
-		//加速
-		fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
-
-		//合計加速度に落下中の速度を加算
-		totalAxcell_ += fallVec_;
-
-		//二段ジャンプ時
-		if(jumpCount > 0 && jumpCount < 2)
+		if(!onGround_)
 		{
-			if(gamePad_->GetButtonA())
-			{
-				jumpSound_->PlaySoundWave(false);
-				
-				isJumpRotate_ = true;
-				onGround_ = false;
-				const float jumpVYFist = 0.4f;
-				fallVec_ = { 0,jumpVYFist,0 };
-				jumpCount -= 1;
-			}
-			if(keys_->PushedKeyMoment(DIK_SPACE))
-			{
-				jumpSound_->PlaySoundWave(false);
-				isJumpRotate_ = true;
-				onGround_ = false;
-				const float jumpVYFist = 0.4f;
-				fallVec_ = { 0,jumpVYFist,0 };
-				jumpCount -= 1;
-			}
-		}
+			//下向き加速度　
+			const float fallAcc = -0.015f;
+			const float fallVYMin = -0.5f;
+			//加速
+			fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
 
-		//二段ジャンプ時の回転処理
-		JumpRotation();
-	}
-	//ジャンプ操作
-	else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
-	{
-		jumpSound_->PlaySoundWave(false);
-		onGround_ = false;
-		const float jumpVYFist = 0.4f;
-		fallVec_ = { 0,jumpVYFist,0 };
-		jumpCount -= 1;
-	}
-	else if(gamePad_->GetButtonA() && jumpCount > 0)
-	{
-		jumpSound_->PlaySoundWave(false);
-		onGround_ = false;
-		const float jumpVYFist = 0.4f;
-		fallVec_ = { 0,jumpVYFist,0 };
-		jumpCount -= 1;
+			//合計加速度に落下中の速度を加算
+			totalAxcell_ += fallVec_;
+
+			//二段ジャンプ時
+			if(jumpCount > 0 && jumpCount < 2)
+			{
+				if(gamePad_->GetButtonA())
+				{
+					jumpSound_->PlaySoundWave(false);
+
+					isJumpRotate_ = true;
+					onGround_ = false;
+					const float jumpVYFist = 0.4f;
+					fallVec_ = { 0,jumpVYFist,0 };
+					jumpCount -= 1;
+				}
+				if(keys_->PushedKeyMoment(DIK_SPACE))
+				{
+					jumpSound_->PlaySoundWave(false);
+					isJumpRotate_ = true;
+					onGround_ = false;
+					const float jumpVYFist = 0.4f;
+					fallVec_ = { 0,jumpVYFist,0 };
+					jumpCount -= 1;
+				}
+			}
+
+			//二段ジャンプ時の回転処理
+			JumpRotation();
+		}
+		//ジャンプ操作
+		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
+		{
+			jumpSound_->PlaySoundWave(false);
+			onGround_ = false;
+			const float jumpVYFist = 0.4f;
+			fallVec_ = { 0,jumpVYFist,0 };
+			jumpCount -= 1;
+		}
+		else if(gamePad_->GetButtonA() && jumpCount > 0)
+		{
+			jumpSound_->PlaySoundWave(false);
+			onGround_ = false;
+			const float jumpVYFist = 0.4f;
+			fallVec_ = { 0,jumpVYFist,0 };
+			jumpCount -= 1;
+		}
 	}
 
 	//加速を座標に反映
@@ -190,60 +194,63 @@ void Player::Update(Camera* camera)
 	Object3d::SetTransform(position_);
 	Object3d::Update(camera);
 
-	//球コライダーを取得
-	SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
-	assert(sphereCollider);
-
-	//球の上端から球の下端までのレイキャスト用レイを準備
-	Ray ray;
-	ray.start = sphereCollider->center;
-	ray.start.y += sphereCollider->GetRadius();
-	ray.dir = { 0,-1,0 };
-	RaycastHit raycastHit;
-
-	//接地状態
-	if(onGround_)
+	if(isMoving_ == true)
 	{
-		GroundRotation();
+		//球コライダーを取得
+		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
+		assert(sphereCollider);
 
-		//スムーズに坂を下る為の吸着距離
-		const float adsDistance = 0.2f;
-		//接地を維持
-		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
-		{
-			onGround_ = true;
-			position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
-			Object3d::SetTransform(position_);
-			Object3d::Update(camera);
-		}
-		//地面がないので落下
-		else
-		{
-			onGround_ = false;
-			fallVec_ = { 0,0,0 };
-		}
-	}
-	//落下状態
-	else if(fallVec_.y <= 0.0f)
-	{
-		AccelerateChangeColor();
+		//球の上端から球の下端までのレイキャスト用レイを準備
+		Ray ray;
+		ray.start = sphereCollider->center;
+		ray.start.y += sphereCollider->GetRadius();
+		ray.dir = { 0,-1,0 };
+		RaycastHit raycastHit;
 
-		if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
+		//接地状態
+		if(onGround_)
 		{
-			//着地
-			onGround_ = true;
-			position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
-			jumpCount = kMaxJumpNum;
-			//行列の更新など
-			Object3d::SetTransform(position_);
-			Object3d::Update(camera);
-		}
-	}
+			GroundRotation();
 
-	if(position_.y <= deadLine_)
-	{
-		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
-		isDead_ = true;
+			//スムーズに坂を下る為の吸着距離
+			const float adsDistance = 0.2f;
+			//接地を維持
+			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+			{
+				onGround_ = true;
+				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+				Object3d::SetTransform(position_);
+				Object3d::Update(camera);
+			}
+			//地面がないので落下
+			else
+			{
+				onGround_ = false;
+				fallVec_ = { 0,0,0 };
+			}
+		}
+		//落下状態
+		else if(fallVec_.y <= 0.0f)
+		{
+			AccelerateChangeColor();
+
+			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
+			{
+				//着地
+				onGround_ = true;
+				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+				jumpCount = kMaxJumpNum;
+				//行列の更新など
+				Object3d::SetTransform(position_);
+				Object3d::Update(camera);
+			}
+		}
+
+		if(position_.y <= deadLine_)
+		{
+			//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
+			isDead_ = true;
+		}
 	}
 
 	//ゲームパッドのボタン情報をリセット
@@ -331,7 +338,7 @@ void Player::Draw()
 
 void Player::Reset()
 {
-	position_ = { 0,2,2 };
+	position_ = kPlayerInitPos_;
 	rotation_ = { 0,0,0 };
 	scale_ = { 1,1,1 };
 
