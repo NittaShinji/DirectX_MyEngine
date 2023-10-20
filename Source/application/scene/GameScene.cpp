@@ -7,6 +7,7 @@
 #include "MeshCollider.h"
 #include "TouchableObject.h"
 #include "SceneManager.h"
+#include "ObjParticleManager.h"
 #include "Vector4.h"
 #include <sstream>
 #include <iomanip>
@@ -26,12 +27,11 @@ void GameScene::StaticInitialize()
 	imGuiManager_ = BaseScene::imGuiManager_;
 
 	ParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
-	//ParticleManager::StaticInitialize(directXBasic_->GetDevice().Get(),directXBasic_->GetCommandList().Get());
+	ObjParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 }
 
 void GameScene::Initialize()
 {
-
 	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLightGroup(lightGroup_);
@@ -158,9 +158,14 @@ void GameScene::Initialize()
 
 	//パーティクル
 	//groundParticle_ = std::make_unique<GroundParticle>();
-	groundParticle_ = GroundParticle::Create();
+	/*groundParticle_ = GroundParticle::Create();
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
-	ParticleManager::GetInstance()->Initialize();
+	ParticleManager::GetInstance()->Initialize();*/
+
+	blockParticle_ = BlockParticle::Create();
+	ObjParticleManager::GetInstance()->AddEmitter(blockParticle_.get());
+	ObjParticleManager::GetInstance()->Initialize();
+
 	/*particleManager_->AddEmitter();*/
 	/*startScale = 0.5f;
 	endScale = 2.0f;*/
@@ -209,7 +214,6 @@ void GameScene::Update()
 		//imguiからのライトパラメータを反映
 		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
 		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x, lightDir0_.y, lightDir0_.z }), 0.0f);
-
 		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
 	}
 
@@ -278,8 +282,12 @@ void GameScene::Update()
 		//	}
 		//}
 
-		groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
+		//groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
 		
+	}
+	else
+	{
+		blockParticle_->Preparation(player_->GetPos(), "sphere");
 	}
 
 	//カメラの切り替え
@@ -289,8 +297,9 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
+	//ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
 	
-	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
+	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 	//particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
 
 #ifdef _DEBUG
@@ -306,6 +315,7 @@ void GameScene::Update()
 	if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
 	{
 		ParticleManager::GetInstance()->ParticleRemove();
+		ObjParticleManager::GetInstance()->ParticleRemove();
 		stage_->Reset("Stage0.json");
 		player_->Reset();
 		gameCamera_->Reset();
@@ -353,7 +363,8 @@ void GameScene::Draw()
 	/*ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
 	particleManager_->Draw();*/
 
-	ParticleManager::GetInstance()->Draw();
+	//ParticleManager::GetInstance()->Draw();
+	ObjParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
@@ -361,7 +372,6 @@ void GameScene::Draw()
 	bButtonSprite_->Update();
 	jumpSprite_->Update();
 	arrowSprite_->Update();
-
 
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");

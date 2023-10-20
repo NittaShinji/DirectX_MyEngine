@@ -96,9 +96,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BlockParticle.cpp" />
-    <ClCompile Include="ObjParticleEmitter.cpp" />
-    <ClCompile Include="ObjParticleManager.cpp" />
+    <ClCompile Include="Source\application\particle\BlockParticle.cpp" />
+    <ClCompile Include="Source\application\particle\ObjParticleEmitter.cpp" />
+    <ClCompile Include="Source\application\particle\ObjParticleManager.cpp" />
     <ClCompile Include="Source\application\particle\ParticleEmitter..cpp" />
     <ClCompile Include="Source\application\particle\GroundParticle.cpp" />
     <ClCompile Include="Source\application\object\HitWall.cpp" />
@@ -151,9 +151,9 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BlockParticle.h" />
-    <ClInclude Include="ObjParticleEmitter.h" />
-    <ClInclude Include="ObjParticleManager.h" />
+    <ClInclude Include="Source\application\particle\BlockParticle.h" />
+    <ClInclude Include="Source\application\particle\ObjParticleEmitter.h" />
+    <ClInclude Include="Source\application\particle\ObjParticleManager.h" />
     <ClInclude Include="Source\application\particle\ParticleEmitter.h" />
     <ClInclude Include="Source\application\particle\GroundParticle.h" />
     <ClInclude Include="Source\application\object\HitWall.h" />

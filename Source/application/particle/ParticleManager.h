@@ -25,9 +25,9 @@ private: // エイリアス
 public:
 
 	//コピーコンストラクタの無効
-	ParticleManager(const ParticleManager& soundManager) = delete;
+	ParticleManager(const ParticleManager& particleManager) = delete;
 	//代入演算子の無効
-	ParticleManager& operator=(const ParticleManager& soundManager) = delete;
+	ParticleManager& operator=(const ParticleManager& particleManager) = delete;
 
 public: // 静的メンバ関数
 
