@@ -11,6 +11,8 @@ public:
 
 	void Preparation(const Vector3& popPos, std::string fileName);
 
+	void Update(Camera* camera) override;
+
 private:
 
 	const std::string modelFileName_;

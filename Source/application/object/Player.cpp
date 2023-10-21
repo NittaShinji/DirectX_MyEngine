@@ -263,6 +263,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	if(info.object->GetAttributeColor() != attributeColor_)
 	{
 		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
+		//isMoving_ = false;
  		isDead_ = true;
 	}
 
@@ -333,10 +334,13 @@ void Player::Accelerate()
 
 void Player::Draw()
 {
-	Object3d::Draw();
+	if(isDead_ == false)
+	{
+		Object3d::Draw();
+	}
 }
 
-void Player::Reset()
+void Player::Reset(Camera* camera)
 {
 	position_ = kPlayerInitPos_;
 	rotation_ = { 0,0,0 };
@@ -354,6 +358,8 @@ void Player::Reset()
 	isChangeColor = false;
 	attributeColor_ = Attribute::pink;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
+	Object3d::SetTransform(position_);
+	Object3d::Update(camera);
 }
 
 void Player::ImGuiUpdate()

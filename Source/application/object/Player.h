@@ -28,7 +28,7 @@ public:
 
 	void Draw();
 
-	void Reset();
+	void Reset(Camera* camera);
 
 	void ImGuiUpdate();
 

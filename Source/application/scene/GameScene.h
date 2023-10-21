@@ -67,8 +67,6 @@ private:
 	LightGroup* lightGroup_ = nullptr;
 
 	//カメラ
-	std::unique_ptr<Camera> camera_ = nullptr;
-	std::unique_ptr<Camera> testCamera_ = nullptr;
 	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
 
 	//プレイヤー
@@ -130,6 +128,9 @@ private:
 	//std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
 
 	std::unique_ptr<BlockParticle> blockParticle_ = nullptr;
+
+	//リセットフラグ
+	bool isReset_;
 	
 };
 

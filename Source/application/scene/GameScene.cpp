@@ -135,8 +135,6 @@ void GameScene::Initialize()
 	plane_->SetScale(planeScale);
 
 	//------------カメラ----------
-	camera_ = std::make_unique<Camera>();
-	testCamera_ = std::make_unique<Camera>();
 	gameCamera_ = std::make_unique<GameCamera>();
 
 	//カメラ
@@ -149,8 +147,6 @@ void GameScene::Initialize()
 
 	Vector3 cameraUp = { 0,1,0 };
 
-	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
-	testCamera_->Initialize(testCameraEye, testcameraTarget, cameraUp);
 	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 
 	//パーティクル
@@ -163,19 +159,32 @@ void GameScene::Initialize()
 	ObjParticleManager::GetInstance()->AddEmitter(blockParticle_.get());
 	ObjParticleManager::GetInstance()->Initialize();
 
-	/*particleManager_->AddEmitter();*/
-	/*startScale = 0.5f;
-	endScale = 2.0f;*/
-
-	imGuiPos[0] = 0.0f;
-	imGuiPos[1] = 0.0f;
-	imGuiPos[2] = 0.0f;
+	isReset_ = false;
 }
 
 void GameScene::Update()
 {
+	if(player_->GetIsDead() == true)
+	{
+		if(isReset_ == false)
+		{
+			blockParticle_->Preparation(player_->GetPos(), "sphere");
+			isReset_ = true;
+		}
+
+		if(blockParticle_->GetParticleNum() == 0)
+		{
+			ParticleManager::GetInstance()->ParticleRemove();
+			ObjParticleManager::GetInstance()->ParticleRemove();
+			stage_->Reset("Stage0.json");
+			gameCamera_->Reset();
+			player_->Reset(gameCamera_.get());
+			isReset_ = false;
+		}
+	}
+
 	//スプライト
- 	aButtonSprite_->matUpdate();
+  	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();
 	jumpSprite_->matUpdate();
 	arrowSprite_->matUpdate();
@@ -216,75 +225,15 @@ void GameScene::Update()
 
 	lightGroup_->Update();
 
-	camera_->Update();
-	testCamera_->Update();
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell());
-
-	/*ImGui::Begin("Particle");
-	ImGui::SetWindowPos(ImVec2(600, 0));
-	ImGui::SetWindowSize(ImVec2(300, 150));
-	ImGui::SliderFloat("StartScale", &startScale, 0.0f, 50.0f);
-	ImGui::SliderFloat("EndScale", &endScale, 0.0f, 50.0f);
-	ImGui::SliderFloat3("pos", imGuiPos, -3.0f, 3.0f);
-	ImGui::SliderFloat3("vel", imGuiVel, -1.0f, 1.0f);
-	ImGui::SliderFloat3("acc", imGuiAcc, -0.05f, 0.05f);
-	ImGui::End();*/
+	gameCamera_->Update(player_->GetIsMoving(),player_->GetIsDead(), player_->GetTotalAxcell());
 
 	if(player_->GetOnGround() == true)
 	{
-		//Vector3 pos = { 0.0f,0.0f,0.0f };
-
-		//Vector3 vel = { imGuiVel[0],imGuiVel[1] ,imGuiVel[2] };
-
-		//for(int i = 0; i < 3; i++)
-		//{
-		//	const float md_pos = 2.0f;
-		//	pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().x + imGuiPos[0];
-		//	const float shiftY = -0.8f;
-		//	pos.y = player_->GetPos().y + shiftY + imGuiPos[1];
-		//	pos.z = player_->GetPos().z + imGuiPos[2];
-
-		//	vel.x = 0.0f + imGuiVel[0];
-
-		//	const float md_velY = 0.174f;
-		//	vel.y = md_velY + imGuiVel[1];
-
-		//	const float md_velZ = -0.68f;
-		//	vel.z = md_velZ + imGuiVel[2];
-
-		//	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-		//	Vector3 acc{};
-		//	const float md_acc = -0.017f;
-		//	acc.x = imGuiAcc[0];
-		//	acc.y = md_acc + imGuiAcc[1];
-		//	acc.z = md_acc + imGuiAcc[2];
-
-		//	//色を変化させる
-		//	if(player_->GetAttributeColor() == Attribute::pink)
-		//	{
-		//		Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
-		//	}
-		//	else if(player_->GetAttributeColor() == Attribute::yellow)
-		//	{
-		//		Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
-		//	}
-
-		//	//色を変化させる
-		//	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
-
-		//	//追加
-		//	if(particleManager_->GetIsMaxParticle() == false)
-		//	{
-		//		particleManager_->Add(60, pos, vel, acc, colorSpeed, startScale, endScale);
-		//	}
-		//}
-
 		//groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
-		
 	}
 	else
 	{
-		blockParticle_->Preparation(player_->GetPos(), "Cube");
+		
 	}
 
 	//カメラの切り替え
@@ -295,9 +244,7 @@ void GameScene::Update()
 	backGround_->Update(gameCamera_.get());
 
 	//ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
-	
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
-	//particleManager_->Update(gameCamera_.get(), player_->GetAttributeColor());
 
 #ifdef _DEBUG
 
@@ -309,27 +256,14 @@ void GameScene::Update()
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
 
-	if(player_->GetIsDead() == true)
-	{
-		//blockParticle_->Preparation(player_->GetPos(), "sphere");
-		ParticleManager::GetInstance()->ParticleRemove();
-		ObjParticleManager::GetInstance()->ParticleRemove();
-		stage_->Reset("Stage0.json");
-		player_->Reset();
-		gameCamera_->Reset();
-	}
-
 	if(player_->GetIsFinish() == true)
 	{
 		ParticleManager::GetInstance()->ParticleRemove();
 		ObjParticleManager::GetInstance()->ParticleRemove();
 		stage_->Reset("Stage0.json");
-		player_->Reset();
+		player_->Reset(gameCamera_.get());
 		gameCamera_->Reset();
-	}
-
-	if(player_->GetIsFinish() == true)
-	{
+	
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}

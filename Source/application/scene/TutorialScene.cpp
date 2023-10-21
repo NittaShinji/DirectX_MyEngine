@@ -147,7 +147,7 @@ void TutorialScene::Update()
 	}
 	else
 	{
-		player_->Reset();
+		player_->Reset(gameCamera_.get());
 		gameCamera_->Reset();
 	}
 
@@ -170,7 +170,7 @@ void TutorialScene::Update()
 	}
 
 	lightGroup_->Update();
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetTotalAxcell());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell());
 
 	if(player_->GetOnGround() == true)
 	{
@@ -261,7 +261,7 @@ void TutorialScene::Update()
 	{
 		if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
 		{
-			player_->Reset();
+			player_->Reset(gameCamera_.get());
 			gameCamera_->Reset();
 			keyTimer_ = kWaitTime_;
 		}

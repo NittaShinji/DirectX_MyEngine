@@ -5,6 +5,8 @@
 
 class ObjParticleEmitter
 {
+public:
+
 	struct Particle
 	{
 		Object3d object3d;
@@ -58,14 +60,17 @@ public: // メンバ関数
 
 	void SetIsMaxParticle(bool isMaxParticle) { isMaxParticle_ = isMaxParticle; }
 
-private: // 定数
+	std::size_t GetParticleNum() { return std::distance(particles_.begin(), particles_.end()); }
+
+protected: // 定数
+
 	static const int division = 50;					// 分割数
 	static const float radius;				// 底面の半径
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int kVertexCount = 3;		// 頂点数
+	static const int kVertexCount = 2;		// 頂点数
 
-private:
+protected:
 
 	//パーティクル配列
 	std::forward_list<Particle> particles_;

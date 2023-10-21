@@ -2,14 +2,25 @@
 #include "ImGuiManager.h"
 
 
-void GameCamera::Update(bool isPlayerMoving, Vector3 playerAxcell_)
+void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, Vector3 playerAxcell_)
 {
 	if(isPlayerMoving == true)
 	{
-		//プレイヤーのポジションを代入(動いた分だけ進むように初期位置を引く)
-		target_.z += playerAxcell_.z;
-		eye_.z += playerAxcell_.z;
+		
+		if(isPlayerDead == true)
+		{
+			target_.z += playerAxcell_.z / 1.5f;
+			eye_.z += playerAxcell_.z  / 1.5f;
+		}
+		else
+		{
+			//プレイヤーのポジションを代入(動いた分だけ進むように初期位置を引く)
+			target_.z += playerAxcell_.z;
+			eye_.z += playerAxcell_.z;
+
+		}
 	}
+	
 
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
@@ -19,6 +30,9 @@ void GameCamera::Reset()
 {
 	eye_ = { 30,7.5,-20 };
 	target_ = { 0,5,5 };
+
+	UpdateViewMatrix();
+	UpdateProjectionMatrix();
 }
 
 void GameCamera::ImGuiUpdate()

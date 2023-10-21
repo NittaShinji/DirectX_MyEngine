@@ -18,14 +18,13 @@ std::unique_ptr<BlockParticle> BlockParticle::Create()
 
 void BlockParticle::Initialize()
 {
-	startScale_ = { 1.0f,1.0f,1.0f };
+	startScale_ = { 0.9f,0.9f,0.9f };
 	endScale_ = { 0.0f,0.0f,0.0f };
 }
 
 
 void BlockParticle::Preparation(const Vector3& popPos, std::string fileName)
 {
-
 	const float md_pos = 2.0f;
 	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
 	const float shiftY = -0.8f;
@@ -56,4 +55,39 @@ void BlockParticle::Preparation(const Vector3& popPos, std::string fileName)
 		Add(fileName, 60, setPos_, setVel_, acc, colorSpeed, startScale_, endScale_);
 	}
 
+}
+
+void BlockParticle::Update(Camera* camera)
+{
+	//寿命が尽きたパーティクルを全削除
+	particles_.remove_if(
+		[](Particle& x)
+		{
+			return x.frame >= x.num_frame;
+		}
+	);
+
+	std::size_t size = std::distance(particles_.begin(), particles_.end());
+	if(size < kVertexCount)
+	{
+		isMaxParticle_ = false;
+	}
+	else
+	{
+		isMaxParticle_ = true;
+	}
+
+	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	{
+		it->frame++;
+		//進行度を0～1の範囲に換算
+		float f = (float)it->frame / it->num_frame;
+
+		//スケールの線形補間
+		it->scale = (it->e_scale - it->s_scale) * f;
+		it->scale += it->s_scale;
+		it->object3d.SetScale(it->scale);
+
+		it->object3d.Update(camera);
+	}
 }
