@@ -36,6 +36,7 @@ void ObjParticleEmitter::Update(Camera* camera)
 		//スケールの線形補間
 		it->scale = (it->e_scale - it->s_scale) * f;
 		it->scale += it->s_scale;
+		it->object3d.SetScale(it->scale);
 
 		it->object3d.Update(camera);
 	}

@@ -111,11 +111,8 @@ void GameScene::Initialize()
 	const string plane = "Plane";
 	const string wall = "wall";
 
-	Model::Load(sphere);
 	Model::Load(testStage0);
-	Model::Load(skydome);
 	Model::Load(cube);
-	Model::Load(plane);
 	Model::Load(wall);
 
 	//3Dオブジェクトの生成
@@ -287,7 +284,7 @@ void GameScene::Update()
 	}
 	else
 	{
-		blockParticle_->Preparation(player_->GetPos(), "sphere");
+		blockParticle_->Preparation(player_->GetPos(), "Cube");
 	}
 
 	//カメラの切り替え
@@ -312,7 +309,17 @@ void GameScene::Update()
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
 
-	if(player_->GetIsDead() == true || player_->GetIsFinish() == true)
+	if(player_->GetIsDead() == true)
+	{
+		//blockParticle_->Preparation(player_->GetPos(), "sphere");
+		ParticleManager::GetInstance()->ParticleRemove();
+		ObjParticleManager::GetInstance()->ParticleRemove();
+		stage_->Reset("Stage0.json");
+		player_->Reset();
+		gameCamera_->Reset();
+	}
+
+	if(player_->GetIsFinish() == true)
 	{
 		ParticleManager::GetInstance()->ParticleRemove();
 		ObjParticleManager::GetInstance()->ParticleRemove();
