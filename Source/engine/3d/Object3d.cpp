@@ -36,7 +36,7 @@ ComPtr<ID3D12Resource> Object3d::CrateConstBuff(Type1* directXBasic_)
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//定数バッファの生成
-	HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
+	[[maybe_unused]] HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
@@ -68,7 +68,7 @@ void Object3d::Initialize()
 	constBuffMaterial_ = CrateConstBuff<DirectXBasic>(directXBasic_);
 
 	//定数バッファのマッピング
-	HRESULT result = constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform_);//マッピング
+	[[maybe_unused]] HRESULT result = constBuffTransform_->Map(0, nullptr, (void**)&constMapTransform_);//マッピング
 	assert(SUCCEEDED(result));
 
 	// 頂点レイアウト
@@ -368,7 +368,7 @@ void Object3d::Update(Camera* camera)
 	constMapTransform_->cameraPos = cameraPos_;
 
 	//定数バッファのマッピング
-	HRESULT result = constBuffMaterial_->Map(0, nullptr, (void**)&constMapMaterial_);//マッピング
+	[[maybe_unused]] HRESULT result = constBuffMaterial_->Map(0, nullptr, (void**)&constMapMaterial_);//マッピング
 	constBuffMaterial_->SetName(L"constBuffMaterial");
 	assert(SUCCEEDED(result));
 

@@ -45,8 +45,6 @@ private:
 
 	WindowsAPI* winApi_ = nullptr;
 
-	HRESULT result_;
-
 	ComPtr<ID3D12Device> device_ = nullptr;
 	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
@@ -79,8 +77,6 @@ private:
 	void InitializeFence();
 
 public:	//アクセッサ
-
-	const HRESULT& GetResult() const { return result_; };
 
 	ComPtr<ID3D12GraphicsCommandList> GetCommandList() const { return commandList_; };
 

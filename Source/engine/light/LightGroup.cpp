@@ -35,7 +35,7 @@ void LightGroup::Initialize()
 	cbResourceDesc.SampleDesc.Count = 1;
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 	///定数バッファの生成
-	HRESULT result = device_->CreateCommittedResource(
+	[[maybe_unused]] HRESULT result = device_->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
@@ -75,7 +75,7 @@ LightGroup* LightGroup::Create()
 
 void LightGroup::TransferConstBuffer()
 {
-	HRESULT result;
+	[[maybe_unused]] HRESULT result;
 	//定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);

@@ -120,29 +120,29 @@ void DirectXBasic::AfterDraw()
 #pragma region コマンドのフラッシュ
 
 	// 命令のクローズ
-	result_ = commandList_->Close();
-	assert(SUCCEEDED(result_));
+	[[maybe_unused]] HRESULT result = commandList_->Close();
+	assert(SUCCEEDED(result));
 	// コマンドリストの実行
 	ID3D12CommandList* commandLists[] = { commandList_.Get() };
 	commandQueue_->ExecuteCommandLists(1, commandLists);
 	// 画面に表示するバッファをフリップ(裏表の入替え)
-	result_ = swapChain_->Present(1, 0);
-	assert(SUCCEEDED(result_));
+	result = swapChain_->Present(1, 0);
+	assert(SUCCEEDED(result));
 #pragma endregion 
 
 #ifdef _DEBUG
 
-	if(FAILED(result_))
+	if(FAILED(result))
 	{
 		ComPtr<ID3D12DeviceRemovedExtendedData> dred;
 
-		result_ = device_->QueryInterface(IID_PPV_ARGS(&dred));
-		assert(SUCCEEDED(result_));
+		result = device_->QueryInterface(IID_PPV_ARGS(&dred));
+		assert(SUCCEEDED(result));
 
 		// 自動パンくず取得
 		D3D12_DRED_AUTO_BREADCRUMBS_OUTPUT autoBreadcrumbsOutput{};
-		result_ = dred->GetAutoBreadcrumbsOutput(&autoBreadcrumbsOutput);
-		assert(SUCCEEDED(result_));
+		result = dred->GetAutoBreadcrumbsOutput(&autoBreadcrumbsOutput);
+		assert(SUCCEEDED(result));
 	}
 
 #endif
@@ -159,11 +159,11 @@ void DirectXBasic::AfterDraw()
 		CloseHandle(event);
 	}
 	// キューをクリア
-	result_ = commandAllocator_->Reset();
-	assert(SUCCEEDED(result_));
+	result = commandAllocator_->Reset();
+	assert(SUCCEEDED(result));
 	// 再びコマンドリストを貯める準備
-	result_ = commandList_->Reset(commandAllocator_.Get(), nullptr);
-	assert(SUCCEEDED(result_));
+	result = commandList_->Reset(commandAllocator_.Get(), nullptr);
+	assert(SUCCEEDED(result));
 
 #pragma endregion 
 
@@ -205,8 +205,8 @@ void DirectXBasic::InitializeDevice()
 #endif
 
 	// DXGIファクトリーの生成
-	result_ = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory_));
-	assert(SUCCEEDED(result_));
+	[[maybe_unused]] HRESULT result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory_));
+	assert(SUCCEEDED(result));
 	// アダプターの列挙用
 	std::vector<ComPtr<IDXGIAdapter4>> adapters;
 
@@ -253,9 +253,9 @@ void DirectXBasic::InitializeDevice()
 	for(size_t i = 0; i < _countof(levels); i++)
 	{
 		// 採用したアダプターでデバイスを生成
-		result_ = D3D12CreateDevice(tmpAdapter.Get(), levels[i],
+		result = D3D12CreateDevice(tmpAdapter.Get(), levels[i],
 			IID_PPV_ARGS(&device_));
-		if(result_ == S_OK)
+		if(result == S_OK)
 		{
 			// デバイスを生成できた時点でループを抜ける
 			featureLevel = levels[i];
@@ -281,16 +281,16 @@ void DirectXBasic::InitializeCommand()
 #pragma region コマンドアロケータとリストの生成
 
 	// コマンドアロケータを生成
-	result_ = device_->CreateCommandAllocator(
+	[[maybe_unused]] HRESULT result = device_->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		IID_PPV_ARGS(&commandAllocator_));
-	assert(SUCCEEDED(result_));
+	assert(SUCCEEDED(result));
 	// コマンドリストを生成
-	result_ = device_->CreateCommandList(0,
+	result = device_->CreateCommandList(0,
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		commandAllocator_.Get(), nullptr,
 		IID_PPV_ARGS(&commandList_));
-	assert(SUCCEEDED(result_));
+	assert(SUCCEEDED(result));
 
 #pragma endregion
 
@@ -299,8 +299,8 @@ void DirectXBasic::InitializeCommand()
 	D3D12_COMMAND_QUEUE_DESC commandQueueDesc{};
 
 	//コマンドキューを生成
-	result_ = device_->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&commandQueue_));
-	assert(SUCCEEDED(result_));
+	result = device_->CreateCommandQueue(&commandQueueDesc, IID_PPV_ARGS(&commandQueue_));
+	assert(SUCCEEDED(result));
 
 #pragma endregion 
 }
@@ -322,9 +322,9 @@ void DirectXBasic::InitializeSwapChain()
 	ComPtr<IDXGISwapChain1> swapChain1;
 
 	// スワップチェーンの生成
-	result_ = dxgiFactory_->CreateSwapChainForHwnd(
+	[[maybe_unused]] HRESULT result = dxgiFactory_->CreateSwapChainForHwnd(
 		commandQueue_.Get(), winApi_->GetHwndClass(), &swapChainDesc_, nullptr, nullptr, &swapChain1);
-	assert(SUCCEEDED(result_));
+	assert(SUCCEEDED(result));
 
 	//生成したIDXGISwapChain1のオブジェクトをIDXGISwapChain4に変換する
 	swapChain1.As(&swapChain_);
@@ -391,7 +391,7 @@ void DirectXBasic::InitializeDepthBuffer()
 
 #pragma region 深度バッファ生成
 	//深度バッファ生成
-	result_ = device_->CreateCommittedResource(
+	[[maybe_unused]] HRESULT result = device_->CreateCommittedResource(
 		&depthHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&depthResourceDesc,
@@ -409,7 +409,7 @@ void DirectXBasic::InitializeDepthBuffer()
 	dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;	//デプスステンシルビュー
 
 	// デスクリプタヒープの作成
-	result_ = device_->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap_));
+	result = device_->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&dsvHeap_));
 
 #pragma endregion
 
@@ -432,7 +432,7 @@ void DirectXBasic::InitializeFence()
 {
 #pragma region フェンス
 	// フェンスの生成
-	result_ = device_->CreateFence(fenceVal_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence_));
+	[[maybe_unused]] HRESULT result = device_->CreateFence(fenceVal_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence_));
 #pragma endregion 
 }
 

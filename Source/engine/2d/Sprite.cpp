@@ -38,7 +38,7 @@ ComPtr<ID3D12Resource> Sprite::CrateConstBuff(Type1*& constMapData, Type2* direc
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//定数バッファの生成
-	HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
+	[[maybe_unused]] HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
@@ -127,7 +127,7 @@ void Sprite::Initialize(Vector2 position, Vector2 size)
 	resDesc_.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 頂点バッファの生成
-	HRESULT result = directXBasic_->GetResult();
+	[[maybe_unused]] HRESULT result;
 	result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
@@ -196,7 +196,7 @@ void Sprite::matUpdate()
 
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	HRESULT result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
+	[[maybe_unused]] HRESULT result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 	assert(SUCCEEDED(result));
 	// 全頂点に対して
 	for(int32_t i = 0; i < vertices_.size(); i++)

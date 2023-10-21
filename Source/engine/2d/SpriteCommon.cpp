@@ -30,7 +30,7 @@ ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff(Type1*& constMapData, Type2*
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//定数バッファの生成
-	HRESULT result_ = directXBasic_->GetDevice()->CreateCommittedResource(
+	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
@@ -57,7 +57,7 @@ void SpriteCommon::ShaderLoad()
 #pragma region 頂点シェーダの読み込みとコンパイル(P02_01)
 
 	// 頂点シェーダの読み込みとコンパイル
-	HRESULT result_ = D3DCompileFromFile(
+	[[maybe_unused]] HRESULT result_ = D3DCompileFromFile(
 		L"Resources/Shaders/SpriteVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
@@ -144,7 +144,7 @@ void SpriteCommon::SemiTransparent()
 	pipelineDesc_.pRootSignature = rootSignature_.Get();
 
 	// パイプランステートの生成
-	HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result_));
 }
 
@@ -182,7 +182,7 @@ void SpriteCommon::Add()
 	pipelineDesc_.pRootSignature = rootSignature_.Get();
 
 	// パイプランステートの生成
-	HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result_));
 }
 
@@ -221,7 +221,7 @@ void SpriteCommon::Sub()
 
 	// パイプランステートの生成
 	//ID3D12PipelineState *pipelineState = nullptr;
-	HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result_));
 }
 
@@ -260,7 +260,7 @@ void SpriteCommon::InvertColor()
 
 	// パイプランステートの生成
 	//ID3D12PipelineState *pipelineState = nullptr;
-	HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result_));
 }
 
@@ -379,7 +379,7 @@ void SpriteCommon::RootSignatureSet()
 
 	// ルートシグネチャのシリアライズ
 	ComPtr<ID3DBlob> rootSigBlob;
-	HRESULT result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+	[[maybe_unused]] HRESULT result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob_);
 	assert(SUCCEEDED(result_));
 	result_ = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),

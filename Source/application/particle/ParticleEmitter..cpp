@@ -65,7 +65,7 @@ ComPtr<ID3D12Resource> ParticleEmitter::CrateConstBuff(Type1* device)
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//定数バッファの生成
-	HRESULT result = device->CreateCommittedResource(
+	[[maybe_unused]] HRESULT result = device->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
@@ -106,7 +106,7 @@ void ParticleEmitter::AllRemove()
 
 void ParticleEmitter::Update(Camera* camera, Attribute attribute)
 {
-	HRESULT result;
+	[[maybe_unused]] HRESULT result;
 
 	//寿命が尽きたパーティクルを全削除
 	particles_.remove_if(
@@ -301,7 +301,7 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 	constBuff_ = CrateConstBuff<ID3D12Device>(device_);
 
 	//定数バッファのマッピング
-	HRESULT result = constBuff_->Map(0, nullptr, (void**)&constMapData_);//マッピング
+	[[maybe_unused]] HRESULT result = constBuff_->Map(0, nullptr, (void**)&constMapData_);//マッピング
 	assert(SUCCEEDED(result));
 
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
@@ -528,7 +528,7 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 
 void ParticleEmitter::InitializeDescriptorHeap()
 {
-	HRESULT result = S_FALSE;
+	[[maybe_unused]] HRESULT result = S_FALSE;
 
 	// デスクリプタヒープを生成	
 	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
@@ -567,7 +567,7 @@ void ParticleEmitter::PostDraw()
 
 void ParticleEmitter::CreateModel()
 {
-	HRESULT result = S_FALSE;
+	[[maybe_unused]] HRESULT result = S_FALSE;
 
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * kVertexCount);
 
@@ -619,7 +619,7 @@ void ParticleEmitter::LoadTexture(const std::string& fileName)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	HRESULT result = LoadFromWICFile(
+	[[maybe_unused]] HRESULT result = LoadFromWICFile(
 		wfilePath, WIC_FLAGS_NONE,
 		&metadata, scratchImg);
 

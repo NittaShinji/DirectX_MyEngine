@@ -40,7 +40,6 @@ void Mesh::CrateBuffer()
 
 	// 頂点バッファの生成
 	HRESULT result;
-	result = directXBasic_->GetResult();
 	result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,

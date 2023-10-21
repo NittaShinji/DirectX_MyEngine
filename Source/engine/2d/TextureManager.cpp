@@ -45,7 +45,7 @@ void TextureManager::Initialize()
 	srvHeapDesc.NumDescriptors = kMaxSRVCount_;
 
 	//設定を本にSRV用デスクリプタヒープを生成
-	HRESULT result = device_->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
+	[[maybe_unused]] HRESULT result = device_->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
 	assert(SUCCEEDED(result));
 }
 
@@ -68,7 +68,7 @@ void TextureManager::LoadTexture(const std::string& fileName)
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 
-	HRESULT result_ = LoadFromWICFile(
+	[[maybe_unused]] HRESULT result_ = LoadFromWICFile(
 		wfilePath.data(),
 		WIC_FLAGS_NONE,
 		&metadata, scratchImg);
@@ -197,7 +197,7 @@ void TextureManager::TexMapping(int32_t texWidth, int32_t texHeight, Vector4 col
 	textureResourceDesc.SampleDesc.Count = 1;
 
 	//テクスチャバッファの生成
-	HRESULT result_ = device_->CreateCommittedResource(
+	[[maybe_unused]] HRESULT result_ = device_->CreateCommittedResource(
 		&textureHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&textureResourceDesc,
