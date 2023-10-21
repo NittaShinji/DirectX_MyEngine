@@ -38,18 +38,18 @@ ComPtr<ID3D12Resource> Sprite::CrateConstBuff(Type1*& constMapData, Type2* direc
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//定数バッファの生成
-	HRESULT result_ = directXBasic_->GetDevice()->CreateCommittedResource(
+	HRESULT result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff_));
-	assert(SUCCEEDED(result_));
+	assert(SUCCEEDED(result));
 
 	//定数バッファのマッピング
-	result_ = constBuff_->Map(0, nullptr, (void**)&constMapData);//マッピング
-	assert(SUCCEEDED(result_));
+	result = constBuff_->Map(0, nullptr, (void**)&constMapData);//マッピング
+	assert(SUCCEEDED(result));
 
 	return constBuff_;
 }
@@ -127,22 +127,21 @@ void Sprite::Initialize(Vector2 position, Vector2 size)
 	resDesc_.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	// 頂点バッファの生成
-	//ComPtr<ID3D12Resource> vertBuff_ = nullptr;
-	HRESULT result_ = directXBasic_->GetResult();
-	result_ = directXBasic_->GetDevice()->CreateCommittedResource(
+	HRESULT result = directXBasic_->GetResult();
+	result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&heapProp, // ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&resDesc_, // リソース設定
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&vertBuff_));
-	assert(SUCCEEDED(result_));
+	assert(SUCCEEDED(result));
 
 	// GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
 
-	result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result_));
+	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result));
 	// 全頂点に対して
 	for(int32_t i = 0; i < vertices_.size(); i++)
 	{
@@ -197,8 +196,8 @@ void Sprite::matUpdate()
 
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
-	HRESULT result_ = vertBuff_->Map(0, nullptr, (void**)&vertMap);
-	assert(SUCCEEDED(result_));
+	HRESULT result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
+	assert(SUCCEEDED(result));
 	// 全頂点に対して
 	for(int32_t i = 0; i < vertices_.size(); i++)
 	{
@@ -272,8 +271,6 @@ void Sprite::Draw(const std::string& fileName)
 
 void Sprite::TransferVertices()
 {
-	//HRESULT result = S_FALSE;
-
 	// 左下、左上、右下、右上
 	enum { LB, LT, RB, RT };
 

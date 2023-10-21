@@ -168,7 +168,7 @@ void GameScene::Update()
 	{
 		if(isReset_ == false)
 		{
-			blockParticle_->Preparation(player_->GetPos(), "sphere");
+			/*blockParticle_->Preparation(player_->GetPos(), "sphere");*/
 			isReset_ = true;
 		}
 
@@ -233,7 +233,7 @@ void GameScene::Update()
 	}
 	else
 	{
-		
+		blockParticle_->Preparation(player_->GetPos(), "sphere");
 	}
 
 	//カメラの切り替え

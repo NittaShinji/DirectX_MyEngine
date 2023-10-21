@@ -144,7 +144,6 @@ void SpriteCommon::SemiTransparent()
 	pipelineDesc_.pRootSignature = rootSignature_.Get();
 
 	// パイプランステートの生成
-	//ID3D12PipelineState *pipelineState = nullptr;
 	HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result_));
 }
@@ -183,7 +182,6 @@ void SpriteCommon::Add()
 	pipelineDesc_.pRootSignature = rootSignature_.Get();
 
 	// パイプランステートの生成
-	//ID3D12PipelineState *pipelineState = nullptr;
 	HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result_));
 }

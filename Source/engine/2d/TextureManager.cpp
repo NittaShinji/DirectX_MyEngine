@@ -45,8 +45,8 @@ void TextureManager::Initialize()
 	srvHeapDesc.NumDescriptors = kMaxSRVCount_;
 
 	//設定を本にSRV用デスクリプタヒープを生成
-	HRESULT result_ = device_->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
-	assert(SUCCEEDED(result_));
+	HRESULT result = device_->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&srvHeap_));
+	assert(SUCCEEDED(result));
 }
 
 void TextureManager::LoadTexture(const std::string& fileName)
