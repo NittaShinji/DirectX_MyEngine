@@ -150,12 +150,12 @@ void GameScene::Initialize()
 	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 
 	//パーティクル
-	//groundParticle_ = std::make_unique<GroundParticle>();
 	/*groundParticle_ = GroundParticle::Create();
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->Initialize();*/
 
 	blockParticle_ = BlockParticle::Create();
+	blockParticle_->Preparation(sphere);
 	ObjParticleManager::GetInstance()->AddEmitter(blockParticle_.get());
 	ObjParticleManager::GetInstance()->Initialize();
 
@@ -168,7 +168,7 @@ void GameScene::Update()
 	{
 		if(isReset_ == false)
 		{
-			/*blockParticle_->Preparation(player_->GetPos(), "sphere");*/
+			//blockParticle_->Preparation(player_->GetPos(), "sphere");
 			isReset_ = true;
 		}
 
@@ -230,10 +230,11 @@ void GameScene::Update()
 	if(player_->GetOnGround() == true)
 	{
 		//groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
+		blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos());
 	}
 	else
 	{
-		blockParticle_->Preparation(player_->GetPos(), "sphere");
+		
 	}
 
 	//カメラの切り替え
@@ -259,7 +260,7 @@ void GameScene::Update()
 	if(player_->GetIsFinish() == true)
 	{
 		ParticleManager::GetInstance()->ParticleRemove();
-		ObjParticleManager::GetInstance()->ParticleRemove();
+		//ObjParticleManager::GetInstance()->ParticleRemove();
 		stage_->Reset("Stage0.json");
 		player_->Reset(gameCamera_.get());
 		gameCamera_->Reset();
@@ -300,9 +301,6 @@ void GameScene::Draw()
 	Object3d::BeforeDraw();
 	stage_->Draw();
 	player_->Draw();
-
-	/*ParticleManager::PreDraw(directXBasic_->GetCommandList().Get());
-	particleManager_->Draw();*/
 
 	//ParticleManager::GetInstance()->Draw();
 	ObjParticleManager::GetInstance()->Draw();

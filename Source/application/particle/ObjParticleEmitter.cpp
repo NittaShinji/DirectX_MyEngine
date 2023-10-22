@@ -53,7 +53,7 @@ void ObjParticleEmitter::Update(Camera* camera)
 	);
 
 	std::size_t size = std::distance(particles_.begin(), particles_.end());
-	if(size < kVertexCount)
+	if(size < kMaxParticleNum_)
 	{
 		isMaxParticle_ = false;
 	}
@@ -65,6 +65,14 @@ void ObjParticleEmitter::Update(Camera* camera)
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
 		it->frame++;
+
+		//速度に加速度を加算
+		it->velocity = it->velocity + it->accel;
+		//速度による移動
+		Vector3 particlePos = it->object3d.GetTransform();
+		particlePos = particlePos + it->velocity;
+		it->object3d.SetTransform(particlePos);
+
 		//進行度を0～1の範囲に換算
 		float f = (float)it->frame / it->num_frame;
 
@@ -99,12 +107,20 @@ std::unique_ptr<ObjParticleEmitter> ObjParticleEmitter::Create()
 	return instance;
 }
 
+void ObjParticleEmitter::Preparation(std::string fileName)
+{
+	//色を変化させる
+	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
+	Add(fileName, InitLife, InitPos, InitVel, InitAcc, colorSpeed, InitStartScale, InitEndScale);
+}
+
 void ObjParticleEmitter::Add(const std::string fileName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale)
 {
 	int32_t isParticleNum = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
-		if(isParticleNum + generationNum_ >= kVertexCount || isParticleNum >= kVertexCount)
+		if(isParticleNum + generationNum_ >= kMaxParticleNum_ || isParticleNum >= kMaxParticleNum_)
 		{
 			isMaxParticle_ = true;
 			break;

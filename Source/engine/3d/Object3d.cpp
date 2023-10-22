@@ -448,7 +448,6 @@ void Object3d::AfterDraw() {}
 
 Vector3 Object3d::GetWorldPos() const
 {
-	//全ての壁の座標を渡す
 	Vector3 resutVec = { 0,0,0 };
 
 	//ワールド行列の平行移動成分を取得(ワールド座標)

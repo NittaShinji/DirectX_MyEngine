@@ -73,6 +73,8 @@ public: // メンバ関数
 
 	static std::unique_ptr<ObjParticleEmitter> Create();
 
+	virtual void Preparation(std::string fileName);
+
 	void Add(const std::string fileName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
 
 	bool GetIsMaxParticle() { return isMaxParticle_; }
@@ -93,7 +95,17 @@ protected: // 定数
 	static const float radius;				// 底面の半径
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int kVertexCount = 5;		// 頂点数
+	static const int kMaxParticleNum_ = 50;		// 頂点数
+
+	//初期値
+	 int InitLife = 60;
+	 Vector3 InitPos = { 0.0f,0.0f,0.0f };
+	 Vector3 InitVel = { 0.0f,0.0f,0.0f };
+
+	 Vector3 InitStartScale = { 0.0f,0.0f,0.0f };	//初期化初期スケール
+	 Vector3 InitEndScale = { 0.0f,0.0f,0.0f };	//初期化終期スケール
+
+	 Vector3 InitAcc = { 0.0f,0.0f,0.0f };
 
 protected:
 

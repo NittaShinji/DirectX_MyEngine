@@ -9,9 +9,11 @@ public:
 
 	void Initialize();
 
-	void Preparation(const Vector3& popPos, std::string fileName);
-
 	void Update(Camera* camera) override;
+
+	void PopUpdate(Camera* camera,const Vector3& popPos);
+
+	void Add(int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
 
 private:
 
@@ -26,6 +28,8 @@ private:
 	float imGuiPos_[3]{ 0.0f,0.0f,0.0f };
 	float imGuiVel_[3]{ 0.0f,0.0f,0.0f };
 	float imGuiAcc_[3]{ 0.0f,0.0f,0.0f };
+
+	int32_t particleCount_;
 
 };
 

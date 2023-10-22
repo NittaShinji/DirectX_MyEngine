@@ -125,7 +125,7 @@ private:
 	//サウンド
 	std::unique_ptr<Sound> gameSound_ = nullptr;
 
-	//std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
+	std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
 
 	std::unique_ptr<BlockParticle> blockParticle_ = nullptr;
 
