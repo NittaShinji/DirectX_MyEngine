@@ -11,27 +11,6 @@ private: // エイリアス
 
 public:
 
-	//struct GSOutput
-	//{
-	//	Vector3 pos;		// xyz座標
-	//	Vector3 normal;	//法線ベクトル
-	//	Vector2 uv;		// uv座標
-	//};
-
-	//頂点情報
-	//struct GSOutput
-	//{
-	//	Vector3 pos;		// xyz座標
-	//	Vector3 normal;	//法線ベクトル
-	//	Vector2 uv;		// uv座標
-	//};
-
-	// 定数バッファ用データ構造体
-	//struct ConstBufferData
-	//{
-	//	Matrix4 viewProjection;	// ３Ｄ変換行列
-	//};
-
 	struct Particle
 	{
 		Object3d object3d;
@@ -55,6 +34,9 @@ public:
 
 		//色情報
 		Vector4 colorSpeed = {};
+
+		//生み出されたどうか
+		bool isGenerated;
 	};
 
 public: // メンバ関数
@@ -95,10 +77,10 @@ protected: // 定数
 	static const float radius;				// 底面の半径
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int kMaxParticleNum_ = 50;		// 頂点数
+	static const int kMaxParticleNum_ = 30;		// 頂点数
 
 	//初期値
-	 int InitLife = 60;
+	 int InitLife = 30;
 	 Vector3 InitPos = { 0.0f,0.0f,0.0f };
 	 Vector3 InitVel = { 0.0f,0.0f,0.0f };
 
@@ -108,59 +90,6 @@ protected: // 定数
 	 Vector3 InitAcc = { 0.0f,0.0f,0.0f };
 
 protected:
-
-	//定数バッファ
-	//ComPtr<ID3D12Resource> constBuff_;
-	////定数バッファのマッピング用ポインタ
-	//ConstBufferData* constMapData_ = nullptr;
-
-	////グラフィックスパイプライン
-	//D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
-
-	//static ComPtr<ID3D12PipelineState> pipelineState_;
-
-	////ジオメトリシェーダーオブジェクト
-
-	//// ビュー行列
-	//Matrix4 matView_;
-	//// 射影行列
-	//Matrix4 matProjection_;
-
-	//// テクスチャバッファ
-	//static ComPtr<ID3D12Resource> texbuff_;
-	//// 頂点バッファ
-	//static ComPtr<ID3D12Resource> vertBuff_;
-	////頂点データ配列
-	//static std::vector<Vertex> vertices_;
-
-	//// デスクリプタヒープ
-	//static ComPtr<ID3D12DescriptorHeap> descHeap_;
-	//// デスクリプタサイズ
-	//static UINT descriptorHandleIncrementSize_;
-
-	////デスクリプタヒープハンドル
-	//static D3D12_CPU_DESCRIPTOR_HANDLE sSrvHandle_;
-	////テクスチャ番号
-	//static uint32_t sTextureIndex_;
-
-	//// シェーダリソースビューのハンドル(CPU)
-	//static D3D12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV_;
-	//// シェーダリソースビューのハンドル(CPU)
-	//static D3D12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV_;
-
-	//// ルートシグネチャ
-	//static ComPtr<ID3D12RootSignature> rootSignature_;
-	////SRVの最大個数
-	//static const size_t kMaxSRVCount_ = 2056;
-	//static const UINT kRenderTexNum = 2;
-
-	//static ID3D12GraphicsCommandList* cmdList_;
-	//static ID3D12Device* device_;
-
-	//DirectXBasic* directXBasic_ = nullptr;
-
-	//// 頂点バッファビュー
-	//D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
 
 	//パーティクル配列
 	std::forward_list<Particle> particles_;

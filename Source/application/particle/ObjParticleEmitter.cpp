@@ -151,6 +151,7 @@ void ObjParticleEmitter::Add(const std::string fileName,int life, const Vector3&
 		p.s_scale = start_scale;
 		p.e_scale = end_scale;
 		p.colorSpeed = colorSpeed;
+		p.isGenerated = false;
 	}
 }
 

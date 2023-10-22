@@ -36,17 +36,42 @@ void BlockParticle::Initialize()
 void BlockParticle::Update(Camera* camera)
 {
 	//寿命が尽きたパーティクルのスケールを0に
-	for(auto& particle : particles_)
+	//for(auto& particle : particles_)
+	//{
+	//	if(particle.frame >= particle.num_frame)
+	//	{
+	//		particle.scale = InitStartScale;
+	//		particle.velocity = InitVel;
+	//		particle.frame = 0;
+	//		particle.object3d.SetTransform(InitPos);
+	//		particle.object3d.SetScale(particle.scale);
+	//		particle.object3d.Update(camera);
+	//	}
+	//}
+
+	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
-		if(particle.frame >= particle.num_frame)
+		if(it->frame >= it->num_frame)
 		{
-			particle.scale = InitStartScale;
-			particle.velocity = InitVel;
-			particle.frame = 0;
-			particle.object3d.SetTransform(InitPos);
-			particle.object3d.SetScale(Vector3Zero());
-			particle.object3d.Update(camera);
+			it->scale = InitStartScale;
+			it->velocity = InitVel;
+			it->frame = 0;
+			it->object3d.SetTransform(InitPos);
+			it->object3d.SetScale(it->scale);
+			it->object3d.Update(camera);
+			it->isGenerated = false;
 		}
+
+		/*if(it->scale.x <= it->e_scale.x)
+		{
+			it->scale = InitStartScale;
+			it->velocity = InitVel;
+			it->frame = 0;
+			it->object3d.SetTransform(InitPos);
+			it->object3d.SetScale(it->scale);
+			it->object3d.Update(camera);
+			it->isGenerated = false;
+		}*/
 	}
 
 	std::size_t size = std::distance(particles_.begin(), particles_.end());
@@ -61,23 +86,32 @@ void BlockParticle::Update(Camera* camera)
 
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
-		//速度に加速度を加算
-		it->velocity = it->velocity + it->accel;
-		//速度による移動
-		Vector3 particlePos = it->object3d.GetTransform();
-		particlePos = particlePos + it->velocity;
-		it->object3d.SetTransform(particlePos);
+		if(it->isGenerated == true)
+		{
+			//速度に加速度を加算
+			it->velocity = it->velocity + it->accel;
+			//速度による移動
+			Vector3 particlePos = it->object3d.GetTransform();
+			particlePos = particlePos + it->velocity;
+			it->object3d.SetTransform(particlePos);
 
-		it->frame++;
-		//進行度を0～1の範囲に換算
-		float f = (float)it->frame / it->num_frame;
+			it->frame++;
+			//進行度を0～1の範囲に換算
+			float f = (float)it->frame / it->num_frame;
 
-		//スケールの線形補間
-		it->scale = (it->e_scale - it->s_scale) * f;
-		it->scale += it->s_scale;
+			//スケールの線形補間
+			it->scale = (it->e_scale - it->s_scale) * f;
+			it->scale += it->s_scale;
 
-		it->object3d.SetScale(it->scale);
-		it->object3d.Update(camera);
+			/*it->scale.x -= 0.1f;
+			it->scale.y -= 0.1f;
+			it->scale.z -= 0.1f;*/
+
+
+			it->object3d.SetScale(it->scale);
+			it->object3d.Update(camera);
+		}
+		
 	}
 }
 
@@ -91,7 +125,7 @@ void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos)
 	{
 		particleCount_ = 0;
 	}
-	
+
 	const float md_pos = 2.0f;
 	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
 	const float shiftY = -0.8f;
@@ -122,32 +156,18 @@ void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos)
 		it++;
 	}
 
-	it->object3d.SetTransform(setPos_);
-	it->object3d.Update(camera);
-	it->velocity = setVel_;
-	it->accel = acc;
-	it->colorSpeed = colorSpeed;
-	it->object3d.SetScale(it->s_scale);
-	it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
-	it->e_scale = Vector3Zero();
-
-	/*for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	if(it->isGenerated == false)
 	{
 		it->object3d.SetTransform(setPos_);
+		it->object3d.SetScale(it->s_scale);
 		it->object3d.Update(camera);
 		it->velocity = setVel_;
 		it->accel = acc;
 		it->colorSpeed = colorSpeed;
-		it->object3d.SetScale(it->s_scale);
-		it->s_scale = Vector3(1.0f,1.0f,1.0f);
+		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+		it->scale = it->s_scale;
 		it->e_scale = Vector3Zero();
-	}*/
-
-	/*for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
-	{
-		if(it->velocity.x != InitVel.x)
-		{
-			it->object3d.Update(camera);
-		}
-	}*/
+		it->frame = 0;
+		it->isGenerated = true;
+	}
 }
