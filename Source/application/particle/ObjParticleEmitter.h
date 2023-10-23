@@ -55,9 +55,9 @@ public: // メンバ関数
 
 	static std::unique_ptr<ObjParticleEmitter> Create();
 
-	virtual void Preparation(std::string fileName);
+	virtual void Preparation();
 
-	void Add(const std::string fileName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
+	void Add(const std::string modelName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
 
 	bool GetIsMaxParticle() { return isMaxParticle_; }
 
@@ -102,6 +102,8 @@ protected:
 
 	//現在のパーティクルの数
 	int32_t nowParticleCount_;
+
+	std::string modelName_;
 
 };
 

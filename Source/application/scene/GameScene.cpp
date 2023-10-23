@@ -154,8 +154,8 @@ void GameScene::Initialize()
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->Initialize();*/
 
-	blockParticle_ = BlockParticle::Create();
-	blockParticle_->Preparation(sphere);
+	blockParticle_ = BlockParticle::Create(cube);
+	blockParticle_->Preparation();
 	ObjParticleManager::GetInstance()->AddEmitter(blockParticle_.get());
 	ObjParticleManager::GetInstance()->Initialize();
 

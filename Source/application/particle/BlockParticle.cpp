@@ -1,6 +1,6 @@
 #include "BlockParticle.h"
 
-std::unique_ptr<BlockParticle> BlockParticle::Create()
+std::unique_ptr<BlockParticle> BlockParticle::Create(std::string modelName)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	std::unique_ptr<BlockParticle> instance = nullptr;
@@ -11,6 +11,7 @@ std::unique_ptr<BlockParticle> BlockParticle::Create()
 		return nullptr;
 	}
 
+	instance->modelName_ = modelName;
 	instance->Initialize();
 
 	return instance;
@@ -24,7 +25,7 @@ void BlockParticle::Initialize()
 
 	for(int32_t i = 0; i < kMaxParticleNum_; i++)
 	{
-		Preparation("sphere");
+		Preparation();
 	}
 
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)

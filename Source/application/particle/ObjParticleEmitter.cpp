@@ -107,15 +107,15 @@ std::unique_ptr<ObjParticleEmitter> ObjParticleEmitter::Create()
 	return instance;
 }
 
-void ObjParticleEmitter::Preparation(std::string fileName)
+void ObjParticleEmitter::Preparation()
 {
 	//色を変化させる
 	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
-	Add(fileName, InitLife, InitPos, InitVel, InitAcc, colorSpeed, InitStartScale, InitEndScale);
+	Add(modelName_, InitLife, InitPos, InitVel, InitAcc, colorSpeed, InitStartScale, InitEndScale);
 }
 
-void ObjParticleEmitter::Add(const std::string fileName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale)
+void ObjParticleEmitter::Add(const std::string modelName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale)
 {
 	int32_t isParticleNum = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
@@ -140,7 +140,7 @@ void ObjParticleEmitter::Add(const std::string fileName,int life, const Vector3&
 		Particle& p = particles_.front();
 		//値のセット
 		p.object3d.Initialize();
-		p.object3d.SetModel(fileName);
+		p.object3d.SetModel(modelName);
 		p.object3d.SetTransform(position);
 		//p.position = position;
 		p.velocity = velocity;

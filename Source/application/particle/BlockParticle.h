@@ -5,7 +5,7 @@ class BlockParticle : public ObjParticleEmitter
 {
 public:
 
-	static std::unique_ptr<BlockParticle> Create();
+	static std::unique_ptr<BlockParticle> Create(std::string modelName);
 
 	void Initialize();
 
@@ -16,8 +16,6 @@ public:
 	void Add(int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
 
 private:
-
-	const std::string modelFileName_;
 
 	Vector3 setPos_;		//座標
 	Vector3 setVel_;		//方向
