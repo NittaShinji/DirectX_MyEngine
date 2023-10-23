@@ -115,6 +115,21 @@ void ObjParticleEmitter::Preparation()
 	Add(modelName_, InitLife, InitPos, InitVel, InitAcc, colorSpeed, InitStartScale, InitEndScale);
 }
 
+void ObjParticleEmitter::ParticleReset(Camera* camera)
+{
+	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	{
+		it->scale = InitStartScale;
+		it->accel = InitAcc;
+		it->velocity = InitVel;
+		it->frame = 0;
+		it->object3d.SetTransform(InitPos);
+		it->object3d.SetScale(it->scale);
+		it->object3d.Update(camera);
+		it->isGenerated = false;
+	}
+}
+
 void ObjParticleEmitter::Add(const std::string modelName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale)
 {
 	int32_t isParticleNum = 0;

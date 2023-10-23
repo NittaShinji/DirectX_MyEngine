@@ -22,6 +22,8 @@ void BlockParticle::Initialize()
 	startScale_ = { 0.9f,0.9f,0.9f };
 	endScale_ = { 0.0f,0.0f,0.0f };
 	particleCount_ = 0;
+	isPlayerDead_ = false;
+	canReset_ = false;
 
 	for(int32_t i = 0; i < kMaxParticleNum_; i++)
 	{
@@ -55,7 +57,8 @@ void BlockParticle::Update(Camera* camera)
 		if(it->frame >= it->num_frame)
 		{
 			it->scale = InitStartScale;
-			it->velocity = InitVel;
+			it->accel = InitAcc;
+ 			it->velocity = InitVel;
 			it->frame = 0;
 			it->object3d.SetTransform(InitPos);
 			it->object3d.SetScale(it->scale);
@@ -104,71 +107,104 @@ void BlockParticle::Update(Camera* camera)
 			it->scale = (it->e_scale - it->s_scale) * f;
 			it->scale += it->s_scale;
 
-			/*it->scale.x -= 0.1f;
-			it->scale.y -= 0.1f;
-			it->scale.z -= 0.1f;*/
-
-
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
 		}
-		
+
+		if(isPlayerDead_ == true)
+		{
+			if(it->isGenerated == true)
+			{
+				if(it->scale.x <= it->e_scale.x)
+				{
+					resetCount_++;
+					if(resetCount_ == kMaxParticleNum_)
+					{
+						canReset_ = true;
+						//isStartPoped_ = false;
+					}
+				}
+			}
+		}
 	}
 }
 
-void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos)
+void BlockParticle::Reset()
 {
-	if(particleCount_ < kMaxParticleNum_)
+	resetCount_ = 0;
+	canReset_ = false;
+}
+
+void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLanded)
+{
+	if(isLanded == true)
 	{
-		particleCount_++;
-	}
-	else
-	{
-		particleCount_ = 0;
-	}
-
-	const float md_pos = 2.0f;
-	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
-	const float shiftY = -0.8f;
-	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
-	setPos_.z = popPos.z + imGuiPos_[2];
-
-	setVel_.x = 0.0f + imGuiVel_[0];
-
-	const float md_velY = 0.174f;
-	setVel_.y = md_velY + imGuiVel_[1];
-
-	const float md_velZ = -0.68f;
-	setVel_.z = md_velZ + imGuiVel_[2];
-
-	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-	Vector3 acc{};
-	const float md_acc = -0.017f;
-	acc.x = 0.0f + imGuiAcc_[0];
-	acc.y = md_acc + imGuiAcc_[1];
-	acc.z = md_acc + imGuiAcc_[2];
-
-	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
-
-	std::forward_list<Particle>::iterator it = particles_.begin();
-	for(int32_t i = 0; i < particleCount_; i++)
-	{
-		it++;
+		isStartPoped_ = true;
 	}
 
-	if(it->isGenerated == false)
+	if(isStartPoped_ == true)
 	{
-		it->object3d.SetTransform(setPos_);
-		it->object3d.SetScale(it->s_scale);
-		it->object3d.Update(camera);
-		it->velocity = setVel_;
-		it->accel = acc;
-		it->colorSpeed = colorSpeed;
-		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
-		it->scale = it->s_scale;
-		it->e_scale = Vector3Zero();
-		it->frame = 0;
-		it->isGenerated = true;
+		std::forward_list<Particle>::iterator it = particles_.begin();
+		for(int32_t i = 0; i < particleCount_; i++)
+		{
+			it++;
+		}
+
+		if(particleCount_ < kMaxParticleNum_)
+		{
+			particleCount_++;
+			if(particleCount_ == kMaxParticleNum_)
+			{
+				isStartPoped_ = false;
+			}
+		}
+		else
+		{
+			particleCount_ = 0;
+		}
+
+ 		const float md_pos = 2.0f;
+		setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
+		const float shiftY = -0.8f;
+		setPos_.y = popPos.y + shiftY + imGuiPos_[1];
+		setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
+
+		setVel_.x = 0.0f + imGuiVel_[0];
+
+		const float md_velY = 0.174f;
+		//setVel_.y = md_velY + imGuiVel_[1];
+		setVel_.y = (float)rand() / RAND_MAX * md_velY  + imGuiVel_[1];
+
+
+		//const float md_velZ = 2.5f;
+		//setVel_.z = md_velZ + imGuiVel_[2];
+		//setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
+		setVel_.z = 0.8f;
+
+		//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+		Vector3 acc{};
+		const float md_acc = -0.017f;
+		acc.x = 0.0f;
+		acc.y = md_acc;
+		acc.z = 0.0f;
+
+		//色を変化させる
+		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
+		if(it->isGenerated == false)
+		{
+			it->object3d.SetTransform(setPos_);
+			it->object3d.SetScale(it->s_scale);
+			it->object3d.Update(camera);
+			it->velocity = setVel_;
+			it->accel = acc;
+			it->colorSpeed = colorSpeed;
+			it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+			it->scale = it->s_scale;
+			it->e_scale = Vector3Zero();
+			it->frame = 0;
+			it->isGenerated = true;
+		}
+
 	}
 }

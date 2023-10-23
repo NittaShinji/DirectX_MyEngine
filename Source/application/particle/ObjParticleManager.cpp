@@ -43,6 +43,14 @@ void ObjParticleManager::AddEmitter(ObjParticleEmitter* particleEmitter)
 	emitters_.push_back(particleEmitter);
 }
 
+void ObjParticleManager::ParticleReset(Camera* camera)
+{
+	for(auto& emitter : emitters_)
+	{
+		emitter->ParticleReset(camera);
+	}
+}
+
 void ObjParticleManager::AllRemove()
 {
 	//パーティクルを全削除

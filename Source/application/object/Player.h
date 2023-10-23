@@ -141,6 +141,9 @@ private:
 	//スケールアニメーションフラグ
 	bool isScaleAnimetion_ = false;
 
+	//着地フラグ
+	bool isLanded_;
+
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
 public:
@@ -148,6 +151,7 @@ public:
 	bool GetIsMoving() { return isMoving_; }
 	bool GetIsFinish() { return isfinish_; }
 	bool GetIsDead() { return isDead_; }
+	bool GetIsLanded() { return isLanded_; }
 	Vector3 GetPos() { return position_; }
 	bool GetOnGround() { return onGround_; }
 	Attribute GetAttributeColor() { return attributeColor_; }

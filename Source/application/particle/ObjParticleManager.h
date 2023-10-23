@@ -43,6 +43,8 @@ public: // メンバ関数
 
 	void AddEmitter(ObjParticleEmitter* particleEmitter);
 	
+	void ParticleReset(Camera* camera);
+
 	//パーティクルとエミッターを全て削除
 	void AllRemove();
 

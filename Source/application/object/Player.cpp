@@ -66,6 +66,7 @@ void Player::Initialize()
 	isChangeColor = false;
 	isJumpRotate_ = false;
 	onGround_ = true;
+	isLanded_ = false;
 
 	fallVec_ = { 0.0f,0.0f,0.0f };
 	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
@@ -175,6 +176,7 @@ void Player::Update(Camera* camera)
 		{
 			jumpSound_->PlaySoundWave(false);
 			onGround_ = false;
+			isLanded_ = false;
 			const float jumpVYFist = 0.4f;
 			fallVec_ = { 0,jumpVYFist,0 };
 			jumpCount -= 1;
@@ -183,6 +185,7 @@ void Player::Update(Camera* camera)
 		{
 			jumpSound_->PlaySoundWave(false);
 			onGround_ = false;
+			isLanded_ = false;
 			const float jumpVYFist = 0.4f;
 			fallVec_ = { 0,jumpVYFist,0 };
 			jumpCount -= 1;
@@ -218,6 +221,7 @@ void Player::Update(Camera* camera)
 			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 			{
 				onGround_ = true;
+				isLanded_ = false;
 				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				Object3d::SetTransform(position_);
 				Object3d::Update(camera);
@@ -238,6 +242,7 @@ void Player::Update(Camera* camera)
 			{
 				//着地
 				onGround_ = true;
+				isLanded_ = true;
 				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				jumpCount = kMaxJumpNum;
 				//行列の更新など
@@ -355,6 +360,7 @@ void Player::Reset(Camera* camera)
 	isfinish_ = false;
 	isMoving_ = false;
 	isDead_ = false;
+	isLanded_ = false;
 	isChangeColor = false;
 	attributeColor_ = Attribute::pink;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));

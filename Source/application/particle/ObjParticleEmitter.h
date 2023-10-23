@@ -57,6 +57,8 @@ public: // メンバ関数
 
 	virtual void Preparation();
 
+	void ParticleReset(Camera* camera);
+
 	void Add(const std::string modelName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
 
 	bool GetIsMaxParticle() { return isMaxParticle_; }
@@ -77,11 +79,11 @@ protected: // 定数
 	static const float radius;				// 底面の半径
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int kMaxParticleNum_ = 30;		// 頂点数
+	static const int kMaxParticleNum_ = 3;		// 頂点数
 
 	//初期値
 	 int InitLife = 30;
-	 Vector3 InitPos = { 0.0f,0.0f,0.0f };
+	 Vector3 InitPos = { 0.0f,-100.0f,0.0f };
 	 Vector3 InitVel = { 0.0f,0.0f,0.0f };
 
 	 Vector3 InitStartScale = { 0.0f,0.0f,0.0f };	//初期化初期スケール
@@ -102,6 +104,12 @@ protected:
 
 	//現在のパーティクルの数
 	int32_t nowParticleCount_;
+
+	//リセットカウント
+	int32_t resetCount_;
+
+	//リセットできるか
+	bool canReset_;
 
 	std::string modelName_;
 

@@ -172,19 +172,22 @@ void GameScene::Update()
 			isReset_ = true;
 		}
 
-		if(blockParticle_->GetParticleNum() == 0)
+		if(blockParticle_->GetCanReset() == true)
 		{
 			ParticleManager::GetInstance()->ParticleRemove();
-			ObjParticleManager::GetInstance()->ParticleRemove();
+			//blockParticle_->ParticleReset(gameCamera_.get());
+			ObjParticleManager::GetInstance()->ParticleReset(gameCamera_.get());
 			stage_->Reset("Stage0.json");
 			gameCamera_->Reset();
 			player_->Reset(gameCamera_.get());
 			isReset_ = false;
+			blockParticle_->SetCanReset(false);
+			blockParticle_->Reset();
 		}
 	}
 
 	//スプライト
-  	aButtonSprite_->matUpdate();
+	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();
 	jumpSprite_->matUpdate();
 	arrowSprite_->matUpdate();
@@ -225,16 +228,18 @@ void GameScene::Update()
 
 	lightGroup_->Update();
 
-	gameCamera_->Update(player_->GetIsMoving(),player_->GetIsDead(), player_->GetTotalAxcell());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell());
+
+
 
 	if(player_->GetOnGround() == true)
 	{
 		//groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
-		blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos());
+		//blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos());
 	}
 	else
 	{
-		
+
 	}
 
 	//カメラの切り替え
@@ -245,6 +250,9 @@ void GameScene::Update()
 	backGround_->Update(gameCamera_.get());
 
 	//ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
+	blockParticle_->SetPlayerIsDead(player_->GetIsDead());
+	blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded());
+
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 
 #ifdef _DEBUG
@@ -264,7 +272,7 @@ void GameScene::Update()
 		stage_->Reset("Stage0.json");
 		player_->Reset(gameCamera_.get());
 		gameCamera_->Reset();
-	
+
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
@@ -302,7 +310,6 @@ void GameScene::Draw()
 	stage_->Draw();
 	player_->Draw();
 
-	//ParticleManager::GetInstance()->Draw();
 	ObjParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
