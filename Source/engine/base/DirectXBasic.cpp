@@ -120,7 +120,7 @@ void DirectXBasic::AfterDraw()
 #pragma region コマンドのフラッシュ
 
 	// 命令のクローズ
-	[[maybe_unused]] HRESULT result = commandList_->Close();
+	 HRESULT result = commandList_->Close();
 	assert(SUCCEEDED(result));
 	// コマンドリストの実行
 	ID3D12CommandList* commandLists[] = { commandList_.Get() };
@@ -205,7 +205,7 @@ void DirectXBasic::InitializeDevice()
 #endif
 
 	// DXGIファクトリーの生成
-	[[maybe_unused]] HRESULT result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory_));
+	HRESULT result = CreateDXGIFactory(IID_PPV_ARGS(&dxgiFactory_));
 	assert(SUCCEEDED(result));
 	// アダプターの列挙用
 	std::vector<ComPtr<IDXGIAdapter4>> adapters;
@@ -281,7 +281,7 @@ void DirectXBasic::InitializeCommand()
 #pragma region コマンドアロケータとリストの生成
 
 	// コマンドアロケータを生成
-	[[maybe_unused]] HRESULT result = device_->CreateCommandAllocator(
+	HRESULT result = device_->CreateCommandAllocator(
 		D3D12_COMMAND_LIST_TYPE_DIRECT,
 		IID_PPV_ARGS(&commandAllocator_));
 	assert(SUCCEEDED(result));
@@ -322,7 +322,8 @@ void DirectXBasic::InitializeSwapChain()
 	ComPtr<IDXGISwapChain1> swapChain1;
 
 	// スワップチェーンの生成
-	[[maybe_unused]] HRESULT result = dxgiFactory_->CreateSwapChainForHwnd(
+	HRESULT result;
+	result = dxgiFactory_->CreateSwapChainForHwnd(
 		commandQueue_.Get(), winApi_->GetHwndClass(), &swapChainDesc_, nullptr, nullptr, &swapChain1);
 	assert(SUCCEEDED(result));
 
@@ -391,7 +392,8 @@ void DirectXBasic::InitializeDepthBuffer()
 
 #pragma region 深度バッファ生成
 	//深度バッファ生成
-	[[maybe_unused]] HRESULT result = device_->CreateCommittedResource(
+	HRESULT result;
+	result = device_->CreateCommittedResource(
 		&depthHeapProp,
 		D3D12_HEAP_FLAG_NONE,
 		&depthResourceDesc,
@@ -432,7 +434,8 @@ void DirectXBasic::InitializeFence()
 {
 #pragma region フェンス
 	// フェンスの生成
-	[[maybe_unused]] HRESULT result = device_->CreateFence(fenceVal_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence_));
+	HRESULT result;
+	result = device_->CreateFence(fenceVal_, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&fence_));
 #pragma endregion 
 }
 

@@ -30,7 +30,8 @@ ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff(Type1*& constMapData, Type2*
 	cbResourceDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
 
 	//定数バッファの生成
-	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateCommittedResource(
+	HRESULT result;
+	result = directXBasic_->GetDevice()->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
@@ -40,8 +41,8 @@ ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff(Type1*& constMapData, Type2*
 	assert(SUCCEEDED(result_));
 
 	//定数バッファのマッピング
-	result_ = constBuff_->Map(0, nullptr, (void**)&constMapData);//マッピング
-	assert(SUCCEEDED(result_));
+	result = constBuff_->Map(0, nullptr, (void**)&constMapData);//マッピング
+	assert(SUCCEEDED(result));
 
 	return constBuff_;
 }
@@ -57,7 +58,8 @@ void SpriteCommon::ShaderLoad()
 #pragma region 頂点シェーダの読み込みとコンパイル(P02_01)
 
 	// 頂点シェーダの読み込みとコンパイル
-	[[maybe_unused]] HRESULT result_ = D3DCompileFromFile(
+	HRESULT result;
+	result = D3DCompileFromFile(
 		L"Resources/Shaders/SpriteVS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
@@ -66,7 +68,7 @@ void SpriteCommon::ShaderLoad()
 		0,
 		&vsBlob_, &errorBlob_);
 	// エラーなら
-	if(FAILED(result_))
+	if(FAILED(result))
 	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string error;
@@ -83,7 +85,7 @@ void SpriteCommon::ShaderLoad()
 
 #pragma region ピクセルシェーダーの読み込み
 	// ピクセルシェーダの読み込みとコンパイル
-	result_ = D3DCompileFromFile(
+	result = D3DCompileFromFile(
 		L"Resources/Shaders/SpritePS.hlsl", // シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
@@ -93,7 +95,7 @@ void SpriteCommon::ShaderLoad()
 		&psBlob_, &errorBlob_);
 
 	// エラーなら
-	if(FAILED(result_))
+	if(FAILED(result))
 	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string error;
@@ -144,8 +146,9 @@ void SpriteCommon::SemiTransparent()
 	pipelineDesc_.pRootSignature = rootSignature_.Get();
 
 	// パイプランステートの生成
-	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
-	assert(SUCCEEDED(result_));
+	HRESULT result;
+	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	assert(SUCCEEDED(result));
 }
 
 //加算合成
@@ -182,8 +185,9 @@ void SpriteCommon::Add()
 	pipelineDesc_.pRootSignature = rootSignature_.Get();
 
 	// パイプランステートの生成
-	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
-	assert(SUCCEEDED(result_));
+	HRESULT result;
+	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	assert(SUCCEEDED(result));
 }
 
 //減算合成
@@ -221,8 +225,9 @@ void SpriteCommon::Sub()
 
 	// パイプランステートの生成
 	//ID3D12PipelineState *pipelineState = nullptr;
-	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
-	assert(SUCCEEDED(result_));
+	HRESULT result;
+	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	assert(SUCCEEDED(result));
 }
 
 //反転
@@ -260,8 +265,9 @@ void SpriteCommon::InvertColor()
 
 	// パイプランステートの生成
 	//ID3D12PipelineState *pipelineState = nullptr;
-	[[maybe_unused]] HRESULT result_ = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
-	assert(SUCCEEDED(result_));
+	HRESULT result;
+	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
+	assert(SUCCEEDED(result));
 }
 
 void SpriteCommon::Update()
@@ -379,12 +385,13 @@ void SpriteCommon::RootSignatureSet()
 
 	// ルートシグネチャのシリアライズ
 	ComPtr<ID3DBlob> rootSigBlob;
-	[[maybe_unused]] HRESULT result_ = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
+	HRESULT result;
+	result = D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0,
 		&rootSigBlob, &errorBlob_);
-	assert(SUCCEEDED(result_));
-	result_ = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
+	assert(SUCCEEDED(result));
+	result = directXBasic_->GetDevice()->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(),
 		IID_PPV_ARGS(&rootSignature_));
-	assert(SUCCEEDED(result_));
+	assert(SUCCEEDED(result));
 }
 
 void SpriteCommon::BeforeDraw()
