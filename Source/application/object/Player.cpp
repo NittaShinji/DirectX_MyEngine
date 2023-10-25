@@ -265,7 +265,7 @@ void Player::Update(Camera* camera)
 void Player::OnCollision(const CollisionInfo& info)
 {
 	//色が違う場合、死亡判定にする
-	if(info.object->GetAttributeColor() != attributeColor_)
+	if(info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
 	{
 		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		//isMoving_ = false;
