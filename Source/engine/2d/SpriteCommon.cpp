@@ -38,7 +38,7 @@ ComPtr<ID3D12Resource> SpriteCommon::CrateConstBuff(Type1*& constMapData, Type2*
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuff_));
-	assert(SUCCEEDED(result_));
+	assert(SUCCEEDED(result));
 
 	//定数バッファのマッピング
 	result = constBuff_->Map(0, nullptr, (void**)&constMapData);//マッピング
