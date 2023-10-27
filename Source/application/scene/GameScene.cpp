@@ -230,8 +230,6 @@ void GameScene::Update()
 
 	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell());
 
-
-
 	if(player_->GetOnGround() == true)
 	{
 		//groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());

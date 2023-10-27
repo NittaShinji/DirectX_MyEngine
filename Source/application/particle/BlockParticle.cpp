@@ -38,20 +38,7 @@ void BlockParticle::Initialize()
 
 void BlockParticle::Update(Camera* camera)
 {
-	//寿命が尽きたパーティクルのスケールを0に
-	//for(auto& particle : particles_)
-	//{
-	//	if(particle.frame >= particle.num_frame)
-	//	{
-	//		particle.scale = InitStartScale;
-	//		particle.velocity = InitVel;
-	//		particle.frame = 0;
-	//		particle.object3d.SetTransform(InitPos);
-	//		particle.object3d.SetScale(particle.scale);
-	//		particle.object3d.Update(camera);
-	//	}
-	//}
-
+	//寿命が尽きたパーティクルを初期化
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
 		if(it->frame >= it->num_frame)
@@ -65,19 +52,9 @@ void BlockParticle::Update(Camera* camera)
 			it->object3d.Update(camera);
 			it->isGenerated = false;
 		}
-
-		/*if(it->scale.x <= it->e_scale.x)
-		{
-			it->scale = InitStartScale;
-			it->velocity = InitVel;
-			it->frame = 0;
-			it->object3d.SetTransform(InitPos);
-			it->object3d.SetScale(it->scale);
-			it->object3d.Update(camera);
-			it->isGenerated = false;
-		}*/
 	}
 
+	//最大数生成しているかどうか
 	std::size_t size = std::distance(particles_.begin(), particles_.end());
 	if(size < kMaxParticleNum_)
 	{
@@ -111,6 +88,7 @@ void BlockParticle::Update(Camera* camera)
 			it->object3d.Update(camera);
 		}
 
+		//プレイヤーが死んだ際に生成を止めてリセットできるように
 		if(isPlayerDead_ == true)
 		{
 			if(it->isGenerated == true)
@@ -121,7 +99,6 @@ void BlockParticle::Update(Camera* camera)
 					if(resetCount_ == kMaxParticleNum_)
 					{
 						canReset_ = true;
-						//isStartPoped_ = false;
 					}
 				}
 			}
@@ -174,7 +151,6 @@ void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLand
 		const float md_velY = 0.174f;
 		//setVel_.y = md_velY + imGuiVel_[1];
 		setVel_.y = (float)rand() / RAND_MAX * md_velY  + imGuiVel_[1];
-
 
 		//const float md_velZ = 2.5f;
 		//setVel_.z = md_velZ + imGuiVel_[2];

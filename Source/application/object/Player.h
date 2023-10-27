@@ -120,7 +120,7 @@ private:
 	int32_t axcellTimer_ = kAxcellTime_;
 
 	//プレイヤー死亡ライン
-	const float deadLine_ = 0.5f;
+	const float deadLine_ = -5.0f;
 
 	//1周回る時間
 	const float kRotateXTime_ = 60.0f;

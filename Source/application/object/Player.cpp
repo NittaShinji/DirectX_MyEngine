@@ -90,49 +90,48 @@ void Player::Update(Camera* camera)
 		Accelerate();
 	}
 
-	//色変え処理
-	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
-	{
-		//isScaleAnimetion_ = true;
-
-		//属性の変更
-		if(attributeColor_ == Attribute::pink)
-		{
-			attributeColor_ = Attribute::yellow;
-		}
-		else if(attributeColor_ == Attribute::yellow)
-		{
-			attributeColor_ = Attribute::pink;
-		}
-		else
-		{
-			attributeColor_ = Attribute::black;
-		}
-
-		colorFlag_ = true;
-
-		if(attributeColor_ == Attribute::pink)
-		{
-			SetColor(Vector3(1.0f, 0.4f, 0.7f));
-		}
-		else if(attributeColor_ == Attribute::yellow)
-		{
-			SetColor(Vector3(1.0f, 0.469f, 0.0f));
-		}
-		else
-		{
-			SetColor(Vector3(0.0f, 0.0f, 0.0f));
-		}
-	}
-
-	//if(isScaleAnimetion_ == true && scaleTime_)
-
-	Object3d::SetColorFlag(colorFlag_);
-
-
-	//落下処理
 	if(isMoving_ == true)
 	{
+		//色変え処理
+		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+		{
+			//isScaleAnimetion_ = true;
+
+			//属性の変更
+			if(attributeColor_ == Attribute::pink)
+			{
+				attributeColor_ = Attribute::yellow;
+			}
+			else if(attributeColor_ == Attribute::yellow)
+			{
+				attributeColor_ = Attribute::pink;
+			}
+			else
+			{
+				attributeColor_ = Attribute::black;
+			}
+
+			colorFlag_ = true;
+
+			if(attributeColor_ == Attribute::pink)
+			{
+				SetColor(Vector3(1.0f, 0.4f, 0.7f));
+			}
+			else if(attributeColor_ == Attribute::yellow)
+			{
+				SetColor(Vector3(1.0f, 0.469f, 0.0f));
+			}
+			else
+			{
+				SetColor(Vector3(0.0f, 0.0f, 0.0f));
+			}
+		}
+
+		//if(isScaleAnimetion_ == true && scaleTime_)
+
+		Object3d::SetColorFlag(colorFlag_);
+
+		//落下処理
 		if(!onGround_)
 		{
 			//下向き加速度　
@@ -255,6 +254,7 @@ void Player::Update(Camera* camera)
 		{
 			//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 			isDead_ = true;
+			isLanded_ = true;
 		}
 	}
 
@@ -269,7 +269,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	{
 		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		//isMoving_ = false;
- 		isDead_ = true;
+		isDead_ = true;
 	}
 
 	if(info.object->GetAttributeColor() == Attribute::Goal)
