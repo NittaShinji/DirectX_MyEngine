@@ -13,10 +13,10 @@ public:
 
 	void Reset();
 
-	void PopUpdate(Camera* camera,const Vector3& popPos,bool isLanded,bool isPlayerDead);
+	void PopUpdate(Camera* camera,const Vector3& popPos,bool isLanded,bool isPlayerDead,Attribute attributeColor);
 
-	void LandParticlePop(Camera* camera, const Vector3& popPos);
-	void DeadParticlePop(Camera* camera, const Vector3& popPos);
+	void LandParticlePop(Camera* camera, const Vector3& popPos, Attribute attributeColor);
+	void DeadParticlePop(Camera* camera, const Vector3& popPos, Attribute attributeColor);
 
 
 	void Add(int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
@@ -25,7 +25,7 @@ public:
 
 	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
 	void SetCanReset(bool canReset) { canReset_ = canReset; }
-
+	
 private:
 
 	//座標

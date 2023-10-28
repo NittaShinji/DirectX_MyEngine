@@ -150,9 +150,9 @@ void GameScene::Initialize()
 	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 
 	//パーティクル
-	/*groundParticle_ = GroundParticle::Create();
+	groundParticle_ = GroundParticle::Create();
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
-	ParticleManager::GetInstance()->Initialize();*/
+	ParticleManager::GetInstance()->Initialize();
 
 	blockParticle_ = BlockParticle::Create(cube);
 	blockParticle_->Preparation();
@@ -232,7 +232,7 @@ void GameScene::Update()
 
 	if(player_->GetOnGround() == true)
 	{
-		//groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
+		groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
 		//blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos());
 	}
 	else
@@ -247,9 +247,9 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	//ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
+	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
 	blockParticle_->SetPlayerIsDead(player_->GetIsDead());
-	blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetIsDead());
+	blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetIsDead(),player_->GetAttributeColor());
 
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 
@@ -309,6 +309,8 @@ void GameScene::Draw()
 	player_->Draw();
 
 	ObjParticleManager::GetInstance()->Draw();
+
+	ParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
