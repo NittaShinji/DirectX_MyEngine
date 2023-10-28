@@ -269,6 +269,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	{
 		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		//isMoving_ = false;
+		isLanded_ = false;
 		isDead_ = true;
 	}
 

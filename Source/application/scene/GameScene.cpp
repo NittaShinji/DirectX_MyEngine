@@ -249,7 +249,7 @@ void GameScene::Update()
 
 	//ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
 	blockParticle_->SetPlayerIsDead(player_->GetIsDead());
-	blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded());
+	blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetIsDead());
 
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 

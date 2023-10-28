@@ -13,7 +13,11 @@ public:
 
 	void Reset();
 
-	void PopUpdate(Camera* camera,const Vector3& popPos,bool isLanded);
+	void PopUpdate(Camera* camera,const Vector3& popPos,bool isLanded,bool isPlayerDead);
+
+	void LandParticlePop(Camera* camera, const Vector3& popPos);
+	void DeadParticlePop(Camera* camera, const Vector3& popPos);
+
 
 	void Add(int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
 
@@ -42,6 +46,9 @@ private:
 
 	//生成開始フラグ
 	bool isStartPoped_;
+
+	bool isStartDeadParticle_;
+	bool isStartLandParticle_;
 
 	//ゲームオーバーかどうか
 	bool isPlayerDead_;

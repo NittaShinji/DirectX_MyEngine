@@ -24,6 +24,8 @@ void BlockParticle::Initialize()
 	particleCount_ = 0;
 	isPlayerDead_ = false;
 	canReset_ = false;
+	isStartDeadParticle_ = false;
+	isStartLandParticle_ = false;
 
 	for(int32_t i = 0; i < kMaxParticleNum_; i++)
 	{
@@ -99,6 +101,7 @@ void BlockParticle::Update(Camera* camera)
 					if(resetCount_ == kMaxParticleNum_)
 					{
 						canReset_ = true;
+						//isStartDeadParticle_ = false;
 					}
 				}
 			}
@@ -112,27 +115,35 @@ void BlockParticle::Reset()
 	canReset_ = false;
 }
 
-void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLanded)
+void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLanded,bool isPlayerDead)
 {
 	if(isLanded == true)
 	{
+		if(isStartDeadParticle_ == false)
+		{
+			isStartPoped_ = true;
+			isStartLandParticle_ = true;
+		}
+	}
+	
+	if(isPlayerDead == true)
+	{
+		isStartLandParticle_ = false;
 		isStartPoped_ = true;
+		isStartDeadParticle_ = true;
 	}
 
 	if(isStartPoped_ == true)
 	{
-		std::forward_list<Particle>::iterator it = particles_.begin();
-		for(int32_t i = 0; i < particleCount_; i++)
-		{
-			it++;
-		}
-
+		//最大数パーティクルを生み出したら出現を止める
 		if(particleCount_ < kMaxParticleNum_)
 		{
 			particleCount_++;
 			if(particleCount_ == kMaxParticleNum_)
 			{
 				isStartPoped_ = false;
+				isStartLandParticle_ = false;
+				isStartDeadParticle_ = false;
 			}
 		}
 		else
@@ -140,47 +151,158 @@ void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLand
 			particleCount_ = 0;
 		}
 
- 		const float md_pos = 2.0f;
-		setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
-		const float shiftY = -0.8f;
-		setPos_.y = popPos.y + shiftY + imGuiPos_[1];
-		setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
-
-		setVel_.x = 0.0f + imGuiVel_[0];
-
-		const float md_velY = 0.174f;
-		//setVel_.y = md_velY + imGuiVel_[1];
-		setVel_.y = (float)rand() / RAND_MAX * md_velY  + imGuiVel_[1];
-
-		//const float md_velZ = 2.5f;
-		//setVel_.z = md_velZ + imGuiVel_[2];
-		//setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
-		setVel_.z = 0.8f;
-
-		//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-		Vector3 acc{};
-		const float md_acc = -0.017f;
-		acc.x = 0.0f;
-		acc.y = md_acc;
-		acc.z = 0.0f;
-
-		//色を変化させる
-		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
-
-		if(it->isGenerated == false)
+		if(isStartLandParticle_ == true)
 		{
-			it->object3d.SetTransform(setPos_);
-			it->object3d.SetScale(it->s_scale);
-			it->object3d.Update(camera);
-			it->velocity = setVel_;
-			it->accel = acc;
-			it->colorSpeed = colorSpeed;
-			it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
-			it->scale = it->s_scale;
-			it->e_scale = Vector3Zero();
-			it->frame = 0;
-			it->isGenerated = true;
+			LandParticlePop(camera,popPos);
+		}
+		else if(isStartDeadParticle_ == true)
+		{
+			DeadParticlePop(camera,popPos);
 		}
 
+ 	//	const float md_pos = 2.0f;
+		//setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
+		//const float shiftY = -0.8f;
+		//setPos_.y = popPos.y + shiftY + imGuiPos_[1];
+		//setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
+
+		//setVel_.x = 0.0f + imGuiVel_[0];
+
+		//const float md_velY = 0.174f;
+		////setVel_.y = md_velY + imGuiVel_[1];
+		//setVel_.y = (float)rand() / RAND_MAX * md_velY  + imGuiVel_[1];
+
+		////const float md_velZ = 2.5f;
+		////setVel_.z = md_velZ + imGuiVel_[2];
+		////setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
+		//setVel_.z = 0.8f;
+
+		////重力に見立ててYのみ{-0.001f,0}でランダムに分布
+		//Vector3 acc{};
+		//const float md_acc = -0.017f;
+		//acc.x = 0.0f;
+		//acc.y = md_acc;
+		//acc.z = 0.0f;
+
+		////色を変化させる
+		//Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
+		//if(it->isGenerated == false)
+		//{
+		//	it->object3d.SetTransform(setPos_);
+		//	it->object3d.SetScale(it->s_scale);
+		//	it->object3d.Update(camera);
+		//	it->velocity = setVel_;
+		//	it->accel = acc;
+		//	it->colorSpeed = colorSpeed;
+		//	it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+		//	it->scale = it->s_scale;
+		//	it->e_scale = Vector3Zero();
+		//	it->frame = 0;
+		//	it->isGenerated = true;
+		//}
+
+	}
+}
+
+void BlockParticle::LandParticlePop(Camera* camera, const Vector3& popPos)
+{
+	std::forward_list<Particle>::iterator it = particles_.begin();
+	for(int32_t i = 0; i < particleCount_; i++)
+	{
+		it++;
+	}
+
+	const float md_pos = 2.0f;
+	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
+	const float shiftY = -0.8f;
+	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
+	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
+
+	setVel_.x = 0.0f + imGuiVel_[0];
+
+	const float md_velY = 0.174f;
+	//setVel_.y = md_velY + imGuiVel_[1];
+	setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
+
+	//const float md_velZ = 2.5f;
+	//setVel_.z = md_velZ + imGuiVel_[2];
+	//setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
+	setVel_.z = 0.8f;
+
+	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+	Vector3 acc{};
+	const float md_acc = -0.017f;
+	acc.x = 0.0f;
+	acc.y = md_acc;
+	acc.z = 0.0f;
+
+	//色を変化させる
+	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
+	if(it->isGenerated == false)
+	{
+		it->object3d.SetTransform(setPos_);
+		it->object3d.SetScale(it->s_scale);
+		it->object3d.Update(camera);
+		it->velocity = setVel_;
+		it->accel = acc;
+		it->colorSpeed = colorSpeed;
+		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+		it->scale = it->s_scale;
+		it->e_scale = Vector3Zero();
+		it->frame = 0;
+		it->isGenerated = true;
+	}
+}
+
+void BlockParticle::DeadParticlePop(Camera* camera, const Vector3& popPos)
+{
+	std::forward_list<Particle>::iterator it = particles_.begin();
+	for(int32_t i = 0; i < particleCount_; i++)
+	{
+		it++;
+	}
+
+	const float md_pos = 2.0f;
+	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
+	const float shiftY = -0.8f;
+	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
+	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
+
+	setVel_.x = 0.0f + imGuiVel_[0];
+
+	const float md_velY = 0.274f;
+	//setVel_.y = md_velY + imGuiVel_[1];
+	setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
+
+	//const float md_velZ = 2.5f;
+	//setVel_.z = md_velZ + imGuiVel_[2];
+	//setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
+	setVel_.z = -0.1f;
+
+	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+	Vector3 acc{};
+	const float md_acc = -0.017f;
+	acc.x = 0.0f;
+	acc.y = md_acc;
+	acc.z = 0.0f;
+
+	//色を変化させる
+	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
+	if(it->isGenerated == false)
+	{
+		it->object3d.SetTransform(setPos_);
+		it->object3d.SetScale(it->s_scale);
+		it->object3d.Update(camera);
+		it->velocity = setVel_;
+		it->accel = acc;
+		it->colorSpeed = colorSpeed;
+		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+		it->scale = it->s_scale;
+		it->e_scale = Vector3Zero();
+		it->frame = 0;
+		it->isGenerated = true;
 	}
 }
