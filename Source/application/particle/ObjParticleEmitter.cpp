@@ -40,6 +40,7 @@ void ObjParticleEmitter::Initialize()
 	isMaxParticle_ = false;
 	generationNum_ = 0;
 	nowParticleCount_ = 0;
+	maxParticleNum_ = 0;
 }
 
 void ObjParticleEmitter::Update(Camera* camera)
@@ -53,7 +54,7 @@ void ObjParticleEmitter::Update(Camera* camera)
 	);
 
 	std::size_t size = std::distance(particles_.begin(), particles_.end());
-	if(size < kMaxParticleNum_)
+	if(size < maxParticleNum_)
 	{
 		isMaxParticle_ = false;
 	}
@@ -132,21 +133,6 @@ void ObjParticleEmitter::ParticleReset(Camera* camera)
 
 void ObjParticleEmitter::Add(const std::string modelName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale)
 {
-	int32_t isParticleNum = 0;
-	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
-	{
-		if(isParticleNum + generationNum_ >= kMaxParticleNum_ || isParticleNum >= kMaxParticleNum_)
-		{
-			isMaxParticle_ = true;
-			break;
-		}
-		else
-		{
-			isMaxParticle_ = false;
-		}
-		isParticleNum++;
-	}
-
 	if(isMaxParticle_ == false)
 	{
 		//リストに要素を追加
@@ -167,6 +153,22 @@ void ObjParticleEmitter::Add(const std::string modelName,int life, const Vector3
 		p.e_scale = end_scale;
 		p.colorSpeed = colorSpeed;
 		p.isGenerated = false;
+	}
+
+	int32_t currentParticleNum = 0;
+	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	{
+		const int32_t adjustForNum = 1;
+		if(currentParticleNum + generationNum_ >= maxParticleNum_ - adjustForNum || currentParticleNum >= maxParticleNum_ - adjustForNum)
+		{
+			isMaxParticle_ = true;
+			break;
+		}
+		else
+		{
+			isMaxParticle_ = false;
+		}
+		currentParticleNum++;
 	}
 }
 

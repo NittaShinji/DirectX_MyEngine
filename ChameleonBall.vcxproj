@@ -96,6 +96,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\application\particle\DeadParticle.cpp" />
+    <ClCompile Include="Source\application\particle\LandParticle.cpp" />
     <ClCompile Include="Source\application\particle\BlockParticle.cpp" />
     <ClCompile Include="Source\application\particle\ObjParticleEmitter.cpp" />
     <ClCompile Include="Source\application\particle\ObjParticleManager.cpp" />
@@ -151,6 +153,8 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\application\particle\DeadParticle.h" />
+    <ClInclude Include="Source\application\particle\LandParticle.h" />
     <ClInclude Include="Source\application\particle\BlockParticle.h" />
     <ClInclude Include="Source\application\particle\ObjParticleEmitter.h" />
     <ClInclude Include="Source\application\particle\ObjParticleManager.h" />

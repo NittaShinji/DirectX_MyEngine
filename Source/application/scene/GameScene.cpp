@@ -154,10 +154,18 @@ void GameScene::Initialize()
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->Initialize();
 
-	blockParticle_ = BlockParticle::Create(cube);
-	blockParticle_->Preparation();
-	ObjParticleManager::GetInstance()->AddEmitter(blockParticle_.get());
-	ObjParticleManager::GetInstance()->Initialize();
+	//blockParticle_ = BlockParticle::Create(cube);
+	//blockParticle_->Preparation();
+	landParticle_ = LandParticle::Create(cube);
+	//landParticle_->Preparation();
+	deadParticle_ = DeadParticle::Create(cube);
+	//deadParticle_->Preparation();
+
+	//ObjParticleManager::GetInstance()->AddEmitter(blockParticle_.get());
+	ObjParticleManager::GetInstance()->AddEmitter(landParticle_.get());
+	ObjParticleManager::GetInstance()->AddEmitter(deadParticle_.get());
+
+	//ObjParticleManager::GetInstance()->Initialize();
 
 	isReset_ = false;
 }
@@ -168,11 +176,10 @@ void GameScene::Update()
 	{
 		if(isReset_ == false)
 		{
-			//blockParticle_->Preparation(player_->GetPos(), "sphere");
 			isReset_ = true;
 		}
 
-		if(blockParticle_->GetCanReset() == true)
+		if(deadParticle_->GetCanReset() == true)
 		{
 			ParticleManager::GetInstance()->ParticleRemove();
 			//blockParticle_->ParticleReset(gameCamera_.get());
@@ -181,8 +188,8 @@ void GameScene::Update()
 			gameCamera_->Reset();
 			player_->Reset(gameCamera_.get());
 			isReset_ = false;
-			blockParticle_->SetCanReset(false);
-			blockParticle_->Reset();
+			deadParticle_->SetCanReset(false);
+			deadParticle_->Reset();
 		}
 	}
 
@@ -248,9 +255,13 @@ void GameScene::Update()
 	backGround_->Update(gameCamera_.get());
 
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
-	blockParticle_->SetPlayerIsDead(player_->GetIsDead());
-	blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetIsDead(),player_->GetAttributeColor());
-
+	//blockParticle_->SetPlayerIsDead(player_->GetIsDead());
+	//blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetIsDead(),player_->GetAttributeColor());
+	
+	landParticle_->SetPlayerIsDead(player_->GetIsDead());
+	landParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetAttributeColor());
+	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
+	deadParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsDead(),player_->GetAttributeColor());
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 
 #ifdef _DEBUG
@@ -310,7 +321,7 @@ void GameScene::Draw()
 
 	ObjParticleManager::GetInstance()->Draw();
 
-	ParticleManager::GetInstance()->Draw();
+	//ParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();

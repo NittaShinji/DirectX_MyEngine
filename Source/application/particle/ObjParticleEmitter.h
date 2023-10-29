@@ -79,8 +79,7 @@ protected: // 定数
 	static const float radius;				// 底面の半径
 	static const float prizmHeight;			// 柱の高さ
 	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int kMaxParticleNum_ = 3;		// 頂点数
-
+	
 	//初期値
 	 int InitLife = 30;
 	 Vector3 InitPos = { 0.0f,-100.0f,0.0f };
@@ -95,6 +94,10 @@ protected:
 
 	//パーティクル配列
 	std::forward_list<Particle> particles_;
+
+	
+	//int32_t kMaxParticleNum_ = 3;
+	int32_t maxParticleNum_;
 
 	//最大限生成しているかどうか
 	bool isMaxParticle_;

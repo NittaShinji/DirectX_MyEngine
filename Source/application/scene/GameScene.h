@@ -17,6 +17,8 @@
 #include "SoundManager.h"
 #include "GroundParticle.h"
 #include "BlockParticle.h"
+#include "LandParticle.h"
+#include "DeadParticle.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -105,7 +107,7 @@ private:
 	//float whiteColor_[3] = { 1,1,1 };
 	Vector3 whiteColor_ = { 1,1,1 };
 
-	//パーティクル
+	
 	/*std::unique_ptr<ParticleManager> particleManager_ = nullptr;
 	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;*/
 
@@ -125,12 +127,18 @@ private:
 	//サウンド
 	std::unique_ptr<Sound> gameSound_ = nullptr;
 
+	//パーティクル
 	std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
+	//std::unique_ptr<BlockParticle> blockParticle_ = nullptr;
+	std::unique_ptr<LandParticle> landParticle_ = nullptr;
+	std::unique_ptr<DeadParticle> deadParticle_ = nullptr;
 
-	std::unique_ptr<BlockParticle> blockParticle_ = nullptr;
+
 
 	//リセットフラグ
 	bool isReset_;
+
+	
 	
 };
 

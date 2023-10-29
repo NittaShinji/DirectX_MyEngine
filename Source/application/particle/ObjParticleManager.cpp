@@ -18,7 +18,7 @@ void ObjParticleManager::Initialize()
 	//エミッターの初期化
 	for(auto& emitter : emitters_)
 	{
-		emitter->Initialize();
+ 		emitter->Initialize();
 	}
 }
 
