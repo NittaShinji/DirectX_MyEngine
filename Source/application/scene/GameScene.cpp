@@ -149,23 +149,15 @@ void GameScene::Initialize()
 
 	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
 
-	//パーティクル
+	//2Dパーティクル
 	groundParticle_ = GroundParticle::Create();
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->Initialize();
-
-	//blockParticle_ = BlockParticle::Create(cube);
-	//blockParticle_->Preparation();
+	//3Dパーティクル
 	landParticle_ = LandParticle::Create(cube);
-	//landParticle_->Preparation();
 	deadParticle_ = DeadParticle::Create(cube);
-	//deadParticle_->Preparation();
-
-	//ObjParticleManager::GetInstance()->AddEmitter(blockParticle_.get());
 	ObjParticleManager::GetInstance()->AddEmitter(landParticle_.get());
 	ObjParticleManager::GetInstance()->AddEmitter(deadParticle_.get());
-
-	//ObjParticleManager::GetInstance()->Initialize();
 
 	isReset_ = false;
 }
@@ -182,7 +174,6 @@ void GameScene::Update()
 		if(deadParticle_->GetCanReset() == true)
 		{
 			ParticleManager::GetInstance()->ParticleRemove();
-			//blockParticle_->ParticleReset(gameCamera_.get());
 			ObjParticleManager::GetInstance()->ParticleReset(gameCamera_.get());
 			stage_->Reset("Stage0.json");
 			gameCamera_->Reset();
@@ -240,11 +231,6 @@ void GameScene::Update()
 	if(player_->GetOnGround() == true)
 	{
 		groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
-		//blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos());
-	}
-	else
-	{
-
 	}
 
 	//カメラの切り替え
@@ -255,9 +241,6 @@ void GameScene::Update()
 	backGround_->Update(gameCamera_.get());
 
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
-	//blockParticle_->SetPlayerIsDead(player_->GetIsDead());
-	//blockParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetIsDead(),player_->GetAttributeColor());
-	
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	landParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetAttributeColor());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
@@ -277,7 +260,7 @@ void GameScene::Update()
 	if(player_->GetIsFinish() == true)
 	{
 		ParticleManager::GetInstance()->ParticleRemove();
-		//ObjParticleManager::GetInstance()->ParticleRemove();
+		ObjParticleManager::GetInstance()->AllRemove();
 		stage_->Reset("Stage0.json");
 		player_->Reset(gameCamera_.get());
 		gameCamera_->Reset();

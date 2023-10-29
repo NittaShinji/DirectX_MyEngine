@@ -121,7 +121,7 @@ void LandParticle::Reset()
 
 void LandParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLanded,Attribute attributeColor)
 {
-	if(isLanded == true)
+	if(isLanded == true && isPlayerDead_ == false)
 	{
 		isStartPoped_ = true;
 	}
