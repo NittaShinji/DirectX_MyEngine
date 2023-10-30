@@ -188,9 +188,11 @@ void GameScene::Update()
 			isReset_ = true;
 		}
 
+		ParticleManager::GetInstance()->ParticleRemove();
+
 		if(deadParticle_->GetCanReset() == true)
 		{
-			ParticleManager::GetInstance()->ParticleRemove();
+			
 			ObjParticleManager::GetInstance()->ParticleReset(gameCamera_.get());
 			stage_->Reset("Stage0.json");
 			gameCamera_->Reset();
@@ -257,7 +259,7 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	if(player_->GetOnGround() == true && player_->GetIsMoving() == true)
+	if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
 	{
 		groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
 	}

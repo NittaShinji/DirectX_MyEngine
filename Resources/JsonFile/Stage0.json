@@ -510,7 +510,7 @@
                 "translation": [
                     -529.9920043945312,
                     0.0,
-                    8.0
+                    4.0
                 ],
                 "rotation": [
                     0.0,
@@ -556,7 +556,7 @@
                 "translation": [
                     -574.8966674804688,
                     0.0,
-                    0.0
+                    8.0
                 ],
                 "rotation": [
                     0.0,
@@ -758,29 +758,6 @@
         },
         {
             "type": "MESH",
-            "name": "Cube",
-            "transform": {
-                "translation": [
-                    -100.0,
-                    0.0,
-                    5.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "wall",
-            "attribute": "Black"
-        },
-        {
-            "type": "MESH",
             "name": "Cube.002",
             "transform": {
                 "translation": [
@@ -789,18 +766,16 @@
                     5.0
                 ],
                 "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
+                    90.00000762939453,
+                    -3.4150941701227566e-06,
+                    90.0
                 ],
                 "scaling": [
                     1.0,
                     1.0,
                     1.0
                 ]
-            },
-            "file_name": "wall",
-            "attribute": "Black"
+            }
         }
     ]
 }
