@@ -84,7 +84,7 @@ void ParticleEmitter::Initialize(ID3D12Device* device)
 
 	InitializeGraphicsPipeline();
 
-	LoadTexture("effect2.png");
+	LoadTexture("effect1.png");
 
 	CreateModel();
 

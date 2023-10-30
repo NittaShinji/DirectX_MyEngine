@@ -248,10 +248,7 @@ void GameScene::Update()
 
 	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell());
 
-	if(player_->GetOnGround() == true)
-	{
-		groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
-	}
+	
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
@@ -259,6 +256,11 @@ void GameScene::Update()
 	skydome_->Update(gameCamera_.get());
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
+
+	if(player_->GetOnGround() == true && player_->GetIsMoving() == true)
+	{
+		groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
+	}
 
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
@@ -330,7 +332,7 @@ void GameScene::Draw()
 
 	ObjParticleManager::GetInstance()->Draw();
 
-	//ParticleManager::GetInstance()->Draw();
+	ParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
