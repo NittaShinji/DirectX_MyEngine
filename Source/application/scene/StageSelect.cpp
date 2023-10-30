@@ -30,6 +30,7 @@ void StageSelectScene::Initialize()
 	BackGroundWhite_ = std::make_unique<Sprite>();
 	gameSceneSprite1_ = std::make_unique<Sprite>();
 	gameSceneSprite2_ = std::make_unique<Sprite>();
+	sceneTransition_ = std::make_unique<Sprite>();
 
 	const int32_t selectWidth = 640;
 	const int32_t selectHeight = 400;
@@ -37,6 +38,8 @@ void StageSelectScene::Initialize()
 	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight, Vector4(0.8f, 0.8f, 0.8f, 1.0f), "CursorTex");
 	//灰色のテクスチャ―
 	TextureManager::GetInstance()->TexMapping(600, 360, Vector4(0.746f, 0.746f, 0.746f, 1.0f), "BackGroundTex");
+	//黒色のテクスチャ―
+	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BlackBackGroundTex");
 
 	TextureManager::GetInstance()->LoadTexture("GameScene1.png");
 	TextureManager::GetInstance()->LoadTexture("GameScene2.png");
@@ -50,12 +53,13 @@ void StageSelectScene::Initialize()
 	Vector2 backGroundPositionL = { 20.0f,180.0f };
 	Vector2 backGroundPositionR = { 660.0f,180.0f };
 	const Vector2 backGroundSize = { 600.0f,360.0f };
+
 	BackGroundLeft_->Initialize(backGroundPositionL, backGroundSize);
 	BackGroundRight_->Initialize(backGroundPositionR, backGroundSize);
 	BackGroundWhite_->Initialize(Vector2(0.0f, 0.0f), Vector2(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_));
 	gameSceneSprite1_->Initialize(backGroundPositionL, backGroundSize);
 	gameSceneSprite2_->Initialize(backGroundPositionR, backGroundSize);
-
+	sceneTransition_->Initialize(Vector2(0.0f, 0.0f), Vector2(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_));
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
@@ -68,6 +72,8 @@ void StageSelectScene::Initialize()
 	bgmSound_->Initialize("title.wav");
 	touchSound_->Initialize("touch.wav");
 	bgmSound_->PlaySoundWave(true);
+
+	
 }
 
 void StageSelectScene::Update()
@@ -79,7 +85,7 @@ void StageSelectScene::Update()
 	BackGroundWhite_->matUpdate();
 	gameSceneSprite1_->matUpdate();
 	gameSceneSprite2_->matUpdate();
-
+	sceneTransition_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
 	if(gamePad_->IsConnected(Player1)) {}
@@ -109,11 +115,16 @@ void StageSelectScene::Update()
 
 	if(isChangeScene_ == true)
 	{
+		
 		changeSceneTimer_--;
 		if(changeSceneTimer_ <= 0)
 		{
+			
 			SoundManager::GetInstance()->Finalize();
 			SceneManager::GetInstance()->ChangeScene("GAME");
+
+			/*SoundManager::GetInstance()->Finalize();
+			SceneManager::GetInstance()->ChangeScene("GAME");*/
 		}
 	}
 }
@@ -131,6 +142,7 @@ void StageSelectScene::Draw()
 	BackGroundRight_->Update();
 	gameSceneSprite1_->Update();
 	gameSceneSprite2_->Update();
+	sceneTransition_->Update();
 
 	BackGroundWhite_->Draw("WhiteTex");
 	selectSprite_->Draw("CursorTex");
@@ -139,6 +151,11 @@ void StageSelectScene::Draw()
 	gameSceneSprite1_->Draw("GameScene1.png");
 	gameSceneSprite2_->Draw("GameScene2.png");
 
+	if(isChangeScene_ == true)
+	{
+		sceneTransition_->Draw("BlackBackGroundTex");
+	}
+	
 	//描画終了
 	directXBasic_->AfterDraw();
 

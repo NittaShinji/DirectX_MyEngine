@@ -52,6 +52,8 @@ ComPtr<ID3D12Resource> Sprite::CrateConstBuff(Type1*& constMapData, Type2* direc
 	result = constBuff_->Map(0, nullptr, (void**)&constMapData);//マッピング
 	assert(SUCCEEDED(result));
 
+	constBuff_->Unmap(0, nullptr);
+
 	return constBuff_;
 }
 
@@ -65,7 +67,6 @@ void Sprite::StaticInitialize()
 void Sprite::Initialize(Vector2 position, Vector2 size)
 {
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
-
 
 	winWide_ = static_cast<float>(directXBasic_->GetWinWidth());
 	winHeight_ = static_cast<float>(directXBasic_->GetWinHeight());
@@ -88,7 +89,7 @@ void Sprite::Initialize(Vector2 position, Vector2 size)
 	rotation_ = { 0.0f };
 	moveSpeed_ = { 0.0f,0.0f };
 	anchorPoint_ = { 0.0f,0.0f };
-
+	color_ = { 1.0f,1.0f,1.0f,1.0f };
 	size_ = size;
 
 	//ウインドウの中心に表示
@@ -112,7 +113,7 @@ void Sprite::Initialize(Vector2 position, Vector2 size)
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
 
 	//カラーの書き込みと転送
-	constMapMaterial_->color = Vector4(0, 1, 0, 0.5f);
+	constMapMaterial_->color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	// 頂点バッファの設定
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
@@ -224,7 +225,14 @@ void Sprite::matUpdate()
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映
 	//定数バッファにデータ転送
 	constMapTransform_->mat = matWorld * matProjection_;
+
+	result = constBuffMaterial_->Map(0, nullptr, (void**)&constMapMaterial_);//マッピング
+	assert(SUCCEEDED(result));
+
 	constMapMaterial_->color = color_;
+
+	constBuffMaterial_->Unmap(0, nullptr);
+
 
 	moveSpeed_.x = 0.0f;
 	moveSpeed_.y = 0.0f;

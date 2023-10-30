@@ -72,7 +72,7 @@ protected:
 	//Vector3 position;
 	Vector2 moveSpeed_;
 	//色(RGBA)
-	Vector4 color_ = { 1.0f,1.0f,1.0f,1.0f };
+	Vector4 color_ ;
 	//表示サイズ
 	Vector2 size_ = { 100.0f,100.0f };
 

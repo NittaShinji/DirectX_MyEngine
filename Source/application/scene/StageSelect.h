@@ -33,6 +33,7 @@ private:
 	std::unique_ptr<Sprite> BackGroundWhite_ = nullptr;
 	std::unique_ptr<Sprite> gameSceneSprite1_ = nullptr;
 	std::unique_ptr<Sprite> gameSceneSprite2_ = nullptr;
+	std::unique_ptr<Sprite> sceneTransition_ = nullptr;
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;

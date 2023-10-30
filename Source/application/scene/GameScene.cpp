@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "ObjParticleManager.h"
 #include "Vector4.h"
+#include "Easing.h"
 #include <sstream>
 #include <iomanip>
 #include <string>
@@ -67,6 +68,12 @@ void GameScene::Initialize()
 	jumpSprite_ = std::make_unique<Sprite>();
 	arrowSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_ = std::make_unique<Sprite>();
+	sceneTransitionUp_ = std::make_unique<Sprite>();
+	sceneTransitionDown_ = std::make_unique<Sprite>();
+
+	//黒色のテクスチャ―
+	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_ / 2 , Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BlackBackGroundHalfTex");
+
 
 	TextureManager::GetInstance()->LoadTexture("jump.png");
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
@@ -74,7 +81,7 @@ void GameScene::Initialize()
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
 	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight };
-
+	
 	const Vector2 aButtonSize = { 64.0f,64.0f };
 	Vector2 aButtonPosition;
 	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
@@ -95,11 +102,18 @@ void GameScene::Initialize()
 	arrowPosition.x = (WindowsAPI::kWindow_width_)-(arrowSize.x);
 	arrowPosition.y = (WindowsAPI::kWindow_height_ / 2) + (arrowSize.y * 3) + (arrowSize.y / 2);
 
+	Vector2 transitionSize;
+	transitionSize.x = (WindowsAPI::kWindow_width_);
+	transitionSize.y = (WindowsAPI::kWindow_height_ / 2);
+
+
 	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
 	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
 	jumpSprite_->Initialize(jumpSpritePosition, jumpSpriteSize);
 	arrowSprite_->Initialize(arrowPosition, arrowSize);
 	backGroundSprite_->Initialize(Vector2(0.0f, 0.0f), backGroundSize);
+	sceneTransitionUp_->Initialize(Vector2(0.0f, 0.0f),transitionSize);
+	sceneTransitionDown_->Initialize(Vector2(0.0f,transitionSize.y),transitionSize);
 
 	//モデル読み込み
 	const string sphere = "sphere";
@@ -160,10 +174,13 @@ void GameScene::Initialize()
 	ObjParticleManager::GetInstance()->AddEmitter(deadParticle_.get());
 
 	isReset_ = false;
+	//isSceneAnimetion_ = true;
 }
 
 void GameScene::Update()
 {
+	SceneAnimation();
+
 	if(player_->GetIsDead() == true)
 	{
 		if(isReset_ == false)
@@ -181,6 +198,7 @@ void GameScene::Update()
 			isReset_ = false;
 			deadParticle_->SetCanReset(false);
 			deadParticle_->Reset();
+			ResetSceneAnimation();
 		}
 	}
 
@@ -190,6 +208,8 @@ void GameScene::Update()
 	jumpSprite_->matUpdate();
 	arrowSprite_->matUpdate();
 	backGroundSprite_->matUpdate();
+	sceneTransitionUp_->matUpdate();
+	sceneTransitionDown_->matUpdate();
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -312,11 +332,17 @@ void GameScene::Draw()
 	bButtonSprite_->Update();
 	jumpSprite_->Update();
 	arrowSprite_->Update();
+	sceneTransitionUp_->Update();
+	sceneTransitionDown_->Update();
+
 
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
 	jumpSprite_->Draw("jump.png");
 	arrowSprite_->Draw("arrow.png");
+	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
+	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
+
 
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
@@ -324,3 +350,39 @@ void GameScene::Draw()
 	//描画終了
 	directXBasic_->AfterDraw();
 }
+
+void GameScene::SceneAnimation()
+{
+	/*Vector2 sceneAnimationVec_*/
+
+	if(sceneAnimeTimer_ < kSceneAnimeTime_)
+	{
+		sceneAnimeTimer_++;
+	}
+	else
+	{
+		sceneAnimeTimer_ = 0;
+		isFinishAnimetion_ = true;
+	}
+
+	//変化量
+	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
+	sceneAnimationVec_.y += easeOutQuint(x);
+
+	//画像を動かす処理
+	sceneTransitionUp_->MovePos(-sceneAnimationVec_);
+	sceneTransitionDown_->MovePos(sceneAnimationVec_);
+}
+
+void GameScene::ResetSceneAnimation()
+{
+	if(isFinishAnimetion_ == true)
+	{
+		sceneTransitionUp_->SetPosition(Vector2(0.0f, 0.0f));
+		sceneTransitionDown_->SetPosition(Vector2(0.0f, WindowsAPI::kWindow_height_ / 2));
+		sceneAnimeTimer_ = 0;
+		sceneAnimationVec_ = Vector2(0.0f, 0.0f);
+		isFinishAnimetion_ = false;
+	}
+}
+

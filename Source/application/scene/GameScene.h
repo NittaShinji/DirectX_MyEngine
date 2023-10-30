@@ -56,6 +56,11 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	//シーン遷移
+	void SceneAnimation();
+	//シーン遷移アニメーションをリセット
+	void ResetSceneAnimation();
+
 private:
 
 	static DirectXBasic* directXBasic_;
@@ -119,6 +124,8 @@ private:
 	std::unique_ptr<Sprite> arrowSprite_ = nullptr;
 
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
+	std::unique_ptr<Sprite> sceneTransitionUp_ = nullptr;
+	std::unique_ptr<Sprite> sceneTransitionDown_ = nullptr;
 
 	float imGuiPos[3]{ 0.0f,0.0f,0.0f };
 	float imGuiVel[3]{ 0.0f,0.0f,0.0f };
@@ -133,12 +140,17 @@ private:
 	std::unique_ptr<LandParticle> landParticle_ = nullptr;
 	std::unique_ptr<DeadParticle> deadParticle_ = nullptr;
 
-
-
 	//リセットフラグ
 	bool isReset_;
 
-	
-	
+	//アニメーションが終わったかどうか
+	bool isFinishAnimetion_;
+
+	//シーンアニメーション時間
+	const float kSceneAnimeTime_ = 45.0f;
+	//アニメーション時間の変化量
+	float sceneAnimeTimer_ = 0;
+	//シーンアニメーション用変化量
+	Vector2 sceneAnimationVec_;
 };
 
