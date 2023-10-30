@@ -279,19 +279,25 @@ void GameScene::Update()
 
 	if(player_->GetIsFinish() == true)
 	{
-		ParticleManager::GetInstance()->ParticleRemove();
-		ObjParticleManager::GetInstance()->AllRemove();
-		stage_->Reset("Stage0.json");
-		player_->Reset(gameCamera_.get());
-		gameCamera_->Reset();
+		player_->SetIsMoving(false);
+		gameCamera_->GoalAnimation();
 
-		SoundManager::GetInstance()->Finalize();
-		SceneManager::GetInstance()->ChangeScene("CLEAR");
+		if(gameCamera_->GetIsFinishAnimation())
+		{
+			ParticleManager::GetInstance()->AllRemove();
+			ObjParticleManager::GetInstance()->AllRemove();
+			
+			SoundManager::GetInstance()->Finalize();
+			SceneManager::GetInstance()->ChangeScene("CLEAR");
+		}
 	}
 
 #ifdef _DEBUG
 	if(keys_->PushedKeyMoment(DIK_G))
 	{
+		ParticleManager::GetInstance()->AllRemove();
+		ObjParticleManager::GetInstance()->AllRemove();
+
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}

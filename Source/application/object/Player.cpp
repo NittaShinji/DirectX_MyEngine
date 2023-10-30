@@ -264,18 +264,17 @@ void Player::Update(Camera* camera)
 
 void Player::OnCollision(const CollisionInfo& info)
 {
+	if(info.object->GetAttributeColor() == Attribute::Goal)
+	{
+		isfinish_ = true;
+	}
 	//色が違う場合、死亡判定にする
-	if(info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
+	else if(info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
 	{
 		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 		//isMoving_ = false;
 		isLanded_ = false;
 		isDead_ = true;
-	}
-
-	if(info.object->GetAttributeColor() == Attribute::Goal)
-	{
-		isfinish_ = true;
 	}
 }
 

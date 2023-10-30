@@ -11,5 +11,22 @@ public:
 	void Reset();
 
 	void ImGuiUpdate();
+
+	void GoalAnimation();
+
+	bool GetIsFinishAnimation() { return isFinishAnimetion_; }
+
+private:
+
+	//アニメーションが終わったかどうか
+	bool isFinishAnimetion_;
+
+	//シーンアニメーション時間
+	const float kSceneAnimeTime_ = 60.0f;
+	//アニメーション時間の変化量
+	float sceneAnimeTimer_ = kSceneAnimeTime_;
+	//シーンアニメーション用変化量
+	Vector3 sceneAnimationVec_;
+
 };
 
