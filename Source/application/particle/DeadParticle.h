@@ -28,7 +28,7 @@ public:
 private:
 
 	//パーティクル最大数
-	const int32_t kMaxParticleNum_ = 5;
+	const int32_t kMaxParticleNum_ = 2;
 
 	//座標
 	Vector3 setPos_;

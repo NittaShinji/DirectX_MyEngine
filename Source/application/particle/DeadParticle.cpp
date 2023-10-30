@@ -29,6 +29,7 @@ void DeadParticle::Initialize()
 	generationNum_ = 0;
 	nowParticleCount_ = 0;
 	maxParticleNum_ = kMaxParticleNum_;
+	resetCount_ = 0;
 
 	for(int32_t i = 0; i < kMaxParticleNum_; i++)
 	{
@@ -107,15 +108,44 @@ void DeadParticle::Update(Camera* camera)
 						//isStartDeadParticle_ = false;
 					}
 				}
+
+				//if(it->scale.x <= it->e_scale.x && it->isResetValue == false)
+				//{
+				//	it->isResetValue = true;
+				//	resetCount_++;
+				//	if(resetCount_ == kMaxParticleNum_)
+				//	{
+				//		canReset_ = true;
+				//		//isStartDeadParticle_ = false;
+				//	}
+				//}
 			}
 		}
 	}
+
+	//寿命がまだ残っている中リセットされた場合
+	/*if(canReset_ == true)
+	{
+		for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+		{
+			it->scale = InitStartScale;
+			it->accel = InitAcc;
+			it->velocity = InitVel;
+			it->frame = 0;
+			it->object3d.SetTransform(InitPos);
+			it->object3d.SetScale(it->scale);
+			it->object3d.Update(camera);
+			it->isGenerated = false;
+			it->isResetValue = false;
+		}
+	}*/
 }
 
 void DeadParticle::Reset()
 {
 	resetCount_ = 0;
 	canReset_ = false;
+	isStartPoped_ = false;
 }
 
 void DeadParticle::PopUpdate(Camera* camera, const Vector3& popPos,bool isPlayerDead, Attribute attributeColor)
@@ -201,6 +231,7 @@ void DeadParticle::DeadParticlePop(Camera* camera, const Vector3& popPos, Attrib
 		it->e_scale = Vector3Zero();
 		it->frame = 0;
 		it->isGenerated = true;
+		it->isResetValue = false;
 	}
 
 	particleCount_++;

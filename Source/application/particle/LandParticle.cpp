@@ -57,6 +57,7 @@ void LandParticle::Update(Camera* camera)
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
 			it->isGenerated = false;
+			it->isResetValue = true;
 		}
 	}
 
@@ -99,8 +100,9 @@ void LandParticle::Update(Camera* camera)
 		{
 			if(it->isGenerated == true)
 			{
-				if(it->scale.x <= it->e_scale.x)
+				if(it->scale.x <= it->e_scale.x && it->isResetValue == true)
 				{
+					it->isResetValue = false;
 					resetCount_++;
 					if(resetCount_ == kMaxParticleNum_)
 					{
@@ -117,6 +119,7 @@ void LandParticle::Reset()
 {
 	resetCount_ = 0;
 	canReset_ = false;
+	isStartPoped_ = false;
 }
 
 void LandParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLanded,Attribute attributeColor)
@@ -204,5 +207,6 @@ void LandParticle::LandParticlePop(Camera* camera, const Vector3& popPos, Attrib
 		it->e_scale = Vector3Zero();
 		it->frame = 0;
 		it->isGenerated = true;
+		it->isResetValue = false;
 	}
 }
