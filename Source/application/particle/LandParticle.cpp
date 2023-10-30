@@ -19,8 +19,8 @@ std::unique_ptr<LandParticle> LandParticle::Create(std::string modelName)
 
 void LandParticle::Initialize()
 {
-	endScale_ = { 0.9f,0.9f,0.9f };
-	startScale_ = { 0.0f,0.0f,0.0f };
+	startScale_ = { 0.9f,0.9f,0.9f };
+	endScale_ = { 0.0f,0.0f,0.0f };
 	particleCount_ = 0;
 	isPlayerDead_ = false;
 	canReset_ = false;
@@ -47,7 +47,7 @@ void LandParticle::Update(Camera* camera)
 	//寿命が尽きたパーティクルを初期化
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
-		if(it->canReset == true)
+		if(it->frame >= it->num_frame)
 		{
 			it->scale = InitStartScale;
 			it->accel = InitAcc;
@@ -56,8 +56,7 @@ void LandParticle::Update(Camera* camera)
 			it->object3d.SetTransform(InitPos);
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
- 			it->isGenerated = false;
-			it->canReset = false;
+			it->isGenerated = false;
 		}
 	}
 
@@ -76,24 +75,21 @@ void LandParticle::Update(Camera* camera)
 	{
 		if(it->isGenerated == true)
 		{
-			if(it->frame < it->num_frame)
-			{
-				//速度に加速度を加算
-				it->velocity = it->velocity + it->accel;
-				//速度による移動
-				Vector3 particlePos = it->object3d.GetTransform();
-				particlePos = particlePos + it->velocity;
-				it->object3d.SetTransform(particlePos);
+			//速度に加速度を加算
+			it->velocity = it->velocity + it->accel;
+			//速度による移動
+			Vector3 particlePos = it->object3d.GetTransform();
+			particlePos = particlePos + it->velocity;
+			it->object3d.SetTransform(particlePos);
 
-				it->frame++;
-				//進行度を0～1の範囲に換算
-				float f = (float)it->frame / it->num_frame;
+			it->frame++;
+			//進行度を0～1の範囲に換算
+			float f = (float)it->frame / it->num_frame;
 
-				//スケールの線形補間
-				it->scale = (it->e_scale - it->s_scale) * f;
-				it->scale += it->s_scale;
-			}
-			
+			//スケールの線形補間
+			it->scale = (it->e_scale - it->s_scale) * f;
+			it->scale += it->s_scale;
+
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
 		}
