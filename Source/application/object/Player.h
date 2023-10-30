@@ -36,6 +36,8 @@ public:
 
 	void GroundRotation();
 
+	void MiniScaleAnimation();
+
 private:
 
 	std::unique_ptr<Object3d> object_;
@@ -139,7 +141,7 @@ private:
 	float scaleTime_ = kScaleTime_;
 
 	//スケールアニメーションフラグ
-	bool isScaleAnimetion_ = false;
+	bool isStartAnimation_ = false;
 
 	//着地フラグ
 	bool isLanded_;

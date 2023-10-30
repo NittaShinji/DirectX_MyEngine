@@ -158,12 +158,13 @@ void LandParticle::LandParticlePop(Camera* camera, const Vector3& popPos, Attrib
 	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
 	const float shiftY = -0.8f;
 	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
-	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
+	const float shiftZ = -0.5f;
+	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + shiftZ + imGuiPos_[2];
 
 	setVel_.x = 0.0f + imGuiVel_[0];
 
-	const float md_velY = 0.174f;
-	const float md_velZ = 0.8f;
+	const float md_velY = 0.5f;
+	const float md_velZ = 0.3f;
 	setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
 	setVel_.z = md_velZ;
 

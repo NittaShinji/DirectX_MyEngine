@@ -95,7 +95,7 @@ void Player::Update(Camera* camera)
 		//色変え処理
 		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
-			//isScaleAnimetion_ = true;
+			isStartAnimation_ = true;
 
 			//属性の変更
 			if(attributeColor_ == Attribute::pink)
@@ -127,9 +127,16 @@ void Player::Update(Camera* camera)
 			}
 		}
 
-		//if(isScaleAnimetion_ == true && scaleTime_)
-
 		Object3d::SetColorFlag(colorFlag_);
+
+		if(isStartAnimation_ == true)
+		{
+			MiniScaleAnimation();
+		}
+		else
+		{
+			Object3d::SetScale(Vector3(1.0f,1.0f,1.0f));
+		}
 
 		//落下処理
 		if(!onGround_)
@@ -317,8 +324,8 @@ void Player::AccelerateChangeColor()
 void Player::Accelerate()
 {
 	//横向き加速度　
-	const float rightAcc = 0.015f;
-	const float rightVZMin = 0.3f;
+	const float rightAcc = 0.04f;
+	const float rightVZMin = 0.7f;
 
 	if(isRightAxcell_ == true)
 	{
@@ -366,6 +373,7 @@ void Player::Reset(Camera* camera)
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
 	Object3d::SetTransform(position_);
 	Object3d::SetRotation(rotation_);
+	Object3d::SetScale(scale_);
 	Object3d::Update(camera);
 }
 
@@ -423,6 +431,27 @@ void Player::GroundRotation()
 
 
 	Object3d::SetRotation(rotation_);
+}
+
+void Player::MiniScaleAnimation()
+{
+	if(scaleTime_ > 0)
+	{
+		scaleTime_--;
+	}
+	else
+	{
+		scaleTime_ = kScaleTime_;
+		isStartAnimation_ = false;
+	}
+
+	if(isStartAnimation_ == true)
+	{
+		scale_.x = PlayEaseIn(scaleTime_, 1.0f, 1.25f, kScaleTime_);
+		scale_.y = PlayEaseIn(scaleTime_, 1.0f, 1.25f, kScaleTime_);
+		scale_.z = PlayEaseIn(scaleTime_, 1.0f, 1.25f, kScaleTime_);
+		Object3d::SetScale(scale_);
+	}
 }
 
 
