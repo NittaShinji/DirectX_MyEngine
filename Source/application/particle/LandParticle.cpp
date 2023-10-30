@@ -19,8 +19,8 @@ std::unique_ptr<LandParticle> LandParticle::Create(std::string modelName)
 
 void LandParticle::Initialize()
 {
-	startScale_ = { 0.9f,0.9f,0.9f };
-	endScale_ = { 0.0f,0.0f,0.0f };
+	endScale_ = { 0.9f,0.9f,0.9f };
+	startScale_ = { 0.0f,0.0f,0.0f };
 	particleCount_ = 0;
 	isPlayerDead_ = false;
 	canReset_ = false;
@@ -47,7 +47,7 @@ void LandParticle::Update(Camera* camera)
 	//寿命が尽きたパーティクルを初期化
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
-		if(it->frame >= it->num_frame)
+		if(it->canReset == true)
 		{
 			it->scale = InitStartScale;
 			it->accel = InitAcc;
@@ -56,7 +56,8 @@ void LandParticle::Update(Camera* camera)
 			it->object3d.SetTransform(InitPos);
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
-			it->isGenerated = false;
+ 			it->isGenerated = false;
+			it->canReset = false;
 		}
 	}
 
@@ -75,21 +76,24 @@ void LandParticle::Update(Camera* camera)
 	{
 		if(it->isGenerated == true)
 		{
-			//速度に加速度を加算
-			it->velocity = it->velocity + it->accel;
-			//速度による移動
-			Vector3 particlePos = it->object3d.GetTransform();
-			particlePos = particlePos + it->velocity;
-			it->object3d.SetTransform(particlePos);
+			if(it->frame < it->num_frame)
+			{
+				//速度に加速度を加算
+				it->velocity = it->velocity + it->accel;
+				//速度による移動
+				Vector3 particlePos = it->object3d.GetTransform();
+				particlePos = particlePos + it->velocity;
+				it->object3d.SetTransform(particlePos);
 
-			it->frame++;
-			//進行度を0～1の範囲に換算
-			float f = (float)it->frame / it->num_frame;
+				it->frame++;
+				//進行度を0～1の範囲に換算
+				float f = (float)it->frame / it->num_frame;
 
-			//スケールの線形補間
-			it->scale = (it->e_scale - it->s_scale) * f;
-			it->scale += it->s_scale;
-
+				//スケールの線形補間
+				it->scale = (it->e_scale - it->s_scale) * f;
+				it->scale += it->s_scale;
+			}
+			
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
 		}
@@ -99,7 +103,7 @@ void LandParticle::Update(Camera* camera)
 		{
 			if(it->isGenerated == true)
 			{
-				if(it->scale.x <= it->e_scale.x)
+				if(it->scale.x >= it->e_scale.x)
 				{
 					resetCount_++;
 					if(resetCount_ == kMaxParticleNum_)
@@ -199,10 +203,28 @@ void LandParticle::LandParticlePop(Camera* camera, const Vector3& popPos, Attrib
 		it->velocity = setVel_;
 		it->accel = acc;
 		it->colorSpeed = colorSpeed;
-		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+		it->s_scale = startScale_;
 		it->scale = it->s_scale;
-		it->e_scale = Vector3Zero();
+		it->e_scale = endScale_;
 		it->frame = 0;
 		it->isGenerated = true;
+		it->canReset = false;
 	}
+}
+
+void LandParticle::ResetParticleArea(Vector3 playerPos)
+{
+	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
+	{
+		Vector3 particlePos = it->object3d.GetTransform();
+
+		if(playerPos.z > particlePos.z + 30.0f)
+		{
+			if(it->isGenerated == true)
+			{
+ 				it->canReset = true;
+			}
+		}
+	}
+
 }

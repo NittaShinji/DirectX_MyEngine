@@ -261,6 +261,7 @@ void GameScene::Update()
 	backGround_->Update(gameCamera_.get());
 
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
+	landParticle_->ResetParticleArea(player_->GetTransform());
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	landParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetAttributeColor());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());

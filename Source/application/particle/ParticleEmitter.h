@@ -52,7 +52,6 @@ public: // サブクラス
 		int frame = 0;
 		//終了フレーム
 		int num_frame = 0;
-
 		//色情報
 		Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 		Vector4 colorSpeed = { 0.0f,0.0f,0.1f,0.0f };

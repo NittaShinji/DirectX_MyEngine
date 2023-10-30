@@ -37,6 +37,9 @@ public:
 
 		//生み出されたどうか
 		bool isGenerated;
+
+		//リセットできるかどうか
+		bool canReset;
 	};
 
 public: // メンバ関数

@@ -365,6 +365,7 @@ void Player::Reset(Camera* camera)
 	attributeColor_ = Attribute::pink;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
 	Object3d::SetTransform(position_);
+	Object3d::SetRotation(rotation_);
 	Object3d::Update(camera);
 }
 

@@ -23,6 +23,7 @@ public:
 
 	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
 	void SetCanReset(bool canReset) { canReset_ = canReset; }
+	void ResetParticleArea(Vector3 playerPos);
 
 private:
 
