@@ -79,6 +79,8 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
+	gameCamera_ = camera;
+
 	//どのボタンが瞬間的に押されたか
 	gamePad_->PushedButtonMoment();
 
@@ -157,6 +159,7 @@ void Player::Update(Camera* camera)
 				{
 					jumpSound_->PlaySoundWave(false);
 
+					isTouchUnderObject_ = false;
 					isJumpRotate_ = true;
 					onGround_ = false;
 					const float jumpVYFist = 0.4f;
@@ -167,6 +170,7 @@ void Player::Update(Camera* camera)
 				{
 					jumpSound_->PlaySoundWave(false);
 					isJumpRotate_ = true;
+					isTouchUnderObject_ = false;
 					onGround_ = false;
 					const float jumpVYFist = 0.4f;
 					fallVec_ = { 0,jumpVYFist,0 };
@@ -247,6 +251,7 @@ void Player::Update(Camera* camera)
 			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 			{
 				//着地
+				isTouchUnderObject_ = false;
 				onGround_ = true;
 				isLanded_ = true;
 				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
@@ -256,7 +261,30 @@ void Player::Update(Camera* camera)
 				Object3d::Update(camera);
 			}
 		}
+		//else if(fallVec_.y > 0.0f && onGround_ == false)
+		//{
+		//	//球コライダーを取得
+		//	/*SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
+		//	assert(sphereCollider);*/
 
+		//	//球の下端から球の上端までのレイキャスト用レイを準備
+  //			Ray lowerRay;
+		//	lowerRay.start = sphereCollider->center;
+		//	lowerRay.start.y -= sphereCollider->GetRadius();
+		//	lowerRay.dir = { 0,1,0 };
+		//	RaycastHit lowerRaycastHit;
+
+		//	const float adsDistance = 0.2f;
+		//	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &lowerRaycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+		//	{
+		//		position_.y -= (lowerRaycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+		//		//行列の更新など
+		//		Object3d::SetTransform(position_);
+		//		Object3d::Update(camera);
+		//	}
+		//}
+
+		//落下処理
 		if(position_.y <= deadLine_)
 		{
 			//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
@@ -282,6 +310,44 @@ void Player::OnCollision(const CollisionInfo& info)
 		//isMoving_ = false;
 		isLanded_ = false;
 		isDead_ = true;
+	}
+
+	//プレイヤーと同じ色の場合
+	if(info.object->GetAttributeColor() == attributeColor_)
+	{
+		
+		////球コライダーを取得
+		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
+
+		Vector3 objectPosition = info.object->GetTransform();
+		if(position_.y + sphereCollider->GetRadius() <= objectPosition.y && isTouchUnderObject_ == false)
+		{
+			isTouchUnderObject_ = true;
+			position_ -= totalAxcell_;
+
+			//加速
+			fallVec_.y = 0.0f;
+			//Object3d::SetTransform(position_);
+			//Object3d::Update(gameCamera_);
+
+			//フラグを立てて、距離分プレイヤーを下げて、下加速を加える
+		}
+
+		////球の下端から球の上端までのレイキャスト用レイを準備
+		//Ray lowerRay;
+		//lowerRay.start = sphereCollider->center;
+		//lowerRay.start.y -= sphereCollider->GetRadius();
+		//lowerRay.dir = { 0,1,0 };
+		//RaycastHit lowerRaycastHit;
+
+		//const float adsDistance = 0.2f;
+		//if(CollisionManager::GetInstance()->Raycast(lowerRay, COLLISION_ATTR_LANDSHAPE, &lowerRaycastHit, sphereCollider->GetRadius() * 2.0))
+		//{
+		//	position_.y -= (lowerRaycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+		//	//行列の更新など
+		//	Object3d::SetTransform(position_);
+		//	Object3d::Update(gameCamera_);
+		//}
 	}
 }
 
@@ -452,6 +518,11 @@ void Player::MiniScaleAnimation()
 		scale_.z = PlayEaseIn(scaleTime_, 1.0f, 1.25f, kScaleTime_);
 		Object3d::SetScale(scale_);
 	}
+}
+
+void Player::Gravity()
+{
+
 }
 
 

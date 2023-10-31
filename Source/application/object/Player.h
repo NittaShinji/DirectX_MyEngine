@@ -38,6 +38,8 @@ public:
 
 	void MiniScaleAnimation();
 
+	void Gravity();
+
 private:
 
 	std::unique_ptr<Object3d> object_;
@@ -145,6 +147,12 @@ private:
 
 	//着地フラグ
 	bool isLanded_;
+
+	//ゲームカメラ
+	Camera* gameCamera_;
+
+	//下からオブジェクトに触れたかどうか
+	bool isTouchUnderObject_;
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
