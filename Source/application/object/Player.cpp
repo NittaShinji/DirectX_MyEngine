@@ -205,13 +205,68 @@ void Player::Update(Camera* camera)
 	//加速を座標に反映
 	position_ += totalAxcell_;
 	Object3d::SetTransform(position_);
-	Object3d::Update(camera);
+	UpdateWorldMatrix();
+	collider_->Update();
 
 	if(isMoving_ == true)
 	{
 		//球コライダーを取得
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 		assert(sphereCollider);
+
+		//クエリ―コールバッククラス
+		class PlayerQueryCallback : public QueryCallback
+		{
+		public:
+			PlayerQueryCallback(Sphere* sphere) : sphere(sphere) {};
+
+			//衝突時コールバック関数
+			bool OnQueryHit(const QueryHit& info)
+			{
+				//ワールドの上方向
+				const Vector3 up = { 0,1,0 };
+				//排斥方向
+				Vector3 rejectDir = Vector3Normalize(info.reject);
+				//上方向と排斥方向の角度差のコサイン値
+				float cos = Vector3Dot(rejectDir, up).x;
+
+				//地面判定しきい値角度
+				const float threshold = cosf(ToRadian(60.0f));
+				//角度差によって天井または地面判定される場合を除いて
+				if(-threshold < cos && cos < threshold)
+				{
+					//球を排斥(押し出す)
+					sphere->center += info.reject;
+					move += info.reject;
+				}
+
+				return true;
+			}
+
+			//クエリ―に使用する球
+			Sphere* sphere = nullptr;
+			//排斥による移動量(累積値)
+			Vector3 move = {};
+		};
+
+		//クエリーコールバックの関数オブジェクト
+		PlayerQueryCallback callback(sphereCollider);
+
+		//球と地形の交差を全検索
+		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_LANDSHAPE);
+		//交差による排斥分動かす
+		
+		if(onGround_ == false)
+		{
+			position_.x += callback.move.x;
+			position_.y += callback.move.y;
+			position_.z += callback.move.z;
+		}
+		
+
+		//コライダー更新
+		Object3d::UpdateWorldMatrix();
+		collider_->Update();
 
 		//球の上端から球の下端までのレイキャスト用レイを準備
 		Ray ray;
@@ -234,7 +289,6 @@ void Player::Update(Camera* camera)
 				isLanded_ = false;
 				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				Object3d::SetTransform(position_);
-				Object3d::Update(camera);
 			}
 			//地面がないので落下
 			else
@@ -258,32 +312,9 @@ void Player::Update(Camera* camera)
 				jumpCount = kMaxJumpNum;
 				//行列の更新など
 				Object3d::SetTransform(position_);
-				Object3d::Update(camera);
 			}
 		}
-		//else if(fallVec_.y > 0.0f && onGround_ == false)
-		//{
-		//	//球コライダーを取得
-		//	/*SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
-		//	assert(sphereCollider);*/
-
-		//	//球の下端から球の上端までのレイキャスト用レイを準備
-  //			Ray lowerRay;
-		//	lowerRay.start = sphereCollider->center;
-		//	lowerRay.start.y -= sphereCollider->GetRadius();
-		//	lowerRay.dir = { 0,1,0 };
-		//	RaycastHit lowerRaycastHit;
-
-		//	const float adsDistance = 0.2f;
-		//	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &lowerRaycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
-		//	{
-		//		position_.y -= (lowerRaycastHit.distance - sphereCollider->GetRadius() * 2.0f);
-		//		//行列の更新など
-		//		Object3d::SetTransform(position_);
-		//		Object3d::Update(camera);
-		//	}
-		//}
-
+		
 		//落下処理
 		if(position_.y <= deadLine_)
 		{
@@ -292,6 +323,8 @@ void Player::Update(Camera* camera)
 			isLanded_ = true;
 		}
 	}
+
+	Object3d::Update(camera);
 
 	//ゲームパッドのボタン情報をリセット
 	gamePad_->ResetButton();

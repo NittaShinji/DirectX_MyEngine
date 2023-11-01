@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\engine\collision\QueryCallback.cpp" />
     <ClCompile Include="Source\application\particle\DeadParticle.cpp" />
     <ClCompile Include="Source\application\particle\LandParticle.cpp" />
     <ClCompile Include="Source\application\particle\BlockParticle.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\engine\collision\QueryCallback.h" />
     <ClInclude Include="Source\application\particle\DeadParticle.h" />
     <ClInclude Include="Source\application\particle\LandParticle.h" />
     <ClInclude Include="Source\application\particle\BlockParticle.h" />

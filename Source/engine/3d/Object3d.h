@@ -78,6 +78,9 @@ public:
 
 	void MovePos(Vector3 moveVec);
 
+	//行列の更新
+	void UpdateWorldMatrix();
+
 protected:	//メンバ変数
 
 	//クラス名(デバッグ用)

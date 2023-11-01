@@ -105,7 +105,7 @@ void Collision::ClosetPtPoint2Triangle(const Vector3& point, const Triangle& tri
 	*closest = triangle.p0_ + p0_p1 * v + p0_p2 * w;
 }
 
-bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter)
+bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter,Vector3* reject )
 {
 	Vector3 p;
 
@@ -131,10 +131,20 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 		*inter = p;
 	}
 
+	//押し出すベクトルを計算
+	if(reject)
+	{
+		float ds = Vector3Dot(sphere.center, triangle.normal_).x;
+		float dt = Vector3Dot(triangle.p0_, triangle.normal_).x;
+		float rejectLen = dt - ds + sphere.SphereRadius;
+		*reject = triangle.normal_ * rejectLen;
+
+	}
+
 	return true;
 }
 
-bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB)
+bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB, Vector3* reject)
 {
 	//球と球の距離
 	float distance = (sphereB.pos.x - sphereA.pos.x) * (sphereB.pos.x - sphereA.pos.x) +
@@ -147,6 +157,14 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB)
 	//衝突(半径内に入っているかどうか)
 	if(distance <= addRadius)
 	{
+		if(reject)
+		{
+			//押し出すベクトルを計算
+			float rejectLen = sphereA.SphereRadius + sphereB.SphereRadius - sqrt(distance);
+			*reject = Vector3Normalize(sphereA.center - sphereB.center);
+			*reject *= rejectLen;
+		}
+
 		return true;
 	}
 

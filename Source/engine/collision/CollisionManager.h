@@ -1,6 +1,7 @@
 #pragma once
 #include "CollisionPrimitive.h"
 #include "RaycastHit.h"
+#include "QueryCallback.h"
 #include <forward_list>
 
 class BaseCollider;
@@ -44,8 +45,10 @@ public: //メンバ関数
 	/// <param name="maxDistance">最大距離</param>
 	/// <returns>レイが任意のコライダーと交わる場合はtrue、それ以外はfalse</returns>
 	bool Raycast(const Ray& ray, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
-
+	//レイキャスト属性版
 	bool Raycast(const Ray& ray, unsigned short attribute, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
+
+	void QuerySphere(const Sphere& sphere, QueryCallback* callback, unsigned short attribute = static_cast<unsigned short> (0xffffffff));
 
 private:
 	CollisionManager() = default;

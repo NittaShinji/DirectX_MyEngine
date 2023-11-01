@@ -331,21 +331,9 @@ void Object3d::MovePos(Vector3 moveVec)
 	transform_ += moveVec;
 }
 
-void Object3d::Update(Camera* camera)
+void Object3d::UpdateWorldMatrix()
 {
-	//使用するカメラをセット
-	camera_ = camera;
-
-	//ビュー変換行列
-	matView_ = camera_->GetMatView();
-	//射影変換行列
-	matProjection_ = camera_->GetMatProjection();
-
-	cameraPos_ = camera_->GetEye();
-
-	Vector3 move = { 0,0,0 };
-
-	//スケール、回転、平行移動の計算
+	//スケール、回転、平行移動行列の計算
 	matScale_ = MatrixIdentity();
 	matScale_ = MatrixScale(scale_);
 	matRot_ = MatrixIdentity();
@@ -361,6 +349,23 @@ void Object3d::Update(Camera* camera)
 	matWorld_ *= matScale_;
 	matWorld_ *= matRot_;
 	matWorld_ *= matTrans_;
+}
+
+void Object3d::Update(Camera* camera)
+{
+	//使用するカメラをセット
+	camera_ = camera;
+
+	//ビュー変換行列
+	matView_ = camera_->GetMatView();
+	//射影変換行列
+	matProjection_ = camera_->GetMatProjection();
+
+	cameraPos_ = camera_->GetEye();
+
+	Vector3 move = { 0,0,0 };
+
+	UpdateWorldMatrix();
 
 	model_.Update();
 
@@ -474,6 +479,8 @@ void Object3d::SetCollider(BaseCollider* collider)
 	collider_ = collider;
 	//コリジョンマネージャーに登録
 	CollisionManager::GetInstance()->AddCollider(collider);
+	//行列の更新
+	UpdateWorldMatrix();
 	//コライダーを更新しておく
 	collider->Update();
 }

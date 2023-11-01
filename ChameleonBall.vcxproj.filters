@@ -297,6 +297,9 @@
     <ClCompile Include="Source\application\particle\DeadParticle.cpp">
       <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
+    <ClCompile Include="Source\engine\collision\QueryCallback.cpp">
+      <Filter>ソース ファイル\engine\collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -487,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="Source\application\particle\DeadParticle.h">
       <Filter>ヘッダー ファイル\application\particle</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\engine\collision\QueryCallback.h">
+      <Filter>ヘッダー ファイル\engine\collision</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

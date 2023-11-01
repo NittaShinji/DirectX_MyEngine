@@ -27,7 +27,7 @@ public:
 	/// <param name="triangle">三角形</param>
 	/// <param name="inter">交点(三角形上の最近接点)</param>
 	/// <returns>交差しているか否か</returns>
-	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr);
+	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr, Vector3* reject = nullptr);
 
 
 	/// <summary>
@@ -36,7 +36,9 @@ public:
 	/// <param name="sphereA">球</param>
 	/// <param name="sphereB">球</param>
 	/// <returns>交差しているか否か</returns>
-	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB);
+	//static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB);
+	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB,Vector3* reject = nullptr);
+
 
 
 	/// <summary>
