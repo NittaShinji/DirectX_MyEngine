@@ -3,7 +3,7 @@
 #include "Easing.h"
 
 
-void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, Vector3 playerAxcell_)
+void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, Vector3 playerAxcell_, Vector3 playerPos)
 {
 	if(isPlayerMoving == true)
 	{
@@ -16,6 +16,12 @@ void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, Vector3 playerAx
 		else
 		{
 			//プレイヤーのポジションを代入(動いた分だけ進むように初期位置を引く)
+			if(playerPos.y >= 7.0f)
+			{
+				target_.y += playerAxcell_.y;
+				eye_.y += playerAxcell_.y;
+			}
+			
 			target_.z += playerAxcell_.z;
 			eye_.z += playerAxcell_.z;
 

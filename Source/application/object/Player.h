@@ -111,7 +111,7 @@ private:
 	Vector3 totalAxcell_;
 
 	//通常加速度
-	const float kMoveAxcellZ_ = 0.5f;
+	const float kMoveAxcellZ_ = 0.68f;
 
 	//右向き加速ベクトル
 	Vector3 rightAxcellVec_;

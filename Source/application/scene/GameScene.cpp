@@ -248,7 +248,7 @@ void GameScene::Update()
 
 	lightGroup_->Update();
 
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell(),player_->GetPos());
 
 	
 
