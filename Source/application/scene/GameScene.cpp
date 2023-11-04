@@ -37,11 +37,6 @@ void GameScene::Initialize()
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLightGroup(lightGroup_);
 
-	//------------サウンド----------
-	//Sound::GetInstance()->Initialize();
-	//Sound::GetInstance()->LoadSoundWave("gamescene.wav");
-	//Sound::GetInstance()->PlaySoundWave("gamescene.wav",true);
-
 	//サウンド
 	SoundManager::GetInstance()->Initialize();
 	SoundManager::GetInstance()->LoadSoundWave("gamescene.wav");
@@ -73,8 +68,6 @@ void GameScene::Initialize()
 
 	//黒色のテクスチャ―
 	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_ / 2 , Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BlackBackGroundHalfTex");
-
-
 	TextureManager::GetInstance()->LoadTexture("jump.png");
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
 
@@ -106,7 +99,6 @@ void GameScene::Initialize()
 	transitionSize.x = (WindowsAPI::kWindow_width_);
 	transitionSize.y = (WindowsAPI::kWindow_height_ / 2);
 
-
 	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
 	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
 	jumpSprite_->Initialize(jumpSpritePosition, jumpSpriteSize);
@@ -130,7 +122,6 @@ void GameScene::Initialize()
 	Model::Load(wall);
 
 	//3Dオブジェクトの生成
-
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize("Stage0.json");
 
@@ -150,18 +141,7 @@ void GameScene::Initialize()
 
 	//------------カメラ----------
 	gameCamera_ = std::make_unique<GameCamera>();
-
-	//カメラ
-	Vector3 cameraEye = { 30,7.5,-20 };
-
-	Vector3 testCameraEye = { 0,50,-30 };
-	Vector3 cameraTarget = { 0,5,5 };
-
-	Vector3 testcameraTarget = { 0,5,5 };
-
-	Vector3 cameraUp = { 0,1,0 };
-
-	gameCamera_->Initialize(cameraEye, testcameraTarget, cameraUp);
+	gameCamera_->Initialize();
 
 	//2Dパーティクル
 	groundParticle_ = GroundParticle::Create();
@@ -174,7 +154,6 @@ void GameScene::Initialize()
 	ObjParticleManager::GetInstance()->AddEmitter(deadParticle_.get());
 
 	isReset_ = false;
-	//isSceneAnimetion_ = true;
 }
 
 void GameScene::Update()
@@ -248,9 +227,7 @@ void GameScene::Update()
 
 	lightGroup_->Update();
 
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell(),player_->GetPos());
-
-	
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(),player_->GetIsStoped(), player_->GetTotalAxcell(),player_->GetPos());
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());

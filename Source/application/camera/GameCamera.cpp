@@ -2,33 +2,127 @@
 #include "ImGuiManager.h"
 #include "Easing.h"
 
+using namespace MathUtillty;
 
-void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, Vector3 playerAxcell_, Vector3 playerPos)
+void GameCamera::Initialize()
 {
-	if(isPlayerMoving == true)
-	{
+	const Vector3 initcameraEye = { 30,7.5,-20 };
+	const Vector3 initcameraTarget = { 0,5,5 };
+	const Vector3 initcameraUp = { 0,1,0 };
 
-		if(isPlayerDead == true)
+	eye_ = initcameraEye;
+	target_ = initcameraTarget;
+	up_ = initcameraUp;
+
+	axcelRate_ = 0;
+}
+
+void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, bool isPlayerStoped, Vector3 playerAxcell_, Vector3 playerPos)
+{
+	if(isPlayerMoving == true )
+	{
+		if(isPlayerStoped == false)
 		{
-			target_.z += playerAxcell_.z / 1.5f;
-			eye_.z += playerAxcell_.z / 1.5f;
+			if(isSlowDown_ == false)
+			{
+				totalAxcellSpeed_ = playerAxcell_;
+			}
+			
+			if(isPlayerDead == true)
+			{
+				totalAxcellSpeed_.z += playerAxcell_.z / 1.5f;
+				totalAxcellSpeed_.z += playerAxcell_.z / 1.5f;
+			}
+			else
+			{
+				//プレイヤーのポジションを代入(動いた分だけ進むように初期位置を引く)
+				if(playerPos.y >= 6.0f)
+				{
+					//target_.y += playerAxcell_.y;
+					//eye_.y += playerAxcell_.y;
+				}
+
+				totalAxcellSpeed_.y = playerAxcell_.y / 10.0f;
+
+				/*target_.z += playerAxcell_.z;
+				eye_.z += playerAxcell_.z;*/
+			}
+
+			if(moveSlowTimer_ <= 0)
+			{
+				isSlowDown_ = false;
+				moveSlowTimer_ = kSlowDownTime_;
+			}
+			
 		}
 		else
 		{
-			//プレイヤーのポジションを代入(動いた分だけ進むように初期位置を引く)
-			if(playerPos.y >= 7.0f)
+			//急に止まっているからおかしい
+			//徐々に減速させる
+			if(isPlayerStoped == true && isSlowDown_ == false)
 			{
-				target_.y += playerAxcell_.y;
-				eye_.y += playerAxcell_.y;
+				isSlowDown_ = true;
 			}
 			
-			target_.z += playerAxcell_.z;
-			eye_.z += playerAxcell_.z;
+			//totalAxcellSpeed_ = Vector3Zero();
 
+			//if(isSlowDown_ == true)
+			//{
+			//	float x = 0;
+			//	x = moveSlowTimer_ / kSlowDownTime_;
+			//	axcelRate_ = easeOutQuint(x);
+
+			//	/*axcelRate_ = PlayEaseOutQuint(moveSlowTimer_, 0.5f, -0.5f, kSlowDownTime_);
+			//	totalAxcellSpeed_.z *= axcelRate_;*/
+
+			//	//totalAxcellSpeed_.z = PlayEaseOutQuint(moveSlowTimer_, playerAxcell_.z, -playerAxcell_.z, kSlowDownTime_);
+
+			//	if(moveSlowTimer_ > 0)
+			//	{
+			//		moveSlowTimer_--;
+			//	}
+
+			//	if(totalAxcellSpeed_.z <= 0)
+			//	{
+			//		totalAxcellSpeed_.z = 0;
+			//	}
+			//}
+
+			if(isSlowDown_ == true)
+			{
+				if(moveSlowTimer_ > 0)
+				{
+					moveSlowTimer_--;
+				}
+
+				float x = 0;
+				x = moveSlowTimer_ / kSlowDownTime_;
+				axcelRate_ = easeOutQuint(x);
+
+				/*axcelRate_ = PlayEaseOutQuint(moveSlowTimer_, 0.5f, -0.5f, kSlowDownTime_);
+				totalAxcellSpeed_.z *= axcelRate_;*/
+
+				//totalAxcellSpeed_.z = PlayEaseOutQuint(moveSlowTimer_, playerAxcell_.z, -playerAxcell_.z, kSlowDownTime_);
+
+				totalAxcellSpeed_.z *= axcelRate_;
+
+
+
+				if(totalAxcellSpeed_.z <= 0)
+				{
+					totalAxcellSpeed_.z = 0;
+				}
+			}
 		}
+
+		
+
+		target_ += totalAxcellSpeed_;
+		eye_ += totalAxcellSpeed_;
+
 	}
 
-
+	
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
 }

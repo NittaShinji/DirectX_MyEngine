@@ -154,6 +154,9 @@ private:
 	//下からオブジェクトに触れたかどうか
 	bool isTouchUnderObject_;
 
+	//ぶつかってストップしているか
+	bool isStoped_;
+
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
 public:
@@ -168,6 +171,7 @@ public:
 	Vector3 GetPlayerInitPos() { return kPlayerInitPos_; }
 	Vector3 GetTotalAxcell() { return totalAxcell_; }
 	bool GetRightAxcell() { return isRightAxcell_; }
+	bool GetIsStoped() { return isStoped_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }

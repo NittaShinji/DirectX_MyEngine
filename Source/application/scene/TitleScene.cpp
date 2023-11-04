@@ -98,14 +98,7 @@ void TitleScene::Initialize()
 
 	//カメラ
 	camera_ = std::make_unique<Camera>();
-
-	Vector3 cameraEye = { 30,15.5,-20 };
-
-	Vector3 cameraTarget = { 0,5,5 };
-
-	Vector3 cameraUp = { 0,1,0 };
-
-	camera_->Initialize(cameraEye, cameraTarget, cameraUp);
+	camera_->Initialize();
 
 	isChangeScene_ = false;
 	isChangeColor_ = false;
@@ -134,7 +127,7 @@ void TitleScene::Update()
 		titleSphere_->SetRotation(sphereRotate);
 	}
 
-	if(rotateTimer_ >= 0)
+	if(rotateTimer_ > 0)
 	{
 		rotateTimer_--;
 	}

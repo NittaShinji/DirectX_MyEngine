@@ -255,12 +255,21 @@ void Player::Update(Camera* camera)
 		//球と地形の交差を全検索
 		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_LANDSHAPE);
 		//交差による排斥分動かす
-		
 		if(onGround_ == false)
 		{
 			position_.x += callback.move.x;
 			position_.y += callback.move.y;
 			position_.z += callback.move.z;
+			//押し出し時
+			if(callback.move.z < 0)
+			{
+				isStoped_ = true;
+			}
+			else
+			{
+				isStoped_ = false;
+			}
+			
 		}
 		
 

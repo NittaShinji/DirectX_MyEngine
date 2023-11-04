@@ -12,11 +12,14 @@ void Camera::StaticInitialize(DirectXBasic* directXBasic)
 	directXBasic_ = directXBasic;
 }
 
-void Camera::Initialize(Vector3& eye, Vector3& target, Vector3& up)
+void Camera::Initialize()
 {
-	eye_ = eye;
-	target_ = target;
-	up_ = up;
+	const Vector3 initcameraEye = { 30,7.5,-20 };
+	const Vector3 initcameraTarget = { 0,5,5 };
+	const Vector3 initcameraUp = { 0,1,0 };
+	eye_ = initcameraEye;
+	target_ = initcameraTarget;
+	up_ = initcameraUp;
 }
 
 void Camera::Update()

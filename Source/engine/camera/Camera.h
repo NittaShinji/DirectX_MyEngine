@@ -10,7 +10,7 @@ public:
 
 	static void StaticInitialize(DirectXBasic* directXBasic);
 
-	virtual void Initialize(Vector3& eye, Vector3& target, Vector3& up);
+	virtual void Initialize();
 
 	void Update();
 

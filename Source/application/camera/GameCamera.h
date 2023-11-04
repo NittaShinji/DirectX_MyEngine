@@ -6,7 +6,9 @@ class GameCamera : public Camera
 {
 public:
 
-	void Update(bool isPlayerMoving, bool isPlayerDead,Vector3 playerAxcell_,Vector3 playerPos);
+	void Initialize() override;
+
+	void Update(bool isPlayerMoving, bool isPlayerDead,bool isPlayerStoped,Vector3 playerAxcell_,Vector3 playerPos);
 
 	void Reset();
 
@@ -17,6 +19,20 @@ public:
 	bool GetIsFinishAnimation() { return isFinishAnimetion_; }
 
 private:
+
+	//カメラの加速値
+	Vector3 totalAxcellSpeed_;
+
+	//減速フラグ
+	bool isSlowDown_;
+
+	//減速するまでの時間
+	const float kSlowDownTime_ = 5.0f;
+	//減速タイマー
+	float moveSlowTimer_ = kSlowDownTime_;
+
+	//加速割合
+	float axcelRate_;
 
 	//アニメーションが終わったかどうか
 	bool isFinishAnimetion_;

@@ -101,11 +101,7 @@ void TutorialScene::Initialize()
 	gameCamera_ = std::make_unique<GameCamera>();
 
 	//カメラ
-	Vector3 cameraEye = { 30,7.5,-20 };
-	Vector3 cameraTarget = { 0,5,5 };
-	Vector3 cameraUp = { 0,1,0 };
-
-	gameCamera_->Initialize(cameraEye, cameraTarget, cameraUp);
+	gameCamera_->Initialize();
 
 	//パーティクル
 	/*particleManager_ = ParticleManager::Create();
@@ -170,7 +166,7 @@ void TutorialScene::Update()
 	}
 
 	lightGroup_->Update();
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell(),player_->GetPos());
+	//gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(), player_->GetTotalAxcell(),player_->GetPos());
 
 	if(player_->GetOnGround() == true)
 	{
