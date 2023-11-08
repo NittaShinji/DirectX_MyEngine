@@ -172,6 +172,7 @@ public:
 	Vector3 GetTotalAxcell() { return totalAxcell_; }
 	bool GetRightAxcell() { return isRightAxcell_; }
 	bool GetIsStoped() { return isStoped_; }
+	Vector3 GetInitPos() { return kPlayerInitPos_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }
