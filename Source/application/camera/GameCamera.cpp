@@ -10,6 +10,17 @@ void GameCamera::Initialize()
 	target_ = initcameraTarget;
 	up_ = initcameraUp;
 
+	//衝突時に停止する座標を設定
+	goalEyePos_.x = { initcameraEye.x + initEyeDistance.x };
+	goalEyePos_.y = { initcameraEye.y };
+	goalEyePos_.z = { initcameraEye.y + initEyeDistance.z };
+
+	goalEyeTarget_.x = { initcameraTarget.x + initTargetDistance.x };
+	goalEyeTarget_.y = { initcameraTarget.y };
+	goalEyeTarget_.z = { initcameraTarget.z + initTargetDistance.z };
+
+	cameraSpeed_ = 0.0f;
+
 	//moveSlowTimer_ = kSlowDownTime_;
 	//isSlowDown_ = false;
 	//axcelRate_ = 0;
@@ -18,22 +29,142 @@ void GameCamera::Initialize()
 	//backNormalTimer_ = 0.0f;
 }
 
-void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, bool isPlayerStoped, Vector3 playerAxcell_, Vector3 playerPos, Vector3 playerInitPos)
+void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, bool isPlayerStoped, Vector3 playerAxcell_, Vector3 playerPos, Vector3 playerInitPos, float playerNormalAxcell)
 {
-	cameraEyePosition_.x = { playerPos.x - playerInitPos.x + initcameraEye.x };
-	cameraEyePosition_.y = { initcameraEye.y };
-	cameraEyePosition_.z = { playerPos.z - playerInitPos.z + initcameraEye.z };
+	/*eyePosition_.x = { playerPos.x - playerInitPos.x + initcameraEye.x };
+	eyePosition_.y = { playerPos.y - playerInitPos.y + initcameraEye.y };
+	eyePosition_.z = { playerPos.z - playerInitPos.z + initcameraEye.z };
 
-	cameraTargetPosition_.x = { playerPos.x - playerInitPos.x + initcameraTarget.x };
-	cameraTargetPosition_.y = { initcameraTarget.y };
-	cameraTargetPosition_.z = { playerPos.z - playerInitPos.z + initcameraTarget.z };
+	targetPosition_.x = { playerPos.x - playerInitPos.x + initcameraTarget.x };
+	targetPosition_.y = { playerPos.y - playerInitPos.y + initcameraTarget.y };
+	targetPosition_.z = { playerPos.z - playerInitPos.z + initcameraTarget.z};*/
+
+	/*goalEyePos_.x = { eyePosition_.x + initEyeDistance.x };
+	goalEyePos_.y = { eyePosition_.x };
+	goalEyePos_.z = { eyePosition_.x + initEyeDistance.z };
+
+	goalEyeTarget_.x = { targetPosition_.x + initTargetDistance.x };
+	goalEyeTarget_.y = { targetPosition_.y };
+	goalEyeTarget_.z = { targetPosition_.z + initTargetDistance.z};*/
 
 	if(isPlayerMoving == true)
 	{
+		Vector3 moveVec = goalEyePos_ - eye_;
+		moveVec.Normalize();
+
+		goalEyePos_.x = playerPos.x - playerInitPos.x + initcameraEye.x + initEyeDistance.x;
+		goalEyePos_.y = initcameraEye.y;
+		goalEyePos_.z = playerPos.z - playerInitPos.z + initcameraEye.z + initEyeDistance.z;
+
+		goalEyeTarget_.x = playerPos.x - playerInitPos.x + initcameraTarget.x + initTargetDistance.x;
+		goalEyeTarget_.y = initcameraTarget.y;
+		goalEyeTarget_.z = playerPos.z - playerInitPos.z + initcameraTarget.z + initTargetDistance.z;
+
+		//eye_.x += moveVec.x * playerAxcell_.x * cameraSpeed_;
+		//eye_.y += moveVec.y * playerAxcell_.y * cameraSpeed_;
+		//eye_.z += moveVec.z * playerAxcell_.z * cameraSpeed_;
+
+		//target_.x += moveVec.x * playerAxcell_.x * cameraSpeed_;
+		//target_.y += moveVec.y * playerAxcell_.y * cameraSpeed_;
+		//target_.z += moveVec.z * playerAxcell_.z * cameraSpeed_;
+
+		if(isPlayerStoped == true)
+		{
+			isSlowDown_ = true;
+		}
+
+		if(playerNormalAxcell >= 0.0f) {}
+
 		/*cameraTargetPosition_ = { playerPos - playerInitPos  + initcameraTarget };*/
+		if(isSlowDown_ == true)
+		{
+			moveSlowTimer_--;
 
+			//通常加速度にカメラスピードをかける
+			//float endDistance = goalEyePos_.z - eye_.z;
+			//eye_.z = PlayEaseOutQuint(moveSlowTimer_, eye_.z, endDistance, kSlowDownTime_);
+			//float endTargetDistance = goalEyeTarget_.z - target_.z;
+			//target_.z = PlayEaseOutQuint(moveSlowTimer_, target_.z, endTargetDistance, kSlowDownTime_);
 
-		if(isPlayerStoped == false) {}
+			//if(cameraSpeed_ > 0)
+			//{
+			//	//cameraSpeed_ = 1 - (PlayEaseOutQuint(moveSlowTimer_, 1.0f, -1.0f, kSlowDownTime_));
+			//}
+			//else
+			//{
+			//	cameraSpeed_ = 0;
+			//}
+			
+			//cameraSpeed_ = 1.0f - 0.1f * moveSlowTimer_;
+
+			cameraSpeed_ = 1.0f;
+
+			if(eye_.z < goalEyePos_.z )
+			{
+				cameraSpeed_ = 1.25f;
+				eye_.x += moveVec.x * playerNormalAxcell * cameraSpeed_;
+				eye_.y += moveVec.y * playerNormalAxcell * cameraSpeed_;
+				eye_.z += moveVec.z * playerNormalAxcell * cameraSpeed_;
+
+				/*float endDistance = goalEyePos_.z - eye_.z;
+				eye_.z = PlayEaseOutQuint(moveSlowTimer_, eye_.z, endDistance, kSlowDownTime_);*/
+			}
+
+			if(target_.z < goalEyeTarget_.z)
+			{
+				cameraSpeed_ = 1.25f;
+				target_.x += moveVec.x * playerNormalAxcell * cameraSpeed_;
+				target_.y += moveVec.y * playerNormalAxcell * cameraSpeed_;
+				target_.z += moveVec.z * playerNormalAxcell * cameraSpeed_;
+
+				/*float endTargetDistance = goalEyeTarget_.z - target_.z;
+				target_.z = PlayEaseOutQuint(moveSlowTimer_, target_.z, endTargetDistance, kSlowDownTime_);*/
+			}
+
+			if(eye_.z >= goalEyePos_.z && target_.z >= goalEyeTarget_.z)
+			{
+				isSlowDown_ = false;
+				moveSlowTimer_ = kSlowDownTime_;
+				cameraSpeed_ = 1.0f;
+			}
+			
+			if(moveSlowTimer_ <= 0)
+			{
+				//isSlowDown_ = false;
+				//moveSlowTimer_ = kSlowDownTime_;
+			}
+		}
+		else
+		{
+			float nowEyeDistance = goalEyePos_.z - eye_.z;
+			float nowTargetDistance = goalEyeTarget_.z - target_.z;
+
+			if(initEyeDistance.z >= nowEyeDistance && initTargetDistance.z >= nowTargetDistance)
+			//if(eye_.z >= goalEyePos_.z && target_.z >= goalEyeTarget_.z)
+			{
+				cameraSpeed_ = 0.8f;
+				eye_.x += moveVec.x * playerAxcell_.x * cameraSpeed_;
+				eye_.y += moveVec.y * playerAxcell_.y * cameraSpeed_;
+				eye_.z += moveVec.z * playerAxcell_.z * cameraSpeed_;
+
+				target_.x += moveVec.x * playerAxcell_.x * cameraSpeed_;
+				target_.y += moveVec.y * playerAxcell_.y * cameraSpeed_;
+				target_.z += moveVec.z * playerAxcell_.z * cameraSpeed_;
+
+			}
+			else
+			{
+				cameraSpeed_ = { 1.0f };
+				eye_.x += moveVec.x * playerAxcell_.x * cameraSpeed_;
+				eye_.y += moveVec.y * playerAxcell_.y * cameraSpeed_;
+				eye_.z += moveVec.z * playerAxcell_.z * cameraSpeed_;
+
+				target_.x += moveVec.x * playerAxcell_.x * cameraSpeed_;
+				target_.y += moveVec.y * playerAxcell_.y * cameraSpeed_;
+				target_.z += moveVec.z * playerAxcell_.z * cameraSpeed_;
+
+			}
+		}
 		//{
 			//totalAxcellSpeed_ = playerAxcell_;
 
@@ -182,8 +313,8 @@ void GameCamera::Update(bool isPlayerMoving, bool isPlayerDead, bool isPlayerSto
 		//target_ += totalAxcellSpeed_;
 		//eye_ += totalAxcellSpeed_;
 
-		eye_ = cameraEyePosition_;
-		target_ = cameraTargetPosition_;
+		//eye_ = goalEyePos_ - initEyeDistance;
+		//target_ = goalEyeTarget_ - initTargetDistance;
 
 	}
 

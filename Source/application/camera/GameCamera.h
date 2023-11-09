@@ -8,7 +8,7 @@ public:
 
 	void Initialize() override;
 
-	void Update(bool isPlayerMoving, bool isPlayerDead,bool isPlayerStoped,Vector3 playerAxcell_,Vector3 playerPos,Vector3 playerInitPos);
+	void Update(bool isPlayerMoving, bool isPlayerDead, bool isPlayerStoped, Vector3 playerAxcell_, Vector3 playerPos, Vector3 playerInitPos, float playerNormalAxcell);
 
 	void Reset();
 
@@ -24,18 +24,23 @@ private:
 	const Vector3 initcameraTarget = { 0,5,5 };
 	const Vector3 initcameraUp = { 0,1,0 };
 
+	const Vector3 initEyeDistance = { 0.0f,0.0f,12.0f };
+	const Vector3 initTargetDistance = { 0,0,12.0f };
+
 	//カメラの加速値
 	//Vector3 totalAxcellSpeed_;
 
 	//減速フラグ
 	bool isSlowDown_;
 
-	////減速するまでの時間
-	//const float kSlowDownTime_ = 5.0f;
+	float cameraSpeed_;
+
+	//減速するまでの時間
+	const float kSlowDownTime_ = 30.0f;
 	//const float kReturnTime_ = 5.0f;
 
 	//減速タイマー
-	//float moveSlowTimer_ = kSlowDownTime_;
+	float moveSlowTimer_ = kSlowDownTime_;
 	//float moveSlowCount_ = 0.0f;
 
 	//float returnTimer_ = kReturnTime_;
@@ -65,10 +70,10 @@ private:
 	//シーンアニメーション用変化量
 	Vector3 sceneAnimationVec_;
 
-	Vector3 cameraEyePosition_;
-	Vector3 cameraTargetPosition_;
+	Vector3 eyePosition_;
+	Vector3 targetPosition_;
 
-	Vector3 GoalEyePos_;
-	Vector3 GoalEyeTarget_;
+	Vector3 goalEyePos_;
+	Vector3 goalEyeTarget_;
 };
 

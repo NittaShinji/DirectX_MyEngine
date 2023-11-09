@@ -227,7 +227,7 @@ void GameScene::Update()
 
 	lightGroup_->Update();
 
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(),player_->GetIsStoped(), player_->GetTotalAxcell(),player_->GetPos(),player_->GetInitPos());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(),player_->GetIsStoped(), player_->GetTotalAxcell(),player_->GetPos(),player_->GetInitPos(),player_->GetNormalAxcellZ());
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
