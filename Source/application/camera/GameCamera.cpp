@@ -337,7 +337,7 @@ void GameCamera::ImGuiUpdate()
 
 	ImGui::Begin("Camera");
 	ImGui::SetWindowPos(ImVec2(300, 0));
-	ImGui::SetWindowSize(ImVec2(300, 300));
+	ImGui::SetWindowSize(ImVec2(300, 150));
 
 	ImGui::SliderFloat("eyeX", &eye_.x, -100.0f, 50.0f);
 	ImGui::SliderFloat("eyeY", &eye_.y, -100.0f, 50.0f);

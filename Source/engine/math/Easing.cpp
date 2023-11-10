@@ -1,6 +1,23 @@
 #include "Easing.h"
 #include <cmath>
 
+//EasingInfo Initialize(float totalTime, float time, float startPos, float endDistance)
+//{
+//	
+//
+//
+//	return static_cast<EasingInfo>();
+//}
+
+float PlayEaseIn(EasingInfo easingInfo)
+{
+	float x = easingInfo.time / easingInfo.totalTime;
+	float v = easeInCubic(x);
+	float ret = easingInfo.endDistance * v + easingInfo.startPos;
+
+	return ret;
+}
+
 float PlayEaseIn(float time, float startPos, float endDistance, float totalTime)
 {
 	float x = time / totalTime;

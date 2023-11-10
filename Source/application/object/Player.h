@@ -40,6 +40,8 @@ public:
 
 	void Gravity();
 
+	void LandScaleAnimation();
+
 private:
 
 	std::unique_ptr<Object3d> object_;
@@ -156,6 +158,22 @@ private:
 
 	//ぶつかってストップしているか
 	bool isStoped_;
+
+	bool isStartedJumpAnimation_;
+	int32_t kJumpAnimationTime_ = 10;
+	int32_t jumpAnimationTimer_ = kJumpAnimationTime_;
+
+	const Vector3 kMaxJumpMomentScale = { 1.0f,0.8f,1.2f };
+	const Vector3 kMaxLandMomentScale = { 1.5f,0.5f,1.5f };
+	const Vector3 kMoveScale = {1.2f,0.9f,1.2f};
+
+	EasingInfo jumpEasing_ { 60.0f, 0.0f, 0.0f, 0.0f };
+	EasingInfo LandEasing_ { 60.0f, 0.0f, 0.0f, 0.0f };
+	
+	/*EasingInfo jumpEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);
+	EasingInfo LandEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);*/
+
+	bool isStartedLandAnime_ = false;
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;

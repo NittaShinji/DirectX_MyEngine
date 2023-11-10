@@ -311,7 +311,7 @@ void GameScene::Draw()
 
 	ObjParticleManager::GetInstance()->Draw();
 
-	ParticleManager::GetInstance()->Draw();
+	//ParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();

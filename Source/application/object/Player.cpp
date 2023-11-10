@@ -42,6 +42,14 @@ void Player::Initialize()
 	rotation_ = { 0,0,0 };
 	scale_ = { 1.0,1.0,1.0 };
 
+	/*jumpEasing_.endDistance = 0.0f;
+	jumpEasing_.startPos = 0.0f;
+	jumpEasing_.totalTime = 60.0f;
+	jumpEasing_.time = 0.0f;
+
+	LandEasing_ = { 60.0f,0.0f,0.0f,0.0f };
+*/
+
 	//座標情報を設定
 	SetTransform(position_);
 	SetRotation(rotation_);
@@ -67,6 +75,7 @@ void Player::Initialize()
 	isJumpRotate_ = false;
 	onGround_ = true;
 	isLanded_ = false;
+	isStartedJumpAnimation_ = false;
 
 	fallVec_ = { 0.0f,0.0f,0.0f };
 	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
@@ -184,6 +193,7 @@ void Player::Update(Camera* camera)
 		//ジャンプ操作
 		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 		{
+			isStartedJumpAnimation_ = true;
 			jumpSound_->PlaySoundWave(false);
 			onGround_ = false;
 			isLanded_ = false;
@@ -193,6 +203,7 @@ void Player::Update(Camera* camera)
 		}
 		else if(gamePad_->GetButtonA() && jumpCount > 0)
 		{
+			isStartedJumpAnimation_ = true;
 			jumpSound_->PlaySoundWave(false);
 			onGround_ = false;
 			isLanded_ = false;
@@ -200,6 +211,21 @@ void Player::Update(Camera* camera)
 			fallVec_ = { 0,jumpVYFist,0 };
 			jumpCount -= 1;
 		}
+	}
+
+	if(isStartedJumpAnimation_ == true)
+	{
+		if(jumpAnimationTimer_ > 0)
+		{
+			jumpAnimationTimer_--;
+		}
+		else
+		{
+			jumpAnimationTimer_ = kJumpAnimationTime_;
+			isStartedJumpAnimation_ = false;
+		}
+
+		Object3d::SetScale(kMaxJumpMomentScale);
 	}
 
 	//加速を座標に反映
@@ -288,6 +314,7 @@ void Player::Update(Camera* camera)
 		if(onGround_)
 		{
 			GroundRotation();
+			LandScaleAnimation();
 
 			//スムーズに坂を下る為の吸着距離
 			const float adsDistance = 0.2f;
@@ -298,6 +325,7 @@ void Player::Update(Camera* camera)
 				isLanded_ = false;
 				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				Object3d::SetTransform(position_);
+				Object3d::SetScale(kMoveScale);
 			}
 			//地面がないので落下
 			else
@@ -317,10 +345,12 @@ void Player::Update(Camera* camera)
 				isTouchUnderObject_ = false;
 				onGround_ = true;
 				isLanded_ = true;
+				isStartedLandAnime_ = true;
 				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				jumpCount = kMaxJumpNum;
 				//行列の更新など
 				Object3d::SetTransform(position_);
+				Object3d::SetScale(kMaxLandMomentScale);
 			}
 		}
 		
@@ -565,6 +595,31 @@ void Player::MiniScaleAnimation()
 void Player::Gravity()
 {
 
+}
+
+void Player::LandScaleAnimation()
+{
+	if(isStartedLandAnime_ == true)
+	{
+		if(scale_.x <= kMaxLandMomentScale.x)
+		{
+			scale_.x += 0.05f;
+			//scale_.x = PlayEaseIn(jumpEasing_);
+		}
+
+		if(scale_.y >= kMaxLandMomentScale.y)
+		{
+			scale_.y -= 0.05f;
+			//scale_.y = PlayEaseIn(jumpEasing_);
+		}
+
+		if(scale_.z <= kMaxLandMomentScale.z)
+		{
+			scale_.z += 0.05f;
+			//scale_.z = PlayEaseIn(jumpEasing_);
+		}
+	}
+	
 }
 
 
