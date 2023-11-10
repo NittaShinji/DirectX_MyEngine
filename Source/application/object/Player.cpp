@@ -3,7 +3,6 @@
 #include "CollisionManager.h"
 #include "CollisionAttribute.h"
 #include "Sound.h"
-#include "Easing.h"
 #include "ImGuiManager.h"
 
 using namespace std;
@@ -140,7 +139,7 @@ void Player::Update(Camera* camera)
 
 		Object3d::SetColorFlag(colorFlag_);
 
-		if(isStartAnimation_ == true)
+		if(isStartAnimation_ == true && isStartedLandAnime_ == false)
 		{
 			MiniScaleAnimation();
 		}
@@ -225,7 +224,7 @@ void Player::Update(Camera* camera)
 			isStartedJumpAnimation_ = false;
 		}
 
-		Object3d::SetScale(kMaxJumpMomentScale);
+		//Object3d::SetScale(kMaxJumpMomentScale);
 	}
 
 	//加速を座標に反映
@@ -325,7 +324,7 @@ void Player::Update(Camera* camera)
 				isLanded_ = false;
 				position_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				Object3d::SetTransform(position_);
-				Object3d::SetScale(kMoveScale);
+				//Object3d::SetScale(kMoveScale);
 			}
 			//地面がないので落下
 			else
@@ -350,7 +349,7 @@ void Player::Update(Camera* camera)
 				jumpCount = kMaxJumpNum;
 				//行列の更新など
 				Object3d::SetTransform(position_);
-				Object3d::SetScale(kMaxLandMomentScale);
+				//Object3d::SetScale(kMaxLandMomentScale);
 			}
 		}
 		
@@ -521,10 +520,14 @@ void Player::ImGuiUpdate()
 
 	ImGui::Begin("Player");
 	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(300, 100));
+	ImGui::SetWindowSize(ImVec2(300, 200));
 
 	ImGui::SliderFloat("PlayerPosY", &position_.y, -100.0f, 50.0f);
 	ImGui::SliderFloat("PlayerPosZ", &position_.z, -100.0f, 1000.0f);
+	ImGui::SliderFloat("PlayerScaleX", &scale_.x, 0.0f, 5.0f);
+	ImGui::SliderFloat("PlayerScaleY", &scale_.y, 0.0f, 5.0f);
+	ImGui::SliderFloat("PlayerScaleZ", &scale_.z, 0.0f, 5.0f);
+	Object3d::SetScale(scale_);
 
 	ImGui::End();
 }
@@ -618,6 +621,7 @@ void Player::LandScaleAnimation()
 			scale_.z += 0.05f;
 			//scale_.z = PlayEaseIn(jumpEasing_);
 		}
+		Object3d::SetScale(scale_);
 	}
 	
 }

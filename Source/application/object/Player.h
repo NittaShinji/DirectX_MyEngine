@@ -6,6 +6,7 @@
 #include "SphereCollider.h"
 #include "ObjectAttribute.h"
 #include "SoundManager.h"
+#include "Easing.h"
 
 class Player : public Object3d
 {
@@ -164,11 +165,11 @@ private:
 	int32_t jumpAnimationTimer_ = kJumpAnimationTime_;
 
 	const Vector3 kMaxJumpMomentScale = { 1.0f,0.8f,1.2f };
-	const Vector3 kMaxLandMomentScale = { 1.5f,0.5f,1.5f };
+	const Vector3 kMaxLandMomentScale = { 2.5f,0.5f,2.5f };
 	const Vector3 kMoveScale = {1.2f,0.9f,1.2f};
 
-	EasingInfo jumpEasing_ { 60.0f, 0.0f, 0.0f, 0.0f };
-	EasingInfo LandEasing_ { 60.0f, 0.0f, 0.0f, 0.0f };
+	EasingInfo jumpEasing_ = { 60.0f, 0.0f, 0.0f, 0.0f };
+	EasingInfo LandEasing_ = { 60.0f, 0.0f, 0.0f, 0.0f };
 	
 	/*EasingInfo jumpEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);
 	EasingInfo LandEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);*/
