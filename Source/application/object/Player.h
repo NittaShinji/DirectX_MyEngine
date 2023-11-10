@@ -43,6 +43,8 @@ public:
 
 	void LandScaleAnimation();
 
+	void ReturnMoveAnimation();
+
 private:
 
 	std::unique_ptr<Object3d> object_;
@@ -168,6 +170,10 @@ private:
 	const Vector3 kMaxLandMomentScale = { 2.5f,0.5f,2.5f };
 	const Vector3 kMoveScale = {1.2f,0.9f,1.2f};
 
+	const float LandScaleSpeed_ = 0.15f;
+	const float ReturnScaleSpeed_ = 0.15f;
+
+
 	EasingInfo jumpEasing_ = { 60.0f, 0.0f, 0.0f, 0.0f };
 	EasingInfo LandEasing_ = { 60.0f, 0.0f, 0.0f, 0.0f };
 	
@@ -175,6 +181,7 @@ private:
 	EasingInfo LandEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);*/
 
 	bool isStartedLandAnime_ = false;
+	bool isReturnedSizeAnime_ = false;
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
