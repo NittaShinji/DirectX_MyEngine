@@ -37,13 +37,18 @@ public:
 
 	void GroundRotation();
 
-	void MiniScaleAnimation();
+	void ColorChangeAnimation();
 
-	void Gravity();
-
+	//着地時にプレイヤーを潰れたスケールに変化させるアニメーション
 	void LandScaleAnimation();
 
+	//通常時のスケールに戻るアニメーション
 	void ReturnMoveAnimation();
+
+	//ジャンプ時に少し縮むアニメーション
+	void ReadyToJumpAnimation();
+
+	void Animation(bool isStartedAnime,float animationSpeed, Vector3 goalScale);
 
 private:
 
@@ -148,7 +153,7 @@ private:
 	float scaleTime_ = kScaleTime_;
 
 	//スケールアニメーションフラグ
-	bool isStartAnimation_ = false;
+	bool isStartChangeColorAnime_ = false;
 
 	//着地フラグ
 	bool isLanded_;
@@ -166,22 +171,31 @@ private:
 	int32_t kJumpAnimationTime_ = 10;
 	int32_t jumpAnimationTimer_ = kJumpAnimationTime_;
 
-	const Vector3 kMaxJumpMomentScale = { 1.0f,0.8f,1.2f };
-	const Vector3 kMaxLandMomentScale = { 2.5f,0.5f,2.5f };
-	const Vector3 kMoveScale = {1.2f,0.9f,1.2f};
+	const Vector3 kMaxJumpMomentScale_ = { 1.0f,0.8f,1.2f };
+	const Vector3 kMaxLandMomentScale_ = { 2.5f,0.5f,2.5f };
+	const Vector3 kMoveScale_ = {1.0f,1.0f,1.0f};
+	const Vector3 kDentedScale_ = {1.2f,0.8f,1.2f};
 
-	const float LandScaleSpeed_ = 0.15f;
-	const float ReturnScaleSpeed_ = 0.15f;
-
+	const float kLandScaleSpeed_ = 0.15f;
+	const float kReturnScaleSpeed_ = 0.15f;
+	const float kDentSpeed_ = 0.05f;
 
 	EasingInfo jumpEasing_ = { 60.0f, 0.0f, 0.0f, 0.0f };
 	EasingInfo LandEasing_ = { 60.0f, 0.0f, 0.0f, 0.0f };
 	
 	/*EasingInfo jumpEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);
 	EasingInfo LandEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);*/
-
 	bool isStartedLandAnime_ = false;
 	bool isReturnedSizeAnime_ = false;
+	bool isJumpMomentAnime_ = false;
+	bool isDentedAnime_ = false;
+
+	//ジャンプの準備ができているかどうか
+	bool isReadyToJump_;
+
+	bool isScaleChanged_ = false;
+	bool isDuringAnimation_ = false;
+
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;

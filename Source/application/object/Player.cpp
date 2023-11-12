@@ -77,6 +77,8 @@ void Player::Initialize()
 	isStartedJumpAnimation_ = false;
 	isStartedLandAnime_ = false;
 	isReturnedSizeAnime_ = false;
+	isReadyToJump_ = false;
+	isDuringAnimation_ = false;
 
 	fallVec_ = { 0.0f,0.0f,0.0f };
 	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
@@ -107,7 +109,7 @@ void Player::Update(Camera* camera)
 		//色変え処理
 		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
-			isStartAnimation_ = true;
+			isStartChangeColorAnime_ = true;
 
 			//属性の変更
 			if(attributeColor_ == Attribute::pink)
@@ -141,15 +143,17 @@ void Player::Update(Camera* camera)
 
 		Object3d::SetColorFlag(colorFlag_);
 
-		if(isStartAnimation_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false)
+		if(isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false)
 		{
-			MiniScaleAnimation();
+			ColorChangeAnimation();
 		}
 		else
 		{
-			if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false)
+			if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false)
 			{
 				scale_ = { 1.0f,1.0f,1.0f };
+				//scale_ = kMoveScale;
+
 			}
 			//.SetScale(scale_);
 		}
@@ -198,23 +202,22 @@ void Player::Update(Camera* camera)
 		//ジャンプ操作
 		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
 		{
-			isStartedJumpAnimation_ = true;
 			jumpSound_->PlaySoundWave(false);
+			/*onGround_ = false;
+			isLanded_ = false;*/
+			isDentedAnime_ = true;
 			onGround_ = false;
 			isLanded_ = false;
 			const float jumpVYFist = 0.4f;
 			fallVec_ = { 0,jumpVYFist,0 };
 			jumpCount -= 1;
+			isReadyToJump_ = false;
+
 		}
 		else if(gamePad_->GetButtonA() && jumpCount > 0)
 		{
-			isStartedJumpAnimation_ = true;
 			jumpSound_->PlaySoundWave(false);
-			onGround_ = false;
-			isLanded_ = false;
-			const float jumpVYFist = 0.4f;
-			fallVec_ = { 0,jumpVYFist,0 };
-			jumpCount -= 1;
+			isDentedAnime_ = true;
 		}
 	}
 
@@ -229,8 +232,6 @@ void Player::Update(Camera* camera)
 			jumpAnimationTimer_ = kJumpAnimationTime_;
 			isStartedJumpAnimation_ = false;
 		}
-
-		//Object3d::SetScale(kMaxJumpMomentScale);
 	}
 
 	//加速を座標に反映
@@ -299,10 +300,8 @@ void Player::Update(Camera* camera)
 			else
 			{
 				isStoped_ = false;
-			}
-			
+			}	
 		}
-		
 
 		//コライダー更新
 		Object3d::UpdateWorldMatrix();
@@ -367,8 +366,27 @@ void Player::Update(Camera* camera)
 		}
 	}
 
-	LandScaleAnimation();
-	ReturnMoveAnimation();
+	if(isStartedLandAnime_ == true)
+	{
+		Animation(isStartedLandAnime_, kLandScaleSpeed_, kMaxLandMomentScale_);
+		if(isDuringAnimation_ == false)
+		{
+			isReturnedSizeAnime_ = true;
+			isStartedLandAnime_ = false;
+		}
+	}
+	else if(isReturnedSizeAnime_ == true)
+	{
+		Animation(isReturnedSizeAnime_,kReturnScaleSpeed_,kMoveScale_);
+		if(isDuringAnimation_ == false)
+		{
+			isReturnedSizeAnime_ = false;
+		}
+	}
+	else if(isDentedAnime_ == true)
+	{
+		Animation(isDentedAnime_, kDentSpeed_, kDentedScale_);
+	}
 
 	Object3d::Update(camera);
 
@@ -385,8 +403,6 @@ void Player::OnCollision(const CollisionInfo& info)
 	//色が違う場合、死亡判定にする
 	else if(info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
 	{
-		//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
-		//isMoving_ = false;
 		isLanded_ = false;
 		isDead_ = true;
 	}
@@ -394,7 +410,6 @@ void Player::OnCollision(const CollisionInfo& info)
 	//プレイヤーと同じ色の場合
 	if(info.object->GetAttributeColor() == attributeColor_)
 	{
-		
 		////球コライダーを取得
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 
@@ -406,27 +421,7 @@ void Player::OnCollision(const CollisionInfo& info)
 
 			//加速
 			fallVec_.y = 0.0f;
-			//Object3d::SetTransform(position_);
-			//Object3d::Update(gameCamera_);
-
-			//フラグを立てて、距離分プレイヤーを下げて、下加速を加える
 		}
-
-		////球の下端から球の上端までのレイキャスト用レイを準備
-		//Ray lowerRay;
-		//lowerRay.start = sphereCollider->center;
-		//lowerRay.start.y -= sphereCollider->GetRadius();
-		//lowerRay.dir = { 0,1,0 };
-		//RaycastHit lowerRaycastHit;
-
-		//const float adsDistance = 0.2f;
-		//if(CollisionManager::GetInstance()->Raycast(lowerRay, COLLISION_ATTR_LANDSHAPE, &lowerRaycastHit, sphereCollider->GetRadius() * 2.0))
-		//{
-		//	position_.y -= (lowerRaycastHit.distance - sphereCollider->GetRadius() * 2.0f);
-		//	//行列の更新など
-		//	Object3d::SetTransform(position_);
-		//	Object3d::Update(gameCamera_);
-		//}
 	}
 }
 
@@ -517,6 +512,8 @@ void Player::Reset(Camera* camera)
 	isStartedLandAnime_ = false;
 	isReturnedSizeAnime_ = false;
 	isStartedJumpAnimation_ = false;
+	isReadyToJump_ = false;
+	isDentedAnime_ = false;
 
 	attributeColor_ = Attribute::pink;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
@@ -586,7 +583,7 @@ void Player::GroundRotation()
 	Object3d::SetRotation(rotation_);
 }
 
-void Player::MiniScaleAnimation()
+void Player::ColorChangeAnimation()
 {
 	if(scaleTime_ > 0)
 	{
@@ -595,10 +592,10 @@ void Player::MiniScaleAnimation()
 	else
 	{
 		scaleTime_ = kScaleTime_;
-		isStartAnimation_ = false;
+		isStartChangeColorAnime_ = false;
 	}
 
-	if(isStartAnimation_ == true)
+	if(isStartChangeColorAnime_ == true)
 	{
 		scale_.x = PlayEaseIn(scaleTime_, 1.0f, 1.25f, kScaleTime_);
 		scale_.y = PlayEaseIn(scaleTime_, 1.0f, 1.25f, kScaleTime_);
@@ -607,19 +604,14 @@ void Player::MiniScaleAnimation()
 	}
 }
 
-void Player::Gravity()
-{
-
-}
-
 void Player::LandScaleAnimation()
 {
-	if(isStartedLandAnime_ == true)
+	/*if(isStartedLandAnime_ == true)
 	{
 		bool isExpandingX = true;
-		if(scale_.x <= kMaxLandMomentScale.x)
+		if(scale_.x <= kMaxLandMomentScale_.x)
 		{
-			scale_.x += LandScaleSpeed_;
+			scale_.x += kLandScaleSpeed_;
 		}
 		else
 		{
@@ -627,9 +619,9 @@ void Player::LandScaleAnimation()
 		}
 
 		bool isExpandingY = true;
-		if(scale_.y >= kMaxLandMomentScale.y)
+		if(scale_.y >= kMaxLandMomentScale_.y)
 		{
-			scale_.y -= LandScaleSpeed_;
+			scale_.y -= kLandScaleSpeed_;
 		}
 		else
 		{
@@ -637,9 +629,9 @@ void Player::LandScaleAnimation()
 		}
 
 		bool isExpandingZ = true;
-		if(scale_.z <= kMaxLandMomentScale.z)
+		if(scale_.z <= kMaxLandMomentScale_.z)
 		{
-			scale_.z += LandScaleSpeed_;
+			scale_.z += kLandScaleSpeed_;
 		}
 		else
 		{
@@ -653,6 +645,11 @@ void Player::LandScaleAnimation()
 		}
 
 		Object3d::SetScale(scale_);
+	}*/
+
+	if(isStartedLandAnime_ == true)
+	{
+		Animation(isStartedLandAnime_, kLandScaleSpeed_, kMaxLandMomentScale_);	
 	}
 }
 
@@ -661,54 +658,54 @@ void Player::ReturnMoveAnimation()
 	if(isReturnedSizeAnime_ == true)
 	{
 		bool isExpandingX = true;
-		if(scale_.x <= kMoveScale.x && isExpandingX == true)
+		if(scale_.x <= kMoveScale_.x && isExpandingX == true)
 		{
-			scale_.x += ReturnScaleSpeed_;
-			if(scale_.x >= kMoveScale.x)
+			scale_.x += kReturnScaleSpeed_;
+			if(scale_.x >= kMoveScale_.x)
 			{
 				isExpandingX = false;
 			}
 		}
-		else if(scale_.x > kMoveScale.x && isExpandingX == true)
+		else if(scale_.x > kMoveScale_.x && isExpandingX == true)
 		{
-			scale_.x -= ReturnScaleSpeed_;
-			if(scale_.x <= kMoveScale.x)
+			scale_.x -= kReturnScaleSpeed_;
+			if(scale_.x <= kMoveScale_.x)
 			{
 				isExpandingX = false;
 			}
 		}
 
 		bool isExpandingY = true;
-		if(scale_.y >= kMoveScale.y && isExpandingY == true)
+		if(scale_.y >= kMoveScale_.y && isExpandingY == true)
 		{
-			scale_.y -= ReturnScaleSpeed_;
-			if(scale_.x <= kMoveScale.x)
+			scale_.y -= kReturnScaleSpeed_;
+			if(scale_.x <= kMoveScale_.x)
 			{
 				isExpandingY = false;
 			}
 		}
-		else if(scale_.y < kMoveScale.y && isExpandingY == true)
+		else if(scale_.y < kMoveScale_.y && isExpandingY == true)
 		{
-			scale_.y += ReturnScaleSpeed_;
-			if(scale_.y >= kMoveScale.y)
+			scale_.y += kReturnScaleSpeed_;
+			if(scale_.y >= kMoveScale_.y)
 			{
 				isExpandingY = false;
 			}
 		}
 		
 		bool isExpandingZ = true;
-		if(scale_.z <= kMoveScale.z && isExpandingZ == true)
+		if(scale_.z <= kMoveScale_.z && isExpandingZ == true)
 		{
-			scale_.z += ReturnScaleSpeed_;
-			if(scale_.z >= kMoveScale.z)
+			scale_.z += kReturnScaleSpeed_;
+			if(scale_.z >= kMoveScale_.z)
 			{
 				isExpandingZ = false;
 			}
 		}
-		else if(scale_.z > kMoveScale.z && isExpandingZ == true)
+		else if(scale_.z > kMoveScale_.z && isExpandingZ == true)
 		{
-			scale_.z -= ReturnScaleSpeed_;
-			if(scale_.z <= kMoveScale.z)
+			scale_.z -= kReturnScaleSpeed_;
+			if(scale_.z <= kMoveScale_.z)
 			{
 				isExpandingZ = false;
 			}
@@ -720,6 +717,142 @@ void Player::ReturnMoveAnimation()
 		}
 
 		Object3d::SetScale(scale_);
+	}
+}
+
+void Player::ReadyToJumpAnimation()
+{
+	if(isDentedAnime_ == true)
+	{
+		bool isExpandingX = true;
+		if(scale_.x <= kDentedScale_.x && isExpandingX == true)
+		{
+			scale_.x += kDentSpeed_;
+			if(scale_.x >= kDentedScale_.x)
+			{
+				isExpandingX = false;
+			}
+		}
+		else if(scale_.x > kDentedScale_.x && isExpandingX == true)
+		{
+			scale_.x -= kDentSpeed_;
+			if(scale_.x <= kDentedScale_.x)
+			{
+				isExpandingX = false;
+			}
+		}
+
+		bool isExpandingY = true;
+		if(scale_.y >= kDentedScale_.y && isExpandingY == true)
+		{
+			scale_.y -= kDentSpeed_;
+			if(scale_.x <= kDentedScale_.x)
+			{
+				isExpandingY = false;
+			}
+		}
+		else if(scale_.y < kDentedScale_.y && isExpandingY == true)
+		{
+			scale_.y += kDentSpeed_;
+			if(scale_.y >= kDentedScale_.y)
+			{
+				isExpandingY = false;
+			}
+		}
+
+		bool isExpandingZ = true;
+		if(scale_.z <= kDentedScale_.z && isExpandingZ == true)
+		{
+			scale_.z += kDentSpeed_;
+			if(scale_.z >= kDentedScale_.z)
+			{
+				isExpandingZ = false;
+			}
+		}
+		else if(scale_.z > kDentedScale_.z && isExpandingZ == true)
+		{
+			scale_.z -= kDentSpeed_;
+			if(scale_.z <= kDentedScale_.z)
+			{
+				isExpandingZ = false;
+			}
+		}
+
+		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
+		{
+			isDentedAnime_ = false;
+			isReadyToJump_ = true;
+			isReturnedSizeAnime_ = true;
+		}
+	}
+
+}
+
+void Player::Animation(bool isStartedAnime, float animationSpeed, Vector3 goalScale)
+{
+	if(isStartedAnime == true)
+	{
+		//アニメーションフラグをONにする
+		isDuringAnimation_ = true;
+
+		bool isExpandingX = true;
+		if(scale_.x <= goalScale.x && isExpandingX == true)
+		{
+			scale_.x += animationSpeed;
+			if(scale_.x >= goalScale.x)
+			{
+				isExpandingX = false;
+			}
+		}
+		else if(scale_.x > goalScale.x && isExpandingX == true)
+		{
+			scale_.x -= animationSpeed;
+			if(scale_.x <= goalScale.x)
+			{
+				isExpandingX = false;
+			}
+		}
+
+		bool isExpandingY = true;
+		if(scale_.y >= goalScale.y && isExpandingY == true)
+		{
+			scale_.y -= animationSpeed;
+			if(scale_.x <= goalScale.x)
+			{
+				isExpandingY = false;
+			}
+		}
+		else if(scale_.y < goalScale.y && isExpandingY == true)
+		{
+			scale_.y += animationSpeed;
+			if(scale_.y >= goalScale.y)
+			{
+				isExpandingY = false;
+			}
+		}
+
+		bool isExpandingZ = true;
+		if(scale_.z <= goalScale.z && isExpandingZ == true)
+		{
+			scale_.z += animationSpeed;
+			if(scale_.z >= goalScale.z)
+			{
+				isExpandingZ = false;
+			}
+		}
+		else if(scale_.z > goalScale.z && isExpandingZ == true)
+		{
+			scale_.z -= animationSpeed;
+			if(scale_.z <= goalScale.z)
+			{
+				isExpandingZ = false;
+			}
+		}
+
+		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
+		{
+			isDuringAnimation_ = false;
+		}
 	}
 }
 
