@@ -79,6 +79,7 @@ void Player::Initialize()
 	isReturnedSizeAnime_ = false;
 	isReadyToJump_ = false;
 	isDuringAnimation_ = false;
+	returnScaleSpeed_ = 0.15f;
 
 	fallVec_ = { 0.0f,0.0f,0.0f };
 	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
@@ -143,13 +144,21 @@ void Player::Update(Camera* camera)
 
 		Object3d::SetColorFlag(colorFlag_);
 
-		if(isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false)
+		if(isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
 		{
-			ColorChangeAnimation();
+			//ColorChangeAnimation();
+			Animation(isStartChangeColorAnime_, kChangeColorScaleSpeed_, kChangeColorScale_);
+			if(isDuringAnimation_ == false)
+			{
+				//isExpandedAnime_ = false;
+				isReturnedSizeAnime_ = true;
+				returnScaleSpeed_ = 0.075f;
+				isStartChangeColorAnime_ = false;
+			}
 		}
 		else
 		{
-			if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false)
+			if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
 			{
 				scale_ = { 1.0f,1.0f,1.0f };
 				//scale_ = kMoveScale;
@@ -206,12 +215,12 @@ void Player::Update(Camera* camera)
 			/*onGround_ = false;
 			isLanded_ = false;*/
 			isDentedAnime_ = true;
-			onGround_ = false;
+			/*onGround_ = false;
 			isLanded_ = false;
 			const float jumpVYFist = 0.4f;
 			fallVec_ = { 0,jumpVYFist,0 };
 			jumpCount -= 1;
-			isReadyToJump_ = false;
+			isReadyToJump_ = false;*/
 
 		}
 		else if(gamePad_->GetButtonA() && jumpCount > 0)
@@ -377,15 +386,37 @@ void Player::Update(Camera* camera)
 	}
 	else if(isReturnedSizeAnime_ == true)
 	{
-		Animation(isReturnedSizeAnime_,kReturnScaleSpeed_,kMoveScale_);
+		Animation(isReturnedSizeAnime_, returnScaleSpeed_,kMoveScale_);
 		if(isDuringAnimation_ == false)
 		{
 			isReturnedSizeAnime_ = false;
+			returnScaleSpeed_ = 0.15f;
 		}
 	}
 	else if(isDentedAnime_ == true)
 	{
 		Animation(isDentedAnime_, kDentSpeed_, kDentedScale_);
+		if(isDuringAnimation_ == false)
+		{
+			isExpandedAnime_ = true;
+			isDentedAnime_ = false;
+			onGround_ = false;
+			isLanded_ = false;
+			const float jumpVYFist = 0.4f;
+			fallVec_ = { 0,jumpVYFist,0 };
+			jumpCount -= 1;
+			isReadyToJump_ = false;
+		}
+	}
+	else if(isExpandedAnime_ == true)
+	{
+		Animation(isExpandedAnime_, kEpandSpeed_, kExpandScale_);
+		if(isDuringAnimation_ == false)
+		{
+			isExpandedAnime_ = false;
+			isReturnedSizeAnime_ = true;
+			returnScaleSpeed_ = 0.15f;
+		}
 	}
 
 	Object3d::Update(camera);
@@ -604,195 +635,195 @@ void Player::ColorChangeAnimation()
 	}
 }
 
-void Player::LandScaleAnimation()
-{
-	/*if(isStartedLandAnime_ == true)
-	{
-		bool isExpandingX = true;
-		if(scale_.x <= kMaxLandMomentScale_.x)
-		{
-			scale_.x += kLandScaleSpeed_;
-		}
-		else
-		{
-			isExpandingX = false;
-		}
-
-		bool isExpandingY = true;
-		if(scale_.y >= kMaxLandMomentScale_.y)
-		{
-			scale_.y -= kLandScaleSpeed_;
-		}
-		else
-		{
-			isExpandingY = false;
-		}
-
-		bool isExpandingZ = true;
-		if(scale_.z <= kMaxLandMomentScale_.z)
-		{
-			scale_.z += kLandScaleSpeed_;
-		}
-		else
-		{
-			isExpandingZ = false;
-		}
-
-		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
-		{
-			isStartedLandAnime_ = false;
-			isReturnedSizeAnime_ = true;
-		}
-
-		Object3d::SetScale(scale_);
-	}*/
-
-	if(isStartedLandAnime_ == true)
-	{
-		Animation(isStartedLandAnime_, kLandScaleSpeed_, kMaxLandMomentScale_);	
-	}
-}
-
-void Player::ReturnMoveAnimation()
-{
-	if(isReturnedSizeAnime_ == true)
-	{
-		bool isExpandingX = true;
-		if(scale_.x <= kMoveScale_.x && isExpandingX == true)
-		{
-			scale_.x += kReturnScaleSpeed_;
-			if(scale_.x >= kMoveScale_.x)
-			{
-				isExpandingX = false;
-			}
-		}
-		else if(scale_.x > kMoveScale_.x && isExpandingX == true)
-		{
-			scale_.x -= kReturnScaleSpeed_;
-			if(scale_.x <= kMoveScale_.x)
-			{
-				isExpandingX = false;
-			}
-		}
-
-		bool isExpandingY = true;
-		if(scale_.y >= kMoveScale_.y && isExpandingY == true)
-		{
-			scale_.y -= kReturnScaleSpeed_;
-			if(scale_.x <= kMoveScale_.x)
-			{
-				isExpandingY = false;
-			}
-		}
-		else if(scale_.y < kMoveScale_.y && isExpandingY == true)
-		{
-			scale_.y += kReturnScaleSpeed_;
-			if(scale_.y >= kMoveScale_.y)
-			{
-				isExpandingY = false;
-			}
-		}
-		
-		bool isExpandingZ = true;
-		if(scale_.z <= kMoveScale_.z && isExpandingZ == true)
-		{
-			scale_.z += kReturnScaleSpeed_;
-			if(scale_.z >= kMoveScale_.z)
-			{
-				isExpandingZ = false;
-			}
-		}
-		else if(scale_.z > kMoveScale_.z && isExpandingZ == true)
-		{
-			scale_.z -= kReturnScaleSpeed_;
-			if(scale_.z <= kMoveScale_.z)
-			{
-				isExpandingZ = false;
-			}
-		}
-
-		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
-		{
-			isReturnedSizeAnime_ = false;
-		}
-
-		Object3d::SetScale(scale_);
-	}
-}
-
-void Player::ReadyToJumpAnimation()
-{
-	if(isDentedAnime_ == true)
-	{
-		bool isExpandingX = true;
-		if(scale_.x <= kDentedScale_.x && isExpandingX == true)
-		{
-			scale_.x += kDentSpeed_;
-			if(scale_.x >= kDentedScale_.x)
-			{
-				isExpandingX = false;
-			}
-		}
-		else if(scale_.x > kDentedScale_.x && isExpandingX == true)
-		{
-			scale_.x -= kDentSpeed_;
-			if(scale_.x <= kDentedScale_.x)
-			{
-				isExpandingX = false;
-			}
-		}
-
-		bool isExpandingY = true;
-		if(scale_.y >= kDentedScale_.y && isExpandingY == true)
-		{
-			scale_.y -= kDentSpeed_;
-			if(scale_.x <= kDentedScale_.x)
-			{
-				isExpandingY = false;
-			}
-		}
-		else if(scale_.y < kDentedScale_.y && isExpandingY == true)
-		{
-			scale_.y += kDentSpeed_;
-			if(scale_.y >= kDentedScale_.y)
-			{
-				isExpandingY = false;
-			}
-		}
-
-		bool isExpandingZ = true;
-		if(scale_.z <= kDentedScale_.z && isExpandingZ == true)
-		{
-			scale_.z += kDentSpeed_;
-			if(scale_.z >= kDentedScale_.z)
-			{
-				isExpandingZ = false;
-			}
-		}
-		else if(scale_.z > kDentedScale_.z && isExpandingZ == true)
-		{
-			scale_.z -= kDentSpeed_;
-			if(scale_.z <= kDentedScale_.z)
-			{
-				isExpandingZ = false;
-			}
-		}
-
-		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
-		{
-			isDentedAnime_ = false;
-			isReadyToJump_ = true;
-			isReturnedSizeAnime_ = true;
-		}
-	}
-
-}
+//void Player::LandScaleAnimation()
+//{
+//	/*if(isStartedLandAnime_ == true)
+//	{
+//		bool isExpandingX = true;
+//		if(scale_.x <= kMaxLandMomentScale_.x)
+//		{
+//			scale_.x += kLandScaleSpeed_;
+//		}
+//		else
+//		{
+//			isExpandingX = false;
+//		}
+//
+//		bool isExpandingY = true;
+//		if(scale_.y >= kMaxLandMomentScale_.y)
+//		{
+//			scale_.y -= kLandScaleSpeed_;
+//		}
+//		else
+//		{
+//			isExpandingY = false;
+//		}
+//
+//		bool isExpandingZ = true;
+//		if(scale_.z <= kMaxLandMomentScale_.z)
+//		{
+//			scale_.z += kLandScaleSpeed_;
+//		}
+//		else
+//		{
+//			isExpandingZ = false;
+//		}
+//
+//		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
+//		{
+//			isStartedLandAnime_ = false;
+//			isReturnedSizeAnime_ = true;
+//		}
+//
+//		Object3d::SetScale(scale_);
+//	}*/
+//
+//	if(isStartedLandAnime_ == true)
+//	{
+//		Animation(isStartedLandAnime_, kLandScaleSpeed_, kMaxLandMomentScale_);	
+//	}
+//}
+//
+//void Player::ReturnMoveAnimation()
+//{
+//	if(isReturnedSizeAnime_ == true)
+//	{
+//		bool isExpandingX = true;
+//		if(scale_.x <= kMoveScale_.x && isExpandingX == true)
+//		{
+//			scale_.x += kReturnScaleSpeed_;
+//			if(scale_.x >= kMoveScale_.x)
+//			{
+//				isExpandingX = false;
+//			}
+//		}
+//		else if(scale_.x > kMoveScale_.x && isExpandingX == true)
+//		{
+//			scale_.x -= kReturnScaleSpeed_;
+//			if(scale_.x <= kMoveScale_.x)
+//			{
+//				isExpandingX = false;
+//			}
+//		}
+//
+//		bool isExpandingY = true;
+//		if(scale_.y >= kMoveScale_.y && isExpandingY == true)
+//		{
+//			scale_.y -= kReturnScaleSpeed_;
+//			if(scale_.x <= kMoveScale_.x)
+//			{
+//				isExpandingY = false;
+//			}
+//		}
+//		else if(scale_.y < kMoveScale_.y && isExpandingY == true)
+//		{
+//			scale_.y += kReturnScaleSpeed_;
+//			if(scale_.y >= kMoveScale_.y)
+//			{
+//				isExpandingY = false;
+//			}
+//		}
+//		
+//		bool isExpandingZ = true;
+//		if(scale_.z <= kMoveScale_.z && isExpandingZ == true)
+//		{
+//			scale_.z += kReturnScaleSpeed_;
+//			if(scale_.z >= kMoveScale_.z)
+//			{
+//				isExpandingZ = false;
+//			}
+//		}
+//		else if(scale_.z > kMoveScale_.z && isExpandingZ == true)
+//		{
+//			scale_.z -= kReturnScaleSpeed_;
+//			if(scale_.z <= kMoveScale_.z)
+//			{
+//				isExpandingZ = false;
+//			}
+//		}
+//
+//		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
+//		{
+//			isReturnedSizeAnime_ = false;
+//		}
+//
+//		Object3d::SetScale(scale_);
+//	}
+//}
+//
+//void Player::ReadyToJumpAnimation()
+//{
+//	if(isDentedAnime_ == true)
+//	{
+//		bool isExpandingX = true;
+//		if(scale_.x <= kDentedScale_.x && isExpandingX == true)
+//		{
+//			scale_.x += kDentSpeed_;
+//			if(scale_.x >= kDentedScale_.x)
+//			{
+//				isExpandingX = false;
+//			}
+//		}
+//		else if(scale_.x > kDentedScale_.x && isExpandingX == true)
+//		{
+//			scale_.x -= kDentSpeed_;
+//			if(scale_.x <= kDentedScale_.x)
+//			{
+//				isExpandingX = false;
+//			}
+//		}
+//
+//		bool isExpandingY = true;
+//		if(scale_.y >= kDentedScale_.y && isExpandingY == true)
+//		{
+//			scale_.y -= kDentSpeed_;
+//			if(scale_.x <= kDentedScale_.x)
+//			{
+//				isExpandingY = false;
+//			}
+//		}
+//		else if(scale_.y < kDentedScale_.y && isExpandingY == true)
+//		{
+//			scale_.y += kDentSpeed_;
+//			if(scale_.y >= kDentedScale_.y)
+//			{
+//				isExpandingY = false;
+//			}
+//		}
+//
+//		bool isExpandingZ = true;
+//		if(scale_.z <= kDentedScale_.z && isExpandingZ == true)
+//		{
+//			scale_.z += kDentSpeed_;
+//			if(scale_.z >= kDentedScale_.z)
+//			{
+//				isExpandingZ = false;
+//			}
+//		}
+//		else if(scale_.z > kDentedScale_.z && isExpandingZ == true)
+//		{
+//			scale_.z -= kDentSpeed_;
+//			if(scale_.z <= kDentedScale_.z)
+//			{
+//				isExpandingZ = false;
+//			}
+//		}
+//
+//		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
+//		{
+//			isDentedAnime_ = false;
+//			isReadyToJump_ = true;
+//			isReturnedSizeAnime_ = true;
+//		}
+//	}
+//
+//}
 
 void Player::Animation(bool isStartedAnime, float animationSpeed, Vector3 goalScale)
 {
 	if(isStartedAnime == true)
 	{
-		//アニメーションフラグをONにする
+		//アニメーション中フラグをONにする
 		isDuringAnimation_ = true;
 
 		bool isExpandingX = true;
