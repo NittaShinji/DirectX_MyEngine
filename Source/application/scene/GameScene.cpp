@@ -174,7 +174,7 @@ void GameScene::Update()
 			
 			ObjParticleManager::GetInstance()->ParticleReset(gameCamera_.get());
 			stage_->Reset("Stage0.json");
-			gameCamera_->Reset();
+			gameCamera_->Initialize();
 			player_->Reset(gameCamera_.get());
 			isReset_ = false;
 			deadParticle_->SetCanReset(false);
@@ -227,7 +227,7 @@ void GameScene::Update()
 
 	lightGroup_->Update();
 
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(),player_->GetIsStoped(), player_->GetTotalAxcell(),player_->GetTransform(),player_->GetInitPos(),player_->GetNormalAxcellZ());
+	gameCamera_->Update(player_->GetIsMoving(),player_->GetTransform(),player_->GetInitPos());
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());

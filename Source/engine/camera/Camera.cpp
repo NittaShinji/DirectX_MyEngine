@@ -37,16 +37,14 @@ void Camera::UpdateViewMatrix()
 	Vector3 vecTarget = target_;
 	Vector3 vecUp = up_;
 
-	//上方向ベクトル
-
-	//カメラZ軸(視線方向)
-	Vector3 cameraAxisZ = Vector3Subtract(vecTarget, vecEye);
-
 	//0ベクトルだと向きが定まらないので除外
-	assert(!Vector3Equal(cameraAxisZ, Vector3Zero()));
+	assert(!Vector3Equal(vecEye, vecTarget));
 	//assert(std::isinf(cameraAxisZ));
 	assert(!Vector3Equal(vecUp, Vector3Zero()));
 	//assert(std::isinf(vecUp));
+
+	//カメラZ軸(視線方向)
+	Vector3 cameraAxisZ = Vector3Subtract(vecTarget, vecEye);
 
 	//ベクトルを正規化
 	cameraAxisZ.Normalize();

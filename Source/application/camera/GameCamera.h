@@ -8,7 +8,7 @@ public:
 
 	void Initialize() override;
 
-	void Update(bool isPlayerMoving, bool isPlayerDead, bool isPlayerStoped, Vector3 playerAxcell_, Vector3 playerPos, Vector3 playerInitPos, float playerNormalAxcell);
+	void Update(bool isPlayerMoving,Vector3 playerPos, Vector3 playerInitPos);
 
 	void Reset();
 
@@ -24,8 +24,8 @@ private:
 	const Vector3 initcameraTarget = { 0,5,5 };
 	const Vector3 initcameraUp = { 0,1,0 };
 
-	const Vector3 initEyeDistance = { 0.0f,0.0f,12.0f };
-	const Vector3 initTargetDistance = { 0,0,12.0f };
+	const Vector3 initEyeDistance_ = { 0.0f,0.0f,12.0f };
+	const Vector3 initTargetDistance_ = { 0,0,12.0f };
 
 	//カメラの加速値
 	//Vector3 totalAxcellSpeed_;

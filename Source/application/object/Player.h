@@ -174,7 +174,7 @@ private:
 	const Vector3 kMaxJumpMomentScale_ = { 1.0f,0.8f,1.2f };
 	const Vector3 kMaxLandMomentScale_ = { 2.0f,0.5f,2.0f };
 	const Vector3 kMoveScale_ = {1.0f,1.0f,1.0f};
-	const Vector3 kDentedScale_ = {2.0f,0.4f,2.0f};
+	const Vector3 kDentedScale_ = {1.8f,0.4f,1.8f};
 	const Vector3 kExpandScale_ = {0.4f,1.5f,0.4f};
 	const Vector3 kChangeColorScale_ = {1.3f,1.3f,1.3f};
 
