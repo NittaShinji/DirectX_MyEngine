@@ -49,7 +49,7 @@ void Player::Initialize()
 	LandEasing_ = { 60.0f,0.0f,0.0f,0.0f };
 */
 
-	//座標情報を設定
+//座標情報を設定
 	SetTransform(transform_);
 	SetRotation(rotation_);
 	SetScale(scale_);
@@ -80,11 +80,13 @@ void Player::Initialize()
 	isReadyToJump_ = false;
 	isDuringAnimation_ = false;
 	isPushOut_ = false;
+	isRightAxcell_ = false;
 	returnScaleSpeed_ = 0.15f;
 
 	fallVec_ = { 0.0f,0.0f,0.0f };
 	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
 	totalAxcell_ = { 0.0f,0.0f,0.0f };
+	rightAxcellVec_ = Vector3Zero();
 
 	attributeColor_ = Attribute::pink;
 	colorFlag_ = true;
@@ -298,7 +300,7 @@ void Player::Update(Camera* camera)
 			else
 			{
 				isStoped_ = false;
-			}	
+			}
 		}
 
 		//コライダー更新
@@ -316,7 +318,7 @@ void Player::Update(Camera* camera)
 		if(onGround_)
 		{
 			GroundRotation();
-			
+
 			//スムーズに坂を下る為の吸着距離
 			const float adsDistance = 0.2f;
 			//接地を維持
@@ -352,7 +354,7 @@ void Player::Update(Camera* camera)
 				Object3d::SetTransform(transform_);
 			}
 		}
-		
+
 		//落下処理
 		if(transform_.y <= deadLine_)
 		{
@@ -376,7 +378,7 @@ void Player::Update(Camera* camera)
 	//元のサイズに戻るアニメーション
 	else if(isReturnedSizeAnime_ == true)
 	{
-		Animation(isReturnedSizeAnime_, returnScaleSpeed_,kMoveScale_);
+		Animation(isReturnedSizeAnime_, returnScaleSpeed_, kMoveScale_);
 		if(isDuringAnimation_ == false)
 		{
 			isReturnedSizeAnime_ = false;
@@ -481,25 +483,35 @@ void Player::AccelerateChangeColor()
 				axcellTimer_ = kAxcellTime_;
 			}
 		}
+
 	}
 }
+
+
+void Player::EasingInitialize()
+{
+	axcellEasing_.time = 0;
+}
+
 
 void Player::Accelerate()
 {
 	//横向き加速度　
-	const float rightAcc = 0.04f;
-	const float rightVZMin = 0.7f;
+	/*const float rightAcc = 0.04f;
+	const float rightVZMin = 0.7f;*/
 
 	if(isRightAxcell_ == true)
 	{
-		axcellTimer_--;
-		if(axcellTimer_ > 0)
+		axcellEasing_.time++;
+		if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
 		{
-			rightAxcellVec_.z = max(rightAxcellVec_.z + rightAcc, rightVZMin);
+			//rightAxcellVec_.z = max(rightAxcellVec_.z + rightAcc, rightVZMin);
+			rightAxcellVec_.z = PlayEaseOutQuint(axcellEasing_);
 		}
 		else
 		{
 			rightAxcellVec_.z = 0;
+			axcellEasing_.time = 0;
 			isRightAxcell_ = false;
 		}
 	}
@@ -537,6 +549,9 @@ void Player::Reset(Camera* camera)
 	isStartedJumpAnimation_ = false;
 	isReadyToJump_ = false;
 	isDentedAnime_ = false;
+	isRightAxcell_ = false;
+	axcellEasing_.time = 0;
+	rightAxcellVec_ = Vector3Zero();
 
 	attributeColor_ = Attribute::pink;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
@@ -570,7 +585,7 @@ void Player::JumpRotation()
 	if(isJumpRotate_ == true)
 	{
 		float angle = ToRadian(360.0f);
-		rotation_.x -= PlayEaseIn(rotateXTimer_, 0.0f, angle, kRotateXTime_);
+		rotation_.x -= PlayEaseIn(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
 		if(rotateXTimer_ >= 0)
 		{

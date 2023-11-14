@@ -96,8 +96,8 @@ void GameCamera::GoalAnimation()
 	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
 	sceneAnimationVec_.x += easeOutQuint(x);
 
-	eye_.x = PlayEaseIn(sceneAnimeTimer_, 9.8f, 21.0f, kSceneAnimeTime_);
-	eye_.y = PlayEaseIn(sceneAnimeTimer_, 4.1f, 3.4f, kSceneAnimeTime_);
-	eye_.z = PlayEaseIn(sceneAnimeTimer_, 712.0f, -12.0f, kSceneAnimeTime_);
+	eye_.x = PlayEaseIn(9.8f, 21.0f, sceneAnimeTimer_, kSceneAnimeTime_);
+	eye_.y = PlayEaseIn(4.1f, 3.4f, sceneAnimeTimer_, kSceneAnimeTime_);
+	eye_.z = PlayEaseIn(712.0f, -12.0f, sceneAnimeTimer_, kSceneAnimeTime_);
 
 }

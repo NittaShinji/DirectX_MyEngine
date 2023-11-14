@@ -1,21 +1,25 @@
 #pragma once
 #include "Vector3.h"
 
+/// <summary>
+/// イージング情報
+/// </summary>
 typedef struct EasingInfo
 {
-	const float totalTime;
-	float time;
 	float startPos;
 	float endDistance;
+	float time;
+	const float totalTime;
 	
 } EasingInfo;
 
 float PlayEaseIn(EasingInfo easingInfo);
-float PlayEaseIn(float time, float startPos, float endDistance, float totalTime);
+float PlayEaseIn(float startPos, float endDistance, float time, float totalTime);
 float easeInCubic(float x);
 
-float PlayEaseOutQuint(float time, float startPos, float endDistance, float totalTime);
+float PlayEaseOutQuint(EasingInfo easingInfo);
+float PlayEaseOutQuint(float startPos, float endDistance, float time, float totalTime);
 float easeOutQuint(float x);
 
-float PlayEaseOutBouce(float time, float startPos, float endDistance, float totalTime);
+float PlayEaseOutBouce(float startPos, float endDistance, float time, float totalTime);
 float easeOutBouce(float x);

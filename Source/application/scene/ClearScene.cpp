@@ -76,7 +76,7 @@ void ClearScene::Update()
 	if(rotate_ <= ToRadian(360.0f))
 	{
 		float angle = ToRadian(360.0f);
-		rotate_ -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
+		rotate_ -= PlayEaseIn(0.0f, angle, rotateTimer_, kRotateTime_);
 	}
 
 	if(rotateTimer_ >= 0)

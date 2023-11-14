@@ -39,14 +39,7 @@ public:
 
 	void ColorChangeAnimation();
 
-	//着地時にプレイヤーを潰れたスケールに変化させるアニメーション
-	//void LandScaleAnimation();
-
-	//通常時のスケールに戻るアニメーション
-	//void ReturnMoveAnimation();
-
-	//ジャンプ時に少し縮むアニメーション
-	//void ReadyToJumpAnimation();
+	void EasingInitialize();
 
 	void Animation(bool isStartedAnime,float animationSpeed, Vector3 goalScale);
 
@@ -187,8 +180,10 @@ private:
 
 	float returnScaleSpeed_ = 0.15f;
 
-	EasingInfo jumpEasing_ = { 60.0f, 0.0f, 0.0f, 0.0f };
-	EasingInfo LandEasing_ = { 60.0f, 0.0f, 0.0f, 0.0f };
+
+	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
+	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
+	EasingInfo axcellEasing_ = { 0.2f, 0.0f, 0.0f, 25.0f };
 	
 	/*EasingInfo jumpEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);
 	EasingInfo LandEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);*/

@@ -123,7 +123,7 @@ void TitleScene::Update()
 	if(isChangeScene_ == false)
 	{
 		float angle = ToRadian(360.0f);
-		sphereRotate.y -= PlayEaseIn(rotateTimer_, 0.0f, angle, kRotateTime_);
+		sphereRotate.y -= PlayEaseIn(0.0f, angle, rotateTimer_, kRotateTime_);
 		titleSphere_->SetRotation(sphereRotate);
 	}
 
@@ -154,7 +154,7 @@ void TitleScene::Update()
 
 	if(isJump_ == true && sceneAnimeTimer_ == 0)
 	{
-		spherPos_.y += PlayEaseIn(moveTimer_, 0.0, 1.0, kActionTime_);
+		spherPos_.y += PlayEaseIn(0.0, 1.0, moveTimer_, kActionTime_);
 		titleSphere_->SetTransform(spherPos_);
 	}
 
