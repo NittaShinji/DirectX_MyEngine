@@ -110,60 +110,7 @@ void Player::Update(Camera* camera)
 
 	if(isMoving_ == true)
 	{
-		//色変え処理
-		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
-		{
-			isStartChangeColorAnime_ = true;
-
-			//属性の変更
-			if(attributeColor_ == Attribute::pink)
-			{
-				attributeColor_ = Attribute::yellow;
-			}
-			else if(attributeColor_ == Attribute::yellow)
-			{
-				attributeColor_ = Attribute::pink;
-			}
-			else
-			{
-				attributeColor_ = Attribute::black;
-			}
-
-			colorFlag_ = true;
-
-			if(attributeColor_ == Attribute::pink)
-			{
-				SetColor(Vector3(1.0f, 0.4f, 0.7f));
-			}
-			else if(attributeColor_ == Attribute::yellow)
-			{
-				SetColor(Vector3(1.0f, 0.469f, 0.0f));
-			}
-			else
-			{
-				SetColor(Vector3(0.0f, 0.0f, 0.0f));
-			}
-		}
-
-		Object3d::SetColorFlag(colorFlag_);
-
-		if(isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
-		{
-			Animation(isStartChangeColorAnime_, kChangeColorScaleSpeed_, kChangeColorScale_);
-			if(isDuringAnimation_ == false)
-			{
-				isReturnedSizeAnime_ = true;
-				returnScaleSpeed_ = 0.075f;
-				isStartChangeColorAnime_ = false;
-			}
-		}
-		else
-		{
-			if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
-			{
-				scale_ = { 1.0f,1.0f,1.0f };
-			}
-		}
+		
 
 		//落下処理
 		if(!onGround_)
@@ -283,11 +230,15 @@ void Player::Update(Camera* camera)
 		PlayerQueryCallback callback(sphereCollider);
 
 		//球と地形の交差を全検索
-		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_LANDSHAPE);
+		//CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_LANDSHAPE);
+		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_PINK);
+		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_YELLOW);
+		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_BLACK);
+
 		//交差による排斥分動かす
 		if(onGround_ == false)
 		{
-			transform_.x += callback.move.x;
+			//transform_.x += callback.move.x;
 			transform_.y += callback.move.y;
 			transform_.z += callback.move.z;
 
@@ -322,7 +273,29 @@ void Player::Update(Camera* camera)
 			//スムーズに坂を下る為の吸着距離
 			const float adsDistance = 0.2f;
 			//接地を維持
-			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+			/*if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+			{
+				onGround_ = true;
+				isLanded_ = false;
+				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+				Object3d::SetTransform(transform_);
+			}*/
+
+			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+			{
+				onGround_ = true;
+				isLanded_ = false;
+				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+				Object3d::SetTransform(transform_);
+			}
+			else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+			{
+				onGround_ = true;
+				isLanded_ = false;
+				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+				Object3d::SetTransform(transform_);
+			}
+			else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_BLACK, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 			{
 				onGround_ = true;
 				isLanded_ = false;
@@ -341,7 +314,20 @@ void Player::Update(Camera* camera)
 		{
 			AccelerateChangeColor();
 
-			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
+			//if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
+			//{
+			//	//着地
+			//	isTouchUnderObject_ = false;
+			//	onGround_ = true;
+			//	isLanded_ = true;
+			//	isStartedLandAnime_ = true;
+			//	transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+			//	jumpCount = kMaxJumpNum;
+			//	//行列の更新など
+			//	Object3d::SetTransform(transform_);
+			//}
+
+			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 			{
 				//着地
 				isTouchUnderObject_ = false;
@@ -353,6 +339,31 @@ void Player::Update(Camera* camera)
 				//行列の更新など
 				Object3d::SetTransform(transform_);
 			}
+			else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 2.0f))
+			{
+				//着地
+				isTouchUnderObject_ = false;
+				onGround_ = true;
+				isLanded_ = true;
+				isStartedLandAnime_ = true;
+				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+				jumpCount = kMaxJumpNum;
+				//行列の更新など
+				Object3d::SetTransform(transform_);
+			}
+			else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_BLACK, &raycastHit, sphereCollider->GetRadius() * 2.0f))
+			{
+				//着地
+				isTouchUnderObject_ = false;
+				onGround_ = true;
+				isLanded_ = true;
+				isStartedLandAnime_ = true;
+				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
+				jumpCount = kMaxJumpNum;
+				//行列の更新など
+				Object3d::SetTransform(transform_);
+			}
+
 		}
 
 		//落下処理
@@ -361,6 +372,61 @@ void Player::Update(Camera* camera)
 			//Sound::GetInstance()->PlaySoundWave("playerDead.wav", false);
 			isDead_ = true;
 			isLanded_ = true;
+		}
+	}
+
+	//色変え処理
+	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+	{
+		isStartChangeColorAnime_ = true;
+
+		//属性の変更
+		if(attributeColor_ == Attribute::pink)
+		{
+			attributeColor_ = Attribute::yellow;
+		}
+		else if(attributeColor_ == Attribute::yellow)
+		{
+			attributeColor_ = Attribute::pink;
+		}
+		else
+		{
+			attributeColor_ = Attribute::black;
+		}
+
+		colorFlag_ = true;
+
+		if(attributeColor_ == Attribute::pink)
+		{
+			SetColor(Vector3(1.0f, 0.4f, 0.7f));
+		}
+		else if(attributeColor_ == Attribute::yellow)
+		{
+			SetColor(Vector3(1.0f, 0.469f, 0.0f));
+		}
+		else
+		{
+			SetColor(Vector3(0.0f, 0.0f, 0.0f));
+		}
+	}
+
+	Object3d::SetColorFlag(colorFlag_);
+
+	if(isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
+	{
+		Animation(isStartChangeColorAnime_, kChangeColorScaleSpeed_, kChangeColorScale_);
+		if(isDuringAnimation_ == false)
+		{
+			isReturnedSizeAnime_ = true;
+			returnScaleSpeed_ = 0.075f;
+			isStartChangeColorAnime_ = false;
+		}
+	}
+	else
+	{
+		if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
+		{
+			scale_ = { 1.0f,1.0f,1.0f };
 		}
 	}
 
@@ -463,28 +529,94 @@ void Player::AccelerateChangeColor()
 	Ray ray;
 	ray.start = sphereCollider->center;
 	//下方向への方向を球1個分ずらす
-	ray.start.y -= sphereCollider->GetRadius() + sphereCollider->GetRadius() / 2;
+	ray.start.y -= sphereCollider->GetRadius();
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
 	//スムーズに坂を下る為の吸着距離
-	const float adsDistance = 0.2f;
+	//const float adsDistance = 0.2f;
 
-	//地面と衝突しているかどうか
-	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+	////地面と衝突しているかどうか
+	//if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
+	//{
+	//	//色を変える
+	//	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+	//	{
+	//		//加速していなかったら加速フラグを立てる
+	//		if(isRightAxcell_ == false)
+	//		{
+	//			isRightAxcell_ = true;
+	//			axcellTimer_ = kAxcellTime_;
+	//		}
+	//	}
+	//}
+
+	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 3.0f))
 	{
 		//色を変える
 		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
-			//加速していなかったら加速フラグを立てる
-			if(isRightAxcell_ == false)
+			if(attributeColor_ == yellow)
 			{
-				isRightAxcell_ = true;
-				axcellTimer_ = kAxcellTime_;
+
+				//加速していなかったら加速フラグを立てる
+				if(isRightAxcell_ == false)
+				{
+					isRightAxcell_ = true;
+					axcellTimer_ = kAxcellTime_;
+				}
 			}
 		}
-
 	}
+	else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 3.0f))
+	{
+		//色を変える
+		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+		{
+			if(attributeColor_ == pink)
+			{
+				//加速していなかったら加速フラグを立てる
+				if(isRightAxcell_ == false)
+				{
+					isRightAxcell_ = true;
+					axcellTimer_ = kAxcellTime_;
+				}
+			}
+		}
+	}
+
+	//if(attributeColor_ == yellow)
+	//{
+	//	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 3.0f))
+	//	{
+	//		//色を変える
+	//		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+	//		{
+	//			//加速していなかったら加速フラグを立てる
+	//			if(isRightAxcell_ == false)
+	//			{
+	//				isRightAxcell_ = true;
+	//				axcellTimer_ = kAxcellTime_;
+	//			}
+	//		}
+	//	}
+	//}
+	//else if(attributeColor_ == pink)
+	//{
+	//	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 3.0f))
+	//	{
+	//		//色を変える
+	//		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+	//		{
+	//			//加速していなかったら加速フラグを立てる
+	//			if(isRightAxcell_ == false)
+	//			{
+	//				isRightAxcell_ = true;
+	//				axcellTimer_ = kAxcellTime_;
+	//			}
+	//		}
+	//	}
+	//}
 }
 
 

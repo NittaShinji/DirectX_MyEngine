@@ -1,5 +1,6 @@
 #include "Stage.h"
 #include "HitWall.h"
+#include "CollisionAttribute.h"
 #include <string>
 
 void Stage::Initialize(const std::string& fileName)
@@ -20,7 +21,24 @@ void Stage::Initialize(const std::string& fileName)
 		{
 			//3Dオブジェクトの生成
 			std::unique_ptr<TouchableObject> newObject = nullptr;
-			newObject = TouchableObject::Create(objectData.fileName);
+			if(objectData.attribute == "Pink")
+			{
+				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_PINK);
+			}
+			else if(objectData.attribute == "Yellow")
+			{
+				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_YELLOW);
+			}
+			else if(objectData.attribute == "Goal")
+			{
+				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+			}
+			else
+			{
+				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_BLACK);
+			}
+
+
 			
 			//座標
 			Vector3 pos;

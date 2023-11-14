@@ -12,7 +12,7 @@ public:
 	/// </summary>
 	/// <param name="model"></param>
 	/// <returns></returns>
-	static std::unique_ptr<TouchableObject> Create(const std::string& path);
+	static std::unique_ptr<TouchableObject> Create(const std::string& path,const unsigned short coliderAttribute);
 
 	/// <summary>
 	/// 初期化

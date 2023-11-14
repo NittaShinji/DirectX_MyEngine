@@ -183,7 +183,7 @@ private:
 
 	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
 	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
-	EasingInfo axcellEasing_ = { 0.2f, 0.0f, 0.0f, 25.0f };
+	EasingInfo axcellEasing_ = { 0.5f, 0.0f, 0.0f, 25.0f };
 	
 	/*EasingInfo jumpEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);
 	EasingInfo LandEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);*/
