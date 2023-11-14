@@ -167,6 +167,10 @@ private:
 	//ぶつかってストップしているか
 	bool isStoped_;
 
+	//押し出されたかどうか
+	bool isPushOut_;
+
+
 	bool isStartedJumpAnimation_;
 	int32_t kJumpAnimationTime_ = 10;
 	int32_t jumpAnimationTimer_ = kJumpAnimationTime_;

@@ -79,6 +79,7 @@ void Player::Initialize()
 	isReturnedSizeAnime_ = false;
 	isReadyToJump_ = false;
 	isDuringAnimation_ = false;
+	isPushOut_ = false;
 	returnScaleSpeed_ = 0.15f;
 
 	fallVec_ = { 0.0f,0.0f,0.0f };
@@ -101,6 +102,15 @@ void Player::Update(Camera* camera)
 	totalAxcell_ = { 0.0f,0.0f,0.0f };
 	if(isMoving_ == true)
 	{
+		/*if(isStoped_ == false)
+		{
+			totalAxcell_.z += kMoveAxcellZ_;
+			Accelerate();
+		}
+		else
+		{
+			totalAxcell_.z = 0;
+		}*/
 		totalAxcell_.z += kMoveAxcellZ_;
 		Accelerate();
 	}
@@ -298,13 +308,19 @@ void Player::Update(Camera* camera)
 		//交差による排斥分動かす
 		if(onGround_ == false)
 		{
+			transform_.x += callback.move.x;
+			transform_.y += callback.move.y;
+			transform_.z += callback.move.z;
+			
 			position_.x += callback.move.x;
 			position_.y += callback.move.y;
 			position_.z += callback.move.z;
+
 			//押し出し時
 			if(callback.move.z < 0)
 			{
 				isStoped_ = true;
+				//isPushOut_ = true;
 			}
 			else
 			{
