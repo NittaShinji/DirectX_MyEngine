@@ -56,10 +56,6 @@ private:
 
 	//初期位置
 	const Vector3 kPlayerInitPos_ = { 0.0f,2.0f,2.0f };
-	//位置
-	Vector3 position_;
-	Vector3 rotation_ = { 0,0,0 };
-	Vector3 scale_ = { 1,1,1 };
 
 	Vector3 move = { 0,0,0 };
 
@@ -217,7 +213,6 @@ public:
 	bool GetIsFinish() { return isfinish_; }
 	bool GetIsDead() { return isDead_; }
 	bool GetIsLanded() { return isLanded_; }
-	Vector3 GetPos() { return position_; }
 	bool GetOnGround() { return onGround_; }
 	Attribute GetAttributeColor() { return attributeColor_; }
 	Vector3 GetPlayerInitPos() { return kPlayerInitPos_; }

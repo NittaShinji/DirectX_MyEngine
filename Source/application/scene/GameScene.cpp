@@ -227,7 +227,7 @@ void GameScene::Update()
 
 	lightGroup_->Update();
 
-	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(),player_->GetIsStoped(), player_->GetTotalAxcell(),player_->GetPos(),player_->GetInitPos(),player_->GetNormalAxcellZ());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetIsDead(),player_->GetIsStoped(), player_->GetTotalAxcell(),player_->GetTransform(),player_->GetInitPos(),player_->GetNormalAxcellZ());
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
@@ -238,14 +238,14 @@ void GameScene::Update()
 
 	if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
 	{
-		groundParticle_->Preparation(player_->GetPos(), player_->GetAttributeColor());
+		groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
 	}
 
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
-	landParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsLanded(),player_->GetAttributeColor());
+	landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(),player_->GetAttributeColor());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
-	deadParticle_->PopUpdate(gameCamera_.get(), player_->GetPos(), player_->GetIsDead(),player_->GetAttributeColor());
+	deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(),player_->GetAttributeColor());
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 
 #ifdef _DEBUG

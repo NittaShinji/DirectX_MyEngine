@@ -121,9 +121,9 @@ void TutorialScene::Update()
 	bButtonSprite_->matUpdate();
 
 
-	playerPosX = player_->GetPos().x;
-	playerPosY = player_->GetPos().y;
-	playerPosZ = player_->GetPos().z;
+	playerPosX = player_->GetTransform().x;
+	playerPosY = player_->GetTransform().y;
+	playerPosZ = player_->GetTransform().z;
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -176,8 +176,8 @@ void TutorialScene::Update()
 			const float md_pos = 2.0f;
 			Vector3 pos{};
 			pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
-			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f + player_->GetPos().y - 1.0f;
-			pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetPos().z;
+			pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 10.0f + player_->GetTransform().y - 1.0f;
+			pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + player_->GetTransform().z;
 			//x,y,z全て[-0.05f,+0.05f]でランダムに分布
 			const float md_vel = 0.1f;
 			Vector3 vel{};
