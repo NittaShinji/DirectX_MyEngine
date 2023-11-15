@@ -43,6 +43,8 @@ public:
 
 	void Animation(bool isStartedAnime,float animationSpeed, Vector3 goalScale);
 
+	void ResetRotation();
+
 private:
 
 	std::unique_ptr<Object3d> object_;
@@ -127,7 +129,7 @@ private:
 
 	//1周回る時間
 	const float kRotateXTime_ = 60.0f;
-	const float kRotateYTime_ = 360.0f;
+	const float kRotateYTime_ = 60.0f;
 
 	//回転時間
 	float rotateXTimer_ = kRotateXTime_;
@@ -170,15 +172,16 @@ private:
 	const Vector3 kDentedScale_ = {1.8f,0.4f,1.8f};
 	const Vector3 kExpandScale_ = {0.4f,1.5f,0.4f};
 	const Vector3 kChangeColorScale_ = {1.3f,1.3f,1.3f};
-
-
+	const Vector3 kResetRotation_ = { 0.0f,0.0f,0.0f };
+	
 	const float kLandScaleSpeed_ = 0.15f;
 	//const float kReturnScaleSpeed_ = 0.15f;
 	const float kDentSpeed_ = 0.15f;
 	const float kEpandSpeed_ = 0.15f;
 	const float kChangeColorScaleSpeed_ = 0.04f;
+	const float kRotaionSpeed_ = 0.1f;
 
-	float returnScaleSpeed_ = 0.15f;
+	float returnScaleSpeed_ = 0.10f;
 
 
 	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
@@ -198,6 +201,10 @@ private:
 
 	bool isScaleChanged_ = false;
 	bool isDuringAnimation_ = false;
+	bool isResettingRotation_ = false;
+
+	bool isGroundRotate_ = false;
+
 
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;

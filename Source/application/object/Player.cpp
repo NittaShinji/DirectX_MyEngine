@@ -115,6 +115,7 @@ void Player::Update(Camera* camera)
 		//落下処理
 		if(!onGround_)
 		{
+			isGroundRotate_ = false;
 			//下向き加速度　
 			const float fallAcc = -0.015f;
 			const float fallVYMin = -0.5f;
@@ -268,8 +269,9 @@ void Player::Update(Camera* camera)
 		//接地状態
 		if(onGround_)
 		{
+			isGroundRotate_ = true;
 			GroundRotation();
-
+			
 			//スムーズに坂を下る為の吸着距離
 			const float adsDistance = 0.2f;
 			//接地を維持
@@ -360,6 +362,7 @@ void Player::Update(Camera* camera)
 				isStartedLandAnime_ = true;
 				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				jumpCount = kMaxJumpNum;
+				//isResettingRotation_ = true;
 				//行列の更新など
 				Object3d::SetTransform(transform_);
 			}
@@ -478,6 +481,8 @@ void Player::Update(Camera* camera)
 			returnScaleSpeed_ = 0.15f;
 		}
 	}
+
+	ResetRotation();
 
 	Object3d::Update(camera);
 
@@ -684,6 +689,11 @@ void Player::Reset(Camera* camera)
 	isRightAxcell_ = false;
 	axcellEasing_.time = 0;
 	rightAxcellVec_ = Vector3Zero();
+	isJumpRotate_ = false;
+	isGroundRotate_ = false;
+	isResettingRotation_ = false;
+	rotateXTimer_ = kRotateXTime_;
+	rotateYTimer_ = kRotateYTime_;
 
 	attributeColor_ = Attribute::pink;
 	SetColor(Vector3(1.0f, 0.4f, 0.7f));
@@ -706,6 +716,10 @@ void Player::ImGuiUpdate()
 	ImGui::SliderFloat("PlayerScaleX", &scale_.x, 0.0f, 5.0f);
 	ImGui::SliderFloat("PlayerScaleY", &scale_.y, 0.0f, 5.0f);
 	ImGui::SliderFloat("PlayerScaleZ", &scale_.z, 0.0f, 5.0f);
+	ImGui::SliderFloat("PlayerRotationX", &rotation_.x, 0.0f, 2.0f);
+	ImGui::SliderFloat("PlayerRotationY", &rotation_.y, 0.0f, 2.0f);
+	ImGui::SliderFloat("PlayerRotationZ", &rotation_.z, 0.0f, 2.0f);
+
 	Object3d::SetScale(scale_);
 
 	ImGui::End();
@@ -716,6 +730,13 @@ void Player::JumpRotation()
 	//地面についていなければ二段ジャンプの時に回転する
 	if(isJumpRotate_ == true)
 	{
+		/*if(rotation_.y != 0.0f)
+		{
+			isResettingRotation_ = true;
+		}*/
+
+		//rotation_.y = 0.0f;
+
 		float angle = ToRadian(360.0f);
 		rotation_.x -= PlayEaseIn(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
@@ -727,6 +748,8 @@ void Player::JumpRotation()
 		{
 			rotateXTimer_ = kRotateXTime_;
 			isJumpRotate_ = false;
+			rotation_.x = 0.0f;
+			//isResettingRotation_ = true;
 		}
 	}
 
@@ -742,12 +765,44 @@ void Player::GroundRotation()
 		rotateYTimer_ -= rotateYVec;
 		float angle = ToRadian(rotateYTimer_);
 		rotation_.y -= angle;
+		isGroundRotate_ = true;
 	}
 	else
 	{
 		rotateYTimer_ = kRotateYTime_;
-		isJumpRotate_ = false;
+		//isJumpRotate_ = false;
+		isGroundRotate_ = false;
+		rotation_.y = 0.0f;
+		//isResettingRotation_ = true;
 	}
+
+	//if(isGroundRotate_ == true)
+	//{
+	//	if(rotation_.x != 0.0f)
+	//	{
+	//		isResettingRotation_ = true;
+	//	}
+
+	//	//rotation_.x = 0.0f;
+
+	//	float angle = ToRadian(360.0f);
+	//	rotation_.y -= PlayEaseIn(0.0f, angle, rotateYTimer_, kRotateYTime_);
+
+	//	if(rotateYTimer_ >= 0)
+	//	{
+	//		rotateYTimer_--;
+	//	}
+	//	else
+	//	{
+	//		rotateYTimer_ = kRotateYTime_;
+	//		isJumpRotate_ = false;
+	//		isGroundRotate_ = false;
+	//		rotation_.y = 0.0f;
+	//		//isResettingRotation_ = true;
+	//	}
+	//}
+
+
 	Object3d::SetRotation(rotation_);
 }
 
@@ -817,6 +872,78 @@ void Player::Animation(bool isStartedAnime, float animationSpeed, Vector3 goalSc
 			isDuringAnimation_ = false;
 		}
 	}
+}
+
+void Player::ResetRotation()
+{
+	if(isResettingRotation_ == true)
+	{
+		bool isResetRotationX = true;
+		if(isJumpRotate_ == false)
+		{
+			if(rotation_.x <= kResetRotation_.x && isResetRotationX == true)
+			{
+				rotation_.x += kRotaionSpeed_;
+				if(rotation_.x >= kResetRotation_.x)
+				{
+					isResetRotationX = false;
+				}
+			}
+			else if(rotation_.x > kResetRotation_.x && isResetRotationX == true)
+			{
+				rotation_.x -= kRotaionSpeed_;
+				if(rotation_.x <= kResetRotation_.x)
+				{
+					isResetRotationX = false;
+				}
+			}
+		}
+
+		bool isResetRotationY = true;
+		if(isGroundRotate_ == false)
+		{	
+			if(rotation_.y <= kResetRotation_.y && isResetRotationY == true)
+			{
+				rotation_.y += kRotaionSpeed_;
+				if(rotation_.y >= kResetRotation_.y)
+				{
+					isResetRotationY = false;
+				}
+			}
+			else if(rotation_.y > kResetRotation_.y && isResetRotationY == true)
+			{
+				rotation_.y -= kRotaionSpeed_;
+				if(rotation_.y <= kResetRotation_.y)
+				{
+					isResetRotationY = false;
+				}
+			}
+		}
+
+		bool isResetRotationZ = true;
+		if(rotation_.z <= kResetRotation_.z && isResetRotationZ == true)
+		{
+			rotation_.z += kRotaionSpeed_;
+			if(rotation_.z >= kResetRotation_.z)
+			{
+				isResetRotationZ = false;
+			}
+		}
+		else if(rotation_.z > kResetRotation_.z && isResetRotationZ == true)
+		{
+			rotation_.z -= kRotaionSpeed_;
+			if(rotation_.z <= kResetRotation_.z)
+			{
+				isResetRotationZ = false;
+			}
+		}
+
+		if(isResetRotationX == false && isResetRotationY == false && isResetRotationZ == false)
+		{
+			isResettingRotation_ = false;
+		}
+	}
+
 }
 
 
