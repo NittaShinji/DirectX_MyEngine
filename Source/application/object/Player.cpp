@@ -110,8 +110,6 @@ void Player::Update(Camera* camera)
 
 	if(isMoving_ == true)
 	{
-		
-
 		//落下処理
 		if(!onGround_)
 		{
@@ -150,9 +148,6 @@ void Player::Update(Camera* camera)
 					jumpCount -= 1;
 				}
 			}
-
-			//二段ジャンプ時の回転処理
-			JumpRotation();
 		}
 		//ジャンプ操作
 		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
@@ -482,7 +477,13 @@ void Player::Update(Camera* camera)
 		}
 	}
 
-	ResetRotation();
+	//二段ジャンプ時の回転処理
+	if(isDuringAnimation_ == false)
+	{
+		JumpRotation();
+	}
+	
+	//ResetRotation();
 
 	Object3d::Update(camera);
 
@@ -727,29 +728,32 @@ void Player::ImGuiUpdate()
 
 void Player::JumpRotation()
 {
-	//地面についていなければ二段ジャンプの時に回転する
+	//二段ジャンプの時に回転する
 	if(isJumpRotate_ == true)
 	{
-		/*if(rotation_.y != 0.0f)
+		if(scale_.x == 1.0f && scale_.y == 1.0f && scale_.z == 1.0f)
 		{
-			isResettingRotation_ = true;
-		}*/
+			/*if(rotation_.y != 0.0f)
+			{
+				isResettingRotation_ = true;
+			}*/
 
-		//rotation_.y = 0.0f;
+			//rotation_.y = 0.0f;
 
-		float angle = ToRadian(360.0f);
-		rotation_.x -= PlayEaseIn(0.0f, angle, rotateXTimer_, kRotateXTime_);
+			float angle = ToRadian(360.0f);
+			rotation_.x -= PlayEaseIn(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
-		if(rotateXTimer_ >= 0)
-		{
-			rotateXTimer_--;
-		}
-		else
-		{
-			rotateXTimer_ = kRotateXTime_;
-			isJumpRotate_ = false;
-			rotation_.x = 0.0f;
-			//isResettingRotation_ = true;
+			if(rotateXTimer_ >= 0)
+			{
+				rotateXTimer_--;
+			}
+			else
+			{
+				rotateXTimer_ = kRotateXTime_;
+				isJumpRotate_ = false;
+				rotation_.x = 0.0f;
+				//isResettingRotation_ = true;
+			}
 		}
 	}
 
@@ -758,23 +762,44 @@ void Player::JumpRotation()
 
 void Player::GroundRotation()
 {
+	if(isGroundRotate_ == false)
+	{
+		rotateYTimer_ = kRotateYTime_;
+	}
+
 	float rotateYVec = 0.10f;
 
 	if(rotateYTimer_ >= 0)
 	{
-		rotateYTimer_ -= rotateYVec;
+		rotateYTimer_--;
+		
+		float angle = ToRadian(360.0f);
+		//float nowRateTime = rotateYTimer_ / kRotateYTime_;
+
+		//rotation_.x -= PlayEaseIn(0.0f, angle, rotateXTimer_, kRotateXTime_);
+
+		if(rotation_.y < angle)
+		{
+			rotation_.y -= rotateYVec;
+		}
+
+		//rotation_.y -= angle * nowRateTime + 0.0f;
+		//rotation_.x += rotateYVec;
+
+		
+		/*rotateYTimer_ -= rotateYVec;
 		float angle = ToRadian(rotateYTimer_);
 		rotation_.y -= angle;
-		isGroundRotate_ = true;
+		isGroundRotate_ = true;*/
 	}
 	else
 	{
 		rotateYTimer_ = kRotateYTime_;
-		//isJumpRotate_ = false;
 		isGroundRotate_ = false;
-		rotation_.y = 0.0f;
-		//isResettingRotation_ = true;
+		//rotation_.y = 0.0f;
 	}
+
+	
 
 	//if(isGroundRotate_ == true)
 	//{
