@@ -202,7 +202,7 @@ void GameScene::Update()
 			player_->SetIsMoving(true);
 		}
 
-		if(keys_->PushedKeyMoment(DIK_SPACE))
+		if(keys_->PushedKeyMoment(DIK_SPACE) && player_->GetIsFinish() == false)
 		{
 			player_->SetIsMoving(true);
 		}

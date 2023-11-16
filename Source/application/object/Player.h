@@ -57,9 +57,6 @@ private:
 	//ジャンプカウント
 	int32_t jumpCount;
 
-	// 等速ジャンプの1フレームごとのジャンプの上がり幅
-	float jumpHeight;
-
 	//jumpheightの最大値
 	const float kMaxJump = 0.1f;
 
