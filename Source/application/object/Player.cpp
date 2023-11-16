@@ -429,58 +429,73 @@ void Player::Update(Camera* camera)
 	}
 
 	//着地時にへこむアニメーション
-	if(isStartedLandAnime_ == true)
+	if(isDead_ == false)
 	{
-		Animation(isStartedLandAnime_, kLandScaleSpeed_, kMaxLandMomentScale_);
-		//アニメーションが終了したら
-		if(isDuringAnimation_ == false)
+		if(isStartedLandAnime_ == true)
 		{
-			isReturnedSizeAnime_ = true;
-			isStartedLandAnime_ = false;
-		}
-	}
-	//元のサイズに戻るアニメーション
-	else if(isReturnedSizeAnime_ == true)
-	{
-		Animation(isReturnedSizeAnime_, returnScaleSpeed_, kMoveScale_);
-		if(isDuringAnimation_ == false)
-		{
-			isReturnedSizeAnime_ = false;
-			returnScaleSpeed_ = 0.15f;
-		}
-	}
-	//ジャンプ時にへこむアニメーション
-	else if(isDentedAnime_ == true)
-	{
-		Animation(isDentedAnime_, kDentSpeed_, kDentedScale_);
-		if(isDuringAnimation_ == false)
-		{
-			isExpandedAnime_ = true;
-			isDentedAnime_ = false;
-			onGround_ = false;
-			isLanded_ = false;
-			const float jumpVYFist = 0.4f;
-			fallVec_ = { 0,jumpVYFist,0 };
-			jumpCount -= 1;
-			isReadyToJump_ = false;
-		}
-	}
-	//ジャンプ後に伸びるアニメーション
-	else if(isExpandedAnime_ == true)
-	{
-		Animation(isExpandedAnime_, kEpandSpeed_, kExpandScale_);
-		if(isDuringAnimation_ == false)
-		{
-			isExpandedAnime_ = false;
-			isReturnedSizeAnime_ = true;
-			returnScaleSpeed_ = 0.15f;
-		}
-	}
+			if(keys_->PushedKeyMoment(DIK_SPACE))
+			{
+				isExpandedAnime_ = true;
+				isDuringAnimation_ = false;
+				isStartedLandAnime_ = false;
+			}
 
-	//二段ジャンプ時の回転処理
-	if(isDuringAnimation_ == false)
-	{
-		JumpRotation();
+			if(isDuringAnimation_ == true)
+			{
+				Animation(isStartedLandAnime_, kLandScaleSpeed_, kMaxLandMomentScale_);
+			}
+			
+			//アニメーションが終了し、拡大しない場合
+			if(isDuringAnimation_ == false && isExpandedAnime_ == false)
+			{
+				//元のデフォルトサイズに戻す
+				isReturnedSizeAnime_ = true;
+				isStartedLandAnime_ = false;
+			}
+		}
+		//元のサイズに戻るアニメーション
+		else if(isReturnedSizeAnime_ == true)
+		{
+			Animation(isReturnedSizeAnime_, returnScaleSpeed_, kMoveScale_);
+			if(isDuringAnimation_ == false)
+			{
+				isReturnedSizeAnime_ = false;
+				returnScaleSpeed_ = 0.15f;
+			}
+		}
+		//ジャンプ時にへこむアニメーション
+		else if(isDentedAnime_ == true)
+		{
+			Animation(isDentedAnime_, kDentSpeed_, kDentedScale_);
+			if(isDuringAnimation_ == false)
+			{
+				isExpandedAnime_ = true;
+				isDentedAnime_ = false;
+				onGround_ = false;
+				isLanded_ = false;
+				const float jumpVYFist = 0.4f;
+				fallVec_ = { 0,jumpVYFist,0 };
+				jumpCount -= 1;
+				isReadyToJump_ = false;
+			}
+		}
+		//ジャンプ後に伸びるアニメーション
+		else if(isExpandedAnime_ == true)
+		{
+			Animation(isExpandedAnime_, kEpandSpeed_, kExpandScale_);
+			if(isDuringAnimation_ == false)
+			{
+				isExpandedAnime_ = false;
+				isReturnedSizeAnime_ = true;
+				returnScaleSpeed_ = 0.15f;
+			}
+		}
+
+		//二段ジャンプ時の回転処理
+		if(isDuringAnimation_ == false)
+		{
+			JumpRotation();
+		}
 	}
 	
 	//ResetRotation();

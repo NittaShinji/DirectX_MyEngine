@@ -174,9 +174,9 @@ private:
 	const Vector3 kChangeColorScale_ = {1.3f,1.3f,1.3f};
 	const Vector3 kResetRotation_ = { 0.0f,0.0f,0.0f };
 	
-	const float kLandScaleSpeed_ = 0.15f;
+	const float kLandScaleSpeed_ = 0.175f;
 	//const float kReturnScaleSpeed_ = 0.15f;
-	const float kDentSpeed_ = 0.15f;
+	const float kDentSpeed_ = 0.175f;
 	const float kEpandSpeed_ = 0.15f;
 	const float kChangeColorScaleSpeed_ = 0.04f;
 	const float kRotaionSpeed_ = 0.1f;
@@ -185,7 +185,7 @@ private:
 
 
 	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
-	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
+	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 45.0f };
 	EasingInfo axcellEasing_ = { 0.5f, 0.0f, 0.0f, 25.0f };
 	
 	/*EasingInfo jumpEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);
