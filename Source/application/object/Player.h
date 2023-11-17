@@ -110,6 +110,10 @@ private:
 
 	//通常加速度
 	const float kMoveAxcellZ_ = 0.68f;
+	//死んだ際の加速度
+	const float kDeadMoveAxcellZ_ = kMoveAxcellZ_ / 2;
+
+
 
 	//右向き加速ベクトル
 	Vector3 rightAxcellVec_;
@@ -180,13 +184,11 @@ private:
 
 	float returnScaleSpeed_ = 0.10f;
 
-
 	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
 	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 45.0f };
 	EasingInfo axcellEasing_ = { 0.5f, 0.0f, 0.0f, 25.0f };
+	EasingInfo stopSpeedEasing_ = { kMoveAxcellZ_,-kMoveAxcellZ_,0.0f,60.0f };
 	
-	/*EasingInfo jumpEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);
-	EasingInfo LandEasing_ = EasingInfo(60.0f, 0.0f, 0.0f, 0.0f);*/
 	bool isStartedLandAnime_ = false;
 	bool isReturnedSizeAnime_ = false;
 	bool isJumpMomentAnime_ = false;
@@ -201,7 +203,8 @@ private:
 	bool isResettingRotation_ = false;
 
 	bool isGroundRotate_ = false;
-
+	bool isReset_ = false;
+	
 
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;

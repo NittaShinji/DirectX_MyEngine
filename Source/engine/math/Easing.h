@@ -6,9 +6,13 @@
 /// </summary>
 typedef struct EasingInfo
 {
+	//初期位置
 	float startPos;
+	//終点までの距離
 	float endDistance;
+	//アニメーションの現在の時間
 	float time;
+	//アニメーションが行われる時間
 	const float totalTime;
 	
 } EasingInfo;

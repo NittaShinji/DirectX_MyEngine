@@ -104,7 +104,23 @@ void Player::Update(Camera* camera)
 	{
 		//合計加速度をリセット
 		totalAxcell_ = { 0.0f,0.0f,0.0f };
-		totalAxcell_.z += kMoveAxcellZ_;
+		if(isDead_ == true)
+		{
+			stopSpeedEasing_.time--;
+			if(stopSpeedEasing_.time >= 0)
+			{
+				totalAxcell_.z += PlayEaseOutQuint(stopSpeedEasing_);
+			}
+			else
+			{
+				isReset_ = true;
+			}
+		}
+		else
+		{
+			totalAxcell_.z += kMoveAxcellZ_;
+		}
+		
 		Accelerate();
 
 		//落下処理
@@ -177,10 +193,7 @@ void Player::Update(Camera* camera)
 		Object3d::SetTransform(transform_);
 		UpdateWorldMatrix();
 		collider_->Update();
-	}
-
-	if(isMoving_ == true && isfinish_ == false)
-	{
+	
 		//球コライダーを取得
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 		assert(sphereCollider);
@@ -369,10 +382,7 @@ void Player::Update(Camera* camera)
 			isDead_ = true;
 			isLanded_ = true;
 		}
-	}
-
-	if(isMoving_ == true && isfinish_ == false)
-	{
+	
 		//色変え処理
 		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
@@ -586,24 +596,6 @@ void Player::AccelerateChangeColor()
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
-	//スムーズに坂を下る為の吸着距離
-	//const float adsDistance = 0.2f;
-
-	////地面と衝突しているかどうか
-	//if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
-	//{
-	//	//色を変える
-	//	if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
-	//	{
-	//		//加速していなかったら加速フラグを立てる
-	//		if(isRightAxcell_ == false)
-	//		{
-	//			isRightAxcell_ = true;
-	//			axcellTimer_ = kAxcellTime_;
-	//		}
-	//	}
-	//}
-
 	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 3.0f))
 	{
 		//色を変える
@@ -637,39 +629,6 @@ void Player::AccelerateChangeColor()
 			}
 		}
 	}
-
-	//if(attributeColor_ == yellow)
-	//{
-	//	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 3.0f))
-	//	{
-	//		//色を変える
-	//		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
-	//		{
-	//			//加速していなかったら加速フラグを立てる
-	//			if(isRightAxcell_ == false)
-	//			{
-	//				isRightAxcell_ = true;
-	//				axcellTimer_ = kAxcellTime_;
-	//			}
-	//		}
-	//	}
-	//}
-	//else if(attributeColor_ == pink)
-	//{
-	//	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 3.0f))
-	//	{
-	//		//色を変える
-	//		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
-	//		{
-	//			//加速していなかったら加速フラグを立てる
-	//			if(isRightAxcell_ == false)
-	//			{
-	//				isRightAxcell_ = true;
-	//				axcellTimer_ = kAxcellTime_;
-	//			}
-	//		}
-	//	}
-	//}
 }
 
 
@@ -681,16 +640,11 @@ void Player::EasingInitialize()
 
 void Player::Accelerate()
 {
-	//横向き加速度　
-	/*const float rightAcc = 0.04f;
-	const float rightVZMin = 0.7f;*/
-
 	if(isRightAxcell_ == true)
 	{
 		axcellEasing_.time++;
 		if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
 		{
-			//rightAxcellVec_.z = max(rightAxcellVec_.z + rightAcc, rightVZMin);
 			rightAxcellVec_.z = PlayEaseOutQuint(axcellEasing_);
 		}
 		else
@@ -780,13 +734,6 @@ void Player::JumpRotation()
 	{
 		if(scale_.x == 1.0f && scale_.y == 1.0f && scale_.z == 1.0f)
 		{
-			/*if(rotation_.y != 0.0f)
-			{
-				isResettingRotation_ = true;
-			}*/
-
-			//rotation_.y = 0.0f;
-
 			float angle = ToRadian(360.0f);
 			rotation_.x -= PlayEaseIn(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
@@ -799,7 +746,6 @@ void Player::JumpRotation()
 				rotateXTimer_ = kRotateXTime_;
 				isJumpRotate_ = false;
 				rotation_.x = 0.0f;
-				//isResettingRotation_ = true;
 			}
 		}
 	}
@@ -821,59 +767,17 @@ void Player::GroundRotation()
 		rotateYTimer_--;
 		
 		float angle = ToRadian(360.0f);
-		//float nowRateTime = rotateYTimer_ / kRotateYTime_;
-
-		//rotation_.x -= PlayEaseIn(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
 		if(rotation_.y < angle)
 		{
 			rotation_.y -= rotateYVec;
 		}
-
-		//rotation_.y -= angle * nowRateTime + 0.0f;
-		//rotation_.x += rotateYVec;
-
-		
-		/*rotateYTimer_ -= rotateYVec;
-		float angle = ToRadian(rotateYTimer_);
-		rotation_.y -= angle;
-		isGroundRotate_ = true;*/
 	}
 	else
 	{
 		rotateYTimer_ = kRotateYTime_;
 		isGroundRotate_ = false;
-		//rotation_.y = 0.0f;
 	}
-
-	
-
-	//if(isGroundRotate_ == true)
-	//{
-	//	if(rotation_.x != 0.0f)
-	//	{
-	//		isResettingRotation_ = true;
-	//	}
-
-	//	//rotation_.x = 0.0f;
-
-	//	float angle = ToRadian(360.0f);
-	//	rotation_.y -= PlayEaseIn(0.0f, angle, rotateYTimer_, kRotateYTime_);
-
-	//	if(rotateYTimer_ >= 0)
-	//	{
-	//		rotateYTimer_--;
-	//	}
-	//	else
-	//	{
-	//		rotateYTimer_ = kRotateYTime_;
-	//		isJumpRotate_ = false;
-	//		isGroundRotate_ = false;
-	//		rotation_.y = 0.0f;
-	//		//isResettingRotation_ = true;
-	//	}
-	//}
-
 
 	Object3d::SetRotation(rotation_);
 }

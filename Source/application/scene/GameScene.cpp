@@ -171,7 +171,6 @@ void GameScene::Update()
 
 		if(deadParticle_->GetCanReset() == true)
 		{
-			
 			ObjParticleManager::GetInstance()->ParticleReset(gameCamera_.get());
 			stage_->Reset("Stage0.json");
 			gameCamera_->Initialize();
