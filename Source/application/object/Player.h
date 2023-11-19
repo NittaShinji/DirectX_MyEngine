@@ -113,8 +113,6 @@ private:
 	//死んだ際の加速度
 	const float kDeadMoveAxcellZ_ = kMoveAxcellZ_ / 2;
 
-
-
 	//右向き加速ベクトル
 	Vector3 rightAxcellVec_;
 
@@ -127,6 +125,9 @@ private:
 
 	//プレイヤー死亡ライン
 	const float deadLine_ = -5.0f;
+
+	//プレイヤーが死亡した場所
+	Vector3 deadPos_;
 
 	//1周回る時間
 	const float kRotateXTime_ = 60.0f;
@@ -223,6 +224,7 @@ public:
 	bool GetIsStoped() { return isStoped_; }
 	Vector3 GetInitPos() { return kPlayerInitPos_; }
 	float GetNormalAxcellZ() { return kMoveAxcellZ_; }
+	Vector3 GetDeadPos() { return deadPos_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }

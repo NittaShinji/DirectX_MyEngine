@@ -1,6 +1,7 @@
 #pragma once
 #include "Camera.h"
 #include "Vector2.h"
+#include "Easing.h"
 
 class GameCamera : public Camera
 {
@@ -8,7 +9,8 @@ public:
 
 	void Initialize() override;
 
-	void Update(bool isPlayerMoving,Vector3 playerPos, Vector3 playerInitPos);
+	void Update(bool isPlayerMoving,Vector3 playerPos, Vector3 playerInitPos,bool isDead, 
+		Vector3 playerDeadPos,Vector3 playerAxel,bool onGround);
 
 	void Reset();
 
@@ -24,8 +26,10 @@ private:
 	const Vector3 initcameraTarget = { 0,5,5 };
 	const Vector3 initcameraUp = { 0,1,0 };
 
-	const Vector3 initEyeDistance_ = { 0.0f,0.0f,12.0f };
-	const Vector3 initTargetDistance_ = { 0,0,12.0f };
+	const Vector3 initEyeDistance_ = { 0.0f,1.5f,12.0f };
+	const Vector3 initTargetDistance_ = { 0.0f,1.5f,12.0f };
+
+	EasingInfo speedEasing_ = { 1.0f, 0.5f, 0.0f, 15.0f };
 
 	//カメラの加速値
 	//Vector3 totalAxcellSpeed_;
@@ -34,6 +38,8 @@ private:
 	bool isSlowDown_;
 
 	float cameraSpeed_;
+	float cameraSpeedY_;
+
 
 	//減速するまでの時間
 	const float kSlowDownTime_ = 30.0f;
@@ -75,5 +81,7 @@ private:
 
 	Vector3 goalEyePos_;
 	Vector3 goalEyeTarget_;
+
+	
 };
 

@@ -41,6 +41,8 @@ void Player::Initialize()
 	rotation_ = { 0,0,0 };
 	scale_ = { 1.0,1.0,1.0 };
 
+	deadPos_ = transform_;
+
 	/*jumpEasing_.endDistance = 0.0f;
 	jumpEasing_.startPos = 0.0f;
 	jumpEasing_.totalTime = 60.0f;
@@ -542,6 +544,11 @@ void Player::Update(Camera* camera)
 	
 	//ResetRotation();
 
+	if(isDead_ == false)
+	{
+		deadPos_ = transform_;
+	}
+
 	Object3d::Update(camera);
 
 	//ゲームパッドのボタン情報をリセット
@@ -559,6 +566,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	{
 		isLanded_ = false;
 		isDead_ = true;
+		deadPos_ = transform_;
 	}
 
 	//プレイヤーと同じ色の場合
