@@ -29,39 +29,10 @@ private:
 	const Vector3 initEyeDistance_ = { 0.0f,1.5f,12.0f };
 	const Vector3 initTargetDistance_ = { 0.0f,1.5f,12.0f };
 
-	EasingInfo speedEasing_ = { 1.0f, 0.5f, 0.0f, 15.0f };
-
-	//カメラの加速値
-	//Vector3 totalAxcellSpeed_;
-
-	//減速フラグ
-	bool isSlowDown_;
+	EasingInfo speedEasing_ = { 1.0f, 0.2f, 0.0f, 15.0f };
 
 	float cameraSpeed_;
 	float cameraSpeedY_;
-
-
-	//減速するまでの時間
-	const float kSlowDownTime_ = 30.0f;
-	//const float kReturnTime_ = 5.0f;
-
-	//減速タイマー
-	float moveSlowTimer_ = kSlowDownTime_;
-	//float moveSlowCount_ = 0.0f;
-
-	//float returnTimer_ = kReturnTime_;
-
-	//int32_t stopTimer_;
-	//const int32_t kStopTime_ = 20;
-
-	////減速から通常時に戻るまでのフレーム数
-	//const float kBackNormalTime_ = 60.0f;
-	////減速から通常時に戻るまでのフレームカウンター
-	//float backNormalTimer_ = 0.0f;
-	////減速中の移動量
-	//float slowMoveqQuantity_;
-	////スロー分の量を足す
-	//float backQuantity_;
 
 	//加速割合
 	float axcelRate_;
@@ -81,7 +52,5 @@ private:
 
 	Vector3 goalEyePos_;
 	Vector3 goalEyeTarget_;
-
-	
 };
 

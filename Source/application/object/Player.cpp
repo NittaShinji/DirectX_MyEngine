@@ -43,15 +43,7 @@ void Player::Initialize()
 
 	deadPos_ = transform_;
 
-	/*jumpEasing_.endDistance = 0.0f;
-	jumpEasing_.startPos = 0.0f;
-	jumpEasing_.totalTime = 60.0f;
-	jumpEasing_.time = 0.0f;
-
-	LandEasing_ = { 60.0f,0.0f,0.0f,0.0f };
-*/
-
-//座標情報を設定
+	//座標情報を設定
 	SetTransform(transform_);
 	SetRotation(rotation_);
 	SetScale(scale_);
@@ -239,7 +231,6 @@ void Player::Update(Camera* camera)
 		PlayerQueryCallback callback(sphereCollider);
 
 		//球と地形の交差を全検索
-		//CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_LANDSHAPE);
 		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_PINK);
 		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_YELLOW);
 		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_BLACK);
@@ -283,14 +274,6 @@ void Player::Update(Camera* camera)
 			//スムーズに坂を下る為の吸着距離
 			const float adsDistance = 0.2f;
 			//接地を維持
-			/*if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
-			{
-				onGround_ = true;
-				isLanded_ = false;
-				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
-				Object3d::SetTransform(transform_);
-			}*/
-
 			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 2.0f + adsDistance))
 			{
 				onGround_ = true;
@@ -323,19 +306,6 @@ void Player::Update(Camera* camera)
 		else if(fallVec_.y <= 0.0f)
 		{
 			AccelerateChangeColor();
-
-			//if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_LANDSHAPE, &raycastHit, sphereCollider->GetRadius() * 2.0f))
-			//{
-			//	//着地
-			//	isTouchUnderObject_ = false;
-			//	onGround_ = true;
-			//	isLanded_ = true;
-			//	isStartedLandAnime_ = true;
-			//	transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
-			//	jumpCount = kMaxJumpNum;
-			//	//行列の更新など
-			//	Object3d::SetTransform(transform_);
-			//}
 
 			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 2.0f))
 			{
