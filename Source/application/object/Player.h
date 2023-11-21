@@ -205,6 +205,7 @@ private:
 
 	bool isGroundRotate_ = false;
 	bool isReset_ = false;
+	bool isSetDeadPos_ = false;
 	
 
 

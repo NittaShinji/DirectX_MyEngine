@@ -514,7 +514,7 @@ void Player::Update(Camera* camera)
 	
 	//ResetRotation();
 
-	if(isDead_ == false)
+	if(isDead_ == false && isSetDeadPos_ == false)
 	{
 		deadPos_ = transform_;
 	}
@@ -536,7 +536,12 @@ void Player::OnCollision(const CollisionInfo& info)
 	{
 		isLanded_ = false;
 		isDead_ = true;
-		deadPos_ = transform_;
+		if(isSetDeadPos_ == false)
+		{
+			deadPos_ = transform_;
+			isSetDeadPos_ = true;
+		}
+		
 	}
 
 	//プレイヤーと同じ色の場合
@@ -672,6 +677,7 @@ void Player::Reset(Camera* camera)
 	isJumpRotate_ = false;
 	isGroundRotate_ = false;
 	isResettingRotation_ = false;
+	isSetDeadPos_ = false;
 	rotateXTimer_ = kRotateXTime_;
 	rotateYTimer_ = kRotateYTime_;
 

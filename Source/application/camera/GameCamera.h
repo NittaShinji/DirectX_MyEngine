@@ -26,10 +26,14 @@ private:
 	const Vector3 initcameraTarget = { 0,5,5 };
 	const Vector3 initcameraUp = { 0,1,0 };
 
-	const Vector3 initEyeDistance_ = { 0.0f,1.5f,12.0f };
-	const Vector3 initTargetDistance_ = { 0.0f,1.5f,12.0f };
+	const Vector3 initEyeDistance_ = { 0.0f,1.0f,12.0f };
+	const Vector3 initTargetDistance_ = { 0.0f,1.0f,12.0f };
 
-	EasingInfo speedEasing_ = { 1.0f, 0.2f, 0.0f, 15.0f };
+	//Y軸用の加速割合
+	float EyeYAxelRate_ = 2.20f;
+
+	EasingInfo speedEasing_ = { 1.0f, 0.225f, 0.0f, 15.0f };
+	bool isFinishEasing_ = false;
 
 	float cameraSpeed_;
 	float cameraSpeedY_;
@@ -52,5 +56,15 @@ private:
 
 	Vector3 goalEyePos_;
 	Vector3 goalEyeTarget_;
+
+	Vector3 moveEyeVec;
+	Vector3 moveEyeVecY;
+	Vector3 moveTargetVec;
+	Vector3 moveTargetVecY;
+
+	int32_t kSlowTime_ = 30;
+	int32_t slowTimer_;
+
+	bool isStopTarget_ = false;
 };
 
