@@ -1,5 +1,6 @@
 #pragma once
 #include "ObjParticleEmitter.h"
+#include "GameSpeed.h"
 
 class LandParticle : public ObjParticleEmitter
 {
@@ -24,6 +25,8 @@ public:
 	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
 	void SetCanReset(bool canReset) { canReset_ = canReset; }
 	void ResetParticleArea(Vector3 playerPos);
+
+	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
 private:
 
@@ -53,5 +56,9 @@ private:
 	//リセットしてもよいか
 	bool canReset_;
 
+	//フレーム増加量
+	const float freamIncreaseValue_ = 1.0f;
+	//ゲームスピード
+	GameSpeed* gameSpeed_ = nullptr;
 };
 

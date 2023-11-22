@@ -7,6 +7,7 @@
 #include "ObjectAttribute.h"
 #include "SoundManager.h"
 #include "Easing.h"
+#include "GameSpeed.h"
 
 class Player : public Object3d
 {
@@ -206,8 +207,15 @@ private:
 	bool isGroundRotate_ = false;
 	bool isReset_ = false;
 	bool isSetDeadPos_ = false;
-	
 
+	//フレーム増加量
+	const float freamIncreaseValue_ = 1.0f;
+	float frameNum_;
+	float JumpFrameNum_ = 60.0f;
+
+	bool isRising_ = false;
+
+	GameSpeed* gameSpeed_ = nullptr;
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
@@ -230,5 +238,6 @@ public:
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
+	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 };
 

@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Vector2.h"
 #include "Easing.h"
+#include "GameSpeed.h"
 
 class GameCamera : public Camera
 {
@@ -20,6 +21,8 @@ public:
 
 	bool GetIsFinishAnimation() { return isFinishAnimetion_; }
 
+	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
+
 private:
 
 	const Vector3 initcameraEye = { 30,7.5,-20 };
@@ -34,6 +37,8 @@ private:
 
 	EasingInfo speedEasing_ = { 1.0f, 0.225f, 0.0f, 15.0f };
 	bool isFinishEasing_ = false;
+
+	const float kInitCameraSpeed_ = 1.0f;
 
 	float cameraSpeed_;
 	float cameraSpeedY_;
@@ -66,5 +71,7 @@ private:
 	int32_t slowTimer_;
 
 	bool isStopTarget_ = false;
+
+	GameSpeed* gameSpeed_ = nullptr;
 };
 

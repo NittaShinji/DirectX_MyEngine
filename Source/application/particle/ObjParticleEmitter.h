@@ -28,9 +28,9 @@ public:
 		Vector3 e_scale = {};
 
 		//現在フレーム
-		int frame = 0;
+		float frame = 0;
 		//終了フレーム
-		int num_frame = 0;
+		float num_frame = 0;
 
 		//色情報
 		Vector4 colorSpeed = {};
@@ -62,7 +62,7 @@ public: // メンバ関数
 
 	void ParticleReset(Camera* camera);
 
-	void Add(const std::string modelName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
+	void Add(const std::string modelName,float life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
 
 	bool GetIsMaxParticle() { return isMaxParticle_; }
 
@@ -84,7 +84,7 @@ protected: // 定数
 	static const int planeCount = division * 2 + division * 2;		// 面の数
 	
 	//初期値
-	 int InitLife = 30;
+	 float InitLife = 30.0f;
 	 Vector3 InitPos = { 0.0f,-100.0f,0.0f };
 	 Vector3 InitVel = { 0.0f,0.0f,0.0f };
 

@@ -76,13 +76,13 @@ void DeadParticle::Update(Camera* camera)
 		if(it->isGenerated == true)
 		{
 			//速度に加速度を加算
-			it->velocity = it->velocity + it->accel;
+			it->velocity = (it->velocity + it->accel);
 			//速度による移動
 			Vector3 particlePos = it->object3d.GetTransform();
 			particlePos = particlePos + it->velocity;
 			it->object3d.SetTransform(particlePos);
 
-			it->frame++;
+			it->frame += freamIncreaseValue_* gameSpeed_->GetSpeedNum();
 			//進行度を0～1の範囲に換算
 			float f = (float)it->frame / it->num_frame;
 

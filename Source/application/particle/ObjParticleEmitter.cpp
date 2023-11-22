@@ -131,7 +131,7 @@ void ObjParticleEmitter::ParticleReset(Camera* camera)
 	}
 }
 
-void ObjParticleEmitter::Add(const std::string modelName,int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale)
+void ObjParticleEmitter::Add(const std::string modelName,float life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale)
 {
 	if(isMaxParticle_ == false)
 	{

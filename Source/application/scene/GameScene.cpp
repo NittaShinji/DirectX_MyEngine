@@ -13,6 +13,7 @@
 #include <sstream>
 #include <iomanip>
 #include <string>
+#include "GameSpeed.h"
 
 using namespace std;
 
@@ -153,12 +154,34 @@ void GameScene::Initialize()
 	ObjParticleManager::GetInstance()->AddEmitter(landParticle_.get());
 	ObjParticleManager::GetInstance()->AddEmitter(deadParticle_.get());
 
+	gameSpeed_ = std::make_unique<GameSpeed>();
+	gameSpeed_->Initialize();
+	player_->SetGameSpeed(gameSpeed_.get());
+	gameCamera_->SetGameSpeed(gameSpeed_.get());
+	landParticle_->SetGameSpeed(gameSpeed_.get());
+	deadParticle_->SetGameSpeed(gameSpeed_.get());
+
 	isReset_ = false;
 }
 
 void GameScene::Update()
 {
 	SceneAnimation();
+
+#ifdef _DEBUG
+	if(keys_->PushedKeyMoment(DIK_N))
+	{
+		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+	}
+	else if(keys_->PushedKeyMoment(DIK_H))
+	{
+		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::HARD);
+	}
+	else if(keys_->PushedKeyMoment(DIK_S))
+	{
+		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
+	}
+#endif
 
 	if(player_->GetIsDead() == true)
 	{

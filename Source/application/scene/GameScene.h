@@ -19,6 +19,7 @@
 #include "BlockParticle.h"
 #include "LandParticle.h"
 #include "DeadParticle.h"
+#include "GameSpeed.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -26,7 +27,6 @@ class Player;
 
 class GameScene : public BaseScene
 {
-
 public:
 
 	/// <summary>
@@ -152,5 +152,8 @@ private:
 	float sceneAnimeTimer_ = 0;
 	//シーンアニメーション用変化量
 	Vector2 sceneAnimationVec_;
+
+	//ゲームスピード
+	std::unique_ptr<GameSpeed> gameSpeed_;
 };
 

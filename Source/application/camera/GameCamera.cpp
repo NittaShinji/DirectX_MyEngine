@@ -21,13 +21,15 @@ void GameCamera::Initialize()
 	speedEasing_.time = 0.0f;
 	slowTimer_ = kSlowTime_;
 
-	cameraSpeed_ = 1.0f;
-	cameraSpeedY_ = 1.0f;
+	cameraSpeed_ = kInitCameraSpeed_;
+	cameraSpeedY_ = kInitCameraSpeed_;
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
 	Vector3 playerDeadPos, Vector3 playerAxel, bool onGround)
 {
+	cameraSpeed_ = gameSpeed_->GetSpeedNum();
+	cameraSpeedY_ = gameSpeed_->GetSpeedNum();
 
 	if(isPlayerMoving == true)
 	{

@@ -121,6 +121,14 @@ void Player::Update(Camera* camera)
 		if(!onGround_)
 		{
 			isGroundRotate_ = false;
+			frameNum_ += freamIncreaseValue_;
+
+			//if(frameNum_ >= JumpFrameNum_)
+			//{
+			//}
+			////進行度を0～1の範囲に換算
+			//float f = frameNum_ / JumpFrameNum_;
+
 			//下向き加速度　
 			const float fallAcc = -0.015f;
 			const float fallVYMin = -0.5f;
@@ -183,7 +191,7 @@ void Player::Update(Camera* camera)
 		}
 
 		//加速を座標に反映
-		transform_ += totalAxcell_;
+		transform_ += totalAxcell_ * gameSpeed_->GetSpeedNum();;
 		Object3d::SetTransform(transform_);
 		UpdateWorldMatrix();
 		collider_->Update();
@@ -454,6 +462,7 @@ void Player::Update(Camera* camera)
 						isDentedAnime_ = false;
 						onGround_ = false;
 						isLanded_ = false;
+						isRising_ = true;
 						const float jumpVYFist = 0.4f;
 						fallVec_ = { 0,jumpVYFist,0 };
 						jumpCount -= 1;
@@ -485,6 +494,7 @@ void Player::Update(Camera* camera)
 						isDentedAnime_ = false;
 						onGround_ = false;
 						isLanded_ = false;
+						isRising_ = true;
 						const float jumpVYFist = 0.4f;
 						fallVec_ = { 0,jumpVYFist,0 };
 						jumpCount -= 1;
@@ -638,7 +648,7 @@ void Player::Accelerate()
 		}
 	}
 
-	totalAxcell_.z += rightAxcellVec_.z;
+	totalAxcell_.z += rightAxcellVec_.z * gameSpeed_->GetSpeedNum();
 }
 
 void Player::Draw()
