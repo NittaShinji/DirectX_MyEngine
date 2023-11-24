@@ -1,5 +1,6 @@
 #include "ParticleEmitter.h"
 #include "ImGuiManager.h"
+#include "TextureManager.h"
 #include <d3dcompiler.h>
 #include <string.h>
 #include <cassert>
@@ -83,8 +84,6 @@ void ParticleEmitter::Initialize(ID3D12Device* device)
 	device_ = device;
 
 	InitializeGraphicsPipeline();
-
-	LoadTexture("effect1.png");
 
 	CreateModel();
 
@@ -233,13 +232,31 @@ void ParticleEmitter::Draw()
 
 	cmdList_->IASetVertexBuffers(0, 1, &vbView_);
 
+	uint32_t textureIndex;
+	textureIndex = TextureManager::GetInstance()->GetTextureMap().at(particleFileName_);
+
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { descHeap_.Get() };
+	//ID3D12DescriptorHeap* ppHeaps[] = { descHeap_.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { TextureManager::GetInstance()->GetSRVHeap()};
+
 	cmdList_->SetDescriptorHeaps(1, ppHeaps);
 
 	//定数バッファビュー(CBV)をルートパラメータ0番のデスクリプタレンジに設定
 	cmdList_->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
-	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descHeap_->GetGPUDescriptorHandleForHeapStart();
+	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descHeap_->GetGPUDescriptorHandleForHeapStart();
+
+	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
+	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = TextureManager::GetInstance()->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
+
+	//デスクリプタのサイズを取得
+	UINT incrementSize = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	//取得したサイズを使用してハンドルを進める
+	for(uint32_t i = 0; i < textureIndex; i++)
+	{
+		srvGpuHandle.ptr += incrementSize;
+	}
+
 	//シェーダリソースビューをルートパラメータ1番のデスクリプタレンジに設定
 	cmdList_->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
@@ -538,14 +555,14 @@ void ParticleEmitter::InitializeDescriptorHeap()
 	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;//シェーダから見えるように
 	descHeapDesc.NumDescriptors = 1; // シェーダーリソースビュー1つ
-	result = directXBasic_->GetDevice()->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap_));//生成
+	result = device_->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descHeap_));//生成
 	if(FAILED(result))
 	{
 		assert(0);
 	}
 
 	// デスクリプタサイズを取得
-	descriptorHandleIncrementSize_ = directXBasic_->GetDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	descriptorHandleIncrementSize_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 }
 

@@ -191,6 +191,9 @@ private:
 	//現在のパーティクルの数
 	int32_t nowParticleCount_ = 0;
 
-	
+protected :
+
+	//表示する画像名
+	std::string particleFileName_;
 };
 
