@@ -181,7 +181,13 @@ void GameScene::Update()
 	{
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
 	}
+	else if(keys_->PushedKeyMoment(DIK_ESCAPE))
+	{
+		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
+	}
 #endif
+
+	
 
 	if(player_->GetIsDead() == true)
 	{

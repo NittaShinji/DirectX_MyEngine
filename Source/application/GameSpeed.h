@@ -11,6 +11,7 @@ public:
 		SLOW,
 		NORMAL,
 		HARD,
+		STOP,
 	};
 
 public:	//メンバ関数
@@ -25,6 +26,7 @@ private: //メンバ変数
 	const float kSlowSpeed_ = 0.5f;
 	const float kNormalSpeed_ = 1.0f;
 	const float kHardSpeed_ = 1.2f;
+	const float kStopSpeed_ = 0.0f;
 
 	float speedNum_;
 	float time_;

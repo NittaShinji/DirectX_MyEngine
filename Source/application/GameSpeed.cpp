@@ -20,6 +20,10 @@ void GameSpeed::SetSpeed()
 	{
 		speedNum_ = kHardSpeed_;
 	}
+	else if(speedMode_ == SpeedMode::STOP)
+	{
+		speedNum_ = kStopSpeed_;
+	}
 }
 
 void GameSpeed::SetSpeedMode(SpeedMode speedMode)

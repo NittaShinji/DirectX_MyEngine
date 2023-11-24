@@ -191,7 +191,20 @@ void Player::Update(Camera* camera)
 		}
 
 		//加速を座標に反映
-		transform_ += totalAxcell_ * gameSpeed_->GetSpeedNum();;
+
+		//速度に加速度を加算
+		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP)
+		{
+			
+		}
+		else
+		{
+			transform_.x += totalAxcell_.x;
+			transform_.y += totalAxcell_.y;
+			transform_.z += totalAxcell_.z * gameSpeed_->GetSpeedNum();
+		}
+		
+
 		Object3d::SetTransform(transform_);
 		UpdateWorldMatrix();
 		collider_->Update();
