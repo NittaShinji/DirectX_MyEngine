@@ -99,7 +99,7 @@ void ParticleEmitter::SetScale()
 	}
 }
 
-void ParticleEmitter::AllRemove()
+void ParticleEmitter::ParticleRemove()
 {
 	//パーティクルを全削除
 	particles_.clear();

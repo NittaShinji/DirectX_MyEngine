@@ -12,6 +12,8 @@ std::unique_ptr<GroundParticle> GroundParticle::Create()
 		return nullptr;
 	}
 
+	instance->Initialize();
+
 	return instance;
 }
 

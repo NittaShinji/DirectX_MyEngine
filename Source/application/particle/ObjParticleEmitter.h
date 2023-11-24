@@ -66,7 +66,7 @@ public: // メンバ関数
 
 	bool GetIsMaxParticle() { return isMaxParticle_; }
 
-	void AllRemove();
+	void ParticleRemove();
 
 	std::forward_list<Particle> GetPaticles() { return particles_; }
 

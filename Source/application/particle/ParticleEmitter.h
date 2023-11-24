@@ -109,7 +109,7 @@ public: // メンバ関数
 
 	void SetScale();
 
-	void AllRemove();
+	void ParticleRemove();
 
 	std::forward_list<Particle> GetPaticles() { return particles_; }
 

@@ -172,7 +172,7 @@ void ObjParticleEmitter::Add(const std::string modelName,float life, const Vecto
 	}
 }
 
-void ObjParticleEmitter::AllRemove()
+void ObjParticleEmitter::ParticleRemove()
 {
 	//パーティクルを全削除
 	particles_.clear();

@@ -41,7 +41,7 @@ void ParticleManager::AllRemove()
 	//パーティクルを全削除
 	for(auto& emitter : emitters_)
 	{
-		emitter->AllRemove();
+		emitter->ParticleRemove();
 	}
 
 	//エミッターの削除
@@ -53,7 +53,7 @@ void ParticleManager::ParticleRemove()
 	//パーティクルを全削除
 	for(auto& emitter : emitters_)
 	{
-		emitter->AllRemove();
+		emitter->ParticleRemove();
 	}
 }
 
