@@ -21,9 +21,9 @@ using namespace Microsoft::WRL;
 
 ComPtr<ID3D12Resource> ParticleEmitter::texbuff_;
 // 頂点バッファ
-ComPtr<ID3D12Resource> ParticleEmitter::vertBuff_;
+//ComPtr<ID3D12Resource> ParticleEmitter::vertBuff_;
 //頂点データ配列
-std::vector<ParticleEmitter::Vertex> ParticleEmitter::vertices_;
+//std::vector<ParticleEmitter::Vertex> ParticleEmitter::vertices_;
 
 //SRV用のデスクリプタヒープ
 ComPtr<ID3D12DescriptorHeap> ParticleEmitter::descHeap_;
@@ -146,12 +146,23 @@ void ParticleEmitter::Update(Camera* camera, Attribute attribute)
 				nowParticleCount_++;
 			}
 
+			//if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP)
+			//{
+			//	//it->velocity = (it->velocity + it->accel) * gameSpeed_->GetSpeedNum();
+			//}
+			//else
+			//{
+			//	//it->velocity = (it->velocity + it->accel);
+			//}
+
 			//速度に加速度を加算
 			it->velocity = it->velocity + it->accel;
 			//速度による移動
 			it->position = it->position + it->velocity;
 
 			it->frame++;
+			//it->frame += freamIncreaseValue_ * gameSpeed_->GetSpeedNum();
+
 			//進行度を0～1の範囲に換算
 			float f = (float)it->frame / it->num_frame;
 
@@ -275,7 +286,7 @@ std::unique_ptr<ParticleEmitter> ParticleEmitter::Create()
 	return instance;
 }
 
-void ParticleEmitter::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale)
+void ParticleEmitter::Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale)
 {
 	int32_t isParticleNum = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)

@@ -149,7 +149,7 @@ void GameScene::Initialize()
 
 	//2Dパーティクル
 	groundParticle_ = GroundParticle::Create("effect1.png");
-	secondJumpParticle_ = SecondJump2DParticle::Create("jumpEffect.png");
+	secondJumpParticle_ = SecondJump2DParticle::Create("click.png");
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->AddEmitter(secondJumpParticle_.get());
 	ParticleManager::GetInstance()->Initialize();
@@ -163,6 +163,7 @@ void GameScene::Initialize()
 	gameSpeed_->Initialize();
 	player_->SetGameSpeed(gameSpeed_.get());
 	gameCamera_->SetGameSpeed(gameSpeed_.get());
+	
 	landParticle_->SetGameSpeed(gameSpeed_.get());
 	deadParticle_->SetGameSpeed(gameSpeed_.get());
 
@@ -268,17 +269,20 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
-	{
-		groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
-	}
-
 	if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
 	{
 		if(player_->GetIsSecondJumpMoment() == true)
 		{
 			secondJumpParticle_->Preparation(player_->GetTransform());
 		}
+	}
+
+	if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+	{
+		if(player_->GetIsSecondJumpMoment() == false)
+		{
+			groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
+		}	
 	}
 
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());

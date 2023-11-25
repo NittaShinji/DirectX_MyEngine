@@ -19,8 +19,7 @@ std::unique_ptr<GroundParticle> GroundParticle::Create(std::string fileName)
 
 void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 {
-	for(int i = 0; i < 3; i++)
-	{
+	
 		const float md_pos = 2.0f;
 		setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.x + imGuiPos_[0];
 		const float shiftY = -0.8f;
@@ -60,12 +59,12 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 		Vector4 colorSpeed{ 0.0,0.0f,0.0f,0.0f };
 
 		//初期ライフ
-		const int32_t InitLife = 60;
+		const float InitLife = 60.0f;
 
 		//追加
 		if(GetIsMaxParticle() == false)
 		{
 			Add(InitLife, setPos_, setVel_, acc, colorSpeed,color, startScale_, endScale_);
 		}
-	}
+	
 }

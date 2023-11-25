@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Vector4.h"
 #include "ObjectAttribute.h"
+#include "GameSpeed.h"
 #include <forward_list>
 
 /// <summary>
@@ -49,9 +50,9 @@ public: // サブクラス
 		float e_scale = 0.0f;
 
 		//現在フレーム
-		int frame = 0;
+		float frame = 0;
 		//終了フレーム
-		int num_frame = 0;
+		float num_frame = 0;
 		//色情報
 		Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
 		Vector4 colorSpeed = { 0.0f,0.0f,0.1f,0.0f };
@@ -94,7 +95,7 @@ public: // メンバ関数
 	void CreateModel();
 
 
-	void Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale);
+	void Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale);
 
 	//static void LoadTexture();
 	static void LoadTexture(const std::string& fileName);
@@ -114,6 +115,7 @@ public: // メンバ関数
 	std::forward_list<Particle> GetPaticles() { return particles_; }
 
 	void SetGenerationNum(int32_t generationNum) { generationNum_ = generationNum; }
+	//void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
 private: // 定数
 		static const int division = 50;					// 分割数
@@ -135,7 +137,6 @@ private:
 	static ComPtr<ID3D12PipelineState> pipelineState_;
 
 	//ジオメトリシェーダーオブジェクト
-
 	// ビュー行列
 	Matrix4 matView_;
 	// 射影行列
@@ -144,9 +145,9 @@ private:
 	// テクスチャバッファ
 	static ComPtr<ID3D12Resource> texbuff_;
 	// 頂点バッファ
-	static ComPtr<ID3D12Resource> vertBuff_;
+	ComPtr<ID3D12Resource> vertBuff_;
 	//頂点データ配列
-	static std::vector<Vertex> vertices_;
+	std::vector<Vertex> vertices_;
 
 	// デスクリプタヒープ
 	static ComPtr<ID3D12DescriptorHeap> descHeap_;
@@ -203,8 +204,15 @@ protected :
 	const float kColorYellowB = 0.333f;
 	const float kColorYellowAlpha = 1.0f;
 
+	//フレーム増加量
+	const float freamIncreaseValue_ = 1.0f;
 
 	//表示する画像名
 	std::string particleFileName_;
+
+	//ゲームスピード
+	//GameSpeed* gameSpeed_ = nullptr;
+
+
 };
 

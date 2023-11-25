@@ -2,39 +2,6 @@
 
 using namespace Microsoft::WRL;
 
-/// <summary>
-/// 静的メンバ変数の実体
-/// </summary>
-
-//ComPtr<ID3D12Resource> ObjParticleEmitter::texbuff_;
-//// 頂点バッファ
-//ComPtr<ID3D12Resource> ObjParticleEmitter::vertBuff_;
-////頂点データ配列
-//std::vector<ObjParticleEmitter::Vertex> ObjParticleEmitter::vertices_;
-//
-////SRV用のデスクリプタヒープ
-//ComPtr<ID3D12DescriptorHeap> ObjParticleEmitter::descHeap_;
-////デスクリプタヒープハンドル
-//D3D12_CPU_DESCRIPTOR_HANDLE ObjParticleEmitter::sSrvHandle_;
-//// デスクリプタサイズ
-//UINT ObjParticleEmitter::descriptorHandleIncrementSize_;
-//
-////テクスチャ番号
-//uint32_t ObjParticleEmitter::sTextureIndex_;
-//
-//// シェーダリソースビューのハンドル(CPU)
-//D3D12_CPU_DESCRIPTOR_HANDLE ObjParticleEmitter::cpuDescHandleSRV_;
-//// シェーダリソースビューのハンドル(CPU)
-//D3D12_GPU_DESCRIPTOR_HANDLE ObjParticleEmitter::gpuDescHandleSRV_;
-//
-//ComPtr<ID3D12PipelineState> ObjParticleEmitter::pipelineState_;
-//
-//ID3D12GraphicsCommandList* ObjParticleEmitter::cmdList_;
-//
-//ID3D12Device* ObjParticleEmitter::device_ = nullptr;
-//
-//ComPtr<ID3D12RootSignature> ObjParticleEmitter::rootSignature_;
-
 void ObjParticleEmitter::Initialize()
 {
 	isMaxParticle_ = false;
@@ -143,12 +110,10 @@ void ObjParticleEmitter::Add(const std::string modelName,float life, const Vecto
 		p.object3d.Initialize();
 		p.object3d.SetModel(modelName);
 		p.object3d.SetTransform(position);
-		//p.position = position;
 		p.velocity = velocity;
 		p.accel = accel;
 		p.num_frame = life;
 		p.object3d.SetScale(start_scale);
-		//p.scale = start_scale;
 		p.s_scale = start_scale;
 		p.e_scale = end_scale;
 		p.colorSpeed = colorSpeed;
