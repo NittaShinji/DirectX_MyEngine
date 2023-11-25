@@ -80,7 +80,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	virtual void Update(Camera* camera, Attribute attribute);
+	virtual void Update(Camera* camera);
 
 	/// <summary>
 	/// 描画
@@ -89,17 +89,10 @@ public: // メンバ関数
 
 	static std::unique_ptr<ParticleEmitter> Create();
 
-	/// <summary>
-	/// モデル作成
-	/// </summary>
-	void CreateModel();
-
+	//頂点バッファの生成
+	void CreateVertBuff();
 
 	void Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale);
-
-	//static void LoadTexture();
-	static void LoadTexture(const std::string& fileName);
-
 
 	//テンプレートコンストラクタ
 	template <typename Type1>
@@ -143,7 +136,7 @@ private:
 	Matrix4 matProjection_;
 
 	// テクスチャバッファ
-	static ComPtr<ID3D12Resource> texbuff_;
+	ComPtr<ID3D12Resource> texbuff_;
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff_;
 	//頂点データ配列
@@ -212,7 +205,5 @@ protected :
 
 	//ゲームスピード
 	//GameSpeed* gameSpeed_ = nullptr;
-
-
 };
 

@@ -19,7 +19,6 @@ using namespace Microsoft::WRL;
 /// 静的メンバ変数の実体
 /// </summary>
 
-ComPtr<ID3D12Resource> ParticleEmitter::texbuff_;
 // 頂点バッファ
 //ComPtr<ID3D12Resource> ParticleEmitter::vertBuff_;
 //頂点データ配列
@@ -85,7 +84,7 @@ void ParticleEmitter::Initialize(ID3D12Device* device)
 
 	InitializeGraphicsPipeline();
 
-	CreateModel();
+	CreateVertBuff();
 
 	isMaxParticle_ = false;
 }
@@ -104,7 +103,7 @@ void ParticleEmitter::ParticleRemove()
 	particles_.clear();
 }
 
-void ParticleEmitter::Update(Camera* camera, Attribute attribute)
+void ParticleEmitter::Update(Camera* camera)
 {
 	HRESULT result;
 
@@ -178,47 +177,16 @@ void ParticleEmitter::Update(Camera* camera, Attribute attribute)
 			//スケール
 			vertMap->scale = it->scale;
 
-			if(attribute == Attribute::pink)
-			{
-				vertMap->color.x = it->color.x + it->colorSpeed.x;
-				vertMap->color.y = it->color.y + it->colorSpeed.y;
-				vertMap->color.z = it->color.z + it->colorSpeed.z;
-				vertMap->color.w = it->color.w + it->colorSpeed.w;
+			//色
+			it->color.x += it->colorSpeed.x;
+			it->color.y += it->colorSpeed.y;
+			it->color.z += it->colorSpeed.z;
+			it->color.w += it->colorSpeed.w;
 
-				if(vertMap->color.x <= kColorPinkR)
-				{
-					vertMap->color.x = kColorPinkR;
-				}
-				if(vertMap->color.y <= kColorPinkG)
-				{
-					vertMap->color.y = kColorPinkG;
-				}
-				if(vertMap->color.z <= kColorPinkB)
-				{
-					vertMap->color.z = kColorPinkB;
-				}
-			}
-			else if(attribute == Attribute::yellow)
-			{
-				vertMap->color.x = it->color.x + it->colorSpeed.x;
-				vertMap->color.y = it->color.y + it->colorSpeed.y;
-				vertMap->color.z = it->color.z + it->colorSpeed.z;
-				vertMap->color.w = it->color.w + it->colorSpeed.w;
-
-				if(vertMap->color.x <= kColorYellowR)
-				{
-					vertMap->color.x = kColorYellowR;
-				}
-				if(vertMap->color.y <= kColorYellowG)
-				{
-					vertMap->color.y = kColorYellowG;
-				}
-				if(vertMap->color.z <= kColorYellowB)
-				{
-					vertMap->color.z = kColorYellowB;
-				}
-			}
-			else{}
+			vertMap->color.x = it->color.x;
+			vertMap->color.y = it->color.y;
+			vertMap->color.z = it->color.z;
+			vertMap->color.w = it->color.w;
 
 			//次の頂点へ
 			vertMap++;
@@ -459,7 +427,7 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 	pipelineDesc_.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_POINT;
 
 	// その他の設定
-	pipelineDesc_.NumRenderTargets = 2; // 描画対象は1つ
+	pipelineDesc_.NumRenderTargets = 2; // 描画対象は2つ
 	pipelineDesc_.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
 	pipelineDesc_.RTVFormats[1] = DXGI_FORMAT_R8G8B8A8_UNORM_SRGB; // 0~255指定のRGBA
 	pipelineDesc_.SampleDesc.Count = 1; // 1ピクセルにつき1回サンプリング
@@ -484,14 +452,15 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;		//ソースの値を100%使う(今から描画しようとしている色)
 		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;	//デストの値を  0%使う(既に描かれている色)
 
-		//加算合成
-		blenddesc.BlendOp = D3D12_BLEND_OP_ADD;			//加算
-		blenddesc.SrcBlend = D3D12_BLEND_ONE;
-		blenddesc.DestBlend = D3D12_BLEND_ONE;
+		//半透明合成
+		blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
+		blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
+		blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
 
-		blenddesc.BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		blenddesc.SrcBlendAlpha = D3D12_BLEND_ONE;
-		blenddesc.DestBlendAlpha = D3D12_BLEND_ZERO;
+		//加算
+		/*blenddesc.BlendOp = D3D12_BLEND_OP_ADD;			
+		blenddesc.SrcBlend = D3D12_BLEND_ONE;
+		blenddesc.DestBlend = D3D12_BLEND_ONE;*/
 	}
 
 	//デスクリプタレンジの設定
@@ -594,7 +563,7 @@ void ParticleEmitter::PostDraw()
 	ParticleEmitter::cmdList_ = nullptr;
 }
 
-void ParticleEmitter::CreateModel()
+void ParticleEmitter::CreateVertBuff()
 {
 	HRESULT result;
 	result = S_FALSE;
@@ -633,115 +602,4 @@ void ParticleEmitter::CreateModel()
 	//頂点一つ分のサイズ
 	vbView_.StrideInBytes = sizeof(vertices_[0]);
 }
-
-void ParticleEmitter::LoadTexture(const std::string& fileName)
-{
-	const std::string directoryPath = "Resources/Sprite/";
-
-	//ファイルパスを結合
-	std::string filePath = directoryPath + fileName;
-
-	//ユニコード文字列に変換する
-	wchar_t wfilePath[128];
-	MultiByteToWideChar(CP_ACP, 0, filePath.c_str(), -1, wfilePath, _countof(wfilePath));
-
-	//画像ファイルの用意
-	TexMetadata metadata{};
-	ScratchImage scratchImg{};
-
-	HRESULT result;
-	result = LoadFromWICFile(
-		wfilePath, WIC_FLAGS_NONE,
-		&metadata, scratchImg);
-
-	ScratchImage mipChain{};
-	//ミニマップ生成
-	result = GenerateMipMaps(
-		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
-		TEX_FILTER_DEFAULT, 0, mipChain);
-	if(SUCCEEDED(result))
-	{
-		scratchImg = std::move(mipChain);
-		metadata = scratchImg.GetMetadata();
-	}
-
-	//読み込んだディフューズテクスチャをSRGBとして扱う
-	metadata.format = MakeSRGB(metadata.format);
-
-	//ヒープ設定
-	D3D12_HEAP_PROPERTIES textureHeapProp{};
-	textureHeapProp.Type = D3D12_HEAP_TYPE_CUSTOM;
-	textureHeapProp.CPUPageProperty =
-		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
-	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
-
-	//リソース設定
-	D3D12_RESOURCE_DESC textureResourceDesc{};
-	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	textureResourceDesc.Format = metadata.format;
-	textureResourceDesc.Width = metadata.width; // 幅
-	textureResourceDesc.Height = (UINT)metadata.height; // 幅
-	textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
-	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
-	textureResourceDesc.SampleDesc.Count = 1;
-
-	//テクスチャバッファの生成
-	result = device_->CreateCommittedResource(
-		&textureHeapProp,
-		D3D12_HEAP_FLAG_NONE,
-		&textureResourceDesc,
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		//IID_PPV_ARGS(&textureBuffers_[0]));
-		IID_PPV_ARGS(&texbuff_));
-
-	textureHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
-
-	//全ミニマップについて
-	for(size_t i = 0; i < metadata.mipLevels; i++)
-	{
-		//ミニマップレベルを指定してイメージを取得
-		const Image* img = scratchImg.GetImage(i, 0, 0);
-
-		//テクスチャバッファにデータ転送
-
-		result = texbuff_->WriteToSubresource(
-
-			(UINT)i,
-			nullptr,
-			img->pixels,
-			(UINT)img->rowPitch,
-			(UINT)img->slicePitch
-		);
-
-		assert(SUCCEEDED(result));
-	}
-
-	//デスクリプタヒープの設定
-	D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
-	srvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	srvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE; // シェーダーから見えるように
-	srvHeapDesc.NumDescriptors = kMaxSRVCount_;
-
-	//設定を本にSRV用デスクリプタヒープを生成
-	result = device_->CreateDescriptorHeap(&srvHeapDesc, IID_PPV_ARGS(&descHeap_));
-	assert(SUCCEEDED(result));
-
-	//SRVヒープの先頭ハンドルを取得
-	sSrvHandle_ = descHeap_->GetCPUDescriptorHandleForHeapStart();
-
-	//シェーダーリソースビューの設定
-	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{}; //設定構造体
-	srvDesc.Format = textureResourceDesc.Format;//RGBA float
-	srvDesc.Shader4ComponentMapping =
-		D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-	srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;//2Dテクスチャ
-	srvDesc.Texture2D.MipLevels = textureResourceDesc.MipLevels;
-
-	//ハンドルの指す位置にシェーダーリソースビュー作成
-	device_->CreateShaderResourceView(texbuff_.Get(), &srvDesc, sSrvHandle_);
-
-}
-
-
 

@@ -57,11 +57,11 @@ void ParticleManager::ParticleRemove()
 	}
 }
 
-void ParticleManager::Update(Camera* camera, Attribute attribute)
+void ParticleManager::Update(Camera* camera)
 {
 	for(auto& emitter : emitters_)
 	{
-		emitter->Update(camera,attribute);
+		emitter->Update(camera);
 	}
 }
 

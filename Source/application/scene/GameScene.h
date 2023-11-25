@@ -128,6 +128,10 @@ private:
 	std::unique_ptr<Sprite> sceneTransitionUp_ = nullptr;
 	std::unique_ptr<Sprite> sceneTransitionDown_ = nullptr;
 
+	std::unique_ptr<Sprite> testParticleSprite_ = nullptr;
+
+
+
 	float imGuiPos[3]{ 0.0f,0.0f,0.0f };
 	float imGuiVel[3]{ 0.0f,0.0f,0.0f };
 	float imGuiAcc[3]{ 0.0f,0.0f,0.0f };

@@ -48,7 +48,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
-	void Update(Camera* camera, Attribute attribute);
+	void Update(Camera* camera);
 
 	/// <summary>
 	/// 描画

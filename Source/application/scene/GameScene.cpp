@@ -66,6 +66,8 @@ void GameScene::Initialize()
 	backGroundSprite_ = std::make_unique<Sprite>();
 	sceneTransitionUp_ = std::make_unique<Sprite>();
 	sceneTransitionDown_ = std::make_unique<Sprite>();
+	testParticleSprite_ = std::make_unique<Sprite>();
+
 
 	//黒色のテクスチャ―
 	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_ / 2 , Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BlackBackGroundHalfTex");
@@ -73,11 +75,13 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
 	TextureManager::GetInstance()->LoadTexture("effect1.png");
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
-	TextureManager::GetInstance()->LoadTexture("jumpEffect.png");
+	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 
-	const int32_t backGroundWidth = 1280;
-	const int32_t backGroundHeight = 720;
-	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight };
+	const int32_t kHalfWindowWidth = WindowsAPI::kWindow_width_ / 2;
+	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
+
+	
+	const Vector2 backGroundSize = { WindowsAPI::kWindow_width_,WindowsAPI::kWindow_height_ };
 	
 	const Vector2 aButtonSize = { 64.0f,64.0f };
 	Vector2 aButtonPosition;
@@ -110,6 +114,8 @@ void GameScene::Initialize()
 	backGroundSprite_->Initialize(Vector2(0.0f, 0.0f), backGroundSize);
 	sceneTransitionUp_->Initialize(Vector2(0.0f, 0.0f),transitionSize);
 	sceneTransitionDown_->Initialize(Vector2(0.0f,transitionSize.y),transitionSize);
+	testParticleSprite_->Initialize(Vector2(kHalfWindowWidth, kHalfWindowHeight),Vector2(128,128));
+
 
 	//モデル読み込み
 	const string sphere = "sphere";
@@ -149,7 +155,7 @@ void GameScene::Initialize()
 
 	//2Dパーティクル
 	groundParticle_ = GroundParticle::Create("effect1.png");
-	secondJumpParticle_ = SecondJump2DParticle::Create("click.png");
+	secondJumpParticle_ = SecondJump2DParticle::Create("jumpEffect6.png");
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->AddEmitter(secondJumpParticle_.get());
 	ParticleManager::GetInstance()->Initialize();
@@ -223,6 +229,7 @@ void GameScene::Update()
 	backGroundSprite_->matUpdate();
 	sceneTransitionUp_->matUpdate();
 	sceneTransitionDown_->matUpdate();
+	testParticleSprite_->matUpdate();
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -273,7 +280,7 @@ void GameScene::Update()
 	{
 		if(player_->GetIsSecondJumpMoment() == true)
 		{
-			secondJumpParticle_->Preparation(player_->GetTransform());
+			secondJumpParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
 		}
 	}
 
@@ -285,7 +292,7 @@ void GameScene::Update()
 		}	
 	}
 
-	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
+	ParticleManager::GetInstance()->Update(gameCamera_.get());
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(),player_->GetAttributeColor());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
@@ -365,6 +372,7 @@ void GameScene::Draw()
 	arrowSprite_->Update();
 	sceneTransitionUp_->Update();
 	sceneTransitionDown_->Update();
+	testParticleSprite_->Update();
 
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
@@ -372,6 +380,8 @@ void GameScene::Draw()
 	arrowSprite_->Draw("arrow.png");
 	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
+	//testParticleSprite_->Draw("jumpEffect6.png");
+
 
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
