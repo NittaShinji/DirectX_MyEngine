@@ -73,8 +73,7 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
 	TextureManager::GetInstance()->LoadTexture("effect1.png");
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
-
-	
+	TextureManager::GetInstance()->LoadTexture("jumpEffect.png");
 
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
@@ -150,7 +149,9 @@ void GameScene::Initialize()
 
 	//2Dパーティクル
 	groundParticle_ = GroundParticle::Create("effect1.png");
+	secondJumpParticle_ = SecondJump2DParticle::Create("jumpEffect.png");
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
+	ParticleManager::GetInstance()->AddEmitter(secondJumpParticle_.get());
 	ParticleManager::GetInstance()->Initialize();
 	//3Dパーティクル
 	landParticle_ = LandParticle::Create(cube);
@@ -190,8 +191,6 @@ void GameScene::Update()
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
 	}
 #endif
-
-	
 
 	if(player_->GetIsDead() == true)
 	{
@@ -260,7 +259,7 @@ void GameScene::Update()
 	lightGroup_->Update();
 
 	gameCamera_->Update(player_->GetIsMoving(),player_->GetTransform(),player_->GetInitPos(),player_->GetIsDead(),
-		player_->GetDeadPos(),player_->GetTotalAxcell(),player_->GetOnGround());
+	player_->GetDeadPos(),player_->GetTotalAxcell(),player_->GetOnGround());
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
@@ -274,6 +273,14 @@ void GameScene::Update()
 		groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
 	}
 
+	if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+	{
+		if(player_->GetIsSecondJumpMoment() == true)
+		{
+			secondJumpParticle_->Preparation(player_->GetTransform());
+		}
+	}
+
 	ParticleManager::GetInstance()->Update(gameCamera_.get(), player_->GetAttributeColor());
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(),player_->GetAttributeColor());
@@ -285,6 +292,7 @@ void GameScene::Update()
 
 	gameCamera_->ImGuiUpdate();
 	player_->ImGuiUpdate();
+	secondJumpParticle_->ImGuiUpdate();
 
 #endif
 
@@ -343,7 +351,6 @@ void GameScene::Draw()
 	player_->Draw();
 
 	ObjParticleManager::GetInstance()->Draw();
-
 	ParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
@@ -355,14 +362,12 @@ void GameScene::Draw()
 	sceneTransitionUp_->Update();
 	sceneTransitionDown_->Update();
 
-
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
 	jumpSprite_->Draw("jump.png");
 	arrowSprite_->Draw("arrow.png");
 	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
-
 
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
@@ -373,8 +378,6 @@ void GameScene::Draw()
 
 void GameScene::SceneAnimation()
 {
-	/*Vector2 sceneAnimationVec_*/
-
 	if(sceneAnimeTimer_ < kSceneAnimeTime_)
 	{
 		sceneAnimeTimer_++;

@@ -689,29 +689,6 @@
         },
         {
             "type": "MESH",
-            "name": "立方体",
-            "transform": {
-                "translation": [
-                    -100.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Black"
-        },
-        {
-            "type": "MESH",
             "name": "立方体.028",
             "transform": {
                 "translation": [
@@ -758,33 +735,58 @@
         },
         {
             "type": "MESH",
-            "name": "Cube.002",
+            "name": "Cube.001",
             "transform": {
                 "translation": [
-                    -700.0,
+                    -70.69065856933594,
                     0.0,
                     5.0
                 ],
                 "rotation": [
-                    90.00000762939453,
-                    -3.4150941701227566e-06,
-                    90.0
+                    0.0,
+                    -0.0,
+                    0.0
                 ],
                 "scaling": [
                     1.0,
                     1.0,
                     1.0
                 ]
-            }
+            },
+            "file_name": "wall",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.003",
+            "transform": {
+                "translation": [
+                    -139.19810485839844,
+                    0.0,
+                    5.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "wall",
+            "attribute": "Black"
         },
         {
             "type": "MESH",
             "name": "立方体.030",
             "transform": {
                 "translation": [
-                    -40.0,
+                    -100.0,
                     0.0,
-                    6.0
+                    0.0
                 ],
                 "rotation": [
                     0.0,
@@ -802,12 +804,12 @@
         },
         {
             "type": "MESH",
-            "name": "立方体.031",
+            "name": "Cube.002",
             "transform": {
                 "translation": [
-                    -73.58438110351562,
+                    -691.54052734375,
                     0.0,
-                    6.0
+                    5.0
                 ],
                 "rotation": [
                     0.0,
@@ -820,31 +822,8 @@
                     1.0
                 ]
             },
-            "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.032",
-            "transform": {
-                "translation": [
-                    -106.98466491699219,
-                    0.0,
-                    6.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
+            "file_name": "wall",
+            "attribute": "Black"
         }
     ]
 }

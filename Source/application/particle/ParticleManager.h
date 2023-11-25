@@ -45,10 +45,6 @@ public: // メンバ関数
 
 	void Initialize();
 
-	//static void PreDraw(ID3D12GraphicsCommandList* cmdList);
-
-	//static void PostDraw();
-
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
@@ -59,21 +55,18 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	//static std::unique_ptr<ParticleManager> Create();
 
+	/// <summary>
+	/// エミッター(生成器)の追加
+	/// </summary>
+	/// <param name="particleEmitter"></param>
 	void AddEmitter(ParticleEmitter* particleEmitter);
-	//void AddEmitter(std::unique_ptr<ParticleEmitter> particleEmitter);
-
-
-	//static void LoadTexture();
-	//static void LoadTexture(const std::string& fileName);
 
 	//パーティクルとエミッターを全て削除
 	void AllRemove();
 
+	//パーティクルのみ削除
 	void ParticleRemove();
-
-	void EmitterRemove();
 
 private: // 定数
 	static const int division = 50;					// 分割数
@@ -88,8 +81,5 @@ private: // メンバ変数
 	static ID3D12Device* device_;
 
 	std::vector<ParticleEmitter*> emitters_;
-	//std::vector<std::unique_ptr<ParticleEmitter>> emitters_;
-
-
 };
 

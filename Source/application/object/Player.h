@@ -214,6 +214,7 @@ private:
 	float JumpFrameNum_ = 60.0f;
 
 	bool isRising_ = false;
+	bool isSecondJumpMoment_ = false;
 
 	GameSpeed* gameSpeed_ = nullptr;
 
@@ -234,6 +235,7 @@ public:
 	Vector3 GetInitPos() { return kPlayerInitPos_; }
 	float GetNormalAxcellZ() { return kMoveAxcellZ_; }
 	Vector3 GetDeadPos() { return deadPos_; }
+	bool GetIsSecondJumpMoment() { return isSecondJumpMoment_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }

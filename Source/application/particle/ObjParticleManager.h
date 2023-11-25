@@ -50,8 +50,6 @@ public: // メンバ関数
 
 	void ParticleRemove();
 
-	void EmitterRemove();
-
 private: // 定数
 	//static const int division = 50;					// 分割数
 	//static const float radius;				// 底面の半径

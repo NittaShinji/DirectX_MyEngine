@@ -174,18 +174,17 @@ void ParticleEmitter::Update(Camera* camera, Attribute attribute)
 				vertMap->color.z = it->color.z + it->colorSpeed.z;
 				vertMap->color.w = it->color.w + it->colorSpeed.w;
 
-
-				if(vertMap->color.x <= 0.965f)
+				if(vertMap->color.x <= kColorPinkR)
 				{
-					vertMap->color.x = 0.965f;
+					vertMap->color.x = kColorPinkR;
 				}
-				if(vertMap->color.y <= 0.122f)
+				if(vertMap->color.y <= kColorPinkG)
 				{
-					vertMap->color.y = 0.122f;
+					vertMap->color.y = kColorPinkG;
 				}
-				if(vertMap->color.z <= 0.325f)
+				if(vertMap->color.z <= kColorPinkB)
 				{
-					vertMap->color.z = 0.325f;
+					vertMap->color.z = kColorPinkB;
 				}
 			}
 			else if(attribute == Attribute::yellow)
@@ -195,17 +194,17 @@ void ParticleEmitter::Update(Camera* camera, Attribute attribute)
 				vertMap->color.z = it->color.z + it->colorSpeed.z;
 				vertMap->color.w = it->color.w + it->colorSpeed.w;
 
-				if(vertMap->color.x <= 0.957f)
+				if(vertMap->color.x <= kColorYellowR)
 				{
-					vertMap->color.x = 0.957f;
+					vertMap->color.x = kColorYellowR;
 				}
-				if(vertMap->color.y <= 0.596f)
+				if(vertMap->color.y <= kColorYellowG)
 				{
-					vertMap->color.y = 0.596f;
+					vertMap->color.y = kColorYellowG;
 				}
-				if(vertMap->color.z <= 0.333f)
+				if(vertMap->color.z <= kColorYellowB)
 				{
-					vertMap->color.z = 0.1f;
+					vertMap->color.z = kColorYellowB;
 				}
 			}
 			else{}
@@ -236,14 +235,12 @@ void ParticleEmitter::Draw()
 	textureIndex = TextureManager::GetInstance()->GetTextureMap().at(particleFileName_);
 
 	//SRVヒープの設定コマンド
-	//ID3D12DescriptorHeap* ppHeaps[] = { descHeap_.Get() };
 	ID3D12DescriptorHeap* ppHeaps[] = { TextureManager::GetInstance()->GetSRVHeap()};
 
 	cmdList_->SetDescriptorHeaps(1, ppHeaps);
 
 	//定数バッファビュー(CBV)をルートパラメータ0番のデスクリプタレンジに設定
 	cmdList_->SetGraphicsRootConstantBufferView(0, constBuff_->GetGPUVirtualAddress());
-	//D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = descHeap_->GetGPUDescriptorHandleForHeapStart();
 
 	//GPUのSRVヒープの先頭ハンドルを取得(SRVを指しているはず)
 	D3D12_GPU_DESCRIPTOR_HANDLE srvGpuHandle = TextureManager::GetInstance()->GetSRVHeap()->GetGPUDescriptorHandleForHeapStart();
@@ -278,7 +275,7 @@ std::unique_ptr<ParticleEmitter> ParticleEmitter::Create()
 	return instance;
 }
 
-void ParticleEmitter::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 colorSpeed, float start_scale, float end_scale)
+void ParticleEmitter::Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale)
 {
 	int32_t isParticleNum = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
@@ -310,6 +307,7 @@ void ParticleEmitter::Add(int life, Vector3 position, Vector3 velocity, Vector3 
 		p.s_scale = start_scale;
 		p.e_scale = end_scale;
 		p.colorSpeed = colorSpeed;
+		p.color = color;
 	}
 }
 

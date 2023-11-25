@@ -19,6 +19,7 @@
 #include "BlockParticle.h"
 #include "LandParticle.h"
 #include "DeadParticle.h"
+#include "SecondJump2DParticle.h"
 #include "GameSpeed.h"
 
 class CollisionManager;
@@ -136,7 +137,8 @@ private:
 
 	//パーティクル
 	std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
-	//std::unique_ptr<BlockParticle> blockParticle_ = nullptr;
+	std::unique_ptr<SecondJump2DParticle> secondJumpParticle_ = nullptr;
+
 	std::unique_ptr<LandParticle> landParticle_ = nullptr;
 	std::unique_ptr<DeadParticle> deadParticle_ = nullptr;
 

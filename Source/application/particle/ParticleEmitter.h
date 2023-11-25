@@ -94,7 +94,7 @@ public: // メンバ関数
 	void CreateModel();
 
 
-	void Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 colorSpeed, float start_scale, float end_scale);
+	void Add(int life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale);
 
 	//static void LoadTexture();
 	static void LoadTexture(const std::string& fileName);
@@ -192,6 +192,17 @@ private:
 	int32_t nowParticleCount_ = 0;
 
 protected :
+
+	const float kColorPinkR = 0.965f;
+	const float kColorPinkG = 0.122f;
+	const float kColorPinkB = 0.325f;
+	const float kColorPinkAlpha = 1.0f;
+
+	const float kColorYellowR = 0.957f;
+	const float kColorYellowG = 0.596f;
+	const float kColorYellowB = 0.333f;
+	const float kColorYellowAlpha = 1.0f;
+
 
 	//表示する画像名
 	std::string particleFileName_;

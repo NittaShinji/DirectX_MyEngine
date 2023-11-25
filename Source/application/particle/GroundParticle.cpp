@@ -42,34 +42,30 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 		acc.y = md_acc + imGuiAcc_[1];
 		acc.z = md_acc + imGuiAcc_[2];
 
-		//色を変化させる
+		Vector4 color;
+
+		//色設定
 		if(playerColor == Attribute::pink)
-		{
-			Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
+		{	
+			color = { kColorPinkR,kColorPinkG,kColorPinkB,kColorPinkAlpha };
 		}
 		else if(playerColor == Attribute::yellow)
 		{
-			Vector4 colorSpeed{ 1.0f,1.0f,1.0f,1.0f };
+			color = { kColorYellowR,kColorYellowG,kColorYellowB,kColorYellowAlpha };
 		}
 
+		if(playerColor == Attribute::pink) {}
+
 		//色を変化させる
-		Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+		Vector4 colorSpeed{ 0.0,0.0f,0.0f,0.0f };
+
+		//初期ライフ
+		const int32_t InitLife = 60;
 
 		//追加
 		if(GetIsMaxParticle() == false)
 		{
-			Add(60, setPos_, setVel_, acc, colorSpeed, startScale_, endScale_);
+			Add(InitLife, setPos_, setVel_, acc, colorSpeed,color, startScale_, endScale_);
 		}
 	}
 }
-
-void GroundParticle::Initialize()
-{
-
-}
-
-//void GroundParticle::Update(Camera* camera, Attribute attribute)
-//{
-//	/*Preparation()*/
-//	ParticleEmitter::Update(camera,attribute);
-//}

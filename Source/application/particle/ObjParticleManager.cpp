@@ -72,9 +72,3 @@ void ObjParticleManager::ParticleRemove()
 		emitter->SetIsMaxParticle(false);
 	}
 }
-
-void ObjParticleManager::EmitterRemove()
-{
-	//エミッターの削除
-	emitters_.clear();
-}

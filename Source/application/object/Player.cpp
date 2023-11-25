@@ -91,9 +91,16 @@ void Player::Update(Camera* camera)
 {
 	gameCamera_ = camera;
 
+	//瞬間のフラグをOFFにする
+	if(isSecondJumpMoment_ == true)
+	{
+		isSecondJumpMoment_ = false;
+	}
+
 	//どのボタンが瞬間的に押されたか
 	gamePad_->PushedButtonMoment();
 
+	//ゲーム中プレイヤーが死んでいないとき
 	if(isMoving_ == true && isfinish_ == false)
 	{
 		//合計加速度をリセット
@@ -145,22 +152,24 @@ void Player::Update(Camera* camera)
 				{
 					jumpSound_->PlaySoundWave(false);
 
+					isSecondJumpMoment_ = true;
 					isTouchUnderObject_ = false;
 					isJumpRotate_ = true;
 					onGround_ = false;
 					const float jumpVYFist = 0.4f;
 					fallVec_ = { 0,jumpVYFist,0 };
-					jumpCount -= 1;
+					jumpCount--;
 				}
 				if(keys_->PushedKeyMoment(DIK_SPACE))
 				{
 					jumpSound_->PlaySoundWave(false);
+					isSecondJumpMoment_ = true;
 					isJumpRotate_ = true;
 					isTouchUnderObject_ = false;
 					onGround_ = false;
 					const float jumpVYFist = 0.4f;
 					fallVec_ = { 0,jumpVYFist,0 };
-					jumpCount -= 1;
+					jumpCount--;
 				}
 			}
 		}
@@ -736,7 +745,7 @@ void Player::ImGuiUpdate()
 
 void Player::JumpRotation()
 {
-	//二段ジャンプの時に回転する
+	//1回転する
 	if(isJumpRotate_ == true)
 	{
 		if(scale_.x == 1.0f && scale_.y == 1.0f && scale_.z == 1.0f)

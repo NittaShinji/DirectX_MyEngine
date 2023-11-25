@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\application\particle\SecondJump2DParticle.cpp" />
     <ClCompile Include="Source\application\GameSpeed.cpp" />
     <ClCompile Include="Source\engine\collision\QueryCallback.cpp" />
     <ClCompile Include="Source\application\particle\DeadParticle.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\application\particle\SecondJump2DParticle.h" />
     <ClInclude Include="Source\application\GameSpeed.h" />
     <ClInclude Include="Source\engine\collision\QueryCallback.h" />
     <ClInclude Include="Source\application\particle\DeadParticle.h" />
