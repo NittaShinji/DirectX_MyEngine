@@ -2,11 +2,11 @@
 #include "ObjParticleEmitter.h"
 #include "GameSpeed.h"
 
-class DeadParticle : public ObjParticleEmitter
+class BreakParticle : public ObjParticleEmitter
 {
 public:
 
-	static std::unique_ptr<DeadParticle> Create(std::string modelName);
+	static std::unique_ptr<BreakParticle> Create(std::string modelName);
 
 	void Initialize();
 
@@ -14,11 +14,11 @@ public:
 
 	void Reset();
 
-	void PopUpdate(Camera* camera, const Vector3& popPos, bool isPlayerDead, Attribute attributeColor);
+	void PopUpdate(Camera* camera, std::vector<Vector3> breakWallsPos);
 
-	void DeadParticlePop(Camera* camera, const Vector3& popPos, Attribute attributeColor);
+	void Preparation() override;
 
-	//void Add(int life, const Vector3& position, const Vector3& velocity, const Vector3& accel, const Vector4& colorSpeed, const Vector3& start_scale, const Vector3& end_scale);
+	void BreakParticlePop(Camera* camera, const Vector3& popPos);
 
 	bool GetCanReset() { return canReset_; }
 
@@ -26,10 +26,12 @@ public:
 	void SetCanReset(bool canReset) { canReset_ = canReset; }
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
+	void ImGuiUpdate();
+
 private:
 
 	//パーティクル最大数
-	const int32_t kMaxParticleNum_ = 2;
+	const int32_t kMaxParticleNum_ = 4;
 
 	//座標
 	Vector3 setPos_;
@@ -60,6 +62,4 @@ private:
 	GameSpeed* gameSpeed_ = nullptr;
 
 };
-
-
 

@@ -68,6 +68,8 @@ void Player::Initialize()
 	isJumpRotate_ = false;
 	onGround_ = true;
 	isLanded_ = false;
+	isDead_ = false;
+
 	isStartedJumpAnimation_ = false;
 	isStartedLandAnime_ = false;
 	isReturnedSizeAnime_ = false;
@@ -573,11 +575,9 @@ void Player::OnCollision(const CollisionInfo& info)
 			deadPos_ = transform_;
 			isSetDeadPos_ = true;
 		}
-		
 	}
-
 	//プレイヤーと同じ色の場合
-	if(info.object->GetAttributeColor() == attributeColor_)
+	else if(info.object->GetAttributeColor() == attributeColor_)
 	{
 		////球コライダーを取得
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());

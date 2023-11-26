@@ -19,6 +19,8 @@ public:
 
 	bool GetIsBreak_() { return isBreak_; }
 	void SetIsBreak(bool isBreak) { isBreak_ = isBreak; }
+
+	Vector3 GetWallPos() { return transform_; }
 	
 private:
 

@@ -21,6 +21,8 @@ public:
 
 	Vector3 GetGoalPos();
 
+	std::vector<Vector3> GetBreakWallsPos();
+
 private:
 
 	//ステージ情報

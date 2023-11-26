@@ -19,6 +19,7 @@
 #include "BlockParticle.h"
 #include "LandParticle.h"
 #include "DeadParticle.h"
+#include "BreakParticle.h"
 #include "SecondJump2DParticle.h"
 #include "GameSpeed.h"
 
@@ -77,15 +78,14 @@ private:
 	//カメラ
 	std::unique_ptr<GameCamera> gameCamera_ = nullptr;
 
+	//3Dオブジェクト
+	//ステージ
+	std::unique_ptr<Stage> stage_ = nullptr;
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
-
-	//3Dオブジェクト
-	std::unique_ptr<Stage> stage_ = nullptr;
-
 	//背景
 	std::unique_ptr<Object3d> skydome_ = nullptr;
-	std::unique_ptr<Object3d> plane_ = nullptr;
+	std::unique_ptr<TouchableObject> plane_ = nullptr;
 	std::unique_ptr<BackGround> backGround_ = nullptr;
 
 	//ゲームパッド
@@ -113,10 +113,6 @@ private:
 	//float whiteColor_[3] = { 1,1,1 };
 	Vector3 whiteColor_ = { 1,1,1 };
 
-	
-	/*std::unique_ptr<ParticleManager> particleManager_ = nullptr;
-	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;*/
-
 	//UIスプライト
 	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> jumpSprite_ = nullptr;
@@ -129,8 +125,6 @@ private:
 	std::unique_ptr<Sprite> sceneTransitionDown_ = nullptr;
 
 	std::unique_ptr<Sprite> testParticleSprite_ = nullptr;
-
-
 
 	float imGuiPos[3]{ 0.0f,0.0f,0.0f };
 	float imGuiVel[3]{ 0.0f,0.0f,0.0f };
@@ -145,6 +139,7 @@ private:
 
 	std::unique_ptr<LandParticle> landParticle_ = nullptr;
 	std::unique_ptr<DeadParticle> deadParticle_ = nullptr;
+	std::unique_ptr<BreakParticle> breakParticle_ = nullptr;
 
 	//リセットフラグ
 	bool isReset_;

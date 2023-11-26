@@ -1,11 +1,12 @@
 #pragma once
 #include "ObjParticleEmitter.h"
+#include "ObjectAttribute.h"
 
 class BlockParticle : public ObjParticleEmitter
 {
 public:
 
-	static std::unique_ptr<BlockParticle> Create(std::string modelName);
+	static std::unique_ptr<BlockParticle> Create(std::string modelName, int32_t maxParticleNum);
 
 	void Initialize();
 
@@ -14,6 +15,8 @@ public:
 	void Reset();
 
 	void PopUpdate(Camera* camera,const Vector3& popPos,bool isLanded,bool isPlayerDead,Attribute attributeColor);
+
+	void ParticlePop(Camera* camera, const Vector3& popPos, Attribute attributeColor);
 
 	void LandParticlePop(Camera* camera, const Vector3& popPos, Attribute attributeColor);
 	void DeadParticlePop(Camera* camera, const Vector3& popPos, Attribute attributeColor);
@@ -25,6 +28,7 @@ public:
 
 	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
 	void SetCanReset(bool canReset) { canReset_ = canReset; }
+	void SetIsStartPoped(bool isStartPoped) { isStartPoped_ = isStartPoped; };
 	
 private:
 
@@ -47,14 +51,16 @@ private:
 	//生成開始フラグ
 	bool isStartPoped_;
 
-	bool isStartDeadParticle_;
-	bool isStartLandParticle_;
+	//bool isStartDeadParticle_;
+	//bool isStartLandParticle_;
 
 	//ゲームオーバーかどうか
 	bool isPlayerDead_;
 
 	//リセットしてもよいか
 	bool canReset_;
+
+	Attribute attributeColor_;
 
 };
 

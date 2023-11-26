@@ -49,16 +49,6 @@ void SecondJump2DParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 
 	if(playerColor == Attribute::pink) {}
 
-	//色設定
-	/*if(playerColor == Attribute::pink)
-	{
-		color = { kColorPinkR,kColorPinkG,kColorPinkB,kColorPinkAlpha };
-	}
-	else if(playerColor == Attribute::yellow)
-	{
-		color = { kColorYellowR,kColorYellowG,kColorYellowB,kColorYellowAlpha };
-	}*/
-
 	//初期ライフ
 	const float InitLife = 25.0f;
 

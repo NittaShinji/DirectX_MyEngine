@@ -1,6 +1,6 @@
 #include "BlockParticle.h"
 
-std::unique_ptr<BlockParticle> BlockParticle::Create(std::string modelName)
+std::unique_ptr<BlockParticle> BlockParticle::Create(std::string modelName,int32_t maxParticleNum)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	std::unique_ptr<BlockParticle> instance = nullptr;
@@ -12,6 +12,7 @@ std::unique_ptr<BlockParticle> BlockParticle::Create(std::string modelName)
 	}
 
 	instance->modelName_ = modelName;
+	instance->maxParticleNum_ = maxParticleNum;
 	instance->Initialize();
 
 	return instance;
@@ -24,9 +25,7 @@ void BlockParticle::Initialize()
 	particleCount_ = 0;
 	isPlayerDead_ = false;
 	canReset_ = false;
-	isStartDeadParticle_ = false;
-	isStartLandParticle_ = false;
-
+	
 	for(int32_t i = 0; i < maxParticleNum_; i++)
 	{
 		Preparation();
@@ -117,7 +116,7 @@ void BlockParticle::Reset()
 
 void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLanded,bool isPlayerDead, Attribute attributeColor)
 {
-	if(isLanded == true)
+	/*if(isLanded == true)
 	{
 		if(isStartDeadParticle_ == false)
 		{
@@ -131,34 +130,93 @@ void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLand
 		isStartLandParticle_ = false;
 		isStartPoped_ = true;
 		isStartDeadParticle_ = true;
-	}
+	}*/
+
+	if(isPlayerDead) {}
+	if(isLanded) {}
+	attributeColor_ = attributeColor;
 
 	if(isStartPoped_ == true)
 	{
 		//最大数パーティクルを生み出したら出現を止める
 		if(particleCount_ < maxParticleNum_)
 		{
-			particleCount_++;
-			if(particleCount_ == maxParticleNum_)
+			//最大数に達していなければ生成
+			if(particleCount_ != maxParticleNum_)
 			{
-				isStartPoped_ = false;
-				isStartLandParticle_ = false;
-				isStartDeadParticle_ = false;
+				ParticlePop(camera, popPos, attributeColor_);
 			}
 		}
 		else
 		{
+			isStartPoped_ = false;
 			particleCount_ = 0;
 		}
+	}
+}
 
-		if(isStartLandParticle_ == true)
+void BlockParticle::ParticlePop(Camera* camera, const Vector3& popPos,Attribute attributeColor)
+{
+	std::forward_list<Particle>::iterator it = particles_.begin();
+	for(int32_t i = 0; i < particleCount_; i++)
+	{
+		it++;
+	}
+
+	const float md_pos = 2.0f;
+	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
+	const float shiftY = -0.8f;
+	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
+	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
+
+	setVel_.x = 0.0f + imGuiVel_[0];
+
+	const float md_velY = 0.174f;
+	//setVel_.y = md_velY + imGuiVel_[1];
+	setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
+
+	//const float md_velZ = 2.5f;
+	//setVel_.z = md_velZ + imGuiVel_[2];
+	//setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
+	setVel_.z = 0.8f;
+
+	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+	Vector3 acc{};
+	const float md_acc = -0.017f;
+	acc.x = 0.0f;
+	acc.y = md_acc;
+	acc.z = 0.0f;
+
+	//色を変化させる
+	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+
+	if(it->isGenerated == false)
+	{
+		it->object3d.SetTransform(setPos_);
+		it->object3d.SetScale(it->s_scale);
+		it->object3d.SetColorFlag(true);
+		if(attributeColor == Attribute::pink)
 		{
-			LandParticlePop(camera,popPos,attributeColor);
+			it->object3d.SetColor(Vector3(1.0f, 0.4f, 0.7f));
 		}
-		else if(isStartDeadParticle_ == true)
+		else if(attributeColor == Attribute::yellow)
 		{
-			DeadParticlePop(camera,popPos,attributeColor);
+			it->object3d.SetColor(Vector3(1.0f, 0.469f, 0.0f));
 		}
+		else
+		{
+			it->object3d.SetColor(Vector3(0.0f, 0.0f, 0.0f));
+		}
+
+		it->object3d.Update(camera);
+		it->velocity = setVel_;
+		it->accel = acc;
+		it->colorSpeed = colorSpeed;
+		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+		it->scale = it->s_scale;
+		it->e_scale = Vector3Zero();
+		it->frame = 0;
+		it->isGenerated = true;
 	}
 }
 

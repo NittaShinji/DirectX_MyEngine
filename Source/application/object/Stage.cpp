@@ -38,8 +38,6 @@ void Stage::Initialize(const std::string& fileName)
 				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_BLACK);
 			}
 
-
-			
 			//座標
 			Vector3 pos;
 			pos = objectData.translation;
@@ -214,4 +212,19 @@ void Stage::Reset(const std::string& fileName)
 Vector3 Stage::GetGoalPos()
 {
 	return goalPos_;
+}
+
+std::vector<Vector3> Stage::GetBreakWallsPos()
+{
+	std::vector<Vector3> BreakWallsPos_;
+
+	for(std::vector<std::unique_ptr<HitWall>>::iterator it = walls_.begin(); it != walls_.end(); it++)
+	{
+		if(it->get()->GetIsBreak_() == true)
+		{
+			BreakWallsPos_.push_back(it->get()->GetWallPos());
+		}
+	}
+
+	return BreakWallsPos_;
 }

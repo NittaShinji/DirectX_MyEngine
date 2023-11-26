@@ -8,6 +8,7 @@
 #include "TouchableObject.h"
 #include "SceneManager.h"
 #include "ObjParticleManager.h"
+#include "CollisionAttribute.h"
 #include "Vector4.h"
 #include "Easing.h"
 #include <sstream>
@@ -116,7 +117,6 @@ void GameScene::Initialize()
 	sceneTransitionDown_->Initialize(Vector2(0.0f,transitionSize.y),transitionSize);
 	testParticleSprite_->Initialize(Vector2(kHalfWindowWidth, kHalfWindowHeight),Vector2(128,128));
 
-
 	//モデル読み込み
 	const string sphere = "sphere";
 	const string test = "NoImageModel";
@@ -130,6 +130,7 @@ void GameScene::Initialize()
 	Model::Load(testStage0);
 	Model::Load(cube);
 	Model::Load(wall);
+	Model::Load(plane);
 
 	//3Dオブジェクトの生成
 	stage_ = std::make_unique<Stage>();
@@ -145,8 +146,11 @@ void GameScene::Initialize()
 	Vector3 skydomeScale = { 5,5,10 };
 	skydome_->SetScale(skydomeScale);
 
-	plane_ = Object3d::Create(plane);
+	plane_ = TouchableObject::Create(plane, COLLISION_ATTR_BLACK);
 	Vector3 planeScale = { 500,1000,1000 };
+	Vector3 planeTransform = { 0.0f,-3.0f,0.0f };
+	plane_->SetAttributeColor(black);
+	plane_->SetTransform(planeTransform);
 	plane_->SetScale(planeScale);
 
 	//------------カメラ----------
@@ -162,8 +166,10 @@ void GameScene::Initialize()
 	//3Dパーティクル
 	landParticle_ = LandParticle::Create(cube);
 	deadParticle_ = DeadParticle::Create(cube);
+	breakParticle_ = BreakParticle::Create(cube);
 	ObjParticleManager::GetInstance()->AddEmitter(landParticle_.get());
 	ObjParticleManager::GetInstance()->AddEmitter(deadParticle_.get());
+	ObjParticleManager::GetInstance()->AddEmitter(breakParticle_.get());
 
 	gameSpeed_ = std::make_unique<GameSpeed>();
 	gameSpeed_->Initialize();
@@ -172,6 +178,8 @@ void GameScene::Initialize()
 	
 	landParticle_->SetGameSpeed(gameSpeed_.get());
 	deadParticle_->SetGameSpeed(gameSpeed_.get());
+	breakParticle_->SetGameSpeed(gameSpeed_.get());
+
 
 	isReset_ = false;
 }
@@ -271,7 +279,6 @@ void GameScene::Update()
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
-	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());
 	skydome_->Update(gameCamera_.get());
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
@@ -297,6 +304,11 @@ void GameScene::Update()
 	landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(),player_->GetAttributeColor());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
 	deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(),player_->GetAttributeColor());
+	breakParticle_->SetPlayerIsDead(player_->GetIsDead());
+	breakParticle_->PopUpdate(gameCamera_.get(),stage_->GetBreakWallsPos());
+
+	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());
+
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 
 #ifdef _DEBUG
@@ -304,6 +316,7 @@ void GameScene::Update()
 	gameCamera_->ImGuiUpdate();
 	player_->ImGuiUpdate();
 	secondJumpParticle_->ImGuiUpdate();
+	breakParticle_->ImGuiUpdate();
 
 #endif
 
