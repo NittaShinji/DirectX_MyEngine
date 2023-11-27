@@ -110,7 +110,7 @@ private:
 	Vector3 totalAxcell_;
 
 	//通常加速度
-	const float kMoveAxcellZ_ = 0.68f;
+	const float kMoveAxcellZ_ = 0.78f;
 	//死んだ際の加速度
 	const float kDeadMoveAxcellZ_ = kMoveAxcellZ_ / 2;
 
