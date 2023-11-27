@@ -178,10 +178,41 @@ void ParticleEmitter::Update(Camera* camera)
 			vertMap->scale = it->scale;
 
 			//色
-			it->color.x += it->colorSpeed.x;
-			it->color.y += it->colorSpeed.y;
-			it->color.z += it->colorSpeed.z;
-			it->color.w += it->colorSpeed.w;
+			if(it->color.x <= it->endColor.x)
+			{
+				it->color.x += it->colorSpeed.x;
+			}
+			else if(it->color.x > it->endColor.x)
+			{
+				it->color.x -= it->colorSpeed.x;
+			}
+
+			if(it->color.y <= it->endColor.y)
+			{
+				it->color.y += it->colorSpeed.y;
+			}
+			else if(it->color.y > it->endColor.y)
+			{
+				it->color.y -= it->colorSpeed.y;
+			}
+
+			if(it->color.z <= it->endColor.z)
+			{
+				it->color.z += it->colorSpeed.z;
+			}
+			else if(it->color.z > it->endColor.z)
+			{
+				it->color.z -= it->colorSpeed.z;
+			}
+
+			if(it->color.w <= it->endColor.w)
+			{
+				it->color.w += it->colorSpeed.w;
+			}
+			else if(it->color.w > it->endColor.w)
+			{
+				it->color.w -= it->colorSpeed.w;
+			}
 
 			vertMap->color.x = it->color.x;
 			vertMap->color.y = it->color.y;
@@ -254,7 +285,7 @@ std::unique_ptr<ParticleEmitter> ParticleEmitter::Create()
 	return instance;
 }
 
-void ParticleEmitter::Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale)
+void ParticleEmitter::Add(float life, Vector3 position, Vector3 velocity, Vector3 accel,Vector4 endColor, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale)
 {
 	int32_t isParticleNum = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
@@ -287,6 +318,7 @@ void ParticleEmitter::Add(float life, Vector3 position, Vector3 velocity, Vector
 		p.e_scale = end_scale;
 		p.colorSpeed = colorSpeed;
 		p.color = color;
+		p.endColor = endColor;
 	}
 }
 

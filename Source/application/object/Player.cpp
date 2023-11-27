@@ -618,7 +618,6 @@ void Player::AccelerateChangeColor()
 		{
 			if(attributeColor_ == yellow)
 			{
-
 				//加速していなかったら加速フラグを立てる
 				if(isRightAxcell_ == false)
 				{

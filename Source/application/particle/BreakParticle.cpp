@@ -98,6 +98,9 @@ void BreakParticle::Update(Camera* camera)
 			it->scale = (it->e_scale - it->s_scale) * f;
 			it->scale += it->s_scale;
 
+			it->alpha -= 0.03f;
+			it->object3d.SetAlpha(it->alpha);
+
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
 		}
@@ -187,27 +190,27 @@ void BreakParticle::BreakParticlePop(Camera* camera, const Vector3& popPos)
 
 	if(particleCount_ == 0)
 	{
-		setPos_.x = popPos.x + imGuiPos_[0] + 2.4f;
+		setPos_.x = popPos.x + imGuiPos_[0] ;
 		setPos_.y = popPos.y + imGuiPos_[1] + 2.4f;
-		setPos_.z = popPos.z + imGuiPos_[2];
+		setPos_.z = popPos.z + imGuiPos_[2] + 2.4f;
 	}
 	else if(particleCount_ == 1)
 	{
-		setPos_.x = popPos.x + imGuiPos_[0] - 2.4f;
+		setPos_.x = popPos.x + imGuiPos_[0] ;
 		setPos_.y = popPos.y + imGuiPos_[1] + 2.4f;
-		setPos_.z = popPos.z + imGuiPos_[2];
+		setPos_.z = popPos.z + imGuiPos_[2] - 2.4f;
 	}
 	else if(particleCount_ == 2)
 	{
-		setPos_.x = popPos.x + imGuiPos_[0] + 2.4f;
+		setPos_.x = popPos.x + imGuiPos_[0] ;
 		setPos_.y = popPos.y + imGuiPos_[1] - 2.4f;
-		setPos_.z = popPos.z + imGuiPos_[2];
+		setPos_.z = popPos.z + imGuiPos_[2] + 2.4f;
 	}
 	else if(particleCount_ == 3)
 	{ 
-		setPos_.x = popPos.x + imGuiPos_[0] - 2.4f;
+		setPos_.x = popPos.x + imGuiPos_[0] ;
 		setPos_.y = popPos.y + imGuiPos_[1] - 2.4f;
-		setPos_.z = popPos.z + imGuiPos_[2];
+		setPos_.z = popPos.z + imGuiPos_[2] - 2.4f;
 	}
 
 	//const float md_pos = 2.0f;
@@ -235,7 +238,7 @@ void BreakParticle::BreakParticlePop(Camera* camera, const Vector3& popPos)
 	acc.z = 0.0f;
 
 	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,-1.0f };
 
 	if(it->isGenerated == false)
 	{
@@ -244,6 +247,10 @@ void BreakParticle::BreakParticlePop(Camera* camera, const Vector3& popPos)
 		it->object3d.SetColorFlag(true);
 		it->object3d.SetColor(Vector3(1.0f, 1.0f, 1.0f));
 		
+		it->object3d.SetAlphaFlag(true);
+		it->alpha = 1.0f;
+		it->object3d.SetAlpha(it->alpha);
+
 		it->object3d.Update(camera);
 		it->velocity = setVel_;
 		it->accel = acc;

@@ -85,6 +85,7 @@ void BlockParticle::Update(Camera* camera)
 			it->scale = (it->e_scale - it->s_scale) * f;
 			it->scale += it->s_scale;
 
+			
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
 		}
@@ -337,6 +338,9 @@ void BlockParticle::DeadParticlePop(Camera* camera, const Vector3& popPos, Attri
 		{
 			it->object3d.SetColor(Vector3(0.0f, 0.0f, 0.0f));
 		}
+		it->object3d.SetAlphaFlag(true);
+		it->alpha = 1.0f;
+		it->object3d.SetAlpha(it->alpha);
 		it->object3d.Update(camera);
 		it->velocity = setVel_;
 		it->accel = acc;

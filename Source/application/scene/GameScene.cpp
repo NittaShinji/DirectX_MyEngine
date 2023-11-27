@@ -315,8 +315,9 @@ void GameScene::Update()
 
 	gameCamera_->ImGuiUpdate();
 	player_->ImGuiUpdate();
-	secondJumpParticle_->ImGuiUpdate();
+	//secondJumpParticle_->ImGuiUpdate();
 	breakParticle_->ImGuiUpdate();
+	groundParticle_->ImguiUpdate();
 
 #endif
 

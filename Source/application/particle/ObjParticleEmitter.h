@@ -32,6 +32,9 @@ public:
 		//終了フレーム
 		float num_frame = 0;
 
+		//色
+		/*Vector4 color = {};*/
+		float alpha;
 		//色情報
 		Vector4 colorSpeed = {};
 

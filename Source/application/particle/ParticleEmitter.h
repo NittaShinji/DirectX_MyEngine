@@ -55,6 +55,7 @@ public: // サブクラス
 		float num_frame = 0;
 		//色情報
 		Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
+		Vector4 endColor = {0.0f,0.0f,0.0f,1.0f};
 		Vector4 colorSpeed = { 0.0f,0.0f,0.1f,0.0f };
 	};
 
@@ -92,7 +93,7 @@ public: // メンバ関数
 	//頂点バッファの生成
 	void CreateVertBuff();
 
-	void Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale);
+	void Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 endColor,Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale);
 
 	//テンプレートコンストラクタ
 	template <typename Type1>

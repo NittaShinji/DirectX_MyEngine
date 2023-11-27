@@ -689,6 +689,29 @@
         },
         {
             "type": "MESH",
+            "name": "立方体",
+            "transform": {
+                "translation": [
+                    -100.0,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
             "name": "立方体.028",
             "transform": {
                 "translation": [
@@ -738,76 +761,7 @@
             "name": "Cube.001",
             "transform": {
                 "translation": [
-                    -70.69065856933594,
-                    0.0,
-                    5.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "wall",
-            "attribute": "Black"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.003",
-            "transform": {
-                "translation": [
-                    -139.19810485839844,
-                    0.0,
-                    5.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "wall",
-            "attribute": "Black"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.030",
-            "transform": {
-                "translation": [
-                    -100.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "Cube.002",
-            "transform": {
-                "translation": [
-                    -691.54052734375,
+                    -708.9085693359375,
                     0.0,
                     5.0
                 ],

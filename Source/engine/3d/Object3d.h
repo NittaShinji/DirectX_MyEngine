@@ -146,10 +146,12 @@ protected:	//メンバ変数
 	static std::string kDefaultTextureDirectoryPath_;
 
 	bool colorFlag_ = false;
+	bool alphaFlag_ = false;
 
 	static const UINT kRenderTexNum = 2;
 
 	Vector3 color_ = { 1,1,1 };
+	float alpha_ = 1.0f;
 
 	//属性
 	int32_t attributeColor_;
@@ -184,6 +186,9 @@ public:
 	void SetColor(Vector3 color) { color_ = color; }
 	void SetAmbient(Vector3 color);
 	void SetAttributeColor(int32_t attribute) { attributeColor_ = attribute; }
+	void SetAlpha(float alpha) { alpha_ = alpha; }
+	void SetAlphaFlag(bool alphaFlag) { alphaFlag_ = alphaFlag; }
+
 
 	/// <summary>
 	/// コライダーのセット

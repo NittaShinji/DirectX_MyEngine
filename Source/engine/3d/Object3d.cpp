@@ -388,7 +388,15 @@ void Object3d::Update(Camera* camera)
 	SetAmbient(color_);
 	constMapMaterial_->diffuse = model_.GetInfomation()->material.diffuse;
 	constMapMaterial_->specular = model_.GetInfomation()->material.specular;
-	constMapMaterial_->alpha = model_.GetInfomation()->material.alpha;
+
+	if(alphaFlag_ == false)
+	{
+		constMapMaterial_->alpha = model_.GetInfomation()->material.alpha;
+	}
+	else
+	{
+		constMapMaterial_->alpha = alpha_;
+	}
 
 	constBuffMaterial_->Unmap(0, nullptr);
 

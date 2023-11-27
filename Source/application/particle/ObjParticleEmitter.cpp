@@ -50,6 +50,8 @@ void ObjParticleEmitter::Update(Camera* camera)
 		it->object3d.SetScale(it->scale);
 
 		it->object3d.Update(camera);
+
+		
 	}
 }
 
