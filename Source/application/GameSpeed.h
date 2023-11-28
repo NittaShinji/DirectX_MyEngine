@@ -29,7 +29,6 @@ private: //メンバ変数
 	const float kStopSpeed_ = 0.0f;
 
 	float speedNum_;
-	float time_;
 
 public:	//アクセッサ
 

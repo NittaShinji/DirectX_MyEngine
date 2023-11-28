@@ -96,6 +96,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\application\GameTimer.cpp" />
     <ClCompile Include="Source\application\particle\BreakParticle.cpp" />
     <ClCompile Include="Source\application\particle\SecondJump2DParticle.cpp" />
     <ClCompile Include="Source\application\GameSpeed.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\application\GameTimer.h" />
     <ClInclude Include="Source\application\particle\BreakParticle.h" />
     <ClInclude Include="Source\application\particle\SecondJump2DParticle.h" />
     <ClInclude Include="Source\application\GameSpeed.h" />

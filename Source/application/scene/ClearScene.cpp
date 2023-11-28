@@ -21,7 +21,7 @@ void ClearScene::Initialize()
 
 	Vector2 titlePosition = { 0.0f,0.0f };
 	Vector2 titleSize = { 1280.0f,720.0f };
-	end_->Initialize(titlePosition, titleSize);
+	end_->Initialize("WhiteTex",titlePosition);
 
 	Vector2 checkSize = { 157.0f,112.0f };
 	//checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) - (checkSize.x / 2);
@@ -30,13 +30,13 @@ void ClearScene::Initialize()
 	//checkPosition_.y = (WindowsAPI::kWindow_height_ / 2) - (checkSize.y);
 	checkPosition_.y = 0.0f;
 
-	check_->Initialize(checkPosition_, checkSize);
+	check_->Initialize("check.png",checkPosition_);
 
 	Vector2 aButtonSize = { 128.0f,128.0f };
 	Vector2 aButtonPosition = { 0.0f,0.0f };
 	aButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (aButtonSize.x / 2);
 	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y);
-	aButton_->Initialize(aButtonPosition, aButtonSize);
+	aButton_->Initialize("A.png",aButtonPosition);
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();

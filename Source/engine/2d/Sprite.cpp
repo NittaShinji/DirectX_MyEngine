@@ -64,7 +64,7 @@ void Sprite::StaticInitialize()
 	textureManager_ = TextureManager::GetInstance();
 }
 
-void Sprite::Initialize(Vector2 position, Vector2 size)
+void Sprite::Initialize(const std::string fileName,Vector2 position)
 {
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
 
@@ -84,13 +84,12 @@ void Sprite::Initialize(Vector2 position, Vector2 size)
 	constMapTransform_->mat.m[3][0] = -1.0f;
 	constMapTransform_->mat.m[3][1] = 1.0f;
 
-
-	scale_ = { 10.0f,10.0f,10.0f };
+	scale_ = { 1.0f,1.0f,1.0f };
 	rotation_ = { 0.0f };
 	moveSpeed_ = { 0.0f,0.0f };
 	anchorPoint_ = { 0.0f,0.0f };
 	color_ = { 1.0f,1.0f,1.0f,1.0f };
-	size_ = size;
+	size_ = TextureManager::GetInstance()->GetTexSize(fileName);
 
 	//ウインドウの中心に表示
 	position_ = position;
@@ -221,6 +220,7 @@ void Sprite::matUpdate()
 	//ワールド変換行列
 	Matrix4 matWorld;
 	matWorld = MatrixIdentity();	//単位行列を代入して変形をリセット
+	matWorld *= matScale;
 	matWorld *= matRot;		//ワールド行列に回転を反映
 	matWorld *= matTrans;	//ワールド行列に平行移動を反映
 	//定数バッファにデータ転送

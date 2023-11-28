@@ -64,10 +64,10 @@ void GameScene::Initialize()
 	bButtonSprite_ = std::make_unique<Sprite>();
 	jumpSprite_ = std::make_unique<Sprite>();
 	arrowSprite_ = std::make_unique<Sprite>();
-	backGroundSprite_ = std::make_unique<Sprite>();
+	//backGroundSprite_ = std::make_unique<Sprite>();
 	sceneTransitionUp_ = std::make_unique<Sprite>();
 	sceneTransitionDown_ = std::make_unique<Sprite>();
-	testParticleSprite_ = std::make_unique<Sprite>();
+	//testParticleSprite_ = std::make_unique<Sprite>();
 
 
 	//黒色のテクスチャ―
@@ -78,44 +78,49 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 
-	const int32_t kHalfWindowWidth = WindowsAPI::kWindow_width_ / 2;
-	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
+	//const int32_t kHalfWindowWidth = WindowsAPI::kWindow_width_ / 2;
+	//const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
 
 	
 	const Vector2 backGroundSize = { WindowsAPI::kWindow_width_,WindowsAPI::kWindow_height_ };
 	
-	const Vector2 aButtonSize = { 64.0f,64.0f };
+	//const Vector2 aButtonSize = { 64.0f,64.0f };
+
 	Vector2 aButtonPosition;
-	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
-	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y * 4) + (aButtonSize.y / 2);
+	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x * 2);
+	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 4) + (kUiSize_.y / 2);
 
-	const Vector2 bButtonSize = { 64.0f,64.0f };
+	//const Vector2 bButtonSize = { 64.0f,64.0f };
 	Vector2 bButtonPosition;
-	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
-	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y * 4) + (bButtonSize.y / 2);
+	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x);
+	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 4) + (kUiSize_.y / 2);
 
-	const Vector2 jumpSpriteSize = { 64.0f,64.0f };
+	//const Vector2 jumpSpriteSize = { 64.0f,64.0f };
 	Vector2 jumpSpritePosition;
-	jumpSpritePosition.x = (WindowsAPI::kWindow_width_)-(jumpSpriteSize.x * 2);
-	jumpSpritePosition.y = (WindowsAPI::kWindow_height_ / 2) + (jumpSpriteSize.y * 3) + (jumpSpriteSize.y / 2);
+	jumpSpritePosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x * 2);
+	jumpSpritePosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 3) + (kUiSize_.y / 2);
 
-	const Vector2 arrowSize = { 64.0f,64.0f };
+	//const Vector2 arrowSize = { 64.0f,64.0f };
 	Vector2 arrowPosition;
-	arrowPosition.x = (WindowsAPI::kWindow_width_)-(arrowSize.x);
-	arrowPosition.y = (WindowsAPI::kWindow_height_ / 2) + (arrowSize.y * 3) + (arrowSize.y / 2);
+	arrowPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x);
+	arrowPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 3) + (kUiSize_.y / 2);
 
 	Vector2 transitionSize;
 	transitionSize.x = (WindowsAPI::kWindow_width_);
 	transitionSize.y = (WindowsAPI::kWindow_height_ / 2);
 
-	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
-	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
-	jumpSprite_->Initialize(jumpSpritePosition, jumpSpriteSize);
-	arrowSprite_->Initialize(arrowPosition, arrowSize);
-	backGroundSprite_->Initialize(Vector2(0.0f, 0.0f), backGroundSize);
-	sceneTransitionUp_->Initialize(Vector2(0.0f, 0.0f),transitionSize);
-	sceneTransitionDown_->Initialize(Vector2(0.0f,transitionSize.y),transitionSize);
-	testParticleSprite_->Initialize(Vector2(kHalfWindowWidth, kHalfWindowHeight),Vector2(128,128));
+	aButtonSprite_->Initialize("A.png",aButtonPosition);
+	aButtonSprite_->SetSize(Vector2(kUiSize_));
+	bButtonSprite_->Initialize("B.png",bButtonPosition);
+	bButtonSprite_->SetSize(Vector2(kUiSize_));
+	jumpSprite_->Initialize("jump.png",jumpSpritePosition);
+	jumpSprite_->SetSize(Vector2(kUiSize_));
+	arrowSprite_->Initialize("arrow.png",arrowPosition);
+	arrowSprite_->SetSize(Vector2(kUiSize_));
+	//backGroundSprite_->Initialize(Vector2(0.0f, 0.0f));
+	sceneTransitionUp_->Initialize("BlackBackGroundHalfTex",Vector2(0.0f, 0.0f));
+	sceneTransitionDown_->Initialize("BlackBackGroundHalfTex",Vector2(0.0f, WindowsAPI::kWindow_height_ / 2));
+	//testParticleSprite_->Initialize(Vector2(kHalfWindowWidth, kHalfWindowHeight));
 
 	//モデル読み込み
 	const string sphere = "sphere";
@@ -234,10 +239,10 @@ void GameScene::Update()
 	bButtonSprite_->matUpdate();
 	jumpSprite_->matUpdate();
 	arrowSprite_->matUpdate();
-	backGroundSprite_->matUpdate();
+	//backGroundSprite_->matUpdate();
 	sceneTransitionUp_->matUpdate();
 	sceneTransitionDown_->matUpdate();
-	testParticleSprite_->matUpdate();
+	//testParticleSprite_->matUpdate();
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -386,7 +391,7 @@ void GameScene::Draw()
 	arrowSprite_->Update();
 	sceneTransitionUp_->Update();
 	sceneTransitionDown_->Update();
-	testParticleSprite_->Update();
+	//testParticleSprite_->Update();
 
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");

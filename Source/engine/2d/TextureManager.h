@@ -1,5 +1,6 @@
 #pragma once
 #include "DirectXBasic.h"
+#include "Vector2.h"
 #include "Vector4.h"
 #include <wrl.h>
 #include <array>
@@ -58,6 +59,9 @@ private:
 	//画像に結び付いたテクスチャ番号格納用map
 	static std::map<const std::string, uint32_t, std::less<>> textureMap_;
 
+	//テクスチャの幅
+	static std::map<const std::string, Vector2> texSizeMap_;
+
 	static ID3D12Device* device_;
 	static ID3D12GraphicsCommandList* cmdList_;
 
@@ -73,5 +77,6 @@ public:
 	//ゲッター
 	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
 	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
+	Vector2 GetTexSize(std::string fileName);
 };
 

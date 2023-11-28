@@ -16,7 +16,7 @@ public:
 	static void StaticInitialize();
 
 	//初期化
-	void Initialize(Vector2 position, Vector2 size);
+	void Initialize(const std::string fileName, Vector2 position);
 	//行列更新
 	void matUpdate();
 	//描画
@@ -153,4 +153,6 @@ public:
 	void SetIsInvisible(bool isInvisible) { isInvisible_ = isInvisible; };
 	void SetWidth(UINT width) { width_ = width; }
 	void SetHeight(UINT height) { height_ = height; }
+	//void SetScale(Vector3 scale) { scale_ = scale; }
+	
 };

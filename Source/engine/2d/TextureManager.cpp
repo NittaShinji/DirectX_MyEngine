@@ -24,6 +24,8 @@ std::string TextureManager::kDefaultTextureDirectoryPath_ = "Resources/Sprite/";
 uint32_t TextureManager::sTextureIndex_;
 //画像に結び付いたテクスチャ番号格納用map
 std::map<const std::string, uint32_t, std::less<>> TextureManager::textureMap_;
+//std::map<const std::string, uint32_t, std::less<>> TextureManager::textureMap_;
+std::map<const std::string, Vector2> TextureManager::texSizeMap_;
 
 ID3D12Device* TextureManager::device_;
 ID3D12GraphicsCommandList* TextureManager::cmdList_;
@@ -98,8 +100,8 @@ void TextureManager::LoadTexture(const std::string& fileName)
 	D3D12_RESOURCE_DESC textureResourceDesc{};
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	textureResourceDesc.Format = metadata.format;
-	textureResourceDesc.Width = metadata.width; // 幅
-	textureResourceDesc.Height = (UINT)metadata.height; // 幅
+	textureResourceDesc.Width = metadata.width; // 横幅
+	textureResourceDesc.Height = (UINT)metadata.height; // 縦幅
 	textureResourceDesc.DepthOrArraySize = (UINT16)metadata.arraySize;
 	textureResourceDesc.MipLevels = (UINT16)metadata.mipLevels;
 	textureResourceDesc.SampleDesc.Count = 1;
@@ -156,6 +158,9 @@ void TextureManager::LoadTexture(const std::string& fileName)
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	device_->CreateShaderResourceView(textureBuffers_[sTextureIndex_].Get(), &srvDesc, srvHandle);
 
+	//テクスチャのサイズを保存
+	texSizeMap_.emplace(fileName, Vector2(static_cast<float>(textureResourceDesc.Width), static_cast<float>(textureResourceDesc.Height)));
+
 	//画像番号を増やす
 	sTextureIndex_++;
 }
@@ -171,6 +176,9 @@ void TextureManager::TexMapping(int32_t texWidth, int32_t texHeight, Vector4 col
 	const int32_t imageDateCount_ = texWidth * texHeight;
 	//画像イメージデータ配列
 	imageDate = new Vector4[imageDateCount_];
+
+	//テクスチャのサイズを保存
+	texSizeMap_.emplace(fileName, Vector2(static_cast<float>(texWidth), static_cast<float>(texHeight)));
 
 	//全ピクセルの色を初期化
 	for(size_t i = 0; i < imageDateCount_; i++)
@@ -242,4 +250,11 @@ void TextureManager::TexMapping(int32_t texWidth, int32_t texHeight, Vector4 col
 
 	//画像番号を増やす
 	sTextureIndex_++;
+}
+
+Vector2 TextureManager::GetTexSize(std::string fileName)
+{
+	Vector2 result;
+	result = texSizeMap_.at(fileName);
+	return result;
 }

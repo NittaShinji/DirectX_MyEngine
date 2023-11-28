@@ -65,8 +65,8 @@ void TutorialScene::Initialize()
 	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
 	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y * 4) + (bButtonSize.y / 2);
 
-	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
-	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
+	aButtonSprite_->Initialize("A.png",aButtonPosition);
+	bButtonSprite_->Initialize("B.png",bButtonPosition);
 
 	//モデル読み込み
 	const string sphere = "sphere";

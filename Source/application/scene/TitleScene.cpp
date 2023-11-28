@@ -61,7 +61,7 @@ void TitleScene::Initialize()
 
 	Vector2 titlePosition = { 400.0f,33.0f };
 	const Vector2 titleSize = { 480.0f,103.0f };
-	titleSprite_->Initialize(titlePosition, titleSize);
+	titleSprite_->Initialize("TitleFont.png",titlePosition);
 
 	const Vector2 clickButtonSize = { 128.0f,128.0f };
 	Vector2 clickButtonPosition;
@@ -78,10 +78,10 @@ void TitleScene::Initialize()
 	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
 	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y) + (bButtonSize.y / 3);
 
-	clickSprite_->Initialize(clickButtonPosition, clickButtonSize);
-	aButtonSprite_->Initialize(aButtonPosition, aButtonSize);
-	bButtonSprite_->Initialize(bButtonPosition, bButtonSize);
-	backGroundSprite_->Initialize(backGroundPosition, backGroundSize);
+	aButtonSprite_->Initialize("A.png",aButtonPosition);
+	bButtonSprite_->Initialize("B.png",bButtonPosition);
+	clickSprite_->Initialize("click.png",clickButtonPosition);
+	backGroundSprite_->Initialize("WhiteTex",backGroundPosition);
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
