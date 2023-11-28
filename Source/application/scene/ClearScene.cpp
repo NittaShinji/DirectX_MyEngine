@@ -19,15 +19,10 @@ void ClearScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("check.png");
 	TextureManager::GetInstance()->LoadTexture("A.png");
 
-	Vector2 titlePosition = { 0.0f,0.0f };
-	Vector2 titleSize = { 1280.0f,720.0f };
+	Vector2 titlePosition = { 0.0f,0.0f };;
 	end_->Initialize("WhiteTex",titlePosition);
 
-	Vector2 checkSize = { 157.0f,112.0f };
-	//checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) - (checkSize.x / 2);
 	checkPosition_.x = (WindowsAPI::kWindow_width_ / 2);
-
-	//checkPosition_.y = (WindowsAPI::kWindow_height_ / 2) - (checkSize.y);
 	checkPosition_.y = 0.0f;
 
 	check_->Initialize("check.png",checkPosition_);

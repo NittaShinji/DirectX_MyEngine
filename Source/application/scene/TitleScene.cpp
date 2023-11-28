@@ -60,7 +60,6 @@ void TitleScene::Initialize()
 	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");
 
 	Vector2 titlePosition = { 400.0f,33.0f };
-	const Vector2 titleSize = { 480.0f,103.0f };
 	titleSprite_->Initialize("TitleFont.png",titlePosition);
 
 	const Vector2 clickButtonSize = { 128.0f,128.0f };

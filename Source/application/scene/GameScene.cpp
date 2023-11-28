@@ -69,7 +69,6 @@ void GameScene::Initialize()
 	sceneTransitionDown_ = std::make_unique<Sprite>();
 	//testParticleSprite_ = std::make_unique<Sprite>();
 
-
 	//黒色のテクスチャ―
 	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_ / 2 , Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BlackBackGroundHalfTex");
 	TextureManager::GetInstance()->LoadTexture("jump.png");
@@ -78,29 +77,18 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 
-	//const int32_t kHalfWindowWidth = WindowsAPI::kWindow_width_ / 2;
-	//const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
-
-	
-	const Vector2 backGroundSize = { WindowsAPI::kWindow_width_,WindowsAPI::kWindow_height_ };
-	
-	//const Vector2 aButtonSize = { 64.0f,64.0f };
-
 	Vector2 aButtonPosition;
 	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x * 2);
 	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 4) + (kUiSize_.y / 2);
 
-	//const Vector2 bButtonSize = { 64.0f,64.0f };
 	Vector2 bButtonPosition;
 	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x);
 	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 4) + (kUiSize_.y / 2);
 
-	//const Vector2 jumpSpriteSize = { 64.0f,64.0f };
 	Vector2 jumpSpritePosition;
 	jumpSpritePosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x * 2);
 	jumpSpritePosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 3) + (kUiSize_.y / 2);
 
-	//const Vector2 arrowSize = { 64.0f,64.0f };
 	Vector2 arrowPosition;
 	arrowPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x);
 	arrowPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 3) + (kUiSize_.y / 2);
