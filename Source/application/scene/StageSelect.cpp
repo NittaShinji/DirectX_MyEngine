@@ -34,7 +34,7 @@ void StageSelectScene::Initialize()
 
 	const int32_t selectWidth = 640;
 	const int32_t selectHeight = 400;
-	const Vector2 selectSize = { selectWidth,selectHeight };
+
 	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight, Vector4(0.8f, 0.8f, 0.8f, 1.0f), "CursorTex");
 	//灰色のテクスチャ―
 	TextureManager::GetInstance()->TexMapping(600, 360, Vector4(0.746f, 0.746f, 0.746f, 1.0f), "BackGroundTex");
@@ -47,11 +47,9 @@ void StageSelectScene::Initialize()
 	Vector2 selectPosition = { 0.0f,160.0f };
 	
 	Vector2 testPosition = { 0.0f,0.0f };
-	const Vector2 testSize = { 128.0f,128.0f };
 
 	Vector2 backGroundPositionL = { 20.0f,180.0f };
 	Vector2 backGroundPositionR = { 660.0f,180.0f };
-	const Vector2 backGroundSize = { 600.0f,360.0f };
 
 	backGroundLeft_->Initialize("BackGroundTex",backGroundPositionL);
 	backGroundRight_->Initialize("BackGroundTex",backGroundPositionR);

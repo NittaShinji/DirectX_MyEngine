@@ -24,7 +24,6 @@ std::string TextureManager::kDefaultTextureDirectoryPath_ = "Resources/Sprite/";
 uint32_t TextureManager::sTextureIndex_;
 //画像に結び付いたテクスチャ番号格納用map
 std::map<const std::string, uint32_t, std::less<>> TextureManager::textureMap_;
-//std::map<const std::string, uint32_t, std::less<>> TextureManager::textureMap_;
 std::map<const std::string, Vector2> TextureManager::texSizeMap_;
 
 ID3D12Device* TextureManager::device_;
@@ -133,7 +132,6 @@ void TextureManager::LoadTexture(const std::string& fileName)
 
 		assert(SUCCEEDED(result_));
 	}
-
 
 	//SRVヒープの先頭ハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE srvHandle = srvHeap_->GetCPUDescriptorHandleForHeapStart();

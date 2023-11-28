@@ -55,24 +55,23 @@ void TitleScene::Initialize()
 	Vector2 backGroundPosition = { 0.0f,0.0f };
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
-	const Vector2 backGroundSize = { backGroundWidth,backGroundHeight };
 
 	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");
 
 	Vector2 titlePosition = { 400.0f,33.0f };
 	titleSprite_->Initialize("TitleFont.png",titlePosition);
 
-	const Vector2 clickButtonSize = { 128.0f,128.0f };
+	const Vector2 clickButtonSize = { TextureManager::GetInstance()->GetTexSize("click.png")};
 	Vector2 clickButtonPosition;
 	clickButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (clickButtonSize.x / 2);
 	clickButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (clickButtonSize.y) + (clickButtonSize.y / 3);
 
-	const Vector2 aButtonSize = { 128.0f,128.0f };
+	const Vector2 aButtonSize = { TextureManager::GetInstance()->GetTexSize("A.png") };
 	Vector2 aButtonPosition;
 	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
 	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y) + (aButtonSize.y / 3);
 
-	const Vector2 bButtonSize = { 128.0f,128.0f };
+	const Vector2 bButtonSize = { TextureManager::GetInstance()->GetTexSize("B.png") };
 	Vector2 bButtonPosition;
 	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
 	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y) + (bButtonSize.y / 3);

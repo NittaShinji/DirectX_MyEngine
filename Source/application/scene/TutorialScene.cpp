@@ -55,12 +55,14 @@ void TutorialScene::Initialize()
 	aButtonSprite_ = std::make_unique<Sprite>();
 	bButtonSprite_ = std::make_unique<Sprite>();
 
-	const Vector2 aButtonSize = { 64.0f,64.0f };
+	//const Vector2 aButtonSize = { 64.0f,64.0f };
+	const Vector2 aButtonSize = { TextureManager::GetInstance()->GetTexSize("A.png")};
+
 	Vector2 aButtonPosition;
 	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
 	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y * 4) + (aButtonSize.y / 2);
 
-	const Vector2 bButtonSize = { 64.0f,64.0f };
+	const Vector2 bButtonSize = { TextureManager::GetInstance()->GetTexSize("B.png") };
 	Vector2 bButtonPosition;
 	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
 	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y * 4) + (bButtonSize.y / 2);
