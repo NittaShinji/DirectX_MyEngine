@@ -136,7 +136,7 @@ protected:
 	//テクスチャ左上座標
 	Vector2 textureLeftTop_ = { 0.0f,0.0f };
 	//テクスチャ切り出しサイズ
-	Vector2 textureSize_ = { 100.0f,100.0f };
+	Vector2 textureClipSize_ = { 100.0f,100.0f };
 
 public:
 
@@ -153,7 +153,7 @@ public:
 	bool GetIsFlipY() const { return isFlipY_; };
 	bool GetIsInvisible() const { return isInvisible_; };
 	const Vector2& GetTextureLeftTop() const { return textureLeftTop_; };
-	const Vector2& GetTextureSize() const { return textureSize_; };
+	const Vector2& GetTextureSize() const { return textureClipSize_; };
 
 	//セッター
 	void SetMoveSpeed_(const Vector2& moveSpeed) { moveSpeed_ = moveSpeed; };
@@ -170,6 +170,6 @@ public:
 	//void SetScale(Vector3 scale) { scale_ = scale; }
 	
 	void SetTextureLeftTop(const Vector2& textureLeftTop) { textureLeftTop_ = textureLeftTop; };
-	void SetTextureSize(const Vector2& textureSize) { textureSize_ = textureSize; size_ = textureSize_; };
+	void SetTextureClipSize(const Vector2& textureSize) { textureClipSize_ = textureSize; size_ = textureClipSize_; };
 
 };

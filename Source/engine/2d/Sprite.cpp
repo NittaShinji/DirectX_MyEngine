@@ -90,11 +90,11 @@ void Sprite::Initialize(const std::string fileName,Vector2 position)
 	anchorPoint_ = { 0.0f,0.0f };
 	color_ = { 1.0f,1.0f,1.0f,1.0f };
 
-	//テクスチャサイズをイメージに合わせる
+	//テクスチャ切り抜きサイズをイメージに合わせる
 	AdjustTextureSize(fileName);
 	
-	//テクスチャサイズをスプライトのサイズに適用
-	size_ = textureSize_;
+	//テクスチャ切り抜きサイズを表示するスプライトのサイズに適用
+	size_ = textureClipSize_;
 
 	//size_ = TextureManager::GetInstance()->GetTexSize(fileName);
 
@@ -124,9 +124,9 @@ void Sprite::Initialize(const std::string fileName,Vector2 position)
 		D3D12_RESOURCE_DESC resDesc = textureBuffer_->GetDesc();
 
 		float texLeft = textureLeftTop_.x / resDesc.Width;
-		float texRight = (textureLeftTop_.x + textureSize_.x / resDesc.Width);
+		float texRight = (textureLeftTop_.x + textureClipSize_.x / resDesc.Width);
 		float texTop = textureLeftTop_.y / resDesc.Height;
-		float texBottom = (textureLeftTop_.y + textureSize_.y / resDesc.Height);
+		float texBottom = (textureLeftTop_.y + textureClipSize_.y / resDesc.Height);
 		//頂点のUVに反映する
 		vertices_[LB].uv = { texLeft,texBottom };		//左下
 		vertices_[LT].uv = { texLeft,texTop };			//左上
@@ -226,9 +226,9 @@ void Sprite::matUpdate()
 		D3D12_RESOURCE_DESC resDesc = textureBuffer_->GetDesc();
 
 		float texLeft = textureLeftTop_.x / resDesc.Width;
-		float texRight = (textureLeftTop_.x + textureSize_.x / resDesc.Width);
+		float texRight = (textureLeftTop_.x + textureClipSize_.x) / resDesc.Width;
 		float texTop = textureLeftTop_.y / resDesc.Height;
-		float texBottom = (textureLeftTop_.y + textureSize_.y / resDesc.Height);
+		float texBottom = (textureLeftTop_.y + textureClipSize_.y) / resDesc.Height;
 		//頂点のUVに反映する
 		vertices_[LB].uv = { texLeft,texBottom };		//左下
 		vertices_[LT].uv = { texLeft,texTop };			//左上
@@ -371,6 +371,6 @@ void Sprite::AdjustTextureSize(std::string fileName)
 	//テクスチャ情報取得
 	D3D12_RESOURCE_DESC resDesc = textureBuffer->GetDesc();
 
-	textureSize_.x = static_cast<float>(resDesc.Width);
-	textureSize_.y = static_cast<float>(resDesc.Height);
+	textureClipSize_.x = static_cast<float>(resDesc.Width);
+	textureClipSize_.y = static_cast<float>(resDesc.Height);
 }
