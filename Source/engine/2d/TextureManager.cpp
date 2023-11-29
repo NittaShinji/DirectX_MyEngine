@@ -256,3 +256,14 @@ Vector2 TextureManager::GetTexSize(std::string fileName)
 	result = texSizeMap_.at(fileName);
 	return result;
 }
+
+ID3D12Resource* TextureManager::GetTextureBuffer(std::string fileName)
+{
+	uint32_t targetNumber;
+	targetNumber = textureMap_.at(fileName);
+
+	ID3D12Resource* result = nullptr;
+	result = textureBuffers_[targetNumber].Get();
+
+	return result;
+}

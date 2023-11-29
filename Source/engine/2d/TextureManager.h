@@ -78,5 +78,7 @@ public:
 	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
 	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
 	Vector2 GetTexSize(std::string fileName);
+	ID3D12Resource* GetTextureBuffer(std::string fileName);
+
 };
 

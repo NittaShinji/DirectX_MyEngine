@@ -80,6 +80,7 @@ void TitleScene::Initialize()
 	bButtonSprite_->Initialize("B.png",bButtonPosition);
 	clickSprite_->Initialize("click.png",clickButtonPosition);
 	backGroundSprite_->Initialize("WhiteTex",backGroundPosition);
+	bButtonSprite_->SetTextureSize(Vector2(bButtonSize.x / 2, bButtonSize.y / 2));
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();

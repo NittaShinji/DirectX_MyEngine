@@ -89,7 +89,14 @@ void Sprite::Initialize(const std::string fileName,Vector2 position)
 	moveSpeed_ = { 0.0f,0.0f };
 	anchorPoint_ = { 0.0f,0.0f };
 	color_ = { 1.0f,1.0f,1.0f,1.0f };
-	size_ = TextureManager::GetInstance()->GetTexSize(fileName);
+
+	//テクスチャサイズをイメージに合わせる
+	AdjustTextureSize(fileName);
+	
+	//テクスチャサイズをスプライトのサイズに適用
+	size_ = textureSize_;
+
+	//size_ = TextureManager::GetInstance()->GetTexSize(fileName);
 
 	//ウインドウの中心に表示
 	position_ = position;
@@ -107,6 +114,25 @@ void Sprite::Initialize(const std::string fileName,Vector2 position)
 	vertices_.at(RT) = {
 		{ size_.x, 0.0f, 0.0f }, {1.0f,0.0f}//右上
 	};
+
+
+	textureBuffer_ = TextureManager::GetInstance()->GetTextureBuffer(fileName);
+	//もしその画像が読み込み済み
+	if(textureBuffer_)
+	{
+		//テクスチャ情報取得
+		D3D12_RESOURCE_DESC resDesc = textureBuffer_->GetDesc();
+
+		float texLeft = textureLeftTop_.x / resDesc.Width;
+		float texRight = (textureLeftTop_.x + textureSize_.x / resDesc.Width);
+		float texTop = textureLeftTop_.y / resDesc.Height;
+		float texBottom = (textureLeftTop_.y + textureSize_.y / resDesc.Height);
+		//頂点のUVに反映する
+		vertices_[LB].uv = { texLeft,texBottom };		//左下
+		vertices_[LT].uv = { texLeft,texTop };			//左上
+		vertices_[RB].uv = { texRight,texBottom };		//左下
+		vertices_[RT].uv = { texRight,texTop };			//左上
+	}
 
 	// 頂点データ全体のサイズ = 頂点データ一つ分のサイズ * 頂点データの要素数
 	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * vertices_.size());
@@ -193,7 +219,22 @@ void Sprite::matUpdate()
 	vertices_[RB].pos = { right,bottom ,0.0f };
 	vertices_[RT].pos = { right,top ,0.0f };
 
-	// テクスチャ情報取得
+	// UV座標
+	if(textureBuffer_)
+	{
+		//テクスチャ情報取得
+		D3D12_RESOURCE_DESC resDesc = textureBuffer_->GetDesc();
+
+		float texLeft = textureLeftTop_.x / resDesc.Width;
+		float texRight = (textureLeftTop_.x + textureSize_.x / resDesc.Width);
+		float texTop = textureLeftTop_.y / resDesc.Height;
+		float texBottom = (textureLeftTop_.y + textureSize_.y / resDesc.Height);
+		//頂点のUVに反映する
+		vertices_[LB].uv = { texLeft,texBottom };		//左下
+		vertices_[LT].uv = { texLeft,texTop };			//左上
+		vertices_[RB].uv = { texRight,texBottom };		//左下
+		vertices_[RT].uv = { texRight,texTop };			//左上
+	}
 
 	//GPU上のバッファに対応した仮想メモリ(メインメモリ上)を取得
 	Vertex* vertMap = nullptr;
@@ -321,4 +362,15 @@ void Sprite::MovePos(Vector2 moveVec)
 {
 	position_ += moveVec;
 	matUpdate();
+}
+
+void Sprite::AdjustTextureSize(std::string fileName)
+{
+	ID3D12Resource* textureBuffer = TextureManager::GetInstance()->GetTextureBuffer(fileName);
+
+	//テクスチャ情報取得
+	D3D12_RESOURCE_DESC resDesc = textureBuffer->GetDesc();
+
+	textureSize_.x = static_cast<float>(resDesc.Width);
+	textureSize_.y = static_cast<float>(resDesc.Height);
 }
