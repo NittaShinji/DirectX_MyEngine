@@ -10,7 +10,7 @@ void GameTimer::Initialize()
 	TextureManager::GetInstance()->LoadTexture("numbers.png");
 	TextureManager::GetInstance()->TexMapping(2, 2, Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BLACKDot");
 	BlackDot_ = std::unique_ptr<Sprite>();
-	BlackDot_->Initialize();
+	//BlackDot_->Initialize();
 	Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
 	Vector2 texSize = texTotalSize;
 	texSize.x = texSize.x / totalNumber;
