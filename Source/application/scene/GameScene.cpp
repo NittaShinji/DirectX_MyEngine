@@ -173,6 +173,9 @@ void GameScene::Initialize()
 	deadParticle_->SetGameSpeed(gameSpeed_.get());
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
 
+	gameTimer_ = std::make_unique<GameTimer>();
+	gameTimer_->Initialize();
+
 
 	isReset_ = false;
 }
@@ -218,6 +221,7 @@ void GameScene::Update()
 			isReset_ = false;
 			deadParticle_->SetCanReset(false);
 			deadParticle_->Reset();
+			gameTimer_->Reset();
 			ResetSceneAnimation();
 		}
 	}
@@ -231,6 +235,9 @@ void GameScene::Update()
 	sceneTransitionUp_->matUpdate();
 	sceneTransitionDown_->matUpdate();
 	//testParticleSprite_->matUpdate();
+
+	gameTimer_->Update(player_->GetIsMoving());
+
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -301,7 +308,7 @@ void GameScene::Update()
 	breakParticle_->PopUpdate(gameCamera_.get(),stage_->GetBreakWallsPos());
 
 	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());
-
+	
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 
 #ifdef _DEBUG
@@ -387,6 +394,7 @@ void GameScene::Draw()
 	arrowSprite_->Draw("arrow.png");
 	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
+	gameTimer_->Draw();
 	//testParticleSprite_->Draw("jumpEffect6.png");
 
 
