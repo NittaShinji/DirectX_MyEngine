@@ -170,6 +170,6 @@ public:
 	//void SetScale(Vector3 scale) { scale_ = scale; }
 	
 	void SetTextureLeftTop(const Vector2& textureLeftTop) { textureLeftTop_ = textureLeftTop; };
-	void SetTextureClipSize(const Vector2& textureSize) { textureClipSize_ = textureSize; size_ = textureClipSize_; };
+	void SetTextureClipSize(const Vector2& textureSize) { textureClipSize_ = textureSize; size_ = textureSize; };
 
 };

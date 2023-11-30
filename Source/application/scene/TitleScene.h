@@ -6,6 +6,7 @@
 #include "GamePad.h"
 #include "SoundManager.h"
 
+
 class TitleScene : public BaseScene
 {
 public:

@@ -5,20 +5,63 @@ class GameTimer
 public: 
 
 	void Initialize();
-	void Update();
+	void InGameInitialize();
+	void ResultInitialize();
+
+	void Update(bool isStart);
 	void Reset();
 	void LoadNumTexture();
+	void Draw();
+
+	void NumberUpdate();
+	void InGameNumberUpdate();
+	void ResultNumberUpdate();
+
+	void SetNumber(int number,Sprite* sprite);
+
+	void StopTimer();
+
 
 private:
 
-	//ゲーム中に表示する時間(4桁)
-	float inGameTime_;
-	//クリア画面で表示する時間(6桁)
-	float resultTime_;
-	//ハイスコア
-	float highScoreTime_;
+	//時間の位置(等距離感覚)
+	const float equalDistanceX = 2.0f;
+	const float equalDistanceY = 0.0f;
 
-	std::unique_ptr<Sprite> clock_;
-	std::unique_ptr<Sprite> num[10];
+	//1秒
+	const int kOneSeconds_ = 60;
+
+	//MAX時間
+	const int kMaxTime_ = 1000;
+
+	//数字の数
+	const int totalNumber = 10;
+	//インゲーム中に表示する桁
+	static const int inGameDigits = 4;
+	//リザルト表示する桁
+	static const int resultDigits = 7;
+
+	//ゲーム中に表示する時間(4桁)
+	int inGameTime_;
+	//クリア画面で表示する時間(6桁)
+	int timer_ = 0;
+	int resultTime_;
+	//ハイスコア
+	int highScoreTime_;
+
+	//リザルトで足していくときのタイマー
+	//float inGameTimer;
+	//float resultTimer;
+
+	//std::unique_ptr<Sprite> clock_;
+	std::unique_ptr<Sprite> inGameNum[inGameDigits];
+	std::unique_ptr<Sprite> resultNum[resultDigits];
+	std::unique_ptr<Sprite> BlackDot_;
+
+
+	//ゲーム中に表示する時間(4桁)
+	int inGameDisPlayTime_[inGameDigits];
+	//クリア画面で表示する時間(6桁)
+	int resultDisPlaytime[resultDigits];
 };
 
