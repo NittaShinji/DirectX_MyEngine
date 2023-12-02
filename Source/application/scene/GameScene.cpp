@@ -15,6 +15,7 @@
 #include <iomanip>
 #include <string>
 #include "GameSpeed.h"
+#include "GameTimer.h"
 
 using namespace std;
 
@@ -173,10 +174,8 @@ void GameScene::Initialize()
 	deadParticle_->SetGameSpeed(gameSpeed_.get());
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
 
-	gameTimer_ = std::make_unique<GameTimer>();
-	gameTimer_->Initialize();
-
-
+	GameTimer::GetInstance()->InGameInitialize();
+	
 	isReset_ = false;
 }
 
@@ -221,7 +220,7 @@ void GameScene::Update()
 			isReset_ = false;
 			deadParticle_->SetCanReset(false);
 			deadParticle_->Reset();
-			gameTimer_->Reset();
+			GameTimer::GetInstance()->Reset();
 			ResetSceneAnimation();
 		}
 	}
@@ -236,8 +235,7 @@ void GameScene::Update()
 	sceneTransitionDown_->matUpdate();
 	//testParticleSprite_->matUpdate();
 
-	gameTimer_->Update(player_->GetIsMoving());
-
+	
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -310,6 +308,7 @@ void GameScene::Update()
 	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());
 	
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
+	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
 
 #ifdef _DEBUG
 
@@ -342,6 +341,8 @@ void GameScene::Update()
 #ifdef _DEBUG
 	if(keys_->PushedKeyMoment(DIK_G))
 	{
+		player_->SetIsFinish(true);
+		GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
 		ParticleManager::GetInstance()->AllRemove();
 		ObjParticleManager::GetInstance()->AllRemove();
 
@@ -394,7 +395,7 @@ void GameScene::Draw()
 	arrowSprite_->Draw("arrow.png");
 	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
-	gameTimer_->Draw();
+	GameTimer::GetInstance()->InGameDraw();
 	//testParticleSprite_->Draw("jumpEffect6.png");
 
 

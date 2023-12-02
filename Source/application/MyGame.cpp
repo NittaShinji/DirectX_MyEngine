@@ -3,6 +3,7 @@
 #include "StageSelect.h"
 #include "TutorialScene.h"
 #include "ClearScene.h"
+#include "GameTimer.h"
 
 #include "Vector4.h"
 #include <wrl.h>
@@ -29,6 +30,7 @@ void MyGame::Initialize()
 	StageSelectScene::StaticInitialize();
 	TutorialScene::StaticInitialize();
 	ClearScene::StaticInitialize();
+	GameTimer::GetInstance()->StaticInitialize();
 }
 
 void MyGame::Update()

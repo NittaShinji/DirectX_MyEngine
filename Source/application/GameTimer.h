@@ -2,66 +2,101 @@
 #include "Sprite.h"
 class GameTimer
 {
+
+public:
+
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+
+	//コピーコンストラクタ
+	GameTimer(const GameTimer&) = delete;
+	//コピー代入演算子
+	GameTimer& operator=(const GameTimer&) = delete;
+	//ムーブコンストラクタ
+	GameTimer(GameTimer&&) = delete;
+	//ムーブ代入演算子
+	GameTimer& operator = (GameTimer&&) = delete;
+
+	//静的オブジェクトとしてインスタンスを生成
+	static GameTimer* GetInstance()
+	{
+		static GameTimer instance;
+		return &instance;
+	}
+
 public: 
 
-	void Initialize();
+	void StaticInitialize();
 	void InGameInitialize();
 	void ResultInitialize();
 
-	void Update(bool isStart);
+	//void Update(bool isStart);
+
+	void InGameUpdate(bool isStart, bool isFinish);
+	void ResultUpdate();
+
 	void Reset();
-	void LoadNumTexture();
-	void Draw();
+
+	void InGameDraw();
+	void ResultDraw();
+
+	void LoadSprite();
+
+	static void Draw();
 
 	void NumberUpdate();
-	void InGameNumberUpdate();
+	void InGameNumberUpdate(bool isFinish);
 	void ResultNumberUpdate();
 
 	void SetNumber(int number,Sprite* sprite);
 
 	void StopTimer();
 
+private:
+
+	//コンストラクタ
+	GameTimer() = default;
+	//デストラクタ
+	~GameTimer() = default;
 
 private:
 
-	//時間の位置(等距離感覚)
-	const float equalDistanceX = 2.0f;
-	const float equalDistanceY = 0.0f;
-
 	//1秒
-	const int kOneSeconds_ = 60;
+	static const int kOneSeconds_ = 60;
 
 	//MAX時間
-	const int kMaxTime_ = 1000;
+	static const int kMaxTime_ = 1000;
 
 	//数字の数
-	const int totalNumber = 10;
+	static const int totalNumber = 10;
 	//インゲーム中に表示する桁
 	static const int inGameDigits = 4;
 	//リザルト表示する桁
-	static const int resultDigits = 7;
+	static const int resultDigits = 6;
 
 	//ゲーム中に表示する時間(4桁)
-	int inGameTime_;
+	static int inGameTime_;
 	//クリア画面で表示する時間(6桁)
-	int timer_ = 0;
-	int resultTime_;
+	static int resultTime_;
+	//1フレームの時間を計算するタイマー
+	static int timer_;
 	//ハイスコア
-	int highScoreTime_;
+	static int highScoreTime_;
+
+	//画像読み込みフラグ
+	static bool isLoadSprite_;
 
 	//リザルトで足していくときのタイマー
 	//float inGameTimer;
 	//float resultTimer;
 
 	//std::unique_ptr<Sprite> clock_;
-	std::unique_ptr<Sprite> inGameNum[inGameDigits];
-	std::unique_ptr<Sprite> resultNum[resultDigits];
-	std::unique_ptr<Sprite> BlackDot_;
-
+	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
+	static std::unique_ptr<Sprite> resultNum[resultDigits];
+	static std::unique_ptr<Sprite> BlackDot_;
 
 	//ゲーム中に表示する時間(4桁)
-	int inGameDisPlayTime_[inGameDigits];
+	static int inGameDisPlayTime_[inGameDigits];
 	//クリア画面で表示する時間(6桁)
-	int resultDisPlaytime[resultDigits];
+	static int resultDisPlaytime[resultDigits];
 };
 

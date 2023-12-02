@@ -564,6 +564,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	if(info.object->GetAttributeColor() == Attribute::Goal)
 	{
 		isfinish_ = true;
+		isDead_ = false;
 	}
 	//色が違う場合、死亡判定にする
 	else if(info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)

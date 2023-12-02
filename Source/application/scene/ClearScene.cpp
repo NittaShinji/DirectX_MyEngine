@@ -3,6 +3,7 @@
 #include "Easing.h"
 #include "MathUtillity.h"
 #include "TextureManager.h"
+#include "GameTimer.h"
 
 using namespace MathUtillty;
 
@@ -54,6 +55,9 @@ void ClearScene::Initialize()
 	//アンカーポイントの設定
 	Vector2 checkAnchorPoint = { 0.5f,0.5f };
 	check_->SetAnchorPoint(checkAnchorPoint);
+
+	GameTimer::GetInstance()->ResultInitialize();
+
 }
 
 void ClearScene::Update()
@@ -92,9 +96,12 @@ void ClearScene::Update()
 	gamePad_->PushedButtonMoment();
 	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
 	{
+		GameTimer::GetInstance()->Reset();
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("StageSelect");
 	}
+
+	GameTimer::GetInstance()->ResultUpdate();
 }
 
 void ClearScene::Draw()
@@ -111,6 +118,7 @@ void ClearScene::Draw()
 	end_->Draw("WhiteTex");
 	check_->Draw("check.png");
 	aButton_->Draw("A.png");
+	GameTimer::GetInstance()->ResultDraw();
 
 	//描画終了
 	directXBasic_->AfterDraw();

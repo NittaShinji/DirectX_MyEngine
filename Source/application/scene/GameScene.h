@@ -22,7 +22,6 @@
 #include "BreakParticle.h"
 #include "SecondJump2DParticle.h"
 #include "GameSpeed.h"
-#include "GameTimer.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -156,8 +155,6 @@ private:
 	float sceneAnimeTimer_ = 0;
 	//シーンアニメーション用変化量
 	Vector2 sceneAnimationVec_;
-
-	std::unique_ptr<GameTimer> gameTimer_ = nullptr;
 
 	//ゲームスピード
 	std::unique_ptr<GameSpeed> gameSpeed_;

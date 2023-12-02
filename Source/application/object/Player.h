@@ -38,7 +38,7 @@ public:
 
 	void GroundRotation();
 
-	void ColorChangeAnimation();
+	//void ColorChangeAnimation();
 
 	void EasingInitialize();
 
@@ -241,5 +241,6 @@ public:
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
+	void SetIsFinish(bool isFinish) { isfinish_ = isFinish; }
 };
 

@@ -1,35 +1,68 @@
 #include "GameTimer.h"
 #include "TextureManager.h"
 
-void GameTimer::Initialize()
+//ゲーム中に表示する時間(4桁)
+int GameTimer::inGameTime_;
+//クリア画面で表示する時間(6桁)
+int GameTimer::timer_ = 0;
+int GameTimer::resultTime_;
+//ハイスコア
+int GameTimer::highScoreTime_;
+
+bool GameTimer::isLoadSprite_ = false;
+
+std::unique_ptr<Sprite> GameTimer::inGameNum[inGameDigits];
+std::unique_ptr<Sprite> GameTimer::resultNum[resultDigits];
+std::unique_ptr<Sprite> GameTimer::BlackDot_;
+
+//ゲーム中に表示する時間(4桁)
+int GameTimer::inGameDisPlayTime_[inGameDigits];
+//クリア画面で表示する時間(6桁)
+int GameTimer::resultDisPlaytime[resultDigits];
+
+void GameTimer::LoadSprite()
 {
+	//一度だけ画像を読み込む
+	if(isLoadSprite_ == false)
+	{
+		//数字のテクスチャ読み込み
+		TextureManager::GetInstance()->LoadTexture("numbers.png");
+		//黒いドットの点画像を作成
+		const int DotSize = 6;
+		const Vector4 BlackColor = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+		TextureManager::GetInstance()->TexMapping(DotSize, DotSize, BlackColor, "BLACKDot");
+		isLoadSprite_ = true;
+	}
+}
+
+void GameTimer::StaticInitialize()
+{
+	//メンバ変数初期化
 	inGameTime_ = 0;
 	resultTime_ = 0;
 	highScoreTime_ = 0;
-	LoadNumTexture();
-	TextureManager::GetInstance()->LoadTexture("numbers.png");
-	TextureManager::GetInstance()->TexMapping(6, 6, Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BLACKDot");
+	
 	BlackDot_ = std::make_unique<Sprite>();
-	//BlackDot_->Initialize("BLACKDot",);
-	Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
-	Vector2 texSize = texTotalSize;
-	texSize.x = texSize.x / totalNumber;
-	texSize.y = texSize.y;	
-
-	InGameInitialize();
-	//ResultInitialize();
+	for(int i = 0; i < inGameDigits; i++)
+	{
+		inGameNum[i] = std::make_unique<Sprite>();
+	}
+	for(int i = 0; i < resultDigits; i++)
+	{
+		resultNum[i] = std::make_unique<Sprite>();
+	}
 }
 
 void GameTimer::InGameInitialize()
 {
+	LoadSprite();
+
 	Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
 	Vector2 texSize = texTotalSize;
 	texSize.x = texSize.x / totalNumber;
 	const int half = 2;
 	for(int i = 0; i < inGameDigits; i++)
 	{
-		inGameNum[i] = std::make_unique<Sprite>();
-
 		if(i < 2)
 		{
 			// 数字の初期化
@@ -40,7 +73,10 @@ void GameTimer::InGameInitialize()
 			// 数字の初期化
 			inGameNum[i]->Initialize("numbers.png", Vector2((i * texSize.x + texSize.x / half), texSize.y));
 		}
+
+		inGameDisPlayTime_[i] = { 0 };
 		
+		SetNumber(inGameDisPlayTime_[i], inGameNum[i].get());
 	}
 
 	for(int i = 0; i < inGameDigits; i++)
@@ -49,25 +85,41 @@ void GameTimer::InGameInitialize()
 		inGameNum[i]->SetSize(texSize);
 	}
 
-	float integerX = inGameNum[1]->GetPosition().x;
+	//float integerX = inGameNum[1]->GetPosition().x;
 	float decimalX = inGameNum[2]->GetPosition().x;
 
-	Vector2 decimalPointPos = Vector2(decimalX - integerX + texSize.x / half + 6, texSize.y + texSize.y - 15);
+	Vector2 decimalPointPos = Vector2(decimalX - texSize.x / half + 6, texSize.y + texSize.y - 15);
 
 	BlackDot_->Initialize("BLACKDot", decimalPointPos);
 
+	timer_ = 0;
 }
 
 void GameTimer::ResultInitialize()
 {
 	Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
 	Vector2 texSize = texTotalSize;
-	texSize.x = texSize.x / 10;
+	const int half = 2;
+	texSize.x = texSize.x / totalNumber;
+	//for(int i = 0; i < resultDigits; i++)
+	//{
+	//	resultNum[i] = std::make_unique<Sprite>();
+	//	// 数字の初期化
+	//	resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x), texSize.y));
+	//}
+
 	for(int i = 0; i < resultDigits; i++)
 	{
-		resultNum[i] = std::make_unique<Sprite>();
-		// 数字の初期化
-		resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x), texSize.y));
+		if(i < 3)
+		{
+			// 数字の初期化
+			resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x), texSize.y));
+		}
+		else
+		{
+			// 数字の初期化
+			resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x + texSize.x / half), texSize.y));
+		}
 	}
 
 	for(int i = 0; i < resultDigits; i++)
@@ -75,64 +127,118 @@ void GameTimer::ResultInitialize()
 		resultNum[i]->SetTextureClipSize(texSize);
 		resultNum[i]->SetSize(texSize);
 	}
+
+	//float integerX = resultNum[2]->GetPosition().x;
+	float decimalX = resultNum[3]->GetPosition().x;
+
+	Vector2 decimalPointPos = Vector2(decimalX - texSize.x / half + 6, texSize.y + texSize.y - 15);
+
+	BlackDot_->SetPosition(decimalPointPos);
+
 }
 
-void GameTimer::Update(bool isStart)
+void GameTimer::InGameUpdate(bool isStart,bool isFinish)
 {
-	for(int i = 0; i < resultDigits; i++)
-	{
-		//resultNum[i]->matUpdate();
-	}
 	for(int i = 0; i < inGameDigits; i++)
 	{
 		inGameNum[i]->matUpdate();
 	}
 
 	BlackDot_->matUpdate();
-	
 
+	//プレイヤーが動き始めたら
 	if(isStart == true)
 	{
-		InGameNumberUpdate();
-		//ResultNumberUpdate();
+		InGameNumberUpdate(isFinish);
 	}
 	else
 	{
-		//for(size_t i = 0; i < resultDigits; i++)
-		//{
-		//	resultDisPlaytime[i] = { 0 };
-		//	SetNumber(resultDisPlaytime[i], resultNum[i].get());
-		//}
-
+		timer_ = 0;
 		for(size_t i = 0; i < inGameDigits; i++)
 		{
 			inGameDisPlayTime_[i] = { 0 };
 			SetNumber(inGameDisPlayTime_[i], inGameNum[i].get());
 		}
+	}
 
+	//クリア時間を保存
+	if(isFinish == true)
+	{
+		resultTime_ = inGameTime_;
+
+		//--4桁目(千の位を表示)
+		resultDisPlaytime[0] = 0;
+		//--3桁目(百の位を表示)
+		resultDisPlaytime[1] = inGameDisPlayTime_[0];
+
+		//--2桁目(十の位を表示)
+		resultDisPlaytime[2] = inGameDisPlayTime_[1];
+		//--1桁目(1の位を表示)
+		resultDisPlaytime[3] = inGameDisPlayTime_[2];
+		resultDisPlaytime[4] = inGameDisPlayTime_[3];
+		resultDisPlaytime[5] = 0;
 	}
 }
+
+void GameTimer::ResultUpdate()
+{
+	for(int i = 0; i < resultDigits; i++)
+	{
+		resultNum[i]->matUpdate();
+	}
+
+	BlackDot_->matUpdate();
+
+	ResultNumberUpdate();
+
+	for(size_t i = 0; i < resultDigits; i++)
+	{
+		SetNumber(resultDisPlaytime[i], resultNum[i].get());
+	}
+}
+
+//
+//void GameTimer::Update(bool isStart)
+//{
+//	for(int i = 0; i < resultDigits; i++)
+//	{
+//		//resultNum[i]->matUpdate();
+//	}
+//	for(int i = 0; i < inGameDigits; i++)
+//	{
+//		inGameNum[i]->matUpdate();
+//	}
+//
+//	BlackDot_->matUpdate();
+//
+//
+//	if(isStart == true)
+//	{
+//		InGameNumberUpdate();
+//		//ResultNumberUpdate();
+//	}
+//	else
+//	{
+//		//for(size_t i = 0; i < resultDigits; i++)
+//		//{
+//		//	resultDisPlaytime[i] = { 0 };
+//		//	SetNumber(resultDisPlaytime[i], resultNum[i].get());
+//		//}
+//
+//		for(size_t i = 0; i < inGameDigits; i++)
+//		{
+//			inGameDisPlayTime_[i] = { 0 };
+//			SetNumber(inGameDisPlayTime_[i], inGameNum[i].get());
+//		}
+//
+//	}
+//}
 
 void GameTimer::Reset()
 {
 	timer_ = 0;
 	inGameTime_ = 0;
 	resultTime_ = 0;
-	highScoreTime_ = 0;
-}
-
-void GameTimer::LoadNumTexture()
-{
-	TextureManager::GetInstance()->LoadTexture("number/0.png");
-	TextureManager::GetInstance()->LoadTexture("number/1.png");
-	TextureManager::GetInstance()->LoadTexture("number/2.png");
-	TextureManager::GetInstance()->LoadTexture("number/3.png");
-	TextureManager::GetInstance()->LoadTexture("number/4.png");
-	TextureManager::GetInstance()->LoadTexture("number/5.png");
-	TextureManager::GetInstance()->LoadTexture("number/6.png");
-	TextureManager::GetInstance()->LoadTexture("number/7.png");
-	TextureManager::GetInstance()->LoadTexture("number/8.png");
-	TextureManager::GetInstance()->LoadTexture("number/9.png");
 }
 
 void GameTimer::NumberUpdate()
@@ -145,17 +251,8 @@ void GameTimer::NumberUpdate()
 	}
 }
 
-void GameTimer::Draw()
+void GameTimer::InGameDraw()
 {
-	//for(int i = 0; i < resultDigits; i++)
-	//{	
-	//	resultNum[i]->Update();
-	//}
-	//for(int i = 0; i < resultDigits; i++)
-	//{
-	//	resultNum[i]->Draw("numbers.png");
-	//}
-
 	for(int i = 0; i < inGameDigits; i++)
 	{
 		inGameNum[i]->Update();
@@ -167,33 +264,57 @@ void GameTimer::Draw()
 
 	BlackDot_->Update();
 	BlackDot_->Draw("BLACKDot");
+}
+void GameTimer::ResultDraw()
+{
+	for(int i = 0; i < resultDigits; i++)
+	{
+		resultNum[i]->Update();
+	}
+	for(int i = 0; i < resultDigits; i++)
+	{
+		resultNum[i]->Draw("numbers.png");
+	}
 
+	BlackDot_->Update();
+	BlackDot_->Draw("BLACKDot");
+}
+
+
+void GameTimer::Draw()
+{
+	//for(int i = 0; i < resultDigits; i++)
+	//{	
+	//	resultNum[i]->Update();
+	//}
+	//for(int i = 0; i < resultDigits; i++)
+	//{
+	//	resultNum[i]->Draw("numbers.png");
+	//}
+
+	
+
+	
 	//resultNum[0]->Update();
 	//resultNum[0]->Draw("numbers.png");
 
 }
 
-void GameTimer::InGameNumberUpdate()
+void GameTimer::InGameNumberUpdate(bool isFinish)
 {
-	//t 経過時間	b最初の位置	c移動量	d移動時間
-	if(inGameTime_ <= kMaxTime_)
+	if(isFinish == false)
 	{
-		timer_++;
-		if(timer_ >= kOneSeconds_)
+		//t 経過時間	b最初の位置	c移動量	d移動時間
+		if(inGameTime_ <= kMaxTime_)
 		{
-			timer_ = 0;
-			inGameTime_++;
+			timer_++;
+			if(timer_ >= kOneSeconds_)
+			{
+				timer_ = 0;
+				inGameTime_++;
+			}
 		}
 	}
-
-	//--4桁目(千の位を表示)
-	//inGameDisPlayTime_[0] = (inGameTime_ % 10000) / 1000;
-	////--3桁目(百の位を表示)
-	//inGameDisPlayTime_[1] = (inGameTime_ % 1000) / 100;
-	////--2桁目(十の位を表示)
-	//inGameDisPlayTime_[2] = (inGameTime_ % 100) / 10;
-	////--1桁目(1の位を表示)
-	//inGameDisPlayTime_[3] = (inGameTime_ % 10) / 1;
 
 	//--4桁目(千の位を表示)
 	inGameDisPlayTime_[0] = (inGameTime_ % 100) / 10;
@@ -214,80 +335,32 @@ void GameTimer::InGameNumberUpdate()
 void GameTimer::ResultNumberUpdate()
 {
 	//t 経過時間	b最初の位置	c移動量	d移動時間
-	if(resultTime_ <= kMaxTime_)
+	if(timer_ < resultTime_)
 	{
-		timer_ ++;
-		if(timer_ >= kOneSeconds_)
+		timer_++;
+		if(timer_ >= resultTime_)
 		{
-			timer_ = 0;
-			resultTime_++;
+			timer_ = resultTime_;
 		}
-	}
+	}	
 
-	//--7桁目(10万の位を表示)
-	resultDisPlaytime[0] = (resultTime_ % 10000000) / 1000000;
-	//--6桁目(万の位を表示)
-	resultDisPlaytime[1] = (resultTime_ % 1000000) / 100000;
-	//--5桁目(千の位を表示)
-	resultDisPlaytime[2] = (resultTime_ % 100000) / 10000;
-	//--4桁目(百の位を表示)
-	resultDisPlaytime[3] = (resultTime_ % 10000) / 1000;
-	//--3桁目(十の位を表示)
-	resultDisPlaytime[4] = (resultTime_ % 1000) / 100;
-	//--2桁目(1の位を表示)
-	resultDisPlaytime[5] = (resultTime_ % 100) / 10;
-	//--1桁目(1の位を表示)
-	resultDisPlaytime[6] = (resultTime_ % 10) / 1;
+	////--6桁目(万の位を表示)
+	//resultDisPlaytime[0] = (timer_ % 1000000) / 100000;
+	////--5桁目(千の位を表示)
+	//resultDisPlaytime[1] = (timer_ % 100000) / 10000;
+	////--4桁目(百の位を表示)
+	//resultDisPlaytime[2] = (timer_ % 10000) / 1000;
+	////--3桁目(十の位を表示)
+	//resultDisPlaytime[3] = (timer_ % 1000) / 100;
+	////--2桁目(1の位を表示)
+	//resultDisPlaytime[4] = (timer_ % 100) / 10;
+	////--1桁目(1の位を表示)
+	//resultDisPlaytime[5] = (timer_ % 10) / 1;
 
 	for(size_t i = 0; i < resultDigits; i++)
 	{
 		SetNumber(resultDisPlaytime[i], resultNum[i].get());
 	}
-	
-	/*Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
-	Vector2 texSize = texTotalSize;
-	texSize.x = texSize.x / totalNumber;
-
-	if(resultDisPlaytime[6] == 0)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 0);
-	}
-	else if(resultDisPlaytime[6] == 1)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 1);
-	}
-	else if(resultDisPlaytime[6] == 2)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 2);
-	}
-	else if(resultDisPlaytime[6] == 3)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 3);
-	}
-	else if(resultDisPlaytime[6] == 4)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 4);
-	}
-	else if(resultDisPlaytime[6] == 5)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 5);
-	}
-	else if(resultDisPlaytime[6] == 6)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 6);
-	}
-	else if(resultDisPlaytime[6] == 7)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 7);
-	}
-	else if(resultDisPlaytime[6] == 8)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 8);
-	}
-	else if(resultDisPlaytime[6] == 9)
-	{
-		resultNum[0]->SetTextureLeftTop(texSize * 9);
-	}*/
 }
 
 void GameTimer::SetNumber(int number, Sprite* sprite)

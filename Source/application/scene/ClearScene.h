@@ -4,7 +4,6 @@
 #include"GamePad.h"
 #include "Vector2.h"
 #include "SoundManager.h"
-#include "GameTimer.h"
 
 class ClearScene : public BaseScene
 {
@@ -48,8 +47,5 @@ private:
 
 	//サウンド
 	std::unique_ptr<Sound> checkSound_ = nullptr;
-
-	//ゲームタイマー
-	std::unique_ptr<GameTimer> gameTimer_ = nullptr;
 };
 
