@@ -8,9 +8,9 @@ void GameTimer::Initialize()
 	highScoreTime_ = 0;
 	LoadNumTexture();
 	TextureManager::GetInstance()->LoadTexture("numbers.png");
-	TextureManager::GetInstance()->TexMapping(2, 2, Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BLACKDot");
-	BlackDot_ = std::unique_ptr<Sprite>();
-	//BlackDot_->Initialize();
+	TextureManager::GetInstance()->TexMapping(6, 6, Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BLACKDot");
+	BlackDot_ = std::make_unique<Sprite>();
+	//BlackDot_->Initialize("BLACKDot",);
 	Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
 	Vector2 texSize = texTotalSize;
 	texSize.x = texSize.x / totalNumber;
@@ -24,7 +24,8 @@ void GameTimer::InGameInitialize()
 {
 	Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
 	Vector2 texSize = texTotalSize;
-	texSize.x = texSize.x / 10;
+	texSize.x = texSize.x / totalNumber;
+	const int half = 2;
 	for(int i = 0; i < inGameDigits; i++)
 	{
 		inGameNum[i] = std::make_unique<Sprite>();
@@ -37,7 +38,7 @@ void GameTimer::InGameInitialize()
 		else
 		{
 			// 数字の初期化
-			inGameNum[i]->Initialize("numbers.png", Vector2((i * texSize.x + texSize.x / 2), texSize.y));
+			inGameNum[i]->Initialize("numbers.png", Vector2((i * texSize.x + texSize.x / half), texSize.y));
 		}
 		
 	}
@@ -47,6 +48,14 @@ void GameTimer::InGameInitialize()
 		inGameNum[i]->SetTextureClipSize(texSize);
 		inGameNum[i]->SetSize(texSize);
 	}
+
+	float integerX = inGameNum[1]->GetPosition().x;
+	float decimalX = inGameNum[2]->GetPosition().x;
+
+	Vector2 decimalPointPos = Vector2(decimalX - integerX + texSize.x / half + 6, texSize.y + texSize.y - 15);
+
+	BlackDot_->Initialize("BLACKDot", decimalPointPos);
+
 }
 
 void GameTimer::ResultInitialize()
@@ -78,6 +87,8 @@ void GameTimer::Update(bool isStart)
 	{
 		inGameNum[i]->matUpdate();
 	}
+
+	BlackDot_->matUpdate();
 	
 
 	if(isStart == true)
@@ -153,6 +164,9 @@ void GameTimer::Draw()
 	{
 		inGameNum[i]->Draw("numbers.png");
 	}
+
+	BlackDot_->Update();
+	BlackDot_->Draw("BLACKDot");
 
 	//resultNum[0]->Update();
 	//resultNum[0]->Draw("numbers.png");
