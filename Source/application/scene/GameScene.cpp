@@ -65,7 +65,7 @@ void GameScene::Initialize()
 	bButtonSprite_ = std::make_unique<Sprite>();
 	jumpSprite_ = std::make_unique<Sprite>();
 	arrowSprite_ = std::make_unique<Sprite>();
-	//backGroundSprite_ = std::make_unique<Sprite>();
+	backGroundSprite_ = std::make_unique<Sprite>();
 	sceneTransitionUp_ = std::make_unique<Sprite>();
 	sceneTransitionDown_ = std::make_unique<Sprite>();
 	//testParticleSprite_ = std::make_unique<Sprite>();
@@ -77,6 +77,8 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("effect1.png");
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
+	TextureManager::GetInstance()->LoadTexture("backGround.png");
+
 
 	Vector2 aButtonPosition;
 	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x * 2);
@@ -106,7 +108,7 @@ void GameScene::Initialize()
 	jumpSprite_->SetSize(Vector2(kUiSize_));
 	arrowSprite_->Initialize("arrow.png",arrowPosition);
 	arrowSprite_->SetSize(Vector2(kUiSize_));
-	//backGroundSprite_->Initialize(Vector2(0.0f, 0.0f));
+	backGroundSprite_->Initialize("backGround.png",Vector2(0.0f, 0.0f));
 	sceneTransitionUp_->Initialize("BlackBackGroundHalfTex",Vector2(0.0f, 0.0f));
 	sceneTransitionDown_->Initialize("BlackBackGroundHalfTex",Vector2(0.0f, WindowsAPI::kWindow_height_ / 2));
 	//testParticleSprite_->Initialize(Vector2(kHalfWindowWidth, kHalfWindowHeight));
@@ -230,7 +232,7 @@ void GameScene::Update()
 	bButtonSprite_->matUpdate();
 	jumpSprite_->matUpdate();
 	arrowSprite_->matUpdate();
-	//backGroundSprite_->matUpdate();
+	backGroundSprite_->matUpdate();
 	sceneTransitionUp_->matUpdate();
 	sceneTransitionDown_->matUpdate();
 	//testParticleSprite_->matUpdate();
@@ -357,6 +359,11 @@ void GameScene::Draw()
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
 
+	/*SpriteCommon::GetInstance()->BeforeDraw();
+	SpriteCommon::GetInstance()->Update();
+	backGroundSprite_->Update();
+	backGroundSprite_->Draw("backGround.png");*/
+
 	Object3d::BeforeDraw();
 	plane_->Draw();
 	backGround_->Draw();
@@ -364,7 +371,7 @@ void GameScene::Draw()
 
 	//描画開始
 	directXBasic_->BeforeDraw();
-
+	
 	//ポストエフェクトの描画
 	postEffect_->Draw();
 
@@ -388,6 +395,8 @@ void GameScene::Draw()
 	sceneTransitionUp_->Update();
 	sceneTransitionDown_->Update();
 	//testParticleSprite_->Update();
+	/*backGroundSprite_->Update();
+	backGroundSprite_->Draw("backGround.png");*/
 
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
@@ -396,6 +405,7 @@ void GameScene::Draw()
 	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
 	GameTimer::GetInstance()->InGameDraw();
+	
 	//testParticleSprite_->Draw("jumpEffect6.png");
 
 
