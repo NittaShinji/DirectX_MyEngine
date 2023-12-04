@@ -71,7 +71,7 @@ void DirectXBasic::BeforeDraw()
 #pragma region 画面クリアコマンド・背景色変更
 
 	// 3.画面クリア R G B A
-	FLOAT clearColor[] = { 0.1f,0.25f,0.5f,0.0f }; // 青っぽい色
+	FLOAT clearColor[] = { 1.0f,0.25f,0.5f,0.0f }; // 青っぽい色
 
 	commandList_->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 	commandList_->ClearDepthStencilView(dsvHandle, D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);

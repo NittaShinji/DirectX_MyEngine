@@ -359,10 +359,10 @@ void GameScene::Draw()
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
 
-	/*SpriteCommon::GetInstance()->BeforeDraw();
+	SpriteCommon::GetInstance()->BeforeDraw();
 	SpriteCommon::GetInstance()->Update();
 	backGroundSprite_->Update();
-	backGroundSprite_->Draw("backGround.png");*/
+	backGroundSprite_->Draw("backGround.png");
 
 	Object3d::BeforeDraw();
 	plane_->Draw();

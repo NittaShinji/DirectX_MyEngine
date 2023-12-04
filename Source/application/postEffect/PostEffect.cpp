@@ -16,7 +16,7 @@ std::string PostEffect::kDefaultTextureDirectoryPath_ = "Resources/";
 uint32_t PostEffect::sTextureIndex_;
 const size_t kMaxSRVCount = 2056;
 std::map<const std::string, uint32_t, std::less<>> PostEffect::textureMap_;
-const float PostEffect::clearColor[4] = { 0.1f,0.25f,0.5f,0.0f };	//青っぽい色
+const float PostEffect::clearColor[4] = { 1.0f,0.25f,0.5f,0.0f };	//青っぽい色
 
 PostEffect::PostEffect()
 	: Sprite()
