@@ -32,7 +32,14 @@ void main(
     for (uint i = 0; i < vnum; i++)
     {
 		//中心からのオフセットをスケーリング+ビルボード回転(モデル座標)
-        float4 offset = mul(matBillboard, offset_array[i] * input[0].scale);
+        float4 offset = offset_array[i] * input[0].scale;
+		
+        float x = offset.x;
+        float y = offset.y;
+        offset.x = cos(input[0].rotate) * x - sin(input[0].rotate) * y;
+        offset.y = sin(input[0].rotate) * x + cos(input[0].rotate) * y;
+        offset = mul(matBillboard, offset);
+		
 		//オフセット分ずらす(ワールド座標)
         element.svpos = input[0].pos + offset;
 		//ビュー、射影変換

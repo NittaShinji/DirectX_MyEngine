@@ -55,10 +55,13 @@ void SecondJump2DParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 	//初期ライフ
 	const float InitLife = 25.0f;
 
+	float rotation = 0.0f;
+	float rotationSpeed = 0.0f;
+
 	//追加
 	if(GetIsMaxParticle() == false)
 	{
-		Add(InitLife, setPos_, setVel_, acc, endColor,color, colorSpeed, startScale_, endScale_);
+		Add(InitLife, setPos_, setVel_, acc, endColor,color, colorSpeed, startScale_, endScale_, rotation,rotationSpeed);
 	}
 
 }

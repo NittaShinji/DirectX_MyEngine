@@ -24,6 +24,7 @@ public: // サブクラス
 		Vector3 pos;		// xyz座標
 		float scale;		// 大きさ
 		Vector4 color;		// 色
+		float rotate;
 	};
 
 	// 定数バッファ用データ構造体
@@ -41,6 +42,9 @@ public: // サブクラス
 		Vector3 velocity = {};
 		//加速度
 		Vector3 accel = {};
+
+		float rotation = 0.0f;
+		float rotationSpeed = 0.1f;
 
 		//スケール
 		float scale = 1.0f;
@@ -93,7 +97,7 @@ public: // メンバ関数
 	//頂点バッファの生成
 	void CreateVertBuff();
 
-	void Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 endColor,Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale);
+	void Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 endColor,Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale,float rotation,float rotationSpeed);
 
 	//テンプレートコンストラクタ
 	template <typename Type1>
@@ -103,13 +107,14 @@ public: // メンバ関数
 	bool GetIsMaxParticle() { return isMaxParticle_; }
 
 	void SetScale();
+	void SetRotation(float rotation) { rotation_ = rotation; };
 
 	void ParticleRemove();
 
 	std::forward_list<Particle> GetPaticles() { return particles_; }
 
 	void SetGenerationNum(int32_t generationNum) { generationNum_ = generationNum; }
-	//void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
+	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
 private: // 定数
 		static const int division = 50;					// 分割数
@@ -186,6 +191,8 @@ private:
 	//現在のパーティクルの数
 	int32_t nowParticleCount_ = 0;
 
+	float rotation_;
+
 protected :
 
 	const float kColorPinkR = 0.965f;
@@ -205,6 +212,6 @@ protected :
 	std::string particleFileName_;
 
 	//ゲームスピード
-	//GameSpeed* gameSpeed_ = nullptr;
+	GameSpeed* gameSpeed_ = nullptr;
 };
 

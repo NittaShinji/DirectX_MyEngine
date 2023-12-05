@@ -72,6 +72,11 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 
 		//color = { 1.0f,1.0f,1.0f,1.0f };
 
+		const float md_rotate = 1.0f;
+		float rotation = (float)rand() / RAND_MAX * md_rotate - 0.0f;
+		float rotationSpeed = 0.01f;
+
+
 		//色を変化させる
 		Vector4 colorSpeed{ 0.02f,0.02f,0.02f,0.15f };
 
@@ -81,7 +86,7 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 		//追加
 		if(GetIsMaxParticle() == false)
 		{
-			Add(InitLife, setPos_, setVel_, acc, endColor, color, colorSpeed, startScale_, endScale_);
+			Add(InitLife, setPos_, setVel_, acc, endColor, color, colorSpeed, startScale_, endScale_,rotation,rotationSpeed);
 		}
 	}
 

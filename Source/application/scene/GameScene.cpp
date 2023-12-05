@@ -172,6 +172,8 @@ void GameScene::Initialize()
 	player_->SetGameSpeed(gameSpeed_.get());
 	gameCamera_->SetGameSpeed(gameSpeed_.get());
 	
+	secondJumpParticle_->SetGameSpeed(gameSpeed_.get());
+	groundParticle_->SetGameSpeed(gameSpeed_.get());
 	landParticle_->SetGameSpeed(gameSpeed_.get());
 	deadParticle_->SetGameSpeed(gameSpeed_.get());
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
@@ -283,29 +285,34 @@ void GameScene::Update()
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 
-	if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
-	{
-		if(player_->GetIsSecondJumpMoment() == true)
-		{
-			secondJumpParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
-		}
-	}
+	landParticle_->SetPlayerIsDead(player_->GetIsDead());
+	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
+	breakParticle_->SetPlayerIsDead(player_->GetIsDead());
 
-	if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+	if(gameSpeed_->GetSpeedMode() != GameSpeed::SpeedMode::STOP)
 	{
-		if(player_->GetIsSecondJumpMoment() == false)
+		if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
 		{
-			groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
-		}	
+			if(player_->GetIsSecondJumpMoment() == true)
+			{
+				secondJumpParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
+			}
+		}
+
+		if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+		{
+			if(player_->GetIsSecondJumpMoment() == false)
+			{
+				groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
+			}
+		}
+		landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(), player_->GetAttributeColor());
+		deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(), player_->GetAttributeColor());
+		breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
 	}
 
 	ParticleManager::GetInstance()->Update(gameCamera_.get());
-	landParticle_->SetPlayerIsDead(player_->GetIsDead());
-	landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(),player_->GetAttributeColor());
-	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
-	deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(),player_->GetAttributeColor());
-	breakParticle_->SetPlayerIsDead(player_->GetIsDead());
-	breakParticle_->PopUpdate(gameCamera_.get(),stage_->GetBreakWallsPos());
+	
 
 	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());
 	

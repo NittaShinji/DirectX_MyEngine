@@ -9,6 +9,7 @@ struct VSOutput
     float4 pos : POSITION; //頂点座標
     float scale : TEXCOORD; //スケール
     float4 color : COLOR;
+    float rotate : ROTATE;
 };
 
 struct GSOutput
