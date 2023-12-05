@@ -16,14 +16,13 @@ void ClearScene::Initialize()
 	check_ = std::make_unique<Sprite>();
 	aButton_ = std::make_unique<Sprite>();
 
-	//SpriteCommon::GetInstance()->LoadTexture("end.png");
 	TextureManager::GetInstance()->LoadTexture("check.png");
 	TextureManager::GetInstance()->LoadTexture("A.png");
 
 	Vector2 titlePosition = { 0.0f,0.0f };;
 	end_->Initialize("WhiteTex",titlePosition);
 
-	checkPosition_.x = (WindowsAPI::kWindow_width_ / 2);
+	checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) + 16;
 	checkPosition_.y = 0.0f;
 
 	check_->Initialize("check.png",checkPosition_);
@@ -51,6 +50,7 @@ void ClearScene::Initialize()
 
 	//変数
 	move_ = { 0.0f,0.0f };
+	isRotateSprite_ = false;
 
 	//アンカーポイントの設定
 	Vector2 checkAnchorPoint = { 0.5f,0.5f };
@@ -65,16 +65,21 @@ void ClearScene::Update()
 	end_->matUpdate();
 	aButton_->matUpdate();
 
+	//移動処理
+	const float moveResultPosY = WindowsAPI::kWindow_height_ / 3;
 
-	if(checkPosition_.y <= (WindowsAPI::kWindow_height_ / 2))
+	if(checkPosition_.y <= moveResultPosY)
 	{
-		move_.y += 0.6f;
+		const float kMoveSpeed = 0.6f;
+		move_.y += kMoveSpeed;
 		checkPosition_.y += move_.y;
 	}
 
-	if(rotate_ <= ToRadian(360.0f))
+	//回転処理
+	const float kOneRotationAngle = 360.0f;
+	if(rotate_ <= ToRadian(kOneRotationAngle) && isRotateSprite_ == false)
 	{
-		float angle = ToRadian(360.0f);
+		float angle = ToRadian(kOneRotationAngle);
 		rotate_ -= PlayEaseIn(0.0f, angle, rotateTimer_, kRotateTime_);
 	}
 
@@ -82,8 +87,10 @@ void ClearScene::Update()
 	{
 		rotateTimer_--;
 	}
-	else
+	else if(rotateTimer_ < 0)
 	{
+		rotateTimer_ = kRotateTime_;
+		isRotateSprite_ = true;
 	}
 
 	check_->SetPosition(checkPosition_);

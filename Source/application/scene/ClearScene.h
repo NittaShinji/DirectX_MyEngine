@@ -44,6 +44,7 @@ private:
 	//1周回る時間
 	const float kRotateTime_ = 30.0f;
 	float rotateTimer_ = kRotateTime_;
+	bool isRotateSprite_ = false;
 
 	//サウンド
 	std::unique_ptr<Sound> checkSound_ = nullptr;

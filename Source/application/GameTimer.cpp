@@ -85,7 +85,6 @@ void GameTimer::InGameInitialize()
 		inGameNum[i]->SetSize(texSize);
 	}
 
-	//float integerX = inGameNum[1]->GetPosition().x;
 	float decimalX = inGameNum[2]->GetPosition().x;
 
 	Vector2 decimalPointPos = Vector2(decimalX - texSize.x / half + 6, texSize.y + texSize.y - 15);
@@ -101,24 +100,26 @@ void GameTimer::ResultInitialize()
 	Vector2 texSize = texTotalSize;
 	const int half = 2;
 	texSize.x = texSize.x / totalNumber;
-	//for(int i = 0; i < resultDigits; i++)
-	//{
-	//	resultNum[i] = std::make_unique<Sprite>();
-	//	// 数字の初期化
-	//	resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x), texSize.y));
-	//}
+
+	//float numberWidth = WindowsAPI::kWindow_height_ / 2;
+	float numberHeight = WindowsAPI::kWindow_height_ / 2;
+
+	//const float dotWidth = numberHeight + texSize.y - 15;
+	const float dotHeight = numberHeight + texSize.y - 15;
+
+
 
 	for(int i = 0; i < resultDigits; i++)
 	{
 		if(i < 3)
 		{
 			// 数字の初期化
-			resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x), texSize.y));
+			resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x) + WindowsAPI::kWindow_width_ / 2 - (texSize.x * 3) , numberHeight));
 		}
 		else
 		{
 			// 数字の初期化
-			resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x + texSize.x / half), texSize.y));
+			resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x + texSize.x / half) + WindowsAPI::kWindow_width_ / 2 - (texSize.x * 3), numberHeight));
 		}
 	}
 
@@ -128,10 +129,9 @@ void GameTimer::ResultInitialize()
 		resultNum[i]->SetSize(texSize);
 	}
 
-	//float integerX = resultNum[2]->GetPosition().x;
 	float decimalX = resultNum[3]->GetPosition().x;
 
-	Vector2 decimalPointPos = Vector2(decimalX - texSize.x / half + 6, texSize.y + texSize.y - 15);
+	Vector2 decimalPointPos = Vector2(decimalX - texSize.x / half + 6, dotHeight);
 
 	BlackDot_->SetPosition(decimalPointPos);
 
