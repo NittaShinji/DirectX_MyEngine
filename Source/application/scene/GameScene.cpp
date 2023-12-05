@@ -389,9 +389,9 @@ void GameScene::Draw()
 	bButtonSprite_->Draw("B.png");
 	jumpSprite_->Draw("jump.png");
 	arrowSprite_->Draw("arrow.png");
+	GameTimer::GetInstance()->InGameDraw();
 	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
-	GameTimer::GetInstance()->InGameDraw();
 	
 	//デバッグテキストの描画
 	imGuiManager_->Draw();

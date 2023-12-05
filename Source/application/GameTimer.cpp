@@ -13,7 +13,8 @@ bool GameTimer::isLoadSprite_ = false;
 
 std::unique_ptr<Sprite> GameTimer::inGameNum[inGameDigits];
 std::unique_ptr<Sprite> GameTimer::resultNum[resultDigits];
-std::unique_ptr<Sprite> GameTimer::BlackDot_;
+std::unique_ptr<Sprite> GameTimer::blackDot_;
+std::unique_ptr<Sprite> GameTimer::stopWatch_;
 
 //ゲーム中に表示する時間(4桁)
 int GameTimer::inGameDisPlayTime_[inGameDigits];
@@ -25,6 +26,8 @@ void GameTimer::LoadSprite()
 	//一度だけ画像を読み込む
 	if(isLoadSprite_ == false)
 	{
+		//時計のテクスチャ読み込み
+		TextureManager::GetInstance()->LoadTexture("StopWatch.png");
 		//数字のテクスチャ読み込み
 		TextureManager::GetInstance()->LoadTexture("numbers.png");
 		//黒いドットの点画像を作成
@@ -42,7 +45,9 @@ void GameTimer::StaticInitialize()
 	resultTime_ = 0;
 	highScoreTime_ = 0;
 	
-	BlackDot_ = std::make_unique<Sprite>();
+	blackDot_ = std::make_unique<Sprite>();
+	stopWatch_ = std::make_unique<Sprite>();
+
 	for(int i = 0; i < inGameDigits; i++)
 	{
 		inGameNum[i] = std::make_unique<Sprite>();
@@ -57,83 +62,95 @@ void GameTimer::InGameInitialize()
 {
 	LoadSprite();
 
-	Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
-	Vector2 texSize = texTotalSize;
-	texSize.x = texSize.x / totalNumber;
+	//10枚分のサイズ
+	Vector2 texNumTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
+	//数字一つ当たりのサイズ
+	Vector2 texNumSize = texNumTotalSize;
+	texNumSize.x = texNumSize.x / totalNumber;
 	const int half = 2;
+	const Vector4 color = { 1.0f,1.0f,1.0,0.75f };
+
+	Vector2 texStopWatchSize = TextureManager::GetInstance()->GetTexSize("StopWatch.png");
+
+	//数字の初期化
 	for(int i = 0; i < inGameDigits; i++)
 	{
-		if(i < 2)
+		if(i < inGameDigits / half)
 		{
-			// 数字の初期化
-			inGameNum[i]->Initialize("numbers.png", Vector2((i * texSize.x), texSize.y));
+			// 整数の初期化
+			inGameNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x) + texNumSize.y, texNumSize.y));
 		}
 		else
 		{
-			// 数字の初期化
-			inGameNum[i]->Initialize("numbers.png", Vector2((i * texSize.x + texSize.x / half), texSize.y));
+			// 小数点の初期化
+			inGameNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x + texNumSize.x / half) + texNumSize.y, texNumSize.y));
 		}
 
+		//数字の桁を0で初期化
 		inGameDisPlayTime_[i] = { 0 };
-		
 		SetNumber(inGameDisPlayTime_[i], inGameNum[i].get());
+		//数字のサイズを指定
+		inGameNum[i]->SetTextureClipSize(texNumSize);
+		inGameNum[i]->SetSize(texNumSize);
+		//透明度を下げる
+		//inGameNum[i]->SetColor(color);
 	}
 
-	for(int i = 0; i < inGameDigits; i++)
-	{
-		inGameNum[i]->SetTextureClipSize(texSize);
-		inGameNum[i]->SetSize(texSize);
-	}
-
+	//ドット画像の初期化
 	float decimalX = inGameNum[2]->GetPosition().x;
+	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x / half + 6, texNumSize.y + texNumSize.y - 15);
+	blackDot_->Initialize("BLACKDot", decimalPointPos);
+	//blackDot_->SetColor(color);
 
-	Vector2 decimalPointPos = Vector2(decimalX - texSize.x / half + 6, texSize.y + texSize.y - 15);
+	//時計画像の初期化
+	float stopWatchX = inGameNum[0]->GetPosition().x - texNumSize.y;
+	stopWatch_->Initialize("StopWatch.png", Vector2(stopWatchX, texNumSize.y));
+	//64 x 64の正方形サイズに変更
+	stopWatch_->SetSize(Vector2(texNumSize.y,texNumSize.y));
+	stopWatch_->SetColor(color);
 
-	BlackDot_->Initialize("BLACKDot", decimalPointPos);
 
 	timer_ = 0;
 }
 
 void GameTimer::ResultInitialize()
 {
-	Vector2 texTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
-	Vector2 texSize = texTotalSize;
+	Vector2 texNumTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
+	Vector2 texNumSize = texNumTotalSize;
 	const int half = 2;
-	texSize.x = texSize.x / totalNumber;
+	texNumSize.x = texNumSize.x / totalNumber;
 
 	//float numberWidth = WindowsAPI::kWindow_height_ / 2;
 	float numberHeight = WindowsAPI::kWindow_height_ / 2;
 
-	//const float dotWidth = numberHeight + texSize.y - 15;
-	const float dotHeight = numberHeight + texSize.y - 15;
-
-
+	//const float dotWidth = numberHeight + texNumSize.y - 15;
+	const float dotHeight = numberHeight + texNumSize.y - 15;
 
 	for(int i = 0; i < resultDigits; i++)
 	{
-		if(i < 3)
+		if(i < resultDigits / half)
 		{
 			// 数字の初期化
-			resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x) + WindowsAPI::kWindow_width_ / 2 - (texSize.x * 3) , numberHeight));
+			resultNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x) + WindowsAPI::kWindow_width_ / 2 - (texNumSize.x * 3) , numberHeight));
 		}
 		else
 		{
 			// 数字の初期化
-			resultNum[i]->Initialize("numbers.png", Vector2((i * texSize.x + texSize.x / half) + WindowsAPI::kWindow_width_ / 2 - (texSize.x * 3), numberHeight));
+			resultNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x + texNumSize.x / half) + WindowsAPI::kWindow_width_ / 2 - (texNumSize.x * 3), numberHeight));
 		}
 	}
 
 	for(int i = 0; i < resultDigits; i++)
 	{
-		resultNum[i]->SetTextureClipSize(texSize);
-		resultNum[i]->SetSize(texSize);
+		resultNum[i]->SetTextureClipSize(texNumSize);
+		resultNum[i]->SetSize(texNumSize);
 	}
 
 	float decimalX = resultNum[3]->GetPosition().x;
 
-	Vector2 decimalPointPos = Vector2(decimalX - texSize.x / half + 6, dotHeight);
+	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x / half + 6, dotHeight);
 
-	BlackDot_->SetPosition(decimalPointPos);
+	blackDot_->SetPosition(decimalPointPos);
 
 }
 
@@ -144,7 +161,8 @@ void GameTimer::InGameUpdate(bool isStart,bool isFinish)
 		inGameNum[i]->matUpdate();
 	}
 
-	BlackDot_->matUpdate();
+	blackDot_->matUpdate();
+	stopWatch_->matUpdate();
 
 	//プレイヤーが動き始めたら
 	if(isStart == true)
@@ -187,7 +205,7 @@ void GameTimer::ResultUpdate()
 		resultNum[i]->matUpdate();
 	}
 
-	BlackDot_->matUpdate();
+	blackDot_->matUpdate();
 
 	ResultNumberUpdate();
 
@@ -209,7 +227,7 @@ void GameTimer::ResultUpdate()
 //		inGameNum[i]->matUpdate();
 //	}
 //
-//	BlackDot_->matUpdate();
+//	blackDot_->matUpdate();
 //
 //
 //	if(isStart == true)
@@ -253,12 +271,14 @@ void GameTimer::NumberUpdate()
 
 void GameTimer::InGameDraw()
 {
+	stopWatch_->Draw("StopWatch.png");
+
 	for(int i = 0; i < inGameDigits; i++)
 	{
 		inGameNum[i]->Draw("numbers.png");
 	}
 
-	BlackDot_->Draw("BLACKDot");
+	blackDot_->Draw("BLACKDot");
 }
 void GameTimer::ResultDraw()
 {
@@ -267,7 +287,7 @@ void GameTimer::ResultDraw()
 		resultNum[i]->Draw("numbers.png");
 	}
 
-	BlackDot_->Draw("BLACKDot");
+	blackDot_->Draw("BLACKDot");
 }
 
 void GameTimer::InGameNumberUpdate(bool isFinish)
