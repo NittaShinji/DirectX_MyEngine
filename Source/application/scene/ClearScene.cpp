@@ -110,11 +110,6 @@ void ClearScene::Draw()
 	directXBasic_->BeforeDraw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
-	SpriteCommon::GetInstance()->Update();
-	end_->Update();
-	check_->Update();
-	aButton_->Update();
-
 	end_->Draw("WhiteTex");
 	check_->Draw("check.png");
 	aButton_->Draw("A.png");

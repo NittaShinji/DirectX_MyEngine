@@ -360,8 +360,6 @@ void GameScene::Draw()
 	postEffect_->PreDrawScene();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
-	SpriteCommon::GetInstance()->Update();
-	backGroundSprite_->Update();
 	backGroundSprite_->Draw("backGround.png");
 
 	Object3d::BeforeDraw();
@@ -387,17 +385,6 @@ void GameScene::Draw()
 	ParticleManager::GetInstance()->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
-	SpriteCommon::GetInstance()->Update();
-	aButtonSprite_->Update();
-	bButtonSprite_->Update();
-	jumpSprite_->Update();
-	arrowSprite_->Update();
-	sceneTransitionUp_->Update();
-	sceneTransitionDown_->Update();
-	//testParticleSprite_->Update();
-	/*backGroundSprite_->Update();
-	backGroundSprite_->Draw("backGround.png");*/
-
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
 	jumpSprite_->Draw("jump.png");
@@ -406,9 +393,6 @@ void GameScene::Draw()
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
 	GameTimer::GetInstance()->InGameDraw();
 	
-	//testParticleSprite_->Draw("jumpEffect6.png");
-
-
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
 

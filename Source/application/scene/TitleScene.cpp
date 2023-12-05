@@ -261,13 +261,6 @@ void TitleScene::Draw()
 	directXBasic_->BeforeDraw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
-	SpriteCommon::GetInstance()->Update();
-	titleSprite_->Update();
-	clickSprite_->Update();
-	aButtonSprite_->Update();
-	bButtonSprite_->Update();
-	backGroundSprite_->Update();
-
 	backGroundSprite_->Draw("WhiteTex");
 	titleSprite_->Draw("TitleFont.png");
 

@@ -281,7 +281,7 @@ void Sprite::matUpdate()
 
 void Sprite::Draw(const std::string& fileName)
 {
-	spriteCommon_->Update();
+	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial_->GetGPUVirtualAddress());
 
 	uint32_t textureIndex;
 	textureIndex = textureManager_->GetTextureMap().at(fileName);
@@ -351,11 +351,6 @@ void Sprite::TransferVertices()
 
 	// 頂点バッファへのデータ転送
 	memcpy(vertMap_, vertices, sizeof(vertices));
-}
-
-void Sprite::Update()
-{
-	directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial_->GetGPUVirtualAddress());
 }
 
 void Sprite::MovePos(Vector2 moveVec)

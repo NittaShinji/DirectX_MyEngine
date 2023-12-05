@@ -131,15 +131,6 @@ void StageSelectScene::Draw()
 	directXBasic_->BeforeDraw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
-	SpriteCommon::GetInstance()->Update();
-	backGroundWhite_->Update();
-	backGroundLeft_->Update();
-	backGroundRight_->Update();
-	gameSceneSprite1_->Update();
-	gameSceneSprite2_->Update();
-	selectSprite_->Update();
-	sceneTransition_->Update();
-
 	backGroundWhite_->Draw("WhiteTex");
 	selectSprite_->Draw("CursorTex");
 	backGroundLeft_->Draw("BackGroundTex");

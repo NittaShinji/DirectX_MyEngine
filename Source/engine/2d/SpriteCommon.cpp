@@ -270,12 +270,6 @@ void SpriteCommon::InvertColor()
 	assert(SUCCEEDED(result));
 }
 
-void SpriteCommon::Update()
-{
-	//定数バッファビュー(CBV)の設定コマンド
-	/*directXBasic_->GetCommandList()->SetGraphicsRootConstantBufferView(0, constBuffMaterial_->GetGPUVirtualAddress());*/
-}
-
 void SpriteCommon::VertexLayoutSet()
 {
 	// 頂点レイアウト

@@ -24,8 +24,6 @@ public:
 
 	void TransferVertices();
 
-	void Update();
-
 	//テンプレートコンストラクタ
 	template <typename Type1, typename Type2>
 	//定数バッファの生成

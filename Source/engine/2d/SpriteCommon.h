@@ -32,8 +32,6 @@ public:
 
 	//初期化
 	void Initialize(DirectXBasic* directXBasic);
-	//更新
-	void Update();
 
 	static SpriteCommon* GetInstance()
 	{
