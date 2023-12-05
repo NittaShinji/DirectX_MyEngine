@@ -306,9 +306,6 @@ void TutorialScene::Draw()
 	//particleManager_->Draw();
 
 	SpriteCommon::GetInstance()->BeforeDraw();
-	SpriteCommon::GetInstance()->Update();
-	aButtonSprite_->Update();
-	bButtonSprite_->Update();
 
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");

@@ -255,49 +255,19 @@ void GameTimer::InGameDraw()
 {
 	for(int i = 0; i < inGameDigits; i++)
 	{
-		inGameNum[i]->Update();
-	}
-	for(int i = 0; i < inGameDigits; i++)
-	{
 		inGameNum[i]->Draw("numbers.png");
 	}
 
-	BlackDot_->Update();
 	BlackDot_->Draw("BLACKDot");
 }
 void GameTimer::ResultDraw()
 {
 	for(int i = 0; i < resultDigits; i++)
 	{
-		resultNum[i]->Update();
-	}
-	for(int i = 0; i < resultDigits; i++)
-	{
 		resultNum[i]->Draw("numbers.png");
 	}
 
-	BlackDot_->Update();
 	BlackDot_->Draw("BLACKDot");
-}
-
-
-void GameTimer::Draw()
-{
-	//for(int i = 0; i < resultDigits; i++)
-	//{	
-	//	resultNum[i]->Update();
-	//}
-	//for(int i = 0; i < resultDigits; i++)
-	//{
-	//	resultNum[i]->Draw("numbers.png");
-	//}
-
-	
-
-	
-	//resultNum[0]->Update();
-	//resultNum[0]->Draw("numbers.png");
-
 }
 
 void GameTimer::InGameNumberUpdate(bool isFinish)
