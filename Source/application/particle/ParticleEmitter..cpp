@@ -145,16 +145,6 @@ void ParticleEmitter::Update(Camera* camera)
 				isMaxParticle_ = false;
 				nowParticleCount_++;
 			}
-
-			//if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP)
-			//{
-			//	//it->velocity = (it->velocity + it->accel) * gameSpeed_->GetSpeedNum();
-			//}
-			//else
-			//{
-			//	//it->velocity = (it->velocity + it->accel);
-			//}
-
 			
 			//速度に加速度を加算
 			it->velocity = (it->velocity + it->accel) * gameSpeed_->GetSpeedNum();
@@ -174,7 +164,6 @@ void ParticleEmitter::Update(Camera* camera)
 
 			it->rotation += it->rotationSpeed;
 
-
 			//座標
 			vertMap->pos.x = it->position.x;
 			vertMap->pos.y = it->position.y;
@@ -186,41 +175,39 @@ void ParticleEmitter::Update(Camera* camera)
 			//色
 			if(it->color.x <= it->endColor.x)
 			{
-				it->color.x += it->colorSpeed.x;
+				it->color.x += it->colorSpeed.x * gameSpeed_->GetSpeedNum();
 			}
 			else if(it->color.x > it->endColor.x)
 			{
-				it->color.x -= it->colorSpeed.x;
+				it->color.x -= it->colorSpeed.x * gameSpeed_->GetSpeedNum();
 			}
 
 			if(it->color.y <= it->endColor.y)
 			{
-				it->color.y += it->colorSpeed.y;
+				it->color.y += it->colorSpeed.y * gameSpeed_->GetSpeedNum();
 			}
 			else if(it->color.y > it->endColor.y)
 			{
-				it->color.y -= it->colorSpeed.y;
+				it->color.y -= it->colorSpeed.y * gameSpeed_->GetSpeedNum();
 			}
 
 			if(it->color.z <= it->endColor.z)
 			{
-				it->color.z += it->colorSpeed.z;
+				it->color.z += it->colorSpeed.z * gameSpeed_->GetSpeedNum();
 			}
 			else if(it->color.z > it->endColor.z)
 			{
-				it->color.z -= it->colorSpeed.z;
+				it->color.z -= it->colorSpeed.z * gameSpeed_->GetSpeedNum();
 			}
 
 			if(it->color.w <= it->endColor.w)
 			{
-				it->color.w += it->colorSpeed.w;
+				it->color.w += it->colorSpeed.w * gameSpeed_->GetSpeedNum();
 			}
 			else if(it->color.w > it->endColor.w)
 			{
-				it->color.w -= it->colorSpeed.w;
+				it->color.w -= it->colorSpeed.w * gameSpeed_->GetSpeedNum();
 			}
-
-			it->rotation += it->rotationSpeed;
 
 			vertMap->color.x = it->color.x;
 			vertMap->color.y = it->color.y;

@@ -19,10 +19,10 @@ std::unique_ptr<GroundParticle> GroundParticle::Create(std::string fileName)
 
 void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 {
-	for(int32_t i = 0; i < 1; i++)
+	for(int32_t i = 0; i < 3; i++)
 	{
 		const float md_pos = 2.0f;
-		setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.x + imGuiPos_[0];
+		setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.x + imGuiPos_[0] + i * 0.2f;
 		const float shiftY = -0.8f;
 		setPos_.y = playerPos.y + shiftY + imGuiPos_[1];
 		setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.z + imGuiPos_[2];
@@ -74,7 +74,7 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 
 		const float md_rotate = 1.0f;
 		float rotation = (float)rand() / RAND_MAX * md_rotate - 0.0f;
-		float rotationSpeed = 0.01f;
+		float rotationSpeed = 0.005f;
 
 
 		//色を変化させる

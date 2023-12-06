@@ -74,7 +74,7 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_ / 2 , Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BlackBackGroundHalfTex");
 	TextureManager::GetInstance()->LoadTexture("jump.png");
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
-	TextureManager::GetInstance()->LoadTexture("effect1.png");
+	TextureManager::GetInstance()->LoadTexture("cloud.png");
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
@@ -154,7 +154,7 @@ void GameScene::Initialize()
 	gameCamera_->Initialize();
 
 	//2Dパーティクル
-	groundParticle_ = GroundParticle::Create("effect1.png");
+	groundParticle_ = GroundParticle::Create("cloud.png");
 	secondJumpParticle_ = SecondJump2DParticle::Create("jumpEffect6.png");
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->AddEmitter(secondJumpParticle_.get());
