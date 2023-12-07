@@ -155,9 +155,11 @@ void GameScene::Initialize()
 
 	//2Dパーティクル
 	groundParticle_ = GroundParticle::Create("cloud.png");
+	hitParticle_ = HitParticle2D::Create("cloud.png");
 	secondJumpParticle_ = SecondJump2DParticle::Create("jumpEffect6.png");
 	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
 	ParticleManager::GetInstance()->AddEmitter(secondJumpParticle_.get());
+	ParticleManager::GetInstance()->AddEmitter(hitParticle_.get());
 	ParticleManager::GetInstance()->Initialize();
 	//3Dパーティクル
 	landParticle_ = LandParticle::Create(cube);
@@ -174,6 +176,8 @@ void GameScene::Initialize()
 	
 	secondJumpParticle_->SetGameSpeed(gameSpeed_.get());
 	groundParticle_->SetGameSpeed(gameSpeed_.get());
+	hitParticle_->SetGameSpeed(gameSpeed_.get());
+
 	landParticle_->SetGameSpeed(gameSpeed_.get());
 	deadParticle_->SetGameSpeed(gameSpeed_.get());
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
@@ -306,6 +310,15 @@ void GameScene::Update()
 				groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
 			}
 		}
+
+		if(player_->GetIsMoving() == true && player_->GetIsDead() == false)
+		{
+			if(player_->GetIsLanded() == true)
+			{
+				hitParticle_->Preparation(player_->GetTransform());
+			}
+		}
+
 		landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(), player_->GetAttributeColor());
 		deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(), player_->GetAttributeColor());
 		breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
@@ -387,6 +400,9 @@ void GameScene::Draw()
 	Object3d::BeforeDraw();
 	stage_->Draw();
 	player_->Draw();
+
+	//深度値クリア
+	directXBasic_->ClearDepthBuffer();
 
 	ObjParticleManager::GetInstance()->Draw();
 	ParticleManager::GetInstance()->Draw();

@@ -161,9 +161,6 @@ private:
 	//ぶつかってストップしているか
 	bool isStoped_;
 
-	//押し出されたかどうか
-	bool isPushOut_;
-
 
 	bool isStartedJumpAnimation_;
 	int32_t kJumpAnimationTime_ = 10;
@@ -215,6 +212,7 @@ private:
 
 	bool isRising_ = false;
 	bool isSecondJumpMoment_ = false;
+	bool isHit_ = false;
 
 	GameSpeed* gameSpeed_ = nullptr;
 
@@ -236,6 +234,7 @@ public:
 	float GetNormalAxcellZ() { return kMoveAxcellZ_; }
 	Vector3 GetDeadPos() { return deadPos_; }
 	bool GetIsSecondJumpMoment() { return isSecondJumpMoment_; }
+	bool GetIsTouchObject() { return isTouchUnderObject_; }
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }

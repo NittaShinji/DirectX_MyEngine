@@ -69,13 +69,13 @@ void Player::Initialize()
 	onGround_ = true;
 	isLanded_ = false;
 	isDead_ = false;
+	isHit_ = false;
 
 	isStartedJumpAnimation_ = false;
 	isStartedLandAnime_ = false;
 	isReturnedSizeAnime_ = false;
 	isReadyToJump_ = false;
 	isDuringAnimation_ = false;
-	isPushOut_ = false;
 	isRightAxcell_ = false;
 	returnScaleSpeed_ = 0.15f;
 
@@ -91,6 +91,8 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
+	isLanded_ = false;
+
 	gameCamera_ = camera;
 
 	//瞬間のフラグをOFFにする
@@ -278,7 +280,6 @@ void Player::Update(Camera* camera)
 			if(callback.move.z < 0)
 			{
 				isStoped_ = true;
-				//isPushOut_ = true;
 			}
 			else
 			{

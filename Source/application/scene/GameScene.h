@@ -22,6 +22,7 @@
 #include "BreakParticle.h"
 #include "SecondJump2DParticle.h"
 #include "GameSpeed.h"
+#include "HitParticle2D.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -139,6 +140,8 @@ private:
 	//パーティクル
 	std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
 	std::unique_ptr<SecondJump2DParticle> secondJumpParticle_ = nullptr;
+	std::unique_ptr<HitParticle2D> hitParticle_ = nullptr;
+	
 
 	std::unique_ptr<LandParticle> landParticle_ = nullptr;
 	std::unique_ptr<DeadParticle> deadParticle_ = nullptr;

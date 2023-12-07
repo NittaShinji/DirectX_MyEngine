@@ -1,6 +1,7 @@
 #include "ParticleEmitter.h"
 #include "ImGuiManager.h"
 #include "TextureManager.h"
+
 #include <d3dcompiler.h>
 #include <string.h>
 #include <cassert>
@@ -148,6 +149,7 @@ void ParticleEmitter::Update(Camera* camera)
 			
 			//速度に加速度を加算
 			it->velocity = (it->velocity + it->accel) * gameSpeed_->GetSpeedNum();
+
 			//it->velocity = it->velocity + it->accel;
 			//速度による移動
 			it->position = it->position + it->velocity;
@@ -161,6 +163,18 @@ void ParticleEmitter::Update(Camera* camera)
 			//スケールの線形補間
 			it->scale = (it->e_scale - it->s_scale) * f;
 			it->scale += it->s_scale;
+
+			/*it->color.x = (it->endColor.x - it->startColor.x) * f;
+			it->color.y = (it->endColor.y - it->startColor.y) * f;
+			it->color.z = (it->endColor.z - it->startColor.z) * f;
+			it->color.w = (it->endColor.w - it->startColor.w) * f;
+
+			it->color.x += it->startColor.x;
+			it->color.y += it->startColor.y;
+			it->color.z += it->startColor.z;
+			it->color.w += it->startColor.w;*/
+
+
 
 			it->rotation += it->rotationSpeed;
 
@@ -213,6 +227,7 @@ void ParticleEmitter::Update(Camera* camera)
 			vertMap->color.y = it->color.y;
 			vertMap->color.z = it->color.z;
 			vertMap->color.w = it->color.w;
+
 			vertMap->rotate = it->rotation;
 
 			//次の頂点へ
@@ -285,7 +300,7 @@ std::unique_ptr<ParticleEmitter> ParticleEmitter::Create()
 	return instance;
 }
 
-void ParticleEmitter::Add(float life, Vector3 position, Vector3 velocity, Vector3 accel,Vector4 endColor, Vector4 color,Vector4 colorSpeed, float start_scale, float end_scale, float rotation, float rotationSpeed)
+void ParticleEmitter::Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 startColor,Vector4 endColor,Vector4 colorSpeed, float start_scale, float end_scale, float rotation, float rotationSpeed)
 {
 	int32_t isParticleNum = 0;
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
@@ -317,7 +332,7 @@ void ParticleEmitter::Add(float life, Vector3 position, Vector3 velocity, Vector
 		p.s_scale = start_scale;
 		p.e_scale = end_scale;
 		p.colorSpeed = colorSpeed;
-		p.color = color;
+ 		p.color = startColor;
 		p.endColor = endColor;
 		p.rotation = rotation;
 		p.rotationSpeed = rotationSpeed;

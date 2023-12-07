@@ -45,9 +45,8 @@ void SecondJump2DParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 	//色を変化させる
 	Vector4 colorSpeed{ 0.0f,0.0f,0.0f,0.04f };
 
-	Vector4 color = { 1.0f,1.0f,1.0f,1.0f };
-
-	Vector4 endColor = color;
+	Vector4 startColor = { 1.0f,1.0f,1.0f,1.0f };
+	Vector4 endColor = { 1.0f,1.0f,1.0f,0.0f };
 	endColor.w = 0.0f;
 
 	if(playerColor == Attribute::pink) {}
@@ -61,7 +60,7 @@ void SecondJump2DParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 	//追加
 	if(GetIsMaxParticle() == false)
 	{
-		Add(InitLife, setPos_, setVel_, acc, endColor,color, colorSpeed, startScale_, endScale_, rotation,rotationSpeed);
+		Add(InitLife, setPos_, setVel_, acc,startColor, endColor, colorSpeed, startScale_, endScale_, rotation,rotationSpeed);
 	}
 
 }

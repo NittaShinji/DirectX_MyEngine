@@ -15,4 +15,16 @@ public:
 	// コンストラクタ
 	Vector4();                                   // 零ベクトルとする
 	Vector4(float x, float y, float z, float w); // x成分, y成分, z成分 を指定しての生成
+
+	//単項演算子オーバーロード
+	Vector4 operator+() const;
+	Vector4 operator-() const;
+
+	//代入演算子オーバーロード
+	Vector4& operator+=(const Vector4& v);
+	Vector4& operator-=(const Vector4& v);
+	Vector4& operator*=(float s);
+	Vector4& operator/=(float s);
+
 };
+
