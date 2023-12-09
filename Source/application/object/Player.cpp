@@ -578,9 +578,24 @@ void Player::OnCollision(const CollisionInfo& info)
 			isSetDeadPos_ = true;
 		}
 	}
-	//プレイヤーと同じ色の場合
+	//下からプレイヤーと同じ色のオブジェクトと当たった場合
 	else if(info.object->GetAttributeColor() == attributeColor_)
 	{
+		/*if(onGround_ == false && isDuringAnimation_ == false && isExpandedAnime_ == false && isDentedAnime_ == false)
+		{
+			isTouchObject_ = true;
+		}*/
+		if(onGround_ == false && isDuringAnimation_ == false && isExpandedAnime_ == false && isDentedAnime_ == false)
+		{
+			isTouchObject_ = true;
+		}
+		if(isExpandedAnime_ == true)
+		{
+			isTouchObject_ = true;
+		}
+
+
+
 		////球コライダーを取得
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 

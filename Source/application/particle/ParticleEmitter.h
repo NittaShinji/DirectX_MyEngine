@@ -118,16 +118,13 @@ public: // メンバ関数
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
 private: // 定数
-		static const int division = 50;					// 分割数
-		static const float radius;				// 底面の半径
-		static const float prizmHeight;			// 柱の高さ
-		static const int planeCount = division * 2 + division * 2;		// 面の数
-		static const int kVertexCount = 1024;		// 頂点数
-
+	static const int division = 50;					// 分割数
+	static const float radius;				// 底面の半径
+	static const float prizmHeight;			// 柱の高さ
+	static const int planeCount = division * 2 + division * 2;		// 面の数
+	
 private:
 
-	//定数バッファ
-	ComPtr<ID3D12Resource> constBuff_;
 	//定数バッファのマッピング用ポインタ
 	ConstBufferData* constMapData_ = nullptr;
 
@@ -136,16 +133,10 @@ private:
 
 	static ComPtr<ID3D12PipelineState> pipelineState_;
 
-	//ジオメトリシェーダーオブジェクト
-	// ビュー行列
-	Matrix4 matView_;
-	// 射影行列
-	Matrix4 matProjection_;
-
+	
 	// テクスチャバッファ
 	ComPtr<ID3D12Resource> texbuff_;
-	// 頂点バッファ
-	ComPtr<ID3D12Resource> vertBuff_;
+	
 	//頂点データ配列
 	std::vector<Vertex> vertices_;
 
@@ -178,23 +169,36 @@ private:
 	// 頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
 
+	bool isFinish_ = 0;
+	
+protected :
+
 	//パーティクル配列
 	std::forward_list<Particle> particles_;
 
-	//最大限生成しているかどうか
-	bool isMaxParticle_;
-
-	bool isFinish_ = 0;
-
-	//一度に生成する数
-	int32_t generationNum_;
+	//ジオメトリシェーダーオブジェクト
+	// ビュー行列
+	Matrix4 matView_;
+	// 射影行列
+	Matrix4 matProjection_;
+	//定数バッファ
+	ComPtr<ID3D12Resource> constBuff_;
+	// 頂点バッファ
+	ComPtr<ID3D12Resource> vertBuff_;
 
 	//現在のパーティクルの数
 	int32_t nowParticleCount_ = 0;
 
+	//一度に生成する数
+	int32_t generationNum_;
+
+	//最大限生成しているかどうか
+	bool isMaxParticle_;
+
 	float rotation_;
 
-protected :
+
+	static const int kVertexCount = 1024;		// 頂点数
 
 	const float kColorPinkR = 0.965f;
 	const float kColorPinkG = 0.122f;

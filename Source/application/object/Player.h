@@ -158,6 +158,9 @@ private:
 	//下からオブジェクトに触れたかどうか
 	bool isTouchUnderObject_;
 
+	//オブジェクトに触れたかどうか
+	bool isTouchObject_;
+
 	//ぶつかってストップしているか
 	bool isStoped_;
 
@@ -234,12 +237,15 @@ public:
 	float GetNormalAxcellZ() { return kMoveAxcellZ_; }
 	Vector3 GetDeadPos() { return deadPos_; }
 	bool GetIsSecondJumpMoment() { return isSecondJumpMoment_; }
-	bool GetIsTouchObject() { return isTouchUnderObject_; }
+	bool GetIsTouchObject() { return isTouchObject_; }
+
+
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	void SetGamePad(GamePad* gamePad) { gamePad_ = gamePad; }
 	void SetIsDead(bool isDead) { isDead_ = isDead; }
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 	void SetIsFinish(bool isFinish) { isfinish_ = isFinish; }
+	void SetIsTouchObject(bool isTouchObject) { isTouchObject_ = isTouchObject; }
 };
 

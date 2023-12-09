@@ -174,8 +174,6 @@ void ParticleEmitter::Update(Camera* camera)
 			it->color.z += it->startColor.z;
 			it->color.w += it->startColor.w;*/
 
-
-
 			it->rotation += it->rotationSpeed;
 
 			//座標

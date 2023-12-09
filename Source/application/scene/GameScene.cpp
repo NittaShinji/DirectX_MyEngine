@@ -313,9 +313,15 @@ void GameScene::Update()
 
 		if(player_->GetIsMoving() == true && player_->GetIsDead() == false)
 		{
-			if(player_->GetIsLanded() == true)
+			bool isTouchObject = player_->GetIsTouchObject();
+
+			if(player_->GetIsLanded() == true || isTouchObject == true)
 			{
-				hitParticle_->Preparation(player_->GetTransform());
+				hitParticle_->Preparation(player_->GetTransform(), isTouchObject);
+				if(isTouchObject == true)
+				{
+					player_->SetIsTouchObject(false);
+				}
 			}
 		}
 
