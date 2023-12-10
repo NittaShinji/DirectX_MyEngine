@@ -20,13 +20,17 @@ void GameCamera::Initialize()
 
 	speedEasing_.time = 0.0f;
 	slowTimer_ = kSlowTime_;
+	axcellWaitTimer = 0;
+	waitRate_ = 0.0f;
 
 	cameraSpeed_ = kInitCameraSpeed_;
 	cameraSpeedY_ = kInitCameraSpeed_;
+	isAxcellAnimation_ = false;
+	isNotBackAnimation_ = false;
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
-	Vector3 playerDeadPos, Vector3 playerAxel, bool onGround)
+	Vector3 playerDeadPos, Vector3 playerTotalAxel, bool onGround, bool rightAxcell, Vector3 rightAxcellVec)
 {
 	cameraSpeed_ = gameSpeed_->GetSpeedNum();
 	cameraSpeedY_ = gameSpeed_->GetSpeedNum();
@@ -41,42 +45,122 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 		goalEyeTarget_.y = playerDeadPos.y - playerInitPos.y + initcameraTarget.y;
 		goalEyeTarget_.z = playerPos.z - playerInitPos.z + initcameraTarget.z + initTargetDistance_.z;
 
-		moveEyeVec = goalEyePos_ - eye_;
-		moveTargetVec = goalEyeTarget_ - target_;
-
-		moveEyeVecY = moveEyeVec;
-		moveEyeVecY.Normalize();
-		moveTargetVecY = moveTargetVec;
-		moveTargetVecY.Normalize();
-		
-		eye_.x += moveEyeVec.x * cameraSpeed_;
-		eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_;
-
-		float distanceY = std::fabs(playerPos.y - playerInitPos.y);
-
-		if(playerDeadPos.x <= 0) {}
-		if(onGround == false) {}
-
-		if(isDead == false)
+		/*if(rightAxcell == true)
 		{
-			eye_.y += moveEyeVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
-			target_.y += moveTargetVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
-		}
+			axcellWaitTimer++;
+			if(axcellWaitTimer >= kAxcellWaitTime)
+			{
+				isAxcellAnimation_ = true;
+			}
+		}*/
 
-		if(playerAxel.x < 0) {}
+			moveEyeVec = goalEyePos_ - eye_;
+			moveTargetVec = goalEyeTarget_ - target_;
 
-		target_.x += moveTargetVec.x * cameraSpeed_;
-		target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_;
+			moveEyeVecY = moveEyeVec;
+			moveEyeVecY.Normalize();
+			moveTargetVecY = moveTargetVec;
+			moveTargetVecY.Normalize();
 
-		if(isDead == true)
-		{
-			if(moveEyeVecY.y < 0)
+			eye_.x += moveEyeVec.x * cameraSpeed_;
+
+			if(rightAxcellVec.z == 0) {};
+
+			if(rightAxcell == false)
+			{
+				if(axcellRate_ < 1.0f )
+				{
+					if(isNotBackAnimation_ == true)
+					{
+						float axcellVec = kAxcellNormalRate_ - axcellRate_;
+						axcellRate_ += axcellVec / kAxcellNormalRate_;
+
+						eye_.z += cameraSpeed_ * axcellRate_;
+						//axcellRate_ += 0.01f;
+					}
+					
+				}
+				else
+				{
+					eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
+				}
+			}
+			else
+			{
+				if(axcellRate_ > 0)
+				{
+					//waitRate_++;
+					
+					/*axcellEasing_.endDistance = 1.0f - axcelRate_;
+					axcellEasing_.startPos = axcelRate_
+					axcellRate_ = PlayEaseOutQuint(axcellEasing_);*/
+
+					
+					isNotBackAnimation_ = true;
+					axcellRate_ -= 0.01f;
+				}
+
+				eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
+			}
+
+			float distanceY = std::fabs(playerPos.y - playerInitPos.y);
+
+			if(playerDeadPos.x <= 0) {}
+			if(onGround == false) {}
+
+			if(isDead == false)
 			{
 				eye_.y += moveEyeVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
 				target_.y += moveTargetVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
-
 			}
-		}
+
+			if(playerTotalAxel.x < 0) {}
+			
+			target_.x += moveTargetVec.x * cameraSpeed_;
+			if(rightAxcell == false)
+			{
+
+				if(axcellRate_ < 1.0f  )
+				{
+					if(isNotBackAnimation_ == true)
+					{
+						float axcellVec = kAxcellNormalRate_ - axcellRate_;
+						axcellRate_ += axcellVec / kAxcellNormalRate_;
+						target_.z += cameraSpeed_ * axcellRate_;
+
+						//axcellRate_ += 0.01f;
+					}
+					
+				}
+				else
+				{
+					target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
+				}
+
+				//axcellRate_ = 1.0f;
+				
+			}
+			else
+			{
+				if(axcellRate_ > 0)
+				{
+					axcellRate_ -= 0.01f;
+					isNotBackAnimation_ = true;
+				}
+				
+				target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
+			}
+
+			if(isDead == true)
+			{
+				if(moveEyeVecY.y < 0)
+				{
+					eye_.y += moveEyeVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
+					target_.y += moveTargetVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
+
+				}
+			}
+		
 	}
 
 	UpdateViewMatrix();
@@ -119,6 +203,12 @@ void GameCamera::ImGuiUpdate()
 	ImGui::SliderFloat("targetZ", &target_.z, -100.0f, 1000.0f);
 
 	ImGui::End();
+
+}
+
+void GameCamera::AccelerationAnimation()
+{
+
 
 }
 

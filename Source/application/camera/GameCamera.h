@@ -11,11 +11,13 @@ public:
 	void Initialize() override;
 
 	void Update(bool isPlayerMoving,Vector3 playerPos, Vector3 playerInitPos,bool isDead, 
-		Vector3 playerDeadPos,Vector3 playerAxel,bool onGround);
+		Vector3 playerDeadPos,Vector3 playerToalAxel,bool onGround,bool rightAxcell,Vector3 rightAxcellVec);
 
 	void Reset();
 
 	void ImGuiUpdate();
+
+	void AccelerationAnimation();
 
 	void GoalAnimation();
 
@@ -71,6 +73,18 @@ private:
 	int32_t slowTimer_;
 
 	bool isStopTarget_ = false;
+
+	const int32_t kAxcellWaitTime = 60;
+	int32_t axcellWaitTimer;
+	bool isAxcellAnimation_;
+
+	const float kAxcellNormalRate_ = 1.0f;
+	float axcellRate_ = 1.0f;
+	float waitRate_ = 0.0f;
+
+	bool isNotBackAnimation_;
+
+	EasingInfo axcellEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
 
 	GameSpeed* gameSpeed_ = nullptr;
 };
