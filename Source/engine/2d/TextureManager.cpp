@@ -52,51 +52,6 @@ void TextureManager::Initialize()
 
 	texConverter_ = std::make_unique<TextureConverter>();
 }
-//
-//void TextureManager::LoadInternal(TexMetadata& texMetadata, ScratchImage& scratchImg, const std::string& filePath)
-//{
-//	HRESULT result;
-//
-//	//ワイド文字列に変換した際の文字列バッファサイズを計算
-//	int32_t filePathBufferSize = MultiByteToWideChar(CP_ACP, 0, filePath.c_str(), -1, nullptr, 0);
-//
-//	//ワイド文字列に変換
-//	std::wstring wfilePath;
-//	MultiByteToWideChar(CP_ACP, 0, filePath.c_str(), -1, wfilePath.data(), filePathBufferSize);
-//
-//	size_t pos1;
-//	std::wstring exceptExt;
-//	std::wstring fileExt_;
-//
-//	//区切り文字 '.'が出てくる一番最後の部分を検索
-//	pos1 = wfilePath.rfind('.');
-//	//検索がヒットしたら
-//	if(pos1 != std::wstring::npos)
-//	{
-//		//区切り文字の後ろをファイル拡張子として保存
-//		fileExt_ = wfilePath.substr(pos1 + 1, wfilePath.size() - pos1 - 1);
-//		//区切り文字の前までを抜き出す
-//		exceptExt = wfilePath.substr(0, pos1);
-//	}
-//	else
-//	{
-//		fileExt_ = L"";
-//		exceptExt = wfilePath;
-//	}
-//
-//	if(fileExt_ == L"dds")
-//	{
-//		//DDSテクスチャのロード
-//		result = LoadFromDDSFile(wfilePath.c_str(), DDS_FLAGS_NONE, &texMetadata, scratchImg);
-//	}
-//	else
-//	{
-//		//WICテクスチャのロード
-//		result = LoadFromWICFile(wfilePath.c_str(), WIC_FLAGS_NONE, &texMetadata, scratchImg);
-//	}
-//
-//	assert(SUCCEEDED(result));
-//}
 
 void TextureManager::LoadTexture(const std::string& fileName)
 {
@@ -115,7 +70,7 @@ void TextureManager::LoadTexture(const std::string& fileName)
 	size_t pos1;
 	std::wstring wfilePath = ConvertMultiByteStringToWideString(fullPath);
 	std::wstring exceptExt;
-	std::wstring fileExt_;
+	std::wstring fileExt;
 
 	//区切り文字 '.'が出てくる一番最後の部分を検索
 	pos1 = wfilePath.rfind('.');
@@ -123,35 +78,31 @@ void TextureManager::LoadTexture(const std::string& fileName)
 	if(pos1 != std::wstring::npos)
 	{
 		//区切り文字の後ろをファイル拡張子として保存
-		fileExt_ = wfilePath.substr(pos1 + 1, wfilePath.size() - pos1 - 1);
+		fileExt = wfilePath.substr(pos1 + 1, wfilePath.size() - pos1 - 1);
 		//区切り文字の前までを抜き出す
 		exceptExt = wfilePath.substr(0, pos1);
 	}
 	else
 	{
-		fileExt_ = L"";
+		fileExt = L"";
 		exceptExt = wfilePath;
 	}
 
-	//マルチバイト文字列に変換
-	std::string resultString = ConvertWideStringToMultiByteString(fileExt_);
+	//拡張子のマルチバイト文字列に変換
+	std::string stringExt = ConvertWideStringToMultiByteString(fileExt);
 	
-	if(resultString == "dds")
+	if(stringExt == "dds")
 	{
 		//DDSテクスチャのロード
 		result = LoadFromDDSFile(wfilePath.c_str(), DDS_FLAGS_NONE, &metadata, scratchImg);
 	}
-
-	if(resultString == "png")
+	else if(stringExt == "png")
 	{
 		//WICテクスチャのロード
 		result = LoadFromWICFile(wfilePath.data(), WIC_FLAGS_NONE, &metadata, scratchImg);
 	}
 
-	//LoadInternal(metadata,scratchImg,fileName);
-
 	//ミニマップ生成
-
 	ScratchImage mipChain{};
 	result = GenerateMipMaps(
 		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
@@ -340,7 +291,7 @@ std::string TextureManager::ConvertWideStringToMultiByteString(const std::wstrin
 	int32_t length = static_cast<int32_t>(wstring.length());
 	//マルチバイト文字列に変換した際の文字列バッファサイズを計算
 	int32_t multiBufferSize = WideCharToMultiByte(CP_ACP, 0, wstring.c_str(), length, 0, 0, 0, 0);
-	std::string resultString(multiBufferSize, '\n');
+	std::string resultString(multiBufferSize, '\0');
 	//マルチバイト文字列に変換
 	if(multiBufferSize) WideCharToMultiByte(CP_ACP, 0, wstring.c_str(), length, &resultString[0], multiBufferSize, 0, 0);
 
