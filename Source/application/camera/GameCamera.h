@@ -45,8 +45,7 @@ private:
 	float cameraSpeed_;
 	float cameraSpeedY_;
 
-	//加速割合
-	float axcelRate_;
+	
 
 	//アニメーションが終わったかどうか
 	bool isFinishAnimetion_;
@@ -79,12 +78,16 @@ private:
 	bool isAxcellAnimation_;
 
 	const float kAxcellNormalRate_ = 1.0f;
+	//加速割合
 	float axcellRate_ = 1.0f;
 	float waitRate_ = 0.0f;
 
 	bool isNotBackAnimation_;
+	bool isAxcellrate_;
 
-	EasingInfo axcellEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
+	EasingInfo slowDownEasing_ = { 1.0f, -0.3f, 0.0f, 10.0f };
+	EasingInfo axcellEasing_ = { 0.7f, 0.3f, 0.0f, 5.0f };
+
 
 	GameSpeed* gameSpeed_ = nullptr;
 };

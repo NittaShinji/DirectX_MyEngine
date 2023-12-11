@@ -188,7 +188,7 @@ private:
 
 	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
 	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 45.0f };
-	EasingInfo axcellEasing_ = { 0.5f, 0.0f, 0.0f, 25.0f };
+	EasingInfo axcellEasing_ = { 0.5f, 0.0f, 0.0f, 20.0f };
 	EasingInfo stopSpeedEasing_ = { kMoveAxcellZ_,-kMoveAxcellZ_,0.0f,60.0f };
 	
 	bool isStartedLandAnime_ = false;

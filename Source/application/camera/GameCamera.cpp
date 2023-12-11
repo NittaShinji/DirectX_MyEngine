@@ -22,11 +22,12 @@ void GameCamera::Initialize()
 	slowTimer_ = kSlowTime_;
 	axcellWaitTimer = 0;
 	waitRate_ = 0.0f;
+	axcellRate_ = 1.0f;
 
 	cameraSpeed_ = kInitCameraSpeed_;
 	cameraSpeedY_ = kInitCameraSpeed_;
-	isAxcellAnimation_ = false;
 	isNotBackAnimation_ = false;
+	isAxcellrate_ = false;
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
@@ -54,113 +55,133 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 			}
 		}*/
 
-			moveEyeVec = goalEyePos_ - eye_;
-			moveTargetVec = goalEyeTarget_ - target_;
+		moveEyeVec = goalEyePos_ - eye_;
+		moveTargetVec = goalEyeTarget_ - target_;
 
-			moveEyeVecY = moveEyeVec;
-			moveEyeVecY.Normalize();
-			moveTargetVecY = moveTargetVec;
-			moveTargetVecY.Normalize();
+		moveEyeVecY = moveEyeVec;
+		moveEyeVecY.Normalize();
+		moveTargetVecY = moveTargetVec;
+		moveTargetVecY.Normalize();
 
-			eye_.x += moveEyeVec.x * cameraSpeed_;
+		eye_.x += moveEyeVec.x * cameraSpeed_;
 
-			if(rightAxcellVec.z == 0) {};
+		if(rightAxcellVec.z == 0) {};
 
-			if(rightAxcell == false)
+		if(rightAxcell == false)
+		{
+
+			if(isNotBackAnimation_ == true)
 			{
-				if(axcellRate_ < 1.0f )
-				{
-					if(isNotBackAnimation_ == true)
-					{
-						float axcellVec = kAxcellNormalRate_ - axcellRate_;
-						axcellRate_ += axcellVec / kAxcellNormalRate_;
 
-						eye_.z += cameraSpeed_ * axcellRate_;
-						//axcellRate_ += 0.01f;
-					}
-					
+				axcellEasing_.time++;
+				if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
+				{
+					axcellRate_ = PlayEaseOutQuint(axcellEasing_);
 				}
 				else
 				{
-					eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
+					axcellEasing_.time = 0;
+					isNotBackAnimation_ = false;
 				}
+
+				/*if(axcellRate_ < kAxcellNormalRate_)
+				{
+					axcellRate_ += 0.01f;
+				}
+				else
+				{
+					axcellRate_ = 1.0f;
+				}*/
+
+
+			}
+
+
+		}
+		else
+		{
+			if(isNotBackAnimation_ == false)
+			{
+				isAxcellrate_ = true;
+			}
+			
+
+
+
+			//if(axcellRate_ > 0)
+			//{
+			//	//waitRate_++;
+			//	
+			//	/*axcellEasing_.endDistance = 1.0f - axcelRate_;
+			//	axcellEasing_.startPos = axcelRate_
+			//	axcellRate_ = PlayEaseOutQuint(axcellEasing_);*/
+
+			//	
+			//	isNotBackAnimation_ = true;
+			//	axcellRate_ -= 0.01f;
+			//}
+
+
+		}
+
+		if(isAxcellrate_ == true)
+		{
+			slowDownEasing_.time++;
+			if(slowDownEasing_.time > 0 && slowDownEasing_.time <= slowDownEasing_.totalTime)
+			{
+				axcellRate_ = PlayEaseOutQuint(slowDownEasing_);
 			}
 			else
 			{
-				if(axcellRate_ > 0)
-				{
-					//waitRate_++;
-					
-					/*axcellEasing_.endDistance = 1.0f - axcelRate_;
-					axcellEasing_.startPos = axcelRate_
-					axcellRate_ = PlayEaseOutQuint(axcellEasing_);*/
-
-					
-					isNotBackAnimation_ = true;
-					axcellRate_ -= 0.01f;
-				}
-
-				eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
+  				slowDownEasing_.time = 0;
+				isNotBackAnimation_ = true;
+				isAxcellrate_ = false;
 			}
+		}
 
-			float distanceY = std::fabs(playerPos.y - playerInitPos.y);
+		if(isNotBackAnimation_ == false)
+		{
+			eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
+		}
+		else
+		{
+			eye_.z += cameraSpeed_ * axcellRate_;
+		}
 
-			if(playerDeadPos.x <= 0) {}
-			if(onGround == false) {}
+		float distanceY = std::fabs(playerPos.y - playerInitPos.y);
 
-			if(isDead == false)
+		if(playerDeadPos.x <= 0) {}
+		if(onGround == false) {}
+
+		if(isDead == false)
+		{
+			eye_.y += moveEyeVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
+			target_.y += moveTargetVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
+		}
+
+		if(playerTotalAxel.x < 0) {}
+
+		target_.x += moveTargetVec.x * cameraSpeed_;
+
+		if(isNotBackAnimation_ == false)
+		{
+			target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
+		}
+		else
+		{
+			target_.z += cameraSpeed_ * axcellRate_;
+		}
+
+		if(isDead == true)
+		{
+			if(moveEyeVecY.y < 0)
 			{
 				eye_.y += moveEyeVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
 				target_.y += moveTargetVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
+
 			}
+		}
 
-			if(playerTotalAxel.x < 0) {}
-			
-			target_.x += moveTargetVec.x * cameraSpeed_;
-			if(rightAxcell == false)
-			{
-
-				if(axcellRate_ < 1.0f  )
-				{
-					if(isNotBackAnimation_ == true)
-					{
-						float axcellVec = kAxcellNormalRate_ - axcellRate_;
-						axcellRate_ += axcellVec / kAxcellNormalRate_;
-						target_.z += cameraSpeed_ * axcellRate_;
-
-						//axcellRate_ += 0.01f;
-					}
-					
-				}
-				else
-				{
-					target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
-				}
-
-				//axcellRate_ = 1.0f;
-				
-			}
-			else
-			{
-				if(axcellRate_ > 0)
-				{
-					axcellRate_ -= 0.01f;
-					isNotBackAnimation_ = true;
-				}
-				
-				target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
-			}
-
-			if(isDead == true)
-			{
-				if(moveEyeVecY.y < 0)
-				{
-					eye_.y += moveEyeVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
-					target_.y += moveTargetVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
-
-				}
-			}
-		
 	}
 
 	UpdateViewMatrix();
@@ -171,6 +192,7 @@ void GameCamera::Reset()
 {
 	eye_ = { 30,7.5,-20 };
 	target_ = { 0,5,5 };
+	axcellRate_ = 1.0f;
 
 	isStopTarget_ = false;
 
@@ -189,6 +211,8 @@ void GameCamera::ImGuiUpdate()
 	ImGui::SliderFloat("moveEyeY", &moveEyeVecY.y, -100.0f, 50.0f);
 	ImGui::SliderFloat("moveTargetVecY", &moveTargetVecY.y, -100.0f, 50.0f);
 	ImGui::SliderFloat("EyeYAxelRate_", &EyeYAxelRate_, 0.0f, 10.0f);
+	ImGui::SliderFloat("AxcelRate", &axcellRate_, 0.0f, 10.0f);
+
 
 
 	ImGui::SliderFloat("easingTimer", &speedEasing_.time, 0.0f, 100.0f);
