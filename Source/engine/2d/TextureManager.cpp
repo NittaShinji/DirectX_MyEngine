@@ -90,6 +90,7 @@ void TextureManager::LoadTexture(const std::string& fileName)
 
 	//拡張子のマルチバイト文字列に変換
 	std::string stringExt = ConvertWideStringToMultiByteString(fileExt);
+	std::erase(stringExt, '\0');
 	
 	if(stringExt == "dds")
 	{
