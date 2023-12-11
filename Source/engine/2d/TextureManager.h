@@ -1,5 +1,6 @@
 #pragma once
 #include "DirectXBasic.h"
+#include "TextureConverter.h"
 #include "Vector2.h"
 #include "Vector4.h"
 #include <wrl.h>
@@ -32,11 +33,21 @@ public:
 	//初期化
 	void Initialize();
 
+	//static void LoadInternal(TexMetadata& texMetadata, ScratchImage& scratchImg, const std::string& filePath);
+
 	//テクスチャ読み込み
 	static void LoadTexture(const std::string& fileName);
 
 	//テクスチャ生成
 	void TexMapping(int32_t texWidth, int32_t texHeight, Vector4 color, const std::string& fileName);
+
+	//テクスチャ変換
+	void TexConvert(std::string fileName);
+
+	//ワイド文字列→マルチバイト文字列変換
+	static std::string ConvertWideStringToMultiByteString(const std::wstring &wstring);
+	//マルチバイト文字列変換→ワイド文字列変換
+	static std::wstring ConvertMultiByteStringToWideString(const std::string& mString);
 
 public:
 
@@ -64,6 +75,10 @@ private:
 
 	static ID3D12Device* device_;
 	static ID3D12GraphicsCommandList* cmdList_;
+
+	//テクスチャコンバータ
+	//TextureConverter converter;
+	std::unique_ptr<TextureConverter> texConverter_;
 
 public:
 

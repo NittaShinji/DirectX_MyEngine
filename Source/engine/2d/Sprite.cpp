@@ -96,8 +96,6 @@ void Sprite::Initialize(const std::string fileName,Vector2 position)
 	//テクスチャ切り抜きサイズを表示するスプライトのサイズに適用
 	size_ = textureClipSize_;
 
-	//size_ = TextureManager::GetInstance()->GetTexSize(fileName);
-
 	//ウインドウの中心に表示
 	position_ = position;
 
@@ -114,7 +112,6 @@ void Sprite::Initialize(const std::string fileName,Vector2 position)
 	vertices_.at(RT) = {
 		{ size_.x, 0.0f, 0.0f }, {1.0f,0.0f}//右上
 	};
-
 
 	textureBuffer_ = TextureManager::GetInstance()->GetTextureBuffer(fileName);
 	//もしその画像が読み込み済み
