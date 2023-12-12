@@ -101,6 +101,7 @@
     <ClCompile Include="Source\application\particle\BreakParticle.cpp" />
     <ClCompile Include="Source\application\particle\SecondJump2DParticle.cpp" />
     <ClCompile Include="Source\application\GameSpeed.cpp" />
+    <ClCompile Include="Source\engine\2d\TextureConverter.cpp" />
     <ClCompile Include="Source\engine\collision\QueryCallback.cpp" />
     <ClCompile Include="Source\application\particle\DeadParticle.cpp" />
     <ClCompile Include="Source\application\particle\LandParticle.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="Source\application\particle\BreakParticle.h" />
     <ClInclude Include="Source\application\particle\SecondJump2DParticle.h" />
     <ClInclude Include="Source\application\GameSpeed.h" />
+    <ClInclude Include="Source\engine\2d\TextureConverter.h" />
     <ClInclude Include="Source\engine\collision\QueryCallback.h" />
     <ClInclude Include="Source\application\particle\DeadParticle.h" />
     <ClInclude Include="Source\application\particle\LandParticle.h" />
