@@ -21,9 +21,20 @@ float PlayEaseIn(EasingInfo easingInfo);
 float PlayEaseIn(float startPos, float endDistance, float time, float totalTime);
 float easeInCubic(float x);
 
+float PlayEaseOutSine(EasingInfo easingInfo);
+float EaseOutSine(float x);
+
 float PlayEaseOutQuint(EasingInfo easingInfo);
 float PlayEaseOutQuint(float startPos, float endDistance, float time, float totalTime);
 float easeOutQuint(float x);
 
+float PlayEaseOutCubic(EasingInfo easingInfo);
+float EaseOutCubic(float x);
+
+float PlayEaseOutBack(EasingInfo easingInfo);
+float EaseOutBack(float x);
+
 float PlayEaseOutBouce(float startPos, float endDistance, float time, float totalTime);
 float easeOutBouce(float x);
+
+

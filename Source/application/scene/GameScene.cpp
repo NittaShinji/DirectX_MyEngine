@@ -405,14 +405,21 @@ void GameScene::Draw()
 	//モデル描画
 	Object3d::BeforeDraw();
 	stage_->Draw();
+	//深度値クリア
+	directXBasic_->ClearDepthBuffer();
+
+	ParticleManager::GetInstance()->Draw();
+	//深度値クリア
+	directXBasic_->ClearDepthBuffer();
+
+	Object3d::BeforeDraw();
 	player_->Draw();
 
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
 	ObjParticleManager::GetInstance()->Draw();
-	ParticleManager::GetInstance()->Draw();
-
+	
 	SpriteCommon::GetInstance()->BeforeDraw();
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
