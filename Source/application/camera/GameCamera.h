@@ -31,7 +31,7 @@ private:
 	const Vector3 initcameraTarget = { 0,5,5 };
 	const Vector3 initcameraUp = { 0,1,0 };
 
-	const Vector3 initEyeDistance_ = { 0.0f,1.0f,12.0f };
+	Vector3 initEyeDistance_ = { 0.0f,1.0f,12.0f };
 	const Vector3 initTargetDistance_ = { 0.0f,1.0f,12.0f };
 
 	//Y軸用の加速割合
@@ -85,10 +85,8 @@ private:
 	bool isNotBackAnimation_;
 	bool isAxcellrate_;
 
-	EasingInfo slowDownEasing_ = { 1.0f, -0.3f, 0.0f, 10.0f };
-	EasingInfo axcellEasing_ = { 0.7f, 0.3f, 0.0f, 5.0f };
-
-
+	EasingInfo slowDownEasing_ = { 1.0f, -0.2f, 0.0f, 15.0f };
+	EasingInfo axcellEasing_ = { 0.8f, 0.4f, 0.0f, 60.0f };
 	GameSpeed* gameSpeed_ = nullptr;
 };
 

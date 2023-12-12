@@ -1,4 +1,5 @@
 #include "Easing.h"
+#include "MathUtillity.h"
 #include <cmath>
 
 float PlayEaseIn(EasingInfo easingInfo)
@@ -24,6 +25,20 @@ float easeInCubic(float x)
 	return x * x * x;
 }
 
+float PlayEaseOutSine(EasingInfo easingInfo)
+{
+	float x = easingInfo.time / easingInfo.totalTime;
+	float v = EaseOutSine(x);
+	float ret = easingInfo.endDistance * v + easingInfo.startPos;
+
+	return ret;
+}
+
+float EaseOutSine(float x)
+{
+	return  sin((x * MathUtillty::PI) / 2);
+}
+
 float PlayEaseOutQuint(EasingInfo easingInfo)
 {
 	float x = easingInfo.time / easingInfo.totalTime;
@@ -45,6 +60,37 @@ float PlayEaseOutQuint( float startPos, float endDistance, float time, float tot
 float easeOutQuint(float x)
 {
 	return static_cast <float> (1 - pow(1 - x, 5));
+}
+
+float PlayEaseOutCubic(EasingInfo easingInfo)
+{
+	float x = easingInfo.time / easingInfo.totalTime;
+	float v = EaseOutCubic(x);
+	float ret = easingInfo.endDistance * v + easingInfo.startPos;
+
+	return ret;
+}
+
+float EaseOutCubic(float x)
+{
+	return static_cast<float>(1 - pow(1 - x, 3));
+}
+
+float PlayEaseOutBack(EasingInfo easingInfo)
+{
+	float x = easingInfo.time / easingInfo.totalTime;
+	float v = EaseOutBack(x);
+	float ret = easingInfo.endDistance * v + easingInfo.startPos;
+
+	return ret;
+}
+
+float EaseOutBack(float x)
+{
+	const float c1 = 1.70158f;
+	const float c3 = c1 + 1;
+
+	return static_cast <float>(1 + c3 * pow(x - 1, 3) + c1 * pow(x - 1, 2));
 }
 
 float PlayEaseOutBouce(float startPos, float endDistance, float time, float totalTime)

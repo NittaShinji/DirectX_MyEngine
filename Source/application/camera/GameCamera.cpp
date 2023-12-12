@@ -69,34 +69,41 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 
 		if(rightAxcell == false)
 		{
-
 			if(isNotBackAnimation_ == true)
 			{
-
-				axcellEasing_.time++;
-				if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
+				if(moveEyeVec.z >= initEyeDistance_.z)
 				{
-					axcellRate_ = PlayEaseOutQuint(axcellEasing_);
+	/*				axcellEasing_.time++;
+					if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
+					{
+						axcellRate_ = PlayEaseOutQuint(axcellEasing_);
+					}*/
+
+					axcellRate_ += 0.0015f;
 				}
 				else
 				{
 					axcellEasing_.time = 0;
 					isNotBackAnimation_ = false;
+					if(axcellRate_ >= 1.0f)
+					{
+						axcellRate_ -= 0.01f;
+					}
+					axcellRate_ = 1.0f;
 				}
 
-				/*if(axcellRate_ < kAxcellNormalRate_)
+				/*axcellEasing_.time++;
+				if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
 				{
-					axcellRate_ += 0.01f;
+					axcellRate_ = PlayEaseOutQuint(axcellEasing_);
+
 				}
 				else
 				{
-					axcellRate_ = 1.0f;
+					axcellEasing_.time = 0;
+					isNotBackAnimation_ = false;
 				}*/
-
-
 			}
-
-
 		}
 		else
 		{
@@ -104,9 +111,6 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 			{
 				isAxcellrate_ = true;
 			}
-			
-
-
 
 			//if(axcellRate_ > 0)
 			//{
@@ -120,8 +124,6 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 			//	isNotBackAnimation_ = true;
 			//	axcellRate_ -= 0.01f;
 			//}
-
-
 		}
 
 		if(isAxcellrate_ == true)
@@ -130,6 +132,8 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 			if(slowDownEasing_.time > 0 && slowDownEasing_.time <= slowDownEasing_.totalTime)
 			{
 				axcellRate_ = PlayEaseOutQuint(slowDownEasing_);
+				//axcellRate_ = PlayEaseOutBack(slowDownEasing_);
+
 			}
 			else
 			{
@@ -139,14 +143,16 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 			}
 		}
 
-		if(isNotBackAnimation_ == false)
-		{
-			eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
-		}
-		else
+		if(isNotBackAnimation_ == true || isAxcellrate_ == true)
 		{
 			eye_.z += cameraSpeed_ * axcellRate_;
 		}
+		else
+		{
+			eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
+		}
+
+		//eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
 
 		float distanceY = std::fabs(playerPos.y - playerInitPos.y);
 
@@ -163,14 +169,16 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 
 		target_.x += moveTargetVec.x * cameraSpeed_;
 
-		if(isNotBackAnimation_ == false)
-		{
-			target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
-		}
-		else
+		if(isNotBackAnimation_ == true || isAxcellrate_ == true)
 		{
 			target_.z += cameraSpeed_ * axcellRate_;
 		}
+		else
+		{
+			target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
+		}
+
+		//target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
 
 		if(isDead == true)
 		{
