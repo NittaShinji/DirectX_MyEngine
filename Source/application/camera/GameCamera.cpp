@@ -5,18 +5,18 @@ using namespace MathUtillty;
 
 void GameCamera::Initialize()
 {
-	eye_ = initcameraEye;
-	target_ = initcameraTarget;
-	up_ = initcameraUp;
+	eye_ = initCameraEye;
+	target_ = initCameraTarget;
+	up_ = initCameraUp;
 
 	//衝突時に停止する座標を設定
-	goalEyePos_.x = { initcameraEye.x + initEyeDistance_.x };
-	goalEyePos_.y = { initcameraEye.y + initEyeDistance_.y };
-	goalEyePos_.z = { initcameraEye.z + initEyeDistance_.z };
+	goalEyePos_.x = { initCameraEye.x + initEyeDistance_.x };
+	goalEyePos_.y = { initCameraEye.y + initEyeDistance_.y };
+	goalEyePos_.z = { initCameraEye.z + initEyeDistance_.z };
 
-	goalEyeTarget_.x = { initcameraTarget.x + initTargetDistance_.x };
-	goalEyeTarget_.y = { initcameraTarget.y + initTargetDistance_.y };
-	goalEyeTarget_.z = { initcameraTarget.z + initTargetDistance_.z };
+	goalEyeTarget_.x = { initCameraTarget.x + initTargetDistance_.x };
+	goalEyeTarget_.y = { initCameraTarget.y + initTargetDistance_.y };
+	goalEyeTarget_.z = { initCameraTarget.z + initTargetDistance_.z };
 
 	speedEasing_.time = 0.0f;
 	slowTimer_ = kSlowTime_;
@@ -24,10 +24,12 @@ void GameCamera::Initialize()
 	waitRate_ = 0.0f;
 	axcellRate_ = 1.0f;
 
+	sceneAnimeTimer_ = kInitSceneAnimeTime_;
 	cameraSpeed_ = kInitCameraSpeed_;
 	cameraSpeedY_ = kInitCameraSpeed_;
 	isNotBackAnimation_ = false;
 	isAxcellrate_ = false;
+	isStartGoalEasing_ = false;
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
@@ -38,13 +40,13 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 
 	if(isPlayerMoving == true)
 	{
-		goalEyePos_.x = playerPos.x - playerInitPos.x + initcameraEye.x + initEyeDistance_.x;
-		goalEyePos_.y = playerDeadPos.y - playerInitPos.y + initcameraEye.y;
-		goalEyePos_.z = playerPos.z - playerInitPos.z + initcameraEye.z + initEyeDistance_.z;
+		goalEyePos_.x = playerPos.x - playerInitPos.x + initCameraEye.x + initEyeDistance_.x;
+		goalEyePos_.y = playerDeadPos.y - playerInitPos.y + initCameraEye.y;
+		goalEyePos_.z = playerPos.z - playerInitPos.z + initCameraEye.z + initEyeDistance_.z;
 
-		goalEyeTarget_.x = playerPos.x - playerInitPos.x + initcameraTarget.x + initTargetDistance_.x;
-		goalEyeTarget_.y = playerDeadPos.y - playerInitPos.y + initcameraTarget.y;
-		goalEyeTarget_.z = playerPos.z - playerInitPos.z + initcameraTarget.z + initTargetDistance_.z;
+		goalEyeTarget_.x = playerPos.x - playerInitPos.x + initCameraTarget.x + initTargetDistance_.x;
+		goalEyeTarget_.y = playerDeadPos.y - playerInitPos.y + initCameraTarget.y;
+		goalEyeTarget_.z = playerPos.z - playerInitPos.z + initCameraTarget.z + initTargetDistance_.z;
 
 		/*if(rightAxcell == true)
 		{
@@ -198,11 +200,13 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 
 void GameCamera::Reset()
 {
-	eye_ = { 30,7.5,-20 };
-	target_ = { 0,5,5 };
+	eye_ = initCameraEye;
+	target_ = initCameraTarget;
+	up_ = initCameraUp;
 	axcellRate_ = 1.0f;
 
 	isStopTarget_ = false;
+	isStartGoalEasing_ = false;
 
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
@@ -220,6 +224,9 @@ void GameCamera::ImGuiUpdate()
 	ImGui::SliderFloat("moveTargetVecY", &moveTargetVecY.y, -100.0f, 50.0f);
 	ImGui::SliderFloat("EyeYAxelRate_", &EyeYAxelRate_, 0.0f, 10.0f);
 	ImGui::SliderFloat("AxcelRate", &axcellRate_, 0.0f, 10.0f);
+	ImGui::SliderFloat("EasingX", &goalEyeXEasing_.endDistance, 0.0f, 10.0f);
+	ImGui::SliderFloat("EasingY", &goalEyeYEasing_.endDistance, 0.0f, 10.0f);
+	ImGui::SliderFloat("EasingZ", &goalEyeZEasing_.endDistance, 0.0f, 10.0f);
 
 
 
@@ -246,21 +253,29 @@ void GameCamera::AccelerationAnimation()
 
 void GameCamera::GoalAnimation()
 {
-	if(sceneAnimeTimer_ >= 0)
+	//スタート時にカメラ位置を代入
+	if(isStartGoalEasing_ == false)
 	{
-		sceneAnimeTimer_--;
+		goalEyeXEasing_.startPos = eye_.x;
+		goalEyeYEasing_.startPos = eye_.y;
+		goalEyeZEasing_.startPos = eye_.z;
+		isStartGoalEasing_ = true;
+	}
+	if(sceneAnimeTimer_ < kSceneAnimeTime_)
+	{
+		sceneAnimeTimer_++;
+		goalEyeXEasing_.time = sceneAnimeTimer_;
+		goalEyeYEasing_.time = sceneAnimeTimer_;
+		goalEyeZEasing_.time = sceneAnimeTimer_;
+
+		eye_.x = PlayEaseOutCubic(goalEyeXEasing_);
+		eye_.y = PlayEaseOutCubic(goalEyeYEasing_);
+		eye_.z = PlayEaseOutCubic(goalEyeZEasing_);
 	}
 	else
 	{
+		isStartGoalEasing_ = false;
 		isFinishAnimetion_ = true;
+		sceneAnimeTimer_ = kInitSceneAnimeTime_;
 	}
-
-	//変化量
-	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
-	sceneAnimationVec_.x += easeOutQuint(x);
-
-	eye_.x = PlayEaseIn(9.8f, 21.0f, sceneAnimeTimer_, kSceneAnimeTime_);
-	eye_.y = PlayEaseIn(4.1f, 3.4f, sceneAnimeTimer_, kSceneAnimeTime_);
-	eye_.z = PlayEaseIn(712.0f, -12.0f, sceneAnimeTimer_, kSceneAnimeTime_);
-
 }
