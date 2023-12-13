@@ -27,9 +27,9 @@ public:
 
 private:
 
-	const Vector3 initcameraEye = { 30,7.5,-20 };
-	const Vector3 initcameraTarget = { 0,5,5 };
-	const Vector3 initcameraUp = { 0,1,0 };
+	const Vector3 initCameraEye = { 30,7.5,-20 };
+	const Vector3 initCameraTarget = { 0,5,5 };
+	const Vector3 initCameraUp = { 0,1,0 };
 
 	Vector3 initEyeDistance_ = { 0.0f,1.0f,12.0f };
 	const Vector3 initTargetDistance_ = { 0.0f,1.0f,12.0f };
@@ -38,6 +38,7 @@ private:
 	float EyeYAxelRate_ = 2.20f;
 
 	EasingInfo speedEasing_ = { 1.0f, 0.225f, 0.0f, 15.0f };
+	bool isStartGoalEasing_ = false;
 	bool isFinishEasing_ = false;
 
 	const float kInitCameraSpeed_ = 1.0f;
@@ -52,6 +53,9 @@ private:
 	const float kSceneAnimeTime_ = 60.0f;
 	//アニメーション時間の変化量
 	float sceneAnimeTimer_ = 0.0f;
+
+	const float kInitSceneAnimeTime_ = 0.0f;
+
 	//シーンアニメーション用変化量
 	Vector3 sceneAnimationVec_;
 
