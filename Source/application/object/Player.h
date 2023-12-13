@@ -217,6 +217,11 @@ private:
 	bool isSecondJumpMoment_ = false;
 	bool isHit_ = false;
 
+	//加速判定猶予用の時間
+	bool isDuringAxcellExtensionTime_;
+	float axcellExtensionTime_ = 0.0f;
+	const float maxExtensionTime = 10.0f;
+
 	GameSpeed* gameSpeed_ = nullptr;
 
 	std::unique_ptr<Sound> jumpSound_ = nullptr;

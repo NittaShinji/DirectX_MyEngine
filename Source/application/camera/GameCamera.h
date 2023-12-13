@@ -84,7 +84,6 @@ private:
 	float axcellRate_ = 1.0f;
 	float waitRate_ = 0.0f;
 
-
 	bool isNotBackAnimation_;
 	bool isAxcellrate_;
 

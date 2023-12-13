@@ -74,6 +74,7 @@ void Player::Initialize()
 	isStartedJumpAnimation_ = false;
 	isStartedLandAnime_ = false;
 	isReturnedSizeAnime_ = false;
+	isDuringAnimation_ = false;
 	isReadyToJump_ = false;
 	isDuringAnimation_ = false;
 	isRightAxcell_ = false;
@@ -673,16 +674,34 @@ void Player::Accelerate()
 {
 	if(isRightAxcell_ == true)
 	{
-		axcellEasing_.time++;
-		if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
+		//加速後の猶予時間中でない場合スピードを足す
+		if(isDuringAxcellExtensionTime_ == false)
 		{
-			rightAxcellVec_.z = PlayEaseOutQuint(axcellEasing_);
+			axcellEasing_.time++;
+			if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
+			{
+				rightAxcellVec_.z = PlayEaseOutQuint(axcellEasing_);
+			}
+			else
+			{
+				rightAxcellVec_.z = 0;
+				axcellEasing_.time = 0;
+				//isRightAxcell_ = false;
+				isDuringAxcellExtensionTime_ = true;
+			}
 		}
-		else
+	}
+
+	//加速後の猶予時間中
+	if(isDuringAxcellExtensionTime_ == true)
+	{
+		//当たり判定用に
+		axcellExtensionTime_++;
+		if(axcellExtensionTime_ >= maxExtensionTime)
 		{
-			rightAxcellVec_.z = 0;
-			axcellEasing_.time = 0;
 			isRightAxcell_ = false;
+			axcellExtensionTime_ = 0;
+			isDuringAxcellExtensionTime_ = false;
 		}
 	}
 

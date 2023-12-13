@@ -48,9 +48,9 @@
             "name": "球",
             "transform": {
                 "translation": [
-                    -724.1685791015625,
+                    -533.263671875,
                     0.0,
-                    2.0
+                    1.9487338066101074
                 ],
                 "rotation": [
                     0.0,
@@ -91,52 +91,6 @@
         },
         {
             "type": "MESH",
-            "name": "立方体.003",
-            "transform": {
-                "translation": [
-                    -340.1688232421875,
-                    0.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Yellow"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.004",
-            "transform": {
-                "translation": [
-                    -360.1688232421875,
-                    0.0,
-                    8.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Yellow"
-        },
-        {
-            "type": "MESH",
             "name": "立方体.005",
             "transform": {
                 "translation": [
@@ -156,7 +110,7 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -179,7 +133,7 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -202,53 +156,7 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.008",
-            "transform": {
-                "translation": [
-                    -380.1688232421875,
-                    0.0,
-                    8.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
             "attribute": "Yellow"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.009",
-            "transform": {
-                "translation": [
-                    -120.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -271,14 +179,129 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
-            "name": "立方体.002",
+            "name": "立方体.021",
             "transform": {
                 "translation": [
-                    -140.0,
+                    -324.4818115234375,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.022",
+            "transform": {
+                "translation": [
+                    -299.2431945800781,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.028",
+            "transform": {
+                "translation": [
+                    -104.92117309570312,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.029",
+            "transform": {
+                "translation": [
+                    -124.92117309570312,
+                    0.0,
+                    0.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "Cube.002",
+            "transform": {
+                "translation": [
+                    -423.9665832519531,
+                    0.0,
+                    9.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "wall",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.003",
+            "transform": {
+                "translation": [
+                    -170.38185119628906,
                     0.0,
                     0.0
                 ],
@@ -298,10 +321,10 @@
         },
         {
             "type": "MESH",
-            "name": "立方体.011",
+            "name": "立方体.004",
             "transform": {
                 "translation": [
-                    -160.0,
+                    -150.38185119628906,
                     0.0,
                     0.0
                 ],
@@ -321,33 +344,10 @@
         },
         {
             "type": "MESH",
-            "name": "立方体.012",
+            "name": "立方体.008",
             "transform": {
                 "translation": [
-                    -240.0,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.013",
-            "transform": {
-                "translation": [
-                    -220.0,
+                    -190.3800048828125,
                     0.0,
                     0.0
                 ],
@@ -370,53 +370,7 @@
             "name": "立方体.014",
             "transform": {
                 "translation": [
-                    -260.1688232421875,
-                    0.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.015",
-            "transform": {
-                "translation": [
-                    -280.1688232421875,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.016",
-            "transform": {
-                "translation": [
-                    -300.1688232421875,
+                    -210.3800048828125,
                     0.0,
                     0.0
                 ],
@@ -439,7 +393,7 @@
             "name": "立方体.017",
             "transform": {
                 "translation": [
-                    -460.1688232421875,
+                    -234.7066650390625,
                     0.0,
                     0.0
                 ],
@@ -462,7 +416,7 @@
             "name": "立方体.018",
             "transform": {
                 "translation": [
-                    -440.1688232421875,
+                    -254.7066650390625,
                     0.0,
                     0.0
                 ],
@@ -482,10 +436,79 @@
         },
         {
             "type": "MESH",
-            "name": "立方体.019",
+            "name": "立方体.030",
             "transform": {
                 "translation": [
-                    -420.1688232421875,
+                    -162.4246063232422,
+                    0.0,
+                    6.5
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.031",
+            "transform": {
+                "translation": [
+                    -194.01507568359375,
+                    0.0,
+                    6.5
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.032",
+            "transform": {
+                "translation": [
+                    -244.9403076171875,
+                    0.0,
+                    6.5
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "testStage0",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.033",
+            "transform": {
+                "translation": [
+                    -279.2431945800781,
                     0.0,
                     0.0
                 ],
@@ -505,81 +528,12 @@
         },
         {
             "type": "MESH",
-            "name": "立方体.021",
+            "name": "立方体.034",
             "transform": {
                 "translation": [
-                    -529.9920043945312,
+                    -344.4818115234375,
                     0.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
                     0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.022",
-            "transform": {
-                "translation": [
-                    -509.99200439453125,
-                    0.0,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.020",
-            "transform": {
-                "translation": [
-                    -574.8966674804688,
-                    0.0,
-                    8.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Yellow"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.023",
-            "transform": {
-                "translation": [
-                    -594.8966674804688,
-                    0.0,
-                    8.0
                 ],
                 "rotation": [
                     0.0,
@@ -600,7 +554,7 @@
             "name": "立方体.024",
             "transform": {
                 "translation": [
-                    -655.9349365234375,
+                    -524.5487060546875,
                     0.0,
                     0.0
                 ],
@@ -616,14 +570,14 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
             "name": "立方体.025",
             "transform": {
                 "translation": [
-                    -675.9349365234375,
+                    -504.5487365722656,
                     0.0,
                     0.0
                 ],
@@ -639,37 +593,14 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.026",
-            "transform": {
-                "translation": [
-                    -715.8986206054688,
-                    0.0,
-                    0.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
             "name": "立方体.027",
             "transform": {
                 "translation": [
-                    -695.8986206054688,
+                    -459.4320983886719,
                     0.0,
                     0.0
                 ],
@@ -685,14 +616,14 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
-            "name": "立方体",
+            "name": "立方体.036",
             "transform": {
                 "translation": [
-                    -100.0,
+                    -479.43206787109375,
                     0.0,
                     0.0
                 ],
@@ -708,16 +639,16 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Black"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
-            "name": "立方体.028",
+            "name": "立方体.037",
             "transform": {
                 "translation": [
-                    -180.0,
+                    -414.341064453125,
                     0.0,
-                    0.0
+                    4.0
                 ],
                 "rotation": [
                     0.0,
@@ -731,16 +662,16 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Black"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
-            "name": "立方体.029",
+            "name": "立方体.038",
             "transform": {
                 "translation": [
-                    -200.0,
+                    -389.3316955566406,
                     0.0,
-                    0.0
+                    4.0
                 ],
                 "rotation": [
                     0.0,
@@ -754,37 +685,16 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Black"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
-            "name": "Cube.002",
+            "name": "立方体.039",
             "transform": {
                 "translation": [
-                    -700.0,
+                    -369.3316955566406,
                     0.0,
-                    5.0
-                ],
-                "rotation": [
-                    90.00000762939453,
-                    -3.4150941701227566e-06,
-                    90.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            }
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.030",
-            "transform": {
-                "translation": [
-                    -40.0,
-                    0.0,
-                    6.0
+                    4.0
                 ],
                 "rotation": [
                     0.0,
@@ -798,16 +708,16 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
-            "name": "立方体.031",
+            "name": "立方体.040",
             "transform": {
                 "translation": [
-                    -73.58438110351562,
+                    -434.341064453125,
                     0.0,
-                    6.0
+                    4.0
                 ],
                 "rotation": [
                     0.0,
@@ -821,16 +731,16 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
-            "name": "立方体.032",
+            "name": "立方体.058",
             "transform": {
                 "translation": [
-                    -106.98466491699219,
+                    -468.7989807128906,
                     0.0,
-                    6.0
+                    7.5
                 ],
                 "rotation": [
                     0.0,
@@ -844,7 +754,7 @@
                 ]
             },
             "file_name": "testStage0",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         }
     ]
 }
