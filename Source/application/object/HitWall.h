@@ -21,6 +21,7 @@ public:
 	void SetIsBreak(bool isBreak) { isBreak_ = isBreak; }
 
 	Vector3 GetWallPos() { return transform_; }
+	bool GetIsCheckChangeColor() { return isCheckChangeColor_; }
 	
 private:
 
@@ -30,10 +31,6 @@ private:
 	//プレイヤーが加速しているか
 	bool isPlayerAccelerating_;
 
-	////リセット用の座標
-	//Vector3 resetPos_;
-
-	////破壊された際の退避用座標
-	//Vector3 kEscapePos_;
+	bool isCheckChangeColor_;
 };
 

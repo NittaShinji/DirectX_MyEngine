@@ -173,7 +173,7 @@ public:
 	bool GetColorFlag() { return colorFlag_; }
 	int32_t GetAttributeColor() { return attributeColor_; }
 	Vector3 GetTransform() { return transform_; }
-
+	
 	void SetTransform(const Vector3& pos) { transform_ = pos; };
 	void SetRotation(const Vector3& rotate) { rotation_ = rotate; };
 	void SetScale(const Vector3& scale) { scale_ = scale; }

@@ -244,7 +244,6 @@ public:
 	bool GetIsSecondJumpMoment() { return isSecondJumpMoment_; }
 	bool GetIsTouchObject() { return isTouchObject_; }
 	Vector3 rightAxcellVec() { return rightAxcellVec_; }
-	
 
 
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }

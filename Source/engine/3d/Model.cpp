@@ -16,7 +16,7 @@ using namespace std;
 using namespace DirectX;
 
 DirectXBasic* Model::directXBasic_ = nullptr;
-std::map<Model::MODELKEY, Model::MODELVALUE> Model::sModels_;
+std::map<std::string, Model::MODELVALUE> Model::sModels_;
 uint32_t Model::sTextureIndex_ = 0;
 D3D12_CPU_DESCRIPTOR_HANDLE Model::sSrvHandle_;
 
@@ -343,7 +343,7 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 }
 
 //検索キー(パス)から値を検索
-const Model::MODELVALUE* Model::GetMODELVALUE(const MODELKEY path)
+const Model::MODELVALUE* Model::GetMODELVALUE(const std::string path)
 {
 	return &sModels_.at(path);
 }

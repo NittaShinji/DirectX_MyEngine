@@ -68,7 +68,7 @@ private:
 
 public:
 
-	using MODELKEY = std::string;
+	//using std::string = std::string;
 
 	//SRVの最大個数
 	static const size_t kMaxSRVCount_ = 256;
@@ -96,7 +96,7 @@ public:
 		std::array<Microsoft::WRL::ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers;
 	};
 
-	static const MODELVALUE* GetMODELVALUE(const MODELKEY path);
+	static const MODELVALUE* GetMODELVALUE(const std::string path);
 
 private:
 
@@ -106,20 +106,20 @@ private:
 	//テクスチャ番号
 	static uint32_t sTextureIndex_;
 
-	MODELKEY name_;
+	std::string name_;
 	MODELVALUE infomation_;
-	static std::map<MODELKEY, MODELVALUE> sModels_;
+	static std::map<std::string, MODELVALUE> sModels_;
 
 public:
 
 	//ゲッター
-	MODELKEY* GetName() { return &name_; };
+	std::string GetName() { return name_; };
 	MODELVALUE* GetInfomation() { return &infomation_; };
 	uint32_t const GetTexIndex() { return sTextureIndex_; };
 	const std::vector<Mesh>& GetMeshes() { return infomation_.meshes; }
 
 	//セッター
-	void SetName(const MODELKEY& name) { name_ = name; };
+	void SetName(const std::string& name) { name_ = name; };
 	void SetInfomation(const MODELVALUE& infomation) { infomation_ = infomation; };
 };
 

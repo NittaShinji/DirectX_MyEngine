@@ -20,6 +20,7 @@ std::unique_ptr<HitWall> HitWall::Create(const std::string& fileName)
 	instance->AddCollider(instance->GetModel());
 	//属性を設定
 	instance->collider_->SetAttribute(COLLISION_ATTR_LANDSHAPE);
+	instance->isPlayerAccelerating_ = false;
 	return instance;
 }
 
@@ -34,17 +35,7 @@ void HitWall::OnCollision(const CollisionInfo& info)
 	{
 		//プレイヤーが加速している場合
 		if(isPlayerAccelerating_ == true)
-		{
-			//壁の属性を対応する属性色に変更し、壊れるように
-			if(info.object->GetAttributeColor() == pink)
-			{
-				Object3d::SetAttributeColor(Attribute::pink);
-			}
-			else
-			{
-				Object3d::SetAttributeColor(Attribute::yellow);
-			}
-			
+		{			
 			isBreak_ = true;
 		}
 	}

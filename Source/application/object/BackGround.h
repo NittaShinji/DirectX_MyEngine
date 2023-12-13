@@ -22,9 +22,9 @@ private:
 	//ステージ情報
 	LevelData* levelData_ = nullptr;
 
-	using MODELKEY = std::string;
-	MODELKEY name_;
-	std::unordered_map<MODELKEY, Model> models_;
+	//using MODELKEY = std::string;
+	std::string name_;
+	std::unordered_map<std::string, Model> models_;
 
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<Object3d>> objects_;

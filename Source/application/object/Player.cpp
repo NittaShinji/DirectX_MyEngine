@@ -7,6 +7,7 @@
 
 using namespace std;
 
+
 std::unique_ptr<Player> Player::Create(const std::string& path)
 {
 	//3Dオブジェクトのインスタンスを生成
@@ -571,21 +572,36 @@ void Player::OnCollision(const CollisionInfo& info)
 	//色が違う場合、死亡判定にする
 	else if(info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
 	{
-		isLanded_ = false;
-		isDead_ = true;
-		if(isSetDeadPos_ == false)
+		std::string modelName = info.object->GetModel()->GetName();
+		
+		if(modelName == "wall")
 		{
-			deadPos_ = transform_;
-			isSetDeadPos_ = true;
+			if(isRightAxcell_ == true){}
+			else
+			{
+				isLanded_ = false;
+				isDead_ = true;
+				if(isSetDeadPos_ == false)
+				{
+					deadPos_ = transform_;
+					isSetDeadPos_ = true;
+				}
+			}
+		}
+		else
+		{
+			isLanded_ = false;
+			isDead_ = true;
+			if(isSetDeadPos_ == false)
+			{
+				deadPos_ = transform_;
+				isSetDeadPos_ = true;
+			}
 		}
 	}
 	//下からプレイヤーと同じ色のオブジェクトと当たった場合
 	else if(info.object->GetAttributeColor() == attributeColor_)
 	{
-		/*if(onGround_ == false && isDuringAnimation_ == false && isExpandedAnime_ == false && isDentedAnime_ == false)
-		{
-			isTouchObject_ = true;
-		}*/
 		if(onGround_ == false && isDuringAnimation_ == false && isExpandedAnime_ == false && isDentedAnime_ == false)
 		{
 			isTouchObject_ = true;
@@ -595,9 +611,7 @@ void Player::OnCollision(const CollisionInfo& info)
 			isTouchObject_ = true;
 		}
 
-
-
-		////球コライダーを取得
+		//球コライダーを取得
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 
 		Vector3 objectPosition = info.object->GetTransform();
@@ -972,5 +986,7 @@ void Player::ResetRotation()
 	}
 
 }
+
+
 
 
