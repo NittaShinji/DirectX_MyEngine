@@ -45,15 +45,13 @@ private:
 	float cameraSpeed_;
 	float cameraSpeedY_;
 
-	
-
 	//アニメーションが終わったかどうか
 	bool isFinishAnimetion_;
 
 	//シーンアニメーション時間
 	const float kSceneAnimeTime_ = 60.0f;
 	//アニメーション時間の変化量
-	float sceneAnimeTimer_ = kSceneAnimeTime_;
+	float sceneAnimeTimer_ = 0.0f;
 	//シーンアニメーション用変化量
 	Vector3 sceneAnimationVec_;
 
@@ -82,8 +80,18 @@ private:
 	float axcellRate_ = 1.0f;
 	float waitRate_ = 0.0f;
 
+
 	bool isNotBackAnimation_;
 	bool isAxcellrate_;
+
+	const float goalEyeXMoveValue_ = -30.0f;
+	const float goalEyeYMoveValue_ = -3.42f;
+	const float goalEyeZMoveValue_ = 8.85f;
+
+	EasingInfo goalEyeXEasing_ = { 0.0f, goalEyeXMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
+	EasingInfo goalEyeYEasing_ = { 0.0f, goalEyeYMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
+	EasingInfo goalEyeZEasing_ = { 0.0f, goalEyeZMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
+
 
 	EasingInfo slowDownEasing_ = { 1.0f, -0.2f, 0.0f, 15.0f };
 	EasingInfo axcellEasing_ = { 0.8f, 0.4f, 0.0f, 60.0f };

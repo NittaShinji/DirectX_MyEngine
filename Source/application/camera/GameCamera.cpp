@@ -24,10 +24,12 @@ void GameCamera::Initialize()
 	waitRate_ = 0.0f;
 	axcellRate_ = 1.0f;
 
+	sceneAnimeTimer_ = 0.0f;
 	cameraSpeed_ = kInitCameraSpeed_;
 	cameraSpeedY_ = kInitCameraSpeed_;
 	isNotBackAnimation_ = false;
 	isAxcellrate_ = false;
+
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
@@ -220,6 +222,9 @@ void GameCamera::ImGuiUpdate()
 	ImGui::SliderFloat("moveTargetVecY", &moveTargetVecY.y, -100.0f, 50.0f);
 	ImGui::SliderFloat("EyeYAxelRate_", &EyeYAxelRate_, 0.0f, 10.0f);
 	ImGui::SliderFloat("AxcelRate", &axcellRate_, 0.0f, 10.0f);
+	ImGui::SliderFloat("EasingX", &goalEyeXEasing_.endDistance, 0.0f, 10.0f);
+	ImGui::SliderFloat("EasingY", &goalEyeYEasing_.endDistance, 0.0f, 10.0f);
+	ImGui::SliderFloat("EasingZ", &goalEyeZEasing_.endDistance, 0.0f, 10.0f);
 
 
 
@@ -246,21 +251,31 @@ void GameCamera::AccelerationAnimation()
 
 void GameCamera::GoalAnimation()
 {
-	if(sceneAnimeTimer_ >= 0)
+	if(sceneAnimeTimer_ < kSceneAnimeTime_)
 	{
-		sceneAnimeTimer_--;
+		//スタート時に
+		if(sceneAnimeTimer_ == 0.0f)
+		{
+			goalEyeXEasing_.startPos = eye_.x;
+			goalEyeYEasing_.startPos = eye_.y;
+			goalEyeZEasing_.startPos = eye_.z;
+		}
+
+		sceneAnimeTimer_++;
+		goalEyeXEasing_.time = sceneAnimeTimer_;
+		goalEyeYEasing_.time = sceneAnimeTimer_;
+		goalEyeZEasing_.time = sceneAnimeTimer_;
+
+		eye_.x = PlayEaseOutCubic(goalEyeXEasing_);
+		eye_.y = PlayEaseOutCubic(goalEyeYEasing_);
+		eye_.z = PlayEaseOutCubic(goalEyeZEasing_);
 	}
 	else
 	{
 		isFinishAnimetion_ = true;
+		sceneAnimeTimer_ = kSceneAnimeTime_;
+		goalEyeXEasing_.time = sceneAnimeTimer_;
+		goalEyeYEasing_.time = sceneAnimeTimer_;
+		goalEyeZEasing_.time = sceneAnimeTimer_;
 	}
-
-	//変化量
-	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
-	sceneAnimationVec_.x += easeOutQuint(x);
-
-	eye_.x = PlayEaseIn(9.8f, 21.0f, sceneAnimeTimer_, kSceneAnimeTime_);
-	eye_.y = PlayEaseIn(4.1f, 3.4f, sceneAnimeTimer_, kSceneAnimeTime_);
-	eye_.z = PlayEaseIn(712.0f, -12.0f, sceneAnimeTimer_, kSceneAnimeTime_);
-
 }
