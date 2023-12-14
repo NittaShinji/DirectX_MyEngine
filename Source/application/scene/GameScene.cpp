@@ -292,6 +292,7 @@ void GameScene::Update()
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
 	breakParticle_->SetPlayerIsDead(player_->GetIsDead());
+	groundParticle_->SetIsPlayerAxcelled(player_->GetRightAxcell());
 
 	if(gameSpeed_->GetSpeedMode() != GameSpeed::SpeedMode::STOP)
 	{
@@ -307,7 +308,7 @@ void GameScene::Update()
 		{
 			if(player_->GetIsSecondJumpMoment() == false)
 			{
-				groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
+				groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor(),player_->GetRightAxcell());
 			}
 		}
 
