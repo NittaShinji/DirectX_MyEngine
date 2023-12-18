@@ -14,6 +14,7 @@ std::unique_ptr<GroundParticle> GroundParticle::Create(std::string fileName)
 
 	instance->particleFileName_ = fileName;
 	instance->changeColorTimer_ = kChangeColorTime;
+	instance->blackTime_ = kBlackTime_;
 
 	return instance;
 }
@@ -67,7 +68,10 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 		}
 		
 
-		if(isPlayerAxcelled == true) {}
+		if(isPlayerAxcelled == true) 
+		{
+			//startColor_ = { 1.0f,1.0f,1.0f,1.0f };
+		}
 
 		//if(isAxcelled == false)
 		//{
@@ -109,17 +113,13 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 		float rotation = (float)rand() / RAND_MAX * md_rotate - 0.0f;
 		float rotationSpeed = 0.005f;
 
-
-		//色を変化させる
-		Vector4 colorSpeed{ 0.05f,0.05f,0.05f,0.15f };
-
 		//初期ライフ
 		const float InitLife = 30.0f;
 
 		//追加
 		if(GetIsMaxParticle() == false)
 		{
-			Add(InitLife, setPos_, setVel_, acc, startColor_, endColor_,  colorSpeed, startScale_, endScale_,rotation,rotationSpeed);
+			Add(InitLife, setPos_, setVel_, acc, startColor_, endColor_,  colorSpeed_, startScale_, endScale_,rotation,rotationSpeed);
 		}
 	}
 
@@ -168,24 +168,134 @@ void GroundParticle::Update(Camera* camera)
 
 	if(isPlayerAxcelled_ == true)
 	{
-		//初期値
-		if(whiteEasing_.time == 0.0f)
+		if(blackTime_ > 0)
 		{
-			endColor_.x = 0.0f;
-			endColor_.y = 0.0f;
-			endColor_.z = 0.0f;
+			blackTime_--;
+
+			redEasing_.endDistance = 0.0f;
+			greenEasing_.endDistance = 0.0f;
+			blueEasing_.endDistance = 0.0f;
+
+			endColor_.x = 0.9f;
+			endColor_.y = 0.9f;
+			endColor_.z = 0.9f;
 			endColor_.w = 1.0f;
 
-			startColor_ = { 1.0f,1.0f,1.0f,1.0f };
+			//startColor_ = { 1.0f,1.0f,1.0f,1.0f };
+
+			colorChangeValue_ += colorSpeed_;
+
+
+			startColor_.x = 1.0f - colorChangeValue_.x;
+			startColor_.y = 1.0f - colorChangeValue_.y;
+			startColor_.z = 1.0f - colorChangeValue_.z;
+			startColor_.w = 1.0f;
+
+			
 		}
-
-		whiteEasing_.time++;
-
-		if(whiteEasing_.time > 0.0f)
+		else
 		{
-			endColor_.x = PlayEaseIn(whiteEasing_);
-			endColor_.y = PlayEaseIn(whiteEasing_);
-			endColor_.z = PlayEaseIn(whiteEasing_);
+			blackTime_ = 0;
+
+			
+			//初期値
+			if(redEasing_.time == 0.0f)
+			{	
+				startColor_.x = std::abs(1.0f - colorChangeValue_.x);
+				startColor_.y = std::abs(1.0f - colorChangeValue_.y);
+				startColor_.z = std::abs(1.0f - colorChangeValue_.z);
+
+				colorChangeValue_ = { 0.0f,0.0f,0.0f,0.0f };
+				/*endColor_.x = 0.0f;
+				endColor_.y = 0.0f;
+				endColor_.z = 0.0f;
+				endColor_.w = 1.0f;*/
+
+				redEasing_.startPos = startColor_.x;
+				greenEasing_.startPos = startColor_.y;
+				blueEasing_.startPos = startColor_.z;
+
+				if(playerColor_ == pink)
+				{
+					colorChangeValue_ += colorSpeed_;
+
+					//redEasing_.startPos = startColor_.x + colorChangeValue_.x;
+					//greenEasing_.startPos = startColor_.y + colorChangeValue_.y;
+					//blueEasing_.startPos = startColor_.z + colorChangeValue_.z;
+
+					//startColor_.x = - colorChangeValue_.x;
+					//startColor_.y = - colorChangeValue_.y;
+					//startColor_.z = - colorChangeValue_.z;
+
+
+
+
+					//kColorPinkR + 0.500f, kColorPinkG + 0.300f, kColorPinkB + 0.500f, 0.0f + imGuiColor_[3]
+				/*	redEasing_.endDistance = (kColorPinkR + 0.500f);
+					greenEasing_.endDistance = (kColorPinkG + 0.300f);
+					blueEasing_.endDistance = (kColorPinkB + 0.500f);*/
+
+					//endColor_.x = kColorPinkR + 0.500f;
+					//endColor_.y = kColorPinkG + 0.300f;
+					//endColor_.z = kColorPinkB + 0.500f;
+					//endColor_.w = 1.0f;
+
+					
+					redEasing_.endDistance = -(kColorPinkR + 0.500f);
+					greenEasing_.endDistance = -(kColorPinkG + 0.300f);
+					blueEasing_.endDistance = -(kColorPinkB + 0.500f);
+				}
+				else if(playerColor_ == yellow)
+				{
+					colorChangeValue_ += colorSpeed_;
+
+					//kColorYellowR + 0.500f, kColorYellowG + 0.300f, kColorYellowB + 0.500f, 0.0f + imGuiColor_[3]
+
+					/*redEasing_.endDistance = (kColorYellowR + 0.500f);
+					greenEasing_.endDistance = (kColorYellowG + 0.300f);
+					blueEasing_.endDistance = (kColorYellowB + 0.500f);
+					*/
+
+					//endColor_.x = kColorYellowR + 0.500f;
+					//endColor_.y = kColorYellowG + 0.300f;
+					//endColor_.z = kColorYellowB + 0.500f;
+					//endColor_.w = 1.0f;
+
+					//startColor_.x = -colorChangeValue_.x;
+					//startColor_.y = -colorChangeValue_.y;
+					//startColor_.z = -colorChangeValue_.z;
+
+					//redEasing_.startPos = startColor_.x + colorChangeValue_.x;
+					//greenEasing_.startPos = startColor_.y + colorChangeValue_.y;
+					//blueEasing_.startPos = startColor_.z + colorChangeValue_.z;
+
+					redEasing_.endDistance = -(kColorYellowR + 0.500f);
+					greenEasing_.endDistance = -(kColorYellowG + 0.300f);
+					blueEasing_.endDistance = -(kColorYellowB + 0.500f);
+				}
+
+				
+			}
+
+			/*whiteEasing_.time++;*/
+			redEasing_.time++;
+			greenEasing_.time++;
+			blueEasing_.time++;
+
+
+
+			if(redEasing_.time > 0.0f)
+			{
+				endColor_.x = PlayEaseIn(redEasing_);
+			}
+			if(greenEasing_.time > 0.0f)
+			{
+				endColor_.y = PlayEaseIn(greenEasing_);
+			}
+			if(blueEasing_.time > 0.0f)
+			{
+				endColor_.z = PlayEaseIn(blueEasing_);
+			}
 		}
 		
 		/*changeColorTimer_--;
@@ -198,8 +308,13 @@ void GroundParticle::Update(Camera* camera)
 	}
 	else
 	{
-		whiteEasing_.time = 0.0f;
-		startColor_ = { 0.0f,0.0f,0.0f,0.0f };
+		colorChangeValue_ = {0.0f,0.0f,0.0f,0.0f};
+		blackTime_ = kBlackTime_;
+		redEasing_.time = 0.0f;
+		greenEasing_.time = 0.0f;
+		blueEasing_.time = 0.0f;
+
+		startColor_ = { 1.0f,1.0f,1.0f,1.0f };
 	}
 
 	if(SUCCEEDED(result))
@@ -315,4 +430,9 @@ void GroundParticle::Update(Camera* camera)
 	constMap->viewProjection = matView_ * matProjection_;	// 行列の合成
 	constMap->matBillboard = matBillboard;
 	constBuff_->Unmap(0, nullptr);
+}
+
+void GroundParticle::SetIsPlayerColor(Attribute playerColor)
+{
+	playerColor_ = playerColor;
 }

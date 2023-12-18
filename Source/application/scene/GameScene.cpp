@@ -181,8 +181,11 @@ void GameScene::Initialize()
 	landParticle_->SetGameSpeed(gameSpeed_.get());
 	deadParticle_->SetGameSpeed(gameSpeed_.get());
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
+	//groundParticle_->SetIsPlayerColor(player_->GetAttributeColor());
+
 
 	GameTimer::GetInstance()->InGameInitialize();
+
 	
 	isReset_ = false;
 }
@@ -294,6 +297,13 @@ void GameScene::Update()
 	breakParticle_->SetPlayerIsDead(player_->GetIsDead());
 	groundParticle_->SetIsPlayerAxcelled(player_->GetRightAxcell());
 
+	if(player_->GetIsLanded() == true)
+	{
+		groundParticle_->SetIsPlayerColor(player_->GetAttributeColor());
+	}
+
+	ParticleManager::GetInstance()->Update(gameCamera_.get());
+	
 	if(gameSpeed_->GetSpeedMode() != GameSpeed::SpeedMode::STOP)
 	{
 		if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
@@ -331,7 +341,6 @@ void GameScene::Update()
 		breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
 	}
 
-	ParticleManager::GetInstance()->Update(gameCamera_.get());
 	
 
 	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());

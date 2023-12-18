@@ -52,3 +52,33 @@ Vector4& Vector4::operator/=(float s)
 	w /= s;
 	return *this;
 }
+
+// Vector4 クラスに属さない関数郡
+//　二項演算子
+const Vector4 operator+(const Vector4& v1, const Vector4& v2)
+{
+	Vector4 temp(v1);
+	return temp += v2;
+}
+
+const Vector4 operator-(const Vector4& v1, const Vector4& v2)
+{
+	Vector4 temp(v1);
+	return temp -= v2;
+}
+const Vector4 operator*(const Vector4& v, float s)
+{
+	Vector4 temp(v);
+	return  temp *= s;
+}
+
+const Vector4 operator*(float s, const Vector4& v)
+{
+	return v * s;
+}
+
+const Vector4 operator/(const Vector4& v, float s)
+{
+	Vector4 temp(v);
+	return temp /= s;
+}

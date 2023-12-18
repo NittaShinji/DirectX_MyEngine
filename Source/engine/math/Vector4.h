@@ -27,4 +27,12 @@ public:
 	Vector4& operator/=(float s);
 
 };
+//　2項演算子オーバーロード
+//　※いろんな引数(引数の型と順序)のパターンに対応するため
+const Vector4 operator+(const Vector4& v1, const Vector4& v2);
+const Vector4 operator-(const Vector4& v1, const Vector4& v2);
+const Vector4 operator*(const Vector4& v, float s);
+const Vector4 operator*(float s, const Vector4& v);
+const Vector4 operator/(const Vector4& v, float s);
+
 
