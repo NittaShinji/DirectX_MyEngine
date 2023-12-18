@@ -176,16 +176,16 @@ void GroundParticle::Update(Camera* camera)
 			greenEasing_.endDistance = 0.0f;
 			blueEasing_.endDistance = 0.0f;
 
+			//白→灰色への最終地点を設定
 			endColor_.x = 0.9f;
 			endColor_.y = 0.9f;
 			endColor_.z = 0.9f;
 			endColor_.w = 1.0f;
 
-			//startColor_ = { 1.0f,1.0f,1.0f,1.0f };
-
+			//色の変化量を保存
 			colorChangeValue_ += colorSpeed_;
 
-
+			//パーティクルの初期色に変化量を加えグラデーションのように
 			startColor_.x = 1.0f - colorChangeValue_.x;
 			startColor_.y = 1.0f - colorChangeValue_.y;
 			startColor_.z = 1.0f - colorChangeValue_.z;
@@ -197,93 +197,45 @@ void GroundParticle::Update(Camera* camera)
 		{
 			blackTime_ = 0;
 
-			
-			//初期値
+			//灰色→プレイヤー色への初期化
 			if(redEasing_.time == 0.0f)
 			{	
+				//白→灰色への変化途中の色を受け継ぐ
 				startColor_.x = std::abs(1.0f - colorChangeValue_.x);
 				startColor_.y = std::abs(1.0f - colorChangeValue_.y);
 				startColor_.z = std::abs(1.0f - colorChangeValue_.z);
 
+				//色の変化量をリセット
 				colorChangeValue_ = { 0.0f,0.0f,0.0f,0.0f };
-				/*endColor_.x = 0.0f;
-				endColor_.y = 0.0f;
-				endColor_.z = 0.0f;
-				endColor_.w = 1.0f;*/
-
-				redEasing_.startPos = startColor_.x;
-				greenEasing_.startPos = startColor_.y;
-				blueEasing_.startPos = startColor_.z;
-
-				if(playerColor_ == pink)
-				{
-					colorChangeValue_ += colorSpeed_;
-
-					//redEasing_.startPos = startColor_.x + colorChangeValue_.x;
-					//greenEasing_.startPos = startColor_.y + colorChangeValue_.y;
-					//blueEasing_.startPos = startColor_.z + colorChangeValue_.z;
-
-					//startColor_.x = - colorChangeValue_.x;
-					//startColor_.y = - colorChangeValue_.y;
-					//startColor_.z = - colorChangeValue_.z;
-
-
-
-
-					//kColorPinkR + 0.500f, kColorPinkG + 0.300f, kColorPinkB + 0.500f, 0.0f + imGuiColor_[3]
-				/*	redEasing_.endDistance = (kColorPinkR + 0.500f);
-					greenEasing_.endDistance = (kColorPinkG + 0.300f);
-					blueEasing_.endDistance = (kColorPinkB + 0.500f);*/
-
-					//endColor_.x = kColorPinkR + 0.500f;
-					//endColor_.y = kColorPinkG + 0.300f;
-					//endColor_.z = kColorPinkB + 0.500f;
-					//endColor_.w = 1.0f;
-
-					
-					redEasing_.endDistance = -(kColorPinkR + 0.500f);
-					greenEasing_.endDistance = -(kColorPinkG + 0.300f);
-					blueEasing_.endDistance = -(kColorPinkB + 0.500f);
-				}
-				else if(playerColor_ == yellow)
-				{
-					colorChangeValue_ += colorSpeed_;
-
-					//kColorYellowR + 0.500f, kColorYellowG + 0.300f, kColorYellowB + 0.500f, 0.0f + imGuiColor_[3]
-
-					/*redEasing_.endDistance = (kColorYellowR + 0.500f);
-					greenEasing_.endDistance = (kColorYellowG + 0.300f);
-					blueEasing_.endDistance = (kColorYellowB + 0.500f);
-					*/
-
-					//endColor_.x = kColorYellowR + 0.500f;
-					//endColor_.y = kColorYellowG + 0.300f;
-					//endColor_.z = kColorYellowB + 0.500f;
-					//endColor_.w = 1.0f;
-
-					//startColor_.x = -colorChangeValue_.x;
-					//startColor_.y = -colorChangeValue_.y;
-					//startColor_.z = -colorChangeValue_.z;
-
-					//redEasing_.startPos = startColor_.x + colorChangeValue_.x;
-					//greenEasing_.startPos = startColor_.y + colorChangeValue_.y;
-					//blueEasing_.startPos = startColor_.z + colorChangeValue_.z;
-
-					redEasing_.endDistance = -(kColorYellowR + 0.500f);
-					greenEasing_.endDistance = -(kColorYellowG + 0.300f);
-					blueEasing_.endDistance = -(kColorYellowB + 0.500f);
-				}
-
-				
 			}
 
-			/*whiteEasing_.time++;*/
+			//色の変化量を保存
+			colorChangeValue_ += colorSpeed_;
+			
 			redEasing_.time++;
 			greenEasing_.time++;
 			blueEasing_.time++;
 
+			//パーティクルの初期色に変化量を加えグラデーションのように
+			redEasing_.startPos = startColor_.x + colorChangeValue_.x;
+			greenEasing_.startPos = startColor_.y + colorChangeValue_.y;
+			blueEasing_.startPos = startColor_.z + colorChangeValue_.z;
 
+			//イージング用の距離を計算
+			if(playerColor_ == pink)
+			{
+				redEasing_.endDistance = kColorPinkR + 0.500f - redEasing_.startPos;
+				greenEasing_.endDistance = kColorPinkG + 0.300f - greenEasing_.startPos;
+				blueEasing_.endDistance = kColorPinkB + 0.500f - blueEasing_.startPos;
+			}
+			else if(playerColor_ == yellow)
+			{
+				redEasing_.endDistance = kColorYellowR + 0.500f - redEasing_.startPos;
+				greenEasing_.endDistance = kColorYellowG + 0.300f - greenEasing_.startPos;
+				blueEasing_.endDistance = kColorYellowB + 0.500f - blueEasing_.startPos;
+			}
 
+			//実際に数値を代入
 			if(redEasing_.time > 0.0f)
 			{
 				endColor_.x = PlayEaseIn(redEasing_);
@@ -297,14 +249,6 @@ void GroundParticle::Update(Camera* camera)
 				endColor_.z = PlayEaseIn(blueEasing_);
 			}
 		}
-		
-		/*changeColorTimer_--;
-		if(changeColorTimer_ > 0.0f)
-		{
-			endColor_.x -= endColorSpeed_;
-			endColor_.y -= endColorSpeed_;
-			endColor_.z -= endColorSpeed_;
-		}*/
 	}
 	else
 	{
@@ -313,7 +257,6 @@ void GroundParticle::Update(Camera* camera)
 		redEasing_.time = 0.0f;
 		greenEasing_.time = 0.0f;
 		blueEasing_.time = 0.0f;
-
 		startColor_ = { 1.0f,1.0f,1.0f,1.0f };
 	}
 
