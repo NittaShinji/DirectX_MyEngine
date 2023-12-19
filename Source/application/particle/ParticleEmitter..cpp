@@ -164,16 +164,6 @@ void ParticleEmitter::Update(Camera* camera)
 			it->scale = (it->e_scale - it->s_scale) * f;
 			it->scale += it->s_scale;
 
-			/*it->color.x = (it->endColor.x - it->startColor.x) * f;
-			it->color.y = (it->endColor.y - it->startColor.y) * f;
-			it->color.z = (it->endColor.z - it->startColor.z) * f;
-			it->color.w = (it->endColor.w - it->startColor.w) * f;
-
-			it->color.x += it->startColor.x;
-			it->color.y += it->startColor.y;
-			it->color.z += it->startColor.z;
-			it->color.w += it->startColor.w;*/
-
 			it->rotation += it->rotationSpeed;
 
 			//座標

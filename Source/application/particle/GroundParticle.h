@@ -8,7 +8,7 @@ public:
 
 	static std::unique_ptr<GroundParticle> Create(std::string fileName);
 
-	void Preparation(Vector3 playerPos, Attribute playerColor,bool isPlayerAxcelled);
+	void Preparation(Vector3 playerPos, Attribute playerColor,bool isPlayerAxcelled,bool isSlow);
 
 	void ImguiUpdate();
 

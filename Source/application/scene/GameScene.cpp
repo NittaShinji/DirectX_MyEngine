@@ -193,6 +193,7 @@ void GameScene::Initialize()
 void GameScene::Update()
 {
 	SceneAnimation();
+	gameSpeed_->Update();
 
 #ifdef _DEBUG
 	if(keys_->PushedKeyMoment(DIK_N))
@@ -245,8 +246,6 @@ void GameScene::Update()
 	sceneTransitionUp_->matUpdate();
 	sceneTransitionDown_->matUpdate();
 	//testParticleSprite_->matUpdate();
-
-	
 
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -301,43 +300,84 @@ void GameScene::Update()
 	{
 		groundParticle_->SetIsPlayerColor(player_->GetAttributeColor());
 	}
-
 	
 	if(gameSpeed_->GetSpeedMode() != GameSpeed::SpeedMode::STOP)
 	{
-		if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
 		{
-			if(player_->GetIsSecondJumpMoment() == true)
+			if(gameSpeed_->GetCanMoveInSlow() == true)
 			{
-				secondJumpParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
-			}
-		}
-
-		if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
-		{
-			if(player_->GetIsSecondJumpMoment() == false)
-			{
-				groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor(),player_->GetRightAxcell());
-			}
-		}
-
-		if(player_->GetIsMoving() == true && player_->GetIsDead() == false)
-		{
-			bool isTouchObject = player_->GetIsTouchObject();
-
-			if(player_->GetIsLanded() == true || isTouchObject == true)
-			{
-				hitParticle_->Preparation(player_->GetTransform(), isTouchObject);
-				if(isTouchObject == true)
+				if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
 				{
-					player_->SetIsTouchObject(false);
+					if(player_->GetIsSecondJumpMoment() == true)
+					{
+						secondJumpParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
+					}
+				}
+
+				if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+				{
+					if(player_->GetIsSecondJumpMoment() == false)
+					{
+						groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor(), player_->GetRightAxcell(),gameSpeed_->GetCanMoveInSlow());
+					}
+				}
+
+				if(player_->GetIsMoving() == true && player_->GetIsDead() == false)
+				{
+					bool isTouchObject = player_->GetIsTouchObject();
+
+					if(player_->GetIsLanded() == true || isTouchObject == true)
+					{
+						hitParticle_->Preparation(player_->GetTransform(), isTouchObject);
+						if(isTouchObject == true)
+						{
+							player_->SetIsTouchObject(false);
+						}
+					}
+				}
+
+				landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(), player_->GetAttributeColor());
+				deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(), player_->GetAttributeColor());
+				breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
+			}
+		}
+		else
+		{
+			if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+			{
+				if(player_->GetIsSecondJumpMoment() == true)
+				{
+					secondJumpParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
 				}
 			}
-		}
 
-		landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(), player_->GetAttributeColor());
-		deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(), player_->GetAttributeColor());
-		breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
+			if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+			{
+				if(player_->GetIsSecondJumpMoment() == false)
+				{
+					groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor(), player_->GetRightAxcell(), gameSpeed_->GetCanMoveInSlow());
+				}
+			}
+
+			if(player_->GetIsMoving() == true && player_->GetIsDead() == false)
+			{
+				bool isTouchObject = player_->GetIsTouchObject();
+
+				if(player_->GetIsLanded() == true || isTouchObject == true)
+				{
+					hitParticle_->Preparation(player_->GetTransform(), isTouchObject);
+					if(isTouchObject == true)
+					{
+						player_->SetIsTouchObject(false);
+					}
+				}
+			}
+
+			landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(), player_->GetAttributeColor());
+			deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(), player_->GetAttributeColor());
+			breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
+		}
 	}	
 
 	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());

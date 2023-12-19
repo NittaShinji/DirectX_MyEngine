@@ -19,7 +19,7 @@ std::unique_ptr<GroundParticle> GroundParticle::Create(std::string fileName)
 	return instance;
 }
 
-void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool isPlayerAxcelled)
+void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool isPlayerAxcelled, bool isSlow)
 {
 	for(int32_t i = 0; i < 3; i++)
 	{
@@ -27,29 +27,56 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 		setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.x + imGuiPos_[0] + i * 0.2f;
 		const float shiftY = -0.8f;
 		setPos_.y = playerPos.y + shiftY + imGuiPos_[1];
-		setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.z + imGuiPos_[2];
+		const float shiftZ = -0.9f;
+		setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.z + imGuiPos_[2] + shiftZ;
 
-		setVel_.x = 0.0f + imGuiVel_[0];
-
-		const float md_velY = 0.174f;
-		setVel_.y = md_velY + imGuiVel_[1];
-
-		const float md_velZ = -0.68f;
-		setVel_.z = md_velZ + imGuiVel_[2];
-
-		//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 		Vector3 acc{};
-		const float md_acc = -0.017f;
-		acc.x = imGuiAcc_[0];
-		acc.y = md_acc + imGuiAcc_[1];
-		//acc.z = md_acc + imGuiAcc_[2];
+		if(isSlow == true)
+		{
+			setVel_.x = 0.0f + imGuiVel_[0];
 
-		//Vector4 endColor;
+			const float md_velY = 0.0f;
+			setVel_.y = md_velY + imGuiVel_[1];
 
-		//Vector4 endColor = { 0.0f,0.0f,0.0f,1.0f };
-		
+			const float md_velZ = -0.68f;
+			setVel_.z = md_velZ + imGuiVel_[2];
+
+			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+			const float md_acc = 0.0f;
+			acc.x = imGuiAcc_[0];
+			acc.y = md_acc + imGuiAcc_[1];
+		}
+		else
+		{
+			setVel_.x = 0.0f + imGuiVel_[0];
+
+			const float md_velY = 0.174f;
+			setVel_.y = md_velY + imGuiVel_[1];
+
+			const float md_velZ = -0.68f;
+			setVel_.z = md_velZ + imGuiVel_[2];
+
+			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+			const float md_acc = -0.017f;
+			acc.x = imGuiAcc_[0];
+			acc.y = md_acc + imGuiAcc_[1];
+		}
+
+		//setVel_.x = 0.0f + imGuiVel_[0];
+
+		//const float md_velY = 0.174f;
+		//setVel_.y = md_velY + imGuiVel_[1];
+
+		//const float md_velZ = -0.68f;
+		//setVel_.z = md_velZ + imGuiVel_[2];
+
+		////重力に見立ててYのみ{-0.001f,0}でランダムに分布
+		//Vector3 acc{};
+		//const float md_acc = -0.017f;
+		//acc.x = imGuiAcc_[0];
+		//acc.y = md_acc + imGuiAcc_[1];
+
 		//色設定
-
 		if(isPlayerAxcelled == false)
 		{
 			if(playerColor == Attribute::pink)
@@ -66,9 +93,9 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 				startColor_ = { kColorYellowR + 0.500f,kColorYellowG + 0.300f,kColorYellowB + 0.500f,0.0f + imGuiColor_[3] };
 			}
 		}
-		
 
-		if(isPlayerAxcelled == true) 
+
+		if(isPlayerAxcelled == true)
 		{
 			//startColor_ = { 1.0f,1.0f,1.0f,1.0f };
 		}
@@ -119,7 +146,7 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 		//追加
 		if(GetIsMaxParticle() == false)
 		{
-			Add(InitLife, setPos_, setVel_, acc, startColor_, endColor_,  colorSpeed_, startScale_, endScale_,rotation,rotationSpeed);
+			Add(InitLife, setPos_, setVel_, acc, startColor_, endColor_, colorSpeed_, startScale_, endScale_, rotation, rotationSpeed);
 		}
 	}
 
@@ -190,8 +217,6 @@ void GroundParticle::Update(Camera* camera)
 			startColor_.y = 1.0f - colorChangeValue_.y;
 			startColor_.z = 1.0f - colorChangeValue_.z;
 			startColor_.w = 1.0f;
-
-			
 		}
 		else
 		{
@@ -199,7 +224,7 @@ void GroundParticle::Update(Camera* camera)
 
 			//灰色→プレイヤー色への初期化
 			if(redEasing_.time == 0.0f)
-			{	
+			{
 				//白→灰色への変化途中の色を受け継ぐ
 				startColor_.x = std::abs(1.0f - colorChangeValue_.x);
 				startColor_.y = std::abs(1.0f - colorChangeValue_.y);
@@ -211,11 +236,78 @@ void GroundParticle::Update(Camera* camera)
 
 			//色の変化量を保存
 			colorChangeValue_ += colorSpeed_;
-			
+
 			redEasing_.time++;
 			greenEasing_.time++;
 			blueEasing_.time++;
 
+			if(playerColor_ == pink)
+			{
+				if(startColor_.x < kColorPinkR + 0.500f)
+				{
+					startColor_.x += colorSpeed_.x;
+				}
+				else if(startColor_.x > kColorPinkR + 0.500f)
+				{
+					startColor_.x -= colorSpeed_.x;
+				}
+				else {}
+
+				if(startColor_.y < kColorPinkG + 0.300f)
+				{
+					startColor_.y += colorSpeed_.y;
+				}
+				else if(startColor_.y >= kColorPinkG + 0.300f)
+				{
+					startColor_.y -= colorSpeed_.y;
+				}
+				else {}
+
+				if(startColor_.z < kColorPinkB + 0.500f)
+				{
+					startColor_.z += colorSpeed_.z;
+				}
+				else if(startColor_.z > kColorPinkB + 0.500f)
+				{
+					startColor_.z -= colorSpeed_.z;
+				}
+				else {}
+			}
+			else if(playerColor_ == yellow)
+			{
+				if(startColor_.x < kColorYellowR + 0.500f)
+				{
+					startColor_.x += colorSpeed_.x;
+				}
+				else if(startColor_.x > kColorYellowR + 0.500f)
+				{
+					startColor_.x -= colorSpeed_.x;
+				}
+				else {}
+
+				if(startColor_.y < kColorYellowG + 0.300f)
+				{
+					startColor_.y += colorSpeed_.y;
+				}
+				else if(startColor_.y >= kColorYellowG + 0.300f)
+				{
+					startColor_.y -= colorSpeed_.y;
+				}
+				else {}
+
+				if(startColor_.z < kColorYellowB + 0.500f)
+				{
+					startColor_.z += colorSpeed_.z;
+				}
+				else if(startColor_.z > kColorYellowB + 0.500f)
+				{
+					startColor_.z -= colorSpeed_.z;
+				}
+				else {}
+			}
+
+			
+			
 			//パーティクルの初期色に変化量を加えグラデーションのように
 			redEasing_.startPos = startColor_.x + colorChangeValue_.x;
 			greenEasing_.startPos = startColor_.y + colorChangeValue_.y;
@@ -252,7 +344,7 @@ void GroundParticle::Update(Camera* camera)
 	}
 	else
 	{
-		colorChangeValue_ = {0.0f,0.0f,0.0f,0.0f};
+		colorChangeValue_ = { 0.0f,0.0f,0.0f,0.0f };
 		blackTime_ = kBlackTime_;
 		redEasing_.time = 0.0f;
 		greenEasing_.time = 0.0f;
@@ -277,40 +369,10 @@ void GroundParticle::Update(Camera* camera)
 
 			//速度に加速度を加算
 			it->velocity = (it->velocity + it->accel) * gameSpeed_->GetSpeedNum();
-
-			//it->velocity = it->velocity + it->accel;
 			//速度による移動
 			it->position = it->position + it->velocity;
-
 			//it->frame++;
 			it->frame += freamIncreaseValue_ * gameSpeed_->GetSpeedNum();
-
-			//進行度を0～1の範囲に換算
-			float f = (float)it->frame / it->num_frame;
-
-			//スケールの線形補間
-			it->scale = (it->e_scale - it->s_scale) * f;
-			it->scale += it->s_scale;
-
-			/*it->color.x = (it->endColor.x - it->startColor.x) * f;
-			it->color.y = (it->endColor.y - it->startColor.y) * f;
-			it->color.z = (it->endColor.z - it->startColor.z) * f;
-			it->color.w = (it->endColor.w - it->startColor.w) * f;
-
-			it->color.x += it->startColor.x;
-			it->color.y += it->startColor.y;
-			it->color.z += it->startColor.z;
-			it->color.w += it->startColor.w;*/
-
-			it->rotation += it->rotationSpeed;
-
-			//座標
-			vertMap->pos.x = it->position.x;
-			vertMap->pos.y = it->position.y;
-			vertMap->pos.z = it->position.z;
-
-			//スケール
-			vertMap->scale = it->scale;
 
 			//色
 			if(it->color.x <= it->endColor.x)
@@ -349,11 +411,17 @@ void GroundParticle::Update(Camera* camera)
 				it->color.w -= it->colorSpeed.w * gameSpeed_->GetSpeedNum();
 			}
 
-			vertMap->color.x = it->color.x;
-			vertMap->color.y = it->color.y;
-			vertMap->color.z = it->color.z;
-			vertMap->color.w = it->color.w;
+			//進行度を0～1の範囲に換算
+			float f = (float)it->frame / it->num_frame;
 
+			//スケールの線形補間
+			it->scale = (it->e_scale - it->s_scale) * f;
+			it->scale += it->s_scale;
+			it->rotation += it->rotationSpeed;
+
+			vertMap->pos = it->position;
+			vertMap->scale = it->scale;
+			vertMap->color = it->color;
 			vertMap->rotate = it->rotation;
 
 			//次の頂点へ

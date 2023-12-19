@@ -3,7 +3,31 @@
 void GameSpeed::Initialize()
 {
 	speedMode_ = SpeedMode::NORMAL;
+	slowCount_ = 0;
+	canMoveInSlow_ = false;
 	SetSpeed();
+}
+
+void GameSpeed::Update()
+{
+	if(speedMode_ == SpeedMode::SLOW)
+	{
+		slowCount_++;
+		if(slowCount_ > slowRate_)
+		{
+			canMoveInSlow_ = true;
+			slowCount_ = 0;
+		}
+		else
+		{
+			canMoveInSlow_ = false;
+		}
+	}
+	else
+	{
+		slowCount_ = 0;
+		canMoveInSlow_ = false;
+	}
 }
 
 void GameSpeed::SetSpeed()
