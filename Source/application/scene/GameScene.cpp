@@ -302,7 +302,6 @@ void GameScene::Update()
 		groundParticle_->SetIsPlayerColor(player_->GetAttributeColor());
 	}
 
-	ParticleManager::GetInstance()->Update(gameCamera_.get());
 	
 	if(gameSpeed_->GetSpeedMode() != GameSpeed::SpeedMode::STOP)
 	{
@@ -339,12 +338,11 @@ void GameScene::Update()
 		landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(), player_->GetAttributeColor());
 		deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(), player_->GetAttributeColor());
 		breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
-	}
-
-	
+	}	
 
 	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());
-	
+
+	ParticleManager::GetInstance()->Update(gameCamera_.get());
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
 
