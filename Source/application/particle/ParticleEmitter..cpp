@@ -183,6 +183,7 @@ void ParticleEmitter::Update(Camera* camera)
 			{
 				it->color.x -= it->colorSpeed.x * gameSpeed_->GetSpeedNum();
 			}
+			else {}
 
 			if(it->color.y <= it->endColor.y)
 			{
@@ -192,6 +193,7 @@ void ParticleEmitter::Update(Camera* camera)
 			{
 				it->color.y -= it->colorSpeed.y * gameSpeed_->GetSpeedNum();
 			}
+			else {}
 
 			if(it->color.z <= it->endColor.z)
 			{
@@ -201,6 +203,7 @@ void ParticleEmitter::Update(Camera* camera)
 			{
 				it->color.z -= it->colorSpeed.z * gameSpeed_->GetSpeedNum();
 			}
+			else {}
 
 			if(it->color.w <= it->endColor.w)
 			{
@@ -210,6 +213,7 @@ void ParticleEmitter::Update(Camera* camera)
 			{
 				it->color.w -= it->colorSpeed.w * gameSpeed_->GetSpeedNum();
 			}
+			else {}
 
 			vertMap->color.x = it->color.x;
 			vertMap->color.y = it->color.y;

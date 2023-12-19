@@ -62,79 +62,21 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 			acc.y = md_acc + imGuiAcc_[1];
 		}
 
-		//setVel_.x = 0.0f + imGuiVel_[0];
-
-		//const float md_velY = 0.174f;
-		//setVel_.y = md_velY + imGuiVel_[1];
-
-		//const float md_velZ = -0.68f;
-		//setVel_.z = md_velZ + imGuiVel_[2];
-
-		////重力に見立ててYのみ{-0.001f,0}でランダムに分布
-		//Vector3 acc{};
-		//const float md_acc = -0.017f;
-		//acc.x = imGuiAcc_[0];
-		//acc.y = md_acc + imGuiAcc_[1];
-
 		//色設定
 		if(isPlayerAxcelled == false)
 		{
 			if(playerColor == Attribute::pink)
 			{
-				//color = { kColorPinkR + imGuiColor_[0],kColorPinkG + imGuiColor_[1],kColorPinkB + imGuiColor_[2],0.0f + imGuiColor_[3] };
 				endColor_ = { 0.0f,0.0f,0.0f,1.0f };
 				startColor_ = { kColorPinkR + 0.500f,kColorPinkG + 0.300f,kColorPinkB + 0.500f,0.0f + imGuiColor_[3] };
 
 			}
 			else if(playerColor == Attribute::yellow)
 			{
-				//color = { kColorYellowR + imGuiColor_[0],kColorYellowG + imGuiColor_[1],kColorYellowB + imGuiColor_[2],0.0f + imGuiColor_[3] };
 				endColor_ = { 0.0f,0.0f,0.0f,1.0f };
 				startColor_ = { kColorYellowR + 0.500f,kColorYellowG + 0.300f,kColorYellowB + 0.500f,0.0f + imGuiColor_[3] };
 			}
 		}
-
-
-		if(isPlayerAxcelled == true)
-		{
-			//startColor_ = { 1.0f,1.0f,1.0f,1.0f };
-		}
-
-		//if(isAxcelled == false)
-		//{
-		//	endColor = { 0.0f,0.0f,0.0f,1.0f };
-		//	if(playerColor == Attribute::pink)
-		//	{
-		//		//color = { kColorPinkR + imGuiColor_[0],kColorPinkG + imGuiColor_[1],kColorPinkB + imGuiColor_[2],0.0f + imGuiColor_[3] };
-		//		startColor = { kColorPinkR + 0.500f,kColorPinkG + 0.300f,kColorPinkB + 0.500f,0.0f + imGuiColor_[3] };
-
-		//	}
-		//	else if(playerColor == Attribute::yellow)
-		//	{
-		//		//color = { kColorYellowR + imGuiColor_[0],kColorYellowG + imGuiColor_[1],kColorYellowB + imGuiColor_[2],0.0f + imGuiColor_[3] };
-		//		startColor = { kColorYellowR + 0.500f,kColorYellowG + 0.300f,kColorYellowB + 0.500f,0.0f + imGuiColor_[3] };
-		//	}
-		//}
-		//else
-		//{
-		//	startColor = { 1.0f,1.0f,1.0f,0.0f + imGuiColor_[3] };
-		//	endColor = { 0.0f,0.0f,0.0f,1.0f };
-		//}
-		//
-
-
-		//if(playerColor == Attribute::pink)
-		//{
-		//	/*color = { 0.0f,0.0f,0.0f,0.0f };
-		//	endColor = { kColorPinkR,kColorPinkG,kColorPinkB,kColorPinkAlpha };*/
-		//}
-		//else if(playerColor == Attribute::yellow)
-		//{
-		//	/*color = { 0.0f,0.0f,0.0f,0.0f };
-		//	endColor = { kColorYellowR,kColorYellowG,kColorYellowB,kColorYellowAlpha };*/
-		//}
-
-		//color = { 1.0f,1.0f,1.0f,1.0f };
 
 		const float md_rotate = 1.0f;
 		float rotation = (float)rand() / RAND_MAX * md_rotate - 0.0f;
@@ -306,8 +248,6 @@ void GroundParticle::Update(Camera* camera)
 				else {}
 			}
 
-			
-			
 			//パーティクルの初期色に変化量を加えグラデーションのように
 			redEasing_.startPos = startColor_.x + colorChangeValue_.x;
 			greenEasing_.startPos = startColor_.y + colorChangeValue_.y;
