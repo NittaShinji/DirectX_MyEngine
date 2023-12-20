@@ -46,6 +46,8 @@ public:
 
 	void ResetRotation();
 
+	void LongJump();
+
 private:
 
 	std::unique_ptr<Object3d> object_;
@@ -58,14 +60,19 @@ private:
 	//ジャンプカウント
 	int32_t jumpCount;
 
-	//jumpheightの最大値
-	const float kMaxJump = 0.1f;
-
 	//最大ジャンプ回数
-	int32_t kMaxJumpNum = 2;;
+	int32_t kMaxJumpNum = 2;
 
 	//空中にいるかどうか
 	bool isFlying_;
+
+	//ジャンプ量
+	float jumpTotalValue_;
+
+	//最大ジャンプ量
+	const float kMaxJumpValue_ = 1.4f;
+
+	bool isLongJump_ = false;;
 
 	//重力
 	float gravitySpeed = 0.0f;
