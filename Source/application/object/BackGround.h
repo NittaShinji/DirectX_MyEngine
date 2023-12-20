@@ -22,7 +22,6 @@ private:
 	//ステージ情報
 	LevelData* levelData_ = nullptr;
 
-	//using MODELKEY = std::string;
 	std::string name_;
 	std::unordered_map<std::string, Model> models_;
 

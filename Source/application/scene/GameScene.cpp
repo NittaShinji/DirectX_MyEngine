@@ -143,7 +143,9 @@ void GameScene::Initialize()
 	skydome_->SetScale(skydomeScale);
 
 	plane_ = TouchableObject::Create(plane, COLLISION_ATTR_BLACK);
-	Vector3 planeScale = { 500,1000,1000 };
+	plane_->SetColorFlag(true);
+	plane_->SetColor(Vector3(0.8f, 0.0f, 0.0f));
+	Vector3 planeScale = { 500,1200,1200 };
 	Vector3 planeTransform = { 0.0f,-3.0f,0.0f };
 	plane_->SetAttributeColor(black);
 	plane_->SetTransform(planeTransform);
