@@ -51,10 +51,7 @@ void TitleScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("A.png");
 	TextureManager::GetInstance()->LoadTexture("B.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
-	TextureManager::GetInstance()->LoadTexture("convertTex.dds");
-
-	//TextureManager::GetInstance()->TexConvert("click.png");
-
+	
 	Vector2 backGroundPosition = { 0.0f,0.0f };
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
