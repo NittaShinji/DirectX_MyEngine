@@ -42,7 +42,9 @@ void BackGround::Initialize()
 			newObject->SetScale(scale);
 
 			//色指定
-			newObject->SetColorFlag(false);
+			newObject->SetColorFlag(true);
+			newObject->SetColor(Vector3(0.6f, 0.6f, 0.6f));
+			newObject->SetAlpha(0.8f);
 
 			//配列に登録
 			objects_.push_back(std::move(newObject));

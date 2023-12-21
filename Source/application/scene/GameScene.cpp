@@ -143,7 +143,9 @@ void GameScene::Initialize()
 	skydome_->SetScale(skydomeScale);
 
 	plane_ = TouchableObject::Create(plane, COLLISION_ATTR_BLACK);
-	Vector3 planeScale = { 500,1000,1000 };
+	plane_->SetColorFlag(true);
+	plane_->SetColor(Vector3(0.8f, 0.25f, 0.0f));
+	Vector3 planeScale = { 500,1200,1200 };
 	Vector3 planeTransform = { 0.0f,-3.0f,0.0f };
 	plane_->SetAttributeColor(black);
 	plane_->SetTransform(planeTransform);
@@ -181,8 +183,6 @@ void GameScene::Initialize()
 	landParticle_->SetGameSpeed(gameSpeed_.get());
 	deadParticle_->SetGameSpeed(gameSpeed_.get());
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
-	//groundParticle_->SetIsPlayerColor(player_->GetAttributeColor());
-
 
 	GameTimer::GetInstance()->InGameInitialize();
 
@@ -401,6 +401,7 @@ void GameScene::Update()
 
 	if(player_->GetIsFinish() == true)
 	{
+		//gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
 		player_->SetIsMoving(false);
 		gameCamera_->GoalAnimation();
 

@@ -46,16 +46,12 @@ void TitleScene::Initialize()
 	aButtonSprite_ = std::make_unique<Sprite>();
 	bButtonSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_ = std::make_unique<Sprite>();
-	converterSprite_ = std::make_unique<Sprite>();
 	
 	TextureManager::GetInstance()->LoadTexture("TitleFont.png");
 	TextureManager::GetInstance()->LoadTexture("A.png");
 	TextureManager::GetInstance()->LoadTexture("B.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
-	TextureManager::GetInstance()->LoadTexture("convertTex.dds");
-
-	//TextureManager::GetInstance()->TexConvert("click.png");
-
+	
 	Vector2 backGroundPosition = { 0.0f,0.0f };
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
@@ -85,8 +81,7 @@ void TitleScene::Initialize()
 
 	clickSprite_->Initialize("click.png",clickButtonPosition);
 	backGroundSprite_->Initialize("WhiteTex",backGroundPosition);
-	converterSprite_->Initialize("convertTex.dds", backGroundPosition);
-
+	
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
@@ -120,7 +115,6 @@ void TitleScene::Update()
 	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();
 	backGroundSprite_->matUpdate();
-	converterSprite_->matUpdate();
 	
 	titleSphere_->Update(camera_.get());
 
@@ -273,10 +267,7 @@ void TitleScene::Draw()
 	clickSprite_->Draw("click.png");
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
-	converterSprite_->Draw("convertTex.dds");
-
-	/*gameTimer_->Draw();*/
-
+	
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();
 	titleSphere_->Draw();
