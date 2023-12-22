@@ -71,7 +71,8 @@ void Player::Initialize()
 	isLanded_ = false;
 	isDead_ = false;
 	isHit_ = false;
-	isLongJump_ = true;
+	isLongJump_ = false;
+	isJumped_ = false;
 
 	isStartedJumpAnimation_ = false;
 	isStartedLandAnime_ = false;
@@ -92,7 +93,7 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
- 	isLanded_ = false;
+	isLanded_ = false;
 
 	gameCamera_ = camera;
 
@@ -126,7 +127,7 @@ void Player::Update(Camera* camera)
 		{
 			totalAxcell_.z += kMoveAxcellZ_;
 		}
-		
+
 		Accelerate();
 
 		//落下処理
@@ -141,11 +142,14 @@ void Player::Update(Camera* camera)
 			////進行度を0～1の範囲に換算
 			//float f = frameNum_ / JumpFrameNum_;
 
-			//下向き加速度　
-			const float fallAcc = -0.015f;
-			const float fallVYMin = -0.5f;
-			//加速
-			fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+			if(isJumped_ == false)
+			{
+				//下向き加速度　
+				const float fallAcc = -0.015f;
+				const float fallVYMin = -0.5f;
+				//加速
+				fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+			}
 
 			//合計加速度に落下中の速度を加算
 			totalAxcell_ += fallVec_;
@@ -190,7 +194,6 @@ void Player::Update(Camera* camera)
 			isDentedAnime_ = true;
 		}
 
-
 		if(isStartedJumpAnimation_ == true)
 		{
 			if(jumpAnimationTimer_ > 0)
@@ -207,22 +210,18 @@ void Player::Update(Camera* camera)
 		//加速を座標に反映
 
 		//速度に加速度を加算
-		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP)
-		{
-			
-		}
+		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP) {}
 		else
 		{
 			transform_.x += totalAxcell_.x;
 			transform_.y += totalAxcell_.y;
 			transform_.z += totalAxcell_.z * gameSpeed_->GetSpeedNum();
 		}
-		
 
 		Object3d::SetTransform(transform_);
 		UpdateWorldMatrix();
 		collider_->Update();
-	
+
 		//球コライダーを取得
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 		assert(sphereCollider);
@@ -303,10 +302,14 @@ void Player::Update(Camera* camera)
 		if(onGround_)
 		{
 			isGroundRotate_ = true;
-			isLongJump_ = true;
-			jumpTotalValue_ = 0.0f;
+			isJumped_ = true;
+			if(isDuringAnimation_ == false)
+			{
+				jumpTotalValue_ = 0.0f;
+			}
+
 			GroundRotation();
-			
+
 			//スムーズに坂を下る為の吸着距離
 			const float adsDistance = 0.2f;
 			//接地を維持
@@ -349,7 +352,10 @@ void Player::Update(Camera* camera)
 				isTouchUnderObject_ = false;
 				onGround_ = true;
 				isLanded_ = true;
-				isStartedLandAnime_ = true;
+				if(isDuringAnimation_ == false)
+				{
+					isStartedLandAnime_ = true;
+				}
 				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				jumpCount = kMaxJumpNum;
 				//行列の更新など
@@ -361,7 +367,10 @@ void Player::Update(Camera* camera)
 				isTouchUnderObject_ = false;
 				onGround_ = true;
 				isLanded_ = true;
-				isStartedLandAnime_ = true;
+				if(isDuringAnimation_ == false)
+				{
+					isStartedLandAnime_ = true;
+				}
 				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				jumpCount = kMaxJumpNum;
 				//行列の更新など
@@ -373,7 +382,10 @@ void Player::Update(Camera* camera)
 				isTouchUnderObject_ = false;
 				onGround_ = true;
 				isLanded_ = true;
-				isStartedLandAnime_ = true;
+				if(isDuringAnimation_ == false)
+				{
+					isStartedLandAnime_ = true;
+				}
 				transform_.y -= (raycastHit.distance - sphereCollider->GetRadius() * 2.0f);
 				jumpCount = kMaxJumpNum;
 				//isResettingRotation_ = true;
@@ -390,9 +402,9 @@ void Player::Update(Camera* camera)
 			isDead_ = true;
 			isLanded_ = true;
 		}
-	
+
 		//色変え処理
-		if(gamePad_->GetButtonB())
+		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
 			isStartChangeColorAnime_ = true;
 
@@ -446,6 +458,47 @@ void Player::Update(Camera* camera)
 			}
 		}
 
+		if(keys_->PushedKeyMoment(DIK_SPACE) == true)
+		{
+			isSmallJump_ = true;
+		}
+		else if(keys_->HasPushedKey(DIK_SPACE) == true)
+		{
+			if(isJumped_ == true)
+			{
+				if(jumpTotalValue_ < kInitJumpValue_ && jumpTotalValue_ < kMaxJumpValue_)
+				{
+					isSmallJump_ = true;
+				}
+				if(jumpTotalValue_ >= kInitJumpValue_ && jumpTotalValue_ < kMaxJumpValue_)
+				{
+					isSmallJump_ = false;
+					isLongJump_ = true;
+				}
+
+				if(jumpTotalValue_ >= kMaxJumpValue_)
+				{
+					isJumped_ = false;
+				}
+
+			}
+		}
+		else if(keys_->ReleasedKeyMoment(DIK_SPACE))
+		{
+			if(onGround_ == false && isSmallJump_ == false)
+			{
+				isJumped_ = false;
+			}
+		}
+		else
+		{
+			if(onGround_ == false && isSmallJump_ == false)
+			{
+				isJumped_ = false;
+			}
+		}
+
+
 		//着地時にへこむアニメーション
 		if(isDead_ == false)
 		{
@@ -466,29 +519,9 @@ void Player::Update(Camera* camera)
 				//		isStartedLandAnime_ = false;
 				//	}
 				//}
-				if(keys_->HasPushedKey(DIK_SPACE))
-				{
-					//押した瞬間
-					if(keys_->PushedKeyMoment(DIK_SPACE))
-					{
-						if(jumpCount > 0)
-						{
-							isExpandedAnime_ = true;
-							isDentedAnime_ = false;
-							onGround_ = false;
-							isLanded_ = false;
-							/*const float jumpVYFist = 0.4f;
-							fallVec_ = { 0,jumpVYFist,0 };*/
-							jumpCount -= 1;
-							isDuringAnimation_ = false;
-							isStartedLandAnime_ = false;
-						}
-					}
 
-					LongJump();
-
-				}
-				else if(gamePad_->GetButtonA())
+				//押した瞬間
+				if(keys_->PushedKeyMoment(DIK_SPACE))
 				{
 					if(jumpCount > 0)
 					{
@@ -496,25 +529,42 @@ void Player::Update(Camera* camera)
 						isDentedAnime_ = false;
 						onGround_ = false;
 						isLanded_ = false;
-						/*const float jumpVYFist = 0.4f;
-						fallVec_ = { 0,jumpVYFist,0 };*/
+
+						jumpTotalValue_ = 0.0f;
+						isSmallJump_ = true;
+						isLongJump_ = false;
+						LongJump();
+						//fallVec_ = { 0,kInitJumpValue_,0 };
+
 						jumpCount -= 1;
 						isDuringAnimation_ = false;
 						isStartedLandAnime_ = false;
 					}
-
-					LongJump();
 				}
 				else
 				{
 					Animation(isStartedLandAnime_, kLandScaleSpeed_, kMaxLandMomentScale_);
-					//アニメーションが終了し、拡大しない場合
-					if(isDuringAnimation_ == false && isExpandedAnime_ == false)
+					//ここのisExpandedAnime_ == trueになってガクガクする
+					//アニメーションが終了し、
+					if(isDuringAnimation_ == false)
 					{
-						//元のデフォルトサイズに戻す
-						isReturnedSizeAnime_ = true;
 						isStartedLandAnime_ = false;
+
+						//拡大しない場合
+						if(isExpandedAnime_ == false)
+						{
+							//元のデフォルトサイズに戻す
+							isReturnedSizeAnime_ = true;
+						}
 					}
+
+					//if(isDuringAnimation_ == false && isExpandedAnime_ == false)
+					//{
+					//	//元のデフォルトサイズに戻す
+					//	isReturnedSizeAnime_ = true;
+					//	isStartedLandAnime_ = false;
+					//}
+
 				}
 			}
 			//元のサイズに戻るアニメーション
@@ -535,31 +585,10 @@ void Player::Update(Camera* camera)
 				//		isDuringAnimation_ = false;
 				//		isStartedLandAnime_ = false;
 				//	}
-
 				//}
 
-				if(keys_->HasPushedKey(DIK_SPACE))
-				{
-					//押した瞬間
-					if(keys_->PushedKeyMoment(DIK_SPACE))
-					{
-						if(jumpCount > 0)
-						{
-							isExpandedAnime_ = true;
-							isDentedAnime_ = false;
-							onGround_ = false;
-							isLanded_ = false;
-							/*const float jumpVYFist = 0.4f;
-							fallVec_ = { 0,jumpVYFist,0 };*/
-							jumpCount -= 1;
-							isDuringAnimation_ = false;
-							isStartedLandAnime_ = false;
-						}
-					}
-
-  					LongJump();
-				}
-				else if(gamePad_->GetButtonA() == true)
+				//押した瞬間
+				if(keys_->PushedKeyMoment(DIK_SPACE))
 				{
 					if(jumpCount > 0)
 					{
@@ -569,21 +598,22 @@ void Player::Update(Camera* camera)
 						isLanded_ = false;
 						/*const float jumpVYFist = 0.4f;
 						fallVec_ = { 0,jumpVYFist,0 };*/
+						LongJump();
 						jumpCount -= 1;
 						isDuringAnimation_ = false;
 						isStartedLandAnime_ = false;
 					}
 
-					LongJump();
 				}
 				else
 				{
+					LongJump();
 					Animation(isReturnedSizeAnime_, returnScaleSpeed_, kMoveScale_);
 					if(isDuringAnimation_ == false)
 					{
 						isReturnedSizeAnime_ = false;
 						returnScaleSpeed_ = 0.15f;
-
+						/*LongJump();*/
 					}
 				}
 			}
@@ -591,7 +621,7 @@ void Player::Update(Camera* camera)
 			else if(isDentedAnime_ == true)
 			{
 				Animation(isDentedAnime_, kDentSpeed_, kDentedScale_);
-				if(isDuringAnimation_ == false) 
+				if(isDuringAnimation_ == false)
 				{
 					if(jumpCount > 0)
 					{
@@ -601,8 +631,8 @@ void Player::Update(Camera* camera)
 						isLanded_ = false;
 						isRising_ = true;
 						LongJump();
-						const float jumpVYFist = 0.4f;
-						fallVec_ = { 0,jumpVYFist,0 };
+						//const float jumpVYFist = 0.4f;
+						//fallVec_ = { 0,jumpVYFist,0 };
 						jumpCount -= 1;
 					}
 				}
@@ -610,6 +640,7 @@ void Player::Update(Camera* camera)
 			//ジャンプ後に伸びるアニメーション
 			else if(isExpandedAnime_ == true)
 			{
+				LongJump();
 				Animation(isExpandedAnime_, kEpandSpeed_, kExpandScale_);
 				if(isDuringAnimation_ == false)
 				{
@@ -626,7 +657,7 @@ void Player::Update(Camera* camera)
 			}
 		}
 	}
-	
+
 	//ResetRotation();
 
 	if(isDead_ == false && isSetDeadPos_ == false)
@@ -651,10 +682,10 @@ void Player::OnCollision(const CollisionInfo& info)
 	else if(info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
 	{
 		std::string modelName = info.object->GetModel()->GetName();
-		
+
 		if(modelName == "wall")
 		{
-			if(isRightAxcell_ == true){}
+			if(isRightAxcell_ == true) {}
 			else
 			{
 				isLanded_ = false;
@@ -815,6 +846,7 @@ void Player::Reset(Camera* camera)
 	move = { 0,0,0 };
 
 	jumpCount = 2;
+	jumpTotalValue_ = 0.0f;
 	onGround_ = true;
 	isJumpRotate_ = false;
 	isFlying_ = 0;
@@ -905,7 +937,7 @@ void Player::GroundRotation()
 	if(rotateYTimer_ >= 0)
 	{
 		rotateYTimer_--;
-		
+
 		float angle = ToRadian(360.0f);
 
 		if(rotation_.y < angle)
@@ -1017,7 +1049,7 @@ void Player::ResetRotation()
 
 		bool isResetRotationY = true;
 		if(isGroundRotate_ == false)
-		{	
+		{
 			if(rotation_.y <= kResetRotation_.y && isResetRotationY == true)
 			{
 				rotation_.y += kRotaionSpeed_;
@@ -1064,68 +1096,82 @@ void Player::ResetRotation()
 
 void Player::LongJump()
 {
-	if(gamePad_->GetButtonA())
-	{
-		if(isLongJump_ == true)
-		{
-			const float jumpIncrease = 0.03f;
-			//加速
-			jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
-		/*	if(jumpTotalValue_ >= kMaxJumpValue_)
-			{
-				fallVec_.y = jumpTotalValue_;
-				isLongJump_ = false;
-			}*/
+	//if(gamePad_->GetButtonA())
+	//{
+	//	if(isLongJump_ == true)
+	//	{
+	//		const float jumpIncrease = 0.03f;
+	//		//加速
+	//		jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
+	//		/*	if(jumpTotalValue_ >= kMaxJumpValue_)
+	//			{
+	//				fallVec_.y = jumpTotalValue_;
+	//				isLongJump_ = false;
+	//			}*/
 
+	//		if(jumpTotalValue_ < kMaxJumpValue_)
+	//		{
+	//			//加速
+	//			jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
+	//			fallVec_.y = jumpTotalValue_;
+	//		}
+	//		else
+	//		{
+	//			jumpTotalValue_ = 0.0f;
+	//			isLongJump_ = false;
+	//		}
+	//	}
+
+	//}
+
+	if(isSmallJump_ == true)
+	{
+		if(isJumped_ == true)
+		{
 			if(jumpTotalValue_ < kMaxJumpValue_)
 			{
 				//加速
-				jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
+				jumpTotalValue_ = min(jumpTotalValue_ + kInitJumpValue_, kMaxJumpValue_);
 				fallVec_.y = jumpTotalValue_;
 			}
 			else
 			{
-				jumpTotalValue_ = 0.0f;
-				isLongJump_ = false;
+				isJumped_ = false;
 			}
 		}
-		
+		isSmallJump_ = false;
 	}
 	else if(keys_->HasPushedKey(DIK_SPACE))
 	{
 		if(isLongJump_ == true)
 		{
-			const float jumpIncrease = 0.03f;
-			
-			if(jumpTotalValue_ < kMaxJumpValue_)
+			if(isJumped_ == true)
 			{
-				//加速
-				jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
-				fallVec_.y = jumpTotalValue_;
-			}
-			else
-			{
-				jumpTotalValue_ = 0.0f;
-				isLongJump_ = false;
-			}
-		}
-	}
+				const float jumpIncrease = 0.015f;
 
-	if(isLongJump_ == true)
-	{
-		gamePad_->ResetButton();
-		gamePad_->HasPushedButton();
-		if(gamePad_->GetButtonA() == false)
-		{
-			isLongJump_ = false;
-			jumpTotalValue_ = 0.0f;
-		}
-		if(keys_->ReleasedKeyMoment(DIK_SPACE))
-		{
-			isLongJump_ = false;
-			jumpTotalValue_ = 0.0f;
+				if(jumpTotalValue_ < kMaxJumpValue_)
+				{
+					//加速
+					jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
+					fallVec_.y = jumpTotalValue_;
+				}
+				else
+				{
+					jumpTotalValue_ = kMaxJumpValue_;
+					isJumped_ = false;
+					isLongJump_ = false;
+				}
+			}
 		}
 	}
+	/*else if(keys_->ReleasedKeyMoment(DIK_SPACE))
+	{
+		if(isJumped_ == true)
+		{
+			isJumped_ = false;
+			jumpTotalValue_ = 0.0f;
+		}
+	}*/
 }
 
 

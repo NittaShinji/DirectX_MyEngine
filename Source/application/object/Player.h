@@ -70,9 +70,14 @@ private:
 	float jumpTotalValue_;
 
 	//最大ジャンプ量
-	const float kMaxJumpValue_ = 1.4f;
+	const float kMaxJumpValue_ = 0.38f;
+	const float kInitJumpValue_ = 0.25f;
 
-	bool isLongJump_ = false;;
+	bool isJumped_ = false;
+
+	bool isLongJump_ = false;
+
+	bool isSmallJump_ = false;
 
 	//重力
 	float gravitySpeed = 0.0f;

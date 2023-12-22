@@ -214,7 +214,7 @@ void GameScene::Update()
 	}
 #endif
 
-	if(player_->GetIsDead() == true)
+	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{
 		if(isReset_ == false)
 		{
@@ -223,7 +223,7 @@ void GameScene::Update()
 
 		ParticleManager::GetInstance()->ParticleRemove();
 
-		if(deadParticle_->GetCanReset() == true)
+		if(deadParticle_->GetCanReset() == true || keys_->HasPushedKey(DIK_R))
 		{
 			ObjParticleManager::GetInstance()->ParticleReset(gameCamera_.get());
 			stage_->Reset("Stage0.json");
