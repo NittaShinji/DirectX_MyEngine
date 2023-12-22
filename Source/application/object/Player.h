@@ -264,5 +264,6 @@ public:
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 	void SetIsFinish(bool isFinish) { isfinish_ = isFinish; }
 	void SetIsTouchObject(bool isTouchObject) { isTouchObject_ = isTouchObject; }
+	void SetIsRightAxcell(bool isRightAxcell) { isRightAxcell_ = isRightAxcell; }
 };
 

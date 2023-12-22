@@ -1,6 +1,7 @@
 #pragma once
 #include "TouchableObject.h"
 #include "HitWall.h"
+#include "GoalOBJ.h"
 #include "LevelManager.h"
 #include "ObjectAttribute.h"
 
@@ -13,7 +14,7 @@ public:
 
 	void Initialize(const std::string& fileName);
 
-	void Update(Camera* camera, bool isPlayerAxcell);
+	void Update(Camera* camera, Player* player);
 
 	void Draw();
 
@@ -22,6 +23,8 @@ public:
 	Vector3 GetGoalPos();
 
 	std::vector<Vector3> GetBreakWallsPos();
+
+	GoalOBJ* GetGoal() { return goal_.get(); }
 
 private:
 
@@ -34,6 +37,8 @@ private:
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
 	std::vector<std::unique_ptr<HitWall>> walls_;
+	std::unique_ptr<GoalOBJ> goal_;
+
 
 	//ゴール座標
 	Vector3 goalPos_;

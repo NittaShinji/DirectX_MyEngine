@@ -107,7 +107,7 @@ void Player::Update(Camera* camera)
 	gamePad_->PushedButtonMoment();
 
 	//ゲーム中プレイヤーが死んでいないとき
-	if(isMoving_ == true && isfinish_ == false)
+	if(isMoving_ == true)
 	{
 		//合計加速度をリセット
 		totalAxcell_ = { 0.0f,0.0f,0.0f };

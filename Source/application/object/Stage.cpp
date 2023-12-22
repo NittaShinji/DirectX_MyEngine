@@ -1,5 +1,5 @@
 #include "Stage.h"
-#include "HitWall.h"
+#include "Player.h"
 #include "CollisionAttribute.h"
 #include <string>
 
@@ -102,40 +102,67 @@ void Stage::Initialize(const std::string& fileName)
 
 		if(objectData.fileName == "wall")
 		{
-			//衝突壁オブジェクトの生成
-			std::unique_ptr<HitWall> newWall = nullptr;
-			newWall = HitWall::Create(objectData.fileName);
-
-			//座標
-			Vector3 pos;
-			pos = objectData.translation;
-			newWall->SetTransform(pos);
-
-			//回転角
-			Vector3 rot;
-			rot = objectData.rotation;
-			newWall->SetRotation(rot);
-
-			//大きさ
-			Vector3 scale;
-			scale = objectData.scaling;
-			newWall->SetScale(scale);
-
-			//その他の初期化
-			newWall->Initialize();
 			if(objectData.attribute == "Goal")
 			{
-				goalPos_ = pos;
-				newWall->SetAttributeColor(Attribute::Goal);
-			}
+				//衝突壁オブジェクトの生成
+				std::unique_ptr<GoalOBJ> newGoal = nullptr;
+				newGoal = GoalOBJ::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+				//座標
+				Vector3 pos;
+				pos = objectData.translation;
+				newGoal->SetTransform(pos);
 
-			//配列に登録
-			walls_.push_back(std::move(newWall));
+				//回転角
+				Vector3 rot;
+				rot = objectData.rotation;
+				newGoal->SetRotation(rot);
+
+				//大きさ
+				Vector3 scale;
+				scale = objectData.scaling;
+				newGoal->SetScale(scale);
+
+				//その他の初期化
+				newGoal->Initialize();
+
+				goalPos_ = pos;
+				newGoal->SetAttributeColor(Attribute::Goal);
+				//newGoal = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+
+				//登録
+				goal_ = std::move(newGoal);
+			}
+			else
+			{
+				//衝突壁オブジェクトの生成
+				std::unique_ptr<HitWall> newWall = nullptr;
+				newWall = HitWall::Create(objectData.fileName);
+				//座標
+				Vector3 pos;
+				pos = objectData.translation;
+				newWall->SetTransform(pos);
+
+				//回転角
+				Vector3 rot;
+				rot = objectData.rotation;
+				newWall->SetRotation(rot);
+
+				//大きさ
+				Vector3 scale;
+				scale = objectData.scaling;
+				newWall->SetScale(scale);
+
+				//その他の初期化
+				newWall->Initialize();
+
+				//配列に登録
+				walls_.push_back(std::move(newWall));
+			}
 		}
 	}
 }
 
-void Stage::Update(Camera* camera, bool isPlayerAccelerating)
+void Stage::Update(Camera* camera, Player* player)
 {
 	for(auto& object : objects_)
 	{
@@ -144,7 +171,7 @@ void Stage::Update(Camera* camera, bool isPlayerAccelerating)
 
 	for(size_t i = 0; i < walls_.size(); i++)
 	{
-		walls_[i]->Update(camera, isPlayerAccelerating);
+		walls_[i]->Update(camera, player->GetRightAxcell());
 
 		//壁が壊れていたら削除
 		if(walls_[i]->GetIsBreak_())
@@ -153,6 +180,8 @@ void Stage::Update(Camera* camera, bool isPlayerAccelerating)
 			i = (size_t)-1;
 		}
 	}
+
+	goal_->Update(camera,player->GetTransform());
 }
 
 void Stage::Draw()
@@ -166,6 +195,8 @@ void Stage::Draw()
 	{
 		wall->Draw();
 	}
+
+	goal_->Draw();
 }
 
 void Stage::Reset(const std::string& fileName)

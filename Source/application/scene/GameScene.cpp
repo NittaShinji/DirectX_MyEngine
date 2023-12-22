@@ -233,6 +233,7 @@ void GameScene::Update()
 			deadParticle_->SetCanReset(false);
 			deadParticle_->Reset();
 			GameTimer::GetInstance()->Reset();
+			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 			ResetSceneAnimation();
 		}
 	}
@@ -380,7 +381,7 @@ void GameScene::Update()
 		}
 	}	
 
-	stage_->Update(gameCamera_.get(), player_->GetRightAxcell());
+	stage_->Update(gameCamera_.get(), player_.get());
 
 	ParticleManager::GetInstance()->Update(gameCamera_.get());
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
@@ -399,10 +400,18 @@ void GameScene::Update()
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
 
+	//ゴールに近づいたらスローにする
+	if(stage_->GetGoal()->GetIsStartGoalStagin() == true)
+	{
+		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
+	}
+
+	//ゴールに触れたら
 	if(player_->GetIsFinish() == true)
 	{
-		//gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
-		player_->SetIsMoving(false);
+		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+		stage_->GetGoal()->SetIsStartGoalStagin(false);
+		player_->SetIsRightAxcell(true);
 		gameCamera_->GoalAnimation();
 
 		if(gameCamera_->GetIsFinishAnimation())
