@@ -71,7 +71,7 @@ private:
 
 	//最大ジャンプ量
 	const float kMaxJumpValue_ = 0.38f;
-	const float kInitJumpValue_ = 0.25f;
+	const float kInitJumpValue_ = 0.27f;
 
 	bool isJumped_ = false;
 

@@ -136,19 +136,25 @@ void Player::Update(Camera* camera)
 			isGroundRotate_ = false;
 			frameNum_ += freamIncreaseValue_;
 
-			//if(frameNum_ >= JumpFrameNum_)
-			//{
-			//}
-			////進行度を0～1の範囲に換算
-			//float f = frameNum_ / JumpFrameNum_;
-
 			if(isJumped_ == false)
 			{
-				//下向き加速度　
-				const float fallAcc = -0.015f;
-				const float fallVYMin = -0.5f;
-				//加速
-				fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+				//長押しの場合滑空するように
+				if(keys_->HasPushedKey(DIK_SPACE) == true)
+				{
+					//下向き加速度　
+					const float fallAcc = -0.015f;
+					const float fallVYMin = -0.5f;
+					//加速
+					fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+				}
+				else
+				{
+					//下向き加速度　
+					const float fallAcc = -0.021f;
+					const float fallVYMin = -0.75f;
+					//加速
+					fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+				}
 			}
 
 			//合計加速度に落下中の速度を加算
@@ -1164,14 +1170,6 @@ void Player::LongJump()
 			}
 		}
 	}
-	/*else if(keys_->ReleasedKeyMoment(DIK_SPACE))
-	{
-		if(isJumped_ == true)
-		{
-			isJumped_ = false;
-			jumpTotalValue_ = 0.0f;
-		}
-	}*/
 }
 
 
