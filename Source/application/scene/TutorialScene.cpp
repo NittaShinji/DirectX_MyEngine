@@ -219,7 +219,7 @@ void TutorialScene::Update()
 		Vector3 pos{};
 		pos.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		pos.y = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + 2.0f;
-		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + stage_->GetGoalPos().z;
+		pos.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f;
 		//x,y,z全て[-0.05f,+0.05f]でランダムに分布
 		const float md_vel = 0.1f;
 		Vector3 vel{};

@@ -689,7 +689,7 @@ void Player::OnCollision(const CollisionInfo& info)
 	{
 		std::string modelName = info.object->GetModel()->GetName();
 
-		if(modelName == "wall")
+		if(modelName == "wall" && info.object->GetAttributeColor() != Goal)
 		{
 			if(isRightAxcell_ == true) {}
 			else

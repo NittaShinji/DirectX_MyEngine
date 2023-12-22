@@ -123,6 +123,11 @@ void Stage::Initialize(const std::string& fileName)
 
 			//その他の初期化
 			newWall->Initialize();
+			if(objectData.attribute == "Goal")
+			{
+				goalPos_ = pos;
+				newWall->SetAttributeColor(Attribute::Goal);
+			}
 
 			//配列に登録
 			walls_.push_back(std::move(newWall));
