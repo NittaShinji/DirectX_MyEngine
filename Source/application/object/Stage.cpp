@@ -71,7 +71,7 @@ void Stage::Initialize(const std::string& fileName)
 				newObject->SetAttributeColor(Attribute::black);
 			}
 
-			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube")
+			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall")
 			{
 				if(newObject->GetColorFlag() == false)
 				{
@@ -87,77 +87,89 @@ void Stage::Initialize(const std::string& fileName)
 					}
 					else
 					{
-						newObject->SetColor(Vector3(0.78f, 0.78f, 0.78f));
+						newObject->SetColor(Vector3(0.0f, 0.0f, 0.0f));
 					}
 				}
 				else if(newObject->GetColorFlag() == true)
 				{
 					newObject->SetColorFlag(false);
 				}
+
+				/*if(objectData.fileName == "GoalWall")
+				{
+					newObject->SetColor(Vector3(0.78f, 0.78f, 0.78f));
+				}*/
 			}
 
 			//配列に登録
 			objects_.push_back(std::move(newObject));
 		}
 
+		if(objectData.fileName == "GoalWall")
+		{
+			//衝突壁オブジェクトの生成
+			std::unique_ptr<GoalOBJ> newGoal = nullptr;
+			newGoal = GoalOBJ::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+			//座標
+			Vector3 pos;
+			pos = objectData.translation;
+			newGoal->SetTransform(pos);
+
+			//回転角
+			Vector3 rot;
+			rot = objectData.rotation;
+			newGoal->SetRotation(rot);
+
+			//大きさ
+			Vector3 scale;
+			scale = objectData.scaling;
+			newGoal->SetScale(scale);
+
+			//その他の初期化
+			newGoal->Initialize();
+
+			goalPos_ = pos;
+			newGoal->SetAttributeColor(Attribute::Goal);
+
+			if(newGoal->GetColorFlag() == false)
+			{
+				newGoal->SetColorFlag(true);
+			}
+
+			newGoal->SetColor(Vector3(0.78f, 0.78f, 0.78f));
+
+			//newGoal = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+
+			//登録
+			goal_ = std::move(newGoal);
+		}
+
 		if(objectData.fileName == "wall")
 		{
-			if(objectData.attribute == "Goal")
-			{
-				//衝突壁オブジェクトの生成
-				std::unique_ptr<GoalOBJ> newGoal = nullptr;
-				newGoal = GoalOBJ::Create(objectData.fileName, COLLISION_ATTR_GOAL);
-				//座標
-				Vector3 pos;
-				pos = objectData.translation;
-				newGoal->SetTransform(pos);
+			//衝突壁オブジェクトの生成
+			std::unique_ptr<HitWall> newWall = nullptr;
+			newWall = HitWall::Create(objectData.fileName);
+			//座標
+			Vector3 pos;
+			pos = objectData.translation;
+			newWall->SetTransform(pos);
 
-				//回転角
-				Vector3 rot;
-				rot = objectData.rotation;
-				newGoal->SetRotation(rot);
+			//回転角
+			Vector3 rot;
+			rot = objectData.rotation;
+			newWall->SetRotation(rot);
 
-				//大きさ
-				Vector3 scale;
-				scale = objectData.scaling;
-				newGoal->SetScale(scale);
+			//大きさ
+			Vector3 scale;
+			scale = objectData.scaling;
+			newWall->SetScale(scale);
 
-				//その他の初期化
-				newGoal->Initialize();
+			//その他の初期化
+			newWall->Initialize();
 
-				goalPos_ = pos;
-				newGoal->SetAttributeColor(Attribute::Goal);
-				//newGoal = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+			//配列に登録
+			walls_.push_back(std::move(newWall));
 
-				//登録
-				goal_ = std::move(newGoal);
-			}
-			else
-			{
-				//衝突壁オブジェクトの生成
-				std::unique_ptr<HitWall> newWall = nullptr;
-				newWall = HitWall::Create(objectData.fileName);
-				//座標
-				Vector3 pos;
-				pos = objectData.translation;
-				newWall->SetTransform(pos);
-
-				//回転角
-				Vector3 rot;
-				rot = objectData.rotation;
-				newWall->SetRotation(rot);
-
-				//大きさ
-				Vector3 scale;
-				scale = objectData.scaling;
-				newWall->SetScale(scale);
-
-				//その他の初期化
-				newWall->Initialize();
-
-				//配列に登録
-				walls_.push_back(std::move(newWall));
-			}
 		}
 	}
 }
@@ -181,7 +193,7 @@ void Stage::Update(Camera* camera, Player* player)
 		}
 	}
 
-	goal_->Update(camera,player->GetTransform());
+	goal_->Update(camera, player->GetTransform());
 }
 
 void Stage::Draw()
@@ -238,7 +250,7 @@ void Stage::Reset(const std::string& fileName)
 
 			//その他の初期化
 			newWall->Initialize();
-			
+
 			//配列に登録
 			walls_.push_back(std::move(newWall));
 		}

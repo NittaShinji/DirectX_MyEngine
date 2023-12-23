@@ -122,11 +122,13 @@ void GameScene::Initialize()
 	const string cube = "Cube";
 	const string plane = "Plane";
 	const string wall = "wall";
+	const string goalWall = "GoalWall";
 
 	Model::Load(testStage0);
 	Model::Load(cube);
 	Model::Load(wall);
 	Model::Load(plane);
+	Model::Load(goalWall);
 
 	//3Dオブジェクトの生成
 	stage_ = std::make_unique<Stage>();
@@ -146,7 +148,7 @@ void GameScene::Initialize()
 	plane_->SetColorFlag(true);
 	plane_->SetColor(Vector3(0.8f, 0.25f, 0.0f));
 	Vector3 planeScale = { 500,1200,1200 };
-	Vector3 planeTransform = { 0.0f,-3.0f,0.0f };
+	Vector3 planeTransform = { 0.0f,-2.0f,0.0f };
 	plane_->SetAttributeColor(black);
 	plane_->SetTransform(planeTransform);
 	plane_->SetScale(planeScale);
@@ -462,7 +464,7 @@ void GameScene::Draw()
 
 	//モデル描画
 	Object3d::BeforeDraw();
-	stage_->Draw();
+	
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
@@ -472,6 +474,7 @@ void GameScene::Draw()
 
 	Object3d::BeforeDraw();
 	player_->Draw();
+	stage_->Draw();
 
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();

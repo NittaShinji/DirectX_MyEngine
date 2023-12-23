@@ -87,9 +87,12 @@ private:
 	bool isNotBackAnimation_;
 	bool isAxcellrate_;
 
-	const float goalEyeXMoveValue_ = -30.0f;
+	const float goalEyeXMoveValue_ = 0.0f;
+	const float goalEyeYMoveValue_ = 0.0f;
+	const float goalEyeZMoveValue_ = 0.0f;
+	/*const float goalEyeXMoveValue_ = -30.0f;
 	const float goalEyeYMoveValue_ = -3.42f;
-	const float goalEyeZMoveValue_ = 8.85f;
+	const float goalEyeZMoveValue_ = 8.85f;*/
 
 	EasingInfo goalEyeXEasing_ = { 0.0f, goalEyeXMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
 	EasingInfo goalEyeYEasing_ = { 0.0f, goalEyeYMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };

@@ -21,7 +21,7 @@ void BackGround::Initialize()
 		if(it != models_.end()) { model = &it->second; }
 		//モデルを指定して3Dオブジェクトを作成
 
-		if(objectData.fileName == "Cube")
+		if(objectData.fileName == "Cube" || objectData.fileName == "wall")
 		{
 			//3Dオブジェクトの生成
 			std::unique_ptr<Object3d> newObject = nullptr;
