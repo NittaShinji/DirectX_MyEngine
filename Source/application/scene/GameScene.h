@@ -88,6 +88,8 @@ private:
 	std::unique_ptr<Object3d> skydome_ = nullptr;
 	std::unique_ptr<TouchableObject> plane_ = nullptr;
 	std::unique_ptr<BackGround> backGround_ = nullptr;
+	std::unique_ptr<BackGround> normalBackGround_ = nullptr;
+
 	
 
 	//ゲームパッド
@@ -133,6 +135,10 @@ private:
 	float imGuiPos[3]{ 0.0f,0.0f,0.0f };
 	float imGuiVel[3]{ 0.0f,0.0f,0.0f };
 	float imGuiAcc[3]{ 0.0f,0.0f,0.0f };
+
+	float imGuiDir_[3]{ 0.0f,0.0f,0.0f };
+
+
 
 	//サウンド
 	std::unique_ptr<Sound> gameSound_ = nullptr;

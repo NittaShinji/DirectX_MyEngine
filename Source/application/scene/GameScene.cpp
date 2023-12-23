@@ -39,6 +39,8 @@ void GameScene::Initialize()
 	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLightGroup(lightGroup_);
+	lightGroup_->SetDirLightActive(0, true);
+	//lightGroup_->SetDirLightActive(1, true);
 
 	//サウンド
 	SoundManager::GetInstance()->Initialize();
@@ -135,7 +137,9 @@ void GameScene::Initialize()
 	stage_->Initialize("Stage0.json");
 
 	backGround_ = std::make_unique<BackGround>();
-	backGround_->Initialize();
+	backGround_->Initialize("backGround.json");
+	normalBackGround_ = std::make_unique<BackGround>();
+	normalBackGround_->Initialize("normalOBJ.json");
 
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
@@ -267,19 +271,24 @@ void GameScene::Update()
 	}
 
 	//光線方向初期値
+	//static Vector3 lightDir = { 0,1,0 };
 	static Vector3 lightDir = { 1,-1,-10 };
+
 	float lightDirUp = 0.0f;
 
 	static Vector3 color = { 1, 1, 1 };
 
 	lightGroup_->SetAmbientColor(color);
 	lightGroup_->SetDirLightDir(0, lightDir, lightDirUp);
+	//lightGroup_->SetDirLightDir(1, lightDir, lightDirUp);
+
 	lightGroup_->SetDirLightColor(0, Vector3(1, 1, 1));
+	//lightGroup_->SetDirLightColor(1, Vector3(1, 1, 1));
 
 	{
 		//imguiからのライトパラメータを反映
 		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
-		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x, lightDir0_.y, lightDir0_.z }), 0.0f);
+		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x + imGuiDir_[0], lightDir0_.y + imGuiDir_[1], lightDir0_.z + imGuiDir_[2] }), 0.0f);
 		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
 	}
 
@@ -293,6 +302,7 @@ void GameScene::Update()
 	skydome_->Update(gameCamera_.get());
 	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
+	normalBackGround_->Update(gameCamera_.get());
 
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
@@ -397,6 +407,14 @@ void GameScene::Update()
 	breakParticle_->ImGuiUpdate();
 	groundParticle_->ImguiUpdate();
 
+	ImGui::Begin("light");
+	ImGui::SetWindowPos(ImVec2(0, 360));
+	ImGui::SetWindowSize(ImVec2(200, 100));
+
+	ImGui::SliderFloat3("lightDir", imGuiDir_, -30.0f, 30.0f);
+	
+	ImGui::End();
+
 #endif
 
 	//全ての衝突をチェック
@@ -449,7 +467,7 @@ void GameScene::Draw()
 	backGroundSprite_->Draw("backGround.png");
 
 	Object3d::BeforeDraw();
-	plane_->Draw();
+	//plane_->Draw();
 	backGround_->Draw();
 	postEffect_->PostDrawScene();
 
@@ -464,6 +482,7 @@ void GameScene::Draw()
 
 	//モデル描画
 	Object3d::BeforeDraw();
+	normalBackGround_->Draw();
 	stage_->Draw();
 	
 	//深度値クリア

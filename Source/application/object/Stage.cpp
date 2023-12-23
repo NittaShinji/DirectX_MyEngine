@@ -95,10 +95,10 @@ void Stage::Initialize(const std::string& fileName)
 					newObject->SetColorFlag(false);
 				}
 
-				/*if(objectData.fileName == "GoalWall")
+				if(objectData.fileName == "testStage0")
 				{
-					newObject->SetColor(Vector3(0.78f, 0.78f, 0.78f));
-				}*/
+					//newObject->SetColor(Vector3(0.78f, 0.78f, 0.78f));
+				}
 			}
 
 			//配列に登録

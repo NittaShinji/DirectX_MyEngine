@@ -10,4 +10,7 @@ enum Attribute
 	yellow,		//黄色
 	black,		//プレイヤーが乗れない色
 	Goal,		//ゴール
+	NormalObj,   //当たり判定のない普通のオブジェクト
+	NReverseObj, //当たり判定のないオブジェクトを反転したもの
+
 };

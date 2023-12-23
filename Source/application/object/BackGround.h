@@ -11,7 +11,7 @@ public:
 	BackGround();
 	~BackGround();
 
-	void Initialize();
+	void Initialize(const std::string fileName);
 
 	void Update(Camera* camera);
 

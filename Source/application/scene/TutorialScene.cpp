@@ -90,7 +90,7 @@ void TutorialScene::Initialize()
 	stage_->Initialize("Stage0.json");
 
 	backGround_ = std::make_unique<BackGround>();
-	backGround_->Initialize();
+	backGround_->Initialize("backGround.json");
 
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
