@@ -464,6 +464,7 @@ void GameScene::Draw()
 
 	//モデル描画
 	Object3d::BeforeDraw();
+	stage_->Draw();
 	
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
@@ -474,7 +475,7 @@ void GameScene::Draw()
 
 	Object3d::BeforeDraw();
 	player_->Draw();
-	stage_->Draw();
+	
 
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
