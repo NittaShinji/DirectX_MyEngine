@@ -125,12 +125,14 @@ void GameScene::Initialize()
 	const string plane = "Plane";
 	const string wall = "wall";
 	const string goalWall = "GoalWall";
+	const string stageBlock = "StageBlock";
 
 	Model::Load(testStage0);
 	Model::Load(cube);
 	Model::Load(wall);
 	Model::Load(plane);
 	Model::Load(goalWall);
+	Model::Load(stageBlock);
 
 	//3Dオブジェクトの生成
 	stage_ = std::make_unique<Stage>();

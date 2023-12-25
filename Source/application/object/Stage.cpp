@@ -17,7 +17,7 @@ void Stage::Initialize(const std::string& fileName)
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
 		//モデルを指定して3Dオブジェクトを作成
-		if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0" || objectData.fileName == "Cube")
+		if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "StageBlock")
 		{
 			//3Dオブジェクトの生成
 			std::unique_ptr<TouchableObject> newObject = nullptr;
@@ -71,7 +71,7 @@ void Stage::Initialize(const std::string& fileName)
 				newObject->SetAttributeColor(Attribute::black);
 			}
 
-			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall")
+			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall" || objectData.fileName == "StageBlock")
 			{
 				if(newObject->GetColorFlag() == false)
 				{
