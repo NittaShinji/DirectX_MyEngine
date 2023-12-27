@@ -53,6 +53,7 @@ void Stage::Initialize(const std::string& fileName)
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
 
+			//属性指定
 			if(objectData.attribute == "Pink")
 			{
 				newObject->SetAttributeColor(Attribute::pink);
@@ -94,11 +95,6 @@ void Stage::Initialize(const std::string& fileName)
 				{
 					newObject->SetColorFlag(false);
 				}
-
-				if(objectData.fileName == "testStage0")
-				{
-					//newObject->SetColor(Vector3(0.78f, 0.78f, 0.78f));
-				}
 			}
 
 			//配列に登録
@@ -129,16 +125,15 @@ void Stage::Initialize(const std::string& fileName)
 			newGoal->Initialize();
 
 			goalPos_ = pos;
-			newGoal->SetAttributeColor(Attribute::Goal);
 
+			//色
+			newGoal->SetAttributeColor(Attribute::Goal);
 			if(newGoal->GetColorFlag() == false)
 			{
 				newGoal->SetColorFlag(true);
 			}
 
 			newGoal->SetColor(Vector3(0.78f, 0.78f, 0.78f));
-
-			//newGoal = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_GOAL);
 
 			//登録
 			goal_ = std::move(newGoal);

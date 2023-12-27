@@ -39,7 +39,6 @@ private:
 	std::vector<std::unique_ptr<HitWall>> walls_;
 	std::unique_ptr<GoalOBJ> goal_;
 
-
 	//ゴール座標
 	Vector3 goalPos_;
 };

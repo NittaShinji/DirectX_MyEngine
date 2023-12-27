@@ -22,7 +22,7 @@ private:
 	//ステージ情報
 	LevelData* levelData_ = nullptr;
 
-	std::string name_;
+	//モデル
 	std::unordered_map<std::string, Model> models_;
 
 	//blender読み込みオブジェクト

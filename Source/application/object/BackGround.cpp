@@ -1,19 +1,14 @@
 #include "BackGround.h"
 #include "ObjectAttribute.h"
 
-BackGround::BackGround()
-{
-}
+BackGround::BackGround(){}
 
-BackGround::~BackGround()
-{
-}
+BackGround::~BackGround(){}
 
 void BackGround::Initialize(const std::string fileName)
 {
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
-	//levelData_ = LevelManager::GetLevelManager()->LoadJSONFile("backGround.json");
 
 	for(auto& objectData : levelData_->objects)
 	{
@@ -43,6 +38,7 @@ void BackGround::Initialize(const std::string fileName)
 			scale = objectData.scaling;
 			newObject->SetScale(scale);
 
+			//属性指定
 			if(objectData.attribute == "Pink")
 			{
 				newObject->SetAttributeColor(Attribute::pink);
@@ -97,11 +93,6 @@ void BackGround::Initialize(const std::string fileName)
 					
 				}
 			}
-			else if(newObject->GetColorFlag() == true)
-			{
-				newObject->SetColorFlag(false);
-			}
-
 			
 			//配列に登録
 			objects_.push_back(std::move(newObject));
