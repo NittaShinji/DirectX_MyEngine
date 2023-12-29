@@ -75,28 +75,24 @@ void BackGround::Initialize(const std::string fileName)
 				}
 				else if(newObject->GetAttributeColor() == Attribute::pink)
 				{
-					const Vector3 pinkBlockColor = { 0.78f, 0.08f, 0.52f };
-					newObject->SetColor(pinkBlockColor);
+					newObject->SetColor(kPinkOBJColor);
 				}
 				else if(newObject->GetAttributeColor() == Attribute::black)
 				{
-					const Vector3 blackBlockColor = { 0.0f, 0.0f, 0.0f };
-					newObject->SetColor(blackBlockColor);
+					newObject->SetColor(kBlackOBJColor);
 				}
 				else
 				{
 					if(newObject->GetAttributeColor() == Attribute::NReverseObj)
 					{
-						const Vector3 nReverseBlockColor = { 0.6f, 0.6f, 0.65f };
-						const float nReverseBlockAlpha = 0.7f;
-						newObject->SetColor(nReverseBlockColor);
-						newObject->SetAlpha(nReverseBlockAlpha);
+						
+						newObject->SetColor(kNormalReverseOBJColor);
+						newObject->SetAlpha(kNormalReverseOBJAlpha);
 					}
 
 					if(newObject->GetAttributeColor() == Attribute::NormalObj)
 					{
-						const Vector3 normalBlockAlpha = { 0.7f, 0.7f, 0.7f };
-						newObject->SetColor(normalBlockAlpha);
+						newObject->SetColor(kNormalOBJColor);
 					}
 				}
 			}

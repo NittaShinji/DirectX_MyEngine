@@ -7,23 +7,39 @@ class GoalOBJ : public TouchableObject
 {
 public:
 
+	/// <summary>
+	/// ゴールオブジェクトを作成
+	/// </summary>
+	/// <param name="fileName">ファイル名</param>
+	/// <param name="coliderAttribute">コライダー属性</param>
+	/// <returns></returns>
 	static std::unique_ptr<GoalOBJ> Create(const std::string& fileName, const unsigned short coliderAttribute);
 
+	/// <summary>
+	/// 他のOBJとの衝突時に呼ばれる関数
+	/// </summary>
+	/// <param name="info">衝突した相手の情報</param>
 	void OnCollision(const CollisionInfo& info) override;
-
+	
+	//初期化
 	void Initialize();
 
-	void Update(Camera* camera, Vector3 goalPos);
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <param name="playerPos">プレイヤー座標</param>
+	void Update(Camera* camera, Vector3 playerPos);
 
+	//描画
 	void Draw() override;
 
-	bool GetIsBreak_() { return isBreak_; }
+	//アクセッサ
 	void SetIsBreak(bool isBreak) { isBreak_ = isBreak; }
-
-	Vector3 GetWallPos() { return transform_; }
-	bool GetIsCheckChangeColor() { return isCheckChangeColor_; }
-	bool GetIsStartGoalStagin() { return isStartGoalStagin_; }
 	void SetIsStartGoalStagin(bool isStartGoalStagin) { isStartGoalStagin_ = isStartGoalStagin; }
+	bool GetIsBreak_() { return isBreak_; }
+	bool GetIsStartGoalStagin() { return isStartGoalStagin_; }
+	Vector3 GetWallPos() { return transform_; }
 
 private:
 
@@ -38,8 +54,6 @@ private:
 
 	//プレイヤーが加速しているか
 	bool isPlayerAccelerating_;
-
-	bool isCheckChangeColor_;
 };
 
 

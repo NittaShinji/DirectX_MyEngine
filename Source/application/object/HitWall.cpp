@@ -3,6 +3,7 @@
 #include "MeshCollider.h"
 #include "CollisionAttribute.h"
 #include "CollisionManager.h"
+#include "ObjectColor.h"
 
 std::unique_ptr<HitWall> HitWall::Create(const std::string& fileName)
 {
@@ -30,7 +31,7 @@ void HitWall::OnCollision(const CollisionInfo& info)
 
 	info.object->GetAttributeColor();
 
-	//球と当たった時
+	//プレイヤー(球)と当たった時
 	if(baseCollider->GetShapeType() == COLLISIONSHAPE_SPHERE)
 	{
 		//プレイヤーが加速している場合
@@ -45,7 +46,7 @@ void HitWall::Initialize()
 {
 	isBreak_ = false;
 	Object3d::SetAttributeColor(Attribute::black);
-	Object3d::SetColor(Vector3(0.78f, 0.78f, 0.78f));
+	Object3d::SetColor(kNormalOBJColor);
 }
 
 void HitWall::Update(Camera* camera, bool isPlayerAccelerating)
