@@ -12,27 +12,39 @@ class Stage : public TouchableObject
 {
 public:
 
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="fileName">ファイル名</param>
 	void Initialize(const std::string& fileName);
 
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="camera">カメラ</param>
+	/// <param name="player">プレイヤー</param>
 	void Update(Camera* camera, Player* player);
 
+	//描画
 	void Draw();
 
+	/// <summary>
+	/// リセット
+	/// </summary>
+	/// <param name="fileName">ファイル名</param>
 	void Reset(const std::string& fileName);
 
-	Vector3 GetGoalPos();
-
+	//破壊された壁情報の座標を渡す関数
 	std::vector<Vector3> GetBreakWallsPos();
 
+	//ゲッター
+	Vector3 GetGoalPos() { return goalPos_; };
 	GoalOBJ* GetGoal() { return goal_.get(); }
 
 private:
 
 	//ステージ情報
 	LevelData* levelData_ = nullptr;
-
-	std::string name_;
-	std::unordered_map<std::string, Model> models_;
 
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<TouchableObject>> objects_;

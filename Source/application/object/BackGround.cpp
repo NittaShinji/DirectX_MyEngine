@@ -1,5 +1,6 @@
 #include "BackGround.h"
 #include "ObjectAttribute.h"
+#include "ObjectColor.h"
 
 BackGround::BackGround(){}
 
@@ -14,6 +15,7 @@ void BackGround::Initialize(const std::string fileName)
 	{
 		//ファイル名から登録済みモデルを検索
 		Model* model = nullptr;
+		std::unordered_map<std::string, Model> models_;
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
 		//モデルを指定して3Dオブジェクトを作成
@@ -64,33 +66,38 @@ void BackGround::Initialize(const std::string fileName)
 			if(newObject->GetColorFlag() == false)
 			{
 				newObject->SetColorFlag(true);
+
 				newObject->SetAlpha(1.0f);
 
 				if(newObject->GetAttributeColor() == Attribute::yellow)
 				{
-					newObject->SetColor(Vector3(1.0f, 0.469f, 0.0f));
+					newObject->SetColor(kYellowOBJColor);
 				}
 				else if(newObject->GetAttributeColor() == Attribute::pink)
 				{
-					newObject->SetColor(Vector3(0.78f, 0.08f, 0.52f));
+					const Vector3 pinkBlockColor = { 0.78f, 0.08f, 0.52f };
+					newObject->SetColor(pinkBlockColor);
 				}
 				else if(newObject->GetAttributeColor() == Attribute::black)
 				{
-					newObject->SetColor(Vector3(0.0f, 0.0f, 0.0f));
+					const Vector3 blackBlockColor = { 0.0f, 0.0f, 0.0f };
+					newObject->SetColor(blackBlockColor);
 				}
 				else
 				{
 					if(newObject->GetAttributeColor() == Attribute::NReverseObj)
 					{
-						newObject->SetColor(Vector3(0.6f, 0.6f, 0.65f));
-						newObject->SetAlpha(0.7f);
+						const Vector3 nReverseBlockColor = { 0.6f, 0.6f, 0.65f };
+						const float nReverseBlockAlpha = 0.7f;
+						newObject->SetColor(nReverseBlockColor);
+						newObject->SetAlpha(nReverseBlockAlpha);
 					}
 
 					if(newObject->GetAttributeColor() == Attribute::NormalObj)
 					{
-						newObject->SetColor(Vector3(0.7f, 0.7f, 0.7f));
+						const Vector3 normalBlockAlpha = { 0.7f, 0.7f, 0.7f };
+						newObject->SetColor(normalBlockAlpha);
 					}
-					
 				}
 			}
 			
@@ -98,7 +105,6 @@ void BackGround::Initialize(const std::string fileName)
 			objects_.push_back(std::move(newObject));
 		}
 	}
-
 }
 
 void BackGround::Update(Camera* camera)

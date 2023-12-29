@@ -12,5 +12,4 @@ enum Attribute
 	Goal,		//ゴール
 	NormalObj,   //当たり判定のない普通のオブジェクト
 	NReverseObj, //当たり判定のないオブジェクトを反転したもの
-
 };

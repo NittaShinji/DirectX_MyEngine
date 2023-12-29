@@ -380,9 +380,11 @@ void Object3d::Update(Camera* camera)
 	constBuffMaterial_->SetName(L"constBuffMaterial");
 	assert(SUCCEEDED(result));
 
+	//色を
 	if(colorFlag_ == false)
 	{
-		color_ = { 1,1,1 };
+		const Vector3 defaultColor = { 1.0f,1.0f,1.0f };
+		color_ = defaultColor;
 	}
 
 	SetAmbient(color_);

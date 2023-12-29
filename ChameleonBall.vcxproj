@@ -163,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="Source\application\object\GoalOBJ.h" />
     <ClInclude Include="Source\application\GameTimer.h" />
+    <ClInclude Include="Source\application\object\ObjectColor.h" />
     <ClInclude Include="Source\application\particle\HitParticle2D.h" />
     <ClInclude Include="Source\application\particle\BreakParticle.h" />
     <ClInclude Include="Source\application\particle\SecondJump2DParticle.h" />

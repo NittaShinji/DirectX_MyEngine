@@ -14,6 +14,7 @@ void Stage::Initialize(const std::string& fileName)
 	{
 		//ファイル名から登録済みモデルを検索
 		Model* model = nullptr;
+		std::unordered_map<std::string, Model> models_;
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
 		//モデルを指定して3Dオブジェクトを作成
@@ -164,7 +165,6 @@ void Stage::Initialize(const std::string& fileName)
 
 			//配列に登録
 			walls_.push_back(std::move(newWall));
-
 		}
 	}
 }
@@ -219,6 +219,7 @@ void Stage::Reset(const std::string& fileName)
 	{
 		//ファイル名から登録済みモデルを検索
 		Model* model = nullptr;
+		std::unordered_map<std::string, Model> models_;
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
 
@@ -250,11 +251,6 @@ void Stage::Reset(const std::string& fileName)
 			walls_.push_back(std::move(newWall));
 		}
 	}
-}
-
-Vector3 Stage::GetGoalPos()
-{
-	return goalPos_;
 }
 
 std::vector<Vector3> Stage::GetBreakWallsPos()

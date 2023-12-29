@@ -3,6 +3,7 @@
 #include "MeshCollider.h"
 #include "CollisionAttribute.h"
 #include "CollisionManager.h"
+#include "ObjectColor.h"
 
 std::unique_ptr<GoalOBJ> GoalOBJ::Create(const std::string& fileName, const unsigned short coliderAttribute)
 {
@@ -34,11 +35,6 @@ void GoalOBJ::OnCollision(const CollisionInfo& info)
 	if(baseCollider->GetShapeType() == COLLISIONSHAPE_SPHERE)
 	{
 		isBreak_ = true;
-		////プレイヤーが加速している場合
-		//if(isPlayerAccelerating_ == true)
-		//{
-		//	
-		//}
 	}
 }
 
@@ -47,7 +43,7 @@ void GoalOBJ::Initialize()
 	isStartGoalStagin_ = false;
 	isBreak_ = false;
 	Object3d::SetAttributeColor(Attribute::Goal);
-	Object3d::SetColor(Vector3(0.78f, 0.78f, 0.78f));
+	Object3d::SetColor(kNormalOBJColor);
 }
 
 void GoalOBJ::Update(Camera* camera, Vector3 playerPos)
