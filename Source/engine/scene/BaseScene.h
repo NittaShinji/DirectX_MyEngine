@@ -11,6 +11,7 @@ class BaseScene
 {
 public:
 
+	//静的初期化
 	static void StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGuiManager);
 
 	//初期化

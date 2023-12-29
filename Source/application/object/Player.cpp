@@ -913,7 +913,7 @@ void Player::JumpRotation()
 		if(scale_.x == 1.0f && scale_.y == 1.0f && scale_.z == 1.0f)
 		{
 			float angle = ToRadian(360.0f);
-			rotation_.x -= PlayEaseIn(0.0f, angle, rotateXTimer_, kRotateXTime_);
+			rotation_.x -= PlayEaseInCubic(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
 			if(rotateXTimer_ >= 0)
 			{

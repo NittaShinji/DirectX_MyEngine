@@ -33,6 +33,7 @@ public:
 	//初期化
 	void Initialize(DirectXBasic* directXBasic);
 
+	//インスタンスを取得
 	static SpriteCommon* GetInstance()
 	{
 		static SpriteCommon spriteCommon;
@@ -84,26 +85,11 @@ private:
 	//グラフィックスパイプライン
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
 
-	////シェーダーリソース用のデスクリプタヒープ
-	//static ComPtr<ID3D12DescriptorHeap> srvHeap_;
-
-	////SRVの最大個数
-	//static const size_t kMaxSRVCount_ = 2056;
-
-	////テクスチャバッファ
-	//static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
-
-	////デフォルトテクスチャ格納ディレクトリ
-	//static std::string kDefaultTextureDirectoryPath_;
-
-	////テクスチャ番号
-	//static uint32_t sTextureIndex_;
-	////画像に結び付いたテクスチャ番号格納用map
-	//static std::map<const std::string, uint32_t, std::less<>> textureMap_;
-
 private:
 
+	//コンストラクタ
 	SpriteCommon();
+	//デストラクタ
 	~SpriteCommon();
 
 public:
@@ -116,9 +102,10 @@ public:
 public:
 
 	//ゲッター
+	//DirextXBasicのポインタを渡す
 	DirectXBasic* GetDirectXBasic() const { return directXBasic_; };
-	//ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
-	//const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
+	//パイプラインステートを取得
 	ComPtr<ID3D12PipelineState> GetPipelineState() { return pipelineState_; };
+	//ルートシグネチャを取得
 	ComPtr<ID3D12RootSignature> GetRootSignature_() { return rootSignature_; };
 };

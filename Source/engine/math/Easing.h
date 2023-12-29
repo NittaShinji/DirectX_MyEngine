@@ -17,24 +17,37 @@ typedef struct EasingInfo
 	
 } EasingInfo;
 
-float PlayEaseIn(EasingInfo easingInfo);
-float PlayEaseIn(float startPos, float endDistance, float time, float totalTime);
-float easeInCubic(float x);
 
-float PlayEaseOutSine(EasingInfo easingInfo);
+//イーズインキュービック
+float EaseInCubic(float x);
+//指定の範囲でイーズインキュービックを行う
+float PlayEaseInCubic(EasingInfo easingInfo);
+float PlayEaseInCubic(float startPos, float endDistance, float time, float totalTime);
+
+//イーズアウトシャイン
 float EaseOutSine(float x);
+//指定の範囲でイーズアウトシャインを行う
+float PlayEaseOutSine(EasingInfo easingInfo);
 
+//イーズアウトクイント
+float EaseOutQuint(float x);
+//指定の範囲でイーズアウトクイントを行う
 float PlayEaseOutQuint(EasingInfo easingInfo);
 float PlayEaseOutQuint(float startPos, float endDistance, float time, float totalTime);
-float easeOutQuint(float x);
 
-float PlayEaseOutCubic(EasingInfo easingInfo);
+//イーズアウトキュービック
 float EaseOutCubic(float x);
+//指定の範囲でイーズアウトキュービックを行う
+float PlayEaseOutCubic(EasingInfo easingInfo);
 
-float PlayEaseOutBack(EasingInfo easingInfo);
+//イーズアウトバック
 float EaseOutBack(float x);
+//指定の範囲でイーズアウトバックを行う
+float PlayEaseOutBack(EasingInfo easingInfo);
 
+//イーズアウトバウンス
+float EaseOutBouce(float x);
+//指定の範囲でイーズアウトバウンスを行う
 float PlayEaseOutBouce(float startPos, float endDistance, float time, float totalTime);
-float easeOutBouce(float x);
 
 

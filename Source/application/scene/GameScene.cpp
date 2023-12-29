@@ -533,7 +533,7 @@ void GameScene::SceneAnimation()
 
 	//変化量
 	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
-	sceneAnimationVec_.y += easeOutQuint(x);
+	sceneAnimationVec_.y += EaseOutQuint(x);
 
 	//画像を動かす処理
 	sceneTransitionUp_->MovePos(-sceneAnimationVec_);

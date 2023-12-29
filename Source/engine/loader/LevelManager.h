@@ -15,6 +15,7 @@
 #include "json.hpp"
 #pragma warning(pop)
 
+//レベルデータ
 struct LevelData
 {
 	//オブジェクト
@@ -45,20 +46,24 @@ public:
 	//再帰関数
 	void Return(nlohmann::json& deserialized, LevelData* levelData);
 
-	LevelData GetLevelData() { return levelData_; };
-
+	//静的インスタンスを取得
 	static LevelManager* GetLevelManager()
 	{
 		static LevelManager levelManager;
 		return &levelManager;
 	};
 
+	//アクセッサ
+	LevelData GetLevelData() { return levelData_; };
 
 private:
 
+	//コンストラクタ
 	LevelManager() {};
+	//デストラクタ
 	~LevelManager() {};
 
+	//レベルデータ
 	LevelData levelData_;
 };
 

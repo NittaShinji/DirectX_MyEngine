@@ -33,7 +33,7 @@ public:
 	/// </summary>
 	void ClearDepthBuffer();
 
-private:
+private: //メンバ関数
 
 	//FPS固定初期化
 	void InitializeFixFPS();
@@ -41,19 +41,40 @@ private:
 	//FPS固定更新
 	void UpdateFixFPS();
 
+	//初期化関数
+	//デバイスを初期化
+	void InitializeDevice();
+	//コマンドを初期化
+	void InitializeCommand();
+	//スワップチェインを初期化
+	void InitializeSwapChain();
+	//レンダーターゲットビューの初期化
+	void InitializeTargetView();
+	//デプスバッファの初期化
+	void InitializeDepthBuffer();
+	//フェンスの初期化
+	void InitializeFence();
+
+private: //メンバ変数
+
 	std::chrono::steady_clock::time_point reference_;
 
 	WindowsAPI* winApi_ = nullptr;
 
+	//デバイス
 	ComPtr<ID3D12Device> device_ = nullptr;
 	ComPtr<IDXGIFactory7> dxgiFactory_ = nullptr;
+	//スワップチェーン
 	ComPtr<IDXGISwapChain4> swapChain_ = nullptr;
+	//コマンドアロケーター
 	ComPtr<ID3D12CommandAllocator> commandAllocator_ = nullptr;
+	//コマンドキュー
 	ComPtr<ID3D12CommandQueue> commandQueue_ = nullptr;
 	ComPtr<ID3D12DescriptorHeap> rtvHeap_ = nullptr;
+	//コマンドリスト
 	ComPtr<ID3D12GraphicsCommandList> commandList_ = nullptr;
+	//デプスバッファ
 	ComPtr<ID3D12Resource> depthBuff_;
-
 	//フェンス
 	ComPtr<ID3D12Fence> fence_;
 	UINT64 fenceVal_ = 0;
@@ -62,33 +83,28 @@ private:
 	ComPtr<ID3D12DescriptorHeap> dsvHeap_;
 	D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc_{};
 	DXGI_SWAP_CHAIN_DESC1 swapChainDesc_{};
-
+	//バックバッファ
 	std::vector<ComPtr<ID3D12Resource>> backBuffers_;
-
 	//リソースバリア
 	D3D12_RESOURCE_BARRIER barrierDesc_{};
 
-	//初期化関数
-	void InitializeDevice();
-	void InitializeCommand();
-	void InitializeSwapChain();
-	void InitializeTargetView();
-	void InitializeDepthBuffer();
-	void InitializeFence();
-
+	
 public:	//アクセッサ
 
+	//コマンドリストを取得
 	ComPtr<ID3D12GraphicsCommandList> GetCommandList() const { return commandList_; };
-
+	//デプスバッファを取得
 	ComPtr<ID3D12Resource> GetDepthBuff() const { return depthBuff_; };
-
+	//デバイスを取得
 	ComPtr<ID3D12Device> GetDevice() const { return device_; };
-
+	//バックバッファのサイズを取得
 	int32_t GetBackBuffersCount() const { return static_cast<int32_t>(backBuffers_.size()); };
-
+	//ウインドウの横幅を取得
 	int32_t GetWinWidth() const { return winApi_->GetWinWidth(); }
+	//ウインドウの縦幅を取得
 	int32_t GetWinHeight() const { return winApi_->GetWinHeight(); }
-
+	//コマンドキューを取得
 	ComPtr<ID3D12CommandQueue> GetCommandQueue() { return commandQueue_; }
+	//フェンスを取得
 	ComPtr<ID3D12Fence> GetFence() { return fence_; }
 };

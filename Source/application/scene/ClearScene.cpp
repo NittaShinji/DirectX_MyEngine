@@ -80,7 +80,7 @@ void ClearScene::Update()
 	if(rotate_ <= ToRadian(kOneRotationAngle) && isRotateSprite_ == false)
 	{
 		float angle = ToRadian(kOneRotationAngle);
-		rotate_ -= PlayEaseIn(0.0f, angle, rotateTimer_, kRotateTime_);
+		rotate_ -= PlayEaseInCubic(0.0f, angle, rotateTimer_, kRotateTime_);
 	}
 
 	if(rotateTimer_ >= 0)

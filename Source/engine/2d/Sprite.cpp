@@ -86,7 +86,6 @@ void Sprite::Initialize(const std::string fileName,Vector2 position)
 
 	scale_ = { 1.0f,1.0f,1.0f };
 	rotation_ = { 0.0f };
-	moveSpeed_ = { 0.0f,0.0f };
 	anchorPoint_ = { 0.0f,0.0f };
 	color_ = { 1.0f,1.0f,1.0f,1.0f };
 
@@ -270,10 +269,6 @@ void Sprite::matUpdate()
 	constMapMaterial_->color = color_;
 
 	constBuffMaterial_->Unmap(0, nullptr);
-
-
-	moveSpeed_.x = 0.0f;
-	moveSpeed_.y = 0.0f;
 }
 
 void Sprite::Draw(const std::string& fileName)

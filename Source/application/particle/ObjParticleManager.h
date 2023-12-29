@@ -51,7 +51,7 @@ public: // メンバ関数
 	void ParticleRemove();
 
 private: // 定数
-	//static const int division = 50;					// 分割数
+	//static const int division = 50;			// 分割数
 	//static const float radius;				// 底面の半径
 	//static const float prizmHeight;			// 柱の高さ
 	//static const int planeCount = division * 2 + division * 2;		// 面の数

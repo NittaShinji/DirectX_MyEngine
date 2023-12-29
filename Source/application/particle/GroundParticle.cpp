@@ -270,15 +270,15 @@ void GroundParticle::Update(Camera* camera)
 			//実際に数値を代入
 			if(redEasing_.time > 0.0f)
 			{
-				endColor_.x = PlayEaseIn(redEasing_);
+				endColor_.x = PlayEaseInCubic(redEasing_);
 			}
 			if(greenEasing_.time > 0.0f)
 			{
-				endColor_.y = PlayEaseIn(greenEasing_);
+				endColor_.y = PlayEaseInCubic(greenEasing_);
 			}
 			if(blueEasing_.time > 0.0f)
 			{
-				endColor_.z = PlayEaseIn(blueEasing_);
+				endColor_.z = PlayEaseInCubic(blueEasing_);
 			}
 		}
 	}

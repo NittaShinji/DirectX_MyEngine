@@ -55,27 +55,19 @@ public:
 
 public: //メンバ関数
 
+	//コンストラクタ
 	Sound();
+	//デストラクタ
 	~Sound();
 
+	//静的インスタンスを返す
 	static Sound* GetInstance()
 	{
 		static Sound instance;
 		return &instance;
 	}
 
-	/// <sumary>
-	/// WAV音声読み込み
-	/// </sumary>
-	/// <param name="filename">WAVファイル名</param>
-	//void LoadSoundWave(const std::string& fileName);
-
-	//音声データ解放
-	//void UnloadSound(SoundData* soundData);
-
-	//終了処理
-	//void Finalize();
-
+	//初期化
 	void Initialize(const std::string& fileName);
 
 	//音声再生
@@ -97,7 +89,5 @@ private:
 
 	//サウンドデータ
 	SoundData soundData_;
-	//サウンドデータマップ
-	//std::map<std::string, Sound::SoundData> soundDataMap_;
 };
 

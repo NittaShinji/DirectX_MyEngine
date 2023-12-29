@@ -9,7 +9,9 @@ private:
 	//エイリアステンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
+	//コンストラクタ
 	SoundManager();
+	//デストラクタ
 	~SoundManager();
 
 public:
@@ -30,12 +32,14 @@ public:
 
 public:
 
+	//静的インスタンスを取得
 	static SoundManager* GetInstance()
 	{
 		static SoundManager instance;
 		return &instance;
 	}
 
+	//初期化
 	void Initialize();
 
 	/// <sumary>
@@ -60,16 +64,28 @@ private:
 	//サウンドデータコンテナ
 	std::map<std::string, Sound::SoundData> soundDatas_;
 
-	////サウンド
-	//std::unique_ptr<SoundData> sound_;
+	//サウンド
 	//再生中のサウンドデータコンテナ
 	std::map<char, Voice> voices_;
 
-public:
+public: //アクセッサ
 
+	/// <summary>
+	/// サウンドデータを取得
+	/// </summary>
+	/// <param name="fileName">ファイル名</param>
+	/// <returns>サウンドデータ</returns>
 	Sound::SoundData& GetSoundData(std::string fileName);
+
+	/// <summary>
+	/// サウンドデータマップを取得
+	/// </summary>
+	/// <returns>サウンドデータマップ</returns>
 	std::map<std::string, Sound::SoundData> GetSoundDataMap() { return soundDatas_; }
 
+	/// <summary>
+	/// //XAudio2のインスタンスを取得
+	/// </summary>
+	/// <returns></returns>
 	ComPtr<IXAudio2> GetXAudio2() { return xAudio2_.Get(); };
-
 };

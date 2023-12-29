@@ -28,9 +28,19 @@ public:
 		bool RT;
 	} PadButton;
 
+public:
+
+	/// <summary>
+	/// 初期化
+	/// </summary>
+	/// <param name="padNum">コントローラー番号</param>
 	void Initialzie(UINT padNum);
 
-	//更新
+	/// <summary>
+	/// 更新
+	/// </summary>
+	/// <param name="padNum">コントローラー番号</param>
+	/// <returns>接続できたかどうか</returns>
 	bool IsConnected(UINT padNum);
 
 	//デッドゾーンの設定
@@ -39,12 +49,10 @@ public:
 	//振動の設定
 	void SetVibration();
 
-	XINPUT_STATE GetState() { return state_; }
-	WORD GetButton() { return state_.Gamepad.wButtons; };
-
+	//1フレーム前のボタン情報の保存
 	void SaveOldButton();
 
-	//各ボタンの判定
+	//各ボタンの判定を返す関数
 	bool GetButtonA() { return padButton_.A; };
 	bool GetButtonB() { return padButton_.B; }
 	bool GetButtonX() { return padButton_.X; }
@@ -73,19 +81,23 @@ public:
 	//離している
 	void ReleaseButtonMoment();
 
-	PadButton GetPadButton() { return padButton_; }
-
 private:
-
-	bool availability[XUSER_MAX_COUNT];
-	XINPUT_STATE state_;
-	XINPUT_STATE oldState_;
 
 	//コントローラの番号
 	UINT padNum_;
 
+	//コントローラーの状態
+	XINPUT_STATE state_;
+	XINPUT_STATE oldState_;
+
 	//各ボタンの構造体
 	PadButton padButton_;
 
+public:
+
+	//アクセッサ
+	PadButton GetPadButton() { return padButton_; }
+	XINPUT_STATE GetState() { return state_; }
+	WORD GetButton() { return state_.Gamepad.wButtons; };
 };
 

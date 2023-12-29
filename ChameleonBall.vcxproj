@@ -103,7 +103,6 @@
     <ClCompile Include="Source\application\particle\SecondJump2DParticle.cpp" />
     <ClCompile Include="Source\application\GameSpeed.cpp" />
     <ClCompile Include="Source\engine\2d\TextureConverter.cpp" />
-    <ClCompile Include="Source\engine\collision\QueryCallback.cpp" />
     <ClCompile Include="Source\application\particle\DeadParticle.cpp" />
     <ClCompile Include="Source\application\particle\LandParticle.cpp" />
     <ClCompile Include="Source\application\particle\BlockParticle.cpp" />

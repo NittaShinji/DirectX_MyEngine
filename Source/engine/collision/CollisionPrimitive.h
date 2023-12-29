@@ -8,13 +8,18 @@
 struct Sphere
 {
 	//中心座標
-	Vector3 center = { 0,0,0 };
-	float upVec = 1.0f;
+	const Vector3 kDefaultCenter = { 0.0f,0.0f,0.0f };
+	Vector3 center = kDefaultCenter;
+
+	const float kDefaultUpVec = 1.0f;
+	float upVec = kDefaultUpVec;
 
 	//半径
-	float SphereRadius = 1.0f;
+	const float kDefaultSphereRadius = 1.0f;
+	float sphereRadius = kDefaultSphereRadius;
 
-	Vector3 pos = { 0,0,0 };
+	const Vector3 kDefaultPos = { 0.0f,0.0f,0.0f};
+	Vector3 pos = kDefaultPos;
 };
 
 ///<summary>
@@ -23,12 +28,18 @@ struct Sphere
 struct Plane
 {
 	//法線ベクトル
-	Vector3 normal = { 0,1,0 };
-	float upVec = 0.0f;
+	const Vector3 kDefaultNormal = { 0.0f,1.0f,0.0f };
+	Vector3 normal = kDefaultNormal;
+
+	const float kDefaultUpVec = 0.0f;
+	float upVec = kDefaultUpVec;
 
 	//原点(0,0,0)からの距離
-	float distance = 0.0f;
-	Vector3 pos = { 0,0,0 };
+	const float kDefaultDistance = 0.0f;
+	float distance = kDefaultDistance;
+
+	const Vector3 kDefaultPos = { 0.0f,0.0f,0.0f };
+	Vector3 pos = kDefaultPos;
 };
 
 ///<summary>
@@ -37,12 +48,18 @@ struct Plane
 struct Ray
 {
 	//始点座標
-	Vector3 start = { 0,0,0 };
-	float upVec = 0.0f;
+	const Vector3 kDefaultStart = { 0.0f,0.0f,0.0f };
+	Vector3 start = kDefaultStart;
+
+	const float kDefaultUpVec = 0.0f;
+	float upVec = kDefaultUpVec;
 
 	//方向(単位ベクトル)
-	Vector3 dir = { 1,0,0 };
-	float dirUpVec = 0.0f;
+	const Vector3 kDefaultDir = { 1.0f,0.0f,0.0f };
+	Vector3 dir = kDefaultDir;
+
+	const float kDefaultDirUpVec = 0.0f;
+	float dirUpVec = kDefaultDirUpVec;
 };
 
 /// <summary>
@@ -52,6 +69,9 @@ class  Triangle
 {
 public:
 
+	/// <summary>
+	/// 法線の計算
+	/// </summary>
 	void ComputeNormal();
 
 public:

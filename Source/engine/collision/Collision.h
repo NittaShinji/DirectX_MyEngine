@@ -19,7 +19,6 @@ public:
 	/// <param name = "closest">最近接点(出力用)</param>
 	static void ClosetPtPoint2Triangle(const Vector3& point, const Triangle& triangle, Vector3* closest);
 
-
 	/// <summary>
 	/// 球と法線付き三角形の当たりチェック
 	/// </summary>
@@ -29,7 +28,6 @@ public:
 	/// <returns>交差しているか否か</returns>
 	static bool CheckSphere2Triangle(const Sphere& sphere, const Triangle& triangle, Vector3* inter = nullptr, Vector3* reject = nullptr);
 
-
 	/// <summary>
 	/// 球と球の当たり判定
 	/// </summary>
@@ -38,8 +36,6 @@ public:
 	/// <returns>交差しているか否か</returns>
 	//static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB);
 	static bool CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB,Vector3* reject = nullptr);
-
-
 
 	/// <summary>
 	/// レイと平面の当たり判定
@@ -61,7 +57,6 @@ public:
 	/// <returns>交差しているか否か</returns>
 	static bool CheckRay2Triangle(const Ray& ray, const Triangle& triangle,
 		float* distance = nullptr, Vector3* inter = nullptr);
-
 
 	/// <summary>
 	/// レイと球の当たり判定

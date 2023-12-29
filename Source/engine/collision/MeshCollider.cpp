@@ -60,7 +60,7 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter, Ve
 	Sphere localSphere;
 	localSphere.center = Vector3Transform(sphere.center, invMatWorld_)
 		;
-	localSphere.SphereRadius *= invMatWorld_.m[0][0];
+	localSphere.sphereRadius *= invMatWorld_.m[0][0];
 
 
 	//ローカル座標系で交差をチェック
@@ -89,13 +89,10 @@ bool MeshCollider::CheckCollisionSphere(const Sphere& sphere, Vector3* inter, Ve
 		}
 	}
 
-
-
 	return false;
 }
 
 bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* inter)
-
 {
 	//オブジェクトのローカル座標系でのレイを得る
 	Ray localRay;
@@ -134,7 +131,6 @@ bool MeshCollider::CheckCollisionRay(const Ray& ray, float* distance, Vector3* i
 
 			return true;
 		}
-
 	}
 
 	return false;

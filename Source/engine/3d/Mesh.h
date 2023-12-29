@@ -24,6 +24,7 @@ public:
 
 public:
 
+	//静的初期化
 	static void StaticInitialize(DirectXBasic* directXbasic);
 
 	//頂点情報をセット
@@ -32,6 +33,9 @@ public:
 	//頂点インデックスをセット
 	void SetIndices(const unsigned short& index);
 
+	/// <summary>
+	/// 頂点・インデックスバッファを作成
+	/// </summary>
 	void CrateBuffer();
 
 	/// <summary>
@@ -74,6 +78,5 @@ private:
 	std::vector<Vertex> vertices_;
 	//頂点インデックス配列
 	std::vector<unsigned short> indices_;
-
 };
 

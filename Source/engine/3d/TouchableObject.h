@@ -24,12 +24,15 @@ public:
 	//コライダーの追加
 	void AddCollider(Model* model);
 
+	//コライダーの更新
 	void ColliderUpdate();
 
+	//描画
 	void Draw() override;
 
 private:
 
+	//メッシュコライダー
 	std::unique_ptr<MeshCollider> objMeshCollider_;
 };
 

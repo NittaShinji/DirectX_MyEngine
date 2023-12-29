@@ -122,7 +122,7 @@ void TitleScene::Update()
 	if(isChangeScene_ == false)
 	{
 		float angle = ToRadian(360.0f);
-		sphereRotate.y -= PlayEaseIn(0.0f, angle, rotateTimer_, kRotateTime_);
+		sphereRotate.y -= PlayEaseInCubic(0.0f, angle, rotateTimer_, kRotateTime_);
 		titleSphere_->SetRotation(sphereRotate);
 	}
 
@@ -153,7 +153,7 @@ void TitleScene::Update()
 
 	if(isJump_ == true && sceneAnimeTimer_ == 0)
 	{
-		spherPos_.y += PlayEaseIn(0.0, 1.0, moveTimer_, kActionTime_);
+		spherPos_.y += PlayEaseInCubic(0.0, 1.0, moveTimer_, kActionTime_);
 		titleSphere_->SetTransform(spherPos_);
 	}
 
@@ -171,7 +171,7 @@ void TitleScene::Update()
 	{
 		if(spherPos_.y >= 5.0f)
 		{
-			spherPos_.y -= easeInCubic(0.75f);
+			spherPos_.y -= EaseInCubic(0.75f);
 		}
 		titleSphere_->SetTransform(spherPos_);
 	}
@@ -291,7 +291,7 @@ void TitleScene::SceneAnimation()
 
 	//変化量
 	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
-	animationMoveVec2.y += easeOutQuint(x);
+	animationMoveVec2.y += EaseOutQuint(x);
 
 	//画像を動かす処理
 	titleSprite_->MovePos(animationMoveVec2);

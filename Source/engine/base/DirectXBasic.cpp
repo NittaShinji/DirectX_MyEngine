@@ -346,7 +346,6 @@ void DirectXBasic::InitializeTargetView()
 	// スワップチェーンの全てのバッファについて処理する
 	for(size_t i = 0; i < backBuffers_.size(); i++)
 	{
-
 		// スワップチェーンからバッファを取得
 		swapChain_->GetBuffer((UINT)i, IID_PPV_ARGS(&backBuffers_[i]));
 		// デスクリプタヒープのハンドルを取得

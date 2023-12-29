@@ -16,7 +16,8 @@ private: //エイリアス
 
 	//テンプレート
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-public:
+
+public: //構造体
 
 	//定数バッファ用データ構造体(座標系)b0
 	struct ConstBufferDateTransform
@@ -47,7 +48,7 @@ public:
 		Vector2 uv;		// uv座標
 	};
 
-public:
+public: //メンバ関数
 
 	/// <summary>
 	/// コンストラクタ
@@ -59,15 +60,24 @@ public:
 	/// </summary>
 	virtual ~Object3d();
 
+	//静的インスタンスを作成
 	static std::unique_ptr<Object3d> Create(const std::string& path);
-
+	//静的初期化
 	static void StaticInitialize(DirectXBasic* directXBasic);
-	virtual void Initialize();
-	virtual void Update(Camera* camera);
-	static void BeforeDraw();
 
-	void AfterDraw();
+	//初期化
+	virtual void Initialize();
+	//更新
+	virtual void Update(Camera* camera);
+	//描画前処理
+	static void BeforeDraw();
+	//描画
 	virtual void Draw();
+
+	/// <summary>
+	/// モデルをセット
+	/// </summary>
+	/// <param name="path">ファイルパス</param>
 	void SetModel(const std::string& path);
 
 	/// <summary>
@@ -76,6 +86,10 @@ public:
 	/// <param name="info">衝突情報</param>
 	virtual void OnCollision(const CollisionInfo& info);
 
+	/// <summary>
+	/// オブジェクトを移動させる関数
+	/// </summary>
+	/// <param name="moveVec">移動量</param>
 	void MovePos(Vector3 moveVec);
 
 	//行列の更新
@@ -109,6 +123,7 @@ protected:	//メンバ変数
 	//平行移動
 	Vector3 transform_;
 
+	//スケール、回転、平行移動変換行列
 	Matrix4 matScale_, matRot_, matTrans_;
 
 	//ワールド変換行列
@@ -123,14 +138,14 @@ protected:	//メンバ変数
 	//カメラ座標
 	Vector3 cameraPos_;
 
-	//親オブジェクトのポインタ
-
 	ID3DBlob* vsBlob_ = nullptr; // 頂点シェーダオブジェクト
 	ID3DBlob* psBlob_ = nullptr; // ピクセルシェーダオブジェクト
 	ID3DBlob* gsBlob_ = nullptr;	//ジオメトリシェーダーオブジェクト
 	ID3DBlob* errorBlob_ = nullptr; // エラーオブジェクト
 
+	//パイプラインステート
 	static Microsoft::WRL::ComPtr<ID3D12PipelineState> pipelineState_;
+	//ルートシグネチャ
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
 
 	//グラフィックスパイプライン
@@ -145,18 +160,24 @@ protected:	//メンバ変数
 	//デフォルトテクスチャ格納ディレクトリ
 	static std::string kDefaultTextureDirectoryPath_;
 
-	bool colorFlag_ = false;
-	bool alphaFlag_ = false;
-
+	//レンダーテクスチャの数
 	static const UINT kRenderTexNum = 2;
 
-	Vector3 color_ = { 1,1,1 };
-	float alpha_ = 1.0f;
+	//色変えフラグ
+	bool colorFlag_ = false;
+	//透明フラグ
+	bool alphaFlag_ = false;
 
+	//色
+	const Vector3 kDefaultColor_ = { 1.0f,1.0f,1.0f };
+	Vector3 color_ = kDefaultColor_;
+	//透明度
+	const float kDefaultAlpha_ = 1.0f;
+	float alpha_ = kDefaultAlpha_;
 	//属性
 	int32_t attributeColor_;
 
-public:
+public: //アクセッサ
 
 	//ゲッター
 	ConstBufferDateTransform* GetConstMapTransform() { return constMapTransform_; };
@@ -170,25 +191,38 @@ public:
 
 	//モデルを取得
 	Model* GetModel() { return &model_; }
+	//色変えフラグを取得
 	bool GetColorFlag() { return colorFlag_; }
+	//属性を取得
 	int32_t GetAttributeColor() { return attributeColor_; }
+	//平行移動を取得
 	Vector3 GetTransform() { return transform_; }
 	
+	//平行移動をセット
 	void SetTransform(const Vector3& pos) { transform_ = pos; };
+	//回転角をセット
 	void SetRotation(const Vector3& rotate) { rotation_ = rotate; };
+	//スケールをセット
 	void SetScale(const Vector3& scale) { scale_ = scale; }
 
+	//平行移動行列をセット
 	void SetMatTrans(const Matrix4& matTrans) { matTrans_ = matTrans; }
+	//回転行列をセット
 	void SetMatRot(const Matrix4& matRot) { matRot_ = matRot; }
+	//スケール行列をセット
 	void SetMatScale(const Matrix4& matScale) { matScale_ = matScale; }
-
+	//色変えフラグをセット
 	void SetColorFlag(bool colorFlag) { colorFlag_ = colorFlag; }
+	//色をセット
 	void SetColor(Vector3 color) { color_ = color; }
+	//アンビエントカラーをセット
 	void SetAmbient(Vector3 color);
+	//属性色をセット
 	void SetAttributeColor(int32_t attribute) { attributeColor_ = attribute; }
-	void SetAlpha(float alpha) { alpha_ = alpha; }
+	//透明フラグをセット
 	void SetAlphaFlag(bool alphaFlag) { alphaFlag_ = alphaFlag; }
-
+	//透明度をセット
+	void SetAlpha(float alpha) { alpha_ = alpha; }
 
 	/// <summary>
 	/// コライダーのセット
@@ -202,8 +236,9 @@ public:
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
 
 
-public: //静的メンバ関数
+public: //アクセッサ(静的メンバ関数)
 
+	//ライトグループをセット
 	static void SetLightGroup(LightGroup* lightGroup) { Object3d::lightGroup_ = lightGroup; }
 
 };

@@ -7,16 +7,21 @@ class SceneManager final
 
 public: //メンバ関数
 
+	/// <summary>
+	/// シングルトンインスタンスの取得
+	/// </summary>
+	/// <returns>シングルトンインスタンス</returns>
 	static SceneManager* GetInstance()
 	{
 		static SceneManager instance;
 		return &instance;
 	}
 
+	//初期化
 	void Initialize();
-
+	//更新
 	void Update();
-
+	//描画
 	void Draw();
 
 	/// <summary>
@@ -30,7 +35,9 @@ public: //メンバ関数
 
 private:
 
+	//コンストラクタ
 	SceneManager();
+	//デストラクタ
 	~SceneManager();
 	//コピーコンストラクタの無効
 	SceneManager(const SceneManager& sceneManager) = delete;
@@ -39,11 +46,9 @@ private:
 
 	//シーンファクトリー
 	std::unique_ptr<AbstractSceneFactory> sceneFactory_ = nullptr;
-
 	//次のシーン
 	std::unique_ptr<BaseScene> nextScene_ = nullptr;
 	//今のシーン(実行中シーン)
 	std::unique_ptr<BaseScene> scene_ = nullptr;
-
 };
 

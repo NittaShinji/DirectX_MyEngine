@@ -462,8 +462,6 @@ void Object3d::BeforeDraw()
 	directXBasic_->GetCommandList()->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 }
 
-void Object3d::AfterDraw() {}
-
 Vector3 Object3d::GetWorldPos() const
 {
 	Vector3 resutVec = { 0,0,0 };

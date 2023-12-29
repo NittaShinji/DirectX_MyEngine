@@ -9,18 +9,10 @@ void BaseScene::StaticInitialize(DirectXBasic* directXBasic, ImGuiManager* imGui
 	imGuiManager_ = imGuiManager;
 }
 
-void BaseScene::Initialize()
-{
-}
+void BaseScene::Initialize(){}
 
-void BaseScene::Update()
-{
-}
+void BaseScene::Update(){}
 
-void BaseScene::Finalize()
-{
-}
+void BaseScene::Finalize(){}
 
-void BaseScene::Draw()
-{
-}
+void BaseScene::Draw(){}

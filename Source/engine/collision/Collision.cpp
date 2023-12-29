@@ -16,7 +16,7 @@ bool Collision::CheckSphere2Plane(const Sphere& sphere, const Plane& plane, Vect
 	float dist = distV.x - plane.distance;
 
 	//距離の絶対値が半径より大きければ当たってない
-	if(fabsf(dist) > sphere.SphereRadius)
+	if(fabsf(dist) > sphere.sphereRadius)
 	{
 		return false;
 	}
@@ -119,7 +119,7 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 	v = Vector3Dot(v, v);
 
 	//球と三角形の距離が半径以下なら当たっていない
-	if(v.x > sphere.SphereRadius * sphere.SphereRadius)
+	if(v.x > sphere.sphereRadius * sphere.sphereRadius)
 	{
 		return false;
 	}
@@ -136,7 +136,7 @@ bool Collision::CheckSphere2Triangle(const Sphere& sphere, const Triangle& trian
 	{
 		float ds = Vector3Dot(sphere.center, triangle.normal_).x;
 		float dt = Vector3Dot(triangle.p0_, triangle.normal_).x;
-		float rejectLen = dt - ds + sphere.SphereRadius;
+		float rejectLen = dt - ds + sphere.sphereRadius;
 		*reject = triangle.normal_ * rejectLen;
 
 	}
@@ -152,7 +152,7 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB,
 		(sphereB.pos.z - sphereA.pos.z) * (sphereB.pos.z - sphereA.pos.z);
 
 	//半径と半径を足したもの
-	float addRadius = (sphereA.SphereRadius + sphereB.SphereRadius) * (sphereA.SphereRadius + sphereB.SphereRadius);
+	float addRadius = (sphereA.sphereRadius + sphereB.sphereRadius) * (sphereA.sphereRadius + sphereB.sphereRadius);
 
 	//衝突(半径内に入っているかどうか)
 	if(distance <= addRadius)
@@ -160,7 +160,7 @@ bool Collision::CheckSphere2Sphere(const Sphere& sphereA, const Sphere& sphereB,
 		if(reject)
 		{
 			//押し出すベクトルを計算
-			float rejectLen = sphereA.SphereRadius + sphereB.SphereRadius - sqrt(distance);
+			float rejectLen = sphereA.sphereRadius + sphereB.sphereRadius - sqrt(distance);
 			*reject = Vector3Normalize(sphereA.center - sphereB.center);
 			*reject *= rejectLen;
 		}
@@ -244,7 +244,7 @@ bool Collision::CheckRay2Sphere(const Ray& ray, const Sphere& sphere, float* dis
 {
 	Vector3 m = ray.start - sphere.center;
 	float b = Vector3Dot(m, ray.dir).x;
-	float c = Vector3Dot(m, m).x - sphere.SphereRadius * sphere.SphereRadius;
+	float c = Vector3Dot(m, m).x - sphere.sphereRadius * sphere.sphereRadius;
 
 	//layの始点がsphereの外側にあり(c > 0)、layがsphereから離れていく方向を差している場合(b > 0)、当たらない
 	if(c > 0.0f && b > 0.0f) { return false; }

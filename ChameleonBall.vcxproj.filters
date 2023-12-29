@@ -297,9 +297,6 @@
     <ClCompile Include="Source\application\particle\DeadParticle.cpp">
       <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
-    <ClCompile Include="Source\engine\collision\QueryCallback.cpp">
-      <Filter>ソース ファイル\engine\collision</Filter>
-    </ClCompile>
     <ClCompile Include="Source\application\GameSpeed.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>

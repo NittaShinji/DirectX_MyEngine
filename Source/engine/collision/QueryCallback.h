@@ -26,7 +26,9 @@ class QueryCallback
 {
 public:
 
+	//デフォルトコンストラクタ
 	QueryCallback() = default;
+	//デフォルトデストラクタ
 	virtual ~QueryCallback() = default;
 
 	/// <summary>

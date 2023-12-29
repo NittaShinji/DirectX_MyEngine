@@ -8,9 +8,18 @@ class BaseCollider;
 
 class CollisionManager
 {
-public: //静的メンバ変数
+public: //静的メンバ関数
 
 	static CollisionManager* GetInstance();
+
+	//デフォルトコンストラクタ
+	CollisionManager() = default;
+	//デフォルトデストラクタ
+	~CollisionManager() = default;
+	//コピーコンストラクタの無効
+	CollisionManager(const CollisionManager&) = delete;
+	//代入演算子の無効
+	CollisionManager& operator = (const CollisionManager&) = delete;
 
 public: //メンバ関数
 
@@ -48,13 +57,15 @@ public: //メンバ関数
 	//レイキャスト属性版
 	bool Raycast(const Ray& ray, unsigned short attribute, RaycastHit* hitInfo = nullptr, float maxDistance = D3D12_FLOAT32_MAX);
 
+	/// <summary>
+	/// 球による衝突全検索
+	/// </summary>
+	/// <param name="sphere">球</param>
+	/// <param name="callback">衝突時コールバック</param>
+	/// <param name="attribute">対象の衝突属性</param>
 	void QuerySphere(const Sphere& sphere, QueryCallback* callback, unsigned short attribute = static_cast<unsigned short> (0xffffffff));
 
 private:
-	CollisionManager() = default;
-	CollisionManager(const CollisionManager&) = delete;
-	~CollisionManager() = default;
-	CollisionManager& operator = (const CollisionManager&) = delete;
 
 	//コライダーのリスト
 	std::forward_list<BaseCollider*> colliders;

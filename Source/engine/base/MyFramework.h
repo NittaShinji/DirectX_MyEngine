@@ -59,6 +59,5 @@ protected: //メンバ変数
 
 	//ゲーム終了フラグ
 	bool endRequst_ = false;
-
 };
 

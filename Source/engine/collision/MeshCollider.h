@@ -9,6 +9,7 @@ class MeshCollider : public BaseCollider
 
 public:
 
+	//コンストラクタ
 	MeshCollider()
 	{
 		//メッシュ形状をセット
@@ -34,7 +35,6 @@ public:
 	/// <returns>交差している否か</returns>
 	bool CheckCollisionSphere(const Sphere& sphere, Vector3* inter = nullptr, Vector3* reject = nullptr);
 
-
 	/// <summary>
 	/// レイとの当たり判定
 	/// </summary>
@@ -44,9 +44,9 @@ public:
 	/// <returns>交差しているか否か</returns>
 	bool CheckCollisionRay(const Ray& ray, float* distance = nullptr, Vector3* inter = nullptr);
 
-
 private:
 
+	//メッシュが持つ三角形の配列
 	std::vector<Triangle> triangles;
 	//ワールド行列の逆行列
 	Matrix4 invMatWorld_;

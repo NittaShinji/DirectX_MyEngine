@@ -16,11 +16,14 @@ private:
 
 private:
 
+	//コンストラクタ
 	TextureManager();
+	//デストラクタ
 	~TextureManager();
 
 public:
 
+	//インスタンスを取得
 	static TextureManager* GetInstance()
 	{
 		static TextureManager textureManager;
