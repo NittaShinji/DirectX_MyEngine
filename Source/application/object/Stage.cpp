@@ -73,6 +73,7 @@ void Stage::Initialize(const std::string& fileName)
 				newObject->SetAttributeColor(Attribute::black);
 			}
 
+			//色を指定
 			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall" || objectData.fileName == "StageBlock")
 			{
 				if(newObject->GetColorFlag() == false)

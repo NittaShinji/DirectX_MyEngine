@@ -64,19 +64,12 @@ void GameScene::Initialize()
 	postEffect_->Initialize(directXBasic_);
 
 	//スプライト
-	aButtonSprite_ = std::make_unique<Sprite>();
-	bButtonSprite_ = std::make_unique<Sprite>();
-	jumpSprite_ = std::make_unique<Sprite>();
-	arrowSprite_ = std::make_unique<Sprite>();
-	backGroundSprite_ = std::make_unique<Sprite>();
-	sceneTransitionUp_ = std::make_unique<Sprite>();
-	sceneTransitionDown_ = std::make_unique<Sprite>();
-	
 	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
 	const Vector4 blackColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-	//黒色のテクスチャ―
+	//黒色のテクスチャ―を生成
 	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, kHalfWindowHeight, blackColor, "BlackBackGroundHalfTex");
+	//画像読み込み
 	TextureManager::GetInstance()->LoadTexture("jump.png");
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
 	TextureManager::GetInstance()->LoadTexture("cloud.png");
@@ -84,21 +77,33 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
 
+	//aボタン画像
+	aButtonSprite_ = std::make_unique<Sprite>();
 	const Vector2 aButtonPosition = { 1152,648 };
-	const Vector2 bButtonPosition = { 1216,648 };
-	const Vector2 jumpSpritePosition = { 1152,684 };
-	const Vector2 arrowPosition = { 1216,584 };
-	const Vector2 kDefaultSpritePos = { 0.0f,0.0f };
-
 	aButtonSprite_->Initialize("A.png",aButtonPosition);
 	aButtonSprite_->SetSize(Vector2(kUiSize_));
+	//bボタン画像
+	bButtonSprite_ = std::make_unique<Sprite>();
+	const Vector2 bButtonPosition = { 1216,648 };
 	bButtonSprite_->Initialize("B.png",bButtonPosition);
 	bButtonSprite_->SetSize(Vector2(kUiSize_));
+	//ジャンプ画像
+	jumpSprite_ = std::make_unique<Sprite>();
+	const Vector2 jumpSpritePosition = { 1152,684 };
 	jumpSprite_->Initialize("jump.png",jumpSpritePosition);
 	jumpSprite_->SetSize(Vector2(kUiSize_));
+	//矢印画像
+	arrowSprite_ = std::make_unique<Sprite>();
+	const Vector2 arrowPosition = { 1216,584 };
 	arrowSprite_->Initialize("arrow.png",arrowPosition);
 	arrowSprite_->SetSize(Vector2(kUiSize_));
+	//背景画像
+	backGroundSprite_ = std::make_unique<Sprite>();
+	const Vector2 kDefaultSpritePos = { 0.0f,0.0f };
 	backGroundSprite_->Initialize("backGround.png", kDefaultSpritePos);
+	//トランジション用画像
+	sceneTransitionUp_ = std::make_unique<Sprite>();
+	sceneTransitionDown_ = std::make_unique<Sprite>();
 	sceneTransitionUp_->Initialize("BlackBackGroundHalfTex", kDefaultSpritePos);
 	sceneTransitionDown_->Initialize("BlackBackGroundHalfTex",Vector2(kDefaultSpritePos.x, kHalfWindowHeight));
 	

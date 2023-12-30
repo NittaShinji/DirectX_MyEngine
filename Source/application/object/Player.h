@@ -82,6 +82,9 @@ private: //定数
 	const float kRotateXTime_ = 60.0f;
 	const float kRotateYTime_ = 60.0f;
 
+	//1週分の回転角
+	const float kOneCircleRotate = 360.0f;
+
 	//初期カウンター数
 	const int32_t kInitCount_ = 0;
 

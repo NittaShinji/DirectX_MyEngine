@@ -865,7 +865,7 @@ void Player::JumpRotation()
 	{
 		if(scale_.x == kDefaultScale_.x && scale_.y == kDefaultScale_.y && scale_.z == kDefaultScale_.z)
 		{
-			float angle = ToRadian(360.0f);
+			float angle = ToRadian(kOneCircleRotate);
 			rotation_.x -= PlayEaseInCubic(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
 			if(rotateXTimer_ >= 0)
@@ -881,6 +881,7 @@ void Player::JumpRotation()
 		}
 	}
 
+	//回転角をセット
 	Object3d::SetRotation(rotation_);
 }
 
@@ -891,17 +892,16 @@ void Player::GroundRotation()
 		rotateYTimer_ = kRotateYTime_;
 	}
 
-	const float rotateYVec = 0.10f;
-
+	//1回転させる
 	if(rotateYTimer_ >= 0)
 	{
 		rotateYTimer_--;
 
-		const float kOneCircleRotate = 360.0f;
 		float angle = ToRadian(kOneCircleRotate);
 
 		if(rotation_.y < angle)
 		{
+			const float rotateYVec = 0.10f;
 			rotation_.y -= rotateYVec;
 		}
 	}
@@ -911,6 +911,7 @@ void Player::GroundRotation()
 		isGroundRotate_ = false;
 	}
 
+	//回転角をセット
 	Object3d::SetRotation(rotation_);
 }
 
@@ -975,6 +976,7 @@ void Player::Animation(bool isStartedAnime, float animationSpeed, Vector3 goalSc
 			}
 		}
 
+		//もし全て到達点に達していたらフラグをオフにする
 		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
 		{
 			isDuringAnimation_ = false;
@@ -984,6 +986,7 @@ void Player::Animation(bool isStartedAnime, float animationSpeed, Vector3 goalSc
 
 void Player::ResetRotation()
 {
+	//ジャンプなどによって、回転が元に戻っていなければ元の角度に戻す
 	if(isResettingRotation_ == true)
 	{
 		bool isResetRotationX = true;
@@ -1046,6 +1049,7 @@ void Player::ResetRotation()
 			}
 		}
 
+		//もし全て戻っていたらフラグをオフにする
 		if(isResetRotationX == false && isResetRotationY == false && isResetRotationZ == false)
 		{
 			isResettingRotation_ = false;
@@ -1056,6 +1060,7 @@ void Player::ResetRotation()
 
 void Player::LongJump()
 {
+	//押した時間によって飛距離が変わるように
 	if(isSmallJump_ == true)
 	{
 		if(isJumped_ == true)
