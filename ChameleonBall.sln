@@ -7,8 +7,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ChameleonBall", "ChameleonB
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{5D6BFD22-2A41-4C88-87C0-8A3A95BFE7B8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXTex", "External\DirectXTex\DirectXTex_Desktop_2022_Win10.vcxproj", "{371B9FA9-4C90-4AC6-A123-ACED756D6C77}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "imgui", "External\imgui\imgui.vcxproj", "{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}"
 EndProject
 Global
@@ -21,10 +19,6 @@ Global
 		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Debug|x64.Build.0 = Debug|x64
 		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Release|x64.ActiveCfg = Release|x64
 		{40D198F6-3465-4A4F-B3F9-E2C16CBBBDFB}.Release|x64.Build.0 = Release|x64
-		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x64.ActiveCfg = Debug|x64
-		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Debug|x64.Build.0 = Debug|x64
-		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x64.ActiveCfg = Release|x64
-		{371B9FA9-4C90-4AC6-A123-ACED756D6C77}.Release|x64.Build.0 = Release|x64
 		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Debug|x64.ActiveCfg = Debug|x64
 		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Debug|x64.Build.0 = Debug|x64
 		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E}.Release|x64.ActiveCfg = Release|x64
@@ -34,7 +28,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{371B9FA9-4C90-4AC6-A123-ACED756D6C77} = {5D6BFD22-2A41-4C88-87C0-8A3A95BFE7B8}
 		{26FA002B-EC0D-4D7A-A69F-8EAA7662802E} = {5D6BFD22-2A41-4C88-87C0-8A3A95BFE7B8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
