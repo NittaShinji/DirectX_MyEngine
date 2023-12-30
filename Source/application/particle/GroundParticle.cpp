@@ -13,7 +13,7 @@ std::unique_ptr<GroundParticle> GroundParticle::Create(std::string fileName)
 	}
 
 	instance->particleFileName_ = fileName;
-	instance->changeColorTimer_ = kChangeColorTime;
+	instance->changeColorTimer_ = kChangeColorTime_;
 	instance->blackTime_ = kBlackTime_;
 
 	return instance;

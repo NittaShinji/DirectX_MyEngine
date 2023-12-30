@@ -66,10 +66,10 @@ private:
 	Vector3 goalEyePos_;
 	Vector3 goalEyeTarget_;
 
-	Vector3 moveEyeVec;
-	Vector3 moveEyeVecY;
-	Vector3 moveTargetVec;
-	Vector3 moveTargetVecY;
+	Vector3 moveEyeVec_;
+	Vector3 moveEyeVecY_;
+	Vector3 moveTargetVec_;
+	Vector3 moveTargetVecY_;
 
 	int32_t kSlowTime_ = 30;
 	int32_t slowTimer_;

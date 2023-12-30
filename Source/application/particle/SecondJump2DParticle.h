@@ -8,15 +8,17 @@ class SecondJump2DParticle : public ParticleEmitter
 {
 public:
 
+	//インスタンスを生成
 	static std::unique_ptr<SecondJump2DParticle> Create(std::string fileName);
 
+	//パーティクル生成準備
 	void Preparation(Vector3 playerPos);
 
+	//更新
 	void Update(Camera* camera) override;
 
+	//ImGui更新
 	void ImGuiUpdate();
-
-	void SetStartPop(bool isStartPop) { isStartPop_ = isStartPop; };
 
 private:
 
@@ -26,8 +28,7 @@ private:
 	float startScale_ = 4.5f;	//初期スケール
 	float endScale_ = 1.0f;	//終期スケール
 
-	bool isStartPop_;
-
+	//imGui設定
 	float imGuiPos_[3]{ 0.0f,0.0f,0.0f };
 	float imGuiVel_[3]{ 0.0f,0.0f,0.0f };
 	float imGuiAcc_[3]{ 0.0f,0.0f,0.0f };

@@ -43,10 +43,10 @@ private:
 	Vector3 endScale_ = {};
 
 	//Imgui設定
-	const float kInitImguiValue = 0.0f;
-	float imGuiPos_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
-	float imGuiVel_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
-	float imGuiAcc_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
+	const float kInitImguiValue_ = 0.0f;
+	float imGuiPos_[3]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
+	float imGuiVel_[3]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
+	float imGuiAcc_[3]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
 
 	//パーティクルを数えるカウンター
 	int32_t particleCount_;

@@ -833,17 +833,25 @@ void Player::ImGuiUpdate()
 	//スプライトの編集ウインドウの表示
 
 	ImGui::Begin("Player");
-	ImGui::SetWindowPos(ImVec2(0, 0));
-	ImGui::SetWindowSize(ImVec2(300, 200));
 
-	ImGui::SliderFloat("PlayerPosY", &transform_.y, -100.0f, 50.0f);
-	ImGui::SliderFloat("PlayerPosZ", &transform_.z, -100.0f, 1000.0f);
-	ImGui::SliderFloat("PlayerScaleX", &scale_.x, 0.0f, 5.0f);
-	ImGui::SliderFloat("PlayerScaleY", &scale_.y, 0.0f, 5.0f);
-	ImGui::SliderFloat("PlayerScaleZ", &scale_.z, 0.0f, 5.0f);
-	ImGui::SliderFloat("PlayerRotationX", &rotation_.x, 0.0f, 2.0f);
-	ImGui::SliderFloat("PlayerRotationY", &rotation_.y, 0.0f, 2.0f);
-	ImGui::SliderFloat("PlayerRotationZ", &rotation_.z, 0.0f, 2.0f);
+	const Vector2 kImGuiPos = { 0.0f,0.0f };
+	const Vector2 kImGuiSize = { 300.0f,200.0f };
+
+	ImGui::SetWindowPos(ImVec2(kImGuiPos.x, kImGuiPos.y));
+	ImGui::SetWindowSize(ImVec2(kImGuiSize.x, kImGuiSize.y));
+
+	const Vector2 kImGuiPosRate = { -100.0f,1000.0f };
+	const Vector2 kImGuiSizeRate = { 0.0f,5.0f };
+	const Vector2 kImGuiRotateRate = { 0.0f,2.0f };
+
+	ImGui::SliderFloat("PlayerPosY", &transform_.y, kImGuiPosRate.x, kImGuiPosRate.x);
+	ImGui::SliderFloat("PlayerPosZ", &transform_.z, kImGuiPosRate.x, kImGuiPosRate.x);
+	ImGui::SliderFloat("PlayerScaleX", &scale_.x, kImGuiSizeRate.x, kImGuiSizeRate.y);
+	ImGui::SliderFloat("PlayerScaleY", &scale_.y, kImGuiSizeRate.x, kImGuiSizeRate.y);
+	ImGui::SliderFloat("PlayerScaleZ", &scale_.z, kImGuiSizeRate.x, kImGuiSizeRate.y);
+	ImGui::SliderFloat("PlayerRotationX", &rotation_.x, kImGuiRotateRate.x, kImGuiRotateRate.y);
+	ImGui::SliderFloat("PlayerRotationY", &rotation_.y, kImGuiRotateRate.x, kImGuiRotateRate.y);
+	ImGui::SliderFloat("PlayerRotationZ", &rotation_.z, kImGuiRotateRate.x, kImGuiRotateRate.y);
 
 	Object3d::SetScale(scale_);
 

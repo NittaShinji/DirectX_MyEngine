@@ -36,18 +36,18 @@ private:
 	Vector4 endColor_;			//終点色
 
 	//色変化時間
-	static const int32_t kChangeColorTime = 30;
+	static const int32_t kChangeColorTime_ = 30;
 	int32_t changeColorTimer_;
 
 	//イージング設定初期値
-	const float kInitStartPos = 1.0f;
-	const float kInitDistance = -1.0f;
-	const float kInitTime = 0.0f;
-	const float kInitTotalTime = 20.0f;
+	const float kInitStartPos_ = 1.0f;
+	const float kInitDistance_ = -1.0f;
+	const float kInitTime_ = 0.0f;
+	const float kInitTotalTime_ = 20.0f;
 	//グラデーション演出用のイージング設定
-	EasingInfo redEasing_ = { kInitStartPos,kInitDistance,kInitTime,kInitTotalTime };
-	EasingInfo greenEasing_ = { kInitStartPos,kInitDistance,kInitTime,kInitTotalTime };
-	EasingInfo blueEasing_ = { kInitStartPos,kInitDistance,kInitTime,kInitTotalTime };
+	EasingInfo redEasing_ = { kInitStartPos_,kInitDistance_,kInitTime_,kInitTotalTime_ };
+	EasingInfo greenEasing_ = { kInitStartPos_,kInitDistance_,kInitTime_,kInitTotalTime_ };
+	EasingInfo blueEasing_ = { kInitStartPos_,kInitDistance_,kInitTime_,kInitTotalTime_ };
 
 	//プレイヤーの色
 	Attribute playerColor_;
@@ -65,11 +65,11 @@ private:
 	const Vector4 colorSpeed_ = { 0.025f,0.025f,0.025f,0.15f };
 
 	//Imgui設定
-	const float kInitImguiValue = 0.0f;
-	float imGuiPos_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
-	float imGuiVel_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
-	float imGuiAcc_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
-	float imGuiColor_[4]{ kInitImguiValue,kInitImguiValue,kInitImguiValue,kInitImguiValue };
+	const float kInitImguiValue_ = 0.0f;
+	float imGuiPos_[3]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
+	float imGuiVel_[3]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
+	float imGuiAcc_[3]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
+	float imGuiColor_[4]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
 
 public: // アクセッサ
 
