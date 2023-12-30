@@ -1,5 +1,8 @@
 #pragma once
 
+/// <summary>
+/// 3次元ベクトル
+/// </summary>
 class Vector3
 {
 public:

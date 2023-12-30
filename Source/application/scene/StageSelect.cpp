@@ -35,29 +35,33 @@ void StageSelectScene::Initialize()
 	const int32_t selectWidth = 640;
 	const int32_t selectHeight = 400;
 
-	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight, Vector4(0.8f, 0.8f, 0.8f, 1.0f), "CursorTex");
+	const Vector4 grayColor = { 0.8f, 0.8f, 0.8f, 1.0f };
+	const Vector4 blackColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+
 	//灰色のテクスチャ―
-	TextureManager::GetInstance()->TexMapping(600, 360, Vector4(0.746f, 0.746f, 0.746f, 1.0f), "BackGroundTex");
+	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight, grayColor, "CursorTex");
+	//TextureManager::GetInstance()->TexMapping(600, 360, Vector4(0.746f, 0.746f, 0.746f, 1.0f), "BackGroundTex");
 	//黒色のテクスチャ―
-	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BlackBackGroundTex");
+	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, blackColor, "BlackBackGroundTex");
 
 	TextureManager::GetInstance()->LoadTexture("GameScene1.png");
 	TextureManager::GetInstance()->LoadTexture("GameScene2.png");
 
-	Vector2 selectPosition = { 0.0f,160.0f };
+	const Vector2 selectPosition = { 0.0f,160.0f };
 	
-	Vector2 testPosition = { 0.0f,0.0f };
+	const Vector2 testPosition = { 0.0f,0.0f };
 
-	Vector2 backGroundPositionL = { 20.0f,180.0f };
-	Vector2 backGroundPositionR = { 660.0f,180.0f };
+	const Vector2 backGroundPositionL = { 20.0f,180.0f };
+	const Vector2 backGroundPositionR = { 660.0f,180.0f };
 
-	backGroundLeft_->Initialize("BackGroundTex",backGroundPositionL);
-	backGroundRight_->Initialize("BackGroundTex",backGroundPositionR);
-	backGroundWhite_->Initialize("WhiteTex",Vector2(0.0f, 0.0f));
+	//backGroundLeft_->Initialize("BackGroundTex",backGroundPositionL);
+	//backGroundRight_->Initialize("BackGroundTex",backGroundPositionR);
+	const Vector2 InitSpritePos = { 0.0f,0.0f };
+	backGroundWhite_->Initialize("WhiteTex", InitSpritePos);
 	selectSprite_->Initialize("CursorTex", selectPosition);
 	gameSceneSprite1_->Initialize("GameScene1.png",backGroundPositionL);
 	gameSceneSprite2_->Initialize("GameScene2.png",backGroundPositionR);
-	sceneTransition_->Initialize("BlackBackGroundTex",Vector2(0.0f, 0.0f));
+	sceneTransition_->Initialize("BlackBackGroundTex", InitSpritePos);
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
@@ -76,8 +80,8 @@ void StageSelectScene::Update()
 {
 	//画像の更新
 	selectSprite_->matUpdate();
-	backGroundLeft_->matUpdate();
-	backGroundRight_->matUpdate();
+	/*backGroundLeft_->matUpdate();
+	backGroundRight_->matUpdate();*/
 	backGroundWhite_->matUpdate();
 	gameSceneSprite1_->matUpdate();
 	gameSceneSprite2_->matUpdate();
@@ -94,18 +98,23 @@ void StageSelectScene::Update()
 		isChangeScene_ = true;
 	}
 
+	//カーソルのスプライトを移動させる
+	const float kWindowHalfX = WindowsAPI::kWindow_width_ / 2;
+	const float kSelectSpritePos = 160.0f;
+
+
 	if(keys_->PushedKeyMoment(DIK_RIGHT))
 	{
 		if(selectSprite_->GetPosition().x == 0.0f)
 		{
-			selectSprite_->SetPosition(Vector2(WindowsAPI::kWindow_width_ / 2, 160.0));
+			selectSprite_->SetPosition(Vector2(kWindowHalfX, kSelectSpritePos));
 		}
 	}
 	else if(keys_->PushedKeyMoment(DIK_LEFT))
 	{
-		if(selectSprite_->GetPosition().x == WindowsAPI::kWindow_width_ / 2)
+		if(selectSprite_->GetPosition().x == kWindowHalfX)
 		{
-			selectSprite_->SetPosition(Vector2(0.0f, 160.0f));
+			selectSprite_->SetPosition(Vector2(0.0f, kSelectSpritePos));
 		}
 	}
 
@@ -133,8 +142,8 @@ void StageSelectScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	backGroundWhite_->Draw("WhiteTex");
 	selectSprite_->Draw("CursorTex");
-	backGroundLeft_->Draw("BackGroundTex");
-	backGroundRight_->Draw("BackGroundTex");
+	//backGroundLeft_->Draw("BackGroundTex");
+	//backGroundRight_->Draw("BackGroundTex");
 	gameSceneSprite1_->Draw("GameScene1.png");
 	gameSceneSprite2_->Draw("GameScene2.png");
 

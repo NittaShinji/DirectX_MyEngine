@@ -7,6 +7,10 @@
 #include <memory>
 #include "ImGuiManager.h"
 
+/// <summary>
+/// MyGameクラス
+/// このゲームの大本となるクラス
+/// </summary>
 class MyGame : public MyFramework
 {
 
@@ -22,8 +26,5 @@ public: //メンバ関数
 	void Update() override;
 	//描画
 	void Draw() override;
-
-private: //メンバ変数
-
 };
 

@@ -67,8 +67,6 @@ void BackGround::Initialize(const std::string fileName)
 			{
 				newObject->SetColorFlag(true);
 
-				newObject->SetAlpha(1.0f);
-
 				if(newObject->GetAttributeColor() == Attribute::yellow)
 				{
 					newObject->SetColor(kYellowOBJColor);
@@ -85,9 +83,7 @@ void BackGround::Initialize(const std::string fileName)
 				{
 					if(newObject->GetAttributeColor() == Attribute::NReverseObj)
 					{
-						
 						newObject->SetColor(kNormalReverseOBJColor);
-						newObject->SetAlpha(kNormalReverseOBJAlpha);
 					}
 
 					if(newObject->GetAttributeColor() == Attribute::NormalObj)

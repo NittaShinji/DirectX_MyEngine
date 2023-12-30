@@ -3,6 +3,9 @@
 #include "Object3d.h"
 #include "CollisionInfo.h"
 
+/// <summary>
+/// 基礎コライダー
+/// </summary>
 class BaseCollider
 {
 public:

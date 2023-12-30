@@ -9,6 +9,9 @@
 #include <vector>
 #include <set>
 
+/// <summary>
+/// サウンド
+/// </summary>
 class Sound
 {
 

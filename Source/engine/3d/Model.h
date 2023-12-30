@@ -6,6 +6,9 @@
 #include "Vector2.h"
 #include "Matrix4.h"
 
+/// <summary>
+/// モデル
+/// </summary>
 class Model
 {	
 private:

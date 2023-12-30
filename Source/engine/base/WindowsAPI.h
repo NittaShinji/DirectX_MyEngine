@@ -2,7 +2,9 @@
 #include <Windows.h>
 #include <stdint.h>
 
-//windowsAPI
+/// <summary>
+/// WindowsAPI
+/// </summary>
 class WindowsAPI final
 {
 public:

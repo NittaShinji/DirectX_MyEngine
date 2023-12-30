@@ -3,6 +3,9 @@
 #include "LevelManager.h"
 #include "ObjectAttribute.h"
 
+/// <summary>
+/// 破壊できる壁
+/// </summary>
 class HitWall : public TouchableObject
 {
 public:

@@ -2,7 +2,9 @@
 #include "SpriteCommon.h"
 #include "Input.h"
 
-//スプライト
+/// <summary>
+/// スプライト・画像クラス
+/// </summary>
 class Sprite
 {
 private:

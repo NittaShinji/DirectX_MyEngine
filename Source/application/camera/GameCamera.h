@@ -4,6 +4,9 @@
 #include "Easing.h"
 #include "GameSpeed.h"
 
+/// <summary>
+/// ゲームカメラ
+/// </summary>
 class GameCamera : public Camera
 {
 public:
@@ -11,13 +14,11 @@ public:
 	void Initialize() override;
 
 	void Update(bool isPlayerMoving,Vector3 playerPos, Vector3 playerInitPos,bool isDead, 
-		Vector3 playerDeadPos,Vector3 playerToalAxel,bool onGround,bool rightAxcell,Vector3 rightAxcellVec);
+		Vector3 playerDeadPos,bool rightAxcell);
 
 	void Reset();
 
 	void ImGuiUpdate();
-
-	void AccelerationAnimation();
 
 	void GoalAnimation();
 
@@ -82,11 +83,14 @@ private:
 	const float kAxcellNormalRate_ = 1.0f;
 	//加速割合
 	float axcellRate_ = 1.0f;
-	float waitRate_ = 0.0f;
-
+	
 	bool isNotBackAnimation_;
 	bool isAxcellrate_;
 
+	const float axcellRateMoveValue_ = 0.0015f;
+	const float decelerationMoveValue_ = 0.01f;
+
+	const int32_t kInitTime_ = 0;
 	const float goalEyeXMoveValue_ = 0.0f;
 	const float goalEyeYMoveValue_ = 0.0f;
 	const float goalEyeZMoveValue_ = 0.0f;

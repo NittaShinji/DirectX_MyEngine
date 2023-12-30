@@ -7,6 +7,9 @@
 #include <dinput.h>
 #pragma warning(pop)
 
+/// <summary>
+/// キーボード入力
+/// </summary>
 class KeyInput
 {
 public:

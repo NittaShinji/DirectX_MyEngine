@@ -215,43 +215,6 @@ void GameTimer::ResultUpdate()
 	}
 }
 
-//
-//void GameTimer::Update(bool isStart)
-//{
-//	for(int i = 0; i < resultDigits; i++)
-//	{
-//		//resultNum[i]->matUpdate();
-//	}
-//	for(int i = 0; i < inGameDigits; i++)
-//	{
-//		inGameNum[i]->matUpdate();
-//	}
-//
-//	blackDot_->matUpdate();
-//
-//
-//	if(isStart == true)
-//	{
-//		InGameNumberUpdate();
-//		//ResultNumberUpdate();
-//	}
-//	else
-//	{
-//		//for(size_t i = 0; i < resultDigits; i++)
-//		//{
-//		//	resultDisPlaytime[i] = { 0 };
-//		//	SetNumber(resultDisPlaytime[i], resultNum[i].get());
-//		//}
-//
-//		for(size_t i = 0; i < inGameDigits; i++)
-//		{
-//			inGameDisPlayTime_[i] = { 0 };
-//			SetNumber(inGameDisPlayTime_[i], inGameNum[i].get());
-//		}
-//
-//	}
-//}
-
 void GameTimer::Reset()
 {
 	timer_ = 0;
@@ -400,10 +363,4 @@ void GameTimer::SetNumber(int number, Sprite* sprite)
 	{
 		sprite->SetTextureLeftTop(texSize * 9);
 	}
-}
-
-void GameTimer::StopTimer()
-{
-	inGameTime_ = inGameTime_;
-	resultTime_ = resultTime_;
 }

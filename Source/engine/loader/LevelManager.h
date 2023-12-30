@@ -15,7 +15,10 @@
 #include "json.hpp"
 #pragma warning(pop)
 
-//レベルデータ
+/// <summary>
+/// レベルデータ
+/// jsonクラスを読み込み、扱う
+/// </summary>
 struct LevelData
 {
 	//オブジェクト

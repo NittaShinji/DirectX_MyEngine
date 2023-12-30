@@ -4,6 +4,9 @@
 #include "Camera.h"
 #include "LevelManager.h"
 
+/// <summary>
+/// 背景オブジェクトクラス
+/// </summary>
 class BackGround : public Object3d
 {
 public:

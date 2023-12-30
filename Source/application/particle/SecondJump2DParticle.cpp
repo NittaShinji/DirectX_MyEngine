@@ -17,21 +17,19 @@ std::unique_ptr<SecondJump2DParticle> SecondJump2DParticle::Create(std::string f
 	return instance;
 }
 
-void SecondJump2DParticle::Preparation(Vector3 playerPos, Attribute playerColor)
+void SecondJump2DParticle::Preparation(Vector3 playerPos)
 {
-
-	//const float md_pos = 2.0f;
+	//ポップ座標
 	setPos_.x = playerPos.x + imGuiPos_[0];
 	const float shiftY = -0.3f;
 	setPos_.y = playerPos.y + shiftY + imGuiPos_[1];
 	const float shiftZ = 0.68f * 2.3f;
 	setPos_.z = playerPos.z + shiftZ + imGuiPos_[2];
 
-	setVel_.x = 0.0f + imGuiVel_[0];
-
+	//移動値
+	setVel_.x = imGuiVel_[0];
 	const float md_velY = 0.0f;
 	setVel_.y = md_velY + imGuiVel_[1];
-
 	const float md_velZ = 0.0f;
 	setVel_.z = md_velZ + imGuiVel_[2];
 
@@ -43,43 +41,48 @@ void SecondJump2DParticle::Preparation(Vector3 playerPos, Attribute playerColor)
 	acc.z = md_acc + imGuiAcc_[2];
 
 	//色を変化させる
-	Vector4 colorSpeed{ 0.0f,0.0f,0.0f,0.04f };
-
-	Vector4 startColor = { 1.0f,1.0f,1.0f,1.0f };
-	Vector4 endColor = { 1.0f,1.0f,1.0f,0.0f };
-	endColor.w = 0.0f;
-
-	if(playerColor == Attribute::pink) {}
-
+	const Vector4 colorSpeed{ 0.0f,0.0f,0.0f,0.04f };
+	//初期色
+	const Vector4 startColor = { 1.0f,1.0f,1.0f,1.0f };
+	//終点の色
+	const Vector4 endColor = { 1.0f,1.0f,1.0f,0.0f };
+	
 	//初期ライフ
 	const float InitLife = 25.0f;
-
-	float rotation = 0.0f;
-	float rotationSpeed = 0.0f;
+	//回転角
+	const float rotation = 0.0f;
+	//回転スピード
+	const float rotationSpeed = 0.0f;
 
 	//追加
 	if(GetIsMaxParticle() == false)
 	{
 		Add(InitLife, setPos_, setVel_, acc,startColor, endColor, colorSpeed, startScale_, endScale_, rotation,rotationSpeed);
 	}
-
 }
 
 void SecondJump2DParticle::Update(Camera* camera)
 {
 	ParticleEmitter::Update(camera);
-
 }
 
 void SecondJump2DParticle::ImGuiUpdate()
 {
 	ImGui::Begin("SecondJumpParticle");
-	ImGui::SetWindowPos(ImVec2(900, 0));
-	ImGui::SetWindowSize(ImVec2(300, 100));
 
-	ImGui::SliderFloat3("pos", imGuiPos_, -10.0f, 30.0f);
-	ImGui::SliderFloat3("vel", imGuiVel_, -5.0f, 5.0f);
-	ImGui::SliderFloat3("acc", imGuiAcc_, -0.05f, 0.05f);
+	const Vector2 kImGuiWindowPos = { 900.0f, 0.0f };
+	const Vector2 kImGuiWindowSize = { 300.0f, 100.0f };
+
+	ImGui::SetWindowPos(ImVec2(kImGuiWindowPos.x, kImGuiWindowPos.y));
+	ImGui::SetWindowSize(ImVec2(kImGuiWindowSize.x, kImGuiWindowSize.y));
+
+	const Vector2 kImGuiPos = { -10.0f, 30.0f };
+	const Vector2 kImGuiVel = { -5.0f, 5.0f };
+	const Vector2 kImGuiAcc = { -0.05f, 0.05f };
+
+	ImGui::SliderFloat3("pos", imGuiPos_, kImGuiPos.x, kImGuiPos.y);
+	ImGui::SliderFloat3("vel", imGuiVel_, kImGuiVel.x, kImGuiVel.y);
+	ImGui::SliderFloat3("acc", imGuiAcc_, kImGuiAcc.x, kImGuiAcc.y);
 
 	ImGui::End();
 }

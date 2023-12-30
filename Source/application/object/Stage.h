@@ -8,6 +8,10 @@
 class Camera;
 class Player;
 
+/// <summary>
+/// ステージクラス
+/// (背景オブジェクトや障害物のオブジェクトを管理するクラス)
+/// </summary>
 class Stage : public TouchableObject
 {
 public:

@@ -187,7 +187,6 @@ void PostEffect::Initialize(DirectXBasic* directXBasic)
 		);
 	}
 
-
 	//RTV用デスクリプタヒープ設定
 	D3D12_DESCRIPTOR_HEAP_DESC rtvDescHeapDesc{};
 	rtvDescHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
@@ -504,7 +503,7 @@ void PostEffect::PreDrawScene()
 	//深度ステンシルビュー用デスクリプタヒープのハンドルを取得
 	D3D12_CPU_DESCRIPTOR_HANDLE dsvH = descHeapDSV->GetCPUDescriptorHandleForHeapStart();
 	//レンダーターゲットをセット
-	directXBasic_->GetCommandList()->OMSetRenderTargets(2, rtvHs, false, &dsvH);
+	directXBasic_->GetCommandList()->OMSetRenderTargets(kRenderTexNum, rtvHs, false, &dsvH);
 
 	D3D12_VIEWPORT viewPort[kRenderTexNum];
 	D3D12_RECT rect[kRenderTexNum];
@@ -516,9 +515,9 @@ void PostEffect::PreDrawScene()
 	}
 
 	//ビューポートの設定
-	directXBasic_->GetCommandList()->RSSetViewports(2, viewPort);
+	directXBasic_->GetCommandList()->RSSetViewports(kRenderTexNum, viewPort);
 	//シザリング矩形の設定
-	directXBasic_->GetCommandList()->RSSetScissorRects(2, rect);
+	directXBasic_->GetCommandList()->RSSetScissorRects(kRenderTexNum, rect);
 
 	//全画面クリア
 	for(UINT i = 0; i < kRenderTexNum; i++)

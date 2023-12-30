@@ -1,4 +1,5 @@
 #include "BlockParticle.h"
+#include "ObjectColor.h"
 
 std::unique_ptr<BlockParticle> BlockParticle::Create(std::string modelName,int32_t maxParticleNum)
 {
@@ -20,17 +21,18 @@ std::unique_ptr<BlockParticle> BlockParticle::Create(std::string modelName,int32
 
 void BlockParticle::Initialize()
 {
-	startScale_ = { 0.9f,0.9f,0.9f };
-	endScale_ = { 0.0f,0.0f,0.0f };
-	particleCount_ = 0;
+	startScale_ = kInitStartScale_;
+	endScale_ = kInitEndScale_;
+	particleCount_ = kInitCount_;
 	isPlayerDead_ = false;
 	canReset_ = false;
 	
+	//事前に最大値まで生成
 	for(int32_t i = 0; i < maxParticleNum_; i++)
 	{
 		Preparation();
 	}
-
+	//初期化
 	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
 	{
 		it->object3d.Initialize();
@@ -47,7 +49,7 @@ void BlockParticle::Update(Camera* camera)
 			it->scale = InitStartScale;
 			it->accel = InitAcc;
  			it->velocity = InitVel;
-			it->frame = 0;
+			it->frame = static_cast<float>(kInitCount_);
 			it->object3d.SetTransform(InitPos);
 			it->object3d.SetScale(it->scale);
 			it->object3d.Update(camera);
@@ -101,7 +103,6 @@ void BlockParticle::Update(Camera* camera)
 					if(resetCount_ == maxParticleNum_)
 					{
 						canReset_ = true;
-						//isStartDeadParticle_ = false;
 					}
 				}
 			}
@@ -117,22 +118,6 @@ void BlockParticle::Reset()
 
 void BlockParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLanded,bool isPlayerDead, Attribute attributeColor)
 {
-	/*if(isLanded == true)
-	{
-		if(isStartDeadParticle_ == false)
-		{
-			isStartPoped_ = true;
-			isStartLandParticle_ = true;
-		}
-	}
-	
-	if(isPlayerDead == true)
-	{
-		isStartLandParticle_ = false;
-		isStartPoped_ = true;
-		isStartDeadParticle_ = true;
-	}*/
-
 	if(isPlayerDead) {}
 	if(isLanded) {}
 	attributeColor_ = attributeColor;
@@ -170,16 +155,13 @@ void BlockParticle::ParticlePop(Camera* camera, const Vector3& popPos,Attribute 
 	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
 	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
 
-	setVel_.x = 0.0f + imGuiVel_[0];
+	setVel_.x = imGuiVel_[0];
 
 	const float md_velY = 0.174f;
-	//setVel_.y = md_velY + imGuiVel_[1];
-	setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
+	const float md_velZ = 0.8f;
 
-	//const float md_velZ = 2.5f;
-	//setVel_.z = md_velZ + imGuiVel_[2];
-	//setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
-	setVel_.z = 0.8f;
+	setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
+	setVel_.z = md_velZ;
 
 	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 	Vector3 acc{};
@@ -189,7 +171,7 @@ void BlockParticle::ParticlePop(Camera* camera, const Vector3& popPos,Attribute 
 	acc.z = 0.0f;
 
 	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+	const Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
 	if(it->isGenerated == false)
 	{
@@ -198,154 +180,22 @@ void BlockParticle::ParticlePop(Camera* camera, const Vector3& popPos,Attribute 
 		it->object3d.SetColorFlag(true);
 		if(attributeColor == Attribute::pink)
 		{
-			it->object3d.SetColor(Vector3(1.0f, 0.4f, 0.7f));
+			it->object3d.SetColor(kTitlePinkOBJColor);
 		}
 		else if(attributeColor == Attribute::yellow)
 		{
-			it->object3d.SetColor(Vector3(1.0f, 0.469f, 0.0f));
+			it->object3d.SetColor(kYellowOBJColor);
 		}
 		else
 		{
-			it->object3d.SetColor(Vector3(0.0f, 0.0f, 0.0f));
+			it->object3d.SetColor(kBlackOBJColor);
 		}
 
 		it->object3d.Update(camera);
 		it->velocity = setVel_;
 		it->accel = acc;
 		it->colorSpeed = colorSpeed;
-		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
-		it->scale = it->s_scale;
-		it->e_scale = Vector3Zero();
-		it->frame = 0;
-		it->isGenerated = true;
-	}
-}
-
-void BlockParticle::LandParticlePop(Camera* camera, const Vector3& popPos, Attribute attributeColor)
-{
-	std::forward_list<Particle>::iterator it = particles_.begin();
-	for(int32_t i = 0; i < particleCount_; i++)
-	{
-		it++;
-	}
-
-	const float md_pos = 2.0f;
-	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
-	const float shiftY = -0.8f;
-	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
-	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
-
-	setVel_.x = 0.0f + imGuiVel_[0];
-
-	const float md_velY = 0.174f;
-	//setVel_.y = md_velY + imGuiVel_[1];
-	setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
-
-	//const float md_velZ = 2.5f;
-	//setVel_.z = md_velZ + imGuiVel_[2];
-	//setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
-	setVel_.z = 0.8f;
-
-	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-	Vector3 acc{};
-	const float md_acc = -0.017f;
-	acc.x = 0.0f;
-	acc.y = md_acc;
-	acc.z = 0.0f;
-
-	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
-
-	if(it->isGenerated == false)
-	{
-		it->object3d.SetTransform(setPos_);
-		it->object3d.SetScale(it->s_scale);
-		it->object3d.SetColorFlag(true);
-		if(attributeColor == Attribute::pink)
-		{
-			it->object3d.SetColor(Vector3(1.0f, 0.4f, 0.7f));
-		}
-		else if(attributeColor == Attribute::yellow)
-		{
-			it->object3d.SetColor(Vector3(1.0f, 0.469f, 0.0f));
-		}
-		else
-		{
-			it->object3d.SetColor(Vector3(0.0f, 0.0f, 0.0f));
-		}
-
-		it->object3d.Update(camera);
-		it->velocity = setVel_;
-		it->accel = acc;
-		it->colorSpeed = colorSpeed;
-		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
-		it->scale = it->s_scale;
-		it->e_scale = Vector3Zero();
-		it->frame = 0;
-		it->isGenerated = true;
-	}
-}
-
-void BlockParticle::DeadParticlePop(Camera* camera, const Vector3& popPos, Attribute attributeColor)
-{
-	std::forward_list<Particle>::iterator it = particles_.begin();
-	for(int32_t i = 0; i < particleCount_; i++)
-	{
-		it++;
-	}
-
-	const float md_pos = 2.0f;
-	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
-	const float shiftY = -0.8f;
-	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
-	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
-
-	setVel_.x = 0.0f + imGuiVel_[0];
-
-	const float md_velY = 0.274f;
-	//setVel_.y = md_velY + imGuiVel_[1];
-	setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
-
-	//const float md_velZ = 2.5f;
-	//setVel_.z = md_velZ + imGuiVel_[2];
-	//setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f  + imGuiVel_[2];
-	setVel_.z = -0.1f;
-
-	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
-	Vector3 acc{};
-	const float md_acc = -0.017f;
-	acc.x = 0.0f;
-	acc.y = md_acc;
-	acc.z = 0.0f;
-
-	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
-
-	if(it->isGenerated == false)
-	{
-		it->object3d.SetTransform(setPos_);
-		it->object3d.SetScale(it->s_scale);
-		it->object3d.SetColorFlag(true);
-		if(attributeColor == Attribute::pink)
-		{
-			it->object3d.SetColor(Vector3(1.0f, 0.4f, 0.7f));
-		}
-		else if(attributeColor == Attribute::yellow)
-		{
-			it->object3d.SetColor(Vector3(1.0f, 0.469f, 0.0f));
-		}
-		else
-		{
-			it->object3d.SetColor(Vector3(0.0f, 0.0f, 0.0f));
-		}
-		it->object3d.SetAlphaFlag(true);
-		it->alpha = 1.0f;
-		it->object3d.SetAlpha(it->alpha);
-		it->object3d.Update(camera);
-		it->velocity = setVel_;
-		it->accel = acc;
-		it->colorSpeed = colorSpeed;
-		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+		it->s_scale = kInitStartScale_;
 		it->scale = it->s_scale;
 		it->e_scale = Vector3Zero();
 		it->frame = 0;

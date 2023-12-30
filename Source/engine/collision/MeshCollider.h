@@ -3,7 +3,9 @@
 #include "CollisionPrimitive.h"
 #include "Matrix4.h"
 
-//メッシュ衝突判定オブジェクト
+/// <summary>
+/// メッシュ衝突判定オブジェクト
+/// </summary>
 class MeshCollider : public BaseCollider
 {
 

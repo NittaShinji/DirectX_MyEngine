@@ -69,6 +69,5 @@ void ObjParticleManager::ParticleRemove()
 	for(auto& emitter : emitters_)
 	{
 		emitter->ParticleRemove();
-		emitter->SetIsMaxParticle(false);
 	}
 }

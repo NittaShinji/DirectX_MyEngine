@@ -5,6 +5,10 @@
 #include <vector>
 #include <wrl.h>
 
+/// <summary>
+/// メッシュ
+/// モデルを構成するポリゴンを扱う
+/// </summary>
 class Mesh
 {
 

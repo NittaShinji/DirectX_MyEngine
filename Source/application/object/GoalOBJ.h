@@ -3,6 +3,9 @@
 #include "LevelManager.h"
 #include "ObjectAttribute.h"
 
+/// <summary>
+/// 当たり判定のあるゴールオブジェクト
+/// </summary>
 class GoalOBJ : public TouchableObject
 {
 public:

@@ -6,9 +6,8 @@
 #include <forward_list>
 
 /// <summary>
-/// 3Dオブジェクト
+/// 2Dパーティクル生成器
 /// </summary>
-
 class ParticleEmitter
 {
 
@@ -66,6 +65,10 @@ public: // サブクラス
 
 public: // メンバ関数
 
+	//静的インスタンスを生成
+	static std::unique_ptr<ParticleEmitter> Create();
+
+	//初期化
 	virtual void Initialize(ID3D12Device* device);
 
 	/// <summary>
@@ -79,8 +82,10 @@ public: // メンバ関数
 	/// </summary>
 	void InitializeDescriptorHeap();
 
+	//描画前処理
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
 
+	//描画後処理
 	static void PostDraw();
 
 	/// <summary>
@@ -93,30 +98,21 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	static std::unique_ptr<ParticleEmitter> Create();
-
 	//頂点バッファの生成
 	void CreateVertBuff();
-
+	
+	//パーティクルを追加
 	void Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 startColor,Vector4 endColor,Vector4 colorSpeed, float start_scale, float end_scale,float rotation,float rotationSpeed);
+
+	//パーティクルを削除
+	void ParticleRemove();
 
 	//テンプレートコンストラクタ
 	template <typename Type1>
 	//定数バッファの生成
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
 
-	bool GetIsMaxParticle() { return isMaxParticle_; }
-
-	void SetScale();
-	void SetRotation(float rotation) { rotation_ = rotation; };
-
-	void ParticleRemove();
-
-	std::forward_list<Particle> GetPaticles() { return particles_; }
-
-	void SetGenerationNum(int32_t generationNum) { generationNum_ = generationNum; }
-	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
-
+	
 private: // 定数
 	static const int division = 50;					// 分割数
 	static const float radius;				// 底面の半径
@@ -130,10 +126,9 @@ private:
 
 	//グラフィックスパイプライン
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
-
+	//パープラインステート
 	static ComPtr<ID3D12PipelineState> pipelineState_;
 
-	
 	// テクスチャバッファ
 	ComPtr<ID3D12Resource> texbuff_;
 	
@@ -161,15 +156,15 @@ private:
 	static const size_t kMaxSRVCount_ = 2056;
 	static const UINT kRenderTexNum = 2;
 
+	//コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList_;
+	//デバイス
 	static ID3D12Device* device_;
-
+	//DirectXの基礎情報
 	DirectXBasic* directXBasic_ = nullptr;
 
 	// 頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
-
-	bool isFinish_ = 0;
 	
 protected :
 
@@ -195,19 +190,20 @@ protected :
 	//最大限生成しているかどうか
 	bool isMaxParticle_;
 
+	//回転角
 	float rotation_;
 
+	// 頂点数
+	static const int kVertexCount = 1024;		
 
-	static const int kVertexCount = 1024;		// 頂点数
-
-	const float kColorPinkR = 0.965f;
-	const float kColorPinkG = 0.122f;
-	const float kColorPinkB = 0.325f;
+	const float kColorPinkR = 1.465f;
+	const float kColorPinkG = 0.422f;
+	const float kColorPinkB = 0.825f;
 	const float kColorPinkAlpha = 1.0f;
 
-	const float kColorYellowR = 0.957f;
-	const float kColorYellowG = 0.596f;
-	const float kColorYellowB = 0.333f;
+	const float kColorYellowR = 1.457f;
+	const float kColorYellowG = 0.896f;
+	const float kColorYellowB = 0.833f;
 	const float kColorYellowAlpha = 1.0f;
 
 	//フレーム増加量
@@ -218,5 +214,14 @@ protected :
 
 	//ゲームスピード
 	GameSpeed* gameSpeed_ = nullptr;
+
+public: //アクセッサ
+
+	//最大数まで生成しているかどうかを取得
+	bool GetIsMaxParticle() { return isMaxParticle_; }
+	//生成しているパーティクルを取得
+	//std::forward_list<Particle> GetPaticles() { return particles_; }
+	//ゲームスピードをセット
+	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 };
 

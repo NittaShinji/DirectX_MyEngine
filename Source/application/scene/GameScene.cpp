@@ -39,7 +39,8 @@ void GameScene::Initialize()
 	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
 	Object3d::SetLightGroup(lightGroup_);
-	lightGroup_->SetDirLightActive(0, true);
+	const int32_t firstLight = 0;
+	lightGroup_->SetDirLightActive(firstLight, true);
 	//lightGroup_->SetDirLightActive(1, true);
 
 	//サウンド
@@ -70,10 +71,12 @@ void GameScene::Initialize()
 	backGroundSprite_ = std::make_unique<Sprite>();
 	sceneTransitionUp_ = std::make_unique<Sprite>();
 	sceneTransitionDown_ = std::make_unique<Sprite>();
-	//testParticleSprite_ = std::make_unique<Sprite>();
+	
+	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
+	const Vector4 blackColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
 	//黒色のテクスチャ―
-	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_ / 2 , Vector4(0.0f, 0.0f, 0.0f, 1.0f), "BlackBackGroundHalfTex");
+	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, kHalfWindowHeight, blackColor, "BlackBackGroundHalfTex");
 	TextureManager::GetInstance()->LoadTexture("jump.png");
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
 	TextureManager::GetInstance()->LoadTexture("cloud.png");
@@ -81,26 +84,11 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
 
-
-	Vector2 aButtonPosition;
-	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x * 2);
-	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 4) + (kUiSize_.y / 2);
-
-	Vector2 bButtonPosition;
-	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x);
-	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 4) + (kUiSize_.y / 2);
-
-	Vector2 jumpSpritePosition;
-	jumpSpritePosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x * 2);
-	jumpSpritePosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 3) + (kUiSize_.y / 2);
-
-	Vector2 arrowPosition;
-	arrowPosition.x = (WindowsAPI::kWindow_width_)-(kUiSize_.x);
-	arrowPosition.y = (WindowsAPI::kWindow_height_ / 2) + (kUiSize_.y * 3) + (kUiSize_.y / 2);
-
-	Vector2 transitionSize;
-	transitionSize.x = (WindowsAPI::kWindow_width_);
-	transitionSize.y = (WindowsAPI::kWindow_height_ / 2);
+	const Vector2 aButtonPosition = { 1152,648 };
+	const Vector2 bButtonPosition = { 1216,648 };
+	const Vector2 jumpSpritePosition = { 1152,684 };
+	const Vector2 arrowPosition = { 1216,584 };
+	const Vector2 kDefaultSpritePos = { 0.0f,0.0f };
 
 	aButtonSprite_->Initialize("A.png",aButtonPosition);
 	aButtonSprite_->SetSize(Vector2(kUiSize_));
@@ -110,11 +98,10 @@ void GameScene::Initialize()
 	jumpSprite_->SetSize(Vector2(kUiSize_));
 	arrowSprite_->Initialize("arrow.png",arrowPosition);
 	arrowSprite_->SetSize(Vector2(kUiSize_));
-	backGroundSprite_->Initialize("backGround.png",Vector2(0.0f, 0.0f));
-	sceneTransitionUp_->Initialize("BlackBackGroundHalfTex",Vector2(0.0f, 0.0f));
-	sceneTransitionDown_->Initialize("BlackBackGroundHalfTex",Vector2(0.0f, WindowsAPI::kWindow_height_ / 2));
-	//testParticleSprite_->Initialize(Vector2(kHalfWindowWidth, kHalfWindowHeight));
-
+	backGroundSprite_->Initialize("backGround.png", kDefaultSpritePos);
+	sceneTransitionUp_->Initialize("BlackBackGroundHalfTex", kDefaultSpritePos);
+	sceneTransitionDown_->Initialize("BlackBackGroundHalfTex",Vector2(kDefaultSpritePos.x, kHalfWindowHeight));
+	
 	//モデル読み込み
 	const string sphere = "sphere";
 	const string test = "NoImageModel";
@@ -145,19 +132,6 @@ void GameScene::Initialize()
 
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
-
-	skydome_ = Object3d::Create(skydome);
-	Vector3 skydomeScale = { 5,5,10 };
-	skydome_->SetScale(skydomeScale);
-
-	plane_ = TouchableObject::Create(plane, COLLISION_ATTR_BLACK);
-	plane_->SetColorFlag(true);
-	plane_->SetColor(Vector3(0.8f, 0.25f, 0.0f));
-	Vector3 planeScale = { 500,1200,1200 };
-	Vector3 planeTransform = { 0.0f,-2.0f,0.0f };
-	plane_->SetAttributeColor(black);
-	plane_->SetTransform(planeTransform);
-	plane_->SetScale(planeScale);
 
 	//------------カメラ----------
 	gameCamera_ = std::make_unique<GameCamera>();
@@ -254,8 +228,7 @@ void GameScene::Update()
 	backGroundSprite_->matUpdate();
 	sceneTransitionUp_->matUpdate();
 	sceneTransitionDown_->matUpdate();
-	//testParticleSprite_->matUpdate();
-
+	
 	if(gamePad_->IsConnected(Player1)) {}
 
 	gamePad_->PushedButtonMoment();
@@ -273,7 +246,6 @@ void GameScene::Update()
 	}
 
 	//光線方向初期値
-	//static Vector3 lightDir = { 0,1,0 };
 	static Vector3 lightDir = { 1,-1,-10 };
 
 	float lightDirUp = 0.0f;
@@ -282,11 +254,9 @@ void GameScene::Update()
 
 	lightGroup_->SetAmbientColor(color);
 	lightGroup_->SetDirLightDir(0, lightDir, lightDirUp);
-	//lightGroup_->SetDirLightDir(1, lightDir, lightDirUp);
-
-	lightGroup_->SetDirLightColor(0, Vector3(1, 1, 1));
-	//lightGroup_->SetDirLightColor(1, Vector3(1, 1, 1));
-
+	const Vector3 whitelightColor = { 1.0f,1.0f,1.0f };
+	lightGroup_->SetDirLightColor(0, whitelightColor);
+	
 	{
 		//imguiからのライトパラメータを反映
 		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
@@ -297,12 +267,10 @@ void GameScene::Update()
 	lightGroup_->Update();
 
 	gameCamera_->Update(player_->GetIsMoving(),player_->GetTransform(),player_->GetInitPos(),player_->GetIsDead(),
-	player_->GetDeadPos(),player_->GetTotalAxcell(),player_->GetOnGround(),player_->GetRightAxcell(),player_->rightAxcellVec());
+	player_->GetDeadPos(),player_->GetRightAxcell());
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
-	skydome_->Update(gameCamera_.get());
-	plane_->Update(gameCamera_.get());
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
 
@@ -326,7 +294,7 @@ void GameScene::Update()
 				{
 					if(player_->GetIsSecondJumpMoment() == true)
 					{
-						secondJumpParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
+						secondJumpParticle_->Preparation(player_->GetTransform());
 					}
 				}
 
@@ -344,7 +312,7 @@ void GameScene::Update()
 
 					if(player_->GetIsLanded() == true || isTouchObject == true)
 					{
-						hitParticle_->Preparation(player_->GetTransform(), isTouchObject);
+						hitParticle_->Preparation(player_->GetTransform());
 						if(isTouchObject == true)
 						{
 							player_->SetIsTouchObject(false);
@@ -363,7 +331,7 @@ void GameScene::Update()
 			{
 				if(player_->GetIsSecondJumpMoment() == true)
 				{
-					secondJumpParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor());
+					secondJumpParticle_->Preparation(player_->GetTransform());
 				}
 			}
 
@@ -381,7 +349,7 @@ void GameScene::Update()
 
 				if(player_->GetIsLanded() == true || isTouchObject == true)
 				{
-					hitParticle_->Preparation(player_->GetTransform(), isTouchObject);
+					hitParticle_->Preparation(player_->GetTransform());
 					if(isTouchObject == true)
 					{
 						player_->SetIsTouchObject(false);
@@ -405,15 +373,19 @@ void GameScene::Update()
 
 	gameCamera_->ImGuiUpdate();
 	player_->ImGuiUpdate();
-	//secondJumpParticle_->ImGuiUpdate();
 	breakParticle_->ImGuiUpdate();
 	groundParticle_->ImguiUpdate();
 
 	ImGui::Begin("light");
-	ImGui::SetWindowPos(ImVec2(0, 360));
-	ImGui::SetWindowSize(ImVec2(200, 100));
+	const Vector2 kImGuiPos = { 0.0f,360.0f };
+	const Vector2 kImGuiSize = { 200.0f,100.0f };
 
-	ImGui::SliderFloat3("lightDir", imGuiDir_, -30.0f, 30.0f);
+	ImGui::SetWindowPos(ImVec2(kImGuiPos.x,kImGuiPos.y));
+	ImGui::SetWindowSize(ImVec2(kImGuiSize.x, kImGuiSize.y));
+
+	const Vector2 kImGuiRate = { -30.0f,30.0f };
+
+	ImGui::SliderFloat3("lightDir", imGuiDir_, kImGuiRate.x, kImGuiRate.y);
 	
 	ImGui::End();
 
@@ -545,7 +517,8 @@ void GameScene::ResetSceneAnimation()
 	if(isFinishAnimetion_ == true)
 	{
 		sceneTransitionUp_->SetPosition(Vector2(0.0f, 0.0f));
-		sceneTransitionDown_->SetPosition(Vector2(0.0f, WindowsAPI::kWindow_height_ / 2));
+		const float kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
+		sceneTransitionDown_->SetPosition(Vector2(0.0f, kHalfWindowHeight));
 		sceneAnimeTimer_ = 0;
 		sceneAnimationVec_ = Vector2(0.0f, 0.0f);
 		isFinishAnimetion_ = false;

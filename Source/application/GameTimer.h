@@ -1,5 +1,9 @@
 #pragma once
 #include "Sprite.h"
+
+/// <summary>
+/// ゲームタイマー
+/// </summary>
 class GameTimer
 {
 
@@ -25,31 +29,42 @@ public:
 
 public: 
 
+	//静的初期化
 	void StaticInitialize();
+	//ゲーム中の初期化
 	void InGameInitialize();
+	//リザルト画面の初期化
 	void ResultInitialize();
 
-	//void Update(bool isStart);
-
-	void InGameUpdate(bool isStart, bool isFinish);
-	void ResultUpdate();
-
-	void Reset();
-
-	void InGameDraw();
-	void ResultDraw();
-
-	void LoadSprite();
-
-	static void Draw();
-
+	//数字の更新
 	void NumberUpdate();
+	//ゲーム中の数字を更新
 	void InGameNumberUpdate(bool isFinish);
+	//リザルト画面の数字を更新
 	void ResultNumberUpdate();
 
-	void SetNumber(int number,Sprite* sprite);
+	//リザルト画面での更新
+	void ResultUpdate();
 
-	void StopTimer();
+	//ImGuiの更新
+	void InGameUpdate(bool isStart, bool isFinish);
+
+	//リセット
+	void Reset();
+
+	//ゲーム中の描画
+	void InGameDraw();
+	//結果画面での描画
+	void ResultDraw();
+
+	//スプライト読み込み
+	void LoadSprite();
+
+	//描画
+	static void Draw();
+
+	//数字をセット
+	void SetNumber(int number,Sprite* sprite);
 
 private:
 
@@ -85,11 +100,6 @@ private:
 	//画像読み込みフラグ
 	static bool isLoadSprite_;
 
-	//リザルトで足していくときのタイマー
-	//float inGameTimer;
-	//float resultTimer;
-
-	//std::unique_ptr<Sprite> clock_;
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
 	static std::unique_ptr<Sprite> blackDot_;

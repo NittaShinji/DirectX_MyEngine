@@ -2,6 +2,9 @@
 #include "Sprite.h"
 #include "Vector4.h"
 
+/// <summary>
+/// ポストエフェクト
+/// </summary>
 class PostEffect : public Sprite
 {
 private:

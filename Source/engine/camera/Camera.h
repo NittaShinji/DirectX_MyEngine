@@ -4,6 +4,9 @@
 #include "DirectXBasic.h"
 #include "MathUtillity.h"
 
+/// <summary>
+/// カメラ
+/// </summary>
 class Camera
 {
 public:

@@ -18,11 +18,16 @@ class CollisionManager;
 class TouchableObject;
 class Player;
 
+/// <summary>
+/// チュートリアルシーン
+/// </summary>
 class TutorialScene : public BaseScene
 {
 public:
 
+	//コンストラクタ
 	TutorialScene();
+	//デストラクタ
 	~TutorialScene();
 
 	//静的初期化
@@ -75,10 +80,6 @@ private:
 
 	//衝突マネージャー
 	CollisionManager* collisionManager_ = nullptr;
-
-	//パーティクル
-	/*std::unique_ptr<ParticleManager> particleManager_ = nullptr;
-	std::unique_ptr<ParticleManager> playerRunEffect_ = nullptr;*/
 
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;

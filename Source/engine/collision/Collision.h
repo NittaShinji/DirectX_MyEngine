@@ -2,6 +2,9 @@
 
 #include "CollisionPrimitive.h"
 
+/// <summary>
+/// 衝突判定
+/// </summary>
 class Collision
 {
 public:

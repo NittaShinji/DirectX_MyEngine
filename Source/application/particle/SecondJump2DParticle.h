@@ -1,13 +1,16 @@
 #pragma once
 #include "ParticleManager.h"
 
+/// <summary>
+/// プレイヤーのジャンプ時に出る半透明の円形パーティクル
+/// </summary>
 class SecondJump2DParticle : public ParticleEmitter
 {
 public:
 
 	static std::unique_ptr<SecondJump2DParticle> Create(std::string fileName);
 
-	void Preparation(Vector3 playerPos, Attribute playerColor);
+	void Preparation(Vector3 playerPos);
 
 	void Update(Camera* camera) override;
 

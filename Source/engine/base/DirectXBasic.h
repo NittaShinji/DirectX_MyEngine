@@ -11,7 +11,9 @@
 #include <d3d12.h>
 #pragma warning(pop)
 
-//DirectX基盤
+/// <summary>
+/// DirectX基盤
+/// </summary>
 class DirectXBasic
 {
 

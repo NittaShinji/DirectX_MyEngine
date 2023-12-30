@@ -20,36 +20,34 @@ std::unique_ptr<HitParticle2D> HitParticle2D::Create(std::string fileName)
 	return instance;
 }
 
-void HitParticle2D::Preparation(Vector3 playerPos,bool isPlayerTouchObject)
+void HitParticle2D::Preparation(Vector3 playerPos)
 {	
-	if(isPlayerTouchObject == true)
-	{
-		/*if(isGenerated_ == true)
-		{
-			isGenerated_ = false;
-		}*/
-	}
-
 	if(isGenerated_ == false)
 	{
 		isGenerated_ = true;
 
-		for(int32_t i = 0; i < 3; i++)
+		for(int32_t i = 0; i < kOneTimeGenerationNum; i++)
 		{
+			//生成する座標
 			const float md_pos = 2.0f;
-			setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.x + imGuiPos_[0] + i * 0.2f;
+			//半分にするようの変数
+			const float divideForHalf = 2.0f;
+			//生成時にずれる座標の量
+			const float shiftQuantity = 0.2f;
+
+			setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.x + imGuiPos_[0] + i * shiftQuantity;
 			const float shiftY = -0.8f;
 			setPos_.y = playerPos.y + shiftY + imGuiPos_[1] - i * 0.2f;
-			setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + playerPos.z + imGuiPos_[2] - i * 0.2f;
+			setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.z + imGuiPos_[2] - i * shiftQuantity;
 
 			const float md_velX = 0.0f;
-			setVel_.x = (float)rand() / RAND_MAX * md_velX - md_velX / 2.0f + imGuiVel_[0];
+			setVel_.x = (float)rand() / RAND_MAX * md_velX - md_velX / divideForHalf + imGuiVel_[0];
 
 			const float md_velY = 0.0f;
 			setVel_.y = md_velY + imGuiVel_[1];
 
 			const float md_velZ = 0.0f;
-			setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / 2.0f + imGuiVel_[2];
+			setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / divideForHalf + imGuiVel_[2];
 
 			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 			Vector3 acc{};
@@ -57,11 +55,11 @@ void HitParticle2D::Preparation(Vector3 playerPos,bool isPlayerTouchObject)
 			acc.x = imGuiAcc_[0];
 			acc.y = md_acc + imGuiAcc_[1];
 
-			Vector4 endColor = { 1.0f,1.0f,1.0f,0.0f };
+			const Vector4 endColor = { 1.0f,1.0f,1.0f,0.0f };
 			const Vector4 startColor = { 1.0f,1.0f,1.0f,1.0f };
 
 			const float md_rotate = 1.0f;
-			float rotation = (float)rand() / RAND_MAX * md_rotate - 0.0f;
+			float rotation = (float)rand() / RAND_MAX * md_rotate;
 			float rotationSpeed = 0.005f;
 
 			//色を変化させる
@@ -151,11 +149,10 @@ void HitParticle2D::Update(Camera* camera)
 			//速度に加速度を加算
 			it->velocity = (it->velocity + it->accel) * gameSpeed_->GetSpeedNum();
 
-			//it->velocity = it->velocity + it->accel;
 			//速度による移動
 			it->position = it->position + it->velocity;
 
-			//it->frame++;
+			//ゲームスピードに応じてフレームを加算する
 			it->frame += freamIncreaseValue_ * gameSpeed_->GetSpeedNum();
 
 			//進行度を0～1の範囲に換算
@@ -228,7 +225,7 @@ void HitParticle2D::Update(Camera* camera)
 
 	Matrix4 matRot = MatrixIdentity();
 	matRot *= MatrixRotateZ(rotation_);
-	rotation_ += 0.01f;
+	rotation_ += kMoveRotateValue_;
 
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;

@@ -7,6 +7,10 @@
 #include <array>
 #include <map>
 
+/// <summary>
+/// テクスチャマネージャー
+/// 画像を管理する
+/// </summary>
 class TextureManager final
 {
 private:

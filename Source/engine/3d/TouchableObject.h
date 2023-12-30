@@ -3,6 +3,10 @@
 
 class MeshCollider;
 
+/// <summary>
+/// 接触可能オブジェクト
+/// 自動で当たり判定を登録するオブジェクトクラス
+/// </summary>
 class TouchableObject : public Object3d
 {
 public:

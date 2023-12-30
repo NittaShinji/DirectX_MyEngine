@@ -2,6 +2,10 @@
 #include "BaseScene.h"
 #include "AbstractSceneFactory.h"
 
+/// <summary>
+/// シーンマネージャー
+/// シーンを管理する
+/// </summary>
 class SceneManager final
 {
 

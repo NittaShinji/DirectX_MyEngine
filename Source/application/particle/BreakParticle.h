@@ -2,30 +2,45 @@
 #include "ObjParticleEmitter.h"
 #include "GameSpeed.h"
 
+/// <summary>
+/// 壁破壊時のパーティクル
+/// </summary>
 class BreakParticle : public ObjParticleEmitter
 {
 public:
 
+	enum breakDir
+	{
+		FrontUp = 0,
+		BackUp,
+		FrontDown,
+		BackDown,
+	};
+
+public:
+
+	//インスタンスを生成
 	static std::unique_ptr<BreakParticle> Create(std::string modelName);
 
+	//初期化
 	void Initialize();
 
+	//更新
 	void Update(Camera* camera) override;
 
+	//リセット
 	void Reset();
 
-	void PopUpdate(Camera* camera, std::vector<Vector3> breakWallsPos);
-
+	//パーティクル生成準備
 	void Preparation() override;
 
+	//パーティクル生成
 	void BreakParticlePop(Camera* camera, const Vector3& popPos);
 
-	bool GetCanReset() { return canReset_; }
+	//パーティクル生成時の更新処理
+	void PopUpdate(Camera* camera, std::vector<Vector3> breakWallsPos);
 
-	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
-	void SetCanReset(bool canReset) { canReset_ = canReset; }
-	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
-
+	//ImGuiの更新処理
 	void ImGuiUpdate();
 
 private:
@@ -38,14 +53,26 @@ private:
 	//方向
 	Vector3 setVel_;
 
+	//初期スケール初期値
+	const Vector3 kInitStartScale_ = { 0.9f,0.9f,0.9f };
+	//終期スケール初期値
+	const Vector3 kInitEndScale_ = { 0.0f,0.0f,0.0f };
+
+	//初期カウンター数
+	const int32_t kInitCount_ = 0;
+
 	//初期スケール
 	Vector3 startScale_ = {};
 	//終期スケール
 	Vector3 endScale_ = {};
 
-	float imGuiPos_[3]{ 0.0f,0.0f,0.0f };
-	float imGuiVel_[3]{ 0.0f,0.0f,0.0f };
-	float imGuiAcc_[3]{ 0.0f,0.0f,0.0f };
+	const float kMoveAlphaValue_ = 0.03f;
+
+	//Imgui設定
+	const float kInitImguiValue = 0.0f;
+	float imGuiPos_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
+	float imGuiVel_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
+	float imGuiAcc_[3]{ kInitImguiValue,kInitImguiValue,kInitImguiValue };
 
 	int32_t particleCount_;
 
@@ -61,5 +88,15 @@ private:
 	//ゲームスピード
 	GameSpeed* gameSpeed_ = nullptr;
 
+public: //アクセッサ
+
+	//リセットしても良いかどうかのフラグを取得する
+	bool GetCanReset() { return canReset_; }
+	//プレイヤーが死んでいるかどうかをセット
+	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
+	//リセットしても良いかどうかのフラグをセットする
+	void SetCanReset(bool canReset) { canReset_ = canReset; }
+	//ゲームスピードをセットする
+	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 };
 

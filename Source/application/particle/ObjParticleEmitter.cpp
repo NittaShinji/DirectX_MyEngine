@@ -5,9 +5,10 @@ using namespace Microsoft::WRL;
 void ObjParticleEmitter::Initialize()
 {
 	isMaxParticle_ = false;
-	generationNum_ = 0;
-	nowParticleCount_ = 0;
-	maxParticleNum_ = 0;
+	const int32_t kInitCount = 0;
+	generationNum_ = kInitCount;
+	nowParticleCount_ = kInitCount;
+	maxParticleNum_ = kInitCount;
 }
 
 void ObjParticleEmitter::Update(Camera* camera)
@@ -78,7 +79,7 @@ std::unique_ptr<ObjParticleEmitter> ObjParticleEmitter::Create()
 void ObjParticleEmitter::Preparation()
 {
 	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+	const Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
 	Add(modelName_, InitLife, InitPos, InitVel, InitAcc, colorSpeed, InitStartScale, InitEndScale);
 }

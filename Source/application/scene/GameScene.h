@@ -28,6 +28,9 @@ class CollisionManager;
 class TouchableObject;
 class Player;
 
+/// <summary>
+/// ゲームシーン
+/// </summary>
 class GameScene : public BaseScene
 {
 public:
@@ -42,6 +45,9 @@ public:
 	/// </summary>
 	~GameScene();
 
+	/// <summary>
+	/// 静的初期化
+	/// </summary>
 	static void StaticInitialize();
 
 	/// <summary>
@@ -89,9 +95,6 @@ private:
 	std::unique_ptr<TouchableObject> plane_ = nullptr;
 	std::unique_ptr<BackGround> backGround_ = nullptr;
 	std::unique_ptr<BackGround> normalBackGround_ = nullptr;
-
-	
-
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;
 
@@ -130,15 +133,11 @@ private:
 
 	const Vector2 kUiSize_ = { 64.0f,64.0f };
 
-	//std::unique_ptr<Sprite> testParticleSprite_ = nullptr;
-
-	float imGuiPos[3]{ 0.0f,0.0f,0.0f };
-	float imGuiVel[3]{ 0.0f,0.0f,0.0f };
-	float imGuiAcc[3]{ 0.0f,0.0f,0.0f };
-
-	float imGuiDir_[3]{ 0.0f,0.0f,0.0f };
-
-
+	const float initImguiValue_ = 0.0f;
+	float imGuiPos[3]{ initImguiValue_,initImguiValue_,initImguiValue_ };
+	float imGuiVel[3]{ initImguiValue_,initImguiValue_,initImguiValue_ };
+	float imGuiAcc[3]{ initImguiValue_,initImguiValue_,initImguiValue_ };
+	float imGuiDir_[3]{ initImguiValue_,initImguiValue_,initImguiValue_ };
 
 	//サウンド
 	std::unique_ptr<Sound> gameSound_ = nullptr;

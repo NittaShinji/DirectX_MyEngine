@@ -20,17 +20,17 @@ std::unique_ptr<BreakParticle> BreakParticle::Create(std::string modelName)
 
 void BreakParticle::Initialize()
 {
-	startScale_ = { 0.9f,0.9f,0.9f };
-	endScale_ = { 0.0f,0.0f,0.0f };
-	particleCount_ = 0;
+	startScale_ = kInitStartScale_;
+	endScale_ = kInitEndScale_;
+	particleCount_ = kInitCount_;
 	isPlayerDead_ = false;
 	canReset_ = false;
 	isStartPoped_ = false;
 	isMaxParticle_ = false;
-	generationNum_ = 0;
-	nowParticleCount_ = 0;
+	generationNum_ = kInitCount_;
+	nowParticleCount_ = kInitCount_;
 	maxParticleNum_ = kMaxParticleNum_;
-	resetCount_ = 0;
+	resetCount_ = kInitCount_;
 
 	for(int32_t i = 0; i < kMaxParticleNum_; i++)
 	{
@@ -98,7 +98,7 @@ void BreakParticle::Update(Camera* camera)
 			it->scale = (it->e_scale - it->s_scale) * f;
 			it->scale += it->s_scale;
 
-			it->alpha -= 0.03f;
+			it->alpha -= kMoveAlphaValue_;
 			it->object3d.SetAlpha(it->alpha);
 
 			it->object3d.SetScale(it->scale);
@@ -140,11 +140,6 @@ void BreakParticle::PopUpdate(Camera* camera, std::vector<Vector3> breakWallsPos
 		isStartPoped_ = true;
 	}
 
-	/*if(isBreakOnWall == true)
-	{
-		isStartPoped_ = true;
-	}*/
-
 	if(isStartPoped_ == true)
 	{
 		//最大数パーティクルを生み出したら出現を止める
@@ -173,7 +168,7 @@ void BreakParticle::PopUpdate(Camera* camera, std::vector<Vector3> breakWallsPos
 void BreakParticle::Preparation()
 {
 	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+	const Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
 	const float kInitLife = 60.0f;
 
@@ -188,57 +183,53 @@ void BreakParticle::BreakParticlePop(Camera* camera, const Vector3& popPos)
 		it++;
 	}
 
-	if(particleCount_ == 0)
+	//生成時にずれる座標の量
+	const float shiftQuantity = 2.4f;
+	
+	//プレイヤーから見て進行方向の上にパーティクル生成
+	if(particleCount_ == FrontUp)
 	{
 		setPos_.x = popPos.x + imGuiPos_[0] ;
-		setPos_.y = popPos.y + imGuiPos_[1] + 2.4f;
-		setPos_.z = popPos.z + imGuiPos_[2] + 2.4f;
-	}
-	else if(particleCount_ == 1)
+		setPos_.y = popPos.y + imGuiPos_[1] + shiftQuantity;
+		setPos_.z = popPos.z + imGuiPos_[2] + shiftQuantity;
+	}//プレイヤーから見て逆方向の上にパーティクル生成
+	else if(particleCount_ == BackUp)
 	{
 		setPos_.x = popPos.x + imGuiPos_[0] ;
-		setPos_.y = popPos.y + imGuiPos_[1] + 2.4f;
-		setPos_.z = popPos.z + imGuiPos_[2] - 2.4f;
-	}
-	else if(particleCount_ == 2)
+		setPos_.y = popPos.y + imGuiPos_[1] + shiftQuantity;
+		setPos_.z = popPos.z + imGuiPos_[2] - shiftQuantity;
+	}//プレイヤーから見て進行方向の下にパーティクル生成
+	else if(particleCount_ == FrontDown)
 	{
 		setPos_.x = popPos.x + imGuiPos_[0] ;
-		setPos_.y = popPos.y + imGuiPos_[1] - 2.4f;
-		setPos_.z = popPos.z + imGuiPos_[2] + 2.4f;
-	}
-	else if(particleCount_ == 3)
+		setPos_.y = popPos.y + imGuiPos_[1] - shiftQuantity;
+		setPos_.z = popPos.z + imGuiPos_[2] + shiftQuantity;
+	}//プレイヤーから見て逆方向の下にパーティクル生成
+	else if(particleCount_ == BackDown)
 	{ 
 		setPos_.x = popPos.x + imGuiPos_[0] ;
-		setPos_.y = popPos.y + imGuiPos_[1] - 2.4f;
-		setPos_.z = popPos.z + imGuiPos_[2] - 2.4f;
+		setPos_.y = popPos.y + imGuiPos_[1] - shiftQuantity;
+		setPos_.z = popPos.z + imGuiPos_[2] - shiftQuantity;
 	}
 
-	//const float md_pos = 2.0f;
-	//setPos_.x = popPos.x + imGuiPos_[0];
-	//const float shiftY = -0.8f;
-	//const float shiftZ = -0.8f;
-	//setPos_.y = popPos.y + imGuiPos_[1];
-	//setPos_.z = popPos.z + imGuiPos_[2];
-	//setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + imGuiPos_[2];
-
-	setVel_.x = 0.0f + imGuiVel_[0];
+	setVel_.x = imGuiVel_[0];
 
 	const float md_velY = 0.274f;
 	const float md_velZ = 0.781f;
-	//setVel_.y = (float)rand() / RAND_MAX * md_velY + imGuiVel_[1];
-	//setVel_.z = (float)rand() / RAND_MAX * md_velZ + imGuiVel_[2];
+
 	setVel_.y =  md_velY + imGuiVel_[1];
 	setVel_.z =  md_velZ + imGuiVel_[2];
 
 	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
+	const float kInitAcc = 0.0f;
 	Vector3 acc{};
 	const float md_acc = -0.017f;
-	acc.x = 0.0f;
+	acc.x = kInitAcc;
 	acc.y = md_acc;
-	acc.z = 0.0f;
+	acc.z = kInitAcc;
 
 	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,-1.0f };
+	const Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,-1.0f };
 
 	if(it->isGenerated == false)
 	{
@@ -255,9 +246,8 @@ void BreakParticle::BreakParticlePop(Camera* camera, const Vector3& popPos)
 		it->velocity = setVel_;
 		it->accel = acc;
 		it->colorSpeed = colorSpeed;
-		it->s_scale = Vector3(1.0f, 1.0f, 1.0f);
+		it->s_scale = kInitStartScale_;
 		it->scale = it->s_scale;
-		//it->e_scale = Vector3Zero();
 		it->e_scale = it->scale;
 		it->frame = 0;
 		it->isGenerated = true;
@@ -269,20 +259,26 @@ void BreakParticle::BreakParticlePop(Camera* camera, const Vector3& popPos)
 void BreakParticle::ImGuiUpdate()
 {
 	ImGui::Begin("BreakParticle");
-	ImGui::SetWindowPos(ImVec2(600, 0));
-	ImGui::SetWindowSize(ImVec2(300, 300));
 
-	ImGui::SliderFloat("imGuiPos_.x", &imGuiPos_[0], -10.0f, 10.0f);
-	ImGui::SliderFloat("imGuiPos_.y", &imGuiPos_[1], -10.0f, 10.0f);
-	ImGui::SliderFloat("imGuiPos_.z", &imGuiPos_[2], -10.0f, 10.0f);
+	const Vector2 kImGuiPos = { 600.0f,0.0f };
+	const Vector2 kImGuiSize = { 300.0f,300.0f };
 
-	ImGui::SliderFloat("imGuiVel_.x", &imGuiVel_[0], -10.0f, 10.0f);
-	ImGui::SliderFloat("imGuiVel_.y", &imGuiVel_[1], -10.0f, 10.0f);
-	ImGui::SliderFloat("imGuiVel_.z", &imGuiVel_[2], -10.0f, 10.0f);
+	ImGui::SetWindowPos(ImVec2(kImGuiPos.x, kImGuiPos.y));
+	ImGui::SetWindowSize(ImVec2(kImGuiSize.x, kImGuiSize.y));
 
-	ImGui::SliderFloat("imGuiAcc_x", &imGuiAcc_[0], -10.0f, 10.0f);
-	ImGui::SliderFloat("imGuiAcc_y", &imGuiAcc_[1], -10.0f, 10.0f);
-	ImGui::SliderFloat("imGuiAcc_z", &imGuiAcc_[2], -10.0f, 10.0f);
+	const Vector2 kImGuiInit = { -10.0f,10.0f };
+
+	ImGui::SliderFloat("imGuiPos_.x", &imGuiPos_[0], kImGuiInit.x, kImGuiInit.y);
+	ImGui::SliderFloat("imGuiPos_.y", &imGuiPos_[1], kImGuiInit.x, kImGuiInit.y);
+	ImGui::SliderFloat("imGuiPos_.z", &imGuiPos_[2], kImGuiInit.x, kImGuiInit.y);
+
+	ImGui::SliderFloat("imGuiVel_.x", &imGuiVel_[0], kImGuiInit.x, kImGuiInit.y);
+	ImGui::SliderFloat("imGuiVel_.y", &imGuiVel_[1], kImGuiInit.x, kImGuiInit.y);
+	ImGui::SliderFloat("imGuiVel_.z", &imGuiVel_[2], kImGuiInit.x, kImGuiInit.y);
+
+	ImGui::SliderFloat("imGuiAcc_x", &imGuiAcc_[0], kImGuiInit.x, kImGuiInit.y);
+	ImGui::SliderFloat("imGuiAcc_y", &imGuiAcc_[1], kImGuiInit.x, kImGuiInit.y);
+	ImGui::SliderFloat("imGuiAcc_z", &imGuiAcc_[2], kImGuiInit.x, kImGuiInit.y);
 
 	ImGui::End();
 

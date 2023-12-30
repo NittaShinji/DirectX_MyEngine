@@ -6,6 +6,9 @@
 
 class BaseCollider;
 
+/// <summary>
+/// 衝突判定を管理する
+/// </summary>
 class CollisionManager
 {
 public: //静的メンバ関数

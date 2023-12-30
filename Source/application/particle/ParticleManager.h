@@ -7,9 +7,9 @@
 #include <forward_list>
 
 /// <summary>
-/// 2Dパーティクル
+/// 2Dパーティクルマネージャー
+/// 2Dパーティクル生成器を管理する
 /// </summary>
-
 class ParticleManager final
 {
 private:
@@ -40,7 +40,6 @@ public: // 静的メンバ関数
 	// 静的初期化
 	static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList*);
 
-
 public: // メンバ関数
 
 	void Initialize();
@@ -54,7 +53,6 @@ public: // メンバ関数
 	/// 描画
 	/// </summary>
 	void Draw();
-
 
 	/// <summary>
 	/// エミッター(生成器)の追加

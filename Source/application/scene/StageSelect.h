@@ -4,6 +4,9 @@
 #include "SoundManager.h"
 #pragma once
 
+/// <summary>
+/// ステージセレクト
+/// </summary>
 class StageSelectScene : public BaseScene
 {
 
@@ -27,6 +30,7 @@ private:
 	static KeyInput* keys_;
 	static ImGuiManager* imGuiManager_;
 
+	//スプライト
 	std::unique_ptr<Sprite> selectSprite_ = nullptr;
 	std::unique_ptr<Sprite> backGroundLeft_ = nullptr;
 	std::unique_ptr<Sprite> backGroundRight_ = nullptr;
@@ -41,7 +45,9 @@ private:
 	//シーンを変えるかどうか
 	bool isChangeScene_;
 
+	//シーンを変えるまでの時間
 	const float kChangeSceneTime_ = 10.0f;
+	//シーンを変えるまでのタイマー
 	float changeSceneTimer_ = kChangeSceneTime_;
 
 	//サウンド

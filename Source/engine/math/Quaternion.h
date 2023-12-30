@@ -1,6 +1,9 @@
 #pragma once
 #include "Matrix4.h"
 
+/// <summary>
+/// クォータニオン
+/// </summary>
 class Quaternion
 {
 

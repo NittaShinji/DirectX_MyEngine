@@ -2,7 +2,9 @@
 
 #include "AbstractSceneFactory.h"
 
-//ゲーム用のシーン工場
+/// <summary>
+/// ゲーム用のシーン工場
+/// </summary>
 class SceneFactory : public AbstractSceneFactory
 {
 public:

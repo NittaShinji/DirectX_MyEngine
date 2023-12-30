@@ -20,11 +20,6 @@ using namespace Microsoft::WRL;
 /// 静的メンバ変数の実体
 /// </summary>
 
-// 頂点バッファ
-//ComPtr<ID3D12Resource> ParticleEmitter::vertBuff_;
-//頂点データ配列
-//std::vector<ParticleEmitter::Vertex> ParticleEmitter::vertices_;
-
 //SRV用のデスクリプタヒープ
 ComPtr<ID3D12DescriptorHeap> ParticleEmitter::descHeap_;
 //デスクリプタヒープハンドル
@@ -37,7 +32,7 @@ uint32_t ParticleEmitter::sTextureIndex_;
 
 // シェーダリソースビューのハンドル(CPU)
 D3D12_CPU_DESCRIPTOR_HANDLE ParticleEmitter::cpuDescHandleSRV_;
-// シェーダリソースビューのハンドル(CPU)
+// シェーダリソースビューのハンドル(GPU)
 D3D12_GPU_DESCRIPTOR_HANDLE ParticleEmitter::gpuDescHandleSRV_;
 
 ComPtr<ID3D12PipelineState> ParticleEmitter::pipelineState_;
@@ -91,14 +86,6 @@ void ParticleEmitter::Initialize(ID3D12Device* device)
 	rotation_ = 0.0f;
 }
 
-void ParticleEmitter::SetScale()
-{
-	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
-	{
-		it->scale -= 0.11f;
-	}
-}
-
 void ParticleEmitter::ParticleRemove()
 {
 	//パーティクルを全削除
@@ -150,11 +137,10 @@ void ParticleEmitter::Update(Camera* camera)
 			//速度に加速度を加算
 			it->velocity = (it->velocity + it->accel) * gameSpeed_->GetSpeedNum();
 
-			//it->velocity = it->velocity + it->accel;
 			//速度による移動
 			it->position = it->position + it->velocity;
 
-			//it->frame++;
+			//ゲームスピードに応じてフレームを加算する
 			it->frame += freamIncreaseValue_ * gameSpeed_->GetSpeedNum();
 
 			//進行度を0～1の範囲に換算
@@ -164,6 +150,7 @@ void ParticleEmitter::Update(Camera* camera)
 			it->scale = (it->e_scale - it->s_scale) * f;
 			it->scale += it->s_scale;
 
+			//回転
 			it->rotation += it->rotationSpeed;
 
 			//座標
@@ -231,8 +218,7 @@ void ParticleEmitter::Update(Camera* camera)
 
 	Matrix4 matRot = MatrixIdentity();
 	matRot *= MatrixRotateZ(rotation_);
-	rotation_ += 0.01f;
-
+	
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
@@ -504,11 +490,6 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 		blenddesc.BlendOp = D3D12_BLEND_OP_ADD;				//加算
 		blenddesc.SrcBlend = D3D12_BLEND_SRC_ALPHA;			//ソースのアルファ値
 		blenddesc.DestBlend = D3D12_BLEND_INV_SRC_ALPHA;	//1.0f - ソースのアルファ値
-
-		//加算
-		/*blenddesc.BlendOp = D3D12_BLEND_OP_ADD;			
-		blenddesc.SrcBlend = D3D12_BLEND_ONE;
-		blenddesc.DestBlend = D3D12_BLEND_ONE;*/
 	}
 
 	//デスクリプタレンジの設定

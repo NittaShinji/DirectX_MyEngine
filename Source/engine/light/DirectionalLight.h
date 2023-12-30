@@ -8,6 +8,9 @@
 
 using namespace MathUtillty;
 
+/// <summary>
+/// 平行光源
+/// </summary>
 class DirectionalLight
 {
 private: //エイリアステンプレート

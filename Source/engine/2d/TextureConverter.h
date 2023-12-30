@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 
-//テクスチャコンバーター
+/// <summary>
+/// テクスチャコンバーター
+/// </summary>
 class TextureConverter
 {
 public:

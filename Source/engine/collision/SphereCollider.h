@@ -3,6 +3,9 @@
 #include "BaseCollider.h"
 #include "CollisionPrimitive.h"
 
+/// <summary>
+/// 球の衝突判定用クラス
+/// </summary>
 class SphereCollider : public BaseCollider, public Sphere
 {
 public:

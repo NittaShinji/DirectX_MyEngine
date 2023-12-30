@@ -5,6 +5,9 @@
 #include "WindowsAPI.h"
 #include "KeyInput.h"
 
+/// <summary>
+/// 入力クラス
+/// </summary>
 class Input
 {
 public:

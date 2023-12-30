@@ -9,6 +9,9 @@
 #include "MathUtillity.h"
 #include "TextureManager.h"
 
+/// <summary>
+/// スプライト共通部分
+/// </summary>
 class SpriteCommon final
 {
 private:

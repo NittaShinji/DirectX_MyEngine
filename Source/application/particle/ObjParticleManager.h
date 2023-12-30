@@ -2,11 +2,17 @@
 #include "Object3d.h"
 #include "ObjParticleEmitter.h"
 
+/// <summary>
+/// パーティクルマネージャー
+/// パーティクル生成器を管理する
+/// </summary>
 class ObjParticleManager final
 {
 public:
 
+	//コンストラクタ
 	ObjParticleManager();
+	//デストラクタ
 	~ObjParticleManager();
 
 private:
@@ -18,6 +24,7 @@ private:
 
 public:
 
+	//インスタンスを取得
 	static ObjParticleManager* GetInstance()
 	{
 		static ObjParticleManager instance;
@@ -41,27 +48,25 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
+	//エミッターを追加する
 	void AddEmitter(ObjParticleEmitter* particleEmitter);
 	
+	//パーティクルをリセット
 	void ParticleReset(Camera* camera);
+
+	//パーティクルを削除
+	void ParticleRemove();
 
 	//パーティクルとエミッターを全て削除
 	void AllRemove();
 
-	void ParticleRemove();
-
-private: // 定数
-	//static const int division = 50;			// 分割数
-	//static const float radius;				// 底面の半径
-	//static const float prizmHeight;			// 柱の高さ
-	//static const int planeCount = division * 2 + division * 2;		// 面の数
-	//static const int kVertexCount = 1024;		// 頂点数
-
 private: // メンバ変数
 
+	//コマンドリスト
 	static ID3D12GraphicsCommandList* cmdList_;
+	//デバイス
 	static ID3D12Device* device_;
-
+	//エミッター
 	std::vector<ObjParticleEmitter*> emitters_;
 };
 

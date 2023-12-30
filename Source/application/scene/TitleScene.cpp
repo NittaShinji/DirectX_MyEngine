@@ -3,6 +3,7 @@
 #include "WindowsAPI.h"
 #include "Vector2.h"
 #include "Easing.h"
+#include "ObjectColor.h"
 
 DirectXBasic* TitleScene::directXBasic_ = nullptr;
 ImGuiManager* TitleScene::imGuiManager_ = nullptr;
@@ -33,12 +34,9 @@ void TitleScene::Initialize()
 
 	//3Dオブジェクト
 	titleSphere_ = Object3d::Create("sphere");
-	spherPos_.x = 0.0f;
-	spherPos_.y = 5.0f;
-	spherPos_.z = 5.0f;
-
+	spherPos_ = kSpherInitPos_;
 	titleSphere_->SetTransform(spherPos_);
-	titleSphere_->SetScale(Vector3{ 3.0f, 3.0f, 3.0f });
+	titleSphere_->SetScale(kSpherInitScale_);
 
 	//画像
 	titleSprite_ = std::make_unique<Sprite>();
@@ -55,26 +53,30 @@ void TitleScene::Initialize()
 	Vector2 backGroundPosition = { 0.0f,0.0f };
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
+	//const int32_t divide2 = 2;
+	//const int32_t divide3 = 3;
+	
+	const Vector4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, whiteColor, "WhiteTex");
 
-	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, Vector4(1.0f, 1.0f, 1.0f, 1.0f), "WhiteTex");
-
-	Vector2 titlePosition = { 400.0f,33.0f };
+	const Vector2 titlePosition = { 400.0f,33.0f };
 	titleSprite_->Initialize("TitleFont.png",titlePosition);
 
 	const Vector2 clickButtonSize = { TextureManager::GetInstance()->GetTexSize("click.png")};
-	Vector2 clickButtonPosition;
-	clickButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (clickButtonSize.x / 2);
-	clickButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (clickButtonSize.y) + (clickButtonSize.y / 3);
+	const Vector2 clickButtonPosition = {576.0f,530.0f};
+	/*clickButtonPosition.x = (WindowsAPI::kWindow_width_ / divide2) - (clickButtonSize.x / divide2);
+	clickButtonPosition.y = (WindowsAPI::kWindow_height_ / divide2) + (clickButtonSize.y) + (clickButtonSize.y / divide3);*/
 
 	const Vector2 aButtonSize = { TextureManager::GetInstance()->GetTexSize("A.png") };
-	Vector2 aButtonPosition;
-	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonSize.x * 2);
-	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y) + (aButtonSize.y / 3);
+	const Vector2 aButtonPosition = { 1024.0f,530.0f };
+	/*const float aButtonTwoTimesSizeX = aButtonSize.x * 2;
+	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonTwoTimesSizeX);
+	aButtonPosition.y = (WindowsAPI::kWindow_height_ / divide2) + (aButtonSize.y) + (aButtonSize.y / divide3);*/
 
 	const Vector2 bButtonSize = { TextureManager::GetInstance()->GetTexSize("B.png") };
-	Vector2 bButtonPosition;
-	bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
-	bButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (bButtonSize.y) + (bButtonSize.y / 3);
+	const Vector2 bButtonPosition = {1152.0f,530.0f};
+	//bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
+	//bButtonPosition.y = (WindowsAPI::kWindow_height_ / divide2) + (bButtonSize.y) + (bButtonSize.y / divide3);
 
 	aButtonSprite_->Initialize("A.png",aButtonPosition);
 	bButtonSprite_->Initialize("B.png",bButtonPosition);
@@ -101,8 +103,6 @@ void TitleScene::Initialize()
 
 	isChangeScene_ = false;
 	isChangeColor_ = false;
-	rotateAcc_ = 0.0f;
-	moveRotate_ = 0.0f;
 	isFinishAnimetion = false;
 }
 
@@ -121,8 +121,10 @@ void TitleScene::Update()
 	//回転処理
 	if(isChangeScene_ == false)
 	{
-		float angle = ToRadian(360.0f);
-		sphereRotate.y -= PlayEaseInCubic(0.0f, angle, rotateTimer_, kRotateTime_);
+		const float kOneCircleRotate = 360.0f;
+		const float kStartEasingPos = 0.0f;
+		float angle = ToRadian(kOneCircleRotate);
+		sphereRotate.y -= PlayEaseInCubic(kStartEasingPos, angle, rotateTimer_, kRotateTime_);
 		titleSphere_->SetRotation(sphereRotate);
 	}
 
@@ -137,7 +139,7 @@ void TitleScene::Update()
 		{
 			rotateTimer_ = kRotateTime_;
 
-			isJump_ = true;
+			isSphereJump_ = true;
 			moveTimer_ = kActionTime_;
 
 			if(isChangeColor_ == false)
@@ -151,9 +153,11 @@ void TitleScene::Update()
 		}
 	}
 
-	if(isJump_ == true && sceneAnimeTimer_ == 0)
+	if(isSphereJump_ == true && sceneAnimeTimer_ == 0)
 	{
-		spherPos_.y += PlayEaseInCubic(0.0, 1.0, moveTimer_, kActionTime_);
+		const float kStartEasingPos = 0.0f;
+		const float kEndEasingPos = 1.0f;
+		spherPos_.y += PlayEaseInCubic(kStartEasingPos, kEndEasingPos, moveTimer_, kActionTime_);
 		titleSphere_->SetTransform(spherPos_);
 	}
 
@@ -164,60 +168,63 @@ void TitleScene::Update()
 	}
 	else
 	{
-		isJump_ = false;
+		isSphereJump_ = false;
 	}
 
-	if(isJump_ == false)
+	if(isSphereJump_ == false)
 	{
-		if(spherPos_.y >= 5.0f)
+		const float kSphereLimitPosY = 5.0f;
+		if(spherPos_.y >= kSphereLimitPosY)
 		{
-			spherPos_.y -= EaseInCubic(0.75f);
+			const float kSphereMoveEasingY = 0.75f;
+			spherPos_.y -= EaseInCubic(kSphereMoveEasingY);
 		}
 		titleSphere_->SetTransform(spherPos_);
 	}
 
-	if(moveTimer_ > (kActionTime_ / 2))
+	const int32_t half = 2;
+	if(moveTimer_ > (kActionTime_ / half))
 	{
-		isDown_ = false;
-		isUp_ = true;
-		move_.y = 0;
+		isSphereDown_ = false;
+		isSphereUp_ = true;
+		sphereMoveValue_.y = 0;
 	}
 	else
 	{
-		isDown_ = true;
-		isUp_ = false;
-		move_.y = 0;
+		isSphereDown_ = true;
+		isSphereUp_ = false;
+		sphereMoveValue_.y = 0;
 	}
 
 	//色を変える処理
-	if(changecolorTimer__ >= 0)
+	if(changeColorTimer_ >= 0)
 	{
-		changecolorTimer__--;
-
+		changeColorTimer_--;
 	}
 	else
 	{
-		changecolorTimer__ = kChangeColorTime_;
+		changeColorTimer_ = kChangeColorTime_;
 	}
 
 	if(isChangeColor_ == false)
 	{
 		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(Vector3(1.0f, 0.4f, 0.7f));
+		titleSphere_->SetColor(kTitlePinkOBJColor);
 	}
 	else
 	{
 		titleSphere_->SetColorFlag(true);
-		titleSphere_->SetColor(Vector3(1.0f, 0.469f, 0.0f));
+		titleSphere_->SetColor(kYellowOBJColor);
 	}
 
-	if(isDown_ == true && isUp_ == false)
+	//フラグの方向に球を移動させる
+	if(isSphereDown_ == true && isSphereUp_ == false)
 	{
-		move_.y -= 0.3f;
+		sphereMoveValue_.y -= kSphereMoveY_;
 	}
-	else if(isUp_ == true && isDown_ == false)
+	else if(isSphereUp_ == true && isSphereDown_ == false)
 	{
-		move_.y += 0.3f;
+		sphereMoveValue_.y += kSphereMoveY_;
 	}
 
 	titleSphere_->SetTransform(spherPos_);
@@ -242,8 +249,10 @@ void TitleScene::Update()
 		if(isFinishAnimetion == true)
 		{
 			changeWhiteTimer_--;
+			//色を白色に変更
+			const Vector3 whiteColor = { 1.0f,1.0f,1.0f };
 			titleSphere_->SetColorFlag(true);
-			titleSphere_->SetColor(Vector3(1.0f, 1.0f, 1.0f));
+			titleSphere_->SetColor(whiteColor);
 			if(changeWhiteTimer_ <= 0)
 			{
 				//Sound::GetInstance()->PauseSound("title.wav");

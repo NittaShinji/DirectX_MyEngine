@@ -1,4 +1,5 @@
 #include "LandParticle.h"
+#include "ObjectColor.h"
 
 std::unique_ptr<LandParticle> LandParticle::Create(std::string modelName)
 {
@@ -19,15 +20,18 @@ std::unique_ptr<LandParticle> LandParticle::Create(std::string modelName)
 
 void LandParticle::Initialize()
 {
-	startScale_ = { 0.9f,0.9f,0.9f };
-	endScale_ = { 0.0f,0.0f,0.0f };
-	particleCount_ = 0;
+	const Vector3 kInitStartScale = { 0.9f,0.9f,0.9f };
+	const Vector3 kInitEndScale = { 0.0f,0.0f,0.0f };
+	
+	startScale_ = kInitStartScale;
+	endScale_ = kInitEndScale;
+	generationNum_ = kInitCount;
+	nowParticleCount_ = kInitCount;
+	particleCount_ = kInitCount;
 	isPlayerDead_ = false;
 	canReset_ = false;
 	isStartPoped_ = false;
 	isMaxParticle_ = false;
-	generationNum_ = 0;
-	nowParticleCount_ = 0;
 	maxParticleNum_ = kMaxParticleNum_;
 
 	for(int32_t i = 0; i < kMaxParticleNum_; i++)
@@ -89,6 +93,7 @@ void LandParticle::Update(Camera* camera)
 			particlePos = particlePos + it->velocity;
 			it->object3d.SetTransform(particlePos);
 
+			//ゲームスピードに応じてフレームを加算する
 			it->frame += freamIncreaseValue_ * gameSpeed_->GetSpeedNum();
 			//進行度を0～1の範囲に換算
 			float f = (float)it->frame / it->num_frame;
@@ -161,14 +166,17 @@ void LandParticle::LandParticlePop(Camera* camera, const Vector3& popPos, Attrib
 		it++;
 	}
 
+	//半分にするようの変数
+	const float divideForHalf = 2.0f;
+	
 	const float md_pos = 2.0f;
-	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.x + imGuiPos_[0];
+	setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + popPos.x + imGuiPos_[0];
 	const float shiftY = -0.8f;
 	setPos_.y = popPos.y + shiftY + imGuiPos_[1];
 	const float shiftZ = -0.5f;
-	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / 2.0f + popPos.z + shiftZ + imGuiPos_[2];
+	setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + popPos.z + shiftZ + imGuiPos_[2];
 
-	setVel_.x = 0.0f + imGuiVel_[0];
+	setVel_.x = imGuiVel_[0];
 
 	const float md_velY = 0.5f;
 	const float md_velZ = 0.3f;
@@ -177,13 +185,15 @@ void LandParticle::LandParticlePop(Camera* camera, const Vector3& popPos, Attrib
 
 	//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 	Vector3 acc{};
-	const float md_acc = -0.017f;
-	acc.x = 0.0f;
-	acc.y = md_acc;
-	acc.z = 0.0f;
+	const float initAcc = 0.0f;
+	const float mdAcc = -0.017f;
+
+	acc.x = initAcc;
+	acc.y = mdAcc;
+	acc.z = initAcc;
 
 	//色を変化させる
-	Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
+	const Vector4 colorSpeed{ 1.0f,-1.0f,-1.0f,1.0f };
 
 	if(it->isGenerated == false)
 	{
@@ -192,15 +202,15 @@ void LandParticle::LandParticlePop(Camera* camera, const Vector3& popPos, Attrib
 		it->object3d.SetColorFlag(true);
 		if(attributeColor == Attribute::pink)
 		{
-			it->object3d.SetColor(Vector3(1.0f, 0.4f, 0.7f));
+			it->object3d.SetColor(kTitlePinkOBJColor);
 		}
 		else if(attributeColor == Attribute::yellow)
 		{
-			it->object3d.SetColor(Vector3(1.0f, 0.469f, 0.0f));
+			it->object3d.SetColor(kYellowOBJColor);
 		}
 		else
 		{
-			it->object3d.SetColor(Vector3(0.0f, 0.0f, 0.0f));
+			it->object3d.SetColor(kBlackOBJColor);
 		}
 
 		it->object3d.Update(camera);
@@ -210,7 +220,7 @@ void LandParticle::LandParticlePop(Camera* camera, const Vector3& popPos, Attrib
 		it->s_scale = startScale_;
 		it->scale = it->s_scale;
 		it->e_scale = endScale_;
-		it->frame = 0;
+		it->frame = static_cast<float>(kInitCount);
 		it->isGenerated = true;
 		it->canReset = false;
 	}
@@ -222,7 +232,7 @@ void LandParticle::ResetParticleArea(Vector3 playerPos)
 	{
 		Vector3 particlePos = it->object3d.GetTransform();
 
-		if(playerPos.z > particlePos.z + 30.0f)
+		if(playerPos.z > particlePos.z + kResetDitance_)
 		{
 			if(it->isGenerated == true)
 			{
@@ -230,5 +240,4 @@ void LandParticle::ResetParticleArea(Vector3 playerPos)
 			}
 		}
 	}
-
 }

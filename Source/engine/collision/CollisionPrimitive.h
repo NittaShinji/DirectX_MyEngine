@@ -1,6 +1,9 @@
 #pragma once 
-
 #include "MathUtillity.h"
+
+///<summary>
+/// 衝突判定の形状を定義する
+///</summary>
 
 ///<summary>
 /// 球

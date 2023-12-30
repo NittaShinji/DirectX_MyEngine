@@ -2,6 +2,10 @@
 #include "Sound.h"
 #include<map>
 
+/// <summary>
+/// サウンドマネージャー
+/// サウンドを管理する
+/// </summary>
 class SoundManager final
 {
 private:

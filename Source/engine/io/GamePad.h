@@ -7,6 +7,9 @@
 
 #pragma comment(lib, "XInput.lib")
 
+/// <summary>
+/// XBOXコントローラー用ゲームパッドクラス
+/// </summary>
 class GamePad
 {
 

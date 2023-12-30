@@ -6,6 +6,9 @@
 #include "GamePad.h"
 #include "SoundManager.h"
 
+/// <summary>
+/// タイトルシーン
+/// </summary>
 class TitleScene : public BaseScene
 {
 public:
@@ -31,48 +34,63 @@ private:
 	static KeyInput* keys_;
 	static ImGuiManager* imGuiManager_;
 
+	//スプライト
 	std::unique_ptr<Sprite> titleSprite_ = nullptr;
 	std::unique_ptr<Sprite> clickSprite_ = nullptr;
 	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
-
 	std::unique_ptr<Sprite> converterSprite_ = nullptr;
-
-
-
 	std::unique_ptr<Object3d> titleSphere_ = nullptr;
 	std::unique_ptr<Camera> camera_ = nullptr;
+
+	//ライト
 	LightGroup* lightGroup_ = nullptr;
 
 	//待ち時間
 	static const int32_t waitTime = 40;
 
+	//球の演出用メンバ変数
+	//球の回転角
 	Vector3 sphereRotate = { 0,0,0 };
+
+	//球の座標
+	const Vector3 kSpherInitPos_ = {0.0f,5.0f,5.0f};
+	const Vector3 kSpherInitScale_ = {3.0f,3.0f,3.0f};
+
 	Vector3 spherPos_;
 
 	//1周回る時間
 	const float kRotateTime_ = 90.0f;
 	const float kActionTime_ = 20.0f;
 
+	//1周で色が変わる時間
 	const float kChangeWhiteTime_ = 10.0f;
+	//選択時に白色に変わる時間
 	const float kChangeColorTime_ = 1080.0f;
 
+	//動く時間のタイマー
 	float moveTimer_ = kActionTime_;
+	//回転時間のタイマー
 	float rotateTimer_ = kRotateTime_;
-	float changecolorTimer__ = kChangeColorTime_;
+	//色が変わるまでの時間のタイマー
+	float changeColorTimer_ = kChangeColorTime_;
+	//選択時に白色に変わる時間のタイマー
 	float changeWhiteTimer_ = kChangeWhiteTime_;
 
-	bool isUp_ = false;
-	bool isDown_ = true;
+	//球が上がっているか
+	bool isSphereUp_ = false;
+	//球が下がっているか
+	bool isSphereDown_ = true;
+	//色が変わっているか
 	bool isChangeColor_ = true;
+	//シーンが変わっているか
 	bool isChangeScene_;
-	Vector3 move_ = { 0,0,0 };
-
-	float rotateAcc_;
-	float moveRotate_;
-
-	bool isJump_;
+	//球の移動量
+	const float kSphereMoveY_ = 0.3f;
+	Vector3 sphereMoveValue_ = { 0,0,0 };
+	//球がジャンプしているか
+	bool isSphereJump_;
 
 	//ゲームパッド
 	std::unique_ptr<GamePad> gamePad_ = nullptr;

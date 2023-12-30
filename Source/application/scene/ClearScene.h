@@ -5,10 +5,16 @@
 #include "Vector2.h"
 #include "SoundManager.h"
 
+/// <summary>
+/// クリアシーン
+/// </summary>
 class ClearScene : public BaseScene
 {
 
 public:
+
+	//静的初期化
+	static void StaticInitialize();
 
 	//初期化
 	void Initialize() override;
@@ -18,8 +24,6 @@ public:
 
 	//描画
 	void Draw() override;
-
-	static void StaticInitialize();
 
 private:
 

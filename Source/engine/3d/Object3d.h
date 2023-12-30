@@ -10,6 +10,10 @@
 
 class BaseCollider;
 
+/// <summary>
+/// オブジェクト
+/// 当たり判定をつけないこともできる
+/// </summary>
 class Object3d
 {
 private: //エイリアス

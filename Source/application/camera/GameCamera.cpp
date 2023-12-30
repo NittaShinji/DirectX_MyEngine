@@ -18,11 +18,11 @@ void GameCamera::Initialize()
 	goalEyeTarget_.y = { initCameraTarget.y + initTargetDistance_.y };
 	goalEyeTarget_.z = { initCameraTarget.z + initTargetDistance_.z };
 
-	speedEasing_.time = 0.0f;
+	
+	speedEasing_.time = static_cast<float>(kInitTime_);
+	axcellWaitTimer = kInitTime_;
 	slowTimer_ = kSlowTime_;
-	axcellWaitTimer = 0;
-	waitRate_ = 0.0f;
-	axcellRate_ = 1.0f;
+	axcellRate_ = kAxcellNormalRate_;
 
 	sceneAnimeTimer_ = kInitSceneAnimeTime_;
 	cameraSpeed_ = kInitCameraSpeed_;
@@ -33,7 +33,7 @@ void GameCamera::Initialize()
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
-	Vector3 playerDeadPos, Vector3 playerTotalAxel, bool onGround, bool rightAxcell, Vector3 rightAxcellVec)
+	Vector3 playerDeadPos, bool rightAxcell)
 {
 	cameraSpeed_ = gameSpeed_->GetSpeedNum();
 	cameraSpeedY_ = gameSpeed_->GetSpeedNum();
@@ -48,15 +48,6 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 		goalEyeTarget_.y = playerDeadPos.y - playerInitPos.y + initCameraTarget.y;
 		goalEyeTarget_.z = playerPos.z - playerInitPos.z + initCameraTarget.z + initTargetDistance_.z;
 
-		/*if(rightAxcell == true)
-		{
-			axcellWaitTimer++;
-			if(axcellWaitTimer >= kAxcellWaitTime)
-			{
-				isAxcellAnimation_ = true;
-			}
-		}*/
-
 		moveEyeVec = goalEyePos_ - eye_;
 		moveTargetVec = goalEyeTarget_ - target_;
 
@@ -66,8 +57,6 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 		moveTargetVecY.Normalize();
 
 		eye_.x += moveEyeVec.x * cameraSpeed_;
-
-		if(rightAxcellVec.z == 0) {};
 
 		if(rightAxcell == false)
 		{
@@ -81,17 +70,17 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 						axcellRate_ = PlayEaseOutQuint(axcellEasing_);
 					}*/
 
-					axcellRate_ += 0.0015f;
+					axcellRate_ += axcellRateMoveValue_;
 				}
 				else
 				{
 					axcellEasing_.time = 0;
 					isNotBackAnimation_ = false;
-					if(axcellRate_ >= 1.0f)
+					if(axcellRate_ >= kAxcellNormalRate_)
 					{
-						axcellRate_ -= 0.01f;
+						axcellRate_ -= decelerationMoveValue_;
 					}
-					axcellRate_ = 1.0f;
+					axcellRate_ = kAxcellNormalRate_;
 				}
 
 				/*axcellEasing_.time++;
@@ -131,7 +120,7 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 		if(isAxcellrate_ == true)
 		{
 			slowDownEasing_.time++;
-			if(slowDownEasing_.time > 0 && slowDownEasing_.time <= slowDownEasing_.totalTime)
+			if(slowDownEasing_.time > kInitTime_ && slowDownEasing_.time <= slowDownEasing_.totalTime)
 			{
 				axcellRate_ = PlayEaseOutQuint(slowDownEasing_);
 				//axcellRate_ = PlayEaseOutBack(slowDownEasing_);
@@ -139,7 +128,7 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 			}
 			else
 			{
-  				slowDownEasing_.time = 0;
+  				slowDownEasing_.time = static_cast<float>(kInitTime_);
 				isNotBackAnimation_ = true;
 				isAxcellrate_ = false;
 			}
@@ -157,17 +146,12 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 		//eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
 
 		float distanceY = std::fabs(playerPos.y - playerInitPos.y);
-
-		if(playerDeadPos.x <= 0) {}
-		if(onGround == false) {}
-
+		
 		if(isDead == false)
 		{
 			eye_.y += moveEyeVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
 			target_.y += moveTargetVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
 		}
-
-		if(playerTotalAxel.x < 0) {}
 
 		target_.x += moveTargetVec.x * cameraSpeed_;
 
@@ -184,11 +168,11 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 
 		if(isDead == true)
 		{
+			//もし死んだ際にY軸のスピードがマイナスならば、そのまま動かす
 			if(moveEyeVecY.y < 0)
 			{
 				eye_.y += moveEyeVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
 				target_.y += moveTargetVecY.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
-
 			}
 		}
 
@@ -203,7 +187,7 @@ void GameCamera::Reset()
 	eye_ = initCameraEye;
 	target_ = initCameraTarget;
 	up_ = initCameraUp;
-	axcellRate_ = 1.0f;
+	axcellRate_ = kAxcellNormalRate_;
 
 	isStopTarget_ = false;
 	isStartGoalEasing_ = false;
@@ -217,37 +201,45 @@ void GameCamera::ImGuiUpdate()
 	//スプライトの編集ウインドウの表示
 
 	ImGui::Begin("Camera");
-	ImGui::SetWindowPos(ImVec2(300, 0));
-	ImGui::SetWindowSize(ImVec2(300, 250));
+	const Vector2 kImGuiPos = { 300.0f, 0.0f };
+	const Vector2 kImGuiSize = { 300.0f, 250.0f };
+	ImGui::SetWindowPos(ImVec2(kImGuiPos.x, kImGuiPos.y));
+	ImGui::SetWindowSize(ImVec2(kImGuiSize.x, kImGuiPos.y));
 
-	ImGui::SliderFloat("moveEyeY", &moveEyeVecY.y, -100.0f, 50.0f);
-	ImGui::SliderFloat("moveTargetVecY", &moveTargetVecY.y, -100.0f, 50.0f);
-	ImGui::SliderFloat("EyeYAxelRate_", &EyeYAxelRate_, 0.0f, 10.0f);
-	ImGui::SliderFloat("AxcelRate", &axcellRate_, 0.0f, 10.0f);
-	ImGui::SliderFloat("EasingX", &goalEyeXEasing_.endDistance, 0.0f, 10.0f);
-	ImGui::SliderFloat("EasingY", &goalEyeYEasing_.endDistance, 0.0f, 10.0f);
-	ImGui::SliderFloat("EasingZ", &goalEyeZEasing_.endDistance, 0.0f, 10.0f);
+	const Vector2 kImGuiMoveRate = { -100.0f,50.0f };
+	const Vector2 kImGuiMoveTargetRate = { -100.0f,50.0f };
+	const Vector2 kImGuiEyeYAxllRate = { 0.0f,10.0f };
+	const Vector2 kImGuiAxllRate = { 0.0f,10.0f };
+
+	const Vector2 kImGuiEasingXRate = { 0.0f,10.0f };
+	const Vector2 kImGuiEasingYRate = { 0.0f,10.0f };
+	const Vector2 kImGuiEasingZRate = { 0.0f,10.0f };
+	const Vector2 kImGuiEasingTimerRate = { 0.0f,100.0f };
+	const Vector2 kImGuiCameraSpeedYRate = { 0.0f,100.0f };
+	const Vector2 kImGuiEyeRate = { -100.0f,50.0f };
+	const Vector2 kImGuiTargetRate = { -100.0f,1000.0f };
 
 
+	ImGui::SliderFloat("moveEyeY", &moveEyeVecY.y, kImGuiMoveRate.x, kImGuiMoveRate.y);
+	ImGui::SliderFloat("moveTargetVecY", &moveTargetVecY.y, kImGuiMoveTargetRate.x, kImGuiMoveTargetRate.y);
+	ImGui::SliderFloat("EyeYAxelRate_", &EyeYAxelRate_, kImGuiEyeYAxllRate.x, kImGuiEyeYAxllRate.y);
+	ImGui::SliderFloat("AxcelRate", &axcellRate_, kImGuiAxllRate.x, kImGuiAxllRate.y);
+	ImGui::SliderFloat("EasingX", &goalEyeXEasing_.endDistance, kImGuiEasingXRate.x, kImGuiEasingXRate.y);
+	ImGui::SliderFloat("EasingY", &goalEyeYEasing_.endDistance, kImGuiEasingYRate.x, kImGuiEasingYRate.y);
+	ImGui::SliderFloat("EasingZ", &goalEyeZEasing_.endDistance, kImGuiEasingZRate.x, kImGuiEasingZRate.y);
 
-	ImGui::SliderFloat("easingTimer", &speedEasing_.time, 0.0f, 100.0f);
-	ImGui::SliderFloat("cameraSpeedY_", &cameraSpeedY_, 0.0f, 100.0f);
+	ImGui::SliderFloat("easingTimer", &speedEasing_.time, kImGuiEasingTimerRate.x, kImGuiEasingTimerRate.y);
+	ImGui::SliderFloat("cameraSpeedY_", &cameraSpeedY_, kImGuiCameraSpeedYRate.x, kImGuiCameraSpeedYRate.y);
 
-	ImGui::SliderFloat("eyeX", &eye_.x, -100.0f, 50.0f);
-	ImGui::SliderFloat("eyeY", &eye_.y, -100.0f, 50.0f);
-	ImGui::SliderFloat("eyeZ", &eye_.z, -100.0f, 1000.0f);
+	ImGui::SliderFloat("eyeX", &eye_.x, kImGuiEyeRate.x, kImGuiEyeRate.y);
+	ImGui::SliderFloat("eyeY", &eye_.y, kImGuiEyeRate.x, kImGuiEyeRate.y);
+	ImGui::SliderFloat("eyeZ", &eye_.z, kImGuiEyeRate.x, kImGuiEyeRate.y);
 
-	ImGui::SliderFloat("targetX", &target_.x, -100.0f, 50.0f);
-	ImGui::SliderFloat("targetY", &target_.y, -100.0f, 50.0f);
-	ImGui::SliderFloat("targetZ", &target_.z, -100.0f, 1000.0f);
+	ImGui::SliderFloat("targetX", &target_.x, kImGuiTargetRate.x, kImGuiTargetRate.y);
+	ImGui::SliderFloat("targetY", &target_.y, kImGuiTargetRate.x, kImGuiTargetRate.y);
+	ImGui::SliderFloat("targetZ", &target_.z, kImGuiTargetRate.x, kImGuiTargetRate.y);
 
 	ImGui::End();
-
-}
-
-void GameCamera::AccelerationAnimation()
-{
-
 
 }
 

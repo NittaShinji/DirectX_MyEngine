@@ -22,15 +22,18 @@ void ClearScene::Initialize()
 	Vector2 titlePosition = { 0.0f,0.0f };;
 	end_->Initialize("WhiteTex",titlePosition);
 
-	checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) + 16;
-	checkPosition_.y = 0.0f;
+	const Vector2 kInitCheckPos = { 656,0.0f };
 
-	check_->Initialize("check.png",checkPosition_);
+	/*checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) + 16;
+	checkPosition_.y = 0.0f;*/
 
-	Vector2 aButtonSize = { 128.0f,128.0f };
-	Vector2 aButtonPosition = { 0.0f,0.0f };
+	check_->Initialize("check.png", kInitCheckPos);
+
+	const Vector2 aButtonSize = { 128.0f,128.0f };
+	const Vector2 aButtonPosition = { 0.0f,0.0f };
+	/*Vector2 aButtonPosition = { 0.0f,0.0f };
 	aButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (aButtonSize.x / 2);
-	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y);
+	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y);*/
 	aButton_->Initialize("A.png",aButtonPosition);
 
 	//シェーダー読み込み
@@ -53,7 +56,7 @@ void ClearScene::Initialize()
 	isRotateSprite_ = false;
 
 	//アンカーポイントの設定
-	Vector2 checkAnchorPoint = { 0.5f,0.5f };
+	const Vector2 checkAnchorPoint = { 0.5f,0.5f };
 	check_->SetAnchorPoint(checkAnchorPoint);
 
 	GameTimer::GetInstance()->ResultInitialize();
