@@ -1,7 +1,7 @@
 # DirectX_MyEngine  
 
 ## 開発環境
-DirectX12
+DirectX12  
 windowsSDK ver “10.0.22000.0"
 
 ## 使用言語
@@ -20,7 +20,7 @@ windowsSDK ver “10.0.22000.0"
 ![MyGame](https://github.com/NittaShinji/DirectX_MyEngine/assets/94505316/cf3a5a75-15df-47b0-9307-ff4f3800f242)  
 
 ## 外部ライブラリ
-・DirectXTex
+・DirectXTex  
 ・imgui
 
 ## ポートフォリオ
