@@ -89,6 +89,7 @@ void Player::Initialize()
 
 	attributeColor_ = Attribute::pink;
 	colorFlag_ = true;
+	Object3d::SetColorFlag(true);
 	SetColor(kTitlePinkOBJColor);
 }
 
