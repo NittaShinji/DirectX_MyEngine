@@ -11,7 +11,8 @@ public:
 	static std::unique_ptr<MirrorPlayer> Create(Player* player);
 
 
-public:
+public: //メンバ関数
+
 	//コンストラクタ
 	MirrorPlayer();
 	//デストラクタ
@@ -25,6 +26,11 @@ public:
 
 	//描画
 	void Draw();
+
+private: //定数
+
+	//オブジェクトに対して鏡面反射した場合の距離
+	const float kMirrorDistance_ = 6.0f;
 
 private: //メンバ変数
 

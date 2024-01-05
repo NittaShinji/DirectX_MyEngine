@@ -199,8 +199,13 @@ public: //アクセッサ
 	bool GetColorFlag() { return colorFlag_; }
 	//属性を取得
 	int32_t GetAttributeColor() { return attributeColor_; }
+	//スケールを取得
+	Vector3 GetScale() { return scale_; }
+	//回転角を取得
+	Vector3 GetRotation() { return rotation_; }
 	//平行移動を取得
 	Vector3 GetTransform() { return transform_; }
+
 	
 	//平行移動をセット
 	void SetTransform(const Vector3& pos) { transform_ = pos; };

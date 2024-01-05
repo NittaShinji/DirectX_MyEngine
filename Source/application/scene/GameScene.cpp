@@ -137,6 +137,7 @@ void GameScene::Initialize()
 
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
+	mirrorPlayer_ = MirrorPlayer::Create(player_.get());
 
 	//------------カメラ----------
 	gameCamera_ = std::make_unique<GameCamera>();
@@ -276,6 +277,8 @@ void GameScene::Update()
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
+	mirrorPlayer_->Update(gameCamera_.get());
+
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
 
@@ -448,6 +451,8 @@ void GameScene::Draw()
 	Object3d::BeforeDraw();
 	//plane_->Draw();
 	backGround_->Draw();
+	mirrorPlayer_->Draw();
+
 	postEffect_->PostDrawScene();
 
 	//描画開始
@@ -474,7 +479,6 @@ void GameScene::Draw()
 	Object3d::BeforeDraw();
 	player_->Draw();
 	
-
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 

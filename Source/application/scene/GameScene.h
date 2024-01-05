@@ -23,6 +23,7 @@
 #include "SecondJump2DParticle.h"
 #include "GameSpeed.h"
 #include "HitParticle2D.h"
+#include "MirrorPlayer.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -90,6 +91,8 @@ private:
 	std::unique_ptr<Stage> stage_ = nullptr;
 	//プレイヤー
 	std::unique_ptr<Player> player_ = nullptr;
+	std::unique_ptr<MirrorPlayer> mirrorPlayer_ = nullptr;
+
 	//背景
 	std::unique_ptr<Object3d> skydome_ = nullptr;
 	std::unique_ptr<TouchableObject> plane_ = nullptr;
