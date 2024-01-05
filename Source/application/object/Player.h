@@ -280,6 +280,7 @@ public: //アクセッサ
 	//下からオブジェクトに触れたかどうかを取得する
 	bool GetIsTouchObject() { return isTouchObject_; }
 
+
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
 	//ゲームパッドをセット

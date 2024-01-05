@@ -102,6 +102,7 @@
   <ItemGroup>
     <ClCompile Include="Source\application\object\GoalOBJ.cpp" />
     <ClCompile Include="Source\application\GameTimer.cpp" />
+    <ClCompile Include="Source\application\object\MirrorPlayer.cpp" />
     <ClCompile Include="Source\application\particle\HitParticle2D.cpp" />
     <ClCompile Include="Source\application\particle\BreakParticle.cpp" />
     <ClCompile Include="Source\application\particle\SecondJump2DParticle.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\application\object\MirrorPlayer.h" />
     <ClInclude Include="Source\application\object\GoalOBJ.h" />
     <ClInclude Include="Source\application\GameTimer.h" />
     <ClInclude Include="Source\application\object\ObjectColor.h" />
