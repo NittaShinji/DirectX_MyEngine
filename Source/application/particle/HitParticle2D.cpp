@@ -20,7 +20,7 @@ std::unique_ptr<HitParticle2D> HitParticle2D::Create(std::string fileName)
 	return instance;
 }
 
-void HitParticle2D::Preparation(Vector3 playerPos)
+void HitParticle2D::Preparation(Vector3 playerPos,bool isPlayerDead)
 {	
 	if(isGenerated_ == false)
 	{
@@ -28,40 +28,75 @@ void HitParticle2D::Preparation(Vector3 playerPos)
 
 		for(int32_t i = 0; i < kOneTimeGenerationNum; i++)
 		{
-			//生成する座標
-			const float md_pos = 2.0f;
-			//半分にするようの変数
-			const float divideForHalf = 2.0f;
-			//生成時にずれる座標の量
-			const float shiftQuantity = 0.2f;
-
-			setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.x + imGuiPos_[0] + i * shiftQuantity;
-			const float shiftY = -0.8f;
-			setPos_.y = playerPos.y + shiftY + imGuiPos_[1] - i * 0.2f;
-			setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.z + imGuiPos_[2] - i * shiftQuantity;
-
-			const float md_velX = 0.0f;
-			setVel_.x = (float)rand() / RAND_MAX * md_velX - md_velX / divideForHalf + imGuiVel_[0];
-
-			const float md_velY = 0.0f;
-			setVel_.y = md_velY + imGuiVel_[1];
-
-			const float md_velZ = 0.0f;
-			setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / divideForHalf + imGuiVel_[2];
-
+			
 			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 			Vector3 acc{};
 			const float md_acc = 0.0f;
 			acc.x = imGuiAcc_[0];
 			acc.y = md_acc + imGuiAcc_[1];
 
-			const Vector4 endColor = { 1.0f,1.0f,1.0f,0.0f };
-			const Vector4 startColor = { 1.0f,1.0f,1.0f,1.0f };
-
+			//回転
 			const float md_rotate = 1.0f;
 			float rotation = (float)rand() / RAND_MAX * md_rotate;
 			float rotationSpeed = 0.005f;
 
+			//色
+			const Vector4 startColor = { 1.0f,1.0f,1.0f,1.0f };
+			Vector4 endColor;
+
+			//生成する座標
+			const float md_pos = 2.0f;
+			//半分にするようの変数
+			const float divideForHalf = 2.0f;
+			
+			if(isPlayerDead == true)
+			{
+				//生成時にずれる座標の量
+				const float shiftQuantity = 0.4f;
+				//パーティクルのY座標を生成時にずらす値
+				const float shiftY = -0.8f;
+				const float shiftZ = 1.5f;
+
+				
+				const Vector4 setEndColor = { 1.0f,1.0f,1.0f,0.5f };
+				endColor = setEndColor;
+				setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.x + imGuiPos_[0] + i * shiftQuantity;
+				setPos_.y = playerPos.y + shiftY + imGuiPos_[1] - i * shiftQuantity;
+				setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.z + imGuiPos_[2] + i * shiftQuantity + shiftZ;
+
+				const float velX = 0.1f;
+				const float velZ = 0.1f;
+
+				setVel_.x = (float)rand() / RAND_MAX * velX - velX / divideForHalf + imGuiVel_[0];
+				setVel_.z = (float)rand() / RAND_MAX * velZ - velZ / divideForHalf + imGuiVel_[2];
+			}
+			else
+			{
+				//生成時にずれるパーティクル一つあたりの座標値
+				const float shiftQuantity = 0.2f;
+				//生成時にずれるパーティクル全体の座標値
+				const float shiftY = -0.4f;
+				const float shiftZ = 1.5f;
+		
+				setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.x + imGuiPos_[0] + i * shiftQuantity;
+				setPos_.y = playerPos.y + shiftY + imGuiPos_[1] - i * shiftQuantity;
+				setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.z + imGuiPos_[2] - i * shiftQuantity + shiftZ;
+
+				const float md_velX = 0.0f;
+				setVel_.x = (float)rand() / RAND_MAX * md_velX - md_velX / divideForHalf + imGuiVel_[0];
+
+				const float md_velY = 0.0f;
+				setVel_.y = md_velY + imGuiVel_[1];
+
+				const float md_velZ = 0.0f;
+				setVel_.z = (float)rand() / RAND_MAX * md_velZ - md_velZ / divideForHalf + imGuiVel_[2];
+
+
+				const Vector4 setEndColor = { 1.0f,1.0f,1.0f,0.0f };
+				endColor = setEndColor;
+			}
+			
+			
 			//色を変化させる
 			const Vector4 colorSpeed{ 0.02f,0.02f,0.02f,0.03f };
 

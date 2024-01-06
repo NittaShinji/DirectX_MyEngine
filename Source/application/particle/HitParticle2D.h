@@ -12,7 +12,7 @@ public:
 	static std::unique_ptr<HitParticle2D> Create(std::string fileName);
 
 	//パーティクル生成準備
-	void Preparation(Vector3 playerPos);
+	void Preparation(Vector3 playerPos, bool isPlayerDead);
 
 	//更新処理
 	void Update(Camera* camera) override;

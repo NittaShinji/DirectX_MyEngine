@@ -155,9 +155,6 @@ private:
 	std::unique_ptr<DeadParticle> deadParticle_ = nullptr;
 	std::unique_ptr<BreakParticle> breakParticle_ = nullptr;
 
-	//リセットフラグ
-	bool isReset_;
-
 	//アニメーションが終わったかどうか
 	bool isFinishAnimetion_;
 

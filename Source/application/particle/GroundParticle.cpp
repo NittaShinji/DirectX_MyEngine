@@ -32,7 +32,7 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 		setPos_.x = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.x + imGuiPos_[0] + i * shiftQuantity;
 		const float shiftY = -0.8f;
 		setPos_.y = playerPos.y + shiftY + imGuiPos_[1];
-		const float shiftZ = -0.9f;
+		const float shiftZ = -1.5f;
 		setPos_.z = (float)rand() / RAND_MAX * md_pos - md_pos / divideForHalf + playerPos.z + imGuiPos_[2] + shiftZ;
 
 		Vector3 acc{};

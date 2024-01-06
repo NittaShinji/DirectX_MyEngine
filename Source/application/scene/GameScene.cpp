@@ -173,9 +173,6 @@ void GameScene::Initialize()
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
 
 	GameTimer::GetInstance()->InGameInitialize();
-
-	
-	isReset_ = false;
 }
 
 void GameScene::Update()
@@ -202,22 +199,23 @@ void GameScene::Update()
 	}
 #endif
 
+	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{
-		if(isReset_ == false)
-		{
-			isReset_ = true;
-		}
+		//ParticleManager::GetInstance()->ParticleRemove();
+		secondJumpParticle_->ParticleRemove();
+		groundParticle_->ParticleRemove();
+		hitParticle_->Preparation(player_->GetTransform(),player_->GetIsDead());
 
-		ParticleManager::GetInstance()->ParticleRemove();
-
+		//リセット処理
 		if(deadParticle_->GetCanReset() == true || keys_->HasPushedKey(DIK_R))
 		{
+			ParticleManager::GetInstance()->ParticleRemove();
+
 			ObjParticleManager::GetInstance()->ParticleReset(gameCamera_.get());
 			stage_->Reset("Stage0.json");
 			gameCamera_->Initialize();
 			player_->Reset(gameCamera_.get());
-			isReset_ = false;
 			deadParticle_->SetCanReset(false);
 			deadParticle_->Reset();
 			GameTimer::GetInstance()->Reset();
@@ -320,7 +318,7 @@ void GameScene::Update()
 
 					if(player_->GetIsLanded() == true || isTouchObject == true)
 					{
-						hitParticle_->Preparation(player_->GetTransform());
+						hitParticle_->Preparation(player_->GetTransform(), player_->GetIsDead());
 						if(isTouchObject == true)
 						{
 							player_->SetIsTouchObject(false);
@@ -353,11 +351,13 @@ void GameScene::Update()
 
 			if(player_->GetIsMoving() == true && player_->GetIsDead() == false)
 			{
+				//一度だけタッチフラグをオンにする
 				bool isTouchObject = player_->GetIsTouchObject();
 
 				if(player_->GetIsLanded() == true || isTouchObject == true)
 				{
-					hitParticle_->Preparation(player_->GetTransform());
+					hitParticle_->Preparation(player_->GetTransform(), player_->GetIsDead());
+					
 					if(isTouchObject == true)
 					{
 						player_->SetIsTouchObject(false);
@@ -472,17 +472,18 @@ void GameScene::Draw()
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
-	ParticleManager::GetInstance()->Draw();
+	Object3d::BeforeDraw();
+	player_->Draw();
+	ObjParticleManager::GetInstance()->Draw();
+
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
-	Object3d::BeforeDraw();
-	player_->Draw();
+	ParticleManager::GetInstance()->Draw();
 	
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
-	ObjParticleManager::GetInstance()->Draw();
 	
 	SpriteCommon::GetInstance()->BeforeDraw();
 	aButtonSprite_->Draw("A.png");
