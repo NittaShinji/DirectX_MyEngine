@@ -822,7 +822,7 @@ void Player::Reset(Camera* camera)
 	rotateYTimer_ = kRotateYTime_;
 
 	attributeColor_ = Attribute::pink;
-	SetColor(kPinkOBJColor);
+	SetColor(kTitlePinkOBJColor);
 	Object3d::SetTransform(transform_);
 	Object3d::SetRotation(rotation_);
 	Object3d::SetScale(scale_);

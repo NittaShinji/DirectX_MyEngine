@@ -77,7 +77,7 @@ private: //定数
 	//加速時間
 	const int32_t kAxcellTime_ = 30;
 	//プレイヤー死亡ライン
-	const float deadLine_ = -5.0f;
+	const float deadLine_ = -4.0f;
 	//1周回る時間
 	const float kRotateXTime_ = 60.0f;
 	const float kRotateYTime_ = 60.0f;
