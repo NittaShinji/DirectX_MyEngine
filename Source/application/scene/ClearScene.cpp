@@ -24,16 +24,16 @@ void ClearScene::Initialize()
 
 	const Vector2 kInitCheckPos = { 656,0.0f };
 
-	/*checkPosition_.x = (WindowsAPI::kWindow_width_ / 2) + 16;
-	checkPosition_.y = 0.0f;*/
+	checkPosition_.x = kInitCheckPos.x;
+	//checkPosition_.y = 0.0f;
 
 	check_->Initialize("check.png", kInitCheckPos);
 
 	const Vector2 aButtonSize = { 128.0f,128.0f };
-	const Vector2 aButtonPosition = { 0.0f,0.0f };
-	/*Vector2 aButtonPosition = { 0.0f,0.0f };
-	aButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (aButtonSize.x / 2);
-	aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y);*/
+	const Vector2 aButtonPosition = { 576.0f,488.0f };
+	//Vector2 aButtonPosition = { 0.0f,0.0f };
+	//aButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (aButtonSize.x / 2);
+	//aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y);
 	aButton_->Initialize("A.png",aButtonPosition);
 
 	//シェーダー読み込み

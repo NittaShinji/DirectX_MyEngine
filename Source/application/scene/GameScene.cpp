@@ -89,7 +89,7 @@ void GameScene::Initialize()
 	bButtonSprite_->SetSize(Vector2(kUiSize_));
 	//ジャンプ画像
 	jumpSprite_ = std::make_unique<Sprite>();
-	const Vector2 jumpSpritePosition = { 1152,684 };
+	const Vector2 jumpSpritePosition = { 1152,584 };
 	jumpSprite_->Initialize("jump.png",jumpSpritePosition);
 	jumpSprite_->SetSize(Vector2(kUiSize_));
 	//矢印画像
