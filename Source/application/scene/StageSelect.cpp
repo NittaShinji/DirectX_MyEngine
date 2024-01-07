@@ -30,7 +30,9 @@ void StageSelectScene::Initialize()
 	backGroundWhite_ = std::make_unique<Sprite>();
 	gameSceneSprite1_ = std::make_unique<Sprite>();
 	gameSceneSprite2_ = std::make_unique<Sprite>();
-	sceneTransition_ = std::make_unique<Sprite>();
+	//sceneTransition_ = std::make_unique<Sprite>();
+	nowLoadingSprite_ = std::make_unique<Sprite>();
+
 
 	const int32_t selectWidth = 640;
 	const int32_t selectHeight = 400;
@@ -46,6 +48,8 @@ void StageSelectScene::Initialize()
 
 	TextureManager::GetInstance()->LoadTexture("GameScene1.png");
 	TextureManager::GetInstance()->LoadTexture("GameScene2.png");
+	TextureManager::GetInstance()->LoadTexture("NowLoading.png");
+
 
 	const Vector2 selectPosition = { 0.0f,160.0f };
 	
@@ -61,7 +65,8 @@ void StageSelectScene::Initialize()
 	selectSprite_->Initialize("CursorTex", selectPosition);
 	gameSceneSprite1_->Initialize("GameScene1.png",backGroundPositionL);
 	gameSceneSprite2_->Initialize("GameScene2.png",backGroundPositionR);
-	sceneTransition_->Initialize("BlackBackGroundTex", InitSpritePos);
+	//sceneTransition_->Initialize("BlackBackGroundTex", InitSpritePos);
+	nowLoadingSprite_->Initialize("NowLoading.png", InitSpritePos);
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
@@ -85,7 +90,8 @@ void StageSelectScene::Update()
 	backGroundWhite_->matUpdate();
 	gameSceneSprite1_->matUpdate();
 	gameSceneSprite2_->matUpdate();
-	sceneTransition_->matUpdate();
+	//sceneTransition_->matUpdate();
+	nowLoadingSprite_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
 	if(gamePad_->IsConnected(Player1)) {}
@@ -149,7 +155,8 @@ void StageSelectScene::Draw()
 
 	if(isChangeScene_ == true)
 	{
-		sceneTransition_->Draw("BlackBackGroundTex");
+		//sceneTransition_->Draw("BlackBackGroundTex");
+		nowLoadingSprite_->Draw("NowLoading.png");
 	}
 	
 	//描画終了

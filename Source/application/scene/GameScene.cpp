@@ -76,7 +76,7 @@ void GameScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
-
+	
 	//aボタン画像
 	aButtonSprite_ = std::make_unique<Sprite>();
 	const Vector2 aButtonPosition = { 1152,648 };
@@ -102,6 +102,9 @@ void GameScene::Initialize()
 	const Vector2 kDefaultSpritePos = { 0.0f,0.0f };
 	backGroundSprite_->Initialize("backGround.png", kDefaultSpritePos);
 	//トランジション用画像
+	nowLoadingSprite_ = std::make_unique<Sprite>();
+	nowLoadingSprite_->Initialize("NowLoading.png", kDefaultSpritePos);
+
 	sceneTransitionUp_ = std::make_unique<Sprite>();
 	sceneTransitionDown_ = std::make_unique<Sprite>();
 	sceneTransitionUp_->Initialize("BlackBackGroundHalfTex", kDefaultSpritePos);
@@ -173,6 +176,8 @@ void GameScene::Initialize()
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
 
 	GameTimer::GetInstance()->InGameInitialize();
+
+	isStartSceneAnimation_ = false;
 }
 
 void GameScene::Update()
@@ -232,6 +237,7 @@ void GameScene::Update()
 	backGroundSprite_->matUpdate();
 	sceneTransitionUp_->matUpdate();
 	sceneTransitionDown_->matUpdate();
+	nowLoadingSprite_->matUpdate();
 	
 	if(gamePad_->IsConnected(Player1)) {}
 
@@ -493,6 +499,10 @@ void GameScene::Draw()
 	GameTimer::GetInstance()->InGameDraw();
 	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
+	if(isStartSceneAnimation_ == false)
+	{
+		nowLoadingSprite_->Draw("NowLoading.png");
+	}
 	
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
@@ -503,6 +513,8 @@ void GameScene::Draw()
 
 void GameScene::SceneAnimation()
 {
+	isStartSceneAnimation_ = true;
+
 	if(sceneAnimeTimer_ < kSceneAnimeTime_)
 	{
 		sceneAnimeTimer_++;

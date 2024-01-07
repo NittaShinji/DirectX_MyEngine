@@ -133,6 +133,9 @@ private:
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
 	std::unique_ptr<Sprite> sceneTransitionUp_ = nullptr;
 	std::unique_ptr<Sprite> sceneTransitionDown_ = nullptr;
+	std::unique_ptr<Sprite> nowLoadingSprite_ = nullptr;
+
+	bool isStartSceneAnimation_ = false;
 
 	const Vector2 kUiSize_ = { 64.0f,64.0f };
 
