@@ -285,3 +285,39 @@ void GamePad::ReleaseButtonMoment()
 		padButton_.B = false;
 	}
 }
+
+bool GamePad::HasPushedButtonA()
+{
+	HasPushedButton();
+	return padButton_.A;
+}
+
+bool GamePad::ReleaseButtonMomentA()
+{
+	ReleaseButtonMoment();
+	return padButton_.A;
+}
+
+bool GamePad::PushedButtonMomentA()
+{
+	PushedButtonMoment();
+	return padButton_.A;
+}
+
+bool GamePad::ReleaseButtonMomentB()
+{
+	ReleaseButtonMoment();
+	return padButton_.B;
+}
+
+bool GamePad::PushedButtonMomentB()
+{
+	PushedButtonMoment();
+	return padButton_.B;
+}
+
+bool GamePad::HasPushedButtonB()
+{
+	HasPushedButton();
+	return padButton_.B;
+}

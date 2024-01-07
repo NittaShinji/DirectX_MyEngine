@@ -106,7 +106,7 @@ void Player::Update(Camera* camera)
 	}
 
 	//どのボタンが瞬間的に押されたか
-	gamePad_->PushedButtonMoment();
+	//gamePad_->PushedButtonMoment();
 
 	//ゲーム中プレイヤーが死んでいないとき
 	if(isMoving_ == true)
@@ -141,7 +141,7 @@ void Player::Update(Camera* camera)
 			if(isJumped_ == false)
 			{
 				//長押しの場合滑空するように
-				if(keys_->HasPushedKey(DIK_SPACE) == true)
+				if(keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButtonA())
 				{
 					//下向き加速度　
 					const float fallAcc = -0.015f;
@@ -165,7 +165,7 @@ void Player::Update(Camera* camera)
 			//二段ジャンプ時
 			if(jumpCount > 0 && jumpCount < 2)
 			{
-				if(gamePad_->GetButtonA())
+				if(gamePad_->PushedButtonMomentA())
 				{
 					jumpSound_->PlaySoundWave(false);
 
@@ -196,7 +196,7 @@ void Player::Update(Camera* camera)
 			jumpSound_->PlaySoundWave(false);
 			isDentedAnime_ = true;
 		}
-		else if(gamePad_->GetButtonA() && jumpCount > 0)
+		else if(gamePad_->PushedButtonMomentA() && jumpCount > 0)
 		{
 			jumpSound_->PlaySoundWave(false);
 			isDentedAnime_ = true;
@@ -414,7 +414,7 @@ void Player::Update(Camera* camera)
 		}
 
 		//色変え処理
-		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+		if(gamePad_->PushedButtonMomentB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
 			isStartChangeColorAnime_ = true;
 
@@ -468,11 +468,11 @@ void Player::Update(Camera* camera)
 			}
 		}
 
-		if(keys_->PushedKeyMoment(DIK_SPACE) == true)
+		if(keys_->PushedKeyMoment(DIK_SPACE) == true || gamePad_->PushedButtonMomentA())
 		{
 			isSmallJump_ = true;
 		}
-		else if(keys_->HasPushedKey(DIK_SPACE) == true)
+		else if(keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButtonA())
 		{
 			if(isJumped_ == true)
 			{
@@ -493,7 +493,7 @@ void Player::Update(Camera* camera)
 
 			}
 		}
-		else if(keys_->ReleasedKeyMoment(DIK_SPACE))
+		else if(keys_->ReleasedKeyMoment(DIK_SPACE) || gamePad_->ReleaseButtonMomentA())
 		{
 			if(onGround_ == false && isSmallJump_ == false)
 			{
@@ -514,7 +514,7 @@ void Player::Update(Camera* camera)
 			if(isStartedLandAnime_ == true)
 			{
 				//押した瞬間
-				if(keys_->PushedKeyMoment(DIK_SPACE))
+				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMomentA())
 				{
 					if(jumpCount > 0)
 					{
@@ -553,7 +553,7 @@ void Player::Update(Camera* camera)
 			else if(isReturnedSizeAnime_ == true)
 			{
 				//押した瞬間
-				if(keys_->PushedKeyMoment(DIK_SPACE))
+				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMomentA())
 				{
 					if(jumpCount > 0)
 					{
@@ -713,7 +713,7 @@ void Player::AccelerateChangeColor()
 	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 3.0f))
 	{
 		//色を変える
-		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+		if(gamePad_->PushedButtonMomentB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
 			if(attributeColor_ == yellow)
 			{
@@ -729,7 +729,7 @@ void Player::AccelerateChangeColor()
 	else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 3.0f))
 	{
 		//色を変える
-		if(gamePad_->GetButtonB() || keys_->PushedKeyMoment(DIK_RETURN))
+		if(gamePad_->PushedButtonMomentB() || keys_->PushedKeyMoment(DIK_RETURN))
 		{
 			if(attributeColor_ == pink)
 			{
@@ -1079,7 +1079,7 @@ void Player::LongJump()
 		}
 		isSmallJump_ = false;
 	}
-	else if(keys_->HasPushedKey(DIK_SPACE))
+	else if(keys_->HasPushedKey(DIK_SPACE) || gamePad_->HasPushedButtonA())
 	{
 		if(isLongJump_ == true)
 		{

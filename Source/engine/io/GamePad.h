@@ -72,17 +72,31 @@ public:
 	//ボタン情報をリセットする
 	void ResetButton();
 
-	//押した瞬間
+	//押した状態かどうか
 	void HasPushedButton();
 
-	//離した瞬間
+	//離している
 	void HasReleasedButton();
 
-	//押し続けている
+	//押した瞬間
 	void PushedButtonMoment();
 
-	//離している
+	//離した瞬間
 	void ReleaseButtonMoment();
+
+	//Aボタンを離した瞬間か
+	bool ReleaseButtonMomentA();
+	//Aボタンを押した瞬間か
+	bool PushedButtonMomentA();
+	//Aボタンを押し続けているか
+	bool HasPushedButtonA();
+
+	//Bボタンを離した瞬間か
+	bool ReleaseButtonMomentB();
+	//Bボタンを押した瞬間か
+	bool PushedButtonMomentB();
+	//Bボタンを押し続けているか
+	bool HasPushedButtonB();
 
 private:
 
