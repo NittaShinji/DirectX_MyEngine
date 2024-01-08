@@ -185,7 +185,6 @@ void GameScene::Update()
 	SceneAnimation();
 	gameSpeed_->Update();
 
-#ifdef _DEBUG
 	if(keys_->PushedKeyMoment(DIK_N))
 	{
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
@@ -202,7 +201,6 @@ void GameScene::Update()
 	{
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
 	}
-#endif
 
 	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
@@ -300,16 +298,16 @@ void GameScene::Update()
 	{
 		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
 		{
+			if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
+			{
+				if(player_->GetIsSecondJumpMoment() == true)
+				{
+					secondJumpParticle_->Preparation(player_->GetTransform());
+				}
+			}
+
 			if(gameSpeed_->GetCanMoveInSlow() == true)
 			{
-				if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
-				{
-					if(player_->GetIsSecondJumpMoment() == true)
-					{
-						secondJumpParticle_->Preparation(player_->GetTransform());
-					}
-				}
-
 				if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
 				{
 					if(player_->GetIsSecondJumpMoment() == false)

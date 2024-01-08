@@ -140,22 +140,41 @@ void Player::Update(Camera* camera)
 
 			if(isJumped_ == false)
 			{
+				const float slow = 10;
 				//長押しの場合滑空するように
 				if(keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButtonA())
 				{
 					//下向き加速度　
 					const float fallAcc = -0.015f;
 					const float fallVYMin = -0.5f;
-					//加速
-					fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+					
+					if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
+					{
+						//加速
+						fallVec_.y = max(fallVec_.y + (fallAcc / slow) , fallVYMin);
+					}
+					else
+					{
+						//加速
+						fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+					}
 				}
 				else
 				{
 					//下向き加速度　
 					const float fallAcc = -0.021f;
 					const float fallVYMin = -0.75f;
-					//加速
-					fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+
+					if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
+					{
+						//加速
+						fallVec_.y = max(fallVec_.y + (fallAcc / slow), fallVYMin);
+					}
+					else
+					{
+						//加速
+						fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+					}
 				}
 			}
 
@@ -222,7 +241,7 @@ void Player::Update(Camera* camera)
 		else
 		{
 			transform_.x += totalAxcell_.x;
-			transform_.y += totalAxcell_.y;
+			transform_.y += totalAxcell_.y * gameSpeed_->GetSpeedNum();;
 			transform_.z += totalAxcell_.z * gameSpeed_->GetSpeedNum();
 		}
 
