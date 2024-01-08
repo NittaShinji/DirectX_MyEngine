@@ -176,6 +176,8 @@ void GameScene::Initialize()
 	breakParticle_->SetGameSpeed(gameSpeed_.get());
 
 	GameTimer::GetInstance()->InGameInitialize();
+	tutorialEvent_ = std::make_unique<TutorialEvent>();
+	tutorialEvent_->Initialzie();
 
 	isStartSceneAnimation_ = false;
 }
@@ -283,6 +285,7 @@ void GameScene::Update()
 
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
+	tutorialEvent_->Update(player_.get(),gameSpeed_.get());
 
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
@@ -501,6 +504,7 @@ void GameScene::Draw()
 	{
 		nowLoadingSprite_->Draw("NowLoading.png");
 	}
+	tutorialEvent_->Draw();
 	
 	//デバッグテキストの描画
 	imGuiManager_->Draw();

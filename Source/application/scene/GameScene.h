@@ -24,6 +24,7 @@
 #include "GameSpeed.h"
 #include "HitParticle2D.h"
 #include "MirrorPlayer.h"
+#include "TutorialEvent.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -169,6 +170,9 @@ private:
 	Vector2 sceneAnimationVec_;
 
 	//ゲームスピード
-	std::unique_ptr<GameSpeed> gameSpeed_;
+	std::unique_ptr<GameSpeed> gameSpeed_ = nullptr;
+
+	//チュートリアルイベント
+	std::unique_ptr<TutorialEvent> tutorialEvent_ = nullptr;
 };
 
