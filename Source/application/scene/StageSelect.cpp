@@ -95,10 +95,8 @@ void StageSelectScene::Update()
 
 	//ゲームパッドが繋がっているかどうか
 	if(gamePad_->IsConnected(Player1)) {}
-	//押した瞬間の判定を取る
-	gamePad_->PushedButtonMoment();
 
-	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
+	if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		touchSound_->PlaySoundWave(false);
 		isChangeScene_ = true;
@@ -109,14 +107,14 @@ void StageSelectScene::Update()
 	const float kSelectSpritePos = 160.0f;
 
 
-	if(keys_->PushedKeyMoment(DIK_RIGHT) || gamePad_->PushedButtonMoment1(XINPUT_GAMEPAD_DPAD_RIGHT))
+	if(keys_->PushedKeyMoment(DIK_RIGHT) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_DPAD_RIGHT))
 	{
 		if(selectSprite_->GetPosition().x == 0.0f)
 		{
 			selectSprite_->SetPosition(Vector2(kWindowHalfX, kSelectSpritePos));
 		}
 	}
-	else if(keys_->PushedKeyMoment(DIK_LEFT) || gamePad_->PushedButtonMoment1(XINPUT_GAMEPAD_DPAD_LEFT))
+	else if(keys_->PushedKeyMoment(DIK_LEFT) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_DPAD_LEFT))
 	{
 		if(selectSprite_->GetPosition().x == kWindowHalfX)
 		{

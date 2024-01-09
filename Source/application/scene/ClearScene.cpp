@@ -102,9 +102,8 @@ void ClearScene::Update()
 
 	//ゲームパッドが繋がっているかどうか
 	if(gamePad_->IsConnected(Player1)) {}
-	//押した瞬間の判定を取る
-	gamePad_->PushedButtonMoment();
-	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
+
+	if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		GameTimer::GetInstance()->Reset();
 		SoundManager::GetInstance()->Finalize();

@@ -129,10 +129,9 @@ void TutorialScene::Update()
 
 	if(gamePad_->IsConnected(Player1)) {}
 
-	gamePad_->PushedButtonMoment();
 	if(player_->GetIsDead() == false)
 	{
-		if(gamePad_->GetButtonA())
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 		{
 			player_->SetIsMoving(true);
 		}
@@ -141,7 +140,6 @@ void TutorialScene::Update()
 		{
 			player_->SetIsMoving(true);
 		}
-
 	}
 	else
 	{

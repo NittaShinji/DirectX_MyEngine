@@ -79,247 +79,9 @@ void GamePad::SaveOldButton()
 void GamePad::ResetButton()
 {
 	isEnabledButton_ = false;
-	padButton_.A = false;
-	padButton_.B = false;
-	padButton_.X = false;
-	padButton_.Y = false;
-	padButton_.Left = false;
-	padButton_.Right = false;
-	padButton_.Up = false;
-	padButton_.Down = false;
-	padButton_.LB = false;
-	padButton_.LT = false;
-	padButton_.RB = false;
-	padButton_.RT = false;
 }
 
-//押した状態かどうか
-void GamePad::HasPushedButton()
-{
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
-	{
-		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
-		{
-			padButton_.A = true;
-		}
-		else
-		{
-			padButton_.A = false;
-		}
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
-	{
-		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
-		{
-			padButton_.B = true;
-		}
-		else
-		{
-			padButton_.B = false;
-		}
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_X)
-	{
-		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_X)
-		{
-			padButton_.X = true;
-		}
-		else
-		{
-			padButton_.X = false;
-		}
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_Y)
-	{
-		padButton_.Y = true;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
-	{
-		padButton_.Up = true;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-	{
-		padButton_.Down = true;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
-	{
-		padButton_.Left = true;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
-	{
-		padButton_.Right = true;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_UP)
-	{
-		padButton_.Up = true;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_DOWN)
-	{
-		padButton_.Down = true;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
-	{
-		padButton_.Left = true;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
-	{
-		padButton_.Right = true;
-	}
-
-}
-
-//離した状態かどうか
-void GamePad::HasReleasedButton()
-{
-	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
-	{
-		if(!(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
-		{
-			padButton_.A = true;
-		}
-		else
-		{
-			padButton_.A = false;
-		}
-	}
-	else
-	{
-		padButton_.A = false;
-	}
-
-	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B))
-	{
-		if(!(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B))
-		{
-			padButton_.B = true;
-		}
-		else
-		{
-			padButton_.B = false;
-		}
-	}
-	else
-	{
-		padButton_.B = false;
-	}
-}
-
-//押した瞬間かどうか
-void GamePad::PushedButtonMoment()
-{
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
-	{
-		if(!(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
-		{
-			padButton_.A = true;
-		}
-		else
-		{
-			padButton_.A = false;
-		}
-	}
-	else
-	{
-		padButton_.A = false;
-	}
-
-	if(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
-	{
-		if(!(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B))
-		{
-			padButton_.B = true;
-		}
-		else
-		{
-			padButton_.B = false;
-		}
-	}
-	else
-	{
-		padButton_.B = false;
-	}
-}
-
-//離した瞬間かどうか
-void GamePad::ReleaseButtonMoment()
-{
-	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_A))
-	{
-		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_A)
-		{
-			padButton_.A = true;
-		}
-		else
-		{
-			padButton_.A = false;
-		}
-	}
-	else
-	{
-		padButton_.A = false;
-	}
-
-	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_B))
-	{
-		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_B)
-		{
-			padButton_.B = true;
-		}
-		else
-		{
-			padButton_.B = false;
-		}
-	}
-	else
-	{
-		padButton_.B = false;
-	}
-
-	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT))
-	{
-		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
-		{
-			padButton_.Right = true;
-		}
-		else
-		{
-			padButton_.Right = false;
-		}
-	}
-	else
-	{
-		padButton_.Right = false;
-	}
-
-	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT))
-	{
-		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
-		{
-			padButton_.Left = true;
-		}
-		else
-		{
-			padButton_.Left = false;
-		}
-	}
-	else
-	{
-		padButton_.Left = false;
-	}
-}
-
-bool GamePad::HasPushedButton1(int16_t button)
+bool GamePad::HasPushedButton(int16_t button)
 {
 	bool result = false;
 
@@ -342,7 +104,7 @@ bool GamePad::HasPushedButton1(int16_t button)
 	return result;
 }
 
-bool GamePad::HasReleasedButton1(int16_t button)
+bool GamePad::HasReleasedButton(int16_t button)
 {
 	bool result = false;
 
@@ -365,7 +127,7 @@ bool GamePad::HasReleasedButton1(int16_t button)
 	return result;
 }
 
-bool GamePad::PushedButtonMoment1(int16_t button)
+bool GamePad::PushedButtonMoment(int16_t button)
 {
 	bool result = false;
 
@@ -388,7 +150,7 @@ bool GamePad::PushedButtonMoment1(int16_t button)
 	return result;
 }
 
-bool GamePad::ReleaseButtonMoment1(int16_t button)
+bool GamePad::ReleaseButtonMoment(int16_t button)
 {
 	bool result = false;
 
@@ -465,74 +227,3 @@ bool GamePad::CompareButton(int16_t button)
 	return isEnabledButton_;
 }
 
-bool GamePad::HasPushedButtonA()
-{
-	HasPushedButton();
-	return padButton_.A;
-}
-
-bool GamePad::ReleaseButtonMomentA()
-{
-	ReleaseButtonMoment();
-	return padButton_.A;
-}
-
-bool GamePad::PushedButtonMomentA()
-{
-	PushedButtonMoment();
-	return padButton_.A;
-}
-
-bool GamePad::ReleaseButtonMomentB()
-{
-	ReleaseButtonMoment();
-	return padButton_.B;
-}
-
-bool GamePad::PushedButtonMomentB()
-{
-	PushedButtonMoment();
-	return padButton_.B;
-}
-
-bool GamePad::HasPushedButtonB()
-{
-	HasPushedButton();
-	return padButton_.B;
-}
-
-bool GamePad::ReleaseButtonMomentRight()
-{
-	ReleaseButtonMoment();
-	return padButton_.Right;
-}
-
-bool GamePad::PushedButtonMomentRight()
-{
-	PushedButtonMoment();
-	return padButton_.Right;
-}
-
-bool GamePad::HasPushedButtonRight()
-{
-	HasPushedButton();
-	return padButton_.Right;
-}
-
-bool GamePad::ReleaseButtonMomentLeft()
-{
-	ReleaseButtonMoment();
-	return padButton_.Left;
-}
-
-bool GamePad::PushedButtonMomentLeft()
-{
-	PushedButtonMoment();
-	return padButton_.Left;
-}
-
-bool GamePad::HasPushedButtonLeft()
-{
-	HasPushedButton();
-	return padButton_.Left;
-}

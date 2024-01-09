@@ -241,15 +241,14 @@ void GameScene::Update()
 	
 	if(gamePad_->IsConnected(Player1)) {}
 
-	gamePad_->PushedButtonMoment();
-	if(player_->GetIsDead() == false)
+	if(player_->GetIsDead() == false && player_->GetIsFinish() == false)
 	{
-		if(gamePad_->GetButtonA())
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 		{
 			player_->SetIsMoving(true);
 		}
 
-		if(keys_->PushedKeyMoment(DIK_SPACE) && player_->GetIsFinish() == false)
+		if(keys_->PushedKeyMoment(DIK_SPACE) )
 		{
 			player_->SetIsMoving(true);
 		}
