@@ -78,6 +78,7 @@ void GamePad::SaveOldButton()
 
 void GamePad::ResetButton()
 {
+	isEnabledButton_ = false;
 	padButton_.A = false;
 	padButton_.B = false;
 	padButton_.X = false;
@@ -284,6 +285,184 @@ void GamePad::ReleaseButtonMoment()
 	{
 		padButton_.B = false;
 	}
+
+	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT))
+	{
+		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
+		{
+			padButton_.Right = true;
+		}
+		else
+		{
+			padButton_.Right = false;
+		}
+	}
+	else
+	{
+		padButton_.Right = false;
+	}
+
+	if(!(state_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT))
+	{
+		if(oldState_.Gamepad.wButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+		{
+			padButton_.Left = true;
+		}
+		else
+		{
+			padButton_.Left = false;
+		}
+	}
+	else
+	{
+		padButton_.Left = false;
+	}
+}
+
+bool GamePad::HasPushedButton1(int16_t button)
+{
+	bool result = false;
+
+	if(state_.Gamepad.wButtons & button)
+	{
+		if(oldState_.Gamepad.wButtons & button)
+		{
+			result = CompareButton(button);
+		}
+		else
+		{
+			isEnabledButton_ = false;
+		}
+	}
+	else
+	{
+		isEnabledButton_ = false;
+	}
+
+	return result;
+}
+
+bool GamePad::HasReleasedButton1(int16_t button)
+{
+	bool result = false;
+
+	if(!(state_.Gamepad.wButtons & button))
+	{
+		if(!(oldState_.Gamepad.wButtons & button))
+		{
+			result = CompareButton(button);
+		}
+		else
+		{
+			isEnabledButton_ = false;
+		}
+	}
+	else
+	{
+		isEnabledButton_ = false;
+	}
+
+	return result;
+}
+
+bool GamePad::PushedButtonMoment1(int16_t button)
+{
+	bool result = false;
+
+	if(state_.Gamepad.wButtons & button)
+	{
+		if(!(oldState_.Gamepad.wButtons & button))
+		{
+			result = CompareButton(button);
+		}
+		else
+		{
+			isEnabledButton_ = false;
+		}
+	}
+	else
+	{
+		isEnabledButton_ = false;
+	}
+
+	return result;
+}
+
+bool GamePad::ReleaseButtonMoment1(int16_t button)
+{
+	bool result = false;
+
+	if(!(state_.Gamepad.wButtons & button))
+	{
+		if(oldState_.Gamepad.wButtons & button)
+		{
+			result = CompareButton(button);
+		}
+		else
+		{
+			isEnabledButton_ = false;
+		}
+	}
+	else
+	{
+		isEnabledButton_ = false;
+	}
+
+	return result;
+}
+
+bool GamePad::CompareButton(int16_t button)
+{
+	if(button == XINPUT_GAMEPAD_A)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_B)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_X)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_Y)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_DPAD_UP)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_DPAD_DOWN)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_DPAD_LEFT)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_DPAD_RIGHT)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_LEFT_THUMB)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_RIGHT_THUMB)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_LEFT_SHOULDER)
+	{
+		isEnabledButton_ = true;
+	}
+	else if(button == XINPUT_GAMEPAD_RIGHT_SHOULDER)
+	{
+		isEnabledButton_ = true;
+	}
+
+	return isEnabledButton_;
 }
 
 bool GamePad::HasPushedButtonA()
@@ -320,4 +499,40 @@ bool GamePad::HasPushedButtonB()
 {
 	HasPushedButton();
 	return padButton_.B;
+}
+
+bool GamePad::ReleaseButtonMomentRight()
+{
+	ReleaseButtonMoment();
+	return padButton_.Right;
+}
+
+bool GamePad::PushedButtonMomentRight()
+{
+	PushedButtonMoment();
+	return padButton_.Right;
+}
+
+bool GamePad::HasPushedButtonRight()
+{
+	HasPushedButton();
+	return padButton_.Right;
+}
+
+bool GamePad::ReleaseButtonMomentLeft()
+{
+	ReleaseButtonMoment();
+	return padButton_.Left;
+}
+
+bool GamePad::PushedButtonMomentLeft()
+{
+	PushedButtonMoment();
+	return padButton_.Left;
+}
+
+bool GamePad::HasPushedButtonLeft()
+{
+	HasPushedButton();
+	return padButton_.Left;
 }

@@ -234,7 +234,8 @@ void TitleScene::Update()
 	//押した瞬間の判定を取る
 	gamePad_->PushedButtonMoment();
 
-	if(gamePad_->GetButtonA() || keys_->PushedKeyMoment(DIK_RETURN))
+
+	if(gamePad_->HasPushedButton1(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		//Sound::GetInstance()->PlaySoundWave("touch.wav",false);
 		//Sound::GetInstance()->PauseSound("Resources/Sound/title.wav");

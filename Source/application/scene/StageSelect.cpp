@@ -109,14 +109,14 @@ void StageSelectScene::Update()
 	const float kSelectSpritePos = 160.0f;
 
 
-	if(keys_->PushedKeyMoment(DIK_RIGHT))
+	if(keys_->PushedKeyMoment(DIK_RIGHT) || gamePad_->PushedButtonMoment1(XINPUT_GAMEPAD_DPAD_RIGHT))
 	{
 		if(selectSprite_->GetPosition().x == 0.0f)
 		{
 			selectSprite_->SetPosition(Vector2(kWindowHalfX, kSelectSpritePos));
 		}
 	}
-	else if(keys_->PushedKeyMoment(DIK_LEFT))
+	else if(keys_->PushedKeyMoment(DIK_LEFT) || gamePad_->PushedButtonMoment1(XINPUT_GAMEPAD_DPAD_LEFT))
 	{
 		if(selectSprite_->GetPosition().x == kWindowHalfX)
 		{

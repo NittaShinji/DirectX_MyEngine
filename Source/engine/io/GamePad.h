@@ -1,5 +1,6 @@
 #pragma once
 #include "windows.h"
+#include "stdint.h"
 #pragma warning(push)
 #pragma warning(disable:4023)
 #include "xinput.h"
@@ -84,6 +85,18 @@ public:
 	//離した瞬間
 	void ReleaseButtonMoment();
 
+	//押した状態かどうか
+	bool HasPushedButton1(int16_t button);
+	//離している
+	bool HasReleasedButton1(int16_t button);
+	//押した瞬間
+	bool PushedButtonMoment1(int16_t button);
+	//離した瞬間
+	bool ReleaseButtonMoment1(int16_t button);
+
+	//引数に渡されたビット番号とボタンのビット番号を比較し、同じならボタンフラグをONにする
+	bool CompareButton(int16_t bottun);
+
 	//Aボタンを離した瞬間か
 	bool ReleaseButtonMomentA();
 	//Aボタンを押した瞬間か
@@ -98,6 +111,21 @@ public:
 	//Bボタンを押し続けているか
 	bool HasPushedButtonB();
 
+	//右ボタンが離した瞬間か
+	bool ReleaseButtonMomentRight();
+	//右ボタンを押した瞬間か
+	bool PushedButtonMomentRight();
+	//右ボタンを押し続けているか
+	bool HasPushedButtonRight();
+
+	//右ボタンが離した瞬間か
+	bool ReleaseButtonMomentLeft();
+	//右ボタンを押した瞬間か
+	bool PushedButtonMomentLeft();
+	//右ボタンを押し続けているか
+	bool HasPushedButtonLeft();
+
+
 private:
 
 	//コントローラの番号
@@ -109,6 +137,9 @@ private:
 
 	//各ボタンの構造体
 	PadButton padButton_;
+
+	//入力されたボタンが有効かどうか
+	bool isEnabledButton_;
 
 public:
 
