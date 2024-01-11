@@ -4,31 +4,21 @@
 
 void TutorialEvent::Initialzie()
 {
-	aButtonSprite_ = std::make_unique<Sprite>();
-	aButtonSprite_->Initialize("A.png",Vector2(640,540));
-	isStartJumpEvent_ = false;
+	//ジャンプイベント設定
+	const float kStartJumpEventPos_ = 70;
+	const float kEndJumpEventPos_ = 120;
+	jumpEvent_ = std::make_unique<Event>();
+	jumpEvent_->Initialzie(kStartJumpEventPos_, kEndJumpEventPos_);
 }
 
-void TutorialEvent::Update(Player* player, GameSpeed* gameSpeed)
+void TutorialEvent::Update(Player* player)
 {
-	aButtonSprite_->matUpdate();
+	float playerPosZ = player->GetTransform().z;
 
-	int32_t playerPosZ = static_cast<int32_t>(player->GetTransform().z);
-	if(playerPosZ >= StartJumpEventPos && playerPosZ <= EndJumpEventPos)
-	{
-		isStartJumpEvent_ = true;
-		gameSpeed->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
-	}
-	else
-	{
-		isStartJumpEvent_ = false;
-	}
+	jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE);
 }
 
 void TutorialEvent::Draw()
 {
-	if(isStartJumpEvent_ == true)
-	{
-		aButtonSprite_->Draw("A.png");
-	}	
+	jumpEvent_->Draw();
 }

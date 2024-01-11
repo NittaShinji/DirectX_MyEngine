@@ -137,6 +137,9 @@ protected:
 	//テクスチャ切り出しサイズ
 	Vector2 textureClipSize_ = { 100.0f,100.0f };
 
+	//読み込んだファイル名
+	std::string fileName_;
+
 public:
 
 	//ゲッター
@@ -158,7 +161,9 @@ public:
 	bool GetIsInvisible() const { return isInvisible_; };
 	//テクスチャ左上座標を取得
 	const Vector2& GetTextureLeftTop() const { return textureLeftTop_; };
-	
+	//読み込んだファイル名を取得
+	const std::string GetFileName() const { return fileName_; }
+
 	//セッター
 	//座標をセット
 	void SetPosition(const Vector2& initPosition) { position_ = initPosition; }
@@ -180,4 +185,7 @@ public:
 	void SetTextureLeftTop(const Vector2& textureLeftTop) { textureLeftTop_ = textureLeftTop; };
 	//切り抜くサイズをセット
 	void SetTextureClipSize(const Vector2& textureSize) { textureClipSize_ = textureSize; size_ = textureSize; };
+	//読み込んだファイル名をセット
+	void SetTextureFileName(const std::string& fileName) { fileName_ = fileName;};
+
 };

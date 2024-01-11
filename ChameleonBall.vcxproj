@@ -100,6 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\application\Event.cpp" />
     <ClCompile Include="Source\application\object\GoalOBJ.cpp" />
     <ClCompile Include="Source\application\GameTimer.cpp" />
     <ClCompile Include="Source\application\object\MirrorPlayer.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Source\application\TutorialEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\application\Event.h" />
     <ClInclude Include="Source\application\object\MirrorPlayer.h" />
     <ClInclude Include="Source\application\object\GoalOBJ.h" />
     <ClInclude Include="Source\application\GameTimer.h" />

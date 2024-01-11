@@ -67,6 +67,7 @@ void Sprite::StaticInitialize()
 void Sprite::Initialize(const std::string fileName,Vector2 position)
 {
 	directXBasic_ = spriteCommon_->GetDirectXBasic();
+	fileName_ = fileName;
 
 	winWide_ = static_cast<float>(directXBasic_->GetWinWidth());
 	winHeight_ = static_cast<float>(directXBasic_->GetWinHeight());

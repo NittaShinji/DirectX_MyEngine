@@ -21,6 +21,7 @@ using namespace std;
 
 DirectXBasic* GameScene::directXBasic_ = nullptr;
 ImGuiManager* GameScene::imGuiManager_ = nullptr;
+KeyInput* GameScene::keys_ = nullptr;
 
 GameScene::GameScene() {}
 GameScene::~GameScene() {}
@@ -177,6 +178,7 @@ void GameScene::Initialize()
 
 	GameTimer::GetInstance()->InGameInitialize();
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
+	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
 	tutorialEvent_->Initialzie();
 
 	isStartSceneAnimation_ = false;
@@ -187,6 +189,7 @@ void GameScene::Update()
 	SceneAnimation();
 	gameSpeed_->Update();
 
+#ifdef _DEBUG
 	if(keys_->PushedKeyMoment(DIK_N))
 	{
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
@@ -203,6 +206,7 @@ void GameScene::Update()
 	{
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
 	}
+#endif
 
 	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
@@ -284,7 +288,7 @@ void GameScene::Update()
 
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
-	//tutorialEvent_->Update(player_.get(),gameSpeed_.get());
+	tutorialEvent_->Update(player_.get());
 
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());

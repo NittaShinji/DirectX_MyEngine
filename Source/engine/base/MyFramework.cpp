@@ -16,7 +16,6 @@ void MyFramework::Initialize()
 	directXBasic_ = std::make_unique<DirectXBasic>();
 	directXBasic_->Initialize(winApi_);
 
-
 	//Input初期化処理
 	input_ = std::make_unique<Input>();
 	input_->Initialize(winApi_);
