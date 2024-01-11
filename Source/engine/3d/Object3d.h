@@ -206,7 +206,6 @@ public: //アクセッサ
 	//平行移動を取得
 	Vector3 GetTransform() { return transform_; }
 
-	
 	//平行移動をセット
 	void SetTransform(const Vector3& pos) { transform_ = pos; };
 	//回転角をセット

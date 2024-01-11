@@ -56,14 +56,6 @@ private:
 
 	struct MODELVALUE
 	{
-		Microsoft::WRL::ComPtr<ID3D12Resource> constBuffB1;	//定数バッファ
-
-		//定数バッファのマッピング用ポインタ
-		ConstBufferDateB0* constMapTransform = nullptr;
-
-		//定数バッファ用データ
-		ConstBufferDateB1* constMap1 = nullptr;
-
 		//マテリアル
 		Material material;
 
