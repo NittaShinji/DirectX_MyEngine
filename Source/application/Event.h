@@ -29,12 +29,17 @@ private:
 	static GamePad* gamePad_;
 	static GameSpeed* gameSpeed_;
 
-	//イベントボタン
+	//イベントが開始しているかどうか
+	bool isStart_;
+	//イベントが終了しているかどうか
+	bool isFinish_;
+	//イベント開始位置
+	float startPos_;
+	//イベント終了位置
+	float finishPos_;
+
+	//イベントボタン画像
 	std::unique_ptr<Sprite> eventButtonSprite_ = nullptr;
 
-	bool isStart_;
-	bool isFinish_;
-	float startPos_;
-	float finishPos_;
 };
 

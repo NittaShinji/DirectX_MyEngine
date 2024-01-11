@@ -19,11 +19,7 @@ public:
 	
 private: //メンバ変数
 
-	//ジャンプ画像
-	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
 	//ジャンプイベント
 	std::unique_ptr<Event> jumpEvent_ = nullptr;
-
-
 };
 
