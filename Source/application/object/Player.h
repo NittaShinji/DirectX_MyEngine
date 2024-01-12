@@ -121,18 +121,14 @@ private:
 	//オブジェクト
 	std::unique_ptr<Object3d> object_;
 
-	Vector3 move = { 0,0,0 };
-
 	//ジャンプカウント
 	int32_t jumpCount;
-
 	
 	//空中にいるかどうか
 	bool isFlying_;
 
 	//ジャンプ量
 	float jumpTotalValue_;
-
 	
 	bool isJumped_ = false;
 	bool isLongJump_ = false;
@@ -216,7 +212,6 @@ private:
 	bool isStartedJumpAnimation_;
 	
 	int32_t jumpAnimationTimer_ = kJumpAnimationTime_;
-	
 	
 	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
 	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 45.0f };

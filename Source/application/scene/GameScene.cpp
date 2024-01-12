@@ -134,10 +134,10 @@ void GameScene::Initialize()
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize("Stage0.json");
 
-	backGround_ = std::make_unique<BackGround>();
-	backGround_->Initialize("backGround.json");
-	normalBackGround_ = std::make_unique<BackGround>();
-	normalBackGround_->Initialize("normalOBJ.json");
+	//backGround_ = std::make_unique<BackGround>();
+	//backGround_->Initialize("backGround.json");
+	//normalBackGround_ = std::make_unique<BackGround>();
+	//normalBackGround_->Initialize("normalOBJ.json");
 
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
@@ -286,9 +286,9 @@ void GameScene::Update()
 	player_->Update(gameCamera_.get());
 	mirrorPlayer_->Update(gameCamera_.get());
 
-	backGround_->Update(gameCamera_.get());
-	normalBackGround_->Update(gameCamera_.get());
-	tutorialEvent_->Update(player_.get());
+	//backGround_->Update(gameCamera_.get());
+	//normalBackGround_->Update(gameCamera_.get());
+	//tutorialEvent_->Update(player_.get());
 
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
@@ -459,8 +459,7 @@ void GameScene::Draw()
 	backGroundSprite_->Draw("backGround.png");
 
 	Object3d::BeforeDraw();
-	//plane_->Draw();
-	backGround_->Draw();
+	//backGround_->Draw();
 	mirrorPlayer_->Draw();
 
 	postEffect_->PostDrawScene();
@@ -476,7 +475,7 @@ void GameScene::Draw()
 
 	//モデル描画
 	Object3d::BeforeDraw();
-	normalBackGround_->Draw();
+	//normalBackGround_->Draw();
 	stage_->Draw();
 	
 	//深度値クリア

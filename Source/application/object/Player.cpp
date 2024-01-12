@@ -60,7 +60,6 @@ void Player::Initialize()
 	//属性を指定
 	playerCollider_->SetAttribute(COLLISION_ATTR_ALLIES);
 
-	move = { 0,0,0 };
 	jumpCount = kMaxJumpNum;
 	isFlying_ = 0;
 	isfinish_ = false;
@@ -292,14 +291,21 @@ void Player::Update(Camera* camera)
 		PlayerQueryCallback callback(sphereCollider);
 
 		//球と地形の交差を全検索
-		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_PINK);
-		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_YELLOW);
-		CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_BLACK);
+		if(attributeColor_ == pink)
+		{
+			CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_PINK);
+		}
+		else if(attributeColor_ == yellow)
+		{
+			CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_YELLOW);
+		}
+		else
+		{
+			CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_BLACK);
+		}
 
-		//交差による排斥分動かす
 		if(onGround_ == false)
 		{
-			//transform_.x += callback.move.x;
 			transform_.y += callback.move.y;
 			transform_.z += callback.move.z;
 
@@ -813,9 +819,6 @@ void Player::Reset(Camera* camera)
 	transform_ = kPlayerInitPos_;
 	rotation_ = kDefaultRotate_;
 	scale_ = kDefaultScale_;
-
-	move = { 0,0,0 };
-
 	jumpCount = kMaxJumpNum;
 	jumpTotalValue_ = 0.0f;
 	onGround_ = true;

@@ -181,7 +181,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -204,7 +204,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -227,7 +227,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -250,7 +250,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -763,7 +763,7 @@
             "name": "立方体.014",
             "transform": {
                 "translation": [
-                    -64.65592956542969,
+                    -317.47100830078125,
                     0.0,
                     7.0
                 ],
@@ -786,7 +786,7 @@
             "name": "立方体.015",
             "transform": {
                 "translation": [
-                    -84.65592956542969,
+                    -337.47100830078125,
                     0.0,
                     7.0
                 ],
@@ -809,7 +809,7 @@
             "name": "立方体.016",
             "transform": {
                 "translation": [
-                    -144.57090759277344,
+                    -397.385986328125,
                     0.0,
                     7.0
                 ],
@@ -832,7 +832,7 @@
             "name": "立方体.017",
             "transform": {
                 "translation": [
-                    -124.57090759277344,
+                    -377.385986328125,
                     0.0,
                     7.0
                 ],

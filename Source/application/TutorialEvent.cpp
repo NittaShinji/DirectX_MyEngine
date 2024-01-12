@@ -11,9 +11,6 @@ void TutorialEvent::Initialzie()
 	jumpEvent_->Initialzie(kStartJumpEventPos_, kEndJumpEventPos_);
 	jumpEvent_->AddSprite("A.png", Vector2(576.0f,296.0f));
 	jumpEvent_->AddSprite("B.png", Vector2(704.0f,424.0f));
-
-	//jumpEvent_->AddSprite("A.png", Vector2(576.0f,296.0f));
-
 }
 
 void TutorialEvent::Update(Player* player)
