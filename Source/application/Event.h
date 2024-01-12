@@ -19,7 +19,7 @@ public:
 	//描画
 	void Draw();
 	//画像をセット
-	void SetSprite(std::string fileName, Vector2 position);
+	void AddSprite(std::string fileName, Vector2 position);
 	//リセット
 	void Reset();
 
@@ -37,9 +37,7 @@ private:
 	float startPos_;
 	//イベント終了位置
 	float finishPos_;
-
 	//イベントボタン画像
-	std::unique_ptr<Sprite> eventButtonSprite_ = nullptr;
-
+	std::vector<std::unique_ptr<Sprite>> eventButtonSprites_;
 };
 

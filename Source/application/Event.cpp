@@ -17,10 +17,11 @@ void Event::Initialzie(float startPos,float endPos)
 	startPos_ = startPos;
 	finishPos_= endPos;
 }
-void Event::SetSprite(std::string fileName,Vector2 position)
+void Event::AddSprite(std::string fileName,Vector2 position)
 {
-	eventButtonSprite_ = std::make_unique<Sprite>();
-	eventButtonSprite_->Initialize(fileName, position);
+	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
+	sprite->Initialize(fileName, position);
+	eventButtonSprites_.emplace_back(std::move(sprite));
 }
 
 void Event::Reset()
@@ -31,6 +32,15 @@ void Event::Reset()
 
 void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t buttonInfo, BYTE keyboardInfo)
 {
+	//画像更新
+	if(eventButtonSprites_.empty() == false)
+	{
+		for(auto& sprite : eventButtonSprites_)
+		{
+			sprite->matUpdate();
+		}
+	}
+
 	//イベントが終了している状態で
 	//イベントの範囲にプレイヤーが入ったらイベントを開始
 	if(playerPosZ >= startPos_ && playerPosZ <= finishPos_)
@@ -61,8 +71,15 @@ void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t butto
 
 void Event::Draw()
 {
-	if(eventButtonSprite_ != nullptr)
+	if(isStart_ == true && isFinish_ == false)
 	{
-		eventButtonSprite_->Draw(eventButtonSprite_->GetFileName());
+		if(eventButtonSprites_.empty() == false)
+		{
+			//画像描画
+			for(auto& sprite : eventButtonSprites_)
+			{
+				sprite->Draw();
+			}
+		}
 	}
 }

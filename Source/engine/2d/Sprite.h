@@ -39,6 +39,7 @@ public:
 	void matUpdate();
 	//描画
 	void Draw(const std::string& fileName);
+	void Draw();
 
 	//行列を送る
 	void TransferVertices();
