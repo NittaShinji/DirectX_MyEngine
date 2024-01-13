@@ -17,10 +17,11 @@ void Event::Initialzie(float startPos,float endPos)
 	startPos_ = startPos;
 	finishPos_= endPos;
 }
-void Event::AddSprite(std::string fileName,Vector2 position)
+void Event::AddSprite(std::string fileName,Vector2 position, Vector2 size)
 {
 	std::unique_ptr<Sprite> sprite = std::make_unique<Sprite>();
 	sprite->Initialize(fileName, position);
+	sprite->SetSize(size);
 	eventButtonSprites_.emplace_back(std::move(sprite));
 }
 
@@ -71,7 +72,7 @@ void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t butto
 
 void Event::Draw()
 {
-	if(isStart_ == true && isFinish_ == false)
+	if(isStart_ == true)
 	{
 		if(eventButtonSprites_.empty() == false)
 		{

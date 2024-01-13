@@ -288,7 +288,7 @@ void GameScene::Update()
 
 	//backGround_->Update(gameCamera_.get());
 	//normalBackGround_->Update(gameCamera_.get());
-	//tutorialEvent_->Update(player_.get());
+	tutorialEvent_->Update(player_.get());
 
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());

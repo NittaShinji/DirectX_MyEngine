@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "GamePad.h"
 #include "GameSpeed.h"
+#include "ParticleEmitter.h"
 #include <stdint.h>
 
 class Event
@@ -19,7 +20,7 @@ public:
 	//描画
 	void Draw();
 	//画像をセット
-	void AddSprite(std::string fileName, Vector2 position);
+	void AddSprite(std::string fileName, Vector2 position,Vector2 size);
 	//リセット
 	void Reset();
 
@@ -39,5 +40,8 @@ private:
 	float finishPos_;
 	//イベントボタン画像
 	std::vector<std::unique_ptr<Sprite>> eventButtonSprites_;
+
+	//イベントパーティクル
+	//std::unique_ptr<ParticleEmitter> particleEmitter_ = nullptr;
 };
 
