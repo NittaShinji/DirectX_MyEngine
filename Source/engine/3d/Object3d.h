@@ -117,12 +117,12 @@ protected:	//メンバ変数
 	Camera* camera_ = nullptr;
 
 	//定数バッファ
-	static Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
-	static Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
+	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_;
 
 	//定数バッファのマッピング用ポインタ
-	static ConstBufferDateTransform* constMapTransform_;
-	static ConstBufferDataMaterial* constMapMaterial_;
+	ConstBufferDateTransform* constMapTransform_;
+	ConstBufferDataMaterial* constMapMaterial_;
 
 	//スケール
 	Vector3 scale_;
