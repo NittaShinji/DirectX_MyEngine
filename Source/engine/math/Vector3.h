@@ -33,6 +33,8 @@ public:
 	Vector3& operator*=(float s);
 	Vector3& operator/=(float s);
 
+	bool operator==(const Vector3& v) const;
+	bool operator!=(const Vector3& v) const;
 };
 
 //　2項演算子オーバーロード

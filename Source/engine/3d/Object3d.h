@@ -124,6 +124,16 @@ protected:	//メンバ変数
 	ConstBufferDateTransform* constMapTransform_;
 	ConstBufferDataMaterial* constMapMaterial_;
 
+	//前フレームスケール
+	Vector3 oldScale_;
+	//前フレーム回転角
+	Vector3 oldRotation_;
+	//前フレーム平行移動
+	Vector3 oldTransform_;
+
+	//行列更新フラグ
+	bool isChangedMatrix_;
+
 	//スケール
 	Vector3 scale_;
 	//回転角

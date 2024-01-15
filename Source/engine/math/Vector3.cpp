@@ -85,6 +85,54 @@ Vector3& Vector3::operator/=(float s)
 	return *this;
 }
 
+bool Vector3::operator==(const Vector3& v) const
+{
+	if(x == v.x && y == v.y && z == v.z)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}	
+}
+
+bool Vector3::operator!=(const Vector3& v) const
+{
+	if(x == v.x && y == v.y && z == v.z)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+//const bool& Vector3::operator==(const Vector3& v)
+//{
+//	if(*this == v)
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
+//
+//const bool& Vector3::operator!=(const Vector3& v)
+//{
+//	if(*this != v)
+//	{
+//		return true;
+//	}
+//	else
+//	{
+//		return false;
+//	}
+//}
+
 // Vector2 クラスに属さない関数郡
 //　二項演算子
 const Vector3 operator+(const Vector3& v1, const Vector3& v2)

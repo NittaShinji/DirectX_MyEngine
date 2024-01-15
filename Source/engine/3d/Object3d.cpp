@@ -100,22 +100,44 @@ void Object3d::MovePos(Vector3 moveVec)
 
 void Object3d::UpdateWorldMatrix()
 {
-	//スケール、回転、平行移動行列の計算
-	matScale_ = MatrixIdentity();
-	matScale_ = MatrixScale(scale_);
-	matRot_ = MatrixIdentity();
+	if(oldScale_ != scale_)
+	{
+		isChangedMatrix_ = true;
+	}
+	if(oldRotation_ != rotation_)
+	{
+		isChangedMatrix_ = true;
+	}
+	if(oldTransform_ != transform_)
+	{
+		isChangedMatrix_ = true;
+	}
 
-	matRot_ *= MatrixRotateZ(rotation_.z);
-	matRot_ *= MatrixRotateX(rotation_.x);
-	matRot_ *= MatrixRotateY(rotation_.y);
+	if(isChangedMatrix_ == true)
+	{
+		//スケール、回転、平行移動行列の計算
+		matScale_ = MatrixIdentity();
+		matScale_ = MatrixScale(scale_);
+		matRot_ = MatrixIdentity();
 
-	matTrans_ = MatrixIdentity();
-	matTrans_ = MatrixTranslate(transform_);
+		matRot_ *= MatrixRotateZ(rotation_.z);
+		matRot_ *= MatrixRotateX(rotation_.x);
+		matRot_ *= MatrixRotateY(rotation_.y);
 
-	matWorld_ = MatrixIdentity();
-	matWorld_ *= matScale_;
-	matWorld_ *= matRot_;
-	matWorld_ *= matTrans_;
+		matTrans_ = MatrixIdentity();
+		matTrans_ = MatrixTranslate(transform_);
+
+		matWorld_ = MatrixIdentity();
+		matWorld_ *= matScale_;
+		matWorld_ *= matRot_;
+		matWorld_ *= matTrans_;
+
+		isChangedMatrix_ = false;
+	}
+
+	oldScale_ = scale_;
+	oldRotation_ = rotation_;
+	oldTransform_ = transform_;
 }
 
 void Object3d::InitializeGraphicsPipeline()
