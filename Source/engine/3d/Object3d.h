@@ -99,6 +99,10 @@ public: //メンバ関数
 	//行列の更新
 	void UpdateWorldMatrix();
 
+	//グラフィックスパイプラインの初期化
+	static void InitializeGraphicsPipeline();
+
+
 protected:	//メンバ変数
 
 	//クラス名(デバッグ用)
@@ -113,12 +117,12 @@ protected:	//メンバ変数
 	Camera* camera_ = nullptr;
 
 	//定数バッファ
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
-	Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_;
+	static Microsoft::WRL::ComPtr<ID3D12Resource> constBuffTransform_;
+	static Microsoft::WRL::ComPtr<ID3D12Resource> constBuffMaterial_;
 
 	//定数バッファのマッピング用ポインタ
-	ConstBufferDateTransform* constMapTransform_ = nullptr;
-	ConstBufferDataMaterial* constMapMaterial_ = nullptr;
+	static ConstBufferDateTransform* constMapTransform_;
+	static ConstBufferDataMaterial* constMapMaterial_;
 
 	//スケール
 	Vector3 scale_;
@@ -153,7 +157,7 @@ protected:	//メンバ変数
 	static Microsoft::WRL::ComPtr<ID3D12RootSignature> rootSignature_;
 
 	//グラフィックスパイプライン
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_{};
+	static D3D12_GRAPHICS_PIPELINE_STATE_DESC pipelineDesc_;
 
 	//SRVの最大個数
 	static const size_t kMaxSRVCount_ = 2056;
@@ -241,7 +245,7 @@ public: //アクセッサ
 	//テンプレートコンストラクタ
 	template <typename Type1>
 	//定数バッファの生成
-	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
+	static ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
 
 
 public: //アクセッサ(静的メンバ関数)
