@@ -115,6 +115,9 @@ private: //定数
 
 	const float kDefaultReturnScaleSpeed_ = 0.075f;
 	const float kAnimataionReturnScaleSpeed_ = 0.15f;
+
+	//プレイヤーの衝突範囲(加速判定などもあるので球コライダーの半径より大きめに)
+	const float kCollisionArea = 100.0f;
 	
 private:
 
@@ -274,7 +277,8 @@ public: //アクセッサ
 	bool GetIsSecondJumpMoment() { return isSecondJumpMoment_; }
 	//下からオブジェクトに触れたかどうかを取得する
 	bool GetIsTouchObject() { return isTouchObject_; }
-
+	//プレイヤーの衝突可能範囲
+	float GetCollisionArea() { return kCollisionArea; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }

@@ -3,8 +3,9 @@
 #include "CollisionAttribute.h"
 #include <string>
 
-void Stage::Initialize(const std::string& fileName)
+void Stage::Initialize(const std::string& fileName, Player* player)
 {
+	player_ = player;
 	goalPos_ = { 0,0,0 };
 
 	//レベルデータからオブジェクトを生成、配置
@@ -73,6 +74,14 @@ void Stage::Initialize(const std::string& fileName)
 				newObject->SetAttributeColor(Attribute::black);
 			}
 
+			//コライダーの設定
+			float distance = std::fabs(objectData.translation.z - player->GetTransform().z);
+
+			if(distance > player_->GetCollisionArea())
+			{
+				newObject->RemoveCollider();
+			}
+
 			//色を指定
 			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall" || objectData.fileName == "StageBlock")
 			{
@@ -123,10 +132,17 @@ void Stage::Initialize(const std::string& fileName)
 			scale = objectData.scaling;
 			newGoal->SetScale(scale);
 
+			//コライダーの設定
+			float distance = std::fabs(objectData.translation.z - player->GetTransform().z);
+			if(distance > player_->GetCollisionArea())
+			{
+				newGoal->RemoveCollider();
+			}
+
 			//その他の初期化
 			newGoal->Initialize();
-
 			goalPos_ = pos;
+
 
 			//色
 			newGoal->SetAttributeColor(Attribute::Goal);
@@ -161,6 +177,13 @@ void Stage::Initialize(const std::string& fileName)
 			scale = objectData.scaling;
 			newWall->SetScale(scale);
 
+			//コライダーの設定
+			float distance = std::fabs(objectData.translation.z - player->GetTransform().z);
+			if(distance > player_->GetCollisionArea())
+			{
+				newWall->RemoveCollider();
+			}
+
 			//その他の初期化
 			newWall->Initialize();
 
@@ -174,11 +197,22 @@ void Stage::Update(Camera* camera, Player* player)
 {
 	for(auto& object : objects_)
 	{
+		float distance = std::fabs(object->GetTransform().z - player->GetTransform().z);
+		if(distance <= player_->GetCollisionArea())
+		{
+			object->AddCollider(object->GetModel());
+		}
+		
 		object->Update(camera);
 	}
 
 	for(size_t i = 0; i < walls_.size(); i++)
 	{
+		float distance = std::fabs(walls_[i]->GetTransform().z - player->GetTransform().z);
+		if(distance < player_->GetCollisionArea())
+		{
+			walls_[i]->AddCollider(walls_[i]->GetModel());
+		}
 		walls_[i]->Update(camera, player->GetRightAxcell());
 
 		//壁が壊れていたら削除
@@ -189,6 +223,11 @@ void Stage::Update(Camera* camera, Player* player)
 		}
 	}
 
+	float distance = std::fabs(goal_->GetTransform().z - player->GetTransform().z);
+	if(distance < player_->GetCollisionArea())
+	{
+		goal_->AddCollider(goal_->GetModel());
+	}
 	goal_->Update(camera, player->GetTransform());
 }
 
@@ -245,6 +284,13 @@ void Stage::Reset(const std::string& fileName)
 			scale = objectData.scaling;
 			newWall->SetScale(scale);
 
+			//コライダーの設定
+			float distance = std::fabs(objectData.translation.z - player_->GetTransform().z);
+			if(distance > player_->GetCollisionArea())
+			{
+				newWall->RemoveCollider();
+			}
+			
 			//その他の初期化
 			newWall->Initialize();
 
@@ -252,6 +298,11 @@ void Stage::Reset(const std::string& fileName)
 			walls_.push_back(std::move(newWall));
 		}
 	}
+}
+
+void Stage::ColliderUpdate()
+{
+	
 }
 
 std::vector<Vector3> Stage::GetBreakWallsPos()

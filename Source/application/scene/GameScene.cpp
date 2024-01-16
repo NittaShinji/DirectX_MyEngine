@@ -131,17 +131,17 @@ void GameScene::Initialize()
 	Model::Load(stageBlock);
 
 	//3Dオブジェクトの生成
+	player_ = Player::Create(sphere);
+	player_->SetGamePad(gamePad_.get());
+	mirrorPlayer_ = MirrorPlayer::Create(player_.get());
+
 	stage_ = std::make_unique<Stage>();
-	stage_->Initialize("Stage0.json");
+	stage_->Initialize("Stage0.json", player_.get());
 
 	backGround_ = std::make_unique<BackGround>();
 	backGround_->Initialize("backGround.json");
 	normalBackGround_ = std::make_unique<BackGround>();
 	normalBackGround_->Initialize("normalOBJ.json");
-
-	player_ = Player::Create(sphere);
-	player_->SetGamePad(gamePad_.get());
-	mirrorPlayer_ = MirrorPlayer::Create(player_.get());
 
 	//------------カメラ----------
 	gameCamera_ = std::make_unique<GameCamera>();

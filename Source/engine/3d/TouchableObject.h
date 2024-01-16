@@ -28,6 +28,9 @@ public:
 	//コライダーの追加
 	void AddCollider(Model* model);
 
+	//コライダーの削除
+	void RemoveCollider();
+
 	//コライダーの更新
 	void ColliderUpdate();
 
@@ -38,5 +41,8 @@ private:
 
 	//メッシュコライダー
 	std::unique_ptr<MeshCollider> objMeshCollider_;
+
+	//コライダーをセットしているかどうか
+	bool isSetedCollider_ = false;
 };
 

@@ -79,11 +79,7 @@ void Object3d::Initialize()
 
 Object3d::~Object3d()
 {
-	if(collider_)
-	{
-		//コリジョンマネージャーから登録を解除する
-		CollisionManager::GetInstance()->RemoveCollider(collider_);
-	}
+	RemoveCollider();
 }
 
 void Object3d::SetModel(const std::string& path)
@@ -385,6 +381,15 @@ void Object3d::InitializeGraphicsPipeline()
 	// パイプランステートの生成
 	result = directXBasic_->GetDevice()->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result));
+}
+
+void Object3d::RemoveCollider()
+{
+	if(collider_)
+	{
+		//コリジョンマネージャーから登録を解除する
+		CollisionManager::GetInstance()->RemoveCollider(collider_);
+	}
 }
 
 void Object3d::Update(Camera* camera)

@@ -20,7 +20,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="fileName">ファイル名</param>
-	void Initialize(const std::string& fileName);
+	void Initialize(const std::string& fileName,Player* player);
 
 	/// <summary>
 	/// 更新
@@ -38,6 +38,9 @@ public:
 	/// <param name="fileName">ファイル名</param>
 	void Reset(const std::string& fileName);
 
+	//コライダー更新
+	void ColliderUpdate();
+
 	//破壊された壁情報の座標を渡す関数
 	std::vector<Vector3> GetBreakWallsPos();
 
@@ -46,6 +49,9 @@ public:
 	GoalOBJ* GetGoal() { return goal_.get(); }
 
 private:
+
+	//プレイヤー
+	Player* player_ = nullptr;
 
 	//ステージ情報
 	LevelData* levelData_ = nullptr;

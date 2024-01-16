@@ -102,6 +102,8 @@ public: //メンバ関数
 	//グラフィックスパイプラインの初期化
 	static void InitializeGraphicsPipeline();
 
+	//コライダーを削除する
+	void RemoveCollider();
 
 protected:	//メンバ変数
 

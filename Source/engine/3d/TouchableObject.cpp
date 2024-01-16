@@ -1,6 +1,7 @@
 #include "TouchableObject.h"
 #include "MeshCollider.h"
 #include "CollisionAttribute.h"
+#include "CollisionManager.h"
 
 std::unique_ptr<TouchableObject> TouchableObject::Create(const std::string& path, const unsigned short coliderAttribute)
 {
@@ -27,10 +28,28 @@ void TouchableObject::Initialize()
 
 void TouchableObject::AddCollider(Model* model)
 {
-	//コライダーの追加
-	objMeshCollider_ = std::make_unique<MeshCollider>();
-	SetCollider(objMeshCollider_.get());
-	objMeshCollider_->ConstructTriangles(model);
+	if(isSetedCollider_ == false)
+	{
+		if(objMeshCollider_ == nullptr)
+		{
+			//コライダーの追加
+			objMeshCollider_ = std::make_unique<MeshCollider>();
+		}
+		
+		SetCollider(objMeshCollider_.get());
+		objMeshCollider_->ConstructTriangles(model);
+		isSetedCollider_ = true;
+	}
+}
+
+void TouchableObject::RemoveCollider()
+{
+	if(objMeshCollider_ && isSetedCollider_ == true)
+	{
+		//コリジョンマネージャーから登録を解除する
+		CollisionManager::GetInstance()->RemoveCollider(collider_);
+		isSetedCollider_ = false;
+	}
 }
 
 void TouchableObject::ColliderUpdate()

@@ -86,15 +86,15 @@ void TutorialScene::Initialize()
 	Model::Load(plane);
 
 	//3Dオブジェクトの生成
-	stage_ = std::make_unique<Stage>();
-	stage_->Initialize("Stage0.json");
-
-	backGround_ = std::make_unique<BackGround>();
-	backGround_->Initialize("backGround.json");
-
 	player_ = Player::Create(sphere);
 	player_->SetGamePad(gamePad_.get());
 
+	stage_ = std::make_unique<Stage>();
+	stage_->Initialize("Stage0.json",player_.get());
+
+	backGround_ = std::make_unique<BackGround>();
+	backGround_->Initialize("backGround.json");
+	
 	skydome_ = Object3d::Create(skydome);
 	Vector3 skydomeScale = { 5,5,10 };
 	skydome_->SetScale(skydomeScale);
