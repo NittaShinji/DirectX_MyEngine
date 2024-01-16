@@ -1,10 +1,14 @@
 #include "Stage.h"
 #include "Player.h"
 #include "CollisionAttribute.h"
+#include "ObjectColor.h"
+#include "ImGuiManager.h"
 #include <string>
 
 void Stage::Initialize(const std::string& fileName, Player* player)
 {
+	kDebugPinkOBJColor_ = kPinkOBJColor;
+	kDebugYellowOBJColor_ = kYellowOBJColor;
 	player_ = player;
 	goalPos_ = { 0,0,0 };
 
@@ -91,15 +95,15 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 
 					if(newObject->GetAttributeColor() == Attribute::yellow)
 					{
-						newObject->SetColor(Vector3(1.0f, 0.469f, 0.0f));
+						newObject->SetColor(Vector3(kDebugYellowOBJColor_));
 					}
 					else if(newObject->GetAttributeColor() == Attribute::pink)
 					{
-						newObject->SetColor(Vector3(0.78f, 0.08f, 0.52f));
+						newObject->SetColor(Vector3(kDebugPinkOBJColor_));
 					}
 					else
 					{
-						newObject->SetColor(Vector3(0.0f, 0.0f, 0.0f));
+						newObject->SetColor(Vector3(kBlackOBJColor));
 					}
 				}
 				else if(newObject->GetColorFlag() == true)
@@ -202,6 +206,18 @@ void Stage::Update(Camera* camera, Player* player)
 		{
 			object->AddCollider(object->GetModel());
 		}
+
+		if(object->GetModel()->GetName() == "StageBlock")
+		{
+			if(object->GetAttributeColor() == Attribute::pink)
+			{
+				object->SetColor(kDebugPinkOBJColor_);
+			}
+			else if(object->GetAttributeColor() == Attribute::yellow)
+			{
+				object->SetColor(kDebugYellowOBJColor_);
+			}
+		}
 		
 		object->Update(camera);
 	}
@@ -300,9 +316,27 @@ void Stage::Reset(const std::string& fileName)
 	}
 }
 
-void Stage::ColliderUpdate()
+void Stage::ImguiUpdate()
 {
-	
+	ImGui::Begin("STAGE");
+
+	const Vector2 kImGuiPos = { 0.0f,50.0f };
+	const Vector2 kImGuiSize = { 300.0f,300.0f };
+
+	ImGui::SetWindowPos(ImVec2(kImGuiPos.x, kImGuiPos.y));
+	ImGui::SetWindowSize(ImVec2(kImGuiSize.x, kImGuiSize.y));
+
+	const Vector2 kImGuiPosRate = { 0.0f,1.0f };
+
+	ImGui::SliderFloat("PinkColorX", &kDebugPinkOBJColor_.x, kImGuiPosRate.x, kImGuiPosRate.y);
+	ImGui::SliderFloat("PinkColorY", &kDebugPinkOBJColor_.y, kImGuiPosRate.x, kImGuiPosRate.y);
+	ImGui::SliderFloat("PinkColorZ", &kDebugPinkOBJColor_.z, kImGuiPosRate.x, kImGuiPosRate.y);
+
+	ImGui::SliderFloat("YellowColorX", &kDebugYellowOBJColor_.x, kImGuiPosRate.x, kImGuiPosRate.y);
+	ImGui::SliderFloat("YellowColorY", &kDebugYellowOBJColor_.y, kImGuiPosRate.x, kImGuiPosRate.y);
+	ImGui::SliderFloat("YellowColorZ", &kDebugYellowOBJColor_.z, kImGuiPosRate.x, kImGuiPosRate.y);
+
+	ImGui::End();
 }
 
 std::vector<Vector3> Stage::GetBreakWallsPos()

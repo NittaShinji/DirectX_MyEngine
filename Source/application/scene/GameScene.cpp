@@ -393,6 +393,7 @@ void GameScene::Update()
 	player_->ImGuiUpdate();
 	breakParticle_->ImGuiUpdate();
 	groundParticle_->ImguiUpdate();
+	stage_->ImguiUpdate();
 
 	ImGui::Begin("light");
 	const Vector2 kImGuiPos = { 0.0f,360.0f };

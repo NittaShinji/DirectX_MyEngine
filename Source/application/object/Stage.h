@@ -38,8 +38,8 @@ public:
 	/// <param name="fileName">ファイル名</param>
 	void Reset(const std::string& fileName);
 
-	//コライダー更新
-	void ColliderUpdate();
+	//ImGuiアップデート
+	void ImguiUpdate();
 
 	//破壊された壁情報の座標を渡す関数
 	std::vector<Vector3> GetBreakWallsPos();
@@ -60,6 +60,10 @@ private:
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
 	std::vector<std::unique_ptr<HitWall>> walls_;
 	std::unique_ptr<GoalOBJ> goal_;
+
+	Vector3 kDebugYellowOBJColor_;
+	Vector3 kDebugPinkOBJColor_;
+
 
 	//ゴール座標
 	Vector3 goalPos_;
