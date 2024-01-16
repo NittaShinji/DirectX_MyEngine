@@ -92,15 +92,12 @@ void GameTimer::InGameInitialize()
 		//数字のサイズを指定
 		inGameNum[i]->SetTextureClipSize(texNumSize);
 		inGameNum[i]->SetSize(texNumSize);
-		//透明度を下げる
-		//inGameNum[i]->SetColor(color);
 	}
 
 	//ドット画像の初期化
 	float decimalX = inGameNum[2]->GetPosition().x;
 	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x / half + 6, texNumSize.y + texNumSize.y - 15);
 	blackDot_->Initialize("BLACKDot", decimalPointPos);
-	//blackDot_->SetColor(color);
 
 	//時計画像の初期化
 	float stopWatchX = inGameNum[0]->GetPosition().x - texNumSize.y;
@@ -108,7 +105,6 @@ void GameTimer::InGameInitialize()
 	//64 x 64の正方形サイズに変更
 	stopWatch_->SetSize(Vector2(texNumSize.y,texNumSize.y));
 	stopWatch_->SetColor(color);
-
 
 	timer_ = 0;
 }
@@ -119,15 +115,14 @@ void GameTimer::ResultInitialize()
 	Vector2 texNumSize = texNumTotalSize;
 	const int half = 2;
 	texNumSize.x = texNumSize.x / totalNumber;
+	const int decimalBeforeNumber = 3;
 
-	//float numberWidth = WindowsAPI::kWindow_height_ / 2;
 	float numberHeight = WindowsAPI::kWindow_height_ / 2;
-
-	//const float dotWidth = numberHeight + texNumSize.y - 15;
 	const float dotHeight = numberHeight + texNumSize.y - 15;
 
 	for(int i = 0; i < resultDigits; i++)
 	{
+		//数字全体の半分の位置で小数点で分割
 		if(i < resultDigits / half)
 		{
 			// 数字の初期化
@@ -140,22 +135,23 @@ void GameTimer::ResultInitialize()
 		}
 	}
 
+	//1～9までの画像を切り抜いてセット
 	for(int i = 0; i < resultDigits; i++)
 	{
 		resultNum[i]->SetTextureClipSize(texNumSize);
 		resultNum[i]->SetSize(texNumSize);
 	}
 
-	float decimalX = resultNum[3]->GetPosition().x;
+	float decimalX = resultNum[decimalBeforeNumber]->GetPosition().x;
 
+	//小数点の位置を設定
 	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x / half + 6, dotHeight);
-
 	blackDot_->SetPosition(decimalPointPos);
-
 }
 
 void GameTimer::InGameUpdate(bool isStart,bool isFinish)
 {
+	//画像を更新
 	for(int i = 0; i < inGameDigits; i++)
 	{
 		inGameNum[i]->matUpdate();
@@ -167,6 +163,7 @@ void GameTimer::InGameUpdate(bool isStart,bool isFinish)
 	//プレイヤーが動き始めたら
 	if(isStart == true)
 	{
+		//インゲーム中の数字を更新
 		InGameNumberUpdate(isFinish);
 	}
 	else
@@ -200,15 +197,17 @@ void GameTimer::InGameUpdate(bool isStart,bool isFinish)
 
 void GameTimer::ResultUpdate()
 {
+	//画像を更新
 	for(int i = 0; i < resultDigits; i++)
 	{
 		resultNum[i]->matUpdate();
 	}
-
 	blackDot_->matUpdate();
 
+	//数字を更新
 	ResultNumberUpdate();
 
+	//描画する数字をセット
 	for(size_t i = 0; i < resultDigits; i++)
 	{
 		SetNumber(resultDisPlaytime[i], resultNum[i].get());
@@ -222,18 +221,9 @@ void GameTimer::Reset()
 	resultTime_ = 0;
 }
 
-void GameTimer::NumberUpdate()
-{
-	for(int i = 0; i < resultDigits; i++)
-	{
-		//num[i]->SetTextureLeftTop(Vector2(texSize.x * i, texSize.y * i));
-		//num[i]->SetTextureClipSize(texSize);
-		//num[i]->SetSize(texSize);
-	}
-}
-
 void GameTimer::InGameDraw()
 {
+	//ゲーム中の数字・ドットを描画
 	stopWatch_->Draw("StopWatch.png");
 
 	for(int i = 0; i < inGameDigits; i++)
@@ -245,6 +235,7 @@ void GameTimer::InGameDraw()
 }
 void GameTimer::ResultDraw()
 {
+	//リザルト画面の数字・ドットを描画
 	for(int i = 0; i < resultDigits; i++)
 	{
 		resultNum[i]->Draw("numbers.png");
@@ -287,7 +278,7 @@ void GameTimer::InGameNumberUpdate(bool isFinish)
 
 void GameTimer::ResultNumberUpdate()
 {
-	//t 経過時間	b最初の位置	c移動量	d移動時間
+	//リザルト画面の数字を更新
 	if(timer_ < resultTime_)
 	{
 		timer_++;
@@ -297,19 +288,7 @@ void GameTimer::ResultNumberUpdate()
 		}
 	}	
 
-	////--6桁目(万の位を表示)
-	//resultDisPlaytime[0] = (timer_ % 1000000) / 100000;
-	////--5桁目(千の位を表示)
-	//resultDisPlaytime[1] = (timer_ % 100000) / 10000;
-	////--4桁目(百の位を表示)
-	//resultDisPlaytime[2] = (timer_ % 10000) / 1000;
-	////--3桁目(十の位を表示)
-	//resultDisPlaytime[3] = (timer_ % 1000) / 100;
-	////--2桁目(1の位を表示)
-	//resultDisPlaytime[4] = (timer_ % 100) / 10;
-	////--1桁目(1の位を表示)
-	//resultDisPlaytime[5] = (timer_ % 10) / 1;
-
+	//数字をセット
 	for(size_t i = 0; i < resultDigits; i++)
 	{
 		SetNumber(resultDisPlaytime[i], resultNum[i].get());

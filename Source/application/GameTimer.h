@@ -36,8 +36,6 @@ public:
 	//リザルト画面の初期化
 	void ResultInitialize();
 
-	//数字の更新
-	void NumberUpdate();
 	//ゲーム中の数字を更新
 	void InGameNumberUpdate(bool isFinish);
 	//リザルト画面の数字を更新
