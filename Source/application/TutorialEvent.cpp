@@ -2,8 +2,10 @@
 #include "GameSpeed.h"
 #include "Player.h"
 
-void TutorialEvent::Initialzie()
+void TutorialEvent::Initialzie(Player* player)
 {
+	player_ = player;
+
 	const Vector2 kUiSize = { 128.0f,128.0f };
 
 	//ジャンプイベント設定
@@ -34,20 +36,26 @@ void TutorialEvent::Initialzie()
 	changeInAirEvent_->AddSprite("arrow.png", Vector2(640.0f, 296.0f), kChangeColorSpriteSize);
 }
 
-void TutorialEvent::Update(Player* player)
+void TutorialEvent::Update()
 {
-	float playerPosZ = player->GetTransform().z;
+	float playerPosZ = player_->GetTransform().z;
 
-	jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE);
-	hightJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE);
-	changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN);
-	changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_B, DIK_RETURN);
+	if(player_->GetIsDead() == false)
+	{
+		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE);
+		hightJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE);
+		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN);
+		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_B, DIK_RETURN);
+	}
 }
 
 void TutorialEvent::Draw()
 {
-	jumpEvent_->Draw();
-	hightJumpEvent_->Draw();
-	changeColorEvent_->Draw();
-	changeInAirEvent_->Draw();
+	if(player_->GetIsDead() == false)
+	{
+		jumpEvent_->Draw();
+		hightJumpEvent_->Draw();
+		changeColorEvent_->Draw();
+		changeInAirEvent_->Draw();
+	}
 }

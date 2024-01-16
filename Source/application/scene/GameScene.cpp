@@ -179,7 +179,7 @@ void GameScene::Initialize()
 	GameTimer::GetInstance()->InGameInitialize();
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
 	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
-	tutorialEvent_->Initialzie();
+	tutorialEvent_->Initialzie(player_.get());
 
 	isStartSceneAnimation_ = false;
 }
@@ -211,10 +211,10 @@ void GameScene::Update()
 	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{
-		//ParticleManager::GetInstance()->ParticleRemove();
 		secondJumpParticle_->ParticleRemove();
 		groundParticle_->ParticleRemove();
 		hitParticle_->Preparation(player_->GetTransform(),player_->GetIsDead());
+		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 
 		//リセット処理
 		if(deadParticle_->GetCanReset() == true || keys_->HasPushedKey(DIK_R))
@@ -288,7 +288,7 @@ void GameScene::Update()
 
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
-	tutorialEvent_->Update(player_.get());
+	tutorialEvent_->Update();
 
 	landParticle_->SetPlayerIsDead(player_->GetIsDead());
 	deadParticle_->SetPlayerIsDead(player_->GetIsDead());

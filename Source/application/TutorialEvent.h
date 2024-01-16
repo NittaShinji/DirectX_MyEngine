@@ -11,13 +11,15 @@ class TutorialEvent
 public:
 
 	//初期化
-	void Initialzie();
+	void Initialzie(Player* player);
 	//更新
-	void Update(Player* player);
+	void Update();
 	//描画
 	void Draw();
 	
 private: //メンバ変数
+
+	Player* player_ = nullptr;
 
 	//ジャンプイベント
 	std::unique_ptr<Event> jumpEvent_ = nullptr;
