@@ -540,9 +540,6 @@ std::unique_ptr<Object3d> Object3d::Create(const std::string& path)
 		return nullptr;
 	}
 
-	//モデル読み込み
-	Model::Load(path);
-
 	instance->Initialize();
 	instance->SetModel(path);
 
