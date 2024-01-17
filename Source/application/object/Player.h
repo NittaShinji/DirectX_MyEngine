@@ -279,6 +279,8 @@ public: //アクセッサ
 	bool GetIsTouchObject() { return isTouchObject_; }
 	//プレイヤーの衝突可能範囲
 	float GetCollisionArea() { return kCollisionArea; }
+	//ジャンプカウントを取得
+	int32_t GetJumpCount() { return jumpCount; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
