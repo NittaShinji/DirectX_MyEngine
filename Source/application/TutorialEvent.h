@@ -6,6 +6,9 @@
 
 class Player;
 
+/// <summary>
+/// チュートリアルイベント
+/// </summary>
 class TutorialEvent
 {
 public:

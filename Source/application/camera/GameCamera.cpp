@@ -5,20 +5,11 @@ using namespace MathUtillty;
 
 void GameCamera::Initialize()
 {
+	//メンバ変数の初期化
 	eye_ = initCameraEye;
 	target_ = initCameraTarget;
 	up_ = initCameraUp;
 
-	//衝突時に停止する座標を設定
-	goalEyePos_.x = { initCameraEye.x + initEyeDistance_.x };
-	goalEyePos_.y = { initCameraEye.y + initEyeDistance_.y };
-	goalEyePos_.z = { initCameraEye.z + initEyeDistance_.z };
-
-	goalEyeTarget_.x = { initCameraTarget.x + initTargetDistance_.x };
-	goalEyeTarget_.y = { initCameraTarget.y + initTargetDistance_.y };
-	goalEyeTarget_.z = { initCameraTarget.z + initTargetDistance_.z };
-
-	
 	speedEasing_.time = static_cast<float>(kInitTime_);
 	axcellWaitTimer = kInitTime_;
 	slowTimer_ = kSlowTime_;
@@ -28,8 +19,18 @@ void GameCamera::Initialize()
 	cameraSpeed_ = kInitCameraSpeed_;
 	cameraSpeedY_ = kInitCameraSpeed_;
 	isNotBackAnimation_ = false;
-	isAxcellrate_ = false;
+	isSlowDown_ = false;
 	isStartGoalEasing_ = false;
+
+	//プレイヤーが衝突時に停止する座標を設定
+	goalEyePos_.x = { initCameraEye.x + initEyeDistance_.x };
+	goalEyePos_.y = { initCameraEye.y + initEyeDistance_.y };
+	goalEyePos_.z = { initCameraEye.z + initEyeDistance_.z };
+
+	goalEyeTarget_.x = { initCameraTarget.x + initTargetDistance_.x };
+	goalEyeTarget_.y = { initCameraTarget.y + initTargetDistance_.y };
+	goalEyeTarget_.z = { initCameraTarget.z + initTargetDistance_.z };
+
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
@@ -38,8 +39,10 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 	cameraSpeed_ = gameSpeed_->GetSpeedNum();
 	cameraSpeedY_ = gameSpeed_->GetSpeedNum();
 
+	//プレイヤーの球が動いているとき
 	if(isPlayerMoving == true)
 	{
+		//補間移動の計算
 		goalEyePos_.x = playerPos.x - playerInitPos.x + initCameraEye.x + initEyeDistance_.x;
 		goalEyePos_.y = playerDeadPos.y - playerInitPos.y + initCameraEye.y;
 		goalEyePos_.z = playerPos.z - playerInitPos.z + initCameraEye.z + initEyeDistance_.z;
@@ -56,142 +59,103 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 		moveTargetVecY_ = moveTargetVec_;
 		moveTargetVecY_.Normalize();
 
+		//プレイヤーはx方向には動かないので補間計算はしない。
 		eye_.x += moveEyeVec_.x * cameraSpeed_;
+		target_.x += moveTargetVec_.x * cameraSpeed_;
 
+		//プレイヤーが加速していないとき
 		if(rightAxcell == false)
 		{
+			//カメラが遅れているアニメーション中の場合
 			if(isNotBackAnimation_ == true)
 			{
+				//カメラとプレイヤーの距離が所定の距離より離れている時
 				if(moveEyeVec_.z >= initEyeDistance_.z)
 				{
-	/*				axcellEasing_.time++;
-					if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
-					{
-						axcellRate_ = PlayEaseOutQuint(axcellEasing_);
-					}*/
-
 					axcellRate_ += axcellRateMoveValue_;
 				}
+				//カメラとプレイヤーの距離が所定の距離以下になった場合
 				else
 				{
-					axcellEasing_.time = 0;
 					isNotBackAnimation_ = false;
-					if(axcellRate_ >= kAxcellNormalRate_)
-					{
-						axcellRate_ -= decelerationMoveValue_;
-					}
+					//カメラの加速割合を戻す
 					axcellRate_ = kAxcellNormalRate_;
 				}
-
-				/*axcellEasing_.time++;
-				if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
-				{
-					axcellRate_ = PlayEaseOutQuint(axcellEasing_);
-
-				}
-				else
-				{
-					axcellEasing_.time = 0;
-					isNotBackAnimation_ = false;
-				}*/
 			}
 		}
+		//プレイヤーが加速しているとき
 		else
 		{
 			if(isNotBackAnimation_ == false)
 			{
-				isAxcellrate_ = true;
+				isSlowDown_ = true;
 			}
-
-			//if(axcellRate_ > 0)
-			//{
-			//	//waitRate_++;
-			//	
-			//	/*axcellEasing_.endDistance = 1.0f - axcelRate_;
-			//	axcellEasing_.startPos = axcelRate_
-			//	axcellRate_ = PlayEaseOutQuint(axcellEasing_);*/
-
-			//	
-			//	isNotBackAnimation_ = true;
-			//	axcellRate_ -= 0.01f;
-			//}
 		}
 
-		if(isAxcellrate_ == true)
+		//スローダウンする処理
+		if(isSlowDown_ == true)
 		{
 			slowDownEasing_.time++;
 			if(slowDownEasing_.time > kInitTime_ && slowDownEasing_.time <= slowDownEasing_.totalTime)
 			{
 				axcellRate_ = PlayEaseOutQuint(slowDownEasing_);
-				//axcellRate_ = PlayEaseOutBack(slowDownEasing_);
-
 			}
 			else
 			{
   				slowDownEasing_.time = static_cast<float>(kInitTime_);
 				isNotBackAnimation_ = true;
-				isAxcellrate_ = false;
+				isSlowDown_ = false;
 			}
 		}
 
-		if(isNotBackAnimation_ == true || isAxcellrate_ == true)
-		{
-			eye_.z += cameraSpeed_ * axcellRate_;
-		}
-		else
-		{
-			eye_.z += moveEyeVec_.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
-		}
-
-		//eye_.z += moveEyeVec.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
-
+		//Y方向の処理
 		float distanceY = std::fabs(playerPos.y - playerInitPos.y);
-		
-		if(isDead == false)
-		{
-			eye_.y += moveEyeVecY_.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
-			target_.y += moveTargetVecY_.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
-		}
-
-		target_.x += moveTargetVec_.x * cameraSpeed_;
-
-		if(isNotBackAnimation_ == true || isAxcellrate_ == true)
-		{
-			target_.z += cameraSpeed_ * axcellRate_;
-		}
-		else
-		{
-			target_.z += moveTargetVec_.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
-		}
-
-		//target_.z += moveTargetVec.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
-
+		//もしプレイヤーが死んだ際に
 		if(isDead == true)
 		{
-			//もし死んだ際にY軸のスピードがマイナスならば、そのまま動かす
+			//Y軸のスピードがマイナスならば、そのまま動かす
 			if(moveEyeVecY_.y < 0)
 			{
 				eye_.y += moveEyeVecY_.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
 				target_.y += moveTargetVecY_.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
 			}
 		}
+		else
+		{
+			eye_.y += moveEyeVecY_.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
+			target_.y += moveTargetVecY_.y / (distanceY + EyeYAxelRate_) * cameraSpeedY_;
+		}
 
+		//加速時のアニメーション中は通常のスピードを足す
+		if(isNotBackAnimation_ == true || isSlowDown_ == true)
+		{
+			eye_.z += cameraSpeed_ * axcellRate_;
+			target_.z += cameraSpeed_ * axcellRate_;
+		}
+		//加速時以外は補間移動をするように
+		else
+		{
+			eye_.z += moveEyeVec_.z / initEyeDistance_.z * cameraSpeed_ * axcellRate_;
+			target_.z += moveTargetVec_.z / initTargetDistance_.z * cameraSpeed_ * axcellRate_;
+		}
 	}
 
+	//行列の更新
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
 }
 
 void GameCamera::Reset()
 {
+	//メンバ変数を初期化
 	eye_ = initCameraEye;
 	target_ = initCameraTarget;
 	up_ = initCameraUp;
 	axcellRate_ = kAxcellNormalRate_;
-
 	isStopTarget_ = false;
 	isStartGoalEasing_ = false;
 
+	//行列の更新
 	UpdateViewMatrix();
 	UpdateProjectionMatrix();
 }
@@ -219,7 +183,6 @@ void GameCamera::ImGuiUpdate()
 	const Vector2 kImGuiEyeRate = { -100.0f,50.0f };
 	const Vector2 kImGuiTargetRate = { -100.0f,1000.0f };
 
-
 	ImGui::SliderFloat("moveEyeY", &moveEyeVecY_.y, kImGuiMoveRate.x, kImGuiMoveRate.y);
 	ImGui::SliderFloat("moveTargetVecY", &moveTargetVecY_.y, kImGuiMoveTargetRate.x, kImGuiMoveTargetRate.y);
 	ImGui::SliderFloat("EyeYAxelRate_", &EyeYAxelRate_, kImGuiEyeYAxllRate.x, kImGuiEyeYAxllRate.y);
@@ -245,7 +208,7 @@ void GameCamera::ImGuiUpdate()
 
 void GameCamera::GoalAnimation()
 {
-	//スタート時にカメラ位置を代入
+	//ゴール演出スタート時にカメラ位置を代入
 	if(isStartGoalEasing_ == false)
 	{
 		goalEyeXEasing_.startPos = eye_.x;
@@ -253,6 +216,8 @@ void GameCamera::GoalAnimation()
 		goalEyeZEasing_.startPos = eye_.z;
 		isStartGoalEasing_ = true;
 	}
+
+	//アニメーション中
 	if(sceneAnimeTimer_ < kSceneAnimeTime_)
 	{
 		sceneAnimeTimer_++;

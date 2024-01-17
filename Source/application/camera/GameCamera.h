@@ -85,7 +85,7 @@ private:
 	float axcellRate_ = 1.0f;
 	
 	bool isNotBackAnimation_;
-	bool isAxcellrate_;
+	bool isSlowDown_;
 
 	const float axcellRateMoveValue_ = 0.0015f;
 	const float decelerationMoveValue_ = 0.01f;
@@ -94,17 +94,12 @@ private:
 	const float goalEyeXMoveValue_ = 0.0f;
 	const float goalEyeYMoveValue_ = 0.0f;
 	const float goalEyeZMoveValue_ = 0.0f;
-	/*const float goalEyeXMoveValue_ = -30.0f;
-	const float goalEyeYMoveValue_ = -3.42f;
-	const float goalEyeZMoveValue_ = 8.85f;*/
 
 	EasingInfo goalEyeXEasing_ = { 0.0f, goalEyeXMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
 	EasingInfo goalEyeYEasing_ = { 0.0f, goalEyeYMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
 	EasingInfo goalEyeZEasing_ = { 0.0f, goalEyeZMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
 
-
 	EasingInfo slowDownEasing_ = { 1.0f, -0.2f, 0.0f, 15.0f };
-	EasingInfo axcellEasing_ = { 0.8f, 0.4f, 0.0f, 60.0f };
 	GameSpeed* gameSpeed_ = nullptr;
 };
 

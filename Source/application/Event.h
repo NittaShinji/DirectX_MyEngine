@@ -7,6 +7,10 @@
 #include "ParticleEmitter.h"
 #include <stdint.h>
 
+/// <summary>
+/// イベントクラス
+/// 特定の場所において、ゲームスピードや画像を表示する
+/// </summary>
 class Event
 {
 public:
