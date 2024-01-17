@@ -37,12 +37,11 @@ void GameScene::StaticInitialize()
 
 void GameScene::Initialize()
 {
-	lightGroup_ = LightGroup::Create();
 	//3Dオブジェクトにライトをセット
+	lightGroup_ = LightGroup::Create();
 	Object3d::SetLightGroup(lightGroup_);
 	const int32_t firstLight = 0;
 	lightGroup_->SetDirLightActive(firstLight, true);
-	//lightGroup_->SetDirLightActive(1, true);
 
 	//サウンド
 	SoundManager::GetInstance()->Initialize();
@@ -494,7 +493,6 @@ void GameScene::Draw()
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
-	
 	SpriteCommon::GetInstance()->BeforeDraw();
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");

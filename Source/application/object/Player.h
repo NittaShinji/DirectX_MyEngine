@@ -63,7 +63,7 @@ public:
 private: //定数
 
 	//最大ジャンプ回数
-	const int32_t kMaxJumpNum = 2;
+	const int32_t kMaxJumpNum_ = 2;
 
 	//初期位置
 	const Vector3 kPlayerInitPos_ = { 0.0f,22.0f,2.0f };
@@ -83,14 +83,13 @@ private: //定数
 	const float kRotateYTime_ = 60.0f;
 
 	//1週分の回転角
-	const float kOneCircleRotate = 360.0f;
+	const float kOneCircleRotate_ = 360.0f;
 
 	//初期カウンター数
 	const int32_t kInitCount_ = 0;
 
 	const Vector3 kDefaultScale_ = { 1.0f,1.0f,1.0f };
 	const Vector3 kDefaultRotate_ = { 0.0f,0.0f,0.0f };
-
 
 	//アニメーション用スケール定数
 	const Vector3 kMaxJumpMomentScale_ = { 1.0f,0.8f,1.2f };
@@ -111,13 +110,13 @@ private: //定数
 	//フレーム増加量
 	const float freamIncreaseValue_ = 1.0f;
 	//加速判定最大時間
-	const float maxExtensionTime = 10.0f;
+	const float maxExtensionTime_ = 10.0f;
 
 	const float kDefaultReturnScaleSpeed_ = 0.075f;
 	const float kAnimataionReturnScaleSpeed_ = 0.15f;
 
 	//プレイヤーの衝突範囲(加速判定などもあるので球コライダーの半径より大きめに)
-	const float kCollisionArea = 100.0f;
+	const float kCollisionArea_ = 100.0f;
 	
 private:
 
@@ -125,7 +124,7 @@ private:
 	std::unique_ptr<Object3d> object_;
 
 	//ジャンプカウント
-	int32_t jumpCount;
+	int32_t jumpCount_;
 	
 	//空中にいるかどうか
 	bool isFlying_;
@@ -250,6 +249,7 @@ private:
 	
 	GameSpeed* gameSpeed_ = nullptr;
 
+	//サウンド
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
 
@@ -278,9 +278,11 @@ public: //アクセッサ
 	//下からオブジェクトに触れたかどうかを取得する
 	bool GetIsTouchObject() { return isTouchObject_; }
 	//プレイヤーの衝突可能範囲
-	float GetCollisionArea() { return kCollisionArea; }
+	float GetCollisionArea() { return kCollisionArea_; }
 	//ジャンプカウントを取得
-	int32_t GetJumpCount() { return jumpCount; }
+	int32_t GetJumpCount() { return jumpCount_; }
+	//最大ジャンプ数を取得
+	int32_t GetKMaxJumpNum() { return kMaxJumpNum_; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }

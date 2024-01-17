@@ -18,7 +18,6 @@ std::unique_ptr<Player> Player::Create(const std::string& path)
 	}
 
 	Model::Load(path);
-
 	instance->Initialize();
 	instance->SetModel(path);
 
@@ -27,10 +26,7 @@ std::unique_ptr<Player> Player::Create(const std::string& path)
 
 void Player::Initialize()
 {
-	Object3d::Initialize();
-	/*Sound::GetInstance()->LoadSoundWave("jump.wav");
-	Sound::GetInstance()->LoadSoundWave("doubleJump.wav");
-	Sound::GetInstance()->LoadSoundWave("playerDead.wav");*/
+	//プレイヤー周りのサウンドを初期化
 	SoundManager::GetInstance()->LoadSoundWave("jump.wav");
 	SoundManager::GetInstance()->LoadSoundWave("doubleJump.wav");
 	jumpSound_ = std::make_unique<Sound>();
@@ -38,13 +34,12 @@ void Player::Initialize()
 	jumpSound_->Initialize("jump.wav");
 	doubleJumpSound_->Initialize("doubleJump.wav");
 
+	//プレイヤーオブジェクトの初期化
+	Object3d::Initialize();
 	transform_ = kPlayerInitPos_;
 	rotation_ = kDefaultRotate_;
 	scale_ = kDefaultScale_;
-
 	deadPos_ = transform_;
-
-	//座標情報を設定
 	SetTransform(transform_);
 	SetRotation(rotation_);
 	SetScale(scale_);
@@ -60,7 +55,8 @@ void Player::Initialize()
 	//属性を指定
 	playerCollider_->SetAttribute(COLLISION_ATTR_ALLIES);
 
-	jumpCount = kMaxJumpNum;
+	//メンバ変数の初期化
+	jumpCount_ = kMaxJumpNum_;
 	isFlying_ = 0;
 	isfinish_ = false;
 	isMoving_ = false;
@@ -86,6 +82,7 @@ void Player::Initialize()
 	totalAxcell_ = { 0.0f,0.0f,0.0f };
 	rightAxcellVec_ = Vector3Zero();
 
+	//プレイヤーの色の初期化
 	attributeColor_ = Attribute::pink;
 	colorFlag_ = true;
 	Object3d::SetColorFlag(true);
@@ -103,9 +100,6 @@ void Player::Update(Camera* camera)
 	{
 		isSecondJumpMoment_ = false;
 	}
-
-	//どのボタンが瞬間的に押されたか
-	//gamePad_->PushedButtonMoment();
 
 	//ゲーム中プレイヤーが死んでいないとき
 	if(isMoving_ == true)
@@ -181,7 +175,7 @@ void Player::Update(Camera* camera)
 			totalAxcell_ += fallVec_;
 
 			//二段ジャンプ時
-			if(jumpCount > 0 && jumpCount < kMaxJumpNum)
+			if(jumpCount_ > 0 && jumpCount_ < kMaxJumpNum_)
 			{
 				if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 				{
@@ -193,7 +187,7 @@ void Player::Update(Camera* camera)
 					onGround_ = false;
 					const float jumpVYFist = 0.4f;
 					fallVec_ = { 0,jumpVYFist,0 };
-					jumpCount--;
+					jumpCount_--;
 				}
 				if(keys_->PushedKeyMoment(DIK_SPACE))
 				{
@@ -204,17 +198,17 @@ void Player::Update(Camera* camera)
 					onGround_ = false;
 					const float jumpVYFist = 0.4f;
 					fallVec_ = { 0,jumpVYFist,0 };
-					jumpCount--;
+					jumpCount_--;
 				}
 			}
 		}
 		//ジャンプ操作
-		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount > 0)
+		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount_ > 0)
 		{
 			jumpSound_->PlaySoundWave(false);
 			isDentedAnime_ = true;
 		}
-		else if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) && jumpCount > 0)
+		else if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) && jumpCount_ > 0)
 		{
 			jumpSound_->PlaySoundWave(false);
 			isDentedAnime_ = true;
@@ -394,7 +388,7 @@ void Player::Update(Camera* camera)
 					isStartedLandAnime_ = true;
 				}
 				transform_.y -= (raycastHit.distance - colliderTwoTimesSize);
-				jumpCount = kMaxJumpNum;
+				jumpCount_ = kMaxJumpNum_;
 				//行列の更新など
 				Object3d::SetTransform(transform_);
 			}
@@ -409,7 +403,7 @@ void Player::Update(Camera* camera)
 					isStartedLandAnime_ = true;
 				}
 				transform_.y -= (raycastHit.distance - colliderTwoTimesSize);
-				jumpCount = kMaxJumpNum;
+				jumpCount_ = kMaxJumpNum_;
 				//行列の更新など
 				Object3d::SetTransform(transform_);
 			}
@@ -424,7 +418,7 @@ void Player::Update(Camera* camera)
 					isStartedLandAnime_ = true;
 				}
 				transform_.y -= (raycastHit.distance - colliderTwoTimesSize);
-				jumpCount = kMaxJumpNum;
+				jumpCount_ = kMaxJumpNum_;
 				//行列の更新など
 				Object3d::SetTransform(transform_);
 			}
@@ -541,7 +535,7 @@ void Player::Update(Camera* camera)
 				//押した瞬間
 				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 				{
-					if(jumpCount > 0)
+					if(jumpCount_ > 0)
 					{
 						isExpandedAnime_ = true;
 						isDentedAnime_ = false;
@@ -552,7 +546,7 @@ void Player::Update(Camera* camera)
 						isSmallJump_ = true;
 						isLongJump_ = false;
 						LongJump();
-						jumpCount--;
+						jumpCount_--;
 						isDuringAnimation_ = false;
 						isStartedLandAnime_ = false;
 					}
@@ -580,14 +574,14 @@ void Player::Update(Camera* camera)
 				//押した瞬間
 				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 				{
-					if(jumpCount > 0)
+					if(jumpCount_ > 0)
 					{
 						isExpandedAnime_ = true;
 						isDentedAnime_ = false;
 						onGround_ = false;
 						isLanded_ = false;
 						LongJump();
-						jumpCount--;
+						jumpCount_--;
 						isDuringAnimation_ = false;
 						isStartedLandAnime_ = false;
 					}
@@ -610,7 +604,7 @@ void Player::Update(Camera* camera)
 				Animation(isDentedAnime_, kDentSpeed_, kDentedScale_);
 				if(isDuringAnimation_ == false)
 				{
-					if(jumpCount > 0)
+					if(jumpCount_ > 0)
 					{
 						isExpandedAnime_ = true;
 						isDentedAnime_ = false;
@@ -618,7 +612,7 @@ void Player::Update(Camera* camera)
 						isLanded_ = false;
 						isRising_ = true;
 						LongJump();
-						jumpCount--;
+						jumpCount_--;
 					}
 				}
 			}
@@ -795,7 +789,7 @@ void Player::Accelerate()
 	{
 		//当たり判定用に
 		axcellExtensionTime_++;
-		if(axcellExtensionTime_ >= maxExtensionTime)
+		if(axcellExtensionTime_ >= maxExtensionTime_)
 		{
 			isRightAxcell_ = false;
 			axcellExtensionTime_ = 0;
@@ -819,7 +813,7 @@ void Player::Reset(Camera* camera)
 	transform_ = kPlayerInitPos_;
 	rotation_ = kDefaultRotate_;
 	scale_ = kDefaultScale_;
-	jumpCount = kMaxJumpNum;
+	jumpCount_ = kMaxJumpNum_;
 	jumpTotalValue_ = 0.0f;
 	onGround_ = true;
 	isJumpRotate_ = false;
@@ -888,7 +882,7 @@ void Player::JumpRotation()
 	{
 		if(scale_.x == kDefaultScale_.x && scale_.y == kDefaultScale_.y && scale_.z == kDefaultScale_.z)
 		{
-			float angle = ToRadian(kOneCircleRotate);
+			float angle = ToRadian(kOneCircleRotate_);
 			rotation_.x -= PlayEaseInCubic(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
 			if(rotateXTimer_ >= 0)
@@ -920,7 +914,7 @@ void Player::GroundRotation()
 	{
 		rotateYTimer_--;
 
-		float angle = ToRadian(kOneCircleRotate);
+		float angle = ToRadian(kOneCircleRotate_);
 
 		if(rotation_.y < angle)
 		{
