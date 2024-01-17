@@ -938,66 +938,7 @@ void Player::Animation(bool isStartedAnime, float animationSpeed, Vector3 goalSc
 	{
 		//アニメーション中フラグをONにする
 		isDuringAnimation_ = true;
-
-		bool isExpandingX = true;
-		if(scale_.x <= goalScale.x && isExpandingX == true)
-		{
-			scale_.x += animationSpeed;
-			if(scale_.x >= goalScale.x)
-			{
-				isExpandingX = false;
-			}
-		}
-		else if(scale_.x > goalScale.x && isExpandingX == true)
-		{
-			scale_.x -= animationSpeed;
-			if(scale_.x <= goalScale.x)
-			{
-				isExpandingX = false;
-			}
-		}
-
-		bool isExpandingY = true;
-		if(scale_.y >= goalScale.y && isExpandingY == true)
-		{
-			scale_.y -= animationSpeed;
-			if(scale_.x <= goalScale.x)
-			{
-				isExpandingY = false;
-			}
-		}
-		else if(scale_.y < goalScale.y && isExpandingY == true)
-		{
-			scale_.y += animationSpeed;
-			if(scale_.y >= goalScale.y)
-			{
-				isExpandingY = false;
-			}
-		}
-
-		bool isExpandingZ = true;
-		if(scale_.z <= goalScale.z && isExpandingZ == true)
-		{
-			scale_.z += animationSpeed;
-			if(scale_.z >= goalScale.z)
-			{
-				isExpandingZ = false;
-			}
-		}
-		else if(scale_.z > goalScale.z && isExpandingZ == true)
-		{
-			scale_.z -= animationSpeed;
-			if(scale_.z <= goalScale.z)
-			{
-				isExpandingZ = false;
-			}
-		}
-
-		//もし全て到達点に達していたらフラグをオフにする
-		if(isExpandingX == false && isExpandingY == false && isExpandingZ == false)
-		{
-			isDuringAnimation_ = false;
-		}
+		ResetVector3Value(scale_, goalScale, animationSpeed, isDuringAnimation_);
 	}
 }
 
@@ -1006,73 +947,8 @@ void Player::ResetRotation()
 	//ジャンプなどによって、回転が元に戻っていなければ元の角度に戻す
 	if(isResettingRotation_ == true)
 	{
-		bool isResetRotationX = true;
-		if(isJumpRotate_ == false)
-		{
-			if(rotation_.x <= kResetRotation_.x && isResetRotationX == true)
-			{
-				rotation_.x += kRotaionSpeed_;
-				if(rotation_.x >= kResetRotation_.x)
-				{
-					isResetRotationX = false;
-				}
-			}
-			else if(rotation_.x > kResetRotation_.x && isResetRotationX == true)
-			{
-				rotation_.x -= kRotaionSpeed_;
-				if(rotation_.x <= kResetRotation_.x)
-				{
-					isResetRotationX = false;
-				}
-			}
-		}
-
-		bool isResetRotationY = true;
-		if(isGroundRotate_ == false)
-		{
-			if(rotation_.y <= kResetRotation_.y && isResetRotationY == true)
-			{
-				rotation_.y += kRotaionSpeed_;
-				if(rotation_.y >= kResetRotation_.y)
-				{
-					isResetRotationY = false;
-				}
-			}
-			else if(rotation_.y > kResetRotation_.y && isResetRotationY == true)
-			{
-				rotation_.y -= kRotaionSpeed_;
-				if(rotation_.y <= kResetRotation_.y)
-				{
-					isResetRotationY = false;
-				}
-			}
-		}
-
-		bool isResetRotationZ = true;
-		if(rotation_.z <= kResetRotation_.z && isResetRotationZ == true)
-		{
-			rotation_.z += kRotaionSpeed_;
-			if(rotation_.z >= kResetRotation_.z)
-			{
-				isResetRotationZ = false;
-			}
-		}
-		else if(rotation_.z > kResetRotation_.z && isResetRotationZ == true)
-		{
-			rotation_.z -= kRotaionSpeed_;
-			if(rotation_.z <= kResetRotation_.z)
-			{
-				isResetRotationZ = false;
-			}
-		}
-
-		//もし全て戻っていたらフラグをオフにする
-		if(isResetRotationX == false && isResetRotationY == false && isResetRotationZ == false)
-		{
-			isResettingRotation_ = false;
-		}
+		ResetVector3Value(rotation_, kResetRotation_, kRotaionSpeed_, isResettingRotation_);
 	}
-
 }
 
 void Player::LongJump()
@@ -1117,6 +993,52 @@ void Player::LongJump()
 				}
 			}
 		}
+	}
+}
+
+bool Player::ResetValue(float& value, const float defaultValue, const float changeValue)
+{
+	bool result = false;
+
+	if(value < defaultValue)
+	{
+		value += changeValue;
+		if(value >= defaultValue)
+		{
+			result = true;
+		}
+	}
+	else if(value > defaultValue)
+	{
+		value -= changeValue;
+		if(value <= defaultValue)
+		{
+			result = true;
+		}
+	}
+	else
+	{
+		result = true;
+	}
+
+	return result;
+}
+
+void Player::ResetVector3Value(Vector3& value, const Vector3 defaultValue, const float changeValue, bool& isStartToReset)
+{
+	bool isResetedX= false;
+	isResetedX = ResetValue(value.x, defaultValue.x, changeValue);
+
+	bool isResetedY = false;
+	isResetedY = ResetValue(value.y, defaultValue.y, changeValue);
+
+	bool isResetedZ = false;
+	isResetedZ = ResetValue(value.z, defaultValue.z, changeValue);
+
+	//もし全て戻っていたらフラグをオフにする
+	if(isResetedX == true && isResetedY == true && isResetedZ == true)
+	{
+		isStartToReset = false;
 	}
 }
 

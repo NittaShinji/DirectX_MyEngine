@@ -22,7 +22,7 @@ void TutorialEvent::Initialzie(Player* player)
 	hightJumpEvent_->AddSprite("A.png", Vector2(586.0f,296.0f), kUiSize);
 
 	const float kStartChangeColorEventPos_ = 505;
-	const float kEndChangeColorEventPos_ = 525;
+	const float kEndChangeColorEventPos_ = 545;
 	changeColorEvent_ = std::make_unique<Event>();
 	changeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
 	changeColorEvent_->AddSprite("B.png", Vector2(586.0f, 296.0f), kUiSize);
