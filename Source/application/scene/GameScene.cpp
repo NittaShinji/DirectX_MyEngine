@@ -130,7 +130,9 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
+	//トランジションの更新
 	gameSprite_->SceneAnimation();
+	//ゲームスピードの更新
 	gameSpeed_->Update();
 
 #ifdef _DEBUG
@@ -182,6 +184,7 @@ void GameScene::Update()
 	//ゲームパッドを接続
 	if(gamePad_->IsConnected(Player1)) {}
 
+	//ゲームが始まっていないときに始める処理
 	if(player_->GetIsDead() == false && player_->GetIsFinish() == false)
 	{
 		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
@@ -202,20 +205,21 @@ void GameScene::Update()
 
 	const Vector3 kColor = { 1, 1, 1 };
 
+	//ライトの設定
 	lightGroup_->SetAmbientColor(kColor);
 	lightGroup_->SetDirLightDir(0, kLightDir, kLightDirUp);
 	const Vector3 whitelightColor = { 1.0f,1.0f,1.0f };
 	lightGroup_->SetDirLightColor(0, whitelightColor);
-	
 	{
 		//imguiからのライトパラメータを反映
 		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
 		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x + imGuiDir_[0], lightDir0_.y + imGuiDir_[1], lightDir0_.z + imGuiDir_[2] }), 0.0f);
 		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
 	}
-
+	//ライトの更新
 	lightGroup_->Update();
 
+	//カメラの更新
 	gameCamera_->Update(player_->GetIsMoving(),player_->GetTransform(),player_->GetInitPos(),player_->GetIsDead(),
 	player_->GetDeadPos(),player_->GetRightAxcell());
 
@@ -223,17 +227,21 @@ void GameScene::Update()
 	player_->Update(gameCamera_.get());
 	mirrorPlayer_->Update(gameCamera_.get());
 
+	//背景オブジェクトの更新
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
 	tutorialEvent_->Update();
+	stage_->Update(gameCamera_.get(), player_.get());
 
+	//パーティクルの生成準備
 	ParticleManager::GetInstance()->Preparation(gameSpeed_.get(), player_.get());
 	ObjParticleManager::GetInstance()->PopUpdate(gameSpeed_.get(),gameCamera_.get(),player_.get(),stage_.get());
 
-	stage_->Update(gameCamera_.get(), player_.get());
-
+	//パーティクルの更新
 	ParticleManager::GetInstance()->Update(gameCamera_.get());
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
+
+	//ゲームタイマーの更新
 	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
 
 #ifdef _DEBUG
@@ -331,13 +339,17 @@ void GameScene::Draw()
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
+	//3Dオブジェクト描画
 	Object3d::BeforeDraw();
 	player_->Draw();
+
+	//3Dパーティクル描画
 	ObjParticleManager::GetInstance()->Draw();
 
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
+	//2Dパーティクル描画
 	ParticleManager::GetInstance()->Draw();
 	
 	//深度値クリア
