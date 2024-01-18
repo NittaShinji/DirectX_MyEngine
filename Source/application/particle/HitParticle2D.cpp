@@ -1,6 +1,7 @@
 #include "HitParticle2D.h"
 #include "ParticleEmitter.h"
 #include "ImGuiManager.h"
+#include "Player.h"
 
 std::unique_ptr<HitParticle2D> HitParticle2D::Create(std::string fileName)
 {
@@ -130,8 +131,6 @@ void HitParticle2D::ImguiUpdate()
 void HitParticle2D::Update(Camera* camera)
 {
 	HRESULT result;
-
-	if(waitingTimeforGeneration_ )
 
 	//寿命が尽きたパーティクルを全削除
 	particles_.remove_if(

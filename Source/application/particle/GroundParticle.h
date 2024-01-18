@@ -1,10 +1,12 @@
 #pragma once
-#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 #include "Easing.h"
 
 /// <summary>
 /// プレイヤーが地面を走っているときのパーティクル
 /// </summary>
+class Player;
+
 class GroundParticle : public ParticleEmitter
 {
 public:
@@ -51,8 +53,6 @@ private:
 
 	//プレイヤーの色
 	Attribute playerColor_;
-	//プレイヤーが加速しているかどうか
-	bool isPlayerAxcelled_;
 
 	//黒いパーティクルになっている時間
 	static const int32_t kBlackTime_ = 10;
@@ -71,11 +71,9 @@ private:
 	float imGuiAcc_[3]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
 	float imGuiColor_[4]{ kInitImguiValue_,kInitImguiValue_,kInitImguiValue_,kInitImguiValue_ };
 
-public: // アクセッサ
+public: //アクセッサ
 
-	//プレイヤーの色をセット
-	void SetIsPlayerColor(Attribute playerColor);
-	//プレイヤーが加速しているかどうかをセット
-	void SetIsPlayerAxcelled(bool isPlayerAxcelled) { isPlayerAxcelled_ = isPlayerAxcelled; };
+	void SetIsPlayerColor(Attribute playerColor) { playerColor_ = playerColor; }
+
 };
 

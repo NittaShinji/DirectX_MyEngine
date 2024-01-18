@@ -1,5 +1,5 @@
 #pragma once
-#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 
 /// <summary>
 /// 衝突時のパーティクル

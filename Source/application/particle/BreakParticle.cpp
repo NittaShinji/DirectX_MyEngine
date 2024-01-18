@@ -1,4 +1,5 @@
 #include "BreakParticle.h"
+#include "Player.h"
 #include "ImGuiManager.h"
 
 std::unique_ptr<BreakParticle> BreakParticle::Create(std::string modelName)
@@ -23,7 +24,6 @@ void BreakParticle::Initialize()
 	startScale_ = kInitStartScale_;
 	endScale_ = kInitEndScale_;
 	particleCount_ = kInitCount_;
-	isPlayerDead_ = false;
 	canReset_ = false;
 	isStartPoped_ = false;
 	isMaxParticle_ = false;
@@ -106,7 +106,7 @@ void BreakParticle::Update(Camera* camera)
 		}
 
 		//プレイヤーが死んだ際に生成を止めてリセットできるように
-		if(isPlayerDead_ == true)
+		if(player_->GetIsDead() == true)
 		{
 			if(it->isGenerated == true)
 			{

@@ -1,4 +1,5 @@
 #include "DeadParticle.h"
+#include "Player.h"
 
 std::unique_ptr<DeadParticle> DeadParticle::Create(std::string modelName)
 {
@@ -22,7 +23,6 @@ void DeadParticle::Initialize()
 	startScale_ = { 0.9f,0.9f,0.9f };
 	endScale_ = { 0.0f,0.0f,0.0f };
 	particleCount_ = 0;
-	isPlayerDead_ = false;
 	canReset_ = false;
 	isStartPoped_ = false;
 	isMaxParticle_ = false;
@@ -102,7 +102,7 @@ void DeadParticle::Update(Camera* camera)
 		}
 
 		//プレイヤーが死んだ際に生成を止めてリセットできるように
-		if(isPlayerDead_ == true)
+		if(player_->GetIsDead() == true)
 		{
 			if(it->isGenerated == true)
 			{

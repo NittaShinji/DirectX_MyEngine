@@ -68,10 +68,6 @@ private:
 	//属性色
 	Attribute attributeColor_;
 
-	//ゲームスピード
-	GameSpeed* gameSpeed_ = nullptr;
-
-
 public: //アクセッサ
 
 	//リセットしても良いかどうかのフラグを取得する
@@ -80,7 +76,5 @@ public: //アクセッサ
 	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
 	//リセットしても良いかどうかのフラグをセットする
 	void SetCanReset(bool canReset) { canReset_ = canReset; }
-	//ゲームスピードをセットする
-	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 };
 

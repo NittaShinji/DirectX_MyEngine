@@ -32,9 +32,7 @@ public:
 
 	bool GetCanReset() { return canReset_; }
 
-	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
 	void SetCanReset(bool canReset) { canReset_ = canReset; }
-	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
 private:
 
@@ -66,14 +64,11 @@ private:
 
 	//生成開始フラグ
 	bool isStartPoped_;
-	//ゲームオーバーかどうか
-	bool isPlayerDead_;
+
 	//リセットしてもよいか
 	bool canReset_;
 
 	//フレーム増加量
 	const float freamIncreaseValue_ = 1.0f;
-	//ゲームスピード
-	GameSpeed* gameSpeed_ = nullptr;
 };
 

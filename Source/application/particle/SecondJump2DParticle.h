@@ -1,5 +1,5 @@
 #pragma once
-#include "ParticleManager.h"
+#include "ParticleEmitter.h"
 
 /// <summary>
 /// プレイヤーのジャンプ時に出る半透明の円形パーティクル

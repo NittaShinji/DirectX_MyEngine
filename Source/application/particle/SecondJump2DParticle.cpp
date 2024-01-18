@@ -1,5 +1,6 @@
 #include "SecondJump2DParticle.h"
 #include "ImGuiManager.h"
+#include "Player.h"
 
 std::unique_ptr<SecondJump2DParticle> SecondJump2DParticle::Create(std::string fileName)
 {

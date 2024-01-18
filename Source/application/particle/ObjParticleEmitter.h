@@ -6,6 +6,10 @@
 /// <summary>
 /// 3Dパーティクル生成器
 /// </summary>
+
+class Player;
+class GameSpeed;
+
 class ObjParticleEmitter
 {
 private: // エイリアス
@@ -120,5 +124,21 @@ protected: //メンバ変数
 	bool canReset_;
 
 	std::string modelName_;
+
+	//ゲームスピード
+	GameSpeed* gameSpeed_ = nullptr;
+
+	//プレイヤー
+	Player* player_ = nullptr;
+
+
+public:
+
+	//ゲームスピードをセット
+	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
+
+	//プレイヤーをセット
+	void SetPlayer(Player* player) { player_ = player; }
+
 };
 

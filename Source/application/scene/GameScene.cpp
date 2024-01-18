@@ -104,35 +104,25 @@ void GameScene::Initialize()
 	gameCamera_->Initialize();
 
 	//2Dパーティクル
-	groundParticle_ = GroundParticle::Create("cloud.png");
-	hitParticle_ = HitParticle2D::Create("cloud.png");
-	secondJumpParticle_ = SecondJump2DParticle::Create("jumpEffect6.png");
-	ParticleManager::GetInstance()->AddEmitter(groundParticle_.get());
-	ParticleManager::GetInstance()->AddEmitter(secondJumpParticle_.get());
-	ParticleManager::GetInstance()->AddEmitter(hitParticle_.get());
 	ParticleManager::GetInstance()->Initialize();
 	//3Dパーティクル
-	landParticle_ = LandParticle::Create(cube);
-	deadParticle_ = DeadParticle::Create(cube);
-	breakParticle_ = BreakParticle::Create(cube);
-	ObjParticleManager::GetInstance()->AddEmitter(landParticle_.get());
-	ObjParticleManager::GetInstance()->AddEmitter(deadParticle_.get());
-	ObjParticleManager::GetInstance()->AddEmitter(breakParticle_.get());
+	ObjParticleManager::GetInstance()->Initialize();
 
+	//ゲームスピード
 	gameSpeed_ = std::make_unique<GameSpeed>();
 	gameSpeed_->Initialize();
 	player_->SetGameSpeed(gameSpeed_.get());
 	gameCamera_->SetGameSpeed(gameSpeed_.get());
-	
-	secondJumpParticle_->SetGameSpeed(gameSpeed_.get());
-	groundParticle_->SetGameSpeed(gameSpeed_.get());
-	hitParticle_->SetGameSpeed(gameSpeed_.get());
 
-	landParticle_->SetGameSpeed(gameSpeed_.get());
-	deadParticle_->SetGameSpeed(gameSpeed_.get());
-	breakParticle_->SetGameSpeed(gameSpeed_.get());
+	//パーティクルにプレイヤー、ゲームスピード情報をセット
+	ParticleManager::GetInstance()->SetEmitterPlayer(player_.get());
+	ParticleManager::GetInstance()->SetEmitterGameSpeed(gameSpeed_.get());
+	ObjParticleManager::GetInstance()->SetEmitterPlayer(player_.get());
+	ObjParticleManager::GetInstance()->SetEmitterGameSpeed(gameSpeed_.get());
 
+	//ゲームタイマー
 	GameTimer::GetInstance()->InGameInitialize();
+	//チュートリアルイベント
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
 	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
 	tutorialEvent_->Initialzie(player_.get());
@@ -144,6 +134,7 @@ void GameScene::Update()
 	gameSpeed_->Update();
 
 #ifdef _DEBUG
+	//ゲームスピードの切り替え
 	if(keys_->PushedKeyMoment(DIK_N))
 	{
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
@@ -165,22 +156,21 @@ void GameScene::Update()
 	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{
-		secondJumpParticle_->ParticleRemove();
-		groundParticle_->ParticleRemove();
-		hitParticle_->Preparation(player_->GetTransform(),player_->GetIsDead());
+		ParticleManager::GetInstance()->ParticleRemove();
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 
+		//死亡時パーティクルが消えてリセット可能かどうか
+		bool canReset = ObjParticleManager::GetInstance()->GetDeadParticle()->GetCanReset();
+
 		//リセット処理
-		if(deadParticle_->GetCanReset() == true || keys_->HasPushedKey(DIK_R))
+		if(canReset == true || keys_->HasPushedKey(DIK_R))
 		{
 			ParticleManager::GetInstance()->ParticleRemove();
+			ObjParticleManager::GetInstance()->ProcessPlayerDead(gameCamera_.get());
 
-			ObjParticleManager::GetInstance()->ParticleReset(gameCamera_.get());
 			stage_->Reset("Stage0.json");
 			gameCamera_->Initialize();
 			player_->Reset(gameCamera_.get());
-			deadParticle_->SetCanReset(false);
-			deadParticle_->Reset();
 			GameTimer::GetInstance()->Reset();
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 			gameSprite_->ResetSceneAnimation();
@@ -189,7 +179,7 @@ void GameScene::Update()
 
 	//スプライト
 	gameSprite_->Update();
-
+	//ゲームパッドを接続
 	if(gamePad_->IsConnected(Player1)) {}
 
 	if(player_->GetIsDead() == false && player_->GetIsFinish() == false)
@@ -237,96 +227,8 @@ void GameScene::Update()
 	normalBackGround_->Update(gameCamera_.get());
 	tutorialEvent_->Update();
 
-	landParticle_->SetPlayerIsDead(player_->GetIsDead());
-	deadParticle_->SetPlayerIsDead(player_->GetIsDead());
-	breakParticle_->SetPlayerIsDead(player_->GetIsDead());
-	groundParticle_->SetIsPlayerAxcelled(player_->GetRightAxcell());
-
-	if(player_->GetIsLanded() == true)
-	{
-		groundParticle_->SetIsPlayerColor(player_->GetAttributeColor());
-	}
-	
-	if(gameSpeed_->GetSpeedMode() != GameSpeed::SpeedMode::STOP)
-	{
-		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
-		{
-			if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
-			{
-				if(player_->GetIsSecondJumpMoment() == true)
-				{
-					secondJumpParticle_->Preparation(player_->GetTransform());
-				}
-			}
-
-			if(gameSpeed_->GetCanMoveInSlow() == true)
-			{
-				if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
-				{
-					if(player_->GetIsSecondJumpMoment() == false)
-					{
-						groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor(), player_->GetRightAxcell(),gameSpeed_->GetCanMoveInSlow());
-					}
-				}
-
-				if(player_->GetIsMoving() == true && player_->GetIsDead() == false)
-				{
-					bool isTouchObject = player_->GetIsTouchObject();
-
-					if(player_->GetIsLanded() == true || isTouchObject == true)
-					{
-						hitParticle_->Preparation(player_->GetTransform(), player_->GetIsDead());
-						if(isTouchObject == true)
-						{
-							player_->SetIsTouchObject(false);
-						}
-					}
-				}
-
-				landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(), player_->GetAttributeColor());
-				deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(), player_->GetAttributeColor());
-				breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
-			}
-		}
-		else
-		{
-			if(player_->GetOnGround() == false && player_->GetIsMoving() == true && player_->GetIsDead() == false)
-			{
-				if(player_->GetIsSecondJumpMoment() == true)
-				{
-					secondJumpParticle_->Preparation(player_->GetTransform());
-				}
-			}
-
-			if(player_->GetOnGround() == true && player_->GetIsMoving() == true && player_->GetIsDead() == false)
-			{
-				if(player_->GetIsSecondJumpMoment() == false)
-				{
-					groundParticle_->Preparation(player_->GetTransform(), player_->GetAttributeColor(), player_->GetRightAxcell(), gameSpeed_->GetCanMoveInSlow());
-				}
-			}
-
-			if(player_->GetIsMoving() == true && player_->GetIsDead() == false)
-			{
-				//一度だけタッチフラグをオンにする
-				bool isTouchObject = player_->GetIsTouchObject();
-
-				if(player_->GetIsLanded() == true || isTouchObject == true)
-				{
-					hitParticle_->Preparation(player_->GetTransform(), player_->GetIsDead());
-					
-					if(isTouchObject == true)
-					{
-						player_->SetIsTouchObject(false);
-					}
-				}
-			}
-
-			landParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsLanded(), player_->GetAttributeColor());
-			deadParticle_->PopUpdate(gameCamera_.get(), player_->GetTransform(), player_->GetIsDead(), player_->GetAttributeColor());
-			breakParticle_->PopUpdate(gameCamera_.get(), stage_->GetBreakWallsPos());
-		}
-	}	
+	ParticleManager::GetInstance()->Preparation(gameSpeed_.get(), player_.get());
+	ObjParticleManager::GetInstance()->PopUpdate(gameSpeed_.get(),gameCamera_.get(),player_.get(),stage_.get());
 
 	stage_->Update(gameCamera_.get(), player_.get());
 
@@ -336,10 +238,10 @@ void GameScene::Update()
 
 #ifdef _DEBUG
 
+	//Imguiの更新
 	gameCamera_->ImGuiUpdate();
 	player_->ImGuiUpdate();
-	breakParticle_->ImGuiUpdate();
-	groundParticle_->ImguiUpdate();
+	ParticleManager::GetInstance()->ImGuiUpdate();
 	stage_->ImguiUpdate();
 
 	ImGui::Begin("light");
@@ -385,6 +287,8 @@ void GameScene::Update()
 	}
 
 #ifdef _DEBUG
+	//デバッグ用
+	//クリア画面に飛ぶ
 	if(keys_->PushedKeyMoment(DIK_G))
 	{
 		player_->SetIsFinish(true);

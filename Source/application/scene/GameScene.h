@@ -127,14 +127,13 @@ private:
 	std::unique_ptr<Sound> gameSound_ = nullptr;
 
 	//パーティクル
-	std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
-	std::unique_ptr<SecondJump2DParticle> secondJumpParticle_ = nullptr;
-	std::unique_ptr<HitParticle2D> hitParticle_ = nullptr;
-	
+	//std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
+	//std::unique_ptr<SecondJump2DParticle> secondJumpParticle_ = nullptr;
+	//std::unique_ptr<HitParticle2D> hitParticle_ = nullptr;
 
-	std::unique_ptr<LandParticle> landParticle_ = nullptr;
-	std::unique_ptr<DeadParticle> deadParticle_ = nullptr;
-	std::unique_ptr<BreakParticle> breakParticle_ = nullptr;
+	//std::unique_ptr<LandParticle> landParticle_ = nullptr;
+	//std::unique_ptr<DeadParticle> deadParticle_ = nullptr;
+	//std::unique_ptr<BreakParticle> breakParticle_ = nullptr;
 
 	//アニメーションが終わったかどうか
 	bool isFinishAnimetion_;

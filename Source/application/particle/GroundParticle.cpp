@@ -1,5 +1,6 @@
 #include "GroundParticle.h"
 #include "ImGuiManager.h"
+#include "Player.h"
 
 std::unique_ptr<GroundParticle> GroundParticle::Create(std::string fileName)
 {
@@ -142,7 +143,7 @@ void GroundParticle::Update(Camera* camera)
 
 	nowParticleCount_ = 0;
 
-	if(isPlayerAxcelled_ == true)
+	if(player_->GetRightAxcell() == true)
 	{
 		if(blackTime_ > 0)
 		{
@@ -388,9 +389,4 @@ void GroundParticle::Update(Camera* camera)
 	constMap->viewProjection = matView_ * matProjection_;	// 行列の合成
 	constMap->matBillboard = matBillboard;
 	constBuff_->Unmap(0, nullptr);
-}
-
-void GroundParticle::SetIsPlayerColor(Attribute playerColor)
-{
-	playerColor_ = playerColor;
 }

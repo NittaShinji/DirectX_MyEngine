@@ -1,5 +1,6 @@
 #include "LandParticle.h"
 #include "ObjectColor.h"
+#include "Player.h"
 
 std::unique_ptr<LandParticle> LandParticle::Create(std::string modelName)
 {
@@ -28,7 +29,6 @@ void LandParticle::Initialize()
 	generationNum_ = kInitCount;
 	nowParticleCount_ = kInitCount;
 	particleCount_ = kInitCount;
-	isPlayerDead_ = false;
 	canReset_ = false;
 	isStartPoped_ = false;
 	isMaxParticle_ = false;
@@ -107,7 +107,7 @@ void LandParticle::Update(Camera* camera)
 		}
 
 		//プレイヤーが死んだ際に生成を止めてリセットできるように
-		if(isPlayerDead_ == true)
+		if(player_->GetIsDead() == true)
 		{
 			if(it->isGenerated == true)
 			{
@@ -133,7 +133,7 @@ void LandParticle::Reset()
 
 void LandParticle::PopUpdate(Camera* camera, const Vector3& popPos, bool isLanded,Attribute attributeColor)
 {
-	if(isLanded == true && isPlayerDead_ == false)
+	if(isLanded == true && player_->GetIsDead() == false)
 	{
 		isStartPoped_ = true;
 	}

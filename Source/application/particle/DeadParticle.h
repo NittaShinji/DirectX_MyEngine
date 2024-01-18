@@ -53,26 +53,19 @@ private:
 
 	//生成開始フラグ
 	bool isStartPoped_;
-	//ゲームオーバーかどうか
-	bool isPlayerDead_;
+
 	//リセットしてもよいか
 	bool canReset_;
 
 	//フレーム増加量
 	const float freamIncreaseValue_ = 1.0f;
-	//ゲームスピード
-	GameSpeed* gameSpeed_ = nullptr;
 
 public: //アクセッサ
 
 	//リセットしても良いかどうかのフラグを取得する
 	bool GetCanReset() { return canReset_; }
-	//プレイヤーが死んでいるかどうかをセット
-	void SetPlayerIsDead(bool isPlayerDead) { isPlayerDead_ = isPlayerDead; }
 	//リセットしても良いかどうかのフラグをセットする
 	void SetCanReset(bool canReset) { canReset_ = canReset; }
-	//ゲームスピードをセットする
-	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 };
 
 

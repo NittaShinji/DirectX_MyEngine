@@ -8,6 +8,9 @@
 /// <summary>
 /// 2Dパーティクル生成器
 /// </summary>
+
+class Player;
+
 class ParticleEmitter
 {
 
@@ -215,13 +218,19 @@ protected :
 	//ゲームスピード
 	GameSpeed* gameSpeed_ = nullptr;
 
+	//プレイヤー
+	Player* player_ = nullptr;
+
 public: //アクセッサ
 
 	//最大数まで生成しているかどうかを取得
 	bool GetIsMaxParticle() { return isMaxParticle_; }
-	//生成しているパーティクルを取得
-	//std::forward_list<Particle> GetPaticles() { return particles_; }
+
 	//ゲームスピードをセット
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
+
+	//プレイヤーをセット
+	void SetPlayer(Player* player) { player_ = player; }
+
 };
 

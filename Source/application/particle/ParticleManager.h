@@ -4,12 +4,19 @@
 #include "ObjectAttribute.h"
 #include "ParticleEmitter.h"
 #include "TextureManager.h"
+#include "GroundParticle.h"
+#include "HitParticle2D.h"
+#include "SecondJump2DParticle.h"
 #include <forward_list>
 
 /// <summary>
 /// 2Dパーティクルマネージャー
 /// 2Dパーティクル生成器を管理する
 /// </summary>
+
+class Player;
+class GameSpeed;
+
 class ParticleManager final
 {
 private:
@@ -68,11 +75,29 @@ public: // メンバ関数
 	//パーティクルのみ削除
 	void ParticleRemove();
 
+	//エミッターにプレイヤーをセット
+	void SetEmitterPlayer(Player* player);
+
+	//エミッターにゲームスピードをセット
+	void SetEmitterGameSpeed(GameSpeed* gameSpeed);
+
+	void Preparation(GameSpeed* gameSpeed, Player* player);
+
+	//プレイヤーが死んだ場合の処理
+	void ProcessPlayerDead(Vector3 transform, bool isDead);
+
+	//ImGuiの更新
+	void ImGuiUpdate();
+
 private: // メンバ変数
 
 	static ID3D12GraphicsCommandList* cmdList_;
 	static ID3D12Device* device_;
 
 	std::vector<ParticleEmitter*> emitters_;
+
+	std::unique_ptr<GroundParticle> groundParticle_;
+	std::unique_ptr<HitParticle2D> hitParticle_;
+	std::unique_ptr<SecondJump2DParticle> secondJumpParticle_;
 };
 
