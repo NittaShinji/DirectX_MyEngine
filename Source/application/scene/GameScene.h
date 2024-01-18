@@ -25,6 +25,7 @@
 #include "HitParticle2D.h"
 #include "MirrorPlayer.h"
 #include "TutorialEvent.h"
+#include "GameSprite.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -67,11 +68,6 @@ public:
 	/// </summary>
 	void Draw() override;
 
-	//シーン遷移
-	void SceneAnimation();
-	//シーン遷移アニメーションをリセット
-	void ResetSceneAnimation();
-
 private:
 
 	static DirectXBasic* directXBasic_;
@@ -112,33 +108,14 @@ private:
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;
 
-	//float ambientColor0_[3] = { 1,1,1 };
 	Vector3 ambientColor0_ = { 1,1,1 };
 	//光線方向初期値
-	//float lightDir0_[3] = { 1,-5,-5 };
 	Vector3 lightDir0_ = { 1,-5,-5 };
-
-	//float lightColor0_[3] = { 1,1,1 };
 	Vector3 lightColor0_ = { 1,1,1 };
-
-	//float whiteColor_[3] = { 1,1,1 };
 	Vector3 whiteColor_ = { 1,1,1 };
 
-	//UIスプライト
-	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
-	std::unique_ptr<Sprite> jumpSprite_ = nullptr;
-
-	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
-	std::unique_ptr<Sprite> arrowSprite_ = nullptr;
-
-	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
-	std::unique_ptr<Sprite> sceneTransitionUp_ = nullptr;
-	std::unique_ptr<Sprite> sceneTransitionDown_ = nullptr;
-	std::unique_ptr<Sprite> nowLoadingSprite_ = nullptr;
-
-	bool isStartSceneAnimation_ = false;
-
-	const Vector2 kUiSize_ = { 64.0f,64.0f };
+	//スプライト
+	std::unique_ptr<GameSprite> gameSprite_ = nullptr;
 
 	const float initImguiValue_ = 0.0f;
 	float imGuiPos[3]{ initImguiValue_,initImguiValue_,initImguiValue_ };

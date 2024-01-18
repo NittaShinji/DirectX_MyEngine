@@ -40,8 +40,6 @@ public:
 	//初期化
 	void Initialize();
 
-	//static void LoadInternal(TexMetadata& texMetadata, ScratchImage& scratchImg, const std::string& filePath);
-
 	//テクスチャ読み込み
 	static void LoadTexture(const std::string& fileName);
 
@@ -84,7 +82,6 @@ private:
 	static ID3D12GraphicsCommandList* cmdList_;
 
 	//テクスチャコンバータ
-	//TextureConverter converter;
 	std::unique_ptr<TextureConverter> texConverter_;
 
 public:

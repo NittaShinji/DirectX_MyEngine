@@ -64,52 +64,9 @@ void GameScene::Initialize()
 	postEffect_->Initialize(directXBasic_);
 
 	//スプライト
-	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
-	const Vector4 blackColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+	gameSprite_ = std::make_unique<GameSprite>();
+	gameSprite_->Initialize();
 
-	//黒色のテクスチャ―を生成
-	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, kHalfWindowHeight, blackColor, "BlackBackGroundHalfTex");
-	//画像読み込み
-	TextureManager::GetInstance()->LoadTexture("jump.png");
-	TextureManager::GetInstance()->LoadTexture("arrow.png");
-	TextureManager::GetInstance()->LoadTexture("cloud.png");
-	TextureManager::GetInstance()->LoadTexture("effect2.png");
-	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
-	TextureManager::GetInstance()->LoadTexture("backGround.png");
-	
-	//aボタン画像
-	aButtonSprite_ = std::make_unique<Sprite>();
-	const Vector2 aButtonPosition = { 1152,648 };
-	aButtonSprite_->Initialize("A.png",aButtonPosition);
-	aButtonSprite_->SetSize(Vector2(kUiSize_));
-	//bボタン画像
-	bButtonSprite_ = std::make_unique<Sprite>();
-	const Vector2 bButtonPosition = { 1216,648 };
-	bButtonSprite_->Initialize("B.png",bButtonPosition);
-	bButtonSprite_->SetSize(Vector2(kUiSize_));
-	//ジャンプ画像
-	jumpSprite_ = std::make_unique<Sprite>();
-	const Vector2 jumpSpritePosition = { 1152,584 };
-	jumpSprite_->Initialize("jump.png",jumpSpritePosition);
-	jumpSprite_->SetSize(Vector2(kUiSize_));
-	//矢印画像
-	arrowSprite_ = std::make_unique<Sprite>();
-	const Vector2 arrowPosition = { 1216,584 };
-	arrowSprite_->Initialize("arrow.png",arrowPosition);
-	arrowSprite_->SetSize(Vector2(kUiSize_));
-	//背景画像
-	backGroundSprite_ = std::make_unique<Sprite>();
-	const Vector2 kDefaultSpritePos = { 0.0f,0.0f };
-	backGroundSprite_->Initialize("backGround.png", kDefaultSpritePos);
-	//トランジション用画像
-	nowLoadingSprite_ = std::make_unique<Sprite>();
-	nowLoadingSprite_->Initialize("NowLoading.png", kDefaultSpritePos);
-
-	sceneTransitionUp_ = std::make_unique<Sprite>();
-	sceneTransitionDown_ = std::make_unique<Sprite>();
-	sceneTransitionUp_->Initialize("BlackBackGroundHalfTex", kDefaultSpritePos);
-	sceneTransitionDown_->Initialize("BlackBackGroundHalfTex",Vector2(kDefaultSpritePos.x, kHalfWindowHeight));
-	
 	//モデル読み込み
 	const string sphere = "sphere";
 	const string test = "NoImageModel";
@@ -179,13 +136,11 @@ void GameScene::Initialize()
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
 	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
 	tutorialEvent_->Initialzie(player_.get());
-
-	isStartSceneAnimation_ = false;
 }
 
 void GameScene::Update()
 {
-	SceneAnimation();
+	gameSprite_->SceneAnimation();
 	gameSpeed_->Update();
 
 #ifdef _DEBUG
@@ -228,20 +183,14 @@ void GameScene::Update()
 			deadParticle_->Reset();
 			GameTimer::GetInstance()->Reset();
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
-			ResetSceneAnimation();
+			//ResetSceneAnimation();
+			gameSprite_->ResetSceneAnimation();
 		}
 	}
 
 	//スプライト
-	aButtonSprite_->matUpdate();
-	bButtonSprite_->matUpdate();
-	jumpSprite_->matUpdate();
-	arrowSprite_->matUpdate();
-	backGroundSprite_->matUpdate();
-	sceneTransitionUp_->matUpdate();
-	sceneTransitionDown_->matUpdate();
-	nowLoadingSprite_->matUpdate();
-	
+	gameSprite_->Update();
+
 	if(gamePad_->IsConnected(Player1)) {}
 
 	if(player_->GetIsDead() == false && player_->GetIsFinish() == false)
@@ -455,9 +404,8 @@ void GameScene::Draw()
 	//レンダーテクスチャの描画
 	postEffect_->PreDrawScene();
 
-	SpriteCommon::GetInstance()->BeforeDraw();
-	backGroundSprite_->Draw("backGround.png");
-
+	gameSprite_->BackGroundDraw();
+	
 	Object3d::BeforeDraw();
 	backGround_->Draw();
 	mirrorPlayer_->Draw();
@@ -493,18 +441,9 @@ void GameScene::Draw()
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
-	SpriteCommon::GetInstance()->BeforeDraw();
-	aButtonSprite_->Draw("A.png");
-	bButtonSprite_->Draw("B.png");
-	jumpSprite_->Draw("jump.png");
-	arrowSprite_->Draw("arrow.png");
+	gameSprite_->UIDraw();
 	GameTimer::GetInstance()->InGameDraw();
-	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
-	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
-	if(isStartSceneAnimation_ == false)
-	{
-		nowLoadingSprite_->Draw("NowLoading.png");
-	}
+	gameSprite_->TransitionDraw();
 	tutorialEvent_->Draw();
 	
 	//デバッグテキストの描画
@@ -513,40 +452,3 @@ void GameScene::Draw()
 	//描画終了
 	directXBasic_->AfterDraw();
 }
-
-void GameScene::SceneAnimation()
-{
-	isStartSceneAnimation_ = true;
-
-	if(sceneAnimeTimer_ < kSceneAnimeTime_)
-	{
-		sceneAnimeTimer_++;
-	}
-	else
-	{
-		sceneAnimeTimer_ = 0;
-		isFinishAnimetion_ = true;
-	}
-
-	//変化量
-	float x = sceneAnimeTimer_ / kSceneAnimeTime_;
-	sceneAnimationVec_.y += EaseOutQuint(x);
-
-	//画像を動かす処理
-	sceneTransitionUp_->MovePos(-sceneAnimationVec_);
-	sceneTransitionDown_->MovePos(sceneAnimationVec_);
-}
-
-void GameScene::ResetSceneAnimation()
-{
-	if(isFinishAnimetion_ == true)
-	{
-		sceneTransitionUp_->SetPosition(Vector2(0.0f, 0.0f));
-		const float kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
-		sceneTransitionDown_->SetPosition(Vector2(0.0f, kHalfWindowHeight));
-		sceneAnimeTimer_ = 0;
-		sceneAnimationVec_ = Vector2(0.0f, 0.0f);
-		isFinishAnimetion_ = false;
-	}
-}
-
