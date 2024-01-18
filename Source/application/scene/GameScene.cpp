@@ -183,7 +183,6 @@ void GameScene::Update()
 			deadParticle_->Reset();
 			GameTimer::GetInstance()->Reset();
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
-			//ResetSceneAnimation();
 			gameSprite_->ResetSceneAnimation();
 		}
 	}
@@ -409,7 +408,6 @@ void GameScene::Draw()
 	Object3d::BeforeDraw();
 	backGround_->Draw();
 	mirrorPlayer_->Draw();
-
 	postEffect_->PostDrawScene();
 
 	//描画開始

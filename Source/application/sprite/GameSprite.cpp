@@ -3,10 +3,9 @@
 
 void GameSprite::Load()
 {
-	//スプライト
+	//読み込み処理
 	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
 	const Vector4 blackColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-
 	//黒色のテクスチャ―を生成
 	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, kHalfWindowHeight, blackColor, "BlackBackGroundHalfTex");
 	//画像読み込み
@@ -20,10 +19,12 @@ void GameSprite::Load()
 
 void GameSprite::Initialize()
 {
+	//アニメーションフラグをオフに
 	isStartSceneAnimation_ = false;
 
 	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
 
+	//画像読み込み
 	Load();
 
 	//aボタン画像
@@ -50,10 +51,10 @@ void GameSprite::Initialize()
 	backGroundSprite_ = std::make_unique<Sprite>();
 	const Vector2 kDefaultSpritePos = { 0.0f,0.0f };
 	backGroundSprite_->Initialize("backGround.png", kDefaultSpritePos);
-	//トランジション用画像
+	//読み込み中画像
 	nowLoadingSprite_ = std::make_unique<Sprite>();
 	nowLoadingSprite_->Initialize("NowLoading.png", kDefaultSpritePos);
-
+	//トランジション用画像
 	sceneTransitionUp_ = std::make_unique<Sprite>();
 	sceneTransitionDown_ = std::make_unique<Sprite>();
 	sceneTransitionUp_->Initialize("BlackBackGroundHalfTex", kDefaultSpritePos);
@@ -62,7 +63,7 @@ void GameSprite::Initialize()
 
 void GameSprite::Update()
 {
-	//スプライト
+	//スプライトの行列更新
 	aButtonSprite_->matUpdate();
 	bButtonSprite_->matUpdate();
 	jumpSprite_->matUpdate();
@@ -92,6 +93,7 @@ void GameSprite::TransitionDraw()
 {
 	sceneTransitionUp_->Draw("BlackBackGroundHalfTex");
 	sceneTransitionDown_->Draw("BlackBackGroundHalfTex");
+	//アニメーションが始まっていないならば
 	if(isStartSceneAnimation_ == false)
 	{
 		nowLoadingSprite_->Draw("NowLoading.png");
@@ -100,8 +102,10 @@ void GameSprite::TransitionDraw()
 
 void GameSprite::SceneAnimation()
 {
+	//アニメーションフラグをオンに
 	isStartSceneAnimation_ = true;
 
+	//アニメーションタイマーを更新
 	if(sceneAnimeTimer_ < kSceneAnimeTime_)
 	{
 		sceneAnimeTimer_++;
@@ -123,11 +127,14 @@ void GameSprite::SceneAnimation()
 
 void GameSprite::ResetSceneAnimation()
 {
+	//もし開幕のアニメーションが終了していたら
 	if(isFinishAnimetion_ == true)
 	{
+		//トランジション画像の座標をリセット
 		sceneTransitionUp_->SetPosition(Vector2(0.0f, 0.0f));
 		const float kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
 		sceneTransitionDown_->SetPosition(Vector2(0.0f, kHalfWindowHeight));
+		//トランジション用の変数を初期化
 		sceneAnimeTimer_ = 0;
 		sceneAnimationVec_ = Vector2(0.0f, 0.0f);
 		isFinishAnimetion_ = false;

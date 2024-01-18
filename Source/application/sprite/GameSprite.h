@@ -46,17 +46,25 @@ private:
 	//シーンアニメーション用変化量
 	Vector2 sceneAnimationVec_;
 
-	//UIスプライト
-	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
-	std::unique_ptr<Sprite> jumpSprite_ = nullptr;
+	///背景スプライト
+	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
 
+	//UIスプライト
+	//Aボタン
+	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
+	//Bボタン
 	std::unique_ptr<Sprite> bButtonSprite_ = nullptr;
+	//ジャンプ
+	std::unique_ptr<Sprite> jumpSprite_ = nullptr;
+	//色変え矢印
 	std::unique_ptr<Sprite> arrowSprite_ = nullptr;
 
-	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
+	///トランジション用スプライト
+	//上半分用の黒いスプライト
 	std::unique_ptr<Sprite> sceneTransitionUp_ = nullptr;
+	//下半分用の黒いスプライト
 	std::unique_ptr<Sprite> sceneTransitionDown_ = nullptr;
+	//読み込み中
 	std::unique_ptr<Sprite> nowLoadingSprite_ = nullptr;
-
 };
 
