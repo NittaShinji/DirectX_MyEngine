@@ -3,6 +3,7 @@
 #include "CollisionAttribute.h"
 #include "ObjectColor.h"
 #include "ImGuiManager.h"
+#include "GameSpeed.h"
 #include <string>
 
 void Stage::Initialize(const std::string& fileName, Player* player)
@@ -197,7 +198,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 	}
 }
 
-void Stage::Update(Camera* camera, Player* player)
+void Stage::Update(Camera* camera, Player* player,GameSpeed* gameSpeed)
 {
 	for(auto& object : objects_)
 	{
@@ -245,6 +246,10 @@ void Stage::Update(Camera* camera, Player* player)
 		goal_->AddCollider(goal_->GetModel());
 	}
 	goal_->Update(camera, player->GetTransform());
+
+	//ゴールに近づいたらスローにする
+	goal_->SlowDownNearGoal(gameSpeed);
+
 }
 
 void Stage::Draw()

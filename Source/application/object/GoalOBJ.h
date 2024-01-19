@@ -6,6 +6,9 @@
 /// <summary>
 /// 当たり判定のあるゴールオブジェクト
 /// </summary>
+
+class GameSpeed;
+
 class GoalOBJ : public TouchableObject
 {
 public:
@@ -36,6 +39,9 @@ public:
 
 	//描画
 	void Draw() override;
+
+	//ゴールに近づいたらゲームスピードをスローにする
+	void SlowDownNearGoal(GameSpeed* gameSpeed);
 
 	//アクセッサ
 	void SetIsBreak(bool isBreak) { isBreak_ = isBreak; }

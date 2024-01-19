@@ -4,6 +4,7 @@
 #include "CollisionAttribute.h"
 #include "CollisionManager.h"
 #include "ObjectColor.h"
+#include "GameSpeed.h"
 
 std::unique_ptr<GoalOBJ> GoalOBJ::Create(const std::string& fileName, const unsigned short coliderAttribute)
 {
@@ -65,5 +66,13 @@ void GoalOBJ::Draw()
 	if(isBreak_ == false)
 	{
 		Object3d::Draw();
+	}
+}
+
+void GoalOBJ::SlowDownNearGoal(GameSpeed* gameSpeed)
+{
+	if(isStartGoalStagin_ == true)
+	{
+		gameSpeed->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
 	}
 }

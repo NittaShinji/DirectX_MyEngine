@@ -68,26 +68,14 @@ void GameScene::Initialize()
 	gameSprite_->Initialize();
 
 	//モデル読み込み
-	const string sphere = "sphere";
-	const string test = "NoImageModel";
-	const string testStage0 = "testStage0";
-	const string ground = "ground";
-	const string skydome = "skydome";
-	const string cube = "Cube";
-	const string plane = "Plane";
-	const string wall = "wall";
-	const string goalWall = "GoalWall";
-	const string stageBlock = "StageBlock";
-
-	Model::Load(testStage0);
-	Model::Load(cube);
-	Model::Load(wall);
-	Model::Load(plane);
-	Model::Load(goalWall);
-	Model::Load(stageBlock);
+	Model::Load("Cube");
+	Model::Load("wall");
+	Model::Load("Plane");
+	Model::Load("GoalWall");
+	Model::Load("StageBlock");
 
 	//3Dオブジェクトの生成
-	player_ = Player::Create(sphere);
+	player_ = Player::Create("sphere");
 	player_->SetGamePad(gamePad_.get());
 	mirrorPlayer_ = MirrorPlayer::Create(player_.get());
 
@@ -130,6 +118,9 @@ void GameScene::Initialize()
 
 void GameScene::Update()
 {
+	//ゲームパッドを接続
+	if(gamePad_->IsConnected(Player1)) {}
+
 	//トランジションの更新
 	gameSprite_->SceneAnimation();
 	//ゲームスピードの更新
@@ -181,8 +172,6 @@ void GameScene::Update()
 
 	//スプライト
 	gameSprite_->Update();
-	//ゲームパッドを接続
-	if(gamePad_->IsConnected(Player1)) {}
 
 	//ゲームが始まっていないときに始める処理
 	if(player_->GetIsDead() == false && player_->GetIsFinish() == false)
@@ -200,9 +189,7 @@ void GameScene::Update()
 
 	//光線方向初期値
 	const Vector3 kLightDir = { 1,-1,-10 };
-
 	const float kLightDirUp = 0.0f;
-
 	const Vector3 kColor = { 1, 1, 1 };
 
 	//ライトの設定
@@ -231,7 +218,7 @@ void GameScene::Update()
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
 	tutorialEvent_->Update();
-	stage_->Update(gameCamera_.get(), player_.get());
+	stage_->Update(gameCamera_.get(), player_.get(),gameSpeed_.get());
 
 	//パーティクルの生成準備
 	ParticleManager::GetInstance()->Preparation(gameSpeed_.get(), player_.get());
@@ -269,12 +256,6 @@ void GameScene::Update()
 
 	//全ての衝突をチェック
 	collisionManager_->CheckAllCollisions();
-
-	//ゴールに近づいたらスローにする
-	if(stage_->GetGoal()->GetIsStartGoalStagin() == true)
-	{
-		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
-	}
 
 	//ゴールに触れたら
 	if(player_->GetIsFinish() == true)

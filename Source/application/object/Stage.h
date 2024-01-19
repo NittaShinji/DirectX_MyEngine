@@ -27,7 +27,7 @@ public:
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="player">プレイヤー</param>
-	void Update(Camera* camera, Player* player);
+	void Update(Camera* camera, Player* player, GameSpeed* gameSpeed);
 
 	//描画
 	void Draw();
