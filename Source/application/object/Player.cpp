@@ -58,7 +58,7 @@ void Player::Initialize()
 	//メンバ変数の初期化
 	jumpCount_ = kMaxJumpNum_;
 	isFlying_ = 0;
-	isfinish_ = false;
+	isFinish_ = false;
 	isMoving_ = false;
 	isChangeColor = false;
 	isJumpRotate_ = false;
@@ -91,9 +91,24 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
+	gameCamera_ = camera;
+
+	//着地フラグをオフに
 	isLanded_ = false;
 
-	gameCamera_ = camera;
+	//ゲームが始まっていないときに始める処理
+	if(isDead_ == false && isFinish_ == false)
+	{
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
+		{
+			isMoving_ = true;
+		}
+
+		if(keys_->PushedKeyMoment(DIK_SPACE))
+		{
+			isMoving_ = true;
+		}
+	}
 
 	//瞬間のフラグをOFFにする
 	if(isSecondJumpMoment_ == true)
@@ -652,7 +667,7 @@ void Player::OnCollision(const CollisionInfo& info)
 {
 	if(info.object->GetAttributeColor() == Attribute::Goal)
 	{
-		isfinish_ = true;
+		isFinish_ = true;
 		isDead_ = false;
 	}
 	//色が違う場合、死亡判定にする
@@ -818,7 +833,7 @@ void Player::Reset(Camera* camera)
 	onGround_ = true;
 	isJumpRotate_ = false;
 	isFlying_ = 0;
-	isfinish_ = false;
+	isFinish_ = false;
 	isMoving_ = false;
 	isDead_ = false;
 	isLanded_ = false;

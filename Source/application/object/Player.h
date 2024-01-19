@@ -145,7 +145,7 @@ private:
 	bool isMoving_;
 
 	//ゴールしたかどうか
-	bool isfinish_;
+	bool isFinish_;
 
 	//プレイヤーのコライダー
 	std::unique_ptr<SphereCollider> playerCollider_ = nullptr;
@@ -263,7 +263,7 @@ public: //アクセッサ
 	//動いているどうかを取得する
 	bool GetIsMoving() { return isMoving_; }
 	//ゴールしたかどうかを取得する
-	bool GetIsFinish() { return isfinish_; }
+	bool GetIsFinish() { return isFinish_; }
 	//死んでいるかどうかを取得する
 	bool GetIsDead() { return isDead_; }
 	//着地したかどうかを取得する
@@ -296,7 +296,7 @@ public: //アクセッサ
 	//ゲームスピードをセットする
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 	//ゴールしたどうかをセットする
-	void SetIsFinish(bool isFinish) { isfinish_ = isFinish; }
+	void SetIsFinish(bool isFinish) { isFinish_ = isFinish; }
 	//下からオブジェクトに触れたかどうかをセットする
 	void SetIsTouchObject(bool isTouchObject) { isTouchObject_ = isTouchObject; }
 	//加速しているかどうかをセットする

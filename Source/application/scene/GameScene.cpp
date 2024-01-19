@@ -173,20 +173,6 @@ void GameScene::Update()
 	//スプライト
 	gameSprite_->Update();
 
-	//ゲームが始まっていないときに始める処理
-	if(player_->GetIsDead() == false && player_->GetIsFinish() == false)
-	{
-		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
-		{
-			player_->SetIsMoving(true);
-		}
-
-		if(keys_->PushedKeyMoment(DIK_SPACE) )
-		{
-			player_->SetIsMoving(true);
-		}
-	}
-
 	//光線方向初期値
 	const Vector3 kLightDir = { 1,-1,-10 };
 	const float kLightDirUp = 0.0f;
