@@ -248,7 +248,6 @@ void GameScene::Update()
 	{
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
-		player_->SetIsRightAxcell(true);
 		gameCamera_->GoalAnimation();
 
 		if(gameCamera_->GetIsFinishAnimation())

@@ -667,6 +667,7 @@ void Player::OnCollision(const CollisionInfo& info)
 {
 	if(info.object->GetAttributeColor() == Attribute::Goal)
 	{
+		isRightAxcell_ = true;
 		isFinish_ = true;
 		isDead_ = false;
 	}
@@ -1056,7 +1057,3 @@ void Player::ResetVector3Value(Vector3& value, const Vector3 defaultValue, const
 		isStartToReset = false;
 	}
 }
-
-
-
-

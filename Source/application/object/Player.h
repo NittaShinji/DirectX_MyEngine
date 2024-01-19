@@ -64,7 +64,6 @@ public:
 	bool ResetValue(float& value, const float defaultValue, const float changeValue);
 	void ResetVector3Value(Vector3& value, const Vector3 defaultValue, const float changeValue, bool& isStartToReset);
 
-
 private: //定数
 
 	//最大ジャンプ回数
