@@ -1,7 +1,6 @@
 #include "SceneFactory.h"
 #include "TitleScene.h"
 #include "StageSelect.h"
-#include "TutorialScene.h"
 #include "GameScene.h"
 #include "ClearScene.h"
 
@@ -17,10 +16,6 @@ std::unique_ptr<BaseScene> SceneFactory::CreateScene(const std::string& sceneNam
     else if(sceneName == "StageSelect")
     {
         newScene = std::make_unique<StageSelectScene>();
-    }
-    else if(sceneName == "Tutorial")
-    {
-        newScene = std::make_unique<TutorialScene>();
     }
     else if(sceneName == "GAME")
     {
