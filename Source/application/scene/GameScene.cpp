@@ -212,9 +212,9 @@ void GameScene::Update()
 	lightGroup_->SetDirLightColor(0, whitelightColor);
 	{
 		//imguiからのライトパラメータを反映
-		lightGroup_->SetAmbientColor(Vector3(ambientColor0_));
-		lightGroup_->SetDirLightDir(0, Vector3({ lightDir0_.x + imGuiDir_[0], lightDir0_.y + imGuiDir_[1], lightDir0_.z + imGuiDir_[2] }), 0.0f);
-		lightGroup_->SetDirLightColor(0, Vector3(lightColor0_));
+		lightGroup_->SetAmbientColor(Vector3(ambientLightColor_));
+		lightGroup_->SetDirLightDir(0, Vector3({ lightDir_.x + imGuiDir_[0], lightDir_.y + imGuiDir_[1], lightDir_.z + imGuiDir_[2] }), 0.0f);
+		lightGroup_->SetDirLightColor(0, Vector3(lightColor_));
 	}
 	//ライトの更新
 	lightGroup_->Update();

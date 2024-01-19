@@ -273,9 +273,6 @@
     <ClCompile Include="Source\application\scene\StageSelect.cpp">
       <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\scene\TutorialScene.cpp">
-      <Filter>ソース ファイル\application\scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\application\scene\SceneFactory.cpp">
       <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
@@ -492,9 +489,6 @@
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\scene\StageSelect.h">
-      <Filter>ヘッダー ファイル\application\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\application\scene\TutorialScene.h">
       <Filter>ヘッダー ファイル\application\scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\scene\SceneFactory.h">

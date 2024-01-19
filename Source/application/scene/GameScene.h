@@ -108,11 +108,11 @@ private:
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;
 
-	Vector3 ambientColor0_ = { 1,1,1 };
+	const Vector3 ambientLightColor_ = { 1,1,1 };
 	//光線方向初期値
-	Vector3 lightDir0_ = { 1,-5,-5 };
-	Vector3 lightColor0_ = { 1,1,1 };
-	Vector3 whiteColor_ = { 1,1,1 };
+	const Vector3 lightDir_ = { 1,-5,-5 };
+	const Vector3 lightColor_ = { 1,1,1 };
+	const Vector3 whiteColor_ = { 1,1,1 };
 
 	//スプライト
 	std::unique_ptr<GameSprite> gameSprite_ = nullptr;
@@ -125,15 +125,6 @@ private:
 
 	//サウンド
 	std::unique_ptr<Sound> gameSound_ = nullptr;
-
-	//パーティクル
-	//std::unique_ptr<GroundParticle> groundParticle_ = nullptr;
-	//std::unique_ptr<SecondJump2DParticle> secondJumpParticle_ = nullptr;
-	//std::unique_ptr<HitParticle2D> hitParticle_ = nullptr;
-
-	//std::unique_ptr<LandParticle> landParticle_ = nullptr;
-	//std::unique_ptr<DeadParticle> deadParticle_ = nullptr;
-	//std::unique_ptr<BreakParticle> breakParticle_ = nullptr;
 
 	//アニメーションが終わったかどうか
 	bool isFinishAnimetion_;
