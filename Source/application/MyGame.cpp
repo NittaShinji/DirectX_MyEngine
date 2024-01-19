@@ -1,7 +1,6 @@
 #include "MyGame.h"
 #include "SceneFactory.h"
 #include "StageSelect.h"
-#include "TutorialScene.h"
 #include "ClearScene.h"
 #include "GameTimer.h"
 
@@ -28,7 +27,6 @@ void MyGame::Initialize()
 	TitleScene::StaticInitialize();
 	GameScene::StaticInitialize();
 	StageSelectScene::StaticInitialize();
-	TutorialScene::StaticInitialize();
 	ClearScene::StaticInitialize();
 	GameTimer::GetInstance()->StaticInitialize();
 }
