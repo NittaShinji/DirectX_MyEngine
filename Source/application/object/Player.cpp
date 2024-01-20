@@ -245,18 +245,18 @@ void Player::Update(Camera* camera)
 		//加速を座標に反映
 		//速度に加速度を加算
 
-		bool isKeepRunnig = false;
-		if(isFinish_ == true && isRightAxcell_ == false)
-		{
-			isKeepRunnig = true;
-		}
+		//bool isKeepRunnig = false;
+		//if(isFinish_ == true && isRightAxcell_ == false)
+		//{
+		//	isKeepRunnig = true;
+		//}
 
 		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP) {}
 		//その場で走り続ける
-		else if(isKeepRunnig == true)
+		/*else if(isKeepRunnig == true)
 		{
 			transform_= transform_;
-		}
+		}*/
 		else
 		{
 			transform_.x += totalAxcell_.x;

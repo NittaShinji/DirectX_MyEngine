@@ -136,7 +136,7 @@ void ParticleManager::Preparation(GameSpeed* gameSpeed,Player* player)
 				}
 			}
 
-			if(player->GetOnGround() == true && player->GetIsMoving() == true && player->GetIsDead() == false)
+ 			if(player->GetOnGround() == true && player->GetIsMoving() == true && player->GetIsDead() == false)
 			{
 				if(player->GetIsSecondJumpMoment() == false)
 				{

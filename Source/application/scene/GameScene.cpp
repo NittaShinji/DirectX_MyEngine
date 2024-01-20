@@ -203,7 +203,7 @@ void GameScene::Update()
 	//背景オブジェクトの更新
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
-	tutorialEvent_->Update();
+	//tutorialEvent_->Update();
 	stage_->Update(gameCamera_.get(), player_.get(),gameSpeed_.get());
 
 	//パーティクルの生成準備
@@ -246,7 +246,7 @@ void GameScene::Update()
 	//ゴールに触れたら
 	if(player_->GetIsFinish() == true)
 	{
-		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
+		//gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
 		gameCamera_->GoalAnimation();
 

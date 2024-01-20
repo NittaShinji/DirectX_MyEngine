@@ -248,7 +248,7 @@ void Stage::Update(Camera* camera, Player* player,GameSpeed* gameSpeed)
 	goal_->Update(camera, player->GetTransform());
 
 	//ゴールに近づいたらスローにする
-	goal_->SlowDownNearGoal(gameSpeed);
+	goal_->SlowDownNearGoal(gameSpeed,player_->GetIsFinish());
 
 }
 

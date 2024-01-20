@@ -60,6 +60,10 @@ void GoalOBJ::Update(Camera* camera, Vector3 playerPos)
 			isStartGoalStagin_ = true;
 		}
 	}
+	else
+	{
+		isStartGoalStagin_ = false;
+	}
 }
 
 void GoalOBJ::Draw()
@@ -70,10 +74,17 @@ void GoalOBJ::Draw()
 	}
 }
 
-void GoalOBJ::SlowDownNearGoal(GameSpeed* gameSpeed)
+void GoalOBJ::SlowDownNearGoal(GameSpeed* gameSpeed,bool isFinish)
 {
 	if(isStartGoalStagin_ == true)
 	{
-		gameSpeed->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
+		if(isFinish == false)
+		{
+			gameSpeed->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
+		}
+		else
+		{
+			gameSpeed->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+		}
 	}
 }

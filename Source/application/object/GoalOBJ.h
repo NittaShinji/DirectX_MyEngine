@@ -41,7 +41,7 @@ public:
 	void Draw() override;
 
 	//ゴールに近づいたらゲームスピードをスローにする
-	void SlowDownNearGoal(GameSpeed* gameSpeed);
+	void SlowDownNearGoal(GameSpeed* gameSpeed, bool isFinish);
 
 	//アクセッサ
 	void SetIsBreak(bool isBreak) { isBreak_ = isBreak; }
