@@ -2,6 +2,7 @@
 #include "TouchableObject.h"
 #include "HitWall.h"
 #include "GoalOBJ.h"
+#include "ResultRoopStage.h"
 #include "LevelManager.h"
 #include "ObjectAttribute.h"
 
@@ -59,11 +60,11 @@ private:
 	//blender読み込みオブジェクト
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
 	std::vector<std::unique_ptr<HitWall>> walls_;
+	std::vector<std::unique_ptr<ResultRoopStage>> resultRoopStages_;
 	std::unique_ptr<GoalOBJ> goal_;
 
 	Vector3 kDebugYellowOBJColor_;
 	Vector3 kDebugPinkOBJColor_;
-
 
 	//ゴール座標
 	Vector3 goalPos_;

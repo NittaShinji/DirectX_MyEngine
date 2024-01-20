@@ -246,7 +246,6 @@ void GameScene::Update()
 	//ゴールに触れたら
 	if(player_->GetIsFinish() == true)
 	{
-		//gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
 		gameCamera_->GoalAnimation();
 

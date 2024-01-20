@@ -1,7 +1,6 @@
 #pragma once
 #include "TouchableObject.h"
 #include "LevelManager.h"
-#include "ObjectAttribute.h"
 
 /// <summary>
 /// 当たり判定のあるゴールオブジェクト

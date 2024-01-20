@@ -23,60 +23,44 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 		std::unordered_map<std::string, Model> models_;
 		decltype(models_)::iterator it = models_.find(objectData.fileName);
 		if(it != models_.end()) { model = &it->second; }
-		//モデルを指定して3Dオブジェクトを作成
-		if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "StageBlock")
+
+		//ループオブジェクト
+		if(objectData.attribute == "RoopPink" || objectData.attribute == "RoopYellow")
 		{
-			//3Dオブジェクトの生成
-			std::unique_ptr<TouchableObject> newObject = nullptr;
-			if(objectData.attribute == "Pink")
-			{
-				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_PINK);
-			}
-			else if(objectData.attribute == "Yellow")
-			{
-				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_YELLOW);
-			}
-			else if(objectData.attribute == "Goal")
-			{
-				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_GOAL);
-			}
-			else
-			{
-				newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_BLACK);
+			std::unique_ptr<ResultRoopStage> roopStage = nullptr;
+
+			if(objectData.fileName == "StageBlock")
+			{	
+				roopStage = ResultRoopStage::Create(objectData.fileName, COLLISION_ATTR_PINK);
 			}
 
 			//座標
 			Vector3 pos;
 			pos = objectData.translation;
-			newObject->SetTransform(pos);
+			roopStage->SetTransform(pos);
 
 			//回転角
 			Vector3 rot;
 			rot = objectData.rotation;
-			newObject->SetRotation(rot);
+			roopStage->SetRotation(rot);
 
 			//大きさ
 			Vector3 scale;
 			scale = objectData.scaling;
-			newObject->SetScale(scale);
+			roopStage->SetScale(scale);
 
 			//属性指定
-			if(objectData.attribute == "Pink")
+			if(objectData.attribute == "RoopPink")
 			{
-				newObject->SetAttributeColor(Attribute::pink);
+				roopStage->SetAttributeColor(Attribute::pink);
 			}
-			else if(objectData.attribute == "Yellow")
+			else if(objectData.attribute == "RoopYellow")
 			{
-				newObject->SetAttributeColor(Attribute::yellow);
-			}
-			else if(objectData.attribute == "Goal")
-			{
-				goalPos_ = pos;
-				newObject->SetAttributeColor(Attribute::Goal);
+				roopStage->SetAttributeColor(Attribute::yellow);
 			}
 			else
 			{
-				newObject->SetAttributeColor(Attribute::black);
+				roopStage->SetAttributeColor(Attribute::black);
 			}
 
 			//コライダーの設定
@@ -84,37 +68,132 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 
 			if(distance > player_->GetCollisionArea())
 			{
-				newObject->RemoveCollider();
+				roopStage->RemoveCollider();
 			}
 
 			//色を指定
-			if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall" || objectData.fileName == "StageBlock")
+			if(roopStage->GetColorFlag() == false)
 			{
-				if(newObject->GetColorFlag() == false)
-				{
-					newObject->SetColorFlag(true);
+				roopStage->SetColorFlag(true);
 
-					if(newObject->GetAttributeColor() == Attribute::yellow)
-					{
-						newObject->SetColor(Vector3(kDebugYellowOBJColor_));
-					}
-					else if(newObject->GetAttributeColor() == Attribute::pink)
-					{
-						newObject->SetColor(Vector3(kDebugPinkOBJColor_));
-					}
-					else
-					{
-						newObject->SetColor(Vector3(kBlackOBJColor));
-					}
-				}
-				else if(newObject->GetColorFlag() == true)
+				if(roopStage->GetAttributeColor() == Attribute::yellow)
 				{
-					newObject->SetColorFlag(false);
+					roopStage->SetColor(Vector3(kDebugYellowOBJColor_));
 				}
+				else if(roopStage->GetAttributeColor() == Attribute::pink)
+				{
+					roopStage->SetColor(Vector3(kDebugPinkOBJColor_));
+				}
+				else
+				{
+					roopStage->SetColor(Vector3(kBlackOBJColor));
+				}
+			}
+			else if(roopStage->GetColorFlag() == true)
+			{
+				roopStage->SetColorFlag(false);
 			}
 
 			//配列に登録
-			objects_.push_back(std::move(newObject));
+			resultRoopStages_.push_back(std::move(roopStage));
+		}
+		//ループしないオブジェクト
+		else
+		{
+			//モデルを指定して3Dオブジェクトを作成
+			if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "StageBlock")
+			{
+				//3Dオブジェクトの生成
+				std::unique_ptr<TouchableObject> newObject = nullptr;
+
+				if(objectData.attribute == "Pink")
+				{
+					newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_PINK);
+				}
+				else if(objectData.attribute == "Yellow")
+				{
+					newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_YELLOW);
+				}
+				else if(objectData.attribute == "Goal")
+				{
+					newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+				}
+				else
+				{
+					newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_BLACK);
+				}
+
+				//座標
+				Vector3 pos;
+				pos = objectData.translation;
+				newObject->SetTransform(pos);
+
+				//回転角
+				Vector3 rot;
+				rot = objectData.rotation;
+				newObject->SetRotation(rot);
+
+				//大きさ
+				Vector3 scale;
+				scale = objectData.scaling;
+				newObject->SetScale(scale);
+
+				//属性指定
+				if(objectData.attribute == "Pink")
+				{
+					newObject->SetAttributeColor(Attribute::pink);
+				}
+				else if(objectData.attribute == "Yellow")
+				{
+					newObject->SetAttributeColor(Attribute::yellow);
+				}
+				else if(objectData.attribute == "Goal")
+				{
+					goalPos_ = pos;
+					newObject->SetAttributeColor(Attribute::Goal);
+				}
+				else
+				{
+					newObject->SetAttributeColor(Attribute::black);
+				}
+
+				//コライダーの設定
+				float distance = std::fabs(objectData.translation.z - player->GetTransform().z);
+
+				if(distance > player_->GetCollisionArea())
+				{
+					newObject->RemoveCollider();
+				}
+
+				//色を指定
+				if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall" || objectData.fileName == "StageBlock")
+				{
+					if(newObject->GetColorFlag() == false)
+					{
+						newObject->SetColorFlag(true);
+
+						if(newObject->GetAttributeColor() == Attribute::yellow)
+						{
+							newObject->SetColor(Vector3(kDebugYellowOBJColor_));
+						}
+						else if(newObject->GetAttributeColor() == Attribute::pink)
+						{
+							newObject->SetColor(Vector3(kDebugPinkOBJColor_));
+						}
+						else
+						{
+							newObject->SetColor(Vector3(kBlackOBJColor));
+						}
+					}
+					else if(newObject->GetColorFlag() == true)
+					{
+						newObject->SetColorFlag(false);
+					}
+				}
+
+				//配列に登録
+				objects_.push_back(std::move(newObject));
+			}
 		}
 
 		if(objectData.fileName == "GoalWall")
@@ -198,7 +277,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 	}
 }
 
-void Stage::Update(Camera* camera, Player* player,GameSpeed* gameSpeed)
+void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 {
 	for(auto& object : objects_)
 	{
@@ -219,7 +298,7 @@ void Stage::Update(Camera* camera, Player* player,GameSpeed* gameSpeed)
 				object->SetColor(kDebugYellowOBJColor_);
 			}
 		}
-		
+
 		object->Update(camera);
 	}
 
@@ -240,6 +319,17 @@ void Stage::Update(Camera* camera, Player* player,GameSpeed* gameSpeed)
 		}
 	}
 
+	for(auto& roopObject : resultRoopStages_)
+	{
+		float distance = std::fabs(roopObject->GetTransform().z - player->GetTransform().z);
+		if(distance <= player_->GetCollisionArea())
+		{
+			roopObject->AddCollider(roopObject->GetModel());
+		}
+
+		roopObject->Update(camera);
+	}
+
 	float distance = std::fabs(goal_->GetTransform().z - player->GetTransform().z);
 	if(distance < player_->GetCollisionArea())
 	{
@@ -248,7 +338,7 @@ void Stage::Update(Camera* camera, Player* player,GameSpeed* gameSpeed)
 	goal_->Update(camera, player->GetTransform());
 
 	//ゴールに近づいたらスローにする
-	goal_->SlowDownNearGoal(gameSpeed,player_->GetIsFinish());
+	goal_->SlowDownNearGoal(gameSpeed, player_->GetIsFinish());
 
 }
 
@@ -262,6 +352,11 @@ void Stage::Draw()
 	for(auto& wall : walls_)
 	{
 		wall->Draw();
+	}
+
+	for(auto& roopObject : resultRoopStages_)
+	{
+		roopObject->Draw();
 	}
 
 	goal_->Draw();
@@ -311,7 +406,7 @@ void Stage::Reset(const std::string& fileName)
 			{
 				newWall->RemoveCollider();
 			}
-			
+
 			//その他の初期化
 			newWall->Initialize();
 

@@ -1,10 +1,9 @@
 #include "GoalOBJ.h"
-#include "BaseCollider.h"
 #include "MeshCollider.h"
 #include "CollisionAttribute.h"
-#include "CollisionManager.h"
 #include "ObjectColor.h"
 #include "GameSpeed.h"
+#include "ObjectAttribute.h"
 
 std::unique_ptr<GoalOBJ> GoalOBJ::Create(const std::string& fileName, const unsigned short coliderAttribute)
 {
