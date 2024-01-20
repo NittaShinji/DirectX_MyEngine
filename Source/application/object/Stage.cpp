@@ -318,6 +318,50 @@ void Stage::Reset(const std::string& fileName)
 			//配列に登録
 			walls_.push_back(std::move(newWall));
 		}
+
+		if(objectData.fileName == "GoalWall")
+		{
+			//衝突壁オブジェクトの生成
+			std::unique_ptr<GoalOBJ> newGoal = nullptr;
+			newGoal = GoalOBJ::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+			//座標
+			Vector3 pos;
+			pos = objectData.translation;
+			newGoal->SetTransform(pos);
+
+			//回転角
+			Vector3 rot;
+			rot = objectData.rotation;
+			newGoal->SetRotation(rot);
+
+			//大きさ
+			Vector3 scale;
+			scale = objectData.scaling;
+			newGoal->SetScale(scale);
+
+			//コライダーの設定
+			float distance = std::fabs(objectData.translation.z - player_->GetTransform().z);
+			if(distance > player_->GetCollisionArea())
+			{
+				newGoal->RemoveCollider();
+			}
+
+			//その他の初期化
+			newGoal->Initialize();
+			goalPos_ = pos;
+
+			//色
+			newGoal->SetAttributeColor(Attribute::Goal);
+			if(newGoal->GetColorFlag() == false)
+			{
+				newGoal->SetColorFlag(true);
+			}
+
+			newGoal->SetColor(kWallOBJColor);
+
+			//登録
+			goal_ = std::move(newGoal);
+		}
 	}
 }
 
