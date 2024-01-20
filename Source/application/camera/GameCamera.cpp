@@ -180,7 +180,7 @@ void GameCamera::ImGuiUpdate()
 	const Vector2 kImGuiEasingZRate = { 0.0f,10.0f };
 	const Vector2 kImGuiEasingTimerRate = { 0.0f,100.0f };
 	const Vector2 kImGuiCameraSpeedYRate = { 0.0f,100.0f };
-	const Vector2 kImGuiEyeRate = { -100.0f,50.0f };
+	const Vector2 kImGuiEyeRate = { -100.0f,500.0f };
 	const Vector2 kImGuiTargetRate = { -100.0f,1000.0f };
 
 	ImGui::SliderFloat("moveEyeY", &moveEyeVecY_.y, kImGuiMoveRate.x, kImGuiMoveRate.y);
@@ -208,31 +208,33 @@ void GameCamera::ImGuiUpdate()
 
 void GameCamera::GoalAnimation()
 {
-	//ゴール演出スタート時にカメラ位置を代入
-	if(isStartGoalEasing_ == false)
-	{
-		goalEyeXEasing_.startPos = eye_.x;
-		goalEyeYEasing_.startPos = eye_.y;
-		goalEyeZEasing_.startPos = eye_.z;
-		isStartGoalEasing_ = true;
-	}
+	if(gameSpeed_->GetCanMoveInSlow() == true) {}
 
-	//アニメーション中
-	if(sceneAnimeTimer_ < kSceneAnimeTime_)
-	{
-		sceneAnimeTimer_++;
-		goalEyeXEasing_.time = sceneAnimeTimer_;
-		goalEyeYEasing_.time = sceneAnimeTimer_;
-		goalEyeZEasing_.time = sceneAnimeTimer_;
+	////ゴール演出スタート時にカメラ位置を代入
+	//if(isStartGoalEasing_ == false)
+	//{
+	//	goalEyeXEasing_.startPos = eye_.x;
+	//	goalEyeYEasing_.startPos = eye_.y;
+	//	goalEyeZEasing_.startPos = eye_.z;
+	//	isStartGoalEasing_ = true;
+	//}
 
-		eye_.x = PlayEaseOutCubic(goalEyeXEasing_);
-		eye_.y = PlayEaseOutCubic(goalEyeYEasing_);
-		eye_.z = PlayEaseOutCubic(goalEyeZEasing_);
-	}
-	else
-	{
-		isStartGoalEasing_ = false;
-		isFinishAnimetion_ = true;
-		sceneAnimeTimer_ = kInitSceneAnimeTime_;
-	}
+	////アニメーション中
+	//if(sceneAnimeTimer_ < kSceneAnimeTime_)
+	//{
+	//	sceneAnimeTimer_++;
+	//	goalEyeXEasing_.time = sceneAnimeTimer_;
+	//	goalEyeYEasing_.time = sceneAnimeTimer_;
+	//	goalEyeZEasing_.time = sceneAnimeTimer_;
+
+	//	eye_.x = PlayEaseOutCubic(goalEyeXEasing_);
+	//	eye_.y = PlayEaseOutCubic(goalEyeYEasing_);
+	//	eye_.z = PlayEaseOutCubic(goalEyeZEasing_);
+	//}
+	//else
+	//{
+	//	isStartGoalEasing_ = false;
+	//	isFinishAnimetion_ = true;
+	//	sceneAnimeTimer_ = kInitSceneAnimeTime_;
+	//}
 }

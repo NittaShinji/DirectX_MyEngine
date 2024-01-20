@@ -246,18 +246,18 @@ void GameScene::Update()
 	//ゴールに触れたら
 	if(player_->GetIsFinish() == true)
 	{
-		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
 		gameCamera_->GoalAnimation();
 
-		if(gameCamera_->GetIsFinishAnimation())
-		{
-			ParticleManager::GetInstance()->AllRemove();
-			ObjParticleManager::GetInstance()->AllRemove();
-			
-			SoundManager::GetInstance()->Finalize();
-			SceneManager::GetInstance()->ChangeScene("CLEAR");
-		}
+		//if(gameCamera_->GetIsFinishAnimation())
+		//{
+		//	ParticleManager::GetInstance()->AllRemove();
+		//	ObjParticleManager::GetInstance()->AllRemove();
+		//	
+		//	SoundManager::GetInstance()->Finalize();
+		//	SceneManager::GetInstance()->ChangeScene("CLEAR");
+		//}
 	}
 
 #ifdef _DEBUG

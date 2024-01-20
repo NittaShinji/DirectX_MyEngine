@@ -51,6 +51,7 @@ void GoalOBJ::Update(Camera* camera, Vector3 playerPos)
 {
 	Object3d::Update(camera);
 
+	//プレイヤーがゴールに近づいたらゲームスピードをスローに
 	if(playerPos.z < transform_.z)
 	{
 		float result = transform_.z - playerPos.z;
