@@ -34,14 +34,36 @@ public:
 	/// </summary>
 	/// <param name="camera">カメラ</param>
 	/// <param name="playerPos">プレイヤー座標</param>
-	void Update(Camera* camera);
+	void Update(Camera* camera, Vector3 playerPos,float roopArea);
 
 	//描画
 	void Draw() override;
 
+	//ループ用に座標をリセットする
+	void ResetPosition();
+
 private:
 
+	float objectDistance_ = 20.0f;
 
+private:
 
+	//ループオブジェクトの数
+	static int32_t roopObjectNum_;
+
+	//ループした回数
+	int32_t roopCount_;
+
+	//リセットできるか
+	bool isReset_;
+
+	float initTransFormZ_;
+
+public: //アクセッサ
+
+	static void SetRoopObjectNum(int32_t roopObjectNum) { roopObjectNum_ = roopObjectNum; }
+	void SetInitTransFormZ(float initTransFormZ) { initTransFormZ_ = initTransFormZ; }
+
+	bool GetIsReset() { return isReset_; }
 };
 

@@ -6,6 +6,8 @@
 #include "ObjectAttribute.h"
 #include "LevelManager.h"
 
+int32_t ResultRoopStage::roopObjectNum_;
+
 std::unique_ptr<ResultRoopStage> ResultRoopStage::Create(const std::string& fileName, const unsigned short coliderAttribute)
 {
 	//オブジェクトのインスタンスを生成
@@ -26,16 +28,41 @@ std::unique_ptr<ResultRoopStage> ResultRoopStage::Create(const std::string& file
 
 void ResultRoopStage::Initialize()
 {
-	Object3d::SetAttributeColor(Attribute::Goal);
-	Object3d::SetColor(kNormalOBJColor);
+	isReset_ = false;
 }
 
-void ResultRoopStage::Update(Camera* camera)
+void ResultRoopStage::Update(Camera* camera, Vector3 playerPos, float roopArea)
 {
+	//プレイヤーがループオブジェクトを過ぎたら
+
+	float distance = transform_.z - playerPos.z;
+	float collisionDistance = std::fabs(distance);
+	if(collisionDistance <= roopArea)
+	{
+		AddCollider(GetModel());
+	}
+
+	if(playerPos.z > transform_.z && distance < -roopArea)
+	{
+		isReset_ = true;
+		roopCount_++;
+		ResetPosition();
+	}
+
 	Object3d::Update(camera);
 }
 
 void ResultRoopStage::Draw()
 {
 	Object3d::Draw();
+}
+
+void ResultRoopStage::ResetPosition()
+{
+	if(isReset_ == true)
+	{
+		transform_.z = initTransFormZ_ + (roopObjectNum_ * objectDistance_ * roopCount_);
+		Object3d::SetTransform(transform_);
+		isReset_ = false;
+	}
 }

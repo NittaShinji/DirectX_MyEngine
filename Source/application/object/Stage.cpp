@@ -16,6 +16,8 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
 
+	int32_t roopObjectCount = 0;
+
 	for(auto& objectData : levelData_->objects)
 	{
 		//ファイル名から登録済みモデルを検索
@@ -32,12 +34,14 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			if(objectData.fileName == "StageBlock")
 			{	
 				roopStage = ResultRoopStage::Create(objectData.fileName, COLLISION_ATTR_PINK);
+				roopObjectCount++;
 			}
 
 			//座標
 			Vector3 pos;
 			pos = objectData.translation;
 			roopStage->SetTransform(pos);
+			roopStage->SetInitTransFormZ(pos.z);
 
 			//回転角
 			Vector3 rot;
@@ -275,6 +279,8 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			walls_.push_back(std::move(newWall));
 		}
 	}
+
+	ResultRoopStage::SetRoopObjectNum(roopObjectCount);
 }
 
 void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
@@ -318,16 +324,10 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 			i = (size_t)-1;
 		}
 	}
-
-	for(auto& roopObject : resultRoopStages_)
+	
+	for(size_t i = 0; i < resultRoopStages_.size(); i++)
 	{
-		float distance = std::fabs(roopObject->GetTransform().z - player->GetTransform().z);
-		if(distance <= player_->GetCollisionArea())
-		{
-			roopObject->AddCollider(roopObject->GetModel());
-		}
-
-		roopObject->Update(camera);
+		resultRoopStages_[i]->Update(camera, player->GetTransform(), player_->GetCollisionArea());
 	}
 
 	float distance = std::fabs(goal_->GetTransform().z - player->GetTransform().z);

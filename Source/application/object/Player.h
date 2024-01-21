@@ -120,7 +120,7 @@ private: //定数
 	const float kAnimataionReturnScaleSpeed_ = 0.15f;
 
 	//プレイヤーの衝突範囲(加速判定などもあるので球コライダーの半径より大きめに)
-	const float kCollisionArea_ = 100.0f;
+	const float kCollisionArea_ = 30.0f;
 	
 private:
 
