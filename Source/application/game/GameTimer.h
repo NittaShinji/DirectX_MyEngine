@@ -34,7 +34,7 @@ public:
 	//ゲーム中の初期化
 	void InGameInitialize();
 	//リザルト画面の初期化
-	void ResultInitialize();
+	void ResultInitialize(float imagePosY);
 
 	//ゲーム中の数字を更新
 	void InGameNumberUpdate(bool isFinish);
@@ -42,7 +42,7 @@ public:
 	void ResultNumberUpdate();
 
 	//リザルト画面での更新
-	void ResultUpdate();
+	void ResultUpdate(bool isFinishedAnimation, float easingMoveY);
 
 	//ImGuiの更新
 	void InGameUpdate(bool isStart, bool isFinish);
@@ -57,9 +57,6 @@ public:
 
 	//スプライト読み込み
 	void LoadSprite();
-
-	//描画
-	static void Draw();
 
 	//数字をセット
 	void SetNumber(int number,Sprite* sprite);
@@ -84,12 +81,21 @@ private:
 	//インゲーム中に表示する桁
 	static const int inGameDigits = 4;
 	//リザルト表示する桁
-	static const int resultDigits = 6;
+	static const int resultDigits = 4;
 
-	//ゲーム中に表示する時間(4桁)
-	static int inGameTime_;
-	//クリア画面で表示する時間(6桁)
-	static int resultTime_;
+	//ゲーム中に表示する分
+	static int gameMinutes_;
+	//クリア画面で表示する分
+	static int resultMinutes_;
+	//ゲーム中に表示する秒
+	int32_t gameSeconds_;
+	//ゲーム中に表示する秒
+	int32_t resultSeconds_;
+
+	//保存用時間
+	int32_t keepSeconds_;
+	int32_t keepMinutes_;
+
 	//1フレームの時間を計算するタイマー
 	static int timer_;
 	//ハイスコア
@@ -97,6 +103,9 @@ private:
 
 	//画像読み込みフラグ
 	static bool isLoadSprite_;
+
+	//リザルト初期化フラグ
+	bool isStartedResultAnimation_;
 
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];

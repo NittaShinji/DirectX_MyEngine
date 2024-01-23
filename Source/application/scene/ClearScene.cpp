@@ -59,8 +59,6 @@ void ClearScene::Initialize()
 	const Vector2 checkAnchorPoint = { 0.5f,0.5f };
 	check_->SetAnchorPoint(checkAnchorPoint);
 
-	GameTimer::GetInstance()->ResultInitialize();
-
 }
 
 void ClearScene::Update()
@@ -109,8 +107,6 @@ void ClearScene::Update()
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("StageSelect");
 	}
-
-	GameTimer::GetInstance()->ResultUpdate();
 }
 
 void ClearScene::Draw()

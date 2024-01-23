@@ -28,13 +28,12 @@ std::unique_ptr<ResultRoopStage> ResultRoopStage::Create(const std::string& file
 
 void ResultRoopStage::Initialize()
 {
-	isReset_ = false;
+	isRoop_ = false;
 }
 
 void ResultRoopStage::Update(Camera* camera, Vector3 playerPos, float roopArea)
 {
 	//プレイヤーがループオブジェクトを過ぎたら
-
 	float distance = transform_.z - playerPos.z;
 	float collisionDistance = std::fabs(distance);
 	if(collisionDistance <= roopArea)
@@ -44,9 +43,9 @@ void ResultRoopStage::Update(Camera* camera, Vector3 playerPos, float roopArea)
 
 	if(playerPos.z > transform_.z && distance < -roopArea)
 	{
-		isReset_ = true;
+		isRoop_ = true;
 		roopCount_++;
-		ResetPosition();
+		RoopPosition();
 	}
 
 	Object3d::Update(camera);
@@ -57,12 +56,21 @@ void ResultRoopStage::Draw()
 	Object3d::Draw();
 }
 
-void ResultRoopStage::ResetPosition()
+void ResultRoopStage::Reset()
 {
-	if(isReset_ == true)
+	isRoop_ = false;
+	roopCount_ = 0;
+	transform_.z = initTransFormZ_;
+	Object3d::SetTransform(transform_);
+	Object3d::UpdateWorldMatrix();
+}
+
+void ResultRoopStage::RoopPosition()
+{
+	if(isRoop_ == true)
 	{
 		transform_.z = initTransFormZ_ + (roopObjectNum_ * objectDistance_ * roopCount_);
 		Object3d::SetTransform(transform_);
-		isReset_ = false;
+		isRoop_ = false;
 	}
 }

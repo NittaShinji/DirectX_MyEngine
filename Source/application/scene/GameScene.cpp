@@ -66,6 +66,8 @@ void GameScene::Initialize()
 	//スプライト
 	gameSprite_ = std::make_unique<GameSprite>();
 	gameSprite_->Initialize();
+	resultSprite_ = std::make_unique<ResultSprite>();
+	resultSprite_->Initialize();
 
 	//モデル読み込み
 	Model::Load("Cube");
@@ -193,8 +195,8 @@ void GameScene::Update()
 	lightGroup_->Update();
 
 	//カメラの更新
-	gameCamera_->Update(player_->GetIsMoving(),player_->GetTransform(),player_->GetInitPos(),player_->GetIsDead(),
-	player_->GetDeadPos(),player_->GetRightAxcell());
+	gameCamera_->Update(player_->GetIsMoving(), player_->GetTransform(), player_->GetInitPos(), player_->GetIsDead(),
+		player_->GetDeadPos(), player_->GetRightAxcell());
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
@@ -204,11 +206,11 @@ void GameScene::Update()
 	backGround_->Update(gameCamera_.get());
 	normalBackGround_->Update(gameCamera_.get());
 	//tutorialEvent_->Update();
-	stage_->Update(gameCamera_.get(), player_.get(),gameSpeed_.get());
+	stage_->Update(gameCamera_.get(), player_.get(), gameSpeed_.get());
 
 	//パーティクルの生成準備
 	ParticleManager::GetInstance()->Preparation(gameSpeed_.get(), player_.get());
-	ObjParticleManager::GetInstance()->PopUpdate(gameSpeed_.get(),gameCamera_.get(),player_.get(),stage_.get());
+	ObjParticleManager::GetInstance()->PopUpdate(gameSpeed_.get(), gameCamera_.get(), player_.get(), stage_.get());
 
 	//パーティクルの更新
 	ParticleManager::GetInstance()->Update(gameCamera_.get());
@@ -216,6 +218,10 @@ void GameScene::Update()
 
 	//ゲームタイマーの更新
 	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
+	if(player_->GetIsFinish() == true)
+	{
+		GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishBackGroundEasing(),resultSprite_->GetBackGroundSpritePosY());
+	}
 
 #ifdef _DEBUG
 
@@ -229,13 +235,13 @@ void GameScene::Update()
 	const Vector2 kImGuiPos = { 0.0f,360.0f };
 	const Vector2 kImGuiSize = { 200.0f,100.0f };
 
-	ImGui::SetWindowPos(ImVec2(kImGuiPos.x,kImGuiPos.y));
+	ImGui::SetWindowPos(ImVec2(kImGuiPos.x, kImGuiPos.y));
 	ImGui::SetWindowSize(ImVec2(kImGuiSize.x, kImGuiSize.y));
 
 	const Vector2 kImGuiRate = { -30.0f,30.0f };
 
 	ImGui::SliderFloat3("lightDir", imGuiDir_, kImGuiRate.x, kImGuiRate.y);
-	
+
 	ImGui::End();
 
 #endif
@@ -248,6 +254,8 @@ void GameScene::Update()
 	{
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
 		gameCamera_->GoalAnimation();
+
+		resultSprite_->Update();
 
 		//if(gameCamera_->GetIsFinishAnimation())
 		//{
@@ -281,7 +289,7 @@ void GameScene::Draw()
 	postEffect_->PreDrawScene();
 
 	gameSprite_->BackGroundDraw();
-	
+
 	Object3d::BeforeDraw();
 	backGround_->Draw();
 	mirrorPlayer_->Draw();
@@ -289,7 +297,7 @@ void GameScene::Draw()
 
 	//描画開始
 	directXBasic_->BeforeDraw();
-	
+
 	//ポストエフェクトの描画
 	postEffect_->Draw();
 
@@ -300,7 +308,7 @@ void GameScene::Draw()
 	Object3d::BeforeDraw();
 	normalBackGround_->Draw();
 	stage_->Draw();
-	
+
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
@@ -316,15 +324,25 @@ void GameScene::Draw()
 
 	//2Dパーティクル描画
 	ParticleManager::GetInstance()->Draw();
-	
+
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
 	gameSprite_->UIDraw();
-	GameTimer::GetInstance()->InGameDraw();
+
 	gameSprite_->TransitionDraw();
 	tutorialEvent_->Draw();
-	
+
+	if(player_->GetIsFinish() == true)
+	{
+		resultSprite_->Draw();
+		GameTimer::GetInstance()->ResultDraw();
+	}
+	else
+	{
+		GameTimer::GetInstance()->InGameDraw();
+	}
+
 	//デバッグテキストの描画
 	imGuiManager_->Draw();
 

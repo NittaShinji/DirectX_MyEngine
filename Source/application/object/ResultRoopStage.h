@@ -39,8 +39,11 @@ public:
 	//描画
 	void Draw() override;
 
+	//リセット
+	void Reset();
+
 	//ループ用に座標をリセットする
-	void ResetPosition();
+	void RoopPosition();
 
 private:
 
@@ -54,8 +57,8 @@ private:
 	//ループした回数
 	int32_t roopCount_;
 
-	//リセットできるか
-	bool isReset_;
+	//ループできるか
+	bool isRoop_;
 
 	float initTransFormZ_;
 
@@ -64,6 +67,6 @@ public: //アクセッサ
 	static void SetRoopObjectNum(int32_t roopObjectNum) { roopObjectNum_ = roopObjectNum; }
 	void SetInitTransFormZ(float initTransFormZ) { initTransFormZ_ = initTransFormZ; }
 
-	bool GetIsReset() { return isReset_; }
+	bool GetIsRoop() { return isRoop_; }
 };
 

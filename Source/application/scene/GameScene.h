@@ -26,6 +26,7 @@
 #include "MirrorPlayer.h"
 #include "TutorialEvent.h"
 #include "GameSprite.h"
+#include "ResultSprite.h"
 
 class CollisionManager;
 class TouchableObject;
@@ -141,5 +142,9 @@ private:
 
 	//チュートリアルイベント
 	std::unique_ptr<TutorialEvent> tutorialEvent_ = nullptr;
+
+	//リザルト画像
+	std::unique_ptr<ResultSprite> resultSprite_ = nullptr;
+
 };
 
