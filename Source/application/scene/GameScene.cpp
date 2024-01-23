@@ -112,6 +112,7 @@ void GameScene::Initialize()
 
 	//ゲームタイマー
 	GameTimer::GetInstance()->InGameInitialize();
+	GameTimer::GetInstance()->ResultInitialize(resultSprite_->GetBackGroundSpritePosY());
 	//チュートリアルイベント
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
 	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
@@ -166,7 +167,8 @@ void GameScene::Update()
 			stage_->Reset("Stage0.json");
 			gameCamera_->Initialize();
 			player_->Reset(gameCamera_.get());
-			GameTimer::GetInstance()->Reset();
+			resultSprite_->Reset();
+			GameTimer::GetInstance()->Reset(resultSprite_->GetBackGroundSpritePosY());
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 			gameSprite_->ResetSceneAnimation();
 		}
@@ -218,10 +220,10 @@ void GameScene::Update()
 
 	//ゲームタイマーの更新
 	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
-	if(player_->GetIsFinish() == true)
-	{
-		GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishBackGroundEasing(),resultSprite_->GetBackGroundSpritePosY());
-	}
+
+	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY());
+
+	resultSprite_->Update();
 
 #ifdef _DEBUG
 
@@ -252,10 +254,18 @@ void GameScene::Update()
 	//ゴールに触れたら
 	if(player_->GetIsFinish() == true)
 	{
+		//ゴールスロー演出を辞める
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
 		gameCamera_->GoalAnimation();
+		
+		resultSprite_->ComeInScreen();
 
-		resultSprite_->Update();
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
+		{
+			player_->SetIsFinish(false);
+			resultSprite_->SetIsFinishOutEasing(false);
+			nextStageNum_++;
+		}
 
 		//if(gameCamera_->GetIsFinishAnimation())
 		//{
@@ -265,6 +275,10 @@ void GameScene::Update()
 		//	SoundManager::GetInstance()->Finalize();
 		//	SceneManager::GetInstance()->ChangeScene("CLEAR");
 		//}
+	}
+	else
+	{
+		resultSprite_->ComeOutOffScreen();
 	}
 
 #ifdef _DEBUG
@@ -335,13 +349,15 @@ void GameScene::Draw()
 
 	if(player_->GetIsFinish() == true)
 	{
-		resultSprite_->Draw();
-		GameTimer::GetInstance()->ResultDraw();
+		
 	}
 	else
 	{
 		GameTimer::GetInstance()->InGameDraw();
 	}
+
+	resultSprite_->Draw();
+	GameTimer::GetInstance()->ResultDraw();
 
 	//デバッグテキストの描画
 	imGuiManager_->Draw();

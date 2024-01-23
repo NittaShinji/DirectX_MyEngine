@@ -103,7 +103,7 @@ void ClearScene::Update()
 
 	if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		GameTimer::GetInstance()->Reset();
+		//GameTimer::GetInstance()->Reset();
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("StageSelect");
 	}

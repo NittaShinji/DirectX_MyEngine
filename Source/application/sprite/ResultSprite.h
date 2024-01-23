@@ -18,6 +18,14 @@ public:
 	//描画
 	void Draw();
 
+	//画面外に出る
+	void ComeOutOffScreen();
+
+	//画面内に来る
+	void ComeInScreen();
+
+	//リセット
+	void Reset();
 
 private: //定数
 
@@ -25,9 +33,12 @@ private: //定数
 
 private: //メンバ変数
 
-	EasingInfo resultEasing_ = { 0.0f, 0.0f, 0.0f, kEasingTime_ };
+	EasingInfo resultOutEasing_ = { 0.0f, 0.0f, 0.0f, kEasingTime_ };
+	EasingInfo resultInEasing_ = { 0.0f, 0.0f, 0.0f, kEasingTime_ };
 
-	bool isFinishBackGroundEasing_ = false;
+	bool isFinishOutEasing_ = false;
+	bool isFinishInEasing_ = false;
+
 
 	///背景スプライト
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
@@ -38,7 +49,12 @@ private: //メンバ変数
 public: //アクセッサ
 
 	float GetBackGroundSpritePosY() { return backGroundSprite_.get()->GetPosition().y; }
-	bool GetIsFinishBackGroundEasing() { return isFinishBackGroundEasing_; }
+	bool GetIsFinishOutEasing() { return isFinishOutEasing_; }
+	bool GetIsFinishInEasing() { return isFinishInEasing_; }
+
+	void SetIsFinishOutEasing(bool isFinishOutEasing) { isFinishOutEasing_ = isFinishOutEasing; }
+	void SetIsFinishInEasing(bool isFinishInEasing) { isFinishInEasing_ = isFinishInEasing; }
+
 
 };
 

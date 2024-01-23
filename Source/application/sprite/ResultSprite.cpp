@@ -3,11 +3,7 @@
 
 void ResultSprite::Load()
 {
-	const int32_t selectWidth = 1000;
-	const int32_t selectHeight = 400;
-	const Vector4 grayColor = { 0.8f, 0.8f, 0.8f, 0.6f };
 
-	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight, grayColor, "gray");
 }
 
 void ResultSprite::Initialize()
@@ -20,10 +16,12 @@ void ResultSprite::Initialize()
 
 	backGroundSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_->Initialize("gray", Vector2(40.0f, -backGorundHeight));
-	resultEasing_.startPos = -backGorundHeight;
-	resultEasing_.endDistance = backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2);
+	resultInEasing_.startPos = -backGorundHeight;
+	resultInEasing_.endDistance = backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2);
+	resultOutEasing_.endDistance = -(backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2));
 
-	isFinishBackGroundEasing_ = false;
+	isFinishOutEasing_ = true;
+	isFinishInEasing_ = false;
 
 	//ゲームタイマー
 	GameTimer::GetInstance()->InGameInitialize();
@@ -31,28 +29,77 @@ void ResultSprite::Initialize()
 
 void ResultSprite::Update()
 {
-	Vector2 backGroundPosition_ = backGroundSprite_->GetPosition();
 
-	if(isFinishBackGroundEasing_ == false)
+}
+
+void ResultSprite::Draw()
+{
+	backGroundSprite_->Draw("gray");
+}
+
+void ResultSprite::ComeOutOffScreen()
+{
+	if(isFinishOutEasing_ == false)
 	{
-		resultEasing_.time++;
-		if(resultEasing_.time > 0 && resultEasing_.time <= resultEasing_.totalTime)
+		resultOutEasing_.time++;
+		if(resultOutEasing_.time > 0 && resultOutEasing_.time <= resultOutEasing_.totalTime)
 		{
-			backGroundPosition_.y = PlayEaseOutQuint(resultEasing_);
+			Vector2 backGroundPosition_ = backGroundSprite_->GetPosition();
+			backGroundPosition_.y = PlayEaseOutQuint(resultOutEasing_);
+			backGroundSprite_->SetPosition(backGroundPosition_);
+			backGroundSprite_->matUpdate();
 		}
 		else
 		{
-			resultEasing_.time = 0;
-			isFinishBackGroundEasing_ = true;
+			resultOutEasing_.time = 0;
+			isFinishOutEasing_ = true;
 		}
+	}
+	else
+	{
+		Reset();
+	}
+}
+
+void ResultSprite::ComeInScreen()
+{
+	Vector2 backGroundPosition_ = backGroundSprite_->GetPosition();
+
+	if(isFinishInEasing_ == false)
+	{
+		resultInEasing_.time++;
+		if(resultInEasing_.time > 0 && resultInEasing_.time <= resultInEasing_.totalTime)
+		{
+			backGroundPosition_.y = PlayEaseOutQuint(resultInEasing_);
+		}
+		else
+		{
+			resultInEasing_.time = 0;
+			isFinishInEasing_ = true;
+		}
+	}
+	else
+	{
+		//画面外に出るイージングの開始位置を設定
+		resultOutEasing_.startPos = backGroundPosition_.y;
 	}
 
 	backGroundSprite_->SetPosition(backGroundPosition_);
 	backGroundSprite_->matUpdate();
 }
 
-void ResultSprite::Draw()
+void ResultSprite::Reset()
 {
-	backGroundSprite_->Draw("gray");
+	const float backGorundX = 40.0f;
+	const float backGorundY = 400.0f;
+
+	backGroundSprite_->SetPosition(Vector2(backGorundX, -backGorundY));
+	backGroundSprite_->matUpdate();
+
+	isFinishOutEasing_ = true;
+	isFinishInEasing_ = false;
+	resultInEasing_.startPos = -backGorundY;
+	resultInEasing_.endDistance = backGorundY + (WindowsAPI::kWindow_height_ / 2 - backGorundY / 2);
+	resultOutEasing_.endDistance = -(backGorundY + (WindowsAPI::kWindow_height_ / 2 - backGorundY / 2));
 }
 

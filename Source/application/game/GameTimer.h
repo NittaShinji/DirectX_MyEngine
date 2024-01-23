@@ -48,7 +48,7 @@ public:
 	void InGameUpdate(bool isStart, bool isFinish);
 
 	//リセット
-	void Reset();
+	void Reset(float imagePosY);
 
 	//ゲーム中の描画
 	void InGameDraw();
@@ -60,6 +60,8 @@ public:
 
 	//数字をセット
 	void SetNumber(int number,Sprite* sprite);
+
+	void ComeOffScreenResult();
 
 private:
 
