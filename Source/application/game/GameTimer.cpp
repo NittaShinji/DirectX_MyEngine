@@ -232,6 +232,9 @@ void GameTimer::Reset()
 	gameSeconds_ = 0;
 	//ゲーム中に表示する秒
 	resultSeconds_ = 0;
+
+	isStartedResultAnimation_ = false;
+
 	InGameInitialize();
 }
 
