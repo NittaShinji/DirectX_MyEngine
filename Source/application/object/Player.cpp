@@ -74,6 +74,7 @@ void Player::Initialize()
 	isReturnedSizeAnime_ = false;
 	isDuringAnimation_ = false;
 	isRightAxcell_ = false;
+	isWithStageEdge_ = true;
 
 	returnScaleSpeed_ = kDefaultReturnScaleSpeed_;
 
@@ -855,6 +856,7 @@ void Player::Reset(Camera* camera)
 	isStartedJumpAnimation_ = false;
 	isDentedAnime_ = false;
 	isRightAxcell_ = false;
+	isWithStageEdge_ = true;
 	axcellEasing_.time = 0;
 	rightAxcellVec_ = Vector3Zero();
 	isJumpRotate_ = false;

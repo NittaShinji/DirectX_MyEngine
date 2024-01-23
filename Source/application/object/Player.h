@@ -247,6 +247,9 @@ private:
 	bool isSecondJumpMoment_ = false;
 	bool isHit_ = false;
 
+	//ステージの端にいるかどうか
+	bool isWithStageEdge_ = true;
+
 	//加速判定猶予用の時間
 	bool isDuringAxcellExtensionTime_;
 	float axcellExtensionTime_ = 0.0f;
@@ -287,6 +290,8 @@ public: //アクセッサ
 	int32_t GetJumpCount() { return jumpCount_; }
 	//最大ジャンプ数を取得
 	int32_t GetKMaxJumpNum() { return kMaxJumpNum_; }
+	//ステージの端にいるかどうか
+	bool GetIsWithStageEdge() { return isWithStageEdge_; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
@@ -300,5 +305,9 @@ public: //アクセッサ
 	void SetIsTouchObject(bool isTouchObject) { isTouchObject_ = isTouchObject; }
 	//加速しているかどうかをセットする
 	void SetIsRightAxcell(bool isRightAxcell) { isRightAxcell_ = isRightAxcell; }
+
+	//ステージの端にいるかどうか
+	void SetIsWithStageEdge(bool isWithStageEdge) { isWithStageEdge_ = isWithStageEdge; }
+
 };
 

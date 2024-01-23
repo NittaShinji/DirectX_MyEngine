@@ -109,6 +109,9 @@ private:
 	//リザルト初期化フラグ
 	bool isStartedResultAnimation_;
 
+	//時間を計るかどうか
+	bool isTimed_;
+
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
 	static std::unique_ptr<Sprite> blackDot_;
@@ -118,5 +121,10 @@ private:
 	static int inGameDisPlayTime_[inGameDigits];
 	//クリア画面で表示する時間(6桁)
 	static int resultDisPlaytime[resultDigits];
+
+public: //アクセッサ
+
+	void SetIsTImed(bool isTimed) { isTimed_ = isTimed; }
+
 };
 

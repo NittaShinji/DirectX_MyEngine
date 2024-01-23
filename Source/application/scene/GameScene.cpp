@@ -152,6 +152,7 @@ void GameScene::Update()
 	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{
+		GameTimer::GetInstance()->SetIsTImed(false);
 		ParticleManager::GetInstance()->ParticleRemove();
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 
@@ -172,6 +173,14 @@ void GameScene::Update()
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 			gameSprite_->ResetSceneAnimation();
 		}
+	}
+
+	//次のステージの端に来たらタイマーをスタートさせる
+	//プレイヤーがステージの端にいるかどうかの状態をboolなどで判断
+	//isWithStageEdgeの
+	if(player_->GetIsMoving() == true && player_->GetIsFinish() == false && player_->GetIsWithStageEdge() == true)
+	{
+		GameTimer::GetInstance()->SetIsTImed(true);
 	}
 
 	//スプライト
@@ -254,6 +263,8 @@ void GameScene::Update()
 	//ゴールに触れたら
 	if(player_->GetIsFinish() == true)
 	{
+		player_->SetIsWithStageEdge(false);
+		GameTimer::GetInstance()->SetIsTImed(false);
 		//ゴールスロー演出を辞める
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
 		gameCamera_->GoalAnimation();

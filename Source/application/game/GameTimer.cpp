@@ -108,6 +108,7 @@ void GameTimer::InGameInitialize()
 	stopWatch_->SetColor(color);
 
 	gameSeconds_ = 0;
+	isTimed_ = false;
 }
 
 void GameTimer::ResultInitialize(float imagePosY)
@@ -168,10 +169,13 @@ void GameTimer::InGameUpdate(bool isStart, bool isFinish)
 	stopWatch_->matUpdate();
 
 	//プレイヤーが動き始めたら
-	if(isStart == true)
+	if(isStart == true )
 	{
-		//インゲーム中の数字を更新
-		InGameNumberUpdate(isFinish);
+		if(isTimed_ == true)
+		{
+			//インゲーム中の数字を更新
+			InGameNumberUpdate(isFinish);
+		}
 	}
 	else
 	{
@@ -230,6 +234,7 @@ void GameTimer::Reset(float imagePosY)
 	gameSeconds_ = 0;
 	gameMinutes_ = 0;
 	resultMinutes_ = 0;
+	isTimed_ = false;
 
 	//ゲーム中に表示する秒
 	gameSeconds_ = 0;
