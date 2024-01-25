@@ -419,7 +419,7 @@ void Stage::Reset(const std::string& fileName)
 		roopObject->Reset();
 	}
 
-	goal_->SetIsBreak(false);
+	goal_->Reset();
 }
 
 void Stage::ImguiUpdate()

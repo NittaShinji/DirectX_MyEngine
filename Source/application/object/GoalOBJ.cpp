@@ -40,8 +40,7 @@ void GoalOBJ::OnCollision(const CollisionInfo& info)
 
 void GoalOBJ::Initialize()
 {
-	isStartGoalStagin_ = false;
-	isBreak_ = false;
+	Reset();
 	Object3d::SetAttributeColor(Attribute::Goal);
 	Object3d::SetColor(kNormalOBJColor);
 }
@@ -71,6 +70,12 @@ void GoalOBJ::Draw()
 	{
 		Object3d::Draw();
 	}
+}
+
+void GoalOBJ::Reset()
+{
+	isStartGoalStagin_ = false;
+	isBreak_ = false;
 }
 
 void GoalOBJ::SlowDownNearGoal(GameSpeed* gameSpeed,bool isFinish)

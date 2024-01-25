@@ -43,9 +43,6 @@ private: //メンバ変数
 	///背景スプライト
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
 
-	//イージング移動距離
-	float easingMoveDistance_;
-
 public: //アクセッサ
 
 	float GetBackGroundSpritePosY() { return backGroundSprite_.get()->GetPosition().y; }

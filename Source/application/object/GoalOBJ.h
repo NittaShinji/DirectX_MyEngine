@@ -39,6 +39,9 @@ public:
 	//描画
 	void Draw() override;
 
+	//リセット
+	void Reset();
+
 	//ゴールに近づいたらゲームスピードをスローにする
 	void SlowDownNearGoal(GameSpeed* gameSpeed, bool isFinish);
 

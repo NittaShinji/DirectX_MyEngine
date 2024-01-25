@@ -167,7 +167,7 @@ void GameScene::Update()
 
 			stage_->Reset("Stage0.json");
 			gameCamera_->Initialize();
-			player_->Reset(gameCamera_.get());
+ 			player_->Reset(gameCamera_.get());
 			resultSprite_->Reset();
 			GameTimer::GetInstance()->Reset(resultSprite_->GetBackGroundSpritePosY());
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);

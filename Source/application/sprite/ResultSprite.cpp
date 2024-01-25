@@ -98,6 +98,10 @@ void ResultSprite::Reset()
 
 	isFinishOutEasing_ = true;
 	isFinishInEasing_ = false;
+
+	resultOutEasing_.time = 0.0f;
+	resultInEasing_.time = 0.0f;
+
 	resultInEasing_.startPos = -backGorundY;
 	resultInEasing_.endDistance = backGorundY + (WindowsAPI::kWindow_height_ / 2 - backGorundY / 2);
 	resultOutEasing_.endDistance = -(backGorundY + (WindowsAPI::kWindow_height_ / 2 - backGorundY / 2));
