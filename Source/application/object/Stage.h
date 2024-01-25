@@ -21,7 +21,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="fileName">ファイル名</param>
-	void Initialize(const std::string& fileName,Player* player);
+	void Initialize(Player* player);
 
 	/// <summary>
 	/// 更新
@@ -29,6 +29,8 @@ public:
 	/// <param name="camera">カメラ</param>
 	/// <param name="player">プレイヤー</param>
 	void Update(Camera* camera, Player* player, GameSpeed* gameSpeed);
+
+	void Load();
 
 	//描画
 	void Draw();
@@ -42,12 +44,18 @@ public:
 	//ImGuiアップデート
 	void ImguiUpdate();
 
+	void NextStageUpdate();
+
 	//破壊された壁情報の座標を渡す関数
 	std::vector<Vector3> GetBreakWallsPos();
 
 	//ゲッター
 	Vector3 GetGoalPos() { return goalPos_; };
 	GoalOBJ* GetGoal() { return goal_.get(); }
+
+private:
+
+	const std::string kDefaultStageName_ = "Stage";
 
 private:
 
@@ -65,6 +73,12 @@ private:
 
 	Vector3 kDebugYellowOBJColor_;
 	Vector3 kDebugPinkOBJColor_;
+
+	//現在のステージ数
+	int32_t stageNum_;
+
+	//ステージの端
+	float stageEdge_;
 
 	//ゴール座標
 	Vector3 goalPos_;

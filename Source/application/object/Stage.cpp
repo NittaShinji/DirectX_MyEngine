@@ -6,15 +6,81 @@
 #include "GameSpeed.h"
 #include <string>
 
-void Stage::Initialize(const std::string& fileName, Player* player)
+void Stage::Initialize(Player* player)
 {
 	kDebugPinkOBJColor_ = kPinkOBJColor;
 	kDebugYellowOBJColor_ = kYellowOBJColor;
 	player_ = player;
 	goalPos_ = { 0,0,0 };
-
+	stageNum_ = 0;
 	//レベルデータからオブジェクトを生成、配置
-	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
+	Load();
+}
+
+void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
+{
+	for(auto& object : objects_)
+	{
+		float distance = std::fabs(object->GetTransform().z - player->GetTransform().z);
+		if(distance <= player_->GetCollisionArea())
+		{
+			object->AddCollider(object->GetModel());
+		}
+
+		if(object->GetModel()->GetName() == "StageBlock")
+		{
+			if(object->GetAttributeColor() == Attribute::pink)
+			{
+				object->SetColor(kDebugPinkOBJColor_);
+			}
+			else if(object->GetAttributeColor() == Attribute::yellow)
+			{
+				object->SetColor(kDebugYellowOBJColor_);
+			}
+		}
+
+		object->Update(camera);
+	}
+
+	for(size_t i = 0; i < walls_.size(); i++)
+	{
+		float distance = std::fabs(walls_[i]->GetTransform().z - player->GetTransform().z);
+		if(distance < player_->GetCollisionArea())
+		{
+			walls_[i]->AddCollider(walls_[i]->GetModel());
+		}
+		walls_[i]->Update(camera, player->GetRightAxcell());
+
+		//壁が壊れていたら削除
+		if(walls_[i]->GetIsBreak_())
+		{
+			walls_.erase(walls_.begin() + i);
+			i = (size_t)-1;
+		}
+	}
+	
+	for(size_t i = 0; i < resultRoopStages_.size(); i++)
+	{
+		resultRoopStages_[i]->Update(camera, player->GetTransform(), player_->GetCollisionArea());
+	}
+
+	float distance = std::fabs(goal_->GetTransform().z - player->GetTransform().z);
+	if(distance < player_->GetCollisionArea())
+	{
+		goal_->AddCollider(goal_->GetModel());
+	}
+	goal_->Update(camera, player->GetTransform());
+
+	//ゴールに近づいたらスローにする
+	goal_->SlowDownNearGoal(gameSpeed, player_->GetIsFinish());
+}
+
+void Stage::Load()
+{
+	std::string stageNumString = std::to_string(stageNum_);
+	std::string LoadName = kDefaultStageName_ + stageNumString + ".json";
+
+	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(LoadName);
 
 	int32_t roopObjectCount = 0;
 
@@ -32,7 +98,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			std::unique_ptr<ResultRoopStage> roopStage = nullptr;
 
 			if(objectData.fileName == "StageBlock")
-			{	
+			{
 				roopStage = ResultRoopStage::Create(objectData.fileName, COLLISION_ATTR_PINK);
 				roopObjectCount++;
 			}
@@ -40,6 +106,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			//座標
 			Vector3 pos;
 			pos = objectData.translation;
+			pos.z += stageEdge_;
 			roopStage->SetTransform(pos);
 			roopStage->SetInitTransFormZ(pos.z);
 
@@ -68,7 +135,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			}
 
 			//コライダーの設定
-			float distance = std::fabs(objectData.translation.z - player->GetTransform().z);
+			float distance = std::fabs(objectData.translation.z - player_->GetTransform().z);
 
 			if(distance > player_->GetCollisionArea())
 			{
@@ -130,6 +197,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 				//座標
 				Vector3 pos;
 				pos = objectData.translation;
+				pos.z += stageEdge_;
 				newObject->SetTransform(pos);
 
 				//回転角
@@ -162,7 +230,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 				}
 
 				//コライダーの設定
-				float distance = std::fabs(objectData.translation.z - player->GetTransform().z);
+				float distance = std::fabs(objectData.translation.z - player_->GetTransform().z);
 
 				if(distance > player_->GetCollisionArea())
 				{
@@ -208,6 +276,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			//座標
 			Vector3 pos;
 			pos = objectData.translation;
+			pos.z += stageEdge_;
 			newGoal->SetTransform(pos);
 
 			//回転角
@@ -221,7 +290,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			newGoal->SetScale(scale);
 
 			//コライダーの設定
-			float distance = std::fabs(objectData.translation.z - player->GetTransform().z);
+			float distance = std::fabs(objectData.translation.z - player_->GetTransform().z);
 			if(distance > player_->GetCollisionArea())
 			{
 				newGoal->RemoveCollider();
@@ -253,6 +322,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			//座標
 			Vector3 pos;
 			pos = objectData.translation;
+			pos.z += stageEdge_;
 			newWall->SetTransform(pos);
 
 			//回転角
@@ -266,7 +336,7 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 			newWall->SetScale(scale);
 
 			//コライダーの設定
-			float distance = std::fabs(objectData.translation.z - player->GetTransform().z);
+			float distance = std::fabs(objectData.translation.z - player_->GetTransform().z);
 			if(distance > player_->GetCollisionArea())
 			{
 				newWall->RemoveCollider();
@@ -280,65 +350,9 @@ void Stage::Initialize(const std::string& fileName, Player* player)
 		}
 	}
 
+	roopObjectCount = 8;
 	ResultRoopStage::SetRoopObjectNum(roopObjectCount);
-}
 
-void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
-{
-	for(auto& object : objects_)
-	{
-		float distance = std::fabs(object->GetTransform().z - player->GetTransform().z);
-		if(distance <= player_->GetCollisionArea())
-		{
-			object->AddCollider(object->GetModel());
-		}
-
-		if(object->GetModel()->GetName() == "StageBlock")
-		{
-			if(object->GetAttributeColor() == Attribute::pink)
-			{
-				object->SetColor(kDebugPinkOBJColor_);
-			}
-			else if(object->GetAttributeColor() == Attribute::yellow)
-			{
-				object->SetColor(kDebugYellowOBJColor_);
-			}
-		}
-
-		object->Update(camera);
-	}
-
-	for(size_t i = 0; i < walls_.size(); i++)
-	{
-		float distance = std::fabs(walls_[i]->GetTransform().z - player->GetTransform().z);
-		if(distance < player_->GetCollisionArea())
-		{
-			walls_[i]->AddCollider(walls_[i]->GetModel());
-		}
-		walls_[i]->Update(camera, player->GetRightAxcell());
-
-		//壁が壊れていたら削除
-		if(walls_[i]->GetIsBreak_())
-		{
-			walls_.erase(walls_.begin() + i);
-			i = (size_t)-1;
-		}
-	}
-	
-	for(size_t i = 0; i < resultRoopStages_.size(); i++)
-	{
-		resultRoopStages_[i]->Update(camera, player->GetTransform(), player_->GetCollisionArea());
-	}
-
-	float distance = std::fabs(goal_->GetTransform().z - player->GetTransform().z);
-	if(distance < player_->GetCollisionArea())
-	{
-		goal_->AddCollider(goal_->GetModel());
-	}
-	goal_->Update(camera, player->GetTransform());
-
-	//ゴールに近づいたらスローにする
-	goal_->SlowDownNearGoal(gameSpeed, player_->GetIsFinish());
 }
 
 void Stage::Draw()
@@ -443,6 +457,33 @@ void Stage::ImguiUpdate()
 	ImGui::SliderFloat("YellowColorZ", &kDebugYellowOBJColor_.z, kImGuiPosRate.x, kImGuiPosRate.y);
 
 	ImGui::End();
+}
+
+void Stage::NextStageUpdate()
+{
+	stageNum_++;
+
+	//ループ終了
+	ResultRoopStage::SetIsFinishedRoopObjects(true);
+
+	//ボタンを押された際に、プレイヤーの位置からループステージの端を計算する
+	for(size_t i = 0; i < resultRoopStages_.size(); i++)
+	{
+		float distance = std::fabs(resultRoopStages_[i]->GetTransform().z - player_->GetTransform().z);
+		//オブジェクトの半径
+		if(distance < ResultRoopStage::GetObjectRadius() && i > 0)
+		{
+			stageEdge_ = resultRoopStages_[i - 1]->GetTransform().z - ResultRoopStage::GetObjectRadius();
+		}
+		else if(distance < ResultRoopStage::GetObjectRadius() && i == 0)
+		{
+			int32_t stageMaxNum = ResultRoopStage::GetRoopObjectNum();
+			stageEdge_ = resultRoopStages_[stageMaxNum]->GetTransform().z;
+		}
+	}
+	
+	//新規ステージ読み込み
+	Load();
 }
 
 std::vector<Vector3> Stage::GetBreakWallsPos()

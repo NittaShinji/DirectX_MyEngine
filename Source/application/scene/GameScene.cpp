@@ -82,7 +82,7 @@ void GameScene::Initialize()
 	mirrorPlayer_ = MirrorPlayer::Create(player_.get());
 
 	stage_ = std::make_unique<Stage>();
-	stage_->Initialize("Stage0.json", player_.get());
+	stage_->Initialize(player_.get());
 
 	backGround_ = std::make_unique<BackGround>();
 	backGround_->Initialize("backGround.json");
@@ -275,7 +275,7 @@ void GameScene::Update()
 		{
 			player_->SetIsFinish(false);
 			resultSprite_->SetIsFinishOutEasing(false);
-			nextStageNum_++;
+			stage_->NextStageUpdate();
 		}
 
 		//if(gameCamera_->GetIsFinishAnimation())

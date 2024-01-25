@@ -7,6 +7,8 @@
 #include "LevelManager.h"
 
 int32_t ResultRoopStage::roopObjectNum_;
+bool ResultRoopStage::isFinishedRoopObjects_;
+const float ResultRoopStage::objectRadius = 10.0f;
 
 std::unique_ptr<ResultRoopStage> ResultRoopStage::Create(const std::string& fileName, const unsigned short coliderAttribute)
 {
@@ -41,7 +43,7 @@ void ResultRoopStage::Update(Camera* camera, Vector3 playerPos, float roopArea)
 		AddCollider(GetModel());
 	}
 
-	if(playerPos.z > transform_.z && distance < -roopArea)
+	if(playerPos.z > transform_.z && distance < -roopArea && isFinishedRoopObjects_ == false)
 	{
 		isRoop_ = true;
 		roopCount_++;

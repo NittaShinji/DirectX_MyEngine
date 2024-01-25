@@ -48,6 +48,7 @@ public:
 private:
 
 	float objectDistance_ = 20.0f;
+	static const float objectRadius;
 
 private:
 
@@ -60,13 +61,21 @@ private:
 	//ループできるか
 	bool isRoop_;
 
+	//全体のループフラグ
+	static bool isFinishedRoopObjects_;
+	
 	float initTransFormZ_;
 
 public: //アクセッサ
 
 	static void SetRoopObjectNum(int32_t roopObjectNum) { roopObjectNum_ = roopObjectNum; }
 	void SetInitTransFormZ(float initTransFormZ) { initTransFormZ_ = initTransFormZ; }
+	void SetRoopCount(int32_t roopCount) { roopCount_ = roopCount; }
+	void SetIsRoop(bool isRoop) { isRoop_ = isRoop; }
+	static const float GetObjectRadius() { return objectRadius; }
 
+	static void SetIsFinishedRoopObjects(bool isFinishedRoopObjects) { isFinishedRoopObjects_ = isFinishedRoopObjects; }
+	static int32_t GetRoopObjectNum() { return roopObjectNum_; }
 	bool GetIsRoop() { return isRoop_; }
 };
 
