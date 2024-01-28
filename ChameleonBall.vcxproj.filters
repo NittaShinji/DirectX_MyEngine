@@ -130,6 +130,15 @@
     <Filter Include="ソース ファイル\engine\audio">
       <UniqueIdentifier>{2c701f22-383e-465a-bb63-811b8756a2be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\application\event">
+      <UniqueIdentifier>{9b2e2422-1777-4188-9492-7200a9273697}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\game">
+      <UniqueIdentifier>{d2f2bc7a-4c29-44ba-8217-4d80815c041f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\sprite">
+      <UniqueIdentifier>{52b40add-495d-4b78-a1a7-1ff669a0fb3a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
@@ -331,6 +340,9 @@
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Source\application\sprite\ResultSprite.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\MirrorOBJ.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -564,6 +576,9 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\sprite\ResultSprite.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\object\MirrorOBJ.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

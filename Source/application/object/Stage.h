@@ -2,7 +2,8 @@
 #include "TouchableObject.h"
 #include "HitWall.h"
 #include "GoalOBJ.h"
-#include "ResultRoopStage.h"
+//#include "ResultRoopStage.h"
+#include "MirrorOBJ.h"
 #include "LevelManager.h"
 #include "ObjectAttribute.h"
 
@@ -34,6 +35,9 @@ public:
 
 	//描画
 	void Draw();
+
+	//ミラー描画
+	void MirrorDraw();
 
 	/// <summary>
 	/// リセット
@@ -69,6 +73,7 @@ private:
 	std::vector<std::unique_ptr<TouchableObject>> objects_;
 	std::vector<std::unique_ptr<HitWall>> walls_;
 	std::vector<std::unique_ptr<ResultRoopStage>> resultRoopStages_;
+	std::vector<std::unique_ptr<MirrorOBJ>> mirrorObjects_;
 	std::unique_ptr<GoalOBJ> goal_;
 
 	Vector3 kDebugYellowOBJColor_;

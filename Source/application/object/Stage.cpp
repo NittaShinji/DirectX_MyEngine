@@ -64,6 +64,11 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 		resultRoopStages_[i]->Update(camera, player->GetTransform(), player_->GetCollisionArea());
 	}
 
+	for(auto& mirrorObject : mirrorObjects_)
+	{
+		mirrorObject->Update(camera);
+	}
+
 	float distance = std::fabs(goal_->GetTransform().z - player->GetTransform().z);
 	if(distance < player_->GetCollisionArea())
 	{
@@ -353,6 +358,14 @@ void Stage::Load()
 	roopObjectCount = 8;
 	ResultRoopStage::SetRoopObjectNum(roopObjectCount);
 
+	//読み込み後にミラーオブジェクトを生成
+	for(size_t i = 0; i < resultRoopStages_.size(); i++)
+	{
+		std::unique_ptr<MirrorOBJ> mirrorObject = nullptr;
+		mirrorObject = MirrorOBJ::Create(resultRoopStages_[i].get());
+		mirrorObject->Initialize();
+		mirrorObjects_.push_back(std::move(mirrorObject));
+	}
 }
 
 void Stage::Draw()
@@ -373,6 +386,14 @@ void Stage::Draw()
 	}
 
 	goal_->Draw();
+}
+
+void Stage::MirrorDraw()
+{
+	for(auto& mirrorObject : mirrorObjects_)
+	{
+		mirrorObject->Draw();
+	}
 }
 
 void Stage::Reset(const std::string& fileName)

@@ -316,8 +316,9 @@ void GameScene::Draw()
 	gameSprite_->BackGroundDraw();
 
 	Object3d::BeforeDraw();
-	backGround_->Draw();
+	//backGround_->Draw();
 	mirrorPlayer_->Draw();
+	stage_->MirrorDraw();
 	postEffect_->PostDrawScene();
 
 	//描画開始

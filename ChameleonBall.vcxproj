@@ -100,6 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\application\object\MirrorOBJ.cpp" />
     <ClCompile Include="Source\application\sprite\ResultSprite.cpp" />
     <ClCompile Include="Source\application\object\ResultRoopStage.cpp" />
     <ClCompile Include="Source\application\sprite\GameSprite.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Source\application\event\TutorialEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\application\object\MirrorOBJ.h" />
     <ClInclude Include="Source\application\sprite\ResultSprite.h" />
     <ClInclude Include="Source\application\object\ResultRoopStage.h" />
     <ClInclude Include="Source\application\sprite\GameSprite.h" />
