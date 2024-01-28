@@ -155,6 +155,9 @@ void GameTimer::ResultInitialize(float imagePosY)
 		resultDisPlaytime[i] = { 0 };
 		SetNumber(resultDisPlaytime[i], resultNum[i].get());
 	}
+
+	//増加量を初期値にリセット
+	resultTimerIncreaseNum_ = kInitTimerIncreaseNum;
 }
 
 void GameTimer::InGameUpdate(bool isStart, bool isFinish)
@@ -229,6 +232,7 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY)
 
 void GameTimer::Reset(float imagePosY)
 {
+	resultTimerIncreaseNum_ = kInitTimerIncreaseNum;
 	keepSeconds_ = 0;
 	keepMinutes_ = 0;
 	gameSeconds_ = 0;
@@ -316,11 +320,12 @@ void GameTimer::ResultNumberUpdate()
 	//リザルト画面の数字を更新
 	if(resultMinutes_ < keepMinutes_)
 	{
-		resultSeconds_++;
+		resultSeconds_ += resultTimerIncreaseNum_;
 		if(resultSeconds_ >= kOneSeconds_)
 		{
 			resultSeconds_ = 0;
 			resultMinutes_++;
+			resultTimerIncreaseNum_ = int32_t(resultTimerIncreaseNum_ * resultTimerIncreaseRate_);
 		}
 	}
 
@@ -328,7 +333,7 @@ void GameTimer::ResultNumberUpdate()
 	{
 		if(resultSeconds_ < keepSeconds_)
 		{
-			resultSeconds_++;
+			resultSeconds_ += resultTimerIncreaseNum_;
 		}
 	}
 
@@ -396,9 +401,4 @@ void GameTimer::SetNumber(int number, Sprite* sprite)
 	{
 		sprite->SetTextureLeftTop(texSize * 9);
 	}
-}
-
-void GameTimer::ComeOffScreenResult()
-{
-
 }

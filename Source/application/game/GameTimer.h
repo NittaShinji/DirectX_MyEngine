@@ -61,8 +61,6 @@ public:
 	//数字をセット
 	void SetNumber(int number,Sprite* sprite);
 
-	void ComeOffScreenResult();
-
 private:
 
 	//コンストラクタ
@@ -111,6 +109,12 @@ private:
 
 	//時間を計るかどうか
 	bool isTimed_;
+
+	//数える速度
+	const int32_t kInitTimerIncreaseNum = 1;
+	const float  resultTimerIncreaseRate_ = 2.5f;
+	int32_t resultTimerIncreaseNum_;
+
 
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
