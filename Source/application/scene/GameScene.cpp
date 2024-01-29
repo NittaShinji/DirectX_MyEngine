@@ -268,28 +268,34 @@ void GameScene::Update()
 		//ゴールスロー演出を辞める
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
 		gameCamera_->GoalAnimation();
-		
 		resultSprite_->ComeInScreen();
 
-		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
+		if(stage_->GetIsClearedAllStage() == true)
 		{
-			player_->SetIsFinish(false);
-			resultSprite_->SetIsFinishOutEasing(false);
-			stage_->NextStageUpdate();
-		}
+			ParticleManager::GetInstance()->AllRemove();
+			ObjParticleManager::GetInstance()->AllRemove();
 
-		//if(gameCamera_->GetIsFinishAnimation())
-		//{
-		//	ParticleManager::GetInstance()->AllRemove();
-		//	ObjParticleManager::GetInstance()->AllRemove();
-		//	
-		//	SoundManager::GetInstance()->Finalize();
-		//	SceneManager::GetInstance()->ChangeScene("CLEAR");
-		//}
+			SoundManager::GetInstance()->Finalize();
+			SceneManager::GetInstance()->ChangeScene("CLEAR");
+		}
+		else
+		{
+			//一度だけステージ数を増やす
+			stage_->NextStageUpdate();
+			stage_->SetIsAllowedToCountStageNum(false);
+
+			if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
+			{
+				player_->SetIsFinish(false);
+				resultSprite_->SetIsFinishOutEasing(false);
+				stage_->NextStageLoad();
+			}
+		}
 	}
 	else
 	{
 		resultSprite_->ComeOutOffScreen();
+		stage_->SetIsAllowedToCountStageNum(true);
 	}
 
 #ifdef _DEBUG

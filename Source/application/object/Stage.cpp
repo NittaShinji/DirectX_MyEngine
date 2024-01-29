@@ -13,6 +13,8 @@ void Stage::Initialize(Player* player)
 	player_ = player;
 	goalPos_ = { 0,0,0 };
 	stageNum_ = 0;
+	isClearedAllStage_ = false;
+	stageEdge_ = 0.0f;
 	//レベルデータからオブジェクトを生成、配置
 	Load();
 }
@@ -58,7 +60,7 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 			i = (size_t)-1;
 		}
 	}
-	
+
 	for(size_t i = 0; i < resultRoopStages_.size(); i++)
 	{
 		resultRoopStages_[i]->Update(camera, player->GetTransform(), player_->GetCollisionArea());
@@ -455,6 +457,11 @@ void Stage::Reset(const std::string& fileName)
 	}
 
 	goal_->Reset();
+
+	//進んだステージから始まるようにステージの端を初期化
+	stageEdge_ = 0.0f;
+	//ステージ読み込み
+	Load();
 }
 
 void Stage::ImguiUpdate()
@@ -482,8 +489,22 @@ void Stage::ImguiUpdate()
 
 void Stage::NextStageUpdate()
 {
-	stageNum_++;
+	if(isAllowedToCountStageNum_ == true)
+	{
+		if(stageNum_ < kEndStageNum_)
+		{
+			stageNum_++;
+		}
+	}
 
+	if(stageNum_ >= kEndStageNum_)
+	{
+		isClearedAllStage_ = true;
+	}
+}
+
+void Stage::NextStageLoad()
+{
 	//ループ終了
 	ResultRoopStage::SetIsFinishedRoopObjects(true);
 
@@ -502,7 +523,7 @@ void Stage::NextStageUpdate()
 			stageEdge_ = resultRoopStages_[stageMaxNum]->GetTransform().z;
 		}
 	}
-	
+
 	//新規ステージ読み込み
 	Load();
 }

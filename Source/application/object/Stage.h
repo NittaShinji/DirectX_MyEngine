@@ -50,16 +50,25 @@ public:
 
 	void NextStageUpdate();
 
+	void NextStageLoad();
+
 	//破壊された壁情報の座標を渡す関数
 	std::vector<Vector3> GetBreakWallsPos();
 
 	//ゲッター
 	Vector3 GetGoalPos() { return goalPos_; };
 	GoalOBJ* GetGoal() { return goal_.get(); }
+	int32_t GetStageNum() { return stageNum_; }
+	bool GetIsClearedAllStage() { return isClearedAllStage_; }
+	bool GetIsAllowedToCountStageNum() { return isAllowedToCountStageNum_; }
+
+	//セッター
+	void SetIsAllowedToCountStageNum(bool isAllowed) { isAllowedToCountStageNum_ = isAllowed; }
 
 private:
 
 	const std::string kDefaultStageName_ = "Stage";
+	const int32_t kEndStageNum_ = 2;
 
 private:
 
@@ -81,6 +90,11 @@ private:
 
 	//現在のステージ数
 	int32_t stageNum_;
+	//ステージの最後をクリアしたか
+	bool isClearedAllStage_;
+
+	//ステージの数を増やしても良いか
+	bool isAllowedToCountStageNum_;
 
 	//ステージの端
 	float stageEdge_;

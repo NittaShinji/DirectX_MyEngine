@@ -65,6 +65,7 @@ private:
 
 	//プレイヤーが加速しているか
 	bool isPlayerAccelerating_;
+
 };
 
 
