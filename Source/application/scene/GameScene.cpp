@@ -267,7 +267,6 @@ void GameScene::Update()
 		GameTimer::GetInstance()->SetIsTImed(false);
 		//ゴールスロー演出を辞める
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
-		gameCamera_->GoalAnimation();
 		resultSprite_->ComeInScreen();
 
 		if(stage_->GetIsClearedAllStage() == true)
@@ -322,7 +321,7 @@ void GameScene::Draw()
 	gameSprite_->BackGroundDraw();
 
 	Object3d::BeforeDraw();
-	//backGround_->Draw();
+	backGround_->Draw();
 	mirrorPlayer_->Draw();
 	stage_->MirrorDraw();
 	postEffect_->PostDrawScene();
@@ -365,10 +364,7 @@ void GameScene::Draw()
 	gameSprite_->TransitionDraw();
 	tutorialEvent_->Draw();
 
-	if(player_->GetIsFinish() == true)
-	{
-		
-	}
+	if(player_->GetIsFinish() == true){}
 	else
 	{
 		GameTimer::GetInstance()->InGameDraw();

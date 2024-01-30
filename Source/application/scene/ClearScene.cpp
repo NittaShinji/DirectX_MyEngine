@@ -58,7 +58,7 @@ void ClearScene::Initialize()
 	//アンカーポイントの設定
 	const Vector2 checkAnchorPoint = { 0.5f,0.5f };
 	check_->SetAnchorPoint(checkAnchorPoint);
-
+	GameTimer::GetInstance()->ResultInitialize(WindowsAPI::kWindow_height_ / 2);
 }
 
 void ClearScene::Update()
@@ -103,10 +103,11 @@ void ClearScene::Update()
 
 	if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		//GameTimer::GetInstance()->Reset();
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("StageSelect");
 	}
+
+	GameTimer::GetInstance()->ResultUpdate(true, WindowsAPI::kWindow_height_ / 2);
 }
 
 void ClearScene::Draw()

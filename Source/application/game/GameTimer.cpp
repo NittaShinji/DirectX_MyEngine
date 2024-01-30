@@ -125,12 +125,12 @@ void GameTimer::ResultInitialize(float imagePosY)
 		if(i < resultDigits / half)
 		{
 			// 数字の初期化
-			resultNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x) + WindowsAPI::kWindow_width_ / 2 - (texNumSize.x * 3), imagePosY));
+			resultNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x) + WindowsAPI::kWindow_width_ / 2 - (texNumSize.x * 2) - 11, imagePosY));
 		}
 		else
 		{
 			// 数字の初期化
-			resultNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x + texNumSize.x / half) + WindowsAPI::kWindow_width_ / 2 - (texNumSize.x * 3), imagePosY));
+			resultNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x + texNumSize.x / half) + WindowsAPI::kWindow_width_ / 2 - (texNumSize.x * 2) - 11, imagePosY));
 		}
 	}
 
@@ -195,13 +195,6 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY)
 {
 	keepSeconds_ = gameSeconds_;
 	keepMinutes_ = gameMinutes_;
-
-	//結果アニメーションが始まったら一度初期化
-	//if(isStartedResultAnimation_ == false)
-	//{
-	//	ResultInitialize(easingMoveY);
-	//	isStartedResultAnimation_ = true;
-	//}
 
 	//結果タイマーを結果画面の背景に合わせて移動
 	for(int i = 0; i < resultDigits; i++)
@@ -270,17 +263,6 @@ void GameTimer::ResultDraw()
 	}
 
 	blackDot_->Draw("BLACKDot");
-
-	//if(isStartedResultAnimation_ == true)
-	//{
-	//	//リザルト画面の数字・ドットを描画
-	//	for(int i = 0; i < resultDigits; i++)
-	//	{
-	//		resultNum[i]->Draw("numbers.png");
-	//	}
-
-	//	blackDot_->Draw("BLACKDot");
-	//}
 }
 
 void GameTimer::InGameNumberUpdate(bool isFinish)
@@ -317,6 +299,9 @@ void GameTimer::InGameNumberUpdate(bool isFinish)
 
 void GameTimer::ResultNumberUpdate()
 {
+	keepMinutes_ = 23;
+	keepSeconds_ = 58;
+
 	//リザルト画面の数字を更新
 	if(resultMinutes_ < keepMinutes_)
 	{

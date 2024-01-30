@@ -34,9 +34,5 @@ private: //メンバ変数
 	Object3d* object3d_;
 	
 public: //アクセッサ
-
-	//void SetPlayer(Player* player) { player_ = player; };
-
-
 };
 

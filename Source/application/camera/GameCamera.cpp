@@ -205,36 +205,3 @@ void GameCamera::ImGuiUpdate()
 	ImGui::End();
 
 }
-
-void GameCamera::GoalAnimation()
-{
-	if(gameSpeed_->GetCanMoveInSlow() == true) {}
-
-	////ゴール演出スタート時にカメラ位置を代入
-	//if(isStartGoalEasing_ == false)
-	//{
-	//	goalEyeXEasing_.startPos = eye_.x;
-	//	goalEyeYEasing_.startPos = eye_.y;
-	//	goalEyeZEasing_.startPos = eye_.z;
-	//	isStartGoalEasing_ = true;
-	//}
-
-	////アニメーション中
-	//if(sceneAnimeTimer_ < kSceneAnimeTime_)
-	//{
-	//	sceneAnimeTimer_++;
-	//	goalEyeXEasing_.time = sceneAnimeTimer_;
-	//	goalEyeYEasing_.time = sceneAnimeTimer_;
-	//	goalEyeZEasing_.time = sceneAnimeTimer_;
-
-	//	eye_.x = PlayEaseOutCubic(goalEyeXEasing_);
-	//	eye_.y = PlayEaseOutCubic(goalEyeYEasing_);
-	//	eye_.z = PlayEaseOutCubic(goalEyeZEasing_);
-	//}
-	//else
-	//{
-	//	isStartGoalEasing_ = false;
-	//	isFinishAnimetion_ = true;
-	//	sceneAnimeTimer_ = kInitSceneAnimeTime_;
-	//}
-}

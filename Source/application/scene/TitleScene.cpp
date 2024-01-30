@@ -66,20 +66,13 @@ void TitleScene::Initialize()
 
 	const Vector2 clickButtonSize = { TextureManager::GetInstance()->GetTexSize("click.png")};
 	const Vector2 clickButtonPosition = {576.0f,530.0f};
-	/*clickButtonPosition.x = (WindowsAPI::kWindow_width_ / divide2) - (clickButtonSize.x / divide2);
-	clickButtonPosition.y = (WindowsAPI::kWindow_height_ / divide2) + (clickButtonSize.y) + (clickButtonSize.y / divide3);*/
-
+	
 	const Vector2 aButtonSize = { TextureManager::GetInstance()->GetTexSize("A.png") };
 	const Vector2 aButtonPosition = { 1024.0f,530.0f };
-	/*const float aButtonTwoTimesSizeX = aButtonSize.x * 2;
-	aButtonPosition.x = (WindowsAPI::kWindow_width_)-(aButtonTwoTimesSizeX);
-	aButtonPosition.y = (WindowsAPI::kWindow_height_ / divide2) + (aButtonSize.y) + (aButtonSize.y / divide3);*/
-
+	
 	const Vector2 bButtonSize = { TextureManager::GetInstance()->GetTexSize("B.png") };
 	const Vector2 bButtonPosition = {1152.0f,530.0f};
-	//bButtonPosition.x = (WindowsAPI::kWindow_width_)-(bButtonSize.x);
-	//bButtonPosition.y = (WindowsAPI::kWindow_height_ / divide2) + (bButtonSize.y) + (bButtonSize.y / divide3);
-
+	
 	aButtonSprite_->Initialize("A.png",aButtonPosition);
 	bButtonSprite_->Initialize("B.png",bButtonPosition);
 
@@ -236,8 +229,6 @@ void TitleScene::Update()
 
 	if(gamePad_->HasPushedButton(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		//Sound::GetInstance()->PlaySoundWave("touch.wav",false);
-		//Sound::GetInstance()->PauseSound("Resources/Sound/title.wav");
 		touchSound_->PlaySoundWave(false);
 		isChangeScene_ = true;
 	}
@@ -255,8 +246,6 @@ void TitleScene::Update()
 			titleSphere_->SetColor(whiteColor);
 			if(changeWhiteTimer_ <= 0)
 			{
-				//Sound::GetInstance()->PauseSound("title.wav");
-				/*Sound::GetInstance()->Finalize();*/
 				SoundManager::GetInstance()->Finalize();
 				SceneManager::GetInstance()->ChangeScene("StageSelect");
 			}
