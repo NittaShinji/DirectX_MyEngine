@@ -28,8 +28,8 @@ public:
 
 private:
 
-	const Vector3 initCameraEye = { 30,27.5,-20 };
-	const Vector3 initCameraTarget = { 0,25,5 };
+	const Vector3 initCameraEye = { 30,7.5,-20 };
+	const Vector3 initCameraTarget = { 0,5,5 };
 	const Vector3 initCameraUp = { 0,1,0 };
 
 	Vector3 initEyeDistance_ = { 0.0f,1.0f,12.0f };

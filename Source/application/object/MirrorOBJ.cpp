@@ -52,14 +52,14 @@ void MirrorOBJ::SetMirrorInfo()
 	//オブジェクトの位置を代入
 	scale_ = object3d_->GetScale();
 	rotation_ = object3d_->GetRotation();
-	transform_ = object3d_->GetTransform();
+ 	transform_ = object3d_->GetTransform();
 	//鏡面反射用の座標に設定
-	transform_.y = -transform_.y - kMirrorDistance_;
+	transform_.y = -transform_.y + kMirrorDistance_;
 
 	//オブジェクトの色に応じて、色を変更
 	if(object3d_->GetAttributeColor() == Attribute::pink)
 	{
-		SetColor(kTitlePinkOBJColor);
+		SetColor(kPinkOBJColor);
 	}
 	else if(object3d_->GetAttributeColor() == Attribute::yellow)
 	{

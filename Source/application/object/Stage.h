@@ -43,7 +43,7 @@ public:
 	/// リセット
 	/// </summary>
 	/// <param name="fileName">ファイル名</param>
-	void Reset(const std::string& fileName);
+	void Reset();
 
 	//ImGuiアップデート
 	void ImguiUpdate();
@@ -98,6 +98,12 @@ private:
 
 	//ステージの端
 	float stageEdge_;
+
+	//ステージを読み込んだか
+	bool canResetLoadedStage_;
+
+	//リセットで読み込むステージ番号
+	int resetStageNum_;
 
 	//ゴール座標
 	Vector3 goalPos_;

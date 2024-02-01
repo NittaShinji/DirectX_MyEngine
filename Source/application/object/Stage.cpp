@@ -17,6 +17,7 @@ void Stage::Initialize(Player* player)
 	stageEdge_ = 0.0f;
 	//レベルデータからオブジェクトを生成、配置
 	Load();
+	canResetLoadedStage_ = false;
 }
 
 void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
@@ -398,14 +399,23 @@ void Stage::MirrorDraw()
 	}
 }
 
-void Stage::Reset(const std::string& fileName)
+void Stage::Reset()
 {
 	//壁を削除
 	walls_.clear();
 
+	//ステージをクリア
+	mirrorObjects_.clear();
+
+	//ループ
+	resultRoopStages_.clear();
+
 	//壁を再配置
+	std::string stageNumString = std::to_string(stageNum_);
+	std::string LoadName = kDefaultStageName_ + stageNumString + ".json";
+
 	//レベルデータからオブジェクトを生成、配置
-	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
+	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(LoadName);
 
 	for(auto& objectData : levelData_->objects)
 	{
@@ -461,7 +471,12 @@ void Stage::Reset(const std::string& fileName)
 	//進んだステージから始まるようにステージの端を初期化
 	stageEdge_ = 0.0f;
 	//ステージ読み込み
-	Load();
+	//リセット時の読み込みの際に位置だけずらしたいので一回だけ読み込む
+	if(canResetLoadedStage_ == true)
+	{
+		Load();
+		canResetLoadedStage_ = false;
+	}
 }
 
 void Stage::ImguiUpdate()
@@ -489,14 +504,17 @@ void Stage::ImguiUpdate()
 
 void Stage::NextStageUpdate()
 {
+	//ステージの数を増やして良い場合
 	if(isAllowedToCountStageNum_ == true)
 	{
 		if(stageNum_ < kEndStageNum_)
 		{
 			stageNum_++;
+			canResetLoadedStage_ = true;
 		}
 	}
 
+	//全てのステージをクリアしたら
 	if(stageNum_ >= kEndStageNum_)
 	{
 		isClearedAllStage_ = true;

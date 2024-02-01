@@ -27,7 +27,7 @@ public: //メンバ関数
 private: //定数
 
 	//オブジェクトに対して鏡面反射した場合の距離
-	const float kMirrorDistance_ = -15.0f;
+	const float kMirrorDistance_ = -6.0f;
 
 private: //メンバ変数
 

@@ -165,7 +165,7 @@ void GameScene::Update()
 			ParticleManager::GetInstance()->ParticleRemove();
 			ObjParticleManager::GetInstance()->ProcessPlayerDead(gameCamera_.get());
 
-			stage_->Reset("Stage0.json");
+			stage_->Reset();
 			gameCamera_->Initialize();
  			player_->Reset(gameCamera_.get());
 			resultSprite_->Reset();
@@ -300,7 +300,7 @@ void GameScene::Update()
 #ifdef _DEBUG
 	//デバッグ用
 	//クリア画面に飛ぶ
-	if(keys_->PushedKeyMoment(DIK_G))
+	/*if(keys_->PushedKeyMoment(DIK_G))
 	{
 		player_->SetIsFinish(true);
 		GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
@@ -309,7 +309,7 @@ void GameScene::Update()
 
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
-	}
+	}*/
 #endif
 }
 
@@ -374,7 +374,7 @@ void GameScene::Draw()
 	GameTimer::GetInstance()->ResultDraw();
 
 	//デバッグテキストの描画
-	imGuiManager_->Draw();
+	//imGuiManager_->Draw();
 
 	//描画終了
 	directXBasic_->AfterDraw();
