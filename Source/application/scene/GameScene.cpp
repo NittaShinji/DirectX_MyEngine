@@ -374,7 +374,7 @@ void GameScene::Draw()
 	GameTimer::GetInstance()->ResultDraw();
 
 	//デバッグテキストの描画
-	//imGuiManager_->Draw();
+	imGuiManager_->Draw();
 
 	//描画終了
 	directXBasic_->AfterDraw();
