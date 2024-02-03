@@ -22,7 +22,7 @@ void Stage::Initialize(Player* player)
 
 void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 {
-	for(auto& object : objects_)
+ 	for(auto& object : objects_)
 	{
 		float distance = std::fabs(object->GetTransform().z - player->GetTransform().z);
 		if(distance <= player_->GetCollisionArea())
@@ -526,19 +526,22 @@ void Stage::NextStageLoad()
 	//ループ終了
 	ResultRoopStage::SetIsFinishedRoopObjects(true);
 
-	//ボタンを押された際に、プレイヤーの位置からループステージの端を計算する
+	float maxPosZ = 0.0f;
+	//ループしていたものから一番遠くにあるものを求める
 	for(size_t i = 0; i < resultRoopStages_.size(); i++)
 	{
-		float distance = std::fabs(resultRoopStages_[i]->GetTransform().z - player_->GetTransform().z);
-		//オブジェクトの半径
-		if(distance < ResultRoopStage::GetObjectRadius() && i > 0)
+		if(i == 0)
 		{
-			stageEdge_ = resultRoopStages_[i - 1]->GetTransform().z - ResultRoopStage::GetObjectRadius();
+			maxPosZ = resultRoopStages_[i]->GetTransform().z;
+			stageEdge_ = resultRoopStages_[i]->GetTransform().z + ResultRoopStage::GetObjectRadius();
 		}
-		else if(distance < ResultRoopStage::GetObjectRadius() && i == 0)
+		else
 		{
-			int32_t stageMaxNum = ResultRoopStage::GetRoopObjectNum();
-			stageEdge_ = resultRoopStages_[stageMaxNum]->GetTransform().z;
+			if(maxPosZ < resultRoopStages_[i]->GetTransform().z)
+			{
+				maxPosZ = resultRoopStages_[i]->GetTransform().z;
+				stageEdge_ = resultRoopStages_[i]->GetTransform().z + ResultRoopStage::GetObjectRadius();
+			}
 		}
 	}
 
