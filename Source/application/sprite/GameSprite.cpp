@@ -15,6 +15,8 @@ void GameSprite::Load()
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
+	TextureManager::GetInstance()->LoadTexture("NowLoading.png");
+
 }
 
 void GameSprite::Initialize()

@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "GamePad.h"
 #include "SoundManager.h"
+#include "Easing.h"
 
 /// <summary>
 /// タイトルシーン
@@ -105,6 +106,9 @@ private:
 
 	//アニメーションが終わったかどうか
 	bool isFinishAnimetion;
+
+	EasingInfo backGroundChangEasing_ = { 1.0f, -1.0f, 0.0f, 30.0f };
+	Vector4 backChangeColor = {0.0f,0.0f,0.0f,1.0f};
 
 	//サウンド
 	std::unique_ptr<Sound> titleSound_ = nullptr;

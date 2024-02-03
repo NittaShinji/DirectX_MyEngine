@@ -244,10 +244,23 @@ void TitleScene::Update()
 			const Vector3 whiteColor = { 1.0f,1.0f,1.0f };
 			titleSphere_->SetColorFlag(true);
 			titleSphere_->SetColor(whiteColor);
-			if(changeWhiteTimer_ <= 0)
+			//背景画像を黒色に
+			if(backGroundChangEasing_.time < backGroundChangEasing_.totalTime)
 			{
-				SoundManager::GetInstance()->Finalize();
-				SceneManager::GetInstance()->ChangeScene("StageSelect");
+				backGroundChangEasing_.time++;
+				backChangeColor.x = PlayEaseOutQuint(backGroundChangEasing_);
+				backChangeColor.y = PlayEaseOutQuint(backGroundChangEasing_);
+				backChangeColor.z = PlayEaseOutQuint(backGroundChangEasing_);
+				backGroundSprite_->SetColor(backChangeColor);
+			}
+
+			if(changeWhiteTimer_ <= 0 && backGroundChangEasing_.time >= backGroundChangEasing_.totalTime)
+			{
+				if(changeWhiteTimer_ <= 0)
+				{
+					SoundManager::GetInstance()->Finalize();
+					SceneManager::GetInstance()->ChangeScene("GAME");
+				}
 			}
 		}
 	}
