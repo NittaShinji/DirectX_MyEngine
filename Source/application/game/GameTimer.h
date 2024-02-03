@@ -118,7 +118,9 @@ private:
 
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
-	static std::unique_ptr<Sprite> blackDot_;
+	static std::unique_ptr<Sprite> inGameBlackDot_;
+	static std::unique_ptr<Sprite> resultBlackDot_;
+
 	static std::unique_ptr<Sprite> stopWatch_;
 
 	//ゲーム中に表示する時間(4桁)
