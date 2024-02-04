@@ -52,7 +52,7 @@ void TitleScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("A.png");
 	TextureManager::GetInstance()->LoadTexture("B.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
-	TextureManager::GetInstance()->LoadTexture("convertTest.dds");
+	TextureManager::GetInstance()->LoadTexture("DDS_Test.dds");
 
 	
 	Vector2 backGroundPosition = { 0.0f,0.0f };
@@ -81,7 +81,7 @@ void TitleScene::Initialize()
 
 	clickSprite_->Initialize("click.png",clickButtonPosition);
 	backGroundSprite_->Initialize("WhiteTex",backGroundPosition);
-	converterSprite_->Initialize("convertTest.dds", backGroundPosition);
+	converterSprite_->Initialize("DDS_Test.dds", backGroundPosition);
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -283,7 +283,7 @@ void TitleScene::Draw()
 	clickSprite_->Draw("click.png");
 	aButtonSprite_->Draw("A.png");
 	bButtonSprite_->Draw("B.png");
-	converterSprite_->Draw("convertTest.dds");
+	converterSprite_->Draw("DDS_Test.dds");
 	
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();

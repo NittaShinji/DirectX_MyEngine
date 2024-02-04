@@ -62,7 +62,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debug;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -85,7 +85,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debug;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -100,6 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\application\debugText\ImGuiManager.cpp" />
     <ClCompile Include="Source\application\object\MirrorOBJ.cpp" />
     <ClCompile Include="Source\application\sprite\ResultSprite.cpp" />
     <ClCompile Include="Source\application\object\ResultRoopStage.cpp" />
@@ -121,7 +122,6 @@
     <ClCompile Include="Source\application\particle\ParticleEmitter..cpp" />
     <ClCompile Include="Source\application\particle\GroundParticle.cpp" />
     <ClCompile Include="Source\application\object\HitWall.cpp" />
-    <ClCompile Include="Source\application\debug\ImGuiManager.cpp" />
     <ClCompile Include="Source\application\object\BackGround.cpp" />
     <ClCompile Include="Source\application\scene\ClearScene.cpp" />
     <ClCompile Include="Source\application\particle\ParticleManager.cpp" />
@@ -170,6 +170,7 @@
     <ClCompile Include="Source\application\event\TutorialEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\application\debugText\ImGuiManager.h" />
     <ClInclude Include="Source\application\object\MirrorOBJ.h" />
     <ClInclude Include="Source\application\sprite\ResultSprite.h" />
     <ClInclude Include="Source\application\object\ResultRoopStage.h" />
@@ -194,7 +195,6 @@
     <ClInclude Include="Source\application\particle\GroundParticle.h" />
     <ClInclude Include="Source\application\object\HitWall.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Source\application\debug\ImGuiManager.h" />
     <ClInclude Include="Source\application\object\BackGround.h" />
     <ClInclude Include="Source\application\scene\ClearScene.h" />
     <ClInclude Include="Source\application\object\ObjectAttribute.h" />
