@@ -101,19 +101,19 @@ void TextureManager::LoadTexture(const std::string& fileName)
 	{
 		//WICテクスチャのロード
 		result = LoadFromWICFile(wfilePath.data(), WIC_FLAGS_NONE, &metadata, scratchImg);
-	}
 
-	//ミニマップ生成
-	ScratchImage mipChain{};
-	result = GenerateMipMaps(
-		scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
-		TEX_FILTER_DEFAULT, 0, mipChain);
-	if(SUCCEEDED(result))
-	{
-		scratchImg = std::move(mipChain);
-		metadata = scratchImg.GetMetadata();
+		//ミニマップ生成
+		ScratchImage mipChain{};
+		result = GenerateMipMaps(
+			scratchImg.GetImages(), scratchImg.GetImageCount(), scratchImg.GetMetadata(),
+			TEX_FILTER_DEFAULT, 0, mipChain);
+		if(SUCCEEDED(result))
+		{
+			scratchImg = std::move(mipChain);
+			metadata = scratchImg.GetMetadata();
+		}
 	}
-
+	
 	//読み込んだディフューズテクスチャをSRGBとして扱う
 	metadata.format = MakeSRGB(metadata.format);
 

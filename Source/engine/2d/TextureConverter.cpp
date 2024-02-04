@@ -80,15 +80,39 @@ void TextureConverter::SeparateFilePath(const std::wstring& filePath)
 	//区切り文字がないのでファイル名のみとして扱う
 	directoryPath_ = L"";
 	fileName_ = exceptExt;
-}
+} 
 
 void TextureConverter::SaveDDSTextureToFile()
 {
+	ScratchImage mipChain;
+
+	//ミップマップ生成
+	HRESULT result;
+	result = GenerateMipMaps(
+		scratchImage_.GetImages(), scratchImage_.GetImageCount(), scratchImage_.GetMetadata(), 
+		TEX_FILTER_DEFAULT, 0, mipChain);
+	if(SUCCEEDED(result))
+	{
+		//イメージとメタデータを、ミニマップ版で置き換える
+		scratchImage_ = std::move(mipChain);
+		metadata_ = scratchImage_.GetMetadata();
+	}
+
+	//圧縮形式に変換
+	ScratchImage converted;
+	result = Compress(scratchImage_.GetImages(), scratchImage_.GetImageCount(), metadata_,
+		DXGI_FORMAT_BC7_UNORM_SRGB, TEX_COMPRESS_BC7_QUICK | TEX_COMPRESS_SRGB_OUT |
+		TEX_COMPRESS_PARALLEL, 1.0f, converted);
+
+	if(SUCCEEDED(result))
+	{
+		scratchImage_ = std::move(converted);
+		metadata_ = scratchImage_.GetMetadata();
+	}
+
 	//読み込んだテクスチャをSRGBとして扱う
 	metadata_.format = MakeSRGB(metadata_.format);
-
-	HRESULT result;
-
+	
 	//出力ファイル名を設定する
 	std::wstring filePath = directoryPath_ + fileName_ + L".dds";
 
