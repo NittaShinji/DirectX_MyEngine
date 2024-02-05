@@ -307,9 +307,6 @@ void GameTimer::InGameNumberUpdate(bool isFinish)
 
 void GameTimer::ResultNumberUpdate()
 {
-	keepMinutes_ = 23;
-	keepSeconds_ = 58;
-
 	//リザルト画面の数字を更新
 	if(resultMinutes_ < keepMinutes_)
 	{
