@@ -43,7 +43,7 @@ public:
 	void Reset();
 
 	//ゴールに近づいたらゲームスピードをスローにする
-	void SlowDownNearGoal(GameSpeed* gameSpeed, bool isFinish);
+	void SlowDownNearGoal(GameSpeed* gameSpeed, bool isFinish,bool isDead);
 
 	//アクセッサ
 	void SetIsBreak(bool isBreak) { isBreak_ = isBreak; }

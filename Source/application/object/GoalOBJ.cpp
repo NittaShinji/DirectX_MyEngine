@@ -78,11 +78,11 @@ void GoalOBJ::Reset()
 	isBreak_ = false;
 }
 
-void GoalOBJ::SlowDownNearGoal(GameSpeed* gameSpeed,bool isFinish)
+void GoalOBJ::SlowDownNearGoal(GameSpeed* gameSpeed,bool isFinish, bool isDead)
 {
 	if(isStartGoalStagin_ == true)
 	{
-		if(isFinish == false)
+		if(isFinish == false && isDead == false)
 		{
 			gameSpeed->SetSpeedMode(GameSpeed::SpeedMode::SLOW);
 		}
