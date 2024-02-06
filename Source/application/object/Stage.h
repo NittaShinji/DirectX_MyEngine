@@ -2,10 +2,10 @@
 #include "TouchableObject.h"
 #include "HitWall.h"
 #include "GoalOBJ.h"
-//#include "ResultRoopStage.h"
 #include "MirrorOBJ.h"
 #include "LevelManager.h"
 #include "ObjectAttribute.h"
+#include "BackGround.h"
 
 class Camera;
 class Player;
@@ -63,7 +63,8 @@ public:
 	int32_t GetStageNum() { return stageNum_; }
 	bool GetIsClearedAllStage() { return isClearedAllStage_; }
 	bool GetIsAllowedToCountStageNum() { return isAllowedToCountStageNum_; }
-	
+	float GetStageEdge() { return stageEdge_; }
+
 	//セッター
 	void SetIsAllowedToCountStageNum(bool isAllowed) { isAllowedToCountStageNum_ = isAllowed; }
 
@@ -87,6 +88,9 @@ private:
 	std::vector<std::unique_ptr<MirrorOBJ>> mirrorRoopObjects_;
 	std::vector<std::unique_ptr<MirrorOBJ>> mirrorStageObjects_;
 	std::unique_ptr<GoalOBJ> goal_;
+	std::unique_ptr<BackGround> blurbackGround_;
+	std::unique_ptr<BackGround> normalbackGround_;
+
 
 	Vector3 kDebugYellowOBJColor_;
 	Vector3 kDebugPinkOBJColor_;

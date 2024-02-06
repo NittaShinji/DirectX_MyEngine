@@ -1,7 +1,7 @@
 #pragma once
 #include "ResultRoopStage.h"
 
-class MirrorOBJ : Object3d
+class MirrorOBJ : public Object3d
 {
 public: //メンバ関数
 

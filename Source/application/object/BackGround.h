@@ -18,7 +18,7 @@ public:
 	/// 初期化
 	/// </summary>
 	/// <param name="fileName">ファイル名</param>
-	void Initialize(const std::string fileName);
+	void Initialize(const std::string fileName, float stageEdge);
 
 	/// <summary>
 	/// 更新
@@ -28,6 +28,15 @@ public:
 
 	//描画
 	void Draw();
+
+	//読み込み
+	void Load(const std::string fileName,float stageEdge);
+
+	//背景オブジェクトをクリア
+	void Clear();
+
+	//位置を初期座標にリセット
+	void ResetPos();
 
 private:
 

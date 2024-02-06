@@ -84,11 +84,6 @@ void GameScene::Initialize()
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize(player_.get());
 
-	backGround_ = std::make_unique<BackGround>();
-	backGround_->Initialize("backGround.json");
-	normalBackGround_ = std::make_unique<BackGround>();
-	normalBackGround_->Initialize("normalOBJ.json");
-
 	//------------カメラ----------
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->Initialize();
@@ -214,9 +209,6 @@ void GameScene::Update()
 	mirrorPlayer_->Update(gameCamera_.get());
 
 	//背景オブジェクトの更新
-	backGround_->Update(gameCamera_.get());
-	normalBackGround_->Update(gameCamera_.get());
-	//tutorialEvent_->Update();
 	stage_->Update(gameCamera_.get(), player_.get(), gameSpeed_.get());
 
 	//パーティクルの生成準備
@@ -321,7 +313,6 @@ void GameScene::Draw()
 	gameSprite_->BackGroundDraw();
 
 	Object3d::BeforeDraw();
-	backGround_->Draw();
 	mirrorPlayer_->Draw();
 	stage_->MirrorDraw();
 	postEffect_->PostDrawScene();
@@ -337,7 +328,6 @@ void GameScene::Draw()
 
 	//モデル描画
 	Object3d::BeforeDraw();
-	normalBackGround_->Draw();
 	stage_->Draw();
 
 	//深度値クリア

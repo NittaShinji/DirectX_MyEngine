@@ -17,11 +17,20 @@ void Stage::Initialize(Player* player)
 	stageEdge_ = 0.0f;
 	//レベルデータからオブジェクトを生成、配置
 	Load();
+
+	blurbackGround_ = std::make_unique<BackGround>();
+	normalbackGround_ = std::make_unique<BackGround>();
+	blurbackGround_->Initialize("backGround.json",stageEdge_);
+	normalbackGround_->Initialize("normalOBJ.json", stageEdge_);
 	canResetLoadedStage_ = false;
 }
 
 void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 {
+	//背景オブジェクトを更新
+ 	blurbackGround_->Update(camera);
+	normalbackGround_->Update(camera);
+
  	for(auto& object : objects_)
 	{
 		float distance = std::fabs(object->GetTransform().z - player->GetTransform().z);
@@ -120,6 +129,7 @@ void Stage::Load()
 			}
 
 			//座標
+			roopStage->SetInitPos(objectData.translation);
 			Vector3 pos;
 			pos = objectData.translation;
 			pos.z += stageEdge_;
@@ -212,6 +222,7 @@ void Stage::Load()
 				}
 
 				//座標
+				newObject->SetInitPos(objectData.translation);
 				Vector3 pos;
 				pos = objectData.translation;
 				pos.z += stageEdge_;
@@ -291,6 +302,7 @@ void Stage::Load()
 			std::unique_ptr<GoalOBJ> newGoal = nullptr;
 			newGoal = GoalOBJ::Create(objectData.fileName, COLLISION_ATTR_GOAL);
 			//座標
+			newGoal->SetInitPos(objectData.translation);
 			Vector3 pos;
 			pos = objectData.translation;
 			pos.z += stageEdge_;
@@ -337,6 +349,7 @@ void Stage::Load()
 			std::unique_ptr<HitWall> newWall = nullptr;
 			newWall = HitWall::Create(objectData.fileName);
 			//座標
+			newWall->SetInitPos(objectData.translation);
 			Vector3 pos;
 			pos = objectData.translation;
 			pos.z += stageEdge_;
@@ -378,6 +391,7 @@ void Stage::Load()
 		std::unique_ptr<MirrorOBJ> mirrorStage = nullptr;
 		mirrorStage = MirrorOBJ::Create(object.get());
 		mirrorStage->Initialize();
+		mirrorStage->SetInitPos(object.get()->GetInitPos());
 		mirrorStageObjects_.push_back(std::move(mirrorStage));
 	}
 
@@ -387,12 +401,15 @@ void Stage::Load()
 		std::unique_ptr<MirrorOBJ> mirrorObject = nullptr;
 		mirrorObject = MirrorOBJ::Create(resultRoopStages_[i].get());
 		mirrorObject->Initialize();
+		mirrorObject->SetInitPos(resultRoopStages_[i].get()->GetInitPos());
 		mirrorRoopObjects_.push_back(std::move(mirrorObject));
 	}
 }
 
 void Stage::Draw()
 {
+	normalbackGround_->Draw();
+
 	for(auto& object : objects_)
 	{
 		object->Draw();
@@ -413,6 +430,8 @@ void Stage::Draw()
 
 void Stage::MirrorDraw()
 {
+	blurbackGround_->Draw();
+
 	for(auto& mirrorStageObject : mirrorStageObjects_)
 	{
 		mirrorStageObject->Draw();
@@ -436,19 +455,48 @@ void Stage::Reset()
 	mirrorRoopObjects_.clear();
 
 	//進んだステージから始まるようにステージの端を初期化
-	stageEdge_ = 0.0f;
+	//stageEdge_ = 0.0f;
 	//新ステージを読み込む場合
 	//リセット時の読み込みの際に位置だけずらしたいので一回だけ読み込む
 	if(canResetLoadedStage_ == true)
 	{
-		objects_.clear();
-		mirrorStageObjects_.clear();
-		goal_.reset();
+		for(auto& object : objects_)
+		{
+			//Vector3 initPos = object->GetInitPos();	
+			object->SetTransform(Vector3(object->GetInitPos()));
+		}
 
-		Load();
+		for(auto& mirrorStageObject : mirrorStageObjects_)
+		{
+			/*Vector3 initPos = mirrorStageObject->GetInitPos();*/
+			mirrorStageObject->SetTransform(Vector3(mirrorStageObject->GetInitPos()));
+		}
+
+		goal_->SetTransform(Vector3(goal_->GetInitPos()));
+		goal_->Reset();
+
+		blurbackGround_->ResetPos();
+		normalbackGround_->ResetPos();
+
+		/*objects_.clear();
+		mirrorStageObjects_.clear();
+		goal_.reset();*/
+
+		//Load();
+		/*for(auto& resultRoopStage : resultRoopStages_)
+		{
+			resultRoopStage->SetTransform(Vector3(resultRoopStage->GetInitPos()));
+		}
+		for(auto& mirrorRoopObject : mirrorRoopObjects_)
+		{
+			mirrorRoopObject->SetTransform(Vector3(mirrorRoopObject->GetInitPos()));
+		}*/
+
+		stageEdge_ = 0.0f;
 		canResetLoadedStage_ = false;
 	}
 	//新たにステージを変えない場合
+	else 
 	{
 		//壁とループオブジェクトを再配置する
 		ResetLoad();
@@ -499,6 +547,10 @@ void Stage::NextStageUpdate()
 
 void Stage::NextStageLoad()
 {
+	//前ステージの背景オブジェクトをクリア
+	blurbackGround_->Clear();
+	normalbackGround_->Clear();
+
 	//ループ終了
 	ResultRoopStage::SetIsFinishedRoopObjects(true);
 
@@ -523,6 +575,8 @@ void Stage::NextStageLoad()
 
 	//新規ステージ読み込み
 	Load();
+	blurbackGround_->Initialize("backGround.json",stageEdge_);
+	normalbackGround_->Initialize("normalOBJ.json", stageEdge_);
 }
 
 void Stage::ResetLoad()

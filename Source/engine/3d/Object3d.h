@@ -197,6 +197,9 @@ protected:	//メンバ変数
 	//属性
 	int32_t attributeColor_;
 
+	//初期位置
+	Vector3 initPos_;
+
 public: //アクセッサ
 
 	//ゲッター
@@ -221,6 +224,8 @@ public: //アクセッサ
 	Vector3 GetRotation() { return rotation_; }
 	//平行移動を取得
 	Vector3 GetTransform() { return transform_; }
+	//初期位置を取得
+	Vector3 GetInitPos() { return initPos_; }
 
 	//平行移動をセット
 	void SetTransform(const Vector3& pos) { transform_ = pos; };
@@ -247,6 +252,8 @@ public: //アクセッサ
 	void SetAlphaFlag(bool alphaFlag) { alphaFlag_ = alphaFlag; }
 	//透明度をセット
 	void SetAlpha(float alpha) { alpha_ = alpha; }
+	//初期位置をセット
+	void SetInitPos(Vector3 initPos) { initPos_ = initPos; }
 
 	/// <summary>
 	/// コライダーのセット

@@ -6,7 +6,28 @@ BackGround::BackGround(){}
 
 BackGround::~BackGround(){}
 
-void BackGround::Initialize(const std::string fileName)
+void BackGround::Initialize(const std::string fileName, float stageEdge)
+{
+	Load(fileName, stageEdge);
+}
+
+void BackGround::Update(Camera* camera)
+{
+	for(auto& object : objects_)
+	{
+		object->Update(camera);
+	}
+}
+
+void BackGround::Draw()
+{
+	for(auto& object : objects_)
+	{
+		object->Draw();
+	}
+}
+
+void BackGround::Load(const std::string fileName,float stageEdge)
 {
 	//レベルデータからオブジェクトを生成、配置
 	levelData_ = LevelManager::GetLevelManager()->LoadJSONFile(fileName);
@@ -26,8 +47,10 @@ void BackGround::Initialize(const std::string fileName)
 			std::unique_ptr<Object3d> newObject = nullptr;
 			newObject = Object3d::Create(objectData.fileName);
 
+			newObject->SetInitPos(objectData.translation);
 			Vector3 pos;
 			pos = objectData.translation;
+			pos.z += stageEdge;
 			newObject->SetTransform(pos);
 
 			//回転角
@@ -99,18 +122,16 @@ void BackGround::Initialize(const std::string fileName)
 	}
 }
 
-void BackGround::Update(Camera* camera)
+void BackGround::Clear()
+{
+	objects_.clear();
+}
+
+void BackGround::ResetPos()
 {
 	for(auto& object : objects_)
 	{
-		object->Update(camera);
+		object->SetTransform(Vector3(object->GetInitPos()));
 	}
 }
 
-void BackGround::Draw()
-{
-	for(auto& object : objects_)
-	{
-		object->Draw();
-	}
-}
