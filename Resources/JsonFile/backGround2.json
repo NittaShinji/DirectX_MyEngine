@@ -2,6 +2,48 @@
     "name": "scene",
     "objects": [
         {
+            "type": "CAMERA",
+            "name": "Camera",
+            "transform": {
+                "translation": [
+                    -180.56272888183594,
+                    -6.925790786743164,
+                    -2.3046302795410156
+                ],
+                "rotation": [
+                    -116.44071197509766,
+                    2.43558997681248e-06,
+                    133.3080596923828
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "CAMERA",
+            "name": "Camera.001",
+            "transform": {
+                "translation": [
+                    -180.56272888183594,
+                    -6.925790786743164,
+                    -2.3046302795410156
+                ],
+                "rotation": [
+                    -116.44071197509766,
+                    2.43558997681248e-06,
+                    133.3080596923828
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
             "type": "MESH",
             "name": "立方体.037",
             "transform": {
@@ -396,6 +438,1568 @@
                 ]
             },
             "file_name": "Cube"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.084",
+            "transform": {
+                "translation": [
+                    -170.1243438720703,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.085",
+            "transform": {
+                "translation": [
+                    -1.1243438720703125,
+                    0.0,
+                    -4.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.086",
+            "transform": {
+                "translation": [
+                    -10.124343872070312,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.087",
+            "transform": {
+                "translation": [
+                    -70.12434387207031,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.088",
+            "transform": {
+                "translation": [
+                    -30.124343872070312,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.089",
+            "transform": {
+                "translation": [
+                    -90.12434387207031,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.090",
+            "transform": {
+                "translation": [
+                    -110.12434387207031,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.091",
+            "transform": {
+                "translation": [
+                    -130.1243438720703,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.092",
+            "transform": {
+                "translation": [
+                    -50.12434387207031,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.093",
+            "transform": {
+                "translation": [
+                    -150.1243438720703,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体",
+            "transform": {
+                "translation": [
+                    -179.1243438720703,
+                    0.0,
+                    -4.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "CAMERA",
+            "name": "Camera.003",
+            "transform": {
+                "translation": [
+                    -177.4832305908203,
+                    -6.925790786743164,
+                    -17.786579132080078
+                ],
+                "rotation": [
+                    -116.44071197509766,
+                    2.43558997681248e-06,
+                    133.3080596923828
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            }
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.001",
+            "transform": {
+                "translation": [
+                    -196.15760803222656,
+                    0.0,
+                    -4.000041484832764
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.002",
+            "transform": {
+                "translation": [
+                    -274.1531066894531,
+                    0.0,
+                    -4.000049114227295
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.006",
+            "transform": {
+                "translation": [
+                    -245.15304565429688,
+                    0.0,
+                    -6.000046253204346
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.007",
+            "transform": {
+                "translation": [
+                    -225.15304565429688,
+                    0.0,
+                    -6.000044345855713
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.010",
+            "transform": {
+                "translation": [
+                    -265.1530456542969,
+                    0.0,
+                    -6.0000481605529785
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.011",
+            "transform": {
+                "translation": [
+                    -205.15304565429688,
+                    0.0,
+                    -6.000044822692871
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.003",
+            "transform": {
+                "translation": [
+                    -346.22119140625,
+                    1.2000000476837158,
+                    -12.5
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.004",
+            "transform": {
+                "translation": [
+                    -326.22119140625,
+                    1.2000000476837158,
+                    -12.5
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.012",
+            "transform": {
+                "translation": [
+                    -419.47088623046875,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.013",
+            "transform": {
+                "translation": [
+                    -399.47088623046875,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.020",
+            "transform": {
+                "translation": [
+                    -379.47088623046875,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.021",
+            "transform": {
+                "translation": [
+                    -359.47088623046875,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.024",
+            "transform": {
+                "translation": [
+                    -290.4718933105469,
+                    0.0,
+                    -4.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.025",
+            "transform": {
+                "translation": [
+                    -448.46728515625,
+                    0.0,
+                    -4.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.026",
+            "transform": {
+                "translation": [
+                    -439.47088623046875,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.028",
+            "transform": {
+                "translation": [
+                    -299.4718933105469,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.029",
+            "transform": {
+                "translation": [
+                    -319.4718933105469,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.094",
+            "transform": {
+                "translation": [
+                    -339.4718933105469,
+                    0.0,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.005",
+            "transform": {
+                "translation": [
+                    -386.79541015625,
+                    1.2000000476837158,
+                    -12.5
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.008",
+            "transform": {
+                "translation": [
+                    -406.79541015625,
+                    1.2000000476837158,
+                    -12.5
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.009",
+            "transform": {
+                "translation": [
+                    -491.00152587890625,
+                    0.0,
+                    -4.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.014",
+            "transform": {
+                "translation": [
+                    -588.999267578125,
+                    0.0,
+                    -4.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.015",
+            "transform": {
+                "translation": [
+                    -519.8797607421875,
+                    -0.017873505130410194,
+                    -6.000032901763916
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.016",
+            "transform": {
+                "translation": [
+                    -579.8798217773438,
+                    -0.017873505130410194,
+                    -6.0000386238098145
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.023",
+            "transform": {
+                "translation": [
+                    -539.8798217773438,
+                    -0.017873505130410194,
+                    -6.000034809112549
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.017",
+            "transform": {
+                "translation": [
+                    -499.8797912597656,
+                    -0.017873505130410194,
+                    -6.000030994415283
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.018",
+            "transform": {
+                "translation": [
+                    -559.8798217773438,
+                    -0.017873505130410194,
+                    -6.000036716461182
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.022",
+            "transform": {
+                "translation": [
+                    -561.278564453125,
+                    1.2000000476837158,
+                    -12.5
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.068",
+            "transform": {
+                "translation": [
+                    -541.278564453125,
+                    1.2000000476837158,
+                    -12.5
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.069",
+            "transform": {
+                "translation": [
+                    -607.6361083984375,
+                    0.0,
+                    -4.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.070",
+            "transform": {
+                "translation": [
+                    -705.6360473632812,
+                    0.0,
+                    -4.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    0.10000000149011612,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.075",
+            "transform": {
+                "translation": [
+                    -676.6319580078125,
+                    6.671278640624223e-08,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.076",
+            "transform": {
+                "translation": [
+                    -616.6319580078125,
+                    6.671278640624223e-08,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.077",
+            "transform": {
+                "translation": [
+                    -656.6319580078125,
+                    6.671278640624223e-08,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.078",
+            "transform": {
+                "translation": [
+                    -696.6319580078125,
+                    6.671278640624223e-08,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.079",
+            "transform": {
+                "translation": [
+                    -636.6319580078125,
+                    6.671278640624223e-08,
+                    -6.0
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.067",
+            "transform": {
+                "translation": [
+                    -791.6152954101562,
+                    6.671278640624223e-08,
+                    -6.300000190734863
+                ],
+                "rotation": [
+                    0.0,
+                    -89.99999237060547,
+                    0.0
+                ],
+                "scaling": [
+                    0.33000001311302185,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.071",
+            "transform": {
+                "translation": [
+                    -733.632568359375,
+                    0.0,
+                    -6.300000190734863
+                ],
+                "rotation": [
+                    0.0,
+                    -89.99999237060547,
+                    0.0
+                ],
+                "scaling": [
+                    0.33000001311302185,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.072",
+            "transform": {
+                "translation": [
+                    -742.6357421875,
+                    6.671278640624223e-08,
+                    -10.583077430725098
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.073",
+            "transform": {
+                "translation": [
+                    -802.635498046875,
+                    6.671278640624223e-08,
+                    -10.600000381469727
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.074",
+            "transform": {
+                "translation": [
+                    -762.6357421875,
+                    6.671278640624223e-08,
+                    -10.600000381469727
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.080",
+            "transform": {
+                "translation": [
+                    -722.635498046875,
+                    6.671278640624223e-08,
+                    -10.600000381469727
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.081",
+            "transform": {
+                "translation": [
+                    -782.6357421875,
+                    6.671278640624223e-08,
+                    -10.600000381469727
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.095",
+            "transform": {
+                "translation": [
+                    -890.4139404296875,
+                    6.671278640624223e-08,
+                    -14.435176849365234
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.096",
+            "transform": {
+                "translation": [
+                    -830.4144287109375,
+                    6.671278640624223e-08,
+                    -14.435176849365234
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.097",
+            "transform": {
+                "translation": [
+                    -870.4139404296875,
+                    6.671278640624223e-08,
+                    -14.435176849365234
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.098",
+            "transform": {
+                "translation": [
+                    -910.4144287109375,
+                    6.671278640624223e-08,
+                    -14.435176849365234
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.099",
+            "transform": {
+                "translation": [
+                    -850.4139404296875,
+                    6.671278640624223e-08,
+                    -14.435176849365234
+                ],
+                "rotation": [
+                    -0.0,
+                    179.99998474121094,
+                    -0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.106",
+            "transform": {
+                "translation": [
+                    -985.790283203125,
+                    1.2000000476837158,
+                    -10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.107",
+            "transform": {
+                "translation": [
+                    -1005.790283203125,
+                    1.2000000476837158,
+                    -10.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.111",
+            "transform": {
+                "translation": [
+                    -955.8892211914062,
+                    6.671278640624223e-08,
+                    -4.0605316162109375
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.112",
+            "transform": {
+                "translation": [
+                    -935.8892211914062,
+                    6.671278640624223e-08,
+                    -4.060530185699463
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.113",
+            "transform": {
+                "translation": [
+                    -975.8892211914062,
+                    6.671278640624223e-08,
+                    -4.0605316162109375
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.109",
+            "transform": {
+                "translation": [
+                    -1014.2001953125,
+                    6.671278640624223e-08,
+                    -4.09566593170166
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.110",
+            "transform": {
+                "translation": [
+                    -1054.2001953125,
+                    6.671278640624223e-08,
+                    -4.09566593170166
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.114",
+            "transform": {
+                "translation": [
+                    -1034.2001953125,
+                    6.671278640624223e-08,
+                    -4.09566593170166
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -2108,6 +3712,52 @@
                 ]
             },
             "file_name": "Cube"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.156",
+            "transform": {
+                "translation": [
+                    -841.30224609375,
+                    6.671278640624223e-08,
+                    -8.206963539123535
+                ],
+                "rotation": [
+                    -0.0,
+                    89.99999237060547,
+                    0.0
+                ],
+                "scaling": [
+                    0.5199999809265137,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
+        },
+        {
+            "type": "MESH",
+            "name": "立方体.082",
+            "transform": {
+                "translation": [
+                    -899.303466796875,
+                    6.671278640624223e-08,
+                    -8.206963539123535
+                ],
+                "rotation": [
+                    -0.0,
+                    89.99999237060547,
+                    0.0
+                ],
+                "scaling": [
+                    0.5199999809265137,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Black"
         },
         {
             "type": "MESH",

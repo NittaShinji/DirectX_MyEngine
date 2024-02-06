@@ -62,11 +62,19 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 		}
 	}
 
+	//ミラーステージの更新
+	for(auto& mirrorStageObject : mirrorStageObjects_)
+	{
+		mirrorStageObject->Update(camera);
+	}
+
+	//ループオブジェクトの更新
 	for(size_t i = 0; i < resultRoopStages_.size(); i++)
 	{
 		resultRoopStages_[i]->Update(camera, player->GetTransform(), player_->GetCollisionArea());
 	}
 
+	//ミラーループオブジェクトの更新
 	for(auto& mirrorRoopObject : mirrorRoopObjects_)
 	{
 		mirrorRoopObject->Update(camera);
@@ -184,6 +192,7 @@ void Stage::Load()
 			{
 				//3Dオブジェクトの生成
 				std::unique_ptr<TouchableObject> newObject = nullptr;
+				std::unique_ptr<MirrorOBJ> newMirrorObject = nullptr;
 
 				if(objectData.attribute == "Pink")
 				{
@@ -362,6 +371,17 @@ void Stage::Load()
 	ResultRoopStage::SetRoopObjectNum(roopObjectCount);
 
 	//読み込み後にミラーオブジェクトを生成
+
+	//ミラーステージを生成
+	for(auto& object : objects_)
+	{
+		std::unique_ptr<MirrorOBJ> mirrorStage = nullptr;
+		mirrorStage = MirrorOBJ::Create(object.get());
+		mirrorStage->Initialize();
+		mirrorStageObjects_.push_back(std::move(mirrorStage));
+	}
+
+	//ミラーループオブジェクトを生成
 	for(size_t i = 0; i < resultRoopStages_.size(); i++)
 	{
 		std::unique_ptr<MirrorOBJ> mirrorObject = nullptr;
@@ -393,6 +413,11 @@ void Stage::Draw()
 
 void Stage::MirrorDraw()
 {
+	for(auto& mirrorStageObject : mirrorStageObjects_)
+	{
+		mirrorStageObject->Draw();
+	}
+
 	for(auto& mirrorRoopObject : mirrorRoopObjects_)
 	{
 		mirrorRoopObject->Draw();

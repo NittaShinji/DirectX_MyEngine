@@ -273,9 +273,6 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp">
       <Filter>ソース ファイル\engine\audio</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\object\BackGround.cpp">
-      <Filter>ソース ファイル\engine\3d</Filter>
-    </ClCompile>
     <ClCompile Include="Source\engine\math\Easing.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
@@ -353,6 +350,9 @@
     </ClCompile>
     <ClCompile Include="Source\application\debugText\ImGuiManager.cpp">
       <Filter>ソース ファイル\application\debugText</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\BackGround.cpp">
+      <Filter>ソース ファイル\application\object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

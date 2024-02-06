@@ -63,7 +63,7 @@ public:
 	int32_t GetStageNum() { return stageNum_; }
 	bool GetIsClearedAllStage() { return isClearedAllStage_; }
 	bool GetIsAllowedToCountStageNum() { return isAllowedToCountStageNum_; }
-
+	
 	//セッター
 	void SetIsAllowedToCountStageNum(bool isAllowed) { isAllowedToCountStageNum_ = isAllowed; }
 
@@ -85,6 +85,7 @@ private:
 	std::vector<std::unique_ptr<HitWall>> walls_;
 	std::vector<std::unique_ptr<ResultRoopStage>> resultRoopStages_;
 	std::vector<std::unique_ptr<MirrorOBJ>> mirrorRoopObjects_;
+	std::vector<std::unique_ptr<MirrorOBJ>> mirrorStageObjects_;
 	std::unique_ptr<GoalOBJ> goal_;
 
 	Vector3 kDebugYellowOBJColor_;
