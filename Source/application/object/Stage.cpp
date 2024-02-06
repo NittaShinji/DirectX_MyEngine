@@ -378,6 +378,7 @@ void Stage::Load()
 		std::unique_ptr<MirrorOBJ> mirrorStage = nullptr;
 		mirrorStage = MirrorOBJ::Create(object.get());
 		mirrorStage->Initialize();
+		mirrorStage->SetStageNum(stageNum_);
 		mirrorStageObjects_.push_back(std::move(mirrorStage));
 	}
 
@@ -387,6 +388,7 @@ void Stage::Load()
 		std::unique_ptr<MirrorOBJ> mirrorObject = nullptr;
 		mirrorObject = MirrorOBJ::Create(resultRoopStages_[i].get());
 		mirrorObject->Initialize();
+		mirrorObject->SetStageNum(stageNum_);
 		mirrorRoopObjects_.push_back(std::move(mirrorObject));
 	}
 }
@@ -442,6 +444,7 @@ void Stage::Reset()
 	if(canResetLoadedStage_ == true)
 	{
 		objects_.clear();
+		mirrorStageObjects_.clear();
 		goal_.reset();
 
 		Load();
@@ -663,6 +666,7 @@ void Stage::ResetLoad()
 		std::unique_ptr<MirrorOBJ> mirrorObject = nullptr;
 		mirrorObject = MirrorOBJ::Create(resultRoopStages_[i].get());
 		mirrorObject->Initialize();
+		mirrorObject->SetStageNum(stageNum_);
 		mirrorRoopObjects_.push_back(std::move(mirrorObject));
 	}
 

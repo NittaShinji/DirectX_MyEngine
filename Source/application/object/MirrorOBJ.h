@@ -24,6 +24,9 @@ public: //メンバ関数
 	//鏡面反射に必要な情報をセット
 	void SetMirrorInfo();
 
+	//ステージ情報
+	void SetStageNum(int32_t stageName) { stageName_ = stageName; };
+
 private: //定数
 
 	//オブジェクトに対して鏡面反射した場合の距離
@@ -32,6 +35,9 @@ private: //定数
 private: //メンバ変数
 
 	Object3d* object3d_;
+
+	//ステージ番号を保存
+	int32_t stageName_;
 	
 public: //アクセッサ
 };
