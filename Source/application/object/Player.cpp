@@ -961,7 +961,7 @@ void Player::GroundRotation()
 	Object3d::SetRotation(rotation_);
 }
 
-void Player::Animation(bool isStartedAnime, float animationSpeed, Vector3 goalScale)
+void Player::Animation(const bool isStartedAnime, const float animationSpeed, const Vector3& goalScale)
 {
 	if(isStartedAnime == true)
 	{

@@ -285,9 +285,6 @@
     <ClCompile Include="Source\application\scene\StageSelect.cpp">
       <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\scene\SceneFactory.cpp">
-      <Filter>ソース ファイル\application\scene</Filter>
-    </ClCompile>
     <ClCompile Include="Source\application\particle\ParticleEmitter..cpp">
       <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
@@ -353,6 +350,9 @@
     </ClCompile>
     <ClCompile Include="Source\application\object\BackGround.cpp">
       <Filter>ソース ファイル\application\object</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\engine\scene\SceneFactory.cpp">
+      <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -449,9 +449,6 @@
     <ClInclude Include="Source\engine\scene\SceneManager.h">
       <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\engine\scene\AbstractSceneFactory.h">
-      <Filter>ヘッダー ファイル\application\object</Filter>
-    </ClInclude>
     <ClInclude Include="Source\application\camera\GameCamera.h">
       <Filter>ヘッダー ファイル\application\camera</Filter>
     </ClInclude>
@@ -513,9 +510,6 @@
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\scene\StageSelect.h">
-      <Filter>ヘッダー ファイル\application\scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\application\scene\SceneFactory.h">
       <Filter>ヘッダー ファイル\application\scene</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\particle\ParticleEmitter.h">
@@ -589,6 +583,12 @@
     </ClInclude>
     <ClInclude Include="Source\application\debugText\ImGuiManager.h">
       <Filter>ヘッダー ファイル\application\debugText</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\engine\scene\AbstractSceneFactory.h">
+      <Filter>ヘッダー ファイル\engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\engine\scene\SceneFactory.h">
+      <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

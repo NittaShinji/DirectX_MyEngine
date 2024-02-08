@@ -1,6 +1,9 @@
 #pragma once
 #include "Sprite.h"
 
+/// <summary>
+/// ゲームシーンでのスプライトをまとめて描画するクラス
+/// </summary>
 class GameSprite
 {
 public:

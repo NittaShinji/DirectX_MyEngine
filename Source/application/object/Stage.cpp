@@ -17,7 +17,6 @@ void Stage::Initialize(Player* player)
 	stageEdge_ = 0.0f;
 	//レベルデータからオブジェクトを生成、配置
 	Load();
-
 	blurbackGround_ = std::make_unique<BackGround>();
 	normalbackGround_ = std::make_unique<BackGround>();
 	blurbackGround_->Initialize("backGround.json",stageEdge_);

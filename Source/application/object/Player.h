@@ -52,7 +52,7 @@ public:
 	void GroundRotation();
 
 	//アニメーション
-	void Animation(bool isStartedAnime,float animationSpeed, Vector3 goalScale);
+	void Animation(const bool isStartedAnime, const float animationSpeed, const Vector3& goalScale);
 
 	//回転をリセットする
 	void ResetRotation();

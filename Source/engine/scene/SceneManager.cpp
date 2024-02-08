@@ -12,7 +12,6 @@ SceneManager::~SceneManager()
 void SceneManager::Initialize()
 {
 
-
 }
 
 void SceneManager::Update()
