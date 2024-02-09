@@ -15,6 +15,7 @@ void Stage::Initialize(Player* player)
 	stageNum_ = 0;
 	isClearedAllStage_ = false;
 	stageEdge_ = 0.0f;
+	isPlayerReachedStageEdge_ = false;
 	//レベルデータからオブジェクトを生成、配置
 	Load();
 	blurbackGround_ = std::make_unique<BackGround>();
@@ -97,6 +98,11 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 
 	//ゴールに近づいたらスローにする
 	goal_->SlowDownNearGoal(gameSpeed, player_->GetIsFinish(),player_->GetIsDead());
+
+	if(player->GetTransform().z > stageEdge_)
+	{
+		isPlayerReachedStageEdge_ = true;
+	}
 }
 
 void Stage::Load()
@@ -554,6 +560,7 @@ void Stage::NextStageLoad()
 	ResultRoopStage::SetIsFinishedRoopObjects(true);
 
 	float maxPosZ = 0.0f;
+	isPlayerReachedStageEdge_ = false;
 	//ループしていたものから一番遠くにあるものを求める
 	for(size_t i = 0; i < resultRoopStages_.size(); i++)
 	{

@@ -64,6 +64,7 @@ public:
 	bool GetIsClearedAllStage() { return isClearedAllStage_; }
 	bool GetIsAllowedToCountStageNum() { return isAllowedToCountStageNum_; }
 	float GetStageEdge() { return stageEdge_; }
+	bool GetIsPlayerReachedStageEdge() { return isPlayerReachedStageEdge_; }
 
 	//セッター
 	void SetIsAllowedToCountStageNum(bool isAllowed) { isAllowedToCountStageNum_ = isAllowed; }
@@ -105,6 +106,9 @@ private:
 
 	//ステージの端
 	float stageEdge_;
+
+	//プレイヤーがステージの端まで到達したかどうか
+	bool isPlayerReachedStageEdge_;
 
 	//ステージを読み込んだか
 	bool canResetLoadedStage_;

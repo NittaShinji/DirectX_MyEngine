@@ -165,7 +165,7 @@ void GameScene::Update()
 			gameCamera_->Initialize();
  			player_->Reset(gameCamera_.get());
 			resultSprite_->Reset();
-			GameTimer::GetInstance()->Reset(resultSprite_->GetBackGroundSpritePosY());
+			GameTimer::GetInstance()->Reset();
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 			gameSprite_->ResetSceneAnimation();
 		}
@@ -221,7 +221,7 @@ void GameScene::Update()
 	ObjParticleManager::GetInstance()->Update(gameCamera_.get());
 
 	//ゲームタイマーの更新
-	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
+	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(),stage_->GetIsPlayerReachedStageEdge());
 
 	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY());
 
@@ -281,6 +281,7 @@ void GameScene::Update()
 				player_->SetIsFinish(false);
 				resultSprite_->SetIsFinishOutEasing(false);
 				stage_->NextStageLoad();
+				GameTimer::GetInstance()->Reset();
 			}
 		}
 	}

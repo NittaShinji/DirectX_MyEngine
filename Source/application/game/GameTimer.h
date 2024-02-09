@@ -45,10 +45,10 @@ public:
 	void ResultUpdate(bool isFinishedAnimation, float easingMoveY);
 
 	//ImGuiの更新
-	void InGameUpdate(bool isStart, bool isFinish);
+	void InGameUpdate(bool isStart, bool isFinish, bool isReachedStageEdge);
 
 	//リセット
-	void Reset(float imagePosY);
+	void Reset();
 
 	//ゲーム中の描画
 	void InGameDraw();
@@ -82,6 +82,8 @@ private:
 	static const int inGameDigits = 4;
 	//リザルト表示する桁
 	static const int resultDigits = 4;
+
+	static const int kTimerDigits_ = 4;
 
 	//ゲーム中に表示する分
 	static int gameMinutes_;
