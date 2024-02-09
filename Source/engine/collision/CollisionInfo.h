@@ -1,7 +1,11 @@
 #pragma once
 
 class Object3d;
-class BaseCollider;
+
+namespace NsEngine
+{
+	class BaseCollider;
+}
 
 /// <summary>
 /// 衝突情報
@@ -9,7 +13,7 @@ class BaseCollider;
 struct CollisionInfo
 {
 public:
-	CollisionInfo(Object3d* object, BaseCollider* collider, const Vector3& inter)
+	CollisionInfo(Object3d* object, NsEngine::BaseCollider* collider, const Vector3& inter)
 	{
 		this->object = object;
 		this->collider = collider;
@@ -19,7 +23,7 @@ public:
 	//衝突相手のオブジェクト
 	Object3d* object = nullptr;
 	//衝突相手のコライダー
-	BaseCollider* collider = nullptr;
+	NsEngine::BaseCollider* collider = nullptr;
 	//衝突点
 	Vector3 inter;
 };

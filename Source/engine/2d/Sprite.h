@@ -59,7 +59,7 @@ private:
 
 protected:
 
-	static TextureManager* textureManager_;
+	static NsEngine::TextureManager* textureManager_;
 	static SpriteCommon* spriteCommon_;
 
 	static DirectXBasic* directXBasic_;

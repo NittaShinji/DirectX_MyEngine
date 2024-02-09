@@ -1,8 +1,9 @@
 #include "Sound.h"
 #include "SoundManager.h"
 #include <mutex>
-
 #pragma comment(lib,"xaudio2.lib")
+
+using namespace NsEngine;
 
 Sound::Sound() {}
 

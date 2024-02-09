@@ -4,6 +4,8 @@
 #include "MeshCollider.h"
 #include <cassert>
 
+using namespace NsEngine;
+
 CollisionManager* CollisionManager::GetInstance()
 {
 	static CollisionManager instance;

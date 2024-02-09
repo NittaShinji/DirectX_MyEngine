@@ -5,6 +5,8 @@
 #include "Easing.h"
 #include "ObjectColor.h"
 
+using namespace NsEngine;
+
 DirectXBasic* TitleScene::directXBasic_ = nullptr;
 ImGuiManager* TitleScene::imGuiManager_ = nullptr;
 

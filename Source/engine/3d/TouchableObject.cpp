@@ -3,6 +3,8 @@
 #include "CollisionAttribute.h"
 #include "CollisionManager.h"
 
+using namespace NsEngine;
+
 std::unique_ptr<TouchableObject> TouchableObject::Create(const std::string& path, const unsigned short coliderAttribute)
 {
 	//オブジェクトのインスタンスを生成

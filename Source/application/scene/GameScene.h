@@ -28,7 +28,10 @@
 #include "GameSprite.h"
 #include "ResultSprite.h"
 
-class CollisionManager;
+namespace NsEngine
+{
+	class CollisionManager;
+}
 class TouchableObject;
 class Player;
 
@@ -104,7 +107,7 @@ private:
 	std::unique_ptr<TouchableObject> objGround_ = nullptr;
 
 	//衝突マネージャー
-	CollisionManager* collisionManager_ = nullptr;
+	NsEngine::CollisionManager* collisionManager_ = nullptr;
 
 	//待ち時間
 	static const int32_t kWaitTime_ = 40;

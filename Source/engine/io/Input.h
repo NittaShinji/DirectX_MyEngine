@@ -8,27 +8,31 @@
 /// <summary>
 /// 入力クラス
 /// </summary>
-class Input
+/// 
+namespace NsEngine
 {
-public:
+	class Input
+	{
+	public:
 
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	//コンストラクタ
-	Input();
-	//デストラクタ
-	~Input();
+		//コンストラクタ
+		Input();
+		//デストラクタ
+		~Input();
 
-	//初期化
-	void Initialize(WindowsAPI* winApi);
-	//更新
-	void Update();
+		//初期化
+		void Initialize(WindowsAPI* winApi);
+		//更新
+		void Update();
 
-private:
+	private:
 
-	KeyInput* keyInput_ = nullptr;
-	//キー番号
-	static const int32_t kKeyNumber_ = 256;
-	//DirectInputのインスタンス
-	ComPtr<IDirectInput8> dinput_ = nullptr;
-};
+		KeyInput* keyInput_ = nullptr;
+		//キー番号
+		static const int32_t kKeyNumber_ = 256;
+		//DirectInputのインスタンス
+		ComPtr<IDirectInput8> dinput_ = nullptr;
+	};
+}

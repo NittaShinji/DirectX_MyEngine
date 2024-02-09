@@ -3,6 +3,7 @@
 #include <memory>
 #include "Input.h"
 using namespace Microsoft::WRL;
+using namespace NsEngine;
 
 void Input::Initialize(WindowsAPI* winApi)
 {

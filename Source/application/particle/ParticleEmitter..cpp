@@ -15,6 +15,7 @@
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
+using namespace NsEngine;
 
 /// <summary>
 /// 静的メンバ変数の実体

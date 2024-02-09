@@ -6,7 +6,7 @@
 /// <summary>
 /// 球の衝突判定用クラス
 /// </summary>
-class SphereCollider : public BaseCollider, public Sphere
+class SphereCollider : public NsEngine::BaseCollider, public Sphere
 {
 public:
 

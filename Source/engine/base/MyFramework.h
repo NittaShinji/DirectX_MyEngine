@@ -14,6 +14,7 @@
 /// </summary>
 class MyFramework
 {
+
 public:	//メンバ関数
 
 	//初期化
@@ -48,7 +49,7 @@ protected: //メンバ変数
 	std::unique_ptr<DirectXBasic> directXBasic_ = nullptr;
 
 	//入力処理
-	std::unique_ptr<Input> input_ = nullptr;
+	std::unique_ptr<NsEngine::Input> input_ = nullptr;
 
 	//ImGui初期化処理
 	std::unique_ptr<ImGuiManager> imGuiManager_ = nullptr;

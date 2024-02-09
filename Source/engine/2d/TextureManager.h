@@ -11,93 +11,97 @@
 /// テクスチャマネージャー
 /// 画像を管理する
 /// </summary>
-class TextureManager final
+
+namespace NsEngine
 {
-private:
-
-	//エイリアステンプレート
-	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-
-private:
-
-	//コンストラクタ
-	TextureManager();
-	//デストラクタ
-	~TextureManager();
-
-public:
-
-	//インスタンスを取得
-	static TextureManager* GetInstance()
+	class TextureManager final
 	{
-		static TextureManager textureManager;
-		return &textureManager;
-	}
+	private:
 
-	//静的初期化
-	static void StaticInitialize(ID3D12Device* device);
+		//エイリアステンプレート
+		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
-	//初期化
-	void Initialize();
+	private:
 
-	//テクスチャ読み込み
-	static void LoadTexture(const std::string& fileName);
+		//コンストラクタ
+		TextureManager();
+		//デストラクタ
+		~TextureManager();
 
-	//テクスチャ生成
-	void TexMapping(int32_t texWidth, int32_t texHeight, Vector4 color, const std::string& fileName);
+	public:
 
-	//テクスチャ変換
-	void TexConvert(std::string fileName);
+		//インスタンスを取得
+		static TextureManager* GetInstance()
+		{
+			static TextureManager textureManager;
+			return &textureManager;
+		}
 
-	//ワイド文字列→マルチバイト文字列変換
-	static std::string ConvertWideStringToMultiByteString(const std::wstring &wstring);
-	//マルチバイト文字列変換→ワイド文字列変換
-	static std::wstring ConvertMultiByteStringToWideString(const std::string& mString);
+		//静的初期化
+		static void StaticInitialize(ID3D12Device* device);
 
-public:
+		//初期化
+		void Initialize();
 
-	//SRVの最大個数
-	static const size_t kMaxSRVCount_ = 2056;
+		//テクスチャ読み込み
+		static void LoadTexture(const std::string& fileName);
 
-private:
+		//テクスチャ生成
+		void TexMapping(int32_t texWidth, int32_t texHeight, Vector4 color, const std::string& fileName);
 
-	//シェーダーリソース用のデスクリプタヒープ
-	static ComPtr<ID3D12DescriptorHeap> srvHeap_;
+		//テクスチャ変換
+		void TexConvert(std::string fileName);
 
-	//テクスチャバッファ
-	static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
+		//ワイド文字列→マルチバイト文字列変換
+		static std::string ConvertWideStringToMultiByteString(const std::wstring& wstring);
+		//マルチバイト文字列変換→ワイド文字列変換
+		static std::wstring ConvertMultiByteStringToWideString(const std::string& mString);
 
-	//デフォルトテクスチャ格納ディレクトリ
-	static std::string kDefaultTextureDirectoryPath_;
+	public:
 
-	//テクスチャ番号
-	static uint32_t sTextureIndex_;
-	//画像に結び付いたテクスチャ番号格納用map
-	static std::map<const std::string, uint32_t, std::less<>> textureMap_;
+		//SRVの最大個数
+		static const size_t kMaxSRVCount_ = 2056;
 
-	//テクスチャの幅
-	static std::map<const std::string, Vector2> texSizeMap_;
+	private:
 
-	static ID3D12Device* device_;
-	static ID3D12GraphicsCommandList* cmdList_;
+		//シェーダーリソース用のデスクリプタヒープ
+		static ComPtr<ID3D12DescriptorHeap> srvHeap_;
 
-	//テクスチャコンバータ
-	std::unique_ptr<TextureConverter> texConverter_;
+		//テクスチャバッファ
+		static std::array<ComPtr<ID3D12Resource>, kMaxSRVCount_> textureBuffers_;
 
-public:
+		//デフォルトテクスチャ格納ディレクトリ
+		static std::string kDefaultTextureDirectoryPath_;
 
-	//コピーコンストラクタを無効
-	TextureManager(const TextureManager& textureManager) = delete;
-	//代入演算子を無効
-	TextureManager& operator= (const TextureManager& textureManager) = delete;
+		//テクスチャ番号
+		static uint32_t sTextureIndex_;
+		//画像に結び付いたテクスチャ番号格納用map
+		static std::map<const std::string, uint32_t, std::less<>> textureMap_;
 
-public:
+		//テクスチャの幅
+		static std::map<const std::string, Vector2> texSizeMap_;
 
-	//ゲッター
-	ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
-	const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
-	Vector2 GetTexSize(std::string fileName);
-	ID3D12Resource* GetTextureBuffer(std::string fileName);
+		static ID3D12Device* device_;
+		static ID3D12GraphicsCommandList* cmdList_;
 
-};
+		//テクスチャコンバータ
+		std::unique_ptr<TextureConverter> texConverter_;
+
+	public:
+
+		//コピーコンストラクタを無効
+		TextureManager(const TextureManager& textureManager) = delete;
+		//代入演算子を無効
+		TextureManager& operator= (const TextureManager& textureManager) = delete;
+
+	public:
+
+		//ゲッター
+		ID3D12DescriptorHeap* GetSRVHeap() const { return srvHeap_.Get(); };
+		const std::map<const std::string, uint32_t, std::less<>>& GetTextureMap() const { return textureMap_; }
+		Vector2 GetTexSize(std::string fileName);
+		ID3D12Resource* GetTextureBuffer(std::string fileName);
+
+	};
+}
 

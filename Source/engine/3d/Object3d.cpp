@@ -8,6 +8,7 @@
 #pragma comment(lib, "d3dcompiler.lib")
 
 using namespace Microsoft::WRL;
+using namespace NsEngine;
 
 std::string Object3d::kDefaultTextureDirectoryPath_ = "Resources/Model/";
 DirectXBasic* Object3d::directXBasic_ = nullptr;

@@ -1,6 +1,8 @@
 #include "ResultSprite.h"
 #include "GameTimer.h"
 
+using namespace NsEngine;
+
 void ResultSprite::Load()
 {
 

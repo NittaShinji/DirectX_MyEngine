@@ -6,6 +6,8 @@
 #include "Easing.h"
 #include "TextureManager.h"
 
+using namespace NsEngine;
+
 DirectXBasic* StageSelectScene::directXBasic_ = nullptr;
 ImGuiManager* StageSelectScene::imGuiManager_ = nullptr;
 

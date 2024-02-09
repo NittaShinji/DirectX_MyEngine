@@ -7,6 +7,7 @@
 #include "ImGuiManager.h"
 
 using namespace std;
+using namespace NsEngine;
 
 std::unique_ptr<Player> Player::Create(const std::string& path)
 {

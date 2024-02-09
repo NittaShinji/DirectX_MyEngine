@@ -6,7 +6,7 @@
 /// <summary>
 /// メッシュ衝突判定オブジェクト
 /// </summary>
-class MeshCollider : public BaseCollider
+class MeshCollider : public NsEngine::BaseCollider
 {
 
 public:

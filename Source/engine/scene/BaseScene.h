@@ -3,8 +3,11 @@
 #include "Input.h"
 #include "ImGuiManager.h"
 
-//前方宣言
-class SceneManager;
+namespace NsEngine
+{
+	//前方宣言
+	class SceneManager;
+}
 
 /// <summary>
 /// シーン基底クラス
@@ -31,7 +34,7 @@ public:
 public: //メンバ関数
 
 	virtual ~BaseScene() = default;
-	virtual void SetSceneManager(SceneManager* sceneManager) { sceneManager_ = sceneManager; }
+	virtual void SetSceneManager(NsEngine::SceneManager* sceneManager) { sceneManager_ = sceneManager; }
 
 protected:
 
@@ -45,6 +48,7 @@ protected:
 	static ImGuiManager* imGuiManager_;
 
 	//シーンマネージャ
-	SceneManager* sceneManager_ = nullptr;
+	NsEngine::SceneManager* sceneManager_ = nullptr;
 };
+
 

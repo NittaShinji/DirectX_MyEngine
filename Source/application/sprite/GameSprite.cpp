@@ -1,6 +1,8 @@
 #include "GameSprite.h"
 #include "Easing.h"
 
+using namespace NsEngine;
+
 void GameSprite::Load()
 {
 	//読み込み処理
@@ -16,7 +18,6 @@ void GameSprite::Load()
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
 	TextureManager::GetInstance()->LoadTexture("NowLoading.png");
-
 }
 
 void GameSprite::Initialize()

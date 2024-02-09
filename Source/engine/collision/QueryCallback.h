@@ -2,7 +2,11 @@
 #include"MathUtillity.h"
 
 class Object3d;
-class BaseCollider;
+
+namespace NsEngine
+{
+	class BaseCollider;
+}
 
 /// <summary>
 /// クエリ―による情報を得る為の構造体
@@ -12,7 +16,7 @@ struct QueryHit
 	//衝突相手のオブジェクト
 	Object3d* object = nullptr;
 	//衝突相手のオブジェクト
-	BaseCollider* collider = nullptr;
+	NsEngine::BaseCollider* collider = nullptr;
 	//衝突点
 	Vector3 inter;
 	//排斥ベクトル

@@ -43,7 +43,7 @@ public:
 	void Reset();
 
 	//ループ用に座標をリセットする
-	void RoopPosition();
+	void SetRoopPosition();
 
 private:
 

@@ -9,6 +9,7 @@
 #pragma comment(lib,"xaudio2.lib")
 
 using namespace Microsoft::WRL;
+using namespace NsEngine;
 
 MyGame::MyGame() {}
 

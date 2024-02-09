@@ -1,6 +1,8 @@
 #include "GameTimer.h"
 #include "TextureManager.h"
 
+using namespace NsEngine;
+
 //ゲーム中に表示する時間(4桁)
 int GameTimer::gameMinutes_;
 //クリア画面で表示する時間(6桁)

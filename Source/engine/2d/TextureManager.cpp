@@ -11,6 +11,7 @@
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
+using namespace NsEngine;
 
 //シェーダーリソース用のデスクリプタヒープ
 ComPtr<ID3D12DescriptorHeap> TextureManager::srvHeap_;

@@ -8,8 +8,10 @@
 #include "CollisionInfo.h"
 #include "Vector3.h"
 
-class BaseCollider;
-
+namespace NsEngine
+{
+	class BaseCollider;
+}
 /// <summary>
 /// オブジェクト
 /// 当たり判定をつけないこともできる
@@ -110,7 +112,7 @@ protected:	//メンバ変数
 	//クラス名(デバッグ用)
 	const char* name = nullptr;
 	//コライダー
-	BaseCollider* collider_ = nullptr;
+	NsEngine::BaseCollider* collider_ = nullptr;
 
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
@@ -259,7 +261,7 @@ public: //アクセッサ
 	/// コライダーのセット
 	/// </summary>
 	/// <param name="collider">コライダー</param>
-	void SetCollider(BaseCollider* collider);
+	void SetCollider(NsEngine::BaseCollider* collider);
 
 	//テンプレートコンストラクタ
 	template <typename Type1>

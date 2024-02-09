@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+using namespace NsEngine;
 
 SceneManager::SceneManager()
 {

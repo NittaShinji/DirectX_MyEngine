@@ -5,6 +5,8 @@
 #include "CollisionManager.h"
 #include "ObjectColor.h"
 
+using namespace NsEngine;
+
 std::unique_ptr<HitWall> HitWall::Create(const std::string& fileName)
 {
 	//オブジェクトのインスタンスを生成

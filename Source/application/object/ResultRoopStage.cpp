@@ -47,7 +47,7 @@ void ResultRoopStage::Update(Camera* camera, Vector3 playerPos, float roopArea)
 	{
 		isRoop_ = true;
 		roopCount_++;
-		RoopPosition();
+		SetRoopPosition();
 	}
 
 	Object3d::Update(camera);
@@ -67,7 +67,7 @@ void ResultRoopStage::Reset()
 	Object3d::UpdateWorldMatrix();
 }
 
-void ResultRoopStage::RoopPosition()
+void ResultRoopStage::SetRoopPosition()
 {
 	if(isRoop_ == true)
 	{

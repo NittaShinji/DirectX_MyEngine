@@ -5,6 +5,8 @@
 #include "GameSpeed.h"
 #include "ObjectAttribute.h"
 
+using namespace NsEngine;
+
 std::unique_ptr<GoalOBJ> GoalOBJ::Create(const std::string& fileName, const unsigned short coliderAttribute)
 {
 	//オブジェクトのインスタンスを生成

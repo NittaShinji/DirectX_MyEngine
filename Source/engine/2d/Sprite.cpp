@@ -13,9 +13,10 @@
 
 using namespace Microsoft::WRL;
 using namespace MathUtillty;
+using namespace NsEngine;
 
 SpriteCommon* Sprite::spriteCommon_ = nullptr;
-TextureManager* Sprite::textureManager_ = nullptr;
+NsEngine::TextureManager* Sprite::textureManager_ = nullptr;
 DirectXBasic* Sprite::directXBasic_ = nullptr;
 KeyInput* Sprite::keys_ = nullptr;
 Matrix4 Sprite::matProjection_;

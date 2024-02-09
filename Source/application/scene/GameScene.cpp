@@ -18,6 +18,7 @@
 #include "GameTimer.h"
 
 using namespace std;
+using namespace NsEngine;
 
 DirectXBasic* GameScene::directXBasic_ = nullptr;
 ImGuiManager* GameScene::imGuiManager_ = nullptr;

@@ -1,4 +1,5 @@
 #include "BaseScene.h"
+using namespace NsEngine;
 
 DirectXBasic* BaseScene::directXBasic_ = nullptr;
 ImGuiManager* BaseScene::imGuiManager_ = nullptr;

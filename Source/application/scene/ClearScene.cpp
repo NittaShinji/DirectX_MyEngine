@@ -6,6 +6,7 @@
 #include "GameTimer.h"
 
 using namespace MathUtillty;
+using namespace NsEngine;
 
 DirectXBasic* ClearScene::directXBasic_ = nullptr;
 ImGuiManager* ClearScene::imGuiManager_ = nullptr;

@@ -1,4 +1,5 @@
 #include "SoundManager.h"
+using namespace NsEngine;
 
 SoundManager::SoundManager() {}
 
