@@ -145,6 +145,8 @@ void GameScene::Update()
 	}
 #endif
 
+	tutorialEvent_->Update();
+
 	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{

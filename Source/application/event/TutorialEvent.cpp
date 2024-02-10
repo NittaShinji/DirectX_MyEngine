@@ -9,25 +9,25 @@ void TutorialEvent::Initialzie(Player* player)
 	const Vector2 kUiSize = { 128.0f,128.0f };
 
 	//ジャンプイベント設定
-	const float kStartJumpEventPos_ = 155;
-	const float kEndJumpEventPos_ = 190;
+	const float kStartJumpEventPos_ = 75;
+	const float kEndJumpEventPos_ = 110;
 	jumpEvent_ = std::make_unique<Event>();
 	jumpEvent_->Initialzie(kStartJumpEventPos_, kEndJumpEventPos_);
 	jumpEvent_->AddSprite("A.png", Vector2(586.0f, 296.0f), kUiSize);
 
-	const float kStartHighJumpEventPos_ = 250;
-	const float kEndHighJumpEventPos_ = 390;
+	const float kStartHighJumpEventPos_ = 185;
+	const float kEndHighJumpEventPos_ = 320;
 	hightJumpEvent_ = std::make_unique<Event>();
 	hightJumpEvent_->Initialzie(kStartHighJumpEventPos_, kEndHighJumpEventPos_);
 	hightJumpEvent_->AddSprite("A.png", Vector2(586.0f,296.0f), kUiSize);
 
-	const float kStartChangeColorEventPos_ = 505;
-	const float kEndChangeColorEventPos_ = 545;
+	const float kStartChangeColorEventPos_ = 650;
+	const float kEndChangeColorEventPos_ = 670;
 	changeColorEvent_ = std::make_unique<Event>();
 	changeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
 	changeColorEvent_->AddSprite("B.png", Vector2(586.0f, 296.0f), kUiSize);
 
-	const float kStartChangeAirEventPos_ = 590;
+	const float kStartChangeAirEventPos_ = 720;
 	const float kEndChangeAirEventPos_ = 880;
 	const Vector2 kChangeColorSpriteSize = {64.0f,64.0f};
 
