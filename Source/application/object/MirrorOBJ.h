@@ -32,7 +32,15 @@ private: //定数
 private: //メンバ変数
 
 	Object3d* object3d_;
+
+	int32_t stageNum_;
 	
 public: //アクセッサ
+
+	//ステージ数をセットする
+	void SetStageNum(int32_t stageNum) { stageNum_ = stageNum; };
+
+	//ステージ数を取得する
+	int32_t GetStageNum() { return stageNum_; };
 };
 

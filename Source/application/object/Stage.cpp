@@ -244,6 +244,9 @@ void Stage::Load()
 				scale = objectData.scaling;
 				newStageBlock->SetScale(scale);
 
+				//読み込んだステージのNoをセット
+				newStageBlock->SetStageNum(stageNum_);
+
 				//属性指定
 				if(objectData.attribute == "Pink")
 				{
@@ -272,7 +275,7 @@ void Stage::Load()
 				}
 
 				//色を指定
-				if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall" || objectData.fileName == "StageBlock")
+				if(objectData.fileName == "StageBlock")
 				{
 					if(newStageBlock->GetColorFlag() == false)
 					{
@@ -398,6 +401,7 @@ void Stage::Load()
 		mirrorStage = MirrorOBJ::Create(stageBlock.get());
 		mirrorStage->Initialize();
 		mirrorStage->SetInitPos(stageBlock.get()->GetInitPos());
+		mirrorStage->SetStageNum(stageNum_);
 		mirrorStageObjects_.push_back(std::move(mirrorStage));
 	}
 
@@ -464,6 +468,7 @@ void Stage::Reset()
 	//リセット時の読み込みの際に位置だけずらしたいので一回だけ読み込む
 	if(canResetLoadedStage_ == true)
 	{
+		//ステージの配置を移動
 		for(auto& stageBlock : stageBlocks_)
 		{	
 			stageBlock->SetTransform(Vector3(stageBlock->GetInitPos()));
@@ -535,9 +540,39 @@ void Stage::NextStageUpdate()
 
 void Stage::NextStageLoad()
 {
-	//前ステージの背景オブジェクトをクリア
+	//前ステージの背景オブジェクトを削除
 	blurbackGround_->Clear();
 	normalbackGround_->Clear();
+
+	//前ステージのステージオブジェクトを削除
+	int32_t stageBeforeBlockCount_ = 0;
+	for(auto& stageBlock : stageBlocks_)
+	{
+		//現在のステージ以外のステージブロックを数える
+		if(stageBlock->GetStageNum() != stageNum_)
+		{
+			stageBeforeBlockCount_++;
+		}
+	}
+	//現在のステージで使用しないステージブロックを削除
+	stageBlocks_.erase(stageBlocks_.begin(), stageBlocks_.begin() + stageBeforeBlockCount_);
+
+	int32_t mirrorStageBeforeBlockCount_ = 0;
+	for(auto& mirrorStageObject : mirrorStageObjects_)
+	{
+		//現在のステージ以外のステージブロックを削除
+		if(mirrorStageObject->GetStageNum() != stageNum_)
+		{
+			mirrorStageBeforeBlockCount_++;
+		}
+		else
+		{
+			mirrorStageObject->SetTransform(Vector3(mirrorStageObject->GetInitPos()));
+		}
+	}
+
+	//現在のステージで使用しないステージブロックを削除
+	mirrorStageObjects_.erase(mirrorStageObjects_.begin(), mirrorStageObjects_.begin() + mirrorStageBeforeBlockCount_);
 
 	//ループ終了
 	ResultRoopStage::SetIsFinishedRoopObjects(true);
