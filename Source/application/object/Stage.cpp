@@ -151,6 +151,9 @@ void Stage::Load()
 			scale = objectData.scaling;
 			roopStage->SetScale(scale);
 
+			//ステージ数をセット
+			roopStage->SetStageNum(stageNum_);
+
 			//属性指定
 			if(objectData.attribute == "RoopPink")
 			{
@@ -412,6 +415,7 @@ void Stage::Load()
 		mirrorObject = MirrorOBJ::Create(resultRoopStages_[i].get());
 		mirrorObject->Initialize();
 		mirrorObject->SetInitPos(resultRoopStages_[i].get()->GetInitPos());
+		mirrorObject->SetStageNum(stageNum_);
 		mirrorRoopObjects_.push_back(std::move(mirrorObject));
 	}
 }
@@ -574,6 +578,37 @@ void Stage::NextStageLoad()
 	//現在のステージで使用しないステージブロックを削除
 	mirrorStageObjects_.erase(mirrorStageObjects_.begin(), mirrorStageObjects_.begin() + mirrorStageBeforeBlockCount_);
 
+	int32_t roopStageBeforeBlockOBJ = 0;
+	const int32_t deleteStageNum = 2;
+	for(auto& resultRoopStage_ : resultRoopStages_)
+	{
+		//現在のステージ以外のステージブロックを削除
+		if(stageNum_ - resultRoopStage_->GetStageNum() >= deleteStageNum)
+		{
+			roopStageBeforeBlockOBJ++;
+		}
+	}
+
+	if(roopStageBeforeBlockOBJ > 0)
+	{
+		resultRoopStages_.erase(resultRoopStages_.begin(), resultRoopStages_.begin() + roopStageBeforeBlockOBJ);
+	}
+
+	int32_t mirrorRoopStageOBJCount = 0;
+	for(auto& mirrorRoopObject : mirrorRoopObjects_)
+	{
+		//現在のステージ以外のステージブロックを削除
+		if(stageNum_ - mirrorRoopObject->GetStageNum() >= deleteStageNum)
+		{
+			mirrorRoopStageOBJCount++;
+		}
+	}
+
+	if(mirrorRoopStageOBJCount > 0)
+	{
+		mirrorRoopObjects_.erase(mirrorRoopObjects_.begin(), mirrorRoopObjects_.begin() + mirrorRoopStageOBJCount);
+	}
+	
 	//ループ終了
 	ResultRoopStage::SetIsFinishedRoopObjects(true);
 

@@ -66,16 +66,23 @@ private:
 	
 	float initTransFormZ_;
 
+	//どのステージに所属しているか
+	int32_t stageNum_;
+
 public: //アクセッサ
 
 	static void SetRoopObjectNum(int32_t roopObjectNum) { roopObjectNum_ = roopObjectNum; }
 	void SetInitTransFormZ(float initTransFormZ) { initTransFormZ_ = initTransFormZ; }
 	void SetRoopCount(int32_t roopCount) { roopCount_ = roopCount; }
 	void SetIsRoop(bool isRoop) { isRoop_ = isRoop; }
-	static const float GetObjectRadius() { return objectRadius; }
-
+	//ステージ数をセットする
+	void SetStageNum(int32_t stageNum) { stageNum_ = stageNum; };
 	static void SetIsFinishedRoopObjects(bool isFinishedRoopObjects) { isFinishedRoopObjects_ = isFinishedRoopObjects; }
+
+	static const float GetObjectRadius() { return objectRadius; }
 	static int32_t GetRoopObjectNum() { return roopObjectNum_; }
 	bool GetIsRoop() { return isRoop_; }
+	//ステージ数を取得する
+	int32_t GetStageNum() { return stageNum_; };
 };
 
