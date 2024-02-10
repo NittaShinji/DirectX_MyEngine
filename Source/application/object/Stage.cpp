@@ -31,27 +31,27 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
  	blurbackGround_->Update(camera);
 	normalbackGround_->Update(camera);
 
- 	for(auto& object : objects_)
+ 	for(auto& stageBlock : stageBlocks_)
 	{
-		float distance = std::fabs(object->GetTransform().z - player->GetTransform().z);
+		float distance = std::fabs(stageBlock->GetTransform().z - player->GetTransform().z);
 		if(distance <= player_->GetCollisionArea())
 		{
-			object->AddCollider(object->GetModel());
+			stageBlock->AddCollider(stageBlock->GetModel());
 		}
 
-		if(object->GetModel()->GetName() == "StageBlock")
+		if(stageBlock->GetModel()->GetName() == "StageBlock")
 		{
-			if(object->GetAttributeColor() == Attribute::pink)
+			if(stageBlock->GetAttributeColor() == Attribute::pink)
 			{
-				object->SetColor(kDebugPinkOBJColor_);
+				stageBlock->SetColor(kDebugPinkOBJColor_);
 			}
-			else if(object->GetAttributeColor() == Attribute::yellow)
+			else if(stageBlock->GetAttributeColor() == Attribute::yellow)
 			{
-				object->SetColor(kDebugYellowOBJColor_);
+				stageBlock->SetColor(kDebugYellowOBJColor_);
 			}
 		}
 
-		object->Update(camera);
+		stageBlock->Update(camera);
 	}
 
 	for(size_t i = 0; i < walls_.size(); i++)
@@ -203,63 +203,64 @@ void Stage::Load()
 		else
 		{
 			//モデルを指定して3Dオブジェクトを作成
-			if(objectData.fileName == "sphere" || objectData.fileName == "skydome" || objectData.fileName == "Plane" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "StageBlock")
+			if(objectData.fileName == "StageBlock")
 			{
 				//3Dオブジェクトの生成
-				std::unique_ptr<TouchableObject> newObject = nullptr;
+				std::unique_ptr<StageBlock> newStageBlock = nullptr;
+
 				std::unique_ptr<MirrorOBJ> newMirrorObject = nullptr;
 
 				if(objectData.attribute == "Pink")
 				{
-					newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_PINK);
+					newStageBlock = StageBlock::Create(objectData.fileName, COLLISION_ATTR_PINK);
 				}
 				else if(objectData.attribute == "Yellow")
 				{
-					newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_YELLOW);
+					newStageBlock = StageBlock::Create(objectData.fileName, COLLISION_ATTR_YELLOW);
 				}
 				else if(objectData.attribute == "Goal")
 				{
-					newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_GOAL);
+					newStageBlock = StageBlock::Create(objectData.fileName, COLLISION_ATTR_GOAL);
 				}
 				else
 				{
-					newObject = TouchableObject::Create(objectData.fileName, COLLISION_ATTR_BLACK);
+					newStageBlock = StageBlock::Create(objectData.fileName, COLLISION_ATTR_BLACK);
 				}
 
 				//座標
-				newObject->SetInitPos(objectData.translation);
+				newStageBlock->SetInitPos(objectData.translation);
 				Vector3 pos;
 				pos = objectData.translation;
 				pos.z += stageEdge_;
-				newObject->SetTransform(pos);
+				newStageBlock->SetTransform(pos);
 
 				//回転角
 				Vector3 rot;
 				rot = objectData.rotation;
-				newObject->SetRotation(rot);
+				newStageBlock->SetRotation(rot);
 
 				//大きさ
 				Vector3 scale;
 				scale = objectData.scaling;
-				newObject->SetScale(scale);
+				newStageBlock->SetScale(scale);
 
 				//属性指定
 				if(objectData.attribute == "Pink")
 				{
-					newObject->SetAttributeColor(Attribute::pink);
+					newStageBlock->SetAttributeColor(Attribute::pink);
 				}
 				else if(objectData.attribute == "Yellow")
 				{
-					newObject->SetAttributeColor(Attribute::yellow);
+					newStageBlock->SetAttributeColor(Attribute::yellow);
 				}
 				else if(objectData.attribute == "Goal")
 				{
 					goalPos_ = pos;
-					newObject->SetAttributeColor(Attribute::Goal);
+					newStageBlock->SetAttributeColor(Attribute::Goal);
 				}
 				else
 				{
-					newObject->SetAttributeColor(Attribute::black);
+					newStageBlock->SetAttributeColor(Attribute::black);
 				}
 
 				//コライダーの設定
@@ -267,37 +268,37 @@ void Stage::Load()
 
 				if(distance > player_->GetCollisionArea())
 				{
-					newObject->RemoveCollider();
+					newStageBlock->RemoveCollider();
 				}
 
 				//色を指定
 				if(objectData.fileName == "sphere" || objectData.fileName == "testStage0" || objectData.fileName == "Cube" || objectData.fileName == "GoalWall" || objectData.fileName == "StageBlock")
 				{
-					if(newObject->GetColorFlag() == false)
+					if(newStageBlock->GetColorFlag() == false)
 					{
-						newObject->SetColorFlag(true);
+						newStageBlock->SetColorFlag(true);
 
-						if(newObject->GetAttributeColor() == Attribute::yellow)
+						if(newStageBlock->GetAttributeColor() == Attribute::yellow)
 						{
-							newObject->SetColor(Vector3(kDebugYellowOBJColor_));
+							newStageBlock->SetColor(Vector3(kDebugYellowOBJColor_));
 						}
-						else if(newObject->GetAttributeColor() == Attribute::pink)
+						else if(newStageBlock->GetAttributeColor() == Attribute::pink)
 						{
-							newObject->SetColor(Vector3(kDebugPinkOBJColor_));
+							newStageBlock->SetColor(Vector3(kDebugPinkOBJColor_));
 						}
 						else
 						{
-							newObject->SetColor(Vector3(kBlackOBJColor));
+							newStageBlock->SetColor(Vector3(kBlackOBJColor));
 						}
 					}
-					else if(newObject->GetColorFlag() == true)
+					else if(newStageBlock->GetColorFlag() == true)
 					{
-						newObject->SetColorFlag(false);
+						newStageBlock->SetColorFlag(false);
 					}
 				}
 
 				//配列に登録
-				objects_.push_back(std::move(newObject));
+				stageBlocks_.push_back(std::move(newStageBlock));
 			}
 		}
 
@@ -391,12 +392,12 @@ void Stage::Load()
 	//読み込み後にミラーオブジェクトを生成
 
 	//ミラーステージを生成
-	for(auto& object : objects_)
+	for(auto& stageBlock : stageBlocks_)
 	{
 		std::unique_ptr<MirrorOBJ> mirrorStage = nullptr;
-		mirrorStage = MirrorOBJ::Create(object.get());
+		mirrorStage = MirrorOBJ::Create(stageBlock.get());
 		mirrorStage->Initialize();
-		mirrorStage->SetInitPos(object.get()->GetInitPos());
+		mirrorStage->SetInitPos(stageBlock.get()->GetInitPos());
 		mirrorStageObjects_.push_back(std::move(mirrorStage));
 	}
 
@@ -415,9 +416,9 @@ void Stage::Draw()
 {
 	normalbackGround_->Draw();
 
-	for(auto& object : objects_)
+	for(auto& stageBlock : stageBlocks_)
 	{
-		object->Draw();
+		stageBlock->Draw();
 	}
 
 	for(auto& wall : walls_)
@@ -459,21 +460,17 @@ void Stage::Reset()
 	//ループ反射オブジェクトをクリア
 	mirrorRoopObjects_.clear();
 
-	//進んだステージから始まるようにステージの端を初期化
-	//stageEdge_ = 0.0f;
 	//新ステージを読み込む場合
 	//リセット時の読み込みの際に位置だけずらしたいので一回だけ読み込む
 	if(canResetLoadedStage_ == true)
 	{
-		for(auto& object : objects_)
-		{
-			//Vector3 initPos = object->GetInitPos();	
-			object->SetTransform(Vector3(object->GetInitPos()));
+		for(auto& stageBlock : stageBlocks_)
+		{	
+			stageBlock->SetTransform(Vector3(stageBlock->GetInitPos()));
 		}
 
 		for(auto& mirrorStageObject : mirrorStageObjects_)
 		{
-			/*Vector3 initPos = mirrorStageObject->GetInitPos();*/
 			mirrorStageObject->SetTransform(Vector3(mirrorStageObject->GetInitPos()));
 		}
 
@@ -482,20 +479,6 @@ void Stage::Reset()
 
 		blurbackGround_->ResetPos();
 		normalbackGround_->ResetPos();
-
-		/*objects_.clear();
-		mirrorStageObjects_.clear();
-		goal_.reset();*/
-
-		//Load();
-		/*for(auto& resultRoopStage : resultRoopStages_)
-		{
-			resultRoopStage->SetTransform(Vector3(resultRoopStage->GetInitPos()));
-		}
-		for(auto& mirrorRoopObject : mirrorRoopObjects_)
-		{
-			mirrorRoopObject->SetTransform(Vector3(mirrorRoopObject->GetInitPos()));
-		}*/
 
 		stageEdge_ = 0.0f;
 		canResetLoadedStage_ = false;

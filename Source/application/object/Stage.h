@@ -6,6 +6,7 @@
 #include "LevelManager.h"
 #include "ObjectAttribute.h"
 #include "BackGround.h"
+#include "StageBlock.h"
 
 class Camera;
 class Player;
@@ -83,7 +84,7 @@ private:
 	LevelData* levelData_ = nullptr;
 
 	//blender読み込みオブジェクト
-	std::vector<std::unique_ptr<TouchableObject>> objects_;
+	std::vector<std::unique_ptr<StageBlock>> stageBlocks_;
 	std::vector<std::unique_ptr<HitWall>> walls_;
 	std::vector<std::unique_ptr<ResultRoopStage>> resultRoopStages_;
 	std::vector<std::unique_ptr<MirrorOBJ>> mirrorRoopObjects_;
@@ -91,7 +92,6 @@ private:
 	std::unique_ptr<GoalOBJ> goal_;
 	std::unique_ptr<BackGround> blurbackGround_;
 	std::unique_ptr<BackGround> normalbackGround_;
-
 
 	Vector3 kDebugYellowOBJColor_;
 	Vector3 kDebugPinkOBJColor_;

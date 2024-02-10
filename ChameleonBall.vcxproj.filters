@@ -354,6 +354,9 @@
     <ClCompile Include="Source\engine\scene\SceneFactory.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
     </ClCompile>
+    <ClCompile Include="Source\application\object\StageBlock.cpp">
+      <Filter>ソース ファイル\application\object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -589,6 +592,9 @@
     </ClInclude>
     <ClInclude Include="Source\engine\scene\SceneFactory.h">
       <Filter>ヘッダー ファイル\engine\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\object\StageBlock.h">
+      <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
