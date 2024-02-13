@@ -132,7 +132,7 @@ void BillboardY::Update(Camera* camera)
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	constMap->viewProjection = matView_ * matProjection_;	// 行列の合成
-	//constMap->matBillboard = matBillboard;
+	constMap->matBillboard = matBillboard;
 	constBuff_->Unmap(0, nullptr);
 }
 

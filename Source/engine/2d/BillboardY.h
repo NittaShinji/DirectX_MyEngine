@@ -28,7 +28,7 @@ public: // サブクラス
 	struct ConstBufferData
 	{
 		Matrix4 viewProjection;	// ３Ｄ変換行列
-		//Matrix4 matBillboard;	// ビルボード行列
+		Matrix4 matBillboard;	// ビルボード行列
 	};
 
 	struct BillboardYSprite
