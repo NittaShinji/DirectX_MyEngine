@@ -46,11 +46,11 @@ ID3D12Device* BillboardY::device_ = nullptr;
 
 ComPtr<ID3D12RootSignature> BillboardY::rootSignature_;
 
-unsigned short BillboardY::indices[indexCount];
+BillboardY::Vertex BillboardY::vertices_[vertexCount];
 
 //定数バッファの生成
 template <typename Type1>
-ComPtr<ID3D12Resource> BillboardY::CrateConstBuff(Type1* directXBasic_)
+ComPtr<ID3D12Resource> BillboardY::CrateConstBuff(Type1* device)
 {
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
@@ -67,7 +67,7 @@ ComPtr<ID3D12Resource> BillboardY::CrateConstBuff(Type1* directXBasic_)
 
 	//定数バッファの生成
 	HRESULT result;
-	result = directXBasic_->GetDevice()->CreateCommittedResource(
+	result = device->CreateCommittedResource(
 		&cbHeapProp,//ヒープ設定
 		D3D12_HEAP_FLAG_NONE,
 		&cbResourceDesc,//リソース設定
@@ -79,20 +79,22 @@ ComPtr<ID3D12Resource> BillboardY::CrateConstBuff(Type1* directXBasic_)
 	return constBuff_;
 }
 
-void BillboardY::Initialize(ID3D12Device* device)
+void BillboardY::Initialize(BillboardType billboardType)
 {
-	device_ = device;
+	// nullptrチェック
+	assert(device_);
 
 	//定数バッファの生成
-	constBuff_ = CrateConstBuff<DirectXBasic>(directXBasic_);
+	constBuff_ = CrateConstBuff<ID3D12Device>(device_);
 	
 	//定数バッファのマッピング
 	HRESULT result;
 	result = constBuff_->Map(0, nullptr, (void**)&constMapData_);//マッピング
 	assert(SUCCEEDED(result));
 
-	CreateVertBuff();
+	CreateModel();
 
+	billboardType_ = billboardType;
 	rotation_ = 0.0f;
 }
 
@@ -105,10 +107,18 @@ void BillboardY::Update(Camera* camera)
 	//射影変換行列
 	matProjection_ = camera->GetMatProjection();
 
-	//ビルボード行列
 	Matrix4 matBillboard = MatrixIdentity();
-	matBillboard = camera->GetMatBillboard();
 
+	//ビルボード行列
+	if(billboardType_ == BillboardType::AllDirection)
+	{
+		matBillboard = camera->GetMatBillboard();
+	}
+	else
+	{
+		matBillboard = camera->GetMatBillboardY();
+	}
+	
 	//頂点バッファへデータ転送
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
@@ -122,7 +132,7 @@ void BillboardY::Update(Camera* camera)
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
 	constMap->viewProjection = matView_ * matProjection_;	// 行列の合成
-	constMap->matBillboard = matBillboard;
+	//constMap->matBillboard = matBillboard;
 	constBuff_->Unmap(0, nullptr);
 }
 
@@ -160,9 +170,7 @@ void BillboardY::Draw()
 	cmdList_->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 	// 描画コマンド
-	//cmdList_->DrawInstanced(_countof(vertices), 1, 0, 0);
-	// 描画コマンド
-	cmdList_->DrawIndexedInstanced(_countof(indices), 1, 0, 0, 0);
+	cmdList_->DrawInstanced(_countof(vertices_), 1, 0, 0);
 }
 
 std::unique_ptr<BillboardY> BillboardY::Create(std::string fileName)
@@ -190,7 +198,7 @@ void  BillboardY::InitializeGraphicsPipeline()
 
 	// 頂点シェーダの読み込みとコンパイル
 	HRESULT result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticleVS.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/BasicVertexShader.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -214,7 +222,7 @@ void  BillboardY::InitializeGraphicsPipeline()
 
 	// ジオメトリシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticleGS.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/BasicGeometryShader.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -239,7 +247,7 @@ void  BillboardY::InitializeGraphicsPipeline()
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticlePS.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/BasicPixelShader.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -269,27 +277,6 @@ void  BillboardY::InitializeGraphicsPipeline()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
-
-		{
-			//法線ベクトル
-			"TEXCOORD",0,DXGI_FORMAT_R32_FLOAT,0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		},
-
-		{
-			// uv座標
-			"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
-
-		{
-			//回転
-			"ROTATE",0,DXGI_FORMAT_R32_FLOAT,0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
-		}
 	};
 
 	// グラフィックスパイプラインの流れを設定
@@ -426,14 +413,10 @@ void BillboardY::InitializeDescriptorHeap()
 
 	// デスクリプタサイズを取得
 	descriptorHandleIncrementSize_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
 }
 
-void BillboardY::PreDraw(ID3D12GraphicsCommandList* cmdList)
+void BillboardY::PreDraw()
 {
-	// コマンドリストをセット
-	BillboardY::cmdList_ = cmdList;
-
 	//パイプラインのセット
 	cmdList_->SetPipelineState(pipelineState_.Get());
 	//ルートシグネチャのセット
@@ -448,21 +431,27 @@ void BillboardY::PostDraw()
 	BillboardY::cmdList_ = nullptr;
 }
 
-void BillboardY::StaticInitialize()
+void BillboardY::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdlist)
 {
-	// デスクリプタヒープの初期化
-	InitializeDescriptorHeap();
+	device_ = device;
+	cmdList_ = cmdlist;
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
 }
 
-void BillboardY::CreateVertBuff()
+void BillboardY::CreateModel()
 {
 	HRESULT result;
 	result = S_FALSE;
 
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * kVertexCount);
+	Vertex verticesPoint[] =
+	{
+		{{0.0f,0.0f,0.0f}}
+	};
+
+	std::copy(std::begin(verticesPoint), std::end(verticesPoint), vertices_);
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices_));
 
 	// ヒーププロパティ
 	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定

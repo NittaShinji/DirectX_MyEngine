@@ -60,5 +60,7 @@ public:
 	const Matrix4& GetMatProjection() const { return matProjection_; }
 	const Vector3& GetEye() const { return eye_; }
 	const Matrix4& GetMatBillboard() const { return matBillboard; }
+	const Matrix4& GetMatBillboardY() const { return matBillboardY; }
+
 };
 

@@ -57,8 +57,6 @@ void TitleScene::Initialize()
 	Vector2 backGroundPosition = { 0.0f,0.0f };
 	const int32_t backGroundWidth = 1280;
 	const int32_t backGroundHeight = 720;
-	//const int32_t divide2 = 2;
-	//const int32_t divide3 = 3;
 	
 	const Vector4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, whiteColor, "WhiteTex");

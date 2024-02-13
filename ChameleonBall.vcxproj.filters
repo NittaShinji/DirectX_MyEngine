@@ -620,6 +620,7 @@
     <None Include="Resources\Shaders\Particle.hlsli">
       <Filter>リソース ファイル\Shaders</Filter>
     </None>
+    <None Include="Resources\Shaders\BasicShaderHeader.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
@@ -658,6 +659,9 @@
     <FxCompile Include="Resources\Shaders\ParticleVS.hlsl">
       <Filter>リソース ファイル\Shaders</Filter>
     </FxCompile>
+    <FxCompile Include="Resources\Shaders\BasicGeometryShader.hlsl" />
+    <FxCompile Include="Resources\Shaders\BasicPixelShader.hlsl" />
+    <FxCompile Include="Resources\Shaders\BasicVertexShader.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChameleonBall.rc">

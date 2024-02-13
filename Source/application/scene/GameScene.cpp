@@ -32,6 +32,7 @@ void GameScene::StaticInitialize()
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
+	BillboardY::StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 	ParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 	ObjParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 }
@@ -113,6 +114,11 @@ void GameScene::Initialize()
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
 	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
 	tutorialEvent_->Initialzie(player_.get());
+
+	//テストビルボード
+	testBillborad_ = BillboardY::Create("A.png");
+	testBillborad_->Initialize(BillboardY::BillboardType::Yaxis);
+
 }
 
 void GameScene::Update()
@@ -226,6 +232,8 @@ void GameScene::Update()
 	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(),stage_->GetIsPlayerReachedStageEdge());
 
 	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY());
+
+	testBillborad_->Update(gameCamera_.get());
 
 	resultSprite_->Update();
 
@@ -366,6 +374,10 @@ void GameScene::Draw()
 
 	resultSprite_->Draw();
 	GameTimer::GetInstance()->ResultDraw();
+
+	//3Dオブジェクト描画
+	BillboardY::PreDraw();
+	testBillborad_->Draw();
 
 	//デバッグテキストの描画
 	imGuiManager_->Draw();

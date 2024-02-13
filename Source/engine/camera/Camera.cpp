@@ -127,6 +127,39 @@ void Camera::UpdateViewMatrix()
 	matBillboard.m[3][3] = 1;
 
 #pragma endregion
+
+#pragma region Y軸周りビルボード行列の計算
+	//カメラX,Y,Z軸
+	Vector3 ybillCameraAxisX;
+	Vector3 ybillCameraAxisY;
+	Vector3 ybillCameraAxisZ;
+
+	//X軸は共通
+	ybillCameraAxisX = cameraAxisX;
+	//Y軸はワールド座標系のY軸
+	ybillCameraAxisY = Vector3Normalize(vecUp);
+	//Z軸はX軸→Y軸の外積で求まる
+	ybillCameraAxisZ = Vector3Cross(cameraAxisX, cameraAxisZ);
+
+	//Y軸周りビルボード行列
+	matBillboardY.m[0][0] = ybillCameraAxisX.x;
+	matBillboardY.m[0][1] = ybillCameraAxisX.y;
+	matBillboardY.m[0][2] = ybillCameraAxisX.z;
+
+	matBillboardY.m[1][0] = ybillCameraAxisY.x;
+	matBillboardY.m[1][1] = ybillCameraAxisY.y;
+	matBillboardY.m[1][2] = ybillCameraAxisY.z;
+
+	matBillboardY.m[2][0] = ybillCameraAxisZ.x;
+	matBillboardY.m[2][1] = ybillCameraAxisZ.y;
+	matBillboardY.m[2][2] = ybillCameraAxisZ.z;
+
+	matBillboardY.m[3][0] = 0;
+	matBillboardY.m[3][1] = 0;
+	matBillboardY.m[3][2] = 0;
+	matBillboardY.m[3][3] = 1;
+#pragma endregion
+
 }
 
 void Camera::UpdateProjectionMatrix()

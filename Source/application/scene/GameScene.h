@@ -27,6 +27,7 @@
 #include "TutorialEvent.h"
 #include "GameSprite.h"
 #include "ResultSprite.h"
+#include "BillboardY.h"
 
 namespace NsEngine
 {
@@ -148,6 +149,9 @@ private:
 
 	//リザルト画像
 	std::unique_ptr<ResultSprite> resultSprite_ = nullptr;
+
+	//テストビルボード
+	std::unique_ptr<BillboardY> testBillborad_ = nullptr;
 
 	int32_t nextStageNum_ = 0;
 };

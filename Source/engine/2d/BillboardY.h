@@ -22,16 +22,13 @@ public: // サブクラス
 	struct Vertex
 	{
 		Vector3 pos;		// xyz座標
-		float scale;		// 大きさ
-		Vector4 color;		// 色
-		float rotate;		//　回転
 	};
 
 	// 定数バッファ用データ構造体
 	struct ConstBufferData
 	{
 		Matrix4 viewProjection;	// ３Ｄ変換行列
-		Matrix4 matBillboard;	// ビルボード行列
+		//Matrix4 matBillboard;	// ビルボード行列
 	};
 
 	struct BillboardYSprite
@@ -44,13 +41,19 @@ public: // サブクラス
 		float scale = 1.0f;
 	};
 
+	enum class BillboardType
+	{
+		AllDirection,
+		Yaxis,
+	};
+
 public: // メンバ関数
 
 	//静的インスタンスを生成
 	static std::unique_ptr<BillboardY> Create(std::string fileName);
 
 	//初期化
-	virtual void Initialize(ID3D12Device* device);
+	virtual void Initialize(BillboardType billboardType_);
 
 	/// <summary>
 	/// グラフィックパイプライン生成
@@ -64,13 +67,13 @@ public: // メンバ関数
 	static void InitializeDescriptorHeap();
 
 	//描画前処理
-	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
+	static void PreDraw();
 
 	//描画後処理
 	static void PostDraw();
 
 	//静的初期化
-	static void StaticInitialize();
+	static void StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdlist);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -82,8 +85,8 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	//頂点バッファの生成
-	void CreateVertBuff();
+	//板ポリモデルを生成
+	void CreateModel();
 
 	//テンプレートコンストラクタ
 	template <typename Type1>
@@ -91,12 +94,8 @@ public: // メンバ関数
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
 
 private: // 定数
-	static const int division = 50;					// 分割数
-	static const float radius;				// 底面の半径
-	static const float prizmHeight;			// 柱の高さ
-	static const int planeCount = division * 2 + division * 2;		// 面の数
-	static const int indexCount = 3 * 2;		// インデックス数
-	static const int vertexCount = 4;		// 頂点数
+
+	static const int vertexCount = 1;		// 頂点数
 
 private:
 
@@ -112,7 +111,7 @@ private:
 	ComPtr<ID3D12Resource> texbuff_;
 
 	//頂点データ配列
-	std::vector<Vertex> vertices_;
+	static Vertex vertices_[vertexCount];
 
 	// デスクリプタヒープ
 	static ComPtr<ID3D12DescriptorHeap> descHeap_;
@@ -145,9 +144,6 @@ private:
 	// 頂点バッファビュー
 	D3D12_VERTEX_BUFFER_VIEW vbView_ = {};
 
-	// 頂点インデックス配列
-	static unsigned short indices[indexCount];
-
 protected:
 
 	//ジオメトリシェーダーオブジェクト
@@ -171,6 +167,9 @@ protected:
 
 	//ゲームスピード
 	GameSpeed* gameSpeed_ = nullptr;
+
+	//ビルボードの型
+	BillboardType billboardType_;
 
 public: //アクセッサ
 
