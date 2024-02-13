@@ -139,7 +139,6 @@ void Object3d::UpdateWorldMatrix()
 
 void Object3d::InitializeGraphicsPipeline()
 {
-
 	HRESULT result;
 
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト

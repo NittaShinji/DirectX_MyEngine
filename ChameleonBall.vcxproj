@@ -100,6 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\engine\2d\BillboardY.cpp" />
     <ClCompile Include="Source\application\debugText\ImGuiManager.cpp" />
     <ClCompile Include="Source\application\object\MirrorOBJ.cpp" />
     <ClCompile Include="Source\application\sprite\ResultSprite.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="Source\application\object\StageBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\engine\2d\BillboardY.h" />
     <ClInclude Include="Source\application\debugText\ImGuiManager.h" />
     <ClInclude Include="Source\application\object\MirrorOBJ.h" />
     <ClInclude Include="Source\application\sprite\ResultSprite.h" />
