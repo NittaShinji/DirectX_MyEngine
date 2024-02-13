@@ -6,10 +6,11 @@
 #include <forward_list>
 
 /// <summary>
-/// Y軸ビルボール
+/// ビルボード
+/// 3D空間場内に出す、2D画像
 /// </summary>
 
-class BillboardY
+class Billboard
 {
 
 private: // エイリアス
@@ -50,7 +51,7 @@ public: // サブクラス
 public: // メンバ関数
 
 	//静的インスタンスを生成
-	static std::unique_ptr<BillboardY> Create(std::string fileName);
+	static std::unique_ptr<Billboard> Create(std::string fileName);
 
 	//初期化
 	virtual void Initialize(BillboardType billboardType_);
@@ -169,7 +170,7 @@ protected:
 	GameSpeed* gameSpeed_ = nullptr;
 
 	//ビルボードの型
-	BillboardType billboardType_;
+	BillboardType billBoardType_;
 
 public: //アクセッサ
 

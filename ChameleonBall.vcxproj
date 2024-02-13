@@ -100,7 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\engine\2d\BillboardY.cpp" />
+    <ClCompile Include="Source\engine\2d\Billboard.cpp" />
     <ClCompile Include="Source\application\debugText\ImGuiManager.cpp" />
     <ClCompile Include="Source\application\object\MirrorOBJ.cpp" />
     <ClCompile Include="Source\application\sprite\ResultSprite.cpp" />
@@ -172,7 +172,7 @@
     <ClCompile Include="Source\application\object\StageBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\engine\2d\BillboardY.h" />
+    <ClInclude Include="Source\engine\2d\Billboard.h" />
     <ClInclude Include="Source\application\debugText\ImGuiManager.h" />
     <ClInclude Include="Source\application\object\MirrorOBJ.h" />
     <ClInclude Include="Source\application\sprite\ResultSprite.h" />
@@ -256,20 +256,20 @@
   <ItemGroup>
     <None Include=".editorconfig" />
     <None Include="Resources\Shaders\Basic.hlsli" />
-    <None Include="Resources\Shaders\BasicShaderHeader.hlsli" />
+    <None Include="Resources\Shaders\BillBoard.hlsli" />
     <None Include="Resources\Shaders\Object3D.hlsli" />
     <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include="Resources\Shaders\PostEffect.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\Shaders\BasicGeometryShader.hlsl">
+    <FxCompile Include="Resources\Shaders\BillBoardGS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Geometry</ShaderType>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\BasicPixelShader.hlsl">
+    <FxCompile Include="Resources\Shaders\BillBoardPS.hlsl">
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
@@ -281,7 +281,7 @@
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
     </FxCompile>
-    <FxCompile Include="Resources\Shaders\BasicVertexShader.hlsl">
+    <FxCompile Include="Resources\Shaders\BillBoardVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>

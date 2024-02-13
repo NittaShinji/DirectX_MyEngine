@@ -1,4 +1,4 @@
-#include "BillboardY.h"
+#include "Billboard.h"
 #include "ImGuiManager.h"
 #include "TextureManager.h"
 
@@ -22,35 +22,35 @@ using namespace NsEngine;
 /// </summary>
 
 //SRV用のデスクリプタヒープ
-ComPtr<ID3D12DescriptorHeap> BillboardY::descHeap_;
+ComPtr<ID3D12DescriptorHeap> Billboard::descHeap_;
 //デスクリプタヒープハンドル
-D3D12_CPU_DESCRIPTOR_HANDLE BillboardY::sSrvHandle_;
+D3D12_CPU_DESCRIPTOR_HANDLE Billboard::sSrvHandle_;
 // デスクリプタサイズ
-UINT BillboardY::descriptorHandleIncrementSize_;
+UINT Billboard::descriptorHandleIncrementSize_;
 
 //テクスチャ番号
-uint32_t BillboardY::sTextureIndex_;
+uint32_t Billboard::sTextureIndex_;
 
 // シェーダリソースビューのハンドル(CPU)
-D3D12_CPU_DESCRIPTOR_HANDLE BillboardY::cpuDescHandleSRV_;
+D3D12_CPU_DESCRIPTOR_HANDLE Billboard::cpuDescHandleSRV_;
 // シェーダリソースビューのハンドル(GPU)
-D3D12_GPU_DESCRIPTOR_HANDLE BillboardY::gpuDescHandleSRV_;
+D3D12_GPU_DESCRIPTOR_HANDLE Billboard::gpuDescHandleSRV_;
 
-ComPtr<ID3D12PipelineState> BillboardY::pipelineState_;
+ComPtr<ID3D12PipelineState> Billboard::pipelineState_;
 
-D3D12_GRAPHICS_PIPELINE_STATE_DESC BillboardY::pipelineDesc_;
+D3D12_GRAPHICS_PIPELINE_STATE_DESC Billboard::pipelineDesc_;
 
-ID3D12GraphicsCommandList* BillboardY::cmdList_;
+ID3D12GraphicsCommandList* Billboard::cmdList_;
 
-ID3D12Device* BillboardY::device_ = nullptr;
+ID3D12Device* Billboard::device_ = nullptr;
 
-ComPtr<ID3D12RootSignature> BillboardY::rootSignature_;
+ComPtr<ID3D12RootSignature> Billboard::rootSignature_;
 
-BillboardY::Vertex BillboardY::vertices_[vertexCount];
+Billboard::Vertex Billboard::vertices_[vertexCount];
 
 //定数バッファの生成
 template <typename Type1>
-ComPtr<ID3D12Resource> BillboardY::CrateConstBuff(Type1* device)
+ComPtr<ID3D12Resource> Billboard::CrateConstBuff(Type1* device)
 {
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
@@ -79,7 +79,7 @@ ComPtr<ID3D12Resource> BillboardY::CrateConstBuff(Type1* device)
 	return constBuff_;
 }
 
-void BillboardY::Initialize(BillboardType billboardType)
+void Billboard::Initialize(BillboardType BillboardType)
 {
 	// nullptrチェック
 	assert(device_);
@@ -94,11 +94,11 @@ void BillboardY::Initialize(BillboardType billboardType)
 
 	CreateModel();
 
-	billboardType_ = billboardType;
+	billBoardType_ = BillboardType;
 	rotation_ = 0.0f;
 }
 
-void BillboardY::Update(Camera* camera)
+void Billboard::Update(Camera* camera)
 {
 	HRESULT result;
 
@@ -110,7 +110,7 @@ void BillboardY::Update(Camera* camera)
 	Matrix4 matBillboard = MatrixIdentity();
 
 	//ビルボード行列
-	if(billboardType_ == BillboardType::AllDirection)
+	if(billBoardType_ == BillboardType::AllDirection)
 	{
 		matBillboard = camera->GetMatBillboard();
 	}
@@ -136,7 +136,7 @@ void BillboardY::Update(Camera* camera)
 	constBuff_->Unmap(0, nullptr);
 }
 
-void BillboardY::Draw()
+void Billboard::Draw()
 {
 	// nullptrチェック
 	assert(cmdList_);
@@ -173,11 +173,11 @@ void BillboardY::Draw()
 	cmdList_->DrawInstanced(_countof(vertices_), 1, 0, 0);
 }
 
-std::unique_ptr<BillboardY> BillboardY::Create(std::string fileName)
+std::unique_ptr<Billboard> Billboard::Create(std::string fileName)
 {
 	// 3Dオブジェクトのインスタンスを生成
-	std::unique_ptr<BillboardY> instance = nullptr;
-	instance = std::make_unique<BillboardY>();
+	std::unique_ptr<Billboard> instance = nullptr;
+	instance = std::make_unique<Billboard>();
 
 	if(instance == nullptr)
 	{
@@ -189,7 +189,7 @@ std::unique_ptr<BillboardY> BillboardY::Create(std::string fileName)
 	return instance;
 }
 
-void  BillboardY::InitializeGraphicsPipeline()
+void  Billboard::InitializeGraphicsPipeline()
 {
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
 	ComPtr<ID3D10Blob> gsBlob;	//ジオメトリシェーダーオブジェクト
@@ -198,7 +198,7 @@ void  BillboardY::InitializeGraphicsPipeline()
 
 	// 頂点シェーダの読み込みとコンパイル
 	HRESULT result = D3DCompileFromFile(
-		L"Resources/Shaders/BasicVertexShader.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/BillBoardVS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -222,7 +222,7 @@ void  BillboardY::InitializeGraphicsPipeline()
 
 	// ジオメトリシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/BasicGeometryShader.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/BillBoardGS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -247,7 +247,7 @@ void  BillboardY::InitializeGraphicsPipeline()
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/BasicPixelShader.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/BillBoardPS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
@@ -395,7 +395,7 @@ void  BillboardY::InitializeGraphicsPipeline()
 
 }
 
-void BillboardY::InitializeDescriptorHeap()
+void Billboard::InitializeDescriptorHeap()
 {
 	HRESULT result;
 	result = S_FALSE;
@@ -415,7 +415,7 @@ void BillboardY::InitializeDescriptorHeap()
 	descriptorHandleIncrementSize_ = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
-void BillboardY::PreDraw()
+void Billboard::PreDraw()
 {
 	//パイプラインのセット
 	cmdList_->SetPipelineState(pipelineState_.Get());
@@ -425,13 +425,13 @@ void BillboardY::PreDraw()
 	cmdList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 }
 
-void BillboardY::PostDraw()
+void Billboard::PostDraw()
 {
 	// コマンドリストを解除
-	BillboardY::cmdList_ = nullptr;
+	Billboard::cmdList_ = nullptr;
 }
 
-void BillboardY::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdlist)
+void Billboard::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandList* cmdlist)
 {
 	device_ = device;
 	cmdList_ = cmdlist;
@@ -440,7 +440,7 @@ void BillboardY::StaticInitialize(ID3D12Device* device, ID3D12GraphicsCommandLis
 	InitializeGraphicsPipeline();
 }
 
-void BillboardY::CreateModel()
+void Billboard::CreateModel()
 {
 	HRESULT result;
 	result = S_FALSE;

@@ -32,7 +32,7 @@ void GameScene::StaticInitialize()
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
-	BillboardY::StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
+	Billboard::StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 	ParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 	ObjParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 }
@@ -116,8 +116,8 @@ void GameScene::Initialize()
 	tutorialEvent_->Initialzie(player_.get());
 
 	//テストビルボード
-	testBillborad_ = BillboardY::Create("A.png");
-	testBillborad_->Initialize(BillboardY::BillboardType::Yaxis);
+	testBillborad_ = Billboard::Create("A.png");
+	testBillborad_->Initialize(Billboard::BillboardType::Yaxis);
 
 }
 
@@ -376,7 +376,7 @@ void GameScene::Draw()
 	GameTimer::GetInstance()->ResultDraw();
 
 	//3Dオブジェクト描画
-	BillboardY::PreDraw();
+	Billboard::PreDraw();
 	testBillborad_->Draw();
 
 	//デバッグテキストの描画
