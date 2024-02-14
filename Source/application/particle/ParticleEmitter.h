@@ -26,7 +26,7 @@ public: // サブクラス
 		Vector3 pos;		// xyz座標
 		float scale;		// 大きさ
 		Vector4 color;		// 色
-		float rotate;
+		float rotate;		// 回転
 	};
 
 	// 定数バッファ用データ構造体
@@ -79,11 +79,6 @@ public: // メンバ関数
 	/// </summary>
 	/// <returns>成否</returns>
 	void InitializeGraphicsPipeline();
-
-	/// <summary>
-	/// デスクリプタヒープの初期化
-	/// </summary>
-	void InitializeDescriptorHeap();
 
 	//描画前処理
 	static void PreDraw(ID3D12GraphicsCommandList* cmdList);

@@ -5,6 +5,7 @@
 #include "GamePad.h"
 #include "GameSpeed.h"
 #include "ParticleEmitter.h"
+#include "Billboard.h"
 #include <stdint.h>
 
 /// <summary>
@@ -20,11 +21,13 @@ public:
 	//初期化
 	void Initialzie(float startPos, float endPos);
 	//更新
-	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo);
+	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera);
 	//描画
 	void Draw();
 	//画像をセット
-	void AddSprite(std::string fileName, Vector2 position,Vector2 size);
+	void AddSprite(const std::string& fileName, const Vector2& position,const Vector2& size);
+	//ビルボードをセット
+	void AddBillboard(const std::string& fileName, const Billboard::BillboardType& billBoardtype, const Vector3& position,float scale,const Vector4& color);
 	//リセット
 	void Reset();
 
@@ -44,8 +47,7 @@ private:
 	float finishPos_;
 	//イベントボタン画像
 	std::vector<std::unique_ptr<Sprite>> eventButtonSprites_;
-
-	//イベントパーティクル
-	//std::unique_ptr<ParticleEmitter> particleEmitter_ = nullptr;
+	//イベントビルボード画像
+	std::vector<std::unique_ptr<Billboard>> eventBillboard_;
 };
 

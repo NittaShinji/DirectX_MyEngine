@@ -79,7 +79,7 @@ ComPtr<ID3D12Resource> Billboard::CrateConstBuff(Type1* device)
 	return constBuff_;
 }
 
-void Billboard::Initialize(BillboardType BillboardType)
+void Billboard::Initialize()
 {
 	// nullptrチェック
 	assert(device_);
@@ -94,8 +94,10 @@ void Billboard::Initialize(BillboardType BillboardType)
 
 	CreateModel();
 
-	billBoardType_ = BillboardType;
-	rotation_ = 0.0f;
+	rotate_ = 0.0f;
+	scale_ = 1.0f;
+	const Vector4 defaultColor = { 1.0f,1.0f,1.0f,1.0f };
+	color_ = defaultColor;
 }
 
 void Billboard::Update(Camera* camera)
@@ -123,10 +125,15 @@ void Billboard::Update(Camera* camera)
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 
+	vertMap->pos = pos_;
+	vertMap->scale = scale_;
+	vertMap->rotate = rotate_;
+	vertMap->color = color_;
+
 	vertBuff_->Unmap(0, nullptr);
 
 	Matrix4 matRot = MatrixIdentity();
-	matRot *= MatrixRotateZ(rotation_);
+	matRot *= MatrixRotateZ(rotate_);
 
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
@@ -173,7 +180,7 @@ void Billboard::Draw()
 	cmdList_->DrawInstanced(_countof(vertices_), 1, 0, 0);
 }
 
-std::unique_ptr<Billboard> Billboard::Create(std::string fileName)
+std::unique_ptr<Billboard> Billboard::Create(std::string fileName,Billboard::BillboardType billboardType)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	std::unique_ptr<Billboard> instance = nullptr;
@@ -185,6 +192,8 @@ std::unique_ptr<Billboard> Billboard::Create(std::string fileName)
 	}
 
 	instance->fileName_ = fileName;
+	instance->billBoardType_ = billboardType;
+	instance->Initialize();
 
 	return instance;
 }
@@ -277,6 +286,25 @@ void  Billboard::InitializeGraphicsPipeline()
 			D3D12_APPEND_ALIGNED_ELEMENT,
 			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
 		},
+		{
+			//スケール
+			"SCALE",0,DXGI_FORMAT_R32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		},
+		{
+			// uv座標
+			"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+		},
+
+		{
+			//回転
+			"ROTATE",0,DXGI_FORMAT_R32_FLOAT,0,
+			D3D12_APPEND_ALIGNED_ELEMENT,
+			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0
+		}
 	};
 
 	// グラフィックスパイプラインの流れを設定

@@ -16,7 +16,7 @@ public:
 	//初期化
 	void Initialzie(Player* player);
 	//更新
-	void Update();
+	void Update(Camera* camera);
 	//描画
 	void Draw();
 	

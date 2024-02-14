@@ -264,6 +264,7 @@ void GameTimer::Reset()
 
 void GameTimer::InGameDraw()
 {
+	SpriteCommon::GetInstance()->BeforeDraw();
 	//ゲーム中の数字・ドットを描画
 	stopWatch_->Draw("StopWatch.png");
 
@@ -276,6 +277,7 @@ void GameTimer::InGameDraw()
 }
 void GameTimer::ResultDraw()
 {
+	SpriteCommon::GetInstance()->BeforeDraw();
 	//リザルト画面の数字・ドットを描画
 	for(int i = 0; i < kTimerDigits_; i++)
 	{

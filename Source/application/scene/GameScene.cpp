@@ -116,9 +116,7 @@ void GameScene::Initialize()
 	tutorialEvent_->Initialzie(player_.get());
 
 	//テストビルボード
-	testBillborad_ = Billboard::Create("A.png");
-	testBillborad_->Initialize(Billboard::BillboardType::Yaxis);
-
+	testBillborad_ = Billboard::Create("A.png", Billboard::BillboardType::Yaxis);
 }
 
 void GameScene::Update()
@@ -151,7 +149,7 @@ void GameScene::Update()
 	}
 #endif
 
-	tutorialEvent_->Update();
+	tutorialEvent_->Update(gameCamera_.get());
 
 	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))

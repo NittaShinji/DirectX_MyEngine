@@ -27,25 +27,29 @@ void TutorialEvent::Initialzie(Player* player)
 	changeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
 	changeColorEvent_->AddSprite("B.png", Vector2(586.0f, 296.0f), kUiSize);
 
-	const float kStartChangeAirEventPos_ = 720;
-	const float kEndChangeAirEventPos_ = 880;
+	const float kStartChangeAirEventPos_ = 700;
+	const float kEndChangeAirEventPos_ = 1120;
 	const Vector2 kChangeColorSpriteSize = {64.0f,64.0f};
 
 	changeInAirEvent_ = std::make_unique<Event>();
 	changeInAirEvent_->Initialzie(kStartChangeAirEventPos_, kEndChangeAirEventPos_);
-	changeInAirEvent_->AddSprite("arrow.png", Vector2(640.0f, 296.0f), kChangeColorSpriteSize);
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,3.0f,800.0f),3.0f,Vector4(1.0f,1.0f,1.0f,0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,3.0f,910.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,1030.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,1080.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,1120.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
 }
 
-void TutorialEvent::Update()
+void TutorialEvent::Update(Camera* camera)
 {
 	float playerPosZ = player_->GetTransform().z;
 
 	if(player_->GetIsDead() == false)
 	{
-		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE);
-		hightJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE);
-		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN);
-		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_B, DIK_RETURN);
+		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		hightJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera);
+		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera);
 	}
 }
 
@@ -56,6 +60,6 @@ void TutorialEvent::Draw()
 		jumpEvent_->Draw();
 		hightJumpEvent_->Draw();
 		changeColorEvent_->Draw();
-		changeInAirEvent_->Draw();
+ 		changeInAirEvent_->Draw();
 	}
 }

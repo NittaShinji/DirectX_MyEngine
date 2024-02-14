@@ -23,6 +23,9 @@ public: // サブクラス
 	struct Vertex
 	{
 		Vector3 pos;		// xyz座標
+		float scale;		// スケール
+		Vector4 color;		// 色
+		float rotate;		// 回転角
 	};
 
 	// 定数バッファ用データ構造体
@@ -30,16 +33,6 @@ public: // サブクラス
 	{
 		Matrix4 viewProjection;	// ３Ｄ変換行列
 		Matrix4 matBillboard;	// ビルボード行列
-	};
-
-	struct BillboardYSprite
-	{
-		//座標
-		Vector3 position = {};
-		//回転
-		float rotation = 0.0f;
-		//スケール
-		float scale = 1.0f;
 	};
 
 	enum class BillboardType
@@ -51,10 +44,10 @@ public: // サブクラス
 public: // メンバ関数
 
 	//静的インスタンスを生成
-	static std::unique_ptr<Billboard> Create(std::string fileName);
+	static std::unique_ptr<Billboard> Create(std::string fileName, Billboard::BillboardType);
 
 	//初期化
-	virtual void Initialize(BillboardType billboardType_);
+	virtual void Initialize();
 
 	/// <summary>
 	/// グラフィックパイプライン生成
@@ -93,6 +86,20 @@ public: // メンバ関数
 	template <typename Type1>
 	//定数バッファの生成
 	ComPtr<ID3D12Resource> CrateConstBuff(Type1* directXBasic_);
+
+public: //アクセッサ
+
+	//座標をセット
+	void SetPos(Vector3 pos) { pos_ = pos; }
+	//大きさをセット
+	void SetScale(float scale) { scale_ = scale; }
+	//回転角をセット
+	void SetRotate(float rotate) { rotate_ = rotate; }
+	//色をセット
+	void SetColor(Vector4 color) { color_ = color; }
+
+	//ゲームスピードをセット
+	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
 private: // 定数
 
@@ -157,11 +164,14 @@ protected:
 	// 頂点バッファ
 	ComPtr<ID3D12Resource> vertBuff_;
 
+	//座標
+	Vector3 pos_;
+	//大きさ
+	float scale_;
 	//回転角
-	float rotation_;
-
-	// 頂点数
-	static const int kVertexCount = 1024;
+	float rotate_;
+	//色
+	Vector4 color_;
 
 	//表示する画像名
 	std::string fileName_;
@@ -171,10 +181,5 @@ protected:
 
 	//ビルボードの型
 	BillboardType billBoardType_;
-
-public: //アクセッサ
-
-	//ゲームスピードをセット
-	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 };
 
