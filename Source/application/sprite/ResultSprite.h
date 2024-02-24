@@ -6,6 +6,9 @@ class ResultSprite
 {
 public:
 
+	//静的初期化
+	static void StaticInitialize();
+
 	//読み込み処理
 	void Load();
 
@@ -51,7 +54,5 @@ public: //アクセッサ
 
 	void SetIsFinishOutEasing(bool isFinishOutEasing) { isFinishOutEasing_ = isFinishOutEasing; }
 	void SetIsFinishInEasing(bool isFinishInEasing) { isFinishInEasing_ = isFinishInEasing; }
-
-
 };
 

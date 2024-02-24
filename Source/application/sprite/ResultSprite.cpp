@@ -3,6 +3,14 @@
 
 using namespace NsEngine;
 
+void ResultSprite::StaticInitialize()
+{
+	const int32_t backGorundWidth = 1200;
+	const int32_t backGorundHeight = 400;
+	const Vector4 grayColor = { 0.8f, 0.8f, 0.8f, 0.6f };
+	TextureManager::GetInstance()->TexMapping(backGorundWidth, backGorundHeight, grayColor, "gray");
+}
+
 void ResultSprite::Load()
 {
 
@@ -10,12 +18,7 @@ void ResultSprite::Load()
 
 void ResultSprite::Initialize()
 {
-	const int32_t backGorundWidth = 1200;
 	const int32_t backGorundHeight = 400;
-	const Vector4 grayColor = { 0.8f, 0.8f, 0.8f, 0.6f };
-
-	TextureManager::GetInstance()->TexMapping(backGorundWidth, backGorundHeight, grayColor, "gray");
-
 	backGroundSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_->Initialize("gray", Vector2(40.0f, -backGorundHeight));
 	resultInEasing_.startPos = -backGorundHeight;

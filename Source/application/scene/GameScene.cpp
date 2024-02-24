@@ -35,6 +35,7 @@ void GameScene::StaticInitialize()
 	Billboard::StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 	ParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
 	ObjParticleManager::GetInstance()->StaticInitialize(directXBasic_->GetDevice().Get(), directXBasic_->GetCommandList().Get());
+	ResultSprite::StaticInitialize();
 }
 
 void GameScene::Initialize()

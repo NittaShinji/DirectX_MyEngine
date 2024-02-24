@@ -16,8 +16,16 @@ void StageSelectScene::StaticInitialize()
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
-	TextureManager::StaticInitialize(directXBasic_->GetDevice().Get());
-	Sprite::StaticInitialize();
+	const int32_t selectWidth = 640;
+	const int32_t selectHeight = 400;
+
+	const Vector4 grayColor = { 0.8f, 0.8f, 0.8f, 1.0f };
+	const Vector4 blackColor = { 0.0f, 0.0f, 0.0f, 1.0f };
+
+	//灰色のテクスチャ―
+	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight, grayColor, "CursorTex");
+	//黒色のテクスチャ―
+	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, blackColor, "BlackBackGroundTex");
 }
 
 void StageSelectScene::Initialize()
@@ -32,21 +40,7 @@ void StageSelectScene::Initialize()
 	backGroundWhite_ = std::make_unique<Sprite>();
 	gameSceneSprite1_ = std::make_unique<Sprite>();
 	gameSceneSprite2_ = std::make_unique<Sprite>();
-	//sceneTransition_ = std::make_unique<Sprite>();
 	nowLoadingSprite_ = std::make_unique<Sprite>();
-
-
-	const int32_t selectWidth = 640;
-	const int32_t selectHeight = 400;
-
-	const Vector4 grayColor = { 0.8f, 0.8f, 0.8f, 1.0f };
-	const Vector4 blackColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-
-	//灰色のテクスチャ―
-	TextureManager::GetInstance()->TexMapping(selectWidth, selectHeight, grayColor, "CursorTex");
-	//TextureManager::GetInstance()->TexMapping(600, 360, Vector4(0.746f, 0.746f, 0.746f, 1.0f), "BackGroundTex");
-	//黒色のテクスチャ―
-	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, WindowsAPI::kWindow_height_, blackColor, "BlackBackGroundTex");
 
 	TextureManager::GetInstance()->LoadTexture("GameScene1.png");
 	TextureManager::GetInstance()->LoadTexture("GameScene2.png");
@@ -60,14 +54,11 @@ void StageSelectScene::Initialize()
 	const Vector2 backGroundPositionL = { 20.0f,180.0f };
 	const Vector2 backGroundPositionR = { 660.0f,180.0f };
 
-	//backGroundLeft_->Initialize("BackGroundTex",backGroundPositionL);
-	//backGroundRight_->Initialize("BackGroundTex",backGroundPositionR);
 	const Vector2 InitSpritePos = { 0.0f,0.0f };
 	backGroundWhite_->Initialize("WhiteTex", InitSpritePos);
 	selectSprite_->Initialize("CursorTex", selectPosition);
 	gameSceneSprite1_->Initialize("GameScene1.png",backGroundPositionL);
 	gameSceneSprite2_->Initialize("GameScene2.png",backGroundPositionR);
-	//sceneTransition_->Initialize("BlackBackGroundTex", InitSpritePos);
 	nowLoadingSprite_->Initialize("nowLoading.png", InitSpritePos);
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -87,12 +78,9 @@ void StageSelectScene::Update()
 {
 	//画像の更新
 	selectSprite_->matUpdate();
-	/*backGroundLeft_->matUpdate();
-	backGroundRight_->matUpdate();*/
 	backGroundWhite_->matUpdate();
 	gameSceneSprite1_->matUpdate();
 	gameSceneSprite2_->matUpdate();
-	//sceneTransition_->matUpdate();
 	nowLoadingSprite_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
@@ -130,12 +118,8 @@ void StageSelectScene::Update()
 		changeSceneTimer_--;
 		if(changeSceneTimer_ <= 0)
 		{
-			
 			SoundManager::GetInstance()->Finalize();
 			SceneManager::GetInstance()->ChangeScene("GAME");
-
-			/*SoundManager::GetInstance()->Finalize();
-			SceneManager::GetInstance()->ChangeScene("GAME");*/
 		}
 	}
 }
@@ -148,14 +132,11 @@ void StageSelectScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	backGroundWhite_->Draw("WhiteTex");
 	selectSprite_->Draw("CursorTex");
-	//backGroundLeft_->Draw("BackGroundTex");
-	//backGroundRight_->Draw("BackGroundTex");
 	gameSceneSprite1_->Draw("GameScene1.png");
 	gameSceneSprite2_->Draw("GameScene2.png");
 
 	if(isChangeScene_ == true)
 	{
-		//sceneTransition_->Draw("BlackBackGroundTex");
 		nowLoadingSprite_->Draw("nowLoading.png");
 	}
 	

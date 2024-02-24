@@ -22,11 +22,17 @@ void TitleScene::StaticInitialize()
 	Mesh::StaticInitialize(directXBasic_);
 	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
 	Camera::StaticInitialize(directXBasic_);
+
+	const int32_t backGroundWidth = 1280;
+	const int32_t backGroundHeight = 720;
+
+	const Vector4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	TextureManager::GetInstance()->Initialize();
+	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, whiteColor, "WhiteTex");
 }
 
 void TitleScene::Initialize()
 {
-	TextureManager::GetInstance()->Initialize();
 	gamePad_ = std::make_unique<GamePad>();
 	gamePad_->Initialzie(Player1);
 
@@ -55,12 +61,7 @@ void TitleScene::Initialize()
 	TextureManager::GetInstance()->LoadTexture("click.png");
 	
 	Vector2 backGroundPosition = { 0.0f,0.0f };
-	const int32_t backGroundWidth = 1280;
-	const int32_t backGroundHeight = 720;
 	
-	const Vector4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
-	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, whiteColor, "WhiteTex");
-
 	const Vector2 titlePosition = { 400.0f,33.0f };
 	titleSprite_->Initialize("titleFont.png",titlePosition);
 
