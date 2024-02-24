@@ -150,8 +150,11 @@ void GameScene::Update()
 	}
 #endif
 
-	tutorialEvent_->Update(gameCamera_.get());
-
+	if(stage_->GetStageNum() == Stage::tutorialStage)
+	{
+		tutorialEvent_->Update(gameCamera_.get());
+	}
+	
 	//プレイヤーが死んだ際の処理
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{
@@ -234,8 +237,6 @@ void GameScene::Update()
 
 	testBillborad_->Update(gameCamera_.get());
 
-	resultSprite_->Update();
-
 #ifdef _DEBUG
 
 	//Imguiの更新
@@ -300,6 +301,8 @@ void GameScene::Update()
 		stage_->SetIsAllowedToCountStageNum(true);
 	}
 
+	resultSprite_->Update();
+
 #ifdef _DEBUG
 	//デバッグ用
 	//クリア画面に飛ぶ
@@ -363,7 +366,11 @@ void GameScene::Draw()
 	gameSprite_->UIDraw();
 
 	gameSprite_->TransitionDraw();
-	tutorialEvent_->Draw();
+
+	if(stage_->GetStageNum() == Stage::tutorialStage)
+	{
+		tutorialEvent_->Draw();
+	}
 
 	if(player_->GetIsFinish() == true){}
 	else

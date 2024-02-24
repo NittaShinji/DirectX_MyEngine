@@ -34,7 +34,7 @@ void ResultSprite::Initialize()
 
 void ResultSprite::Update()
 {
-
+	backGroundSprite_->matUpdate();
 }
 
 void ResultSprite::Draw()

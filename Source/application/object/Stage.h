@@ -19,6 +19,14 @@ class Stage : public TouchableObject
 {
 public:
 
+	enum stageNum
+	{
+		tutorialStage = 0,
+		Stage1,
+	};
+
+public:
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
