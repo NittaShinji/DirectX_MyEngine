@@ -180,6 +180,7 @@ void Player::Update(Camera* camera)
 						//加速
 						fallVec_.y = max(fallVec_.y + (fallAcc / slow), fallVYMin);
 					}
+					else if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP){}
 					else
 					{
 						//加速
