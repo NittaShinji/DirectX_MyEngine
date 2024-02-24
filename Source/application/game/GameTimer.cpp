@@ -256,10 +256,6 @@ void GameTimer::Reset()
 		resultDisPlaytime[i] = { 0 };
 		SetNumber(resultDisPlaytime[i], resultNum[i].get());
 	}
-
-	//if(imagePosY == 0) {}
-
-	//ResultInitialize(imagePosY);
 }
 
 void GameTimer::InGameDraw()
@@ -329,7 +325,17 @@ void GameTimer::ResultNumberUpdate()
 		{
 			resultSeconds_ = 0;
 			resultMinutes_++;
-			resultTimerIncreaseNum_ = int32_t(resultTimerIncreaseNum_ * resultTimerIncreaseRate_);
+
+			const int32_t maxIncreaseNum = 60;
+
+			if(resultTimerIncreaseNum_ < maxIncreaseNum)
+			{
+				resultTimerIncreaseNum_ = std::abs(int32_t(resultTimerIncreaseNum_ * resultTimerIncreaseRate_));
+			}
+			else
+			{
+				resultTimerIncreaseNum_ = maxIncreaseNum;
+			}
 		}
 	}
 
