@@ -50,7 +50,7 @@ void StageSelectScene::Initialize()
 
 	TextureManager::GetInstance()->LoadTexture("GameScene1.png");
 	TextureManager::GetInstance()->LoadTexture("GameScene2.png");
-	TextureManager::GetInstance()->LoadTexture("NowLoading.png");
+	TextureManager::GetInstance()->LoadTexture("nowLoading.png");
 
 
 	const Vector2 selectPosition = { 0.0f,160.0f };
@@ -68,7 +68,7 @@ void StageSelectScene::Initialize()
 	gameSceneSprite1_->Initialize("GameScene1.png",backGroundPositionL);
 	gameSceneSprite2_->Initialize("GameScene2.png",backGroundPositionR);
 	//sceneTransition_->Initialize("BlackBackGroundTex", InitSpritePos);
-	nowLoadingSprite_->Initialize("NowLoading.png", InitSpritePos);
+	nowLoadingSprite_->Initialize("nowLoading.png", InitSpritePos);
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
@@ -156,7 +156,7 @@ void StageSelectScene::Draw()
 	if(isChangeScene_ == true)
 	{
 		//sceneTransition_->Draw("BlackBackGroundTex");
-		nowLoadingSprite_->Draw("NowLoading.png");
+		nowLoadingSprite_->Draw("nowLoading.png");
 	}
 	
 	//描画終了

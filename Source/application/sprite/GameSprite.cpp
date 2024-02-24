@@ -17,7 +17,7 @@ void GameSprite::Load()
 	TextureManager::GetInstance()->LoadTexture("effect2.png");
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
-	TextureManager::GetInstance()->LoadTexture("NowLoading.png");
+	TextureManager::GetInstance()->LoadTexture("nowLoading.png");
 }
 
 void GameSprite::Initialize()
@@ -56,7 +56,7 @@ void GameSprite::Initialize()
 	backGroundSprite_->Initialize("backGround.png", kDefaultSpritePos);
 	//読み込み中画像
 	nowLoadingSprite_ = std::make_unique<Sprite>();
-	nowLoadingSprite_->Initialize("NowLoading.png", kDefaultSpritePos);
+	nowLoadingSprite_->Initialize("nowLoading.png", kDefaultSpritePos);
 	//トランジション用画像
 	sceneTransitionUp_ = std::make_unique<Sprite>();
 	sceneTransitionDown_ = std::make_unique<Sprite>();
@@ -99,7 +99,7 @@ void GameSprite::TransitionDraw()
 	//アニメーションが始まっていないならば
 	if(isStartSceneAnimation_ == false)
 	{
-		nowLoadingSprite_->Draw("NowLoading.png");
+		nowLoadingSprite_->Draw("nowLoading.png");
 	}
 }
 

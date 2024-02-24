@@ -16,9 +16,11 @@ void ClearScene::Initialize()
 	end_ = std::make_unique<Sprite>();
 	check_ = std::make_unique<Sprite>();
 	aButton_ = std::make_unique<Sprite>();
+	clearSprite_ = std::make_unique<Sprite>();
 
 	TextureManager::GetInstance()->LoadTexture("check.png");
 	TextureManager::GetInstance()->LoadTexture("A.png");
+	TextureManager::GetInstance()->LoadTexture("gameClear.png");
 
 	Vector2 titlePosition = { 0.0f,0.0f };;
 	end_->Initialize("WhiteTex",titlePosition);
@@ -26,16 +28,17 @@ void ClearScene::Initialize()
 	const Vector2 kInitCheckPos = { 656,0.0f };
 
 	checkPosition_.x = kInitCheckPos.x;
-	//checkPosition_.y = 0.0f;
-
+	
 	check_->Initialize("check.png", kInitCheckPos);
 
-	const Vector2 aButtonSize = { 128.0f,128.0f };
-	const Vector2 aButtonPosition = { 576.0f,488.0f };
-	//Vector2 aButtonPosition = { 0.0f,0.0f };
-	//aButtonPosition.x = (WindowsAPI::kWindow_width_ / 2) - (aButtonSize.x / 2);
-	//aButtonPosition.y = (WindowsAPI::kWindow_height_ / 2) + (aButtonSize.y);
+	const Vector2 aButtonSize = { 64.0f,64.0f };
+	const Vector2 aButtonPosition = { 575.0f,565.0f };
 	aButton_->Initialize("A.png",aButtonPosition);
+	//aButton_->SetSize(Vector2(aButtonSize));
+
+	const Vector2 kClearSpritePosition = { 320.0f,320.0f };
+	clearSprite_->Initialize("gameClear.png", kClearSpritePosition);
+
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -66,9 +69,10 @@ void ClearScene::Update()
 {
 	end_->matUpdate();
 	aButton_->matUpdate();
+	clearSprite_->matUpdate();
 
 	//移動処理
-	const float moveResultPosY = WindowsAPI::kWindow_height_ / 3;
+	const float moveResultPosY = WindowsAPI::kWindow_height_ / 3 - 50;
 
 	if(checkPosition_.y <= moveResultPosY)
 	{
@@ -105,7 +109,7 @@ void ClearScene::Update()
 	if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
 		SoundManager::GetInstance()->Finalize();
-		SceneManager::GetInstance()->ChangeScene("StageSelect");
+		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
 	GameTimer::GetInstance()->ResultUpdate(true, WindowsAPI::kWindow_height_ / 2);
@@ -120,7 +124,8 @@ void ClearScene::Draw()
 	end_->Draw("WhiteTex");
 	check_->Draw("check.png");
 	aButton_->Draw("A.png");
-	GameTimer::GetInstance()->ResultDraw();
+	clearSprite_->Draw("gameClear.png");
+	//GameTimer::GetInstance()->ResultDraw();
 
 	//描画終了
 	directXBasic_->AfterDraw();

@@ -31,7 +31,7 @@ void GameTimer::LoadSprite()
 	if(isLoadSprite_ == false)
 	{
 		//時計のテクスチャ読み込み
-		TextureManager::GetInstance()->LoadTexture("StopWatch.png");
+		TextureManager::GetInstance()->LoadTexture("stopWatch.png");
 		//数字のテクスチャ読み込み
 		TextureManager::GetInstance()->LoadTexture("numbers.png");
 		//黒いドットの点画像を作成
@@ -77,7 +77,7 @@ void GameTimer::InGameInitialize()
 	const int half = 2;
 	const Vector4 color = { 1.0f,1.0f,1.0,0.75f };
 
-	Vector2 texStopWatchSize = TextureManager::GetInstance()->GetTexSize("StopWatch.png");
+	Vector2 texStopWatchSize = TextureManager::GetInstance()->GetTexSize("stopWatch.png");
 
 	//数字の初期化
 	for(int i = 0; i < kTimerDigits_; i++)
@@ -110,7 +110,7 @@ void GameTimer::InGameInitialize()
 
 	//時計画像の初期化
 	float stopWatchX = inGameNum[0]->GetPosition().x - texNumSize.y;
-	stopWatch_->Initialize("StopWatch.png", Vector2(stopWatchX, texNumSize.y));
+	stopWatch_->Initialize("stopWatch.png", Vector2(stopWatchX, texNumSize.y));
 	//64 x 64の正方形サイズに変更
 	stopWatch_->SetSize(Vector2(texNumSize.y, texNumSize.y));
 	stopWatch_->SetColor(color);
@@ -266,7 +266,7 @@ void GameTimer::InGameDraw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	//ゲーム中の数字・ドットを描画
-	stopWatch_->Draw("StopWatch.png");
+	stopWatch_->Draw("stopWatch.png");
 
 	for(int i = 0; i < kTimerDigits_; i++)
 	{

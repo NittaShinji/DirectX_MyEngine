@@ -49,7 +49,7 @@ void TitleScene::Initialize()
 	bButtonSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_ = std::make_unique<Sprite>();
 	
-	TextureManager::GetInstance()->LoadTexture("TitleFont.png");
+	TextureManager::GetInstance()->LoadTexture("titleFont.png");
 	TextureManager::GetInstance()->LoadTexture("A.png");
 	TextureManager::GetInstance()->LoadTexture("B.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
@@ -62,7 +62,7 @@ void TitleScene::Initialize()
 	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, whiteColor, "WhiteTex");
 
 	const Vector2 titlePosition = { 400.0f,33.0f };
-	titleSprite_->Initialize("TitleFont.png",titlePosition);
+	titleSprite_->Initialize("titleFont.png",titlePosition);
 
 	const Vector2 clickButtonSize = { TextureManager::GetInstance()->GetTexSize("click.png")};
 	const Vector2 clickButtonPosition = {576.0f,530.0f};
@@ -273,7 +273,7 @@ void TitleScene::Draw()
 
 	SpriteCommon::GetInstance()->BeforeDraw();
 	backGroundSprite_->Draw("WhiteTex");
-	titleSprite_->Draw("TitleFont.png");
+	titleSprite_->Draw("titleFont.png");
 
 	clickSprite_->Draw("click.png");
 	aButtonSprite_->Draw("A.png");

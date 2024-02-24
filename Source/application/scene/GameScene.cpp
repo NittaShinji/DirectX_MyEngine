@@ -302,16 +302,16 @@ void GameScene::Update()
 #ifdef _DEBUG
 	//デバッグ用
 	//クリア画面に飛ぶ
-	/*if(keys_->PushedKeyMoment(DIK_G))
+	if(keys_->PushedKeyMoment(DIK_G))
 	{
 		player_->SetIsFinish(true);
-		GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish());
+		GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(), stage_->GetIsPlayerReachedStageEdge());
 		ParticleManager::GetInstance()->AllRemove();
 		ObjParticleManager::GetInstance()->AllRemove();
 
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
-	}*/
+	}
 #endif
 }
 
