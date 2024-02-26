@@ -28,8 +28,8 @@ public:
 
 private:
 
-	const Vector3 initCameraEye = { 30,7.5,-20 };
-	const Vector3 initCameraTarget = { 0,5,5 };
+	const Vector3 initCameraEye = { 30,7.5,780 };
+	const Vector3 initCameraTarget = { 0,5,805 };
 	const Vector3 initCameraUp = { 0,1,0 };
 
 	Vector3 initEyeDistance_ = { 0.0f,1.0f,12.0f };
@@ -60,9 +60,7 @@ private:
 	//シーンアニメーション用変化量
 	Vector3 sceneAnimationVec_;
 
-	Vector3 eyePosition_;
-	Vector3 targetPosition_;
-
+	//ゴールした時のカメラの位置
 	Vector3 goalEyePos_;
 	Vector3 goalEyeTarget_;
 
@@ -86,7 +84,7 @@ private:
 	
 	bool isNotBackAnimation_;
 	bool isSlowDown_;
-
+	
 	const float axcellRateMoveValue_ = 0.0015f;
 	const float decelerationMoveValue_ = 0.01f;
 

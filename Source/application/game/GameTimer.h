@@ -117,6 +117,8 @@ private:
 	const float  resultTimerIncreaseRate_ = 2.5f;
 	int32_t resultTimerIncreaseNum_;
 
+	//数え終わったかどうか
+	bool isFinishedToTime_;
 
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
@@ -133,6 +135,7 @@ private:
 public: //アクセッサ
 
 	void SetIsTImed(bool isTimed) { isTimed_ = isTimed; }
+	bool GetIsFinishedToTime() { return isFinishedToTime_; }
 
 };
 

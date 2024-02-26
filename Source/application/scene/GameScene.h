@@ -150,9 +150,6 @@ private:
 	//リザルト画像
 	std::unique_ptr<ResultSprite> resultSprite_ = nullptr;
 
-	//テストビルボード
-	std::unique_ptr<Billboard> testBillborad_ = nullptr;
-
 	int32_t nextStageNum_ = 0;
 };
 

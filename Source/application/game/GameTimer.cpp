@@ -67,6 +67,9 @@ void GameTimer::StaticInitialize()
 
 void GameTimer::InGameInitialize()
 {
+	gameSeconds_ = 0;
+	gameMinutes_ = 0;
+
 	LoadSprite();
 
 	//10枚分のサイズ
@@ -121,6 +124,11 @@ void GameTimer::InGameInitialize()
 
 void GameTimer::ResultInitialize(float imagePosY)
 {
+	keepSeconds_ = 0;
+	keepMinutes_ = 0;
+	resultMinutes_ = 0;
+	resultSeconds_ = 0;
+
 	Vector2 texNumTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
 	Vector2 texNumSize = texNumTotalSize;
 	const int half = 2;
@@ -166,6 +174,9 @@ void GameTimer::ResultInitialize(float imagePosY)
 
 	//増加量を初期値にリセット
 	resultTimerIncreaseNum_ = kInitTimerIncreaseNum;
+
+	//数え終わったかどうかを初期化
+	isFinishedToTime_ = false;
 }
 
 void GameTimer::InGameUpdate(bool isStart, bool isFinish,bool isReachedStageEdge)
@@ -234,18 +245,20 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY)
 void GameTimer::Reset()
 {
 	resultTimerIncreaseNum_ = kInitTimerIncreaseNum;
+	//ゲーム中にリザルトに受け渡す用のタイマー
 	keepSeconds_ = 0;
 	keepMinutes_ = 0;
+	//ゲーム中に表示するタイマー
 	gameSeconds_ = 0;
 	gameMinutes_ = 0;
+	//結果用に表示するタイマー
 	resultMinutes_ = 0;
-	isTimed_ = true;
-
-	//ゲーム中に表示する秒
-	gameSeconds_ = 0;
-	//ゲーム中に表示する秒
 	resultSeconds_ = 0;
 
+	isTimed_ = true;
+	isFinishedToTime_ = false;
+
+	
 	//描画する数字を0で初期化(同じ桁なので同じfor分で回す)
 	for(size_t i = 0; i < kTimerDigits_; i++)
 	{
@@ -344,6 +357,10 @@ void GameTimer::ResultNumberUpdate()
 		if(resultSeconds_ < keepSeconds_)
 		{
 			resultSeconds_ += resultTimerIncreaseNum_;
+		}
+		else
+		{
+			isFinishedToTime_ = true;
 		}
 	}
 

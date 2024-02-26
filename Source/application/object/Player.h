@@ -70,7 +70,7 @@ private: //定数
 	const int32_t kMaxJumpNum_ = 2;
 
 	//初期位置
-	const Vector3 kPlayerInitPos_ = { 0.0f,2.0f,2.0f };
+	const Vector3 kPlayerInitPos_ = { 0.0f,2.0f,802.0f };
 	//最大ジャンプ量
 	const float kMaxJumpValue_ = 0.38f;
 	const float kInitJumpValue_ = 0.27f;

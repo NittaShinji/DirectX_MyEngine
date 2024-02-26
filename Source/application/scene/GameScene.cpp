@@ -115,9 +115,6 @@ void GameScene::Initialize()
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
 	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
 	tutorialEvent_->Initialzie(player_.get());
-
-	//テストビルボード
-	testBillborad_ = Billboard::Create("A.png", Billboard::BillboardType::Yaxis);
 }
 
 void GameScene::Update()
@@ -235,8 +232,6 @@ void GameScene::Update()
 
 	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY());
 
-	testBillborad_->Update(gameCamera_.get());
-
 #ifdef _DEBUG
 
 	//Imguiの更新
@@ -274,11 +269,17 @@ void GameScene::Update()
 
 		if(stage_->GetIsClearedAllStage() == true)
 		{
-			ParticleManager::GetInstance()->AllRemove();
-			ObjParticleManager::GetInstance()->AllRemove();
+			if(resultSprite_->GetIsFinishInEasing() == true)
+			{
+				if(GameTimer::GetInstance()->GetIsFinishedToTime() == true)
+				{
+					ParticleManager::GetInstance()->AllRemove();
+					ObjParticleManager::GetInstance()->AllRemove();
 
-			SoundManager::GetInstance()->Finalize();
-			SceneManager::GetInstance()->ChangeScene("CLEAR");
+					SoundManager::GetInstance()->Finalize();
+					SceneManager::GetInstance()->ChangeScene("CLEAR");
+				}	
+			}
 		}
 		else
 		{
@@ -380,10 +381,6 @@ void GameScene::Draw()
 
 	resultSprite_->Draw();
 	GameTimer::GetInstance()->ResultDraw();
-
-	//3Dオブジェクト描画
-	Billboard::PreDraw();
-	testBillborad_->Draw();
 
 	//デバッグテキストの描画
 	imGuiManager_->Draw();

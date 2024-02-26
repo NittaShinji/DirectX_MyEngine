@@ -203,5 +203,4 @@ void GameCamera::ImGuiUpdate()
 	ImGui::SliderFloat("targetZ", &target_.z, kImGuiTargetRate.x, kImGuiTargetRate.y);
 
 	ImGui::End();
-
 }
