@@ -6,7 +6,7 @@ void TutorialEvent::Initialzie(Player* player)
 {
 	player_ = player;
 
-	const Vector2 kUiSize = { 128.0f,128.0f };
+	const Vector2 kUiSize = { 210.0f,136.0f };
 
 	//ジャンプイベント設定
 	const float kStartJumpEventPos_ = 75;
