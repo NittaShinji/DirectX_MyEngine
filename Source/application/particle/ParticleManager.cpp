@@ -144,14 +144,14 @@ void ParticleManager::Preparation(GameSpeed* gameSpeed,Player* player)
 				}
 			}
 
-			if(player->GetIsMoving() == true && player->GetIsDead() == false)
+			if(player->GetIsMoving() == true)
 			{
 				//一度だけタッチフラグをオンにする
 				bool isTouchObject = player->GetIsTouchObject();
 
 				if(player->GetIsLanded() == true || isTouchObject == true)
 				{
-					hitParticle_->Preparation(player->GetTransform(), player->GetIsDead());
+   					hitParticle_->Preparation(player->GetTransform(), player->GetIsDead());
 
 					if(isTouchObject == true)
 					{
@@ -159,6 +159,11 @@ void ParticleManager::Preparation(GameSpeed* gameSpeed,Player* player)
 					}
 				}
 			}
+		}
+
+		if(player->GetIsDead() == true)
+		{
+			hitParticle_->Preparation(player->GetTransform(), player->GetIsDead());
 		}
 	}
 }

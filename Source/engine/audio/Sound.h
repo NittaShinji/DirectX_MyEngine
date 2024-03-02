@@ -88,9 +88,15 @@ public: //メンバ関数
 	//音量調節
 	void SetVolume(const std::string& fileName, float volume);
 
+	//鳴らしたかどうかを取得
+	bool GetIsSounded() { return isSounded_; }
+
 private:
 
 	//サウンドデータ
 	SoundData soundData_;
+
+	//音を鳴らしたかどうか
+	bool isSounded_;
 };
 

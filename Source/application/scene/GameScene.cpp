@@ -156,7 +156,7 @@ void GameScene::Update()
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{
 		GameTimer::GetInstance()->SetIsTImed(false);
-		ParticleManager::GetInstance()->ParticleRemove();
+		//ParticleManager::GetInstance()->ParticleRemove();
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 
 		//死亡時パーティクルが消えてリセット可能かどうか

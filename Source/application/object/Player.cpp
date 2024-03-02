@@ -30,10 +30,16 @@ void Player::Initialize()
 	//プレイヤー周りのサウンドを初期化
 	SoundManager::GetInstance()->LoadSoundWave("jump.wav");
 	SoundManager::GetInstance()->LoadSoundWave("doubleJump.wav");
+	SoundManager::GetInstance()->LoadSoundWave("playerDead.wav");
+
+	//サウンドのインスタンス生成
 	jumpSound_ = std::make_unique<Sound>();
 	doubleJumpSound_ = std::make_unique<Sound>();
+	deadSound_ = std::make_unique<Sound>();
+	//サウンドの初期化
 	jumpSound_->Initialize("jump.wav");
 	doubleJumpSound_->Initialize("doubleJump.wav");
+	deadSound_->Initialize("playerDead.wav");
 
 	//プレイヤーオブジェクトの初期化
 	Object3d::Initialize();
@@ -708,6 +714,11 @@ void Player::OnCollision(const CollisionInfo& info)
 		{
 			isLanded_ = false;
 			isDead_ = true;
+			if(deadSound_->GetIsSounded() == false)
+			{
+				deadSound_->PlaySoundWave(false);
+			}
+			
 			if(isSetDeadPos_ == false)
 			{
 				deadPos_ = transform_;
@@ -840,6 +851,10 @@ void Player::Draw()
 
 void Player::Reset(Camera* camera)
 {
+	jumpSound_->Initialize("jump.wav");
+	doubleJumpSound_->Initialize("doubleJump.wav");
+	deadSound_->Initialize("playerDead.wav");
+
 	transform_ = kPlayerInitPos_;
 	rotation_ = kDefaultRotate_;
 	scale_ = kDefaultScale_;

@@ -29,7 +29,6 @@ void HitParticle2D::Preparation(Vector3 playerPos,bool isPlayerDead)
 
 		for(int32_t i = 0; i < kOneTimeGenerationNum; i++)
 		{
-			
 			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 			Vector3 acc{};
 			const float md_acc = 0.0f;

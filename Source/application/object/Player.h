@@ -259,6 +259,7 @@ private:
 	//サウンド
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
 	std::unique_ptr<Sound> doubleJumpSound_ = nullptr;
+	std::unique_ptr<Sound> deadSound_ = nullptr;
 
 public: //アクセッサ
 
