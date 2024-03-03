@@ -19,7 +19,7 @@ void ClearScene::Initialize()
 	clearSprite_ = std::make_unique<Sprite>();
 
 	TextureManager::GetInstance()->LoadTexture("check.png");
-	TextureManager::GetInstance()->LoadTexture("A.png");
+	TextureManager::GetInstance()->LoadTexture("aButton.png");
 	TextureManager::GetInstance()->LoadTexture("gameClear.png");
 
 	Vector2 titlePosition = { 0.0f,0.0f };;
@@ -33,7 +33,7 @@ void ClearScene::Initialize()
 
 	const Vector2 aButtonSize = { 64.0f,64.0f };
 	const Vector2 aButtonPosition = { 575.0f,565.0f };
-	aButton_->Initialize("A.png",aButtonPosition);
+	aButton_->Initialize("aButton.png",aButtonPosition);
 	//aButton_->SetSize(Vector2(aButtonSize));
 
 	const Vector2 kClearSpritePosition = { 320.0f,320.0f };
@@ -123,7 +123,7 @@ void ClearScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	end_->Draw("WhiteTex");
 	check_->Draw("check.png");
-	aButton_->Draw("A.png");
+	aButton_->Draw("aButton.png");
 	clearSprite_->Draw("gameClear.png");
 	//GameTimer::GetInstance()->ResultDraw();
 

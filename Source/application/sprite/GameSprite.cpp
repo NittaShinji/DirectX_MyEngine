@@ -33,12 +33,12 @@ void GameSprite::Initialize()
 	//aボタン画像
 	aButtonSprite_ = std::make_unique<Sprite>();
 	const Vector2 aButtonPosition = { 1152,648 };
-	aButtonSprite_->Initialize("A.png", aButtonPosition);
+	aButtonSprite_->Initialize("aButton.png", aButtonPosition);
 	aButtonSprite_->SetSize(Vector2(kUiSize_));
 	//bボタン画像
 	bButtonSprite_ = std::make_unique<Sprite>();
 	const Vector2 bButtonPosition = { 1216,648 };
-	bButtonSprite_->Initialize("B.png", bButtonPosition);
+	bButtonSprite_->Initialize("bButton.png", bButtonPosition);
 	bButtonSprite_->SetSize(Vector2(kUiSize_));
 	//ジャンプ画像
 	jumpSprite_ = std::make_unique<Sprite>();
@@ -86,8 +86,8 @@ void GameSprite::BackGroundDraw()
 void GameSprite::UIDraw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
-	aButtonSprite_->Draw("A.png");
-	bButtonSprite_->Draw("B.png");
+	aButtonSprite_->Draw("aButton.png");
+	bButtonSprite_->Draw("bButton.png");
 	jumpSprite_->Draw("jump.png");
 	arrowSprite_->Draw("arrow.png");
 }

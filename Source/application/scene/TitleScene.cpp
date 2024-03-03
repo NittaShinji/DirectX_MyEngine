@@ -56,8 +56,8 @@ void TitleScene::Initialize()
 	backGroundSprite_ = std::make_unique<Sprite>();
 	
 	TextureManager::GetInstance()->LoadTexture("titleFont.png");
-	TextureManager::GetInstance()->LoadTexture("A.png");
-	TextureManager::GetInstance()->LoadTexture("B.png");
+	TextureManager::GetInstance()->LoadTexture("aButton.png");
+	TextureManager::GetInstance()->LoadTexture("bButton.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
 	
 	Vector2 backGroundPosition = { 0.0f,0.0f };
@@ -68,14 +68,19 @@ void TitleScene::Initialize()
 	const Vector2 clickButtonSize = { TextureManager::GetInstance()->GetTexSize("click.png")};
 	const Vector2 clickButtonPosition = {576.0f,530.0f};
 	
-	const Vector2 aButtonSize = { TextureManager::GetInstance()->GetTexSize("A.png") };
+	const Vector2 aButtonSize = { TextureManager::GetInstance()->GetTexSize("aButton.png") };
 	const Vector2 aButtonPosition = { 1024.0f,530.0f };
 	
-	const Vector2 bButtonSize = { TextureManager::GetInstance()->GetTexSize("B.png") };
+	const Vector2 bButtonSize = { TextureManager::GetInstance()->GetTexSize("bButton.png") };
 	const Vector2 bButtonPosition = {1152.0f,530.0f};
 	
-	aButtonSprite_->Initialize("A.png",aButtonPosition);
-	bButtonSprite_->Initialize("B.png",bButtonPosition);
+	aButtonSprite_->Initialize("aButton.png",aButtonPosition);
+	bButtonSprite_->Initialize("bButton.png",bButtonPosition);
+
+	const Vector2 kUiSize = { 128.0f,128.0f };
+
+	aButtonSprite_->SetSize(Vector2(kUiSize));
+	bButtonSprite_->SetSize(Vector2(kUiSize));
 
 	clickSprite_->Initialize("click.png",clickButtonPosition);
 	backGroundSprite_->Initialize("WhiteTex",backGroundPosition);
@@ -277,8 +282,8 @@ void TitleScene::Draw()
 	titleSprite_->Draw("titleFont.png");
 
 	clickSprite_->Draw("click.png");
-	aButtonSprite_->Draw("A.png");
-	bButtonSprite_->Draw("B.png");
+	aButtonSprite_->Draw("aButton.png");
+	bButtonSprite_->Draw("bButton.png");
 	
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();
