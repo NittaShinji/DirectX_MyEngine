@@ -35,15 +35,23 @@ void TutorialEvent::Initialzie(Player* player)
 	doubleJumpEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
 	doubleJumpEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
 
-	const float kStartHighJumpEventPos_ = 370;
-	const float kEndHighJumpEventPos_ = 440;
+	const float kStartHighBeforeJumpEventPos_ = 350;
+	const float kEndHighJumpBeforeEventPos_ = 400;
 	heighJumpBeforeEvent_ = std::make_unique<Event>();
-	heighJumpBeforeEvent_->Initialzie(kStartHighJumpEventPos_, kEndHighJumpEventPos_);
+	heighJumpBeforeEvent_->Initialzie(kStartHighBeforeJumpEventPos_, kEndHighJumpBeforeEventPos_);
 	heighJumpBeforeEvent_->SetIsAnimate(true);
 	heighJumpBeforeEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
 	heighJumpBeforeEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
+	
+	const float kStartHighAfterJumpEventPos_ = 400;
+	const float kEndHighJumpAfterEventPos_ = 440;
+	heighJumpAfterEvent_ = std::make_unique<Event>();
+	heighJumpAfterEvent_->Initialzie(kStartHighAfterJumpEventPos_, kEndHighJumpAfterEventPos_);
+	heighJumpAfterEvent_->SetIsAnimate(true);
+	heighJumpAfterEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
+	heighJumpAfterEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
 	const int32_t heightJumpButtonTime = 30;
-	heighJumpBeforeEvent_->SetButtonAnimeTime(heightJumpButtonTime);
+	heighJumpAfterEvent_->SetButtonAnimeTime(heightJumpButtonTime);
 
 	const float kStartChangeColorEventPos_ = 650;
 	const float kEndChangeColorEventPos_ = 670;
@@ -76,6 +84,8 @@ void TutorialEvent::Update(Camera* camera)
 		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
 		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
 		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		heighJumpAfterEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+
 		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera);
 		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera);
 	}
@@ -89,6 +99,7 @@ void TutorialEvent::Draw()
 		jumpEvent_->AnimationDraw();
 		doubleJumpEvent_->AnimationDraw();
 		heighJumpBeforeEvent_->AnimationDraw();
+		heighJumpAfterEvent_->AnimationDraw();
 		changeColorEvent_->AnimationDraw();
  		changeInAirEvent_->Draw();
 	}

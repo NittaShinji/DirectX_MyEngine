@@ -33,7 +33,7 @@ private: //メンバ変数
 	//ロングジャンプ手前イベント
 	std::unique_ptr<Event> heighJumpBeforeEvent_ = nullptr;
 	//ロングジャンプ後イベント
-	//std::unique_ptr<Event> heighJumpAfterEvent_ = nullptr;
+	std::unique_ptr<Event> heighJumpAfterEvent_ = nullptr;
 
 	//色変えイベント
 	std::unique_ptr<Event> changeColorEvent_ = nullptr;
