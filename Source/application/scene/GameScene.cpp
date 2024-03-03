@@ -366,8 +366,6 @@ void GameScene::Draw()
 
 	gameSprite_->UIDraw();
 
-	gameSprite_->TransitionDraw();
-
 	if(stage_->GetStageNum() == Stage::tutorialStage)
 	{
 		tutorialEvent_->Draw();
@@ -381,6 +379,8 @@ void GameScene::Draw()
 
 	resultSprite_->Draw();
 	GameTimer::GetInstance()->ResultDraw();
+
+	gameSprite_->TransitionDraw();
 
 	//デバッグテキストの描画
 	imGuiManager_->Draw();

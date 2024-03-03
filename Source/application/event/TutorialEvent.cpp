@@ -9,25 +9,49 @@ void TutorialEvent::Initialzie(Player* player)
 	const Vector2 kUiSize = { 168.0f,108.0f };
 	const Vector2 kUiPosition = { 596.0f,570.0f };
 
+	//スタートイベント設定
+	const float kStartEventPos_ = 0;
+	const float kEndEventPos_ = 20;
+	startEvent_ = std::make_unique<Event>();
+	startEvent_->Initialzie(kStartEventPos_, kEndEventPos_);
+	startEvent_->SetIsAnimate(true);
+	startEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
+	startEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
 
 	//ジャンプイベント設定
 	const float kStartJumpEventPos_ = 75;
 	const float kEndJumpEventPos_ = 110;
 	jumpEvent_ = std::make_unique<Event>();
 	jumpEvent_->Initialzie(kStartJumpEventPos_, kEndJumpEventPos_);
+	jumpEvent_->SetIsAnimate(true);
 	jumpEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
+	jumpEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
 
-	const float kStartHighJumpEventPos_ = 185;
-	const float kEndHighJumpEventPos_ = 320;
-	hightJumpEvent_ = std::make_unique<Event>();
-	hightJumpEvent_->Initialzie(kStartHighJumpEventPos_, kEndHighJumpEventPos_);
-	hightJumpEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
+	const float kStartDoubleJumpEventPos_ = 175;
+	const float kEndDoubleJumpEventPos_ = 320;
+	doubleJumpEvent_ = std::make_unique<Event>();
+	doubleJumpEvent_->Initialzie(kStartDoubleJumpEventPos_, kEndDoubleJumpEventPos_);
+	doubleJumpEvent_->SetIsAnimate(true);
+	doubleJumpEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
+	doubleJumpEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
+
+	const float kStartHighJumpEventPos_ = 370;
+	const float kEndHighJumpEventPos_ = 440;
+	heighJumpBeforeEvent_ = std::make_unique<Event>();
+	heighJumpBeforeEvent_->Initialzie(kStartHighJumpEventPos_, kEndHighJumpEventPos_);
+	heighJumpBeforeEvent_->SetIsAnimate(true);
+	heighJumpBeforeEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
+	heighJumpBeforeEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
+	const int32_t heightJumpButtonTime = 30;
+	heighJumpBeforeEvent_->SetButtonAnimeTime(heightJumpButtonTime);
 
 	const float kStartChangeColorEventPos_ = 650;
 	const float kEndChangeColorEventPos_ = 670;
 	changeColorEvent_ = std::make_unique<Event>();
 	changeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
+	heighJumpBeforeEvent_->SetIsAnimate(true);
 	changeColorEvent_->AddSprite("bButton.png", kUiPosition, kUiSize);
+	changeColorEvent_->AddSprite("bPushed.png", kUiPosition, kUiSize);
 
 	const float kStartChangeAirEventPos_ = 700;
 	const float kEndChangeAirEventPos_ = 1120;
@@ -48,8 +72,10 @@ void TutorialEvent::Update(Camera* camera)
 
 	if(player_->GetIsDead() == false)
 	{
+		startEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
 		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
-		hightJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
 		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera);
 		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera);
 	}
@@ -59,9 +85,11 @@ void TutorialEvent::Draw()
 {
 	if(player_->GetIsDead() == false)
 	{
-		jumpEvent_->Draw();
-		hightJumpEvent_->Draw();
-		changeColorEvent_->Draw();
+		startEvent_->AnimationDraw();
+		jumpEvent_->AnimationDraw();
+		doubleJumpEvent_->AnimationDraw();
+		heighJumpBeforeEvent_->AnimationDraw();
+		changeColorEvent_->AnimationDraw();
  		changeInAirEvent_->Draw();
 	}
 }

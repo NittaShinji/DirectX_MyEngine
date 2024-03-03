@@ -81,7 +81,7 @@ public:
 private:
 
 	const std::string kDefaultStageName_ = "Stage";
-	const int32_t kEndStageNum_ = 1;
+	const int32_t kEndStageNum_ = 2;
 
 private:
 

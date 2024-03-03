@@ -24,10 +24,17 @@ private: //メンバ変数
 
 	Player* player_ = nullptr;
 
+	//スタートイベント
+	std::unique_ptr<Event> startEvent_ = nullptr;
 	//ジャンプイベント
 	std::unique_ptr<Event> jumpEvent_ = nullptr;
-	//ハイジャンプイベント
-	std::unique_ptr<Event> hightJumpEvent_ = nullptr;
+	//二回ジャンプするイベント
+	std::unique_ptr<Event> doubleJumpEvent_ = nullptr;
+	//ロングジャンプ手前イベント
+	std::unique_ptr<Event> heighJumpBeforeEvent_ = nullptr;
+	//ロングジャンプ後イベント
+	//std::unique_ptr<Event> heighJumpAfterEvent_ = nullptr;
+
 	//色変えイベント
 	std::unique_ptr<Event> changeColorEvent_ = nullptr;
 	//空中での色変えイベント

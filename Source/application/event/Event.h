@@ -24,12 +24,23 @@ public:
 	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera);
 	//描画
 	void Draw();
+
+	//アニメーション更新
+	void AnimationUpdate();
+	//アニメーション描画
+	void AnimationDraw();
+
 	//画像をセット
 	void AddSprite(const std::string& fileName, const Vector2& position,const Vector2& size);
 	//ビルボードをセット
 	void AddBillboard(const std::string& fileName, const Billboard::BillboardType& billBoardtype, const Vector3& position,float scale,const Vector4& color);
 	//リセット
 	void Reset();
+
+	//アニメーションをするかどうかをセット
+	void SetIsAnimate(bool isAnimate) { isAnimate_ = isAnimate; }
+	//アニメーション時間をセット
+	void SetButtonAnimeTime(int32_t buttonAnimeTime) { buttonAnimeTime_ = buttonAnimeTime; }
 
 private:
 
@@ -49,5 +60,18 @@ private:
 	std::vector<std::unique_ptr<Sprite>> eventButtonSprites_;
 	//イベントビルボード画像
 	std::vector<std::unique_ptr<Billboard>> eventBillboard_;
+
+	//アニメーションするかどうか
+	bool isAnimate_;
+
+	//通常アニメーション時間
+	const int32_t defaultAnimeTime = 17;
+	//イベント中にボタンが押されたか
+	bool isPushedButton_;
+	//ボタンを押し戻すアニメーション用のタイマー
+	int32_t buttonTimer_;
+	//アニメーション用の時間
+	int32_t buttonAnimeTime_;
+
 };
 

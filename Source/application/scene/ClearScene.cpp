@@ -16,6 +16,8 @@ void ClearScene::Initialize()
 	end_ = std::make_unique<Sprite>();
 	check_ = std::make_unique<Sprite>();
 	aButton_ = std::make_unique<Sprite>();
+	aButtonPushed_ = std::make_unique<Sprite>();
+
 	clearSprite_ = std::make_unique<Sprite>();
 
 	TextureManager::GetInstance()->LoadTexture("check.png");
@@ -31,14 +33,15 @@ void ClearScene::Initialize()
 	
 	check_->Initialize("check.png", kInitCheckPos);
 
-	const Vector2 aButtonSize = { 64.0f,64.0f };
-	const Vector2 aButtonPosition = { 575.0f,565.0f };
+	const Vector2 aButtonSize = { 168.0f,108.0f };
+	const Vector2 aButtonPosition = { 556.0f,565.0f };
 	aButton_->Initialize("aButton.png",aButtonPosition);
-	//aButton_->SetSize(Vector2(aButtonSize));
+	aButton_->SetSize(Vector2(aButtonSize));
+	aButtonPushed_->Initialize("aPushed.png",aButtonPosition);
+	aButtonPushed_->SetSize(Vector2(aButtonSize));
 
 	const Vector2 kClearSpritePosition = { 320.0f,320.0f };
 	clearSprite_->Initialize("gameClear.png", kClearSpritePosition);
-
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -69,6 +72,7 @@ void ClearScene::Update()
 {
 	end_->matUpdate();
 	aButton_->matUpdate();
+	aButtonPushed_->matUpdate();
 	clearSprite_->matUpdate();
 
 	//移動処理
@@ -108,6 +112,7 @@ void ClearScene::Update()
 
 	if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
+		isPushedAbutton_ = true;
 		SoundManager::GetInstance()->Finalize();
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
@@ -123,7 +128,15 @@ void ClearScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	end_->Draw("WhiteTex");
 	check_->Draw("check.png");
-	aButton_->Draw("aButton.png");
+	if(isPushedAbutton_ == true)
+	{
+		aButtonPushed_->Draw("aPushed.png");
+	}
+	else
+	{
+		aButton_->Draw("aButton.png");
+	}
+	
 	clearSprite_->Draw("gameClear.png");
 	//GameTimer::GetInstance()->ResultDraw();
 
