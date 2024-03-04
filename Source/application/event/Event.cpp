@@ -50,14 +50,14 @@ void Event::Reset()
 	}
 }
 
-void Event::BillboardSetPlayerPosZ(const Vector3& playerPos, Camera* camera)
+void Event::BillboardSetPlayerPos(const Vector3& playerPos, Camera* camera)
 {
 	//ビルボード更新
 	if(eventBillboard_.empty() == false)
 	{
 		for(auto& billBoard : eventBillboard_)
 		{
-			billBoard->SetPos(Vector3(billBoard->GetPos().x, billBoard->GetPos().y, playerPos.z));
+			billBoard->SetPos(Vector3(billBoard->GetPos().x, playerPos.y + 3.0f, playerPos.z));
 			billBoard->Update(camera);
 		}
 	}

@@ -43,7 +43,7 @@ public:
 	void SetButtonAnimeTime(int32_t buttonAnimeTime) { buttonAnimeTime_ = buttonAnimeTime; }
 
 	//画像をプレイヤーのZ座標位置にセット
-	void BillboardSetPlayerPosZ(const Vector3& playerPos, Camera* camera);
+	void BillboardSetPlayerPos(const Vector3& playerPos, Camera* camera);
 	//透過する
 	void TransmissiveBillboard();
 
