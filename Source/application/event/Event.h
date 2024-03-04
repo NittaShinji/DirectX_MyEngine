@@ -21,7 +21,7 @@ public:
 	//初期化
 	void Initialzie(float startPos, float endPos);
 	//更新
-	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera);
+	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera, int32_t canJumpCount);
 	//描画
 	void Draw();
 
@@ -77,6 +77,9 @@ private:
 	int32_t buttonTimer_;
 	//アニメーション用の時間
 	int32_t buttonAnimeTime_;
+
+	//すでに終了しているか
+	bool isCompletedAlready_;
 
 };
 

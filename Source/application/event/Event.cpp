@@ -18,7 +18,7 @@ void Event::Initialzie(float startPos,float endPos)
 	finishPos_= endPos;
 	buttonAnimeTime_ = defaultAnimeTime;
 	buttonTimer_ = buttonAnimeTime_;
-	isAnimate_ = false;
+	isCompletedAlready_ = false;
 }
 
 void Event::AddSprite(const std::string& fileName,const Vector2& position, const Vector2& size)
@@ -43,6 +43,7 @@ void Event::Reset()
 	isStart_ = false;
 	isFinish_ = false;
 	buttonTimer_ = buttonAnimeTime_;
+	isCompletedAlready_ = false;
 
 	for(auto& billBoard : eventBillboard_)
 	{
@@ -82,7 +83,7 @@ void Event::TransmissiveBillboard()
 	}
 }
 
-void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t buttonInfo, BYTE keyboardInfo,Camera* camera)
+void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t buttonInfo, BYTE keyboardInfo,Camera* camera,int32_t canJumpCount)
 {
 	//画像更新
 	if(eventButtonSprites_.empty() == false)
@@ -108,7 +109,21 @@ void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t butto
 		if(isFinish_ == false)
 		{
 			isStart_ = true;
-			gameSpeed_->SetSpeedMode(speedMode);
+
+			//もしすでにジャンプできるカウントが残っていないのなら
+			if(canJumpCount == 0)
+			{
+				if(buttonInfo == XINPUT_GAMEPAD_A || keyboardInfo == DIK_SPACE)
+				{
+					isCompletedAlready_ = true;
+					//通常スピードに戻すように
+					gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+				}
+			}
+			else
+			{
+				gameSpeed_->SetSpeedMode(speedMode);
+			}
 		}
 	}
 	else
@@ -123,7 +138,6 @@ void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t butto
 		//対象のボタンが押されたらイベント終了
 		if(gamePad_->PushedButtonMoment(buttonInfo) || keys_->PushedKeyMoment(keyboardInfo))
 		{
-			
 			isPushedButton_ = true;
 			isFinish_ = true;
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
@@ -151,7 +165,7 @@ void Event::AnimationUpdate()
 
 void Event::Draw()
 {
-	if(isStart_ == true)
+	if(isStart_ == true && isCompletedAlready_ == false)
 	{
 		if(eventButtonSprites_.empty() == false)
 		{

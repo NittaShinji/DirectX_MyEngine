@@ -15,8 +15,6 @@ void TutorialEvent::Initialzie(Player* player)
 	startEvent_ = std::make_unique<Event>();
 	startEvent_->Initialzie(kStartEventPos_, kEndEventPos_);
 	startEvent_->SetIsAnimate(true);
-	//startEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
-	//startEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
 	startEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 	
 	//ジャンプイベント設定
@@ -24,64 +22,43 @@ void TutorialEvent::Initialzie(Player* player)
 	const float kEndJumpEventPos_ = 110;
 	jumpEvent_ = std::make_unique<Event>();
 	jumpEvent_->Initialzie(kStartJumpEventPos_, kEndJumpEventPos_);
-	jumpEvent_->SetIsAnimate(true);
-	//jumpEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
-	//jumpEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
 	jumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 	
-	const float kStartDoubleJumpEventPos_ = 190;
+	const float kStartDoubleJumpEventPos_ = 185;
 	const float kEndDoubleJumpEventPos_ = 320;
 	doubleJumpEvent_ = std::make_unique<Event>();
 	doubleJumpEvent_->Initialzie(kStartDoubleJumpEventPos_, kEndDoubleJumpEventPos_);
-	doubleJumpEvent_->SetIsAnimate(true);
 	doubleJumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
-	//doubleJumpEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
-	//doubleJumpEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
-
-	const float kStartHighBeforeJumpEventPos_ = 365;
-	const float kEndHighJumpBeforeEventPos_ = 400;
+	const float kStartHighBeforeJumpEventPos_ = 315;
+	const float kEndHighJumpBeforeEventPos_ = 350;
 	heighJumpBeforeEvent_ = std::make_unique<Event>();
 	heighJumpBeforeEvent_->Initialzie(kStartHighBeforeJumpEventPos_, kEndHighJumpBeforeEventPos_);
-	heighJumpBeforeEvent_->SetIsAnimate(true);
-	//heighJumpBeforeEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
-	//heighJumpBeforeEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
 	heighJumpBeforeEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
-
 	
-	const float kStartHighAfterJumpEventPos_ = 400;
-	const float kEndHighJumpAfterEventPos_ = 440;
+	const float kStartHighAfterJumpEventPos_ = 350;
+	const float kEndHighJumpAfterEventPos_ = 390;
 	heighJumpAfterEvent_ = std::make_unique<Event>();
 	heighJumpAfterEvent_->Initialzie(kStartHighAfterJumpEventPos_, kEndHighJumpAfterEventPos_);
-	heighJumpAfterEvent_->SetIsAnimate(true);
-	//heighJumpAfterEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
-	//heighJumpAfterEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
-	//const int32_t heightJumpButtonTime = 30;
-	//heighJumpAfterEvent_->SetButtonAnimeTime(heightJumpButtonTime);
 	heighJumpAfterEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
-
-	const float kStartChangeColorEventPos_ = 650;
-	const float kEndChangeColorEventPos_ = 670;
+	const float kStartChangeColorEventPos_ = 590;
+	const float kEndChangeColorEventPos_ = 610;
 	changeColorEvent_ = std::make_unique<Event>();
 	changeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
-	changeColorEvent_->SetIsAnimate(true);
-	//changeColorEvent_->AddSprite("bButton.png", kUiPosition, kUiSize);
-	//changeColorEvent_->AddSprite("bPushed.png", kUiPosition, kUiSize);
 	changeColorEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
-
-	const float kStartChangeAirEventPos_ = 700;
-	const float kEndChangeAirEventPos_ = 1120;
+	const float kStartChangeAirEventPos_ = 610;
+	const float kEndChangeAirEventPos_ = 1000;
 	const Vector2 kChangeColorSpriteSize = {64.0f,64.0f};
 
 	changeInAirEvent_ = std::make_unique<Event>();
 	changeInAirEvent_->Initialzie(kStartChangeAirEventPos_, kEndChangeAirEventPos_);
-	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,3.0f,800.0f),3.0f,Vector4(1.0f,1.0f,1.0f,0.65f));
-	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,3.0f,910.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
-	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,1030.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
-	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,1080.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
-	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,1120.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,3.0f,710.0f),3.0f,Vector4(1.0f,1.0f,1.0f,0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,3.0f,790.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,850.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,910.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis,Vector3(0.0f,5.0f,970.0f),3.0f,Vector4(1.0f, 1.0f, 1.0f, 0.65f));
 }
 
 void TutorialEvent::Update(Camera* camera)
@@ -91,30 +68,30 @@ void TutorialEvent::Update(Camera* camera)
 
 	if(player_->GetIsDead() == false)
 	{
-		startEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		startEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera,player_->GetJumpCount());
 		startEvent_->TransmissiveBillboard();
 
-		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, player_->GetJumpCount());
 		jumpEvent_->BillboardSetPlayerPos(playerPos, camera);
 		jumpEvent_->TransmissiveBillboard();
 
-		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, player_->GetJumpCount());
 		doubleJumpEvent_->BillboardSetPlayerPos(playerPos, camera);
 		doubleJumpEvent_->TransmissiveBillboard();
 
-		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, player_->GetJumpCount());
 		heighJumpBeforeEvent_->BillboardSetPlayerPos(playerPos, camera);
 		heighJumpBeforeEvent_->TransmissiveBillboard();
 
-		heighJumpAfterEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		heighJumpAfterEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, player_->GetJumpCount());
 		heighJumpAfterEvent_->BillboardSetPlayerPos(playerPos, camera);
 		heighJumpAfterEvent_->TransmissiveBillboard();
 
-		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera);
+		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera, player_->GetJumpCount());
 		changeColorEvent_->BillboardSetPlayerPos(playerPos, camera);
 		changeColorEvent_->TransmissiveBillboard();
 
-		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera);
+		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera, player_->GetJumpCount());
 	}
 }
 
