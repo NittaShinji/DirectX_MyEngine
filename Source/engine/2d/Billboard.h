@@ -89,6 +89,12 @@ public: // メンバ関数
 
 public: //アクセッサ
 
+	//座標を取得
+	Vector3 GetPos() { return pos_; }
+	//カラーを取得
+	Vector4 GetColor() { return color_; }
+	const Vector4& GetkDefaultColor() { return kDefaultColor; }
+
 	//座標をセット
 	void SetPos(Vector3 pos) { pos_ = pos; }
 	//大きさをセット
@@ -101,10 +107,13 @@ public: //アクセッサ
 	//ゲームスピードをセット
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
-private: // 定数
+public:
 
+	// 定数
+	//static const Vector4 kDefaultColor;
+	const Vector4 kDefaultColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	static const int vertexCount = 1;		// 頂点数
-
+	
 private:
 
 	//定数バッファのマッピング用ポインタ

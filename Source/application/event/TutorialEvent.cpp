@@ -15,18 +15,20 @@ void TutorialEvent::Initialzie(Player* player)
 	startEvent_ = std::make_unique<Event>();
 	startEvent_->Initialzie(kStartEventPos_, kEndEventPos_);
 	startEvent_->SetIsAnimate(true);
-	startEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
-	startEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
-
+	//startEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
+	//startEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
+	startEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	
 	//ジャンプイベント設定
 	const float kStartJumpEventPos_ = 75;
 	const float kEndJumpEventPos_ = 110;
 	jumpEvent_ = std::make_unique<Event>();
 	jumpEvent_->Initialzie(kStartJumpEventPos_, kEndJumpEventPos_);
 	jumpEvent_->SetIsAnimate(true);
-	jumpEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
-	jumpEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
-
+	//jumpEvent_->AddSprite("aButton.png", kUiPosition, kUiSize);
+	//jumpEvent_->AddSprite("aPushed.png", kUiPosition, kUiSize);
+	jumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	
 	const float kStartDoubleJumpEventPos_ = 175;
 	const float kEndDoubleJumpEventPos_ = 320;
 	doubleJumpEvent_ = std::make_unique<Event>();
@@ -76,12 +78,18 @@ void TutorialEvent::Initialzie(Player* player)
 
 void TutorialEvent::Update(Camera* camera)
 {
-	float playerPosZ = player_->GetTransform().z;
+	Vector3 playerPos = player_->GetTransform();
+	float playerPosZ = playerPos.z;
 
 	if(player_->GetIsDead() == false)
 	{
 		startEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		startEvent_->TransmissiveBillboard();
+
 		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		jumpEvent_->BillboardSetPlayerPosZ(playerPos, camera);
+		jumpEvent_->TransmissiveBillboard();
+
 		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
 		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
 		heighJumpAfterEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
@@ -95,8 +103,8 @@ void TutorialEvent::Draw()
 {
 	if(player_->GetIsDead() == false)
 	{
-		startEvent_->AnimationDraw();
-		jumpEvent_->AnimationDraw();
+		startEvent_->Draw();
+		jumpEvent_->Draw();
 		doubleJumpEvent_->AnimationDraw();
 		heighJumpBeforeEvent_->AnimationDraw();
 		heighJumpAfterEvent_->AnimationDraw();

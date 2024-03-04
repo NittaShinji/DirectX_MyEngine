@@ -43,6 +43,43 @@ void Event::Reset()
 	isStart_ = false;
 	isFinish_ = false;
 	buttonTimer_ = buttonAnimeTime_;
+
+	for(auto& billBoard : eventBillboard_)
+	{
+		billBoard->SetColor(billBoard->GetkDefaultColor());
+	}
+}
+
+void Event::BillboardSetPlayerPosZ(const Vector3& playerPos, Camera* camera)
+{
+	//ビルボード更新
+	if(eventBillboard_.empty() == false)
+	{
+		for(auto& billBoard : eventBillboard_)
+		{
+			billBoard->SetPos(Vector3(billBoard->GetPos().x, billBoard->GetPos().y, playerPos.z));
+			billBoard->Update(camera);
+		}
+	}
+}
+
+void Event::TransmissiveBillboard()
+{
+	if(isPushedButton_ == true)
+	{
+		for(auto& billBoard : eventBillboard_)
+		{
+			float colorAlpha_ = billBoard->GetColor().w;
+			if(colorAlpha_ > 0.0f)
+			{
+				colorAlpha_ -= 0.1f;
+			}
+
+			Vector3 color = Vector3(billBoard->GetColor().x, billBoard->GetColor().y, billBoard->GetColor().z);
+
+			billBoard->SetColor(Vector4(color.x,color.y,color.z,colorAlpha_));
+		}
+	}
 }
 
 void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t buttonInfo, BYTE keyboardInfo,Camera* camera)
@@ -86,6 +123,7 @@ void Event::Update(float playerPosZ,GameSpeed::SpeedMode speedMode,int16_t butto
 		//対象のボタンが押されたらイベント終了
 		if(gamePad_->PushedButtonMoment(buttonInfo) || keys_->PushedKeyMoment(keyboardInfo))
 		{
+			
 			isPushedButton_ = true;
 			isFinish_ = true;
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);

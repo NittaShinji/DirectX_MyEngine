@@ -48,6 +48,8 @@ ComPtr<ID3D12RootSignature> Billboard::rootSignature_;
 
 Billboard::Vertex Billboard::vertices_[vertexCount];
 
+//const Vector4 kDefaultColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+
 //定数バッファの生成
 template <typename Type1>
 ComPtr<ID3D12Resource> Billboard::CrateConstBuff(Type1* device)
@@ -96,8 +98,7 @@ void Billboard::Initialize()
 
 	rotate_ = 0.0f;
 	scale_ = 1.0f;
-	const Vector4 defaultColor = { 1.0f,1.0f,1.0f,1.0f };
-	color_ = defaultColor;
+	color_ = kDefaultColor;
 }
 
 void Billboard::Update(Camera* camera)
