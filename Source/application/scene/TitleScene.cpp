@@ -50,13 +50,13 @@ void TitleScene::Initialize()
 
 	//画像
 	titleSprite_ = std::make_unique<Sprite>();
-	clickSprite_ = std::make_unique<Sprite>();
 	aButtonSprite_ = std::make_unique<Sprite>();
-	bButtonSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_ = std::make_unique<Sprite>();
 	
 	TextureManager::GetInstance()->LoadTexture("titleFont.png");
 	TextureManager::GetInstance()->LoadTexture("aButton.png");
+	TextureManager::GetInstance()->LoadTexture("aPushed.png");
+
 	TextureManager::GetInstance()->LoadTexture("bButton.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
 	
@@ -65,24 +65,12 @@ void TitleScene::Initialize()
 	const Vector2 titlePosition = { 400.0f,33.0f };
 	titleSprite_->Initialize("titleFont.png",titlePosition);
 
-	const Vector2 clickButtonSize = { TextureManager::GetInstance()->GetTexSize("click.png")};
-	const Vector2 clickButtonPosition = {576.0f,530.0f};
+	const Vector2 aButtonPosition = {576.0f,530.0f};
 	
-	const Vector2 aButtonSize = { TextureManager::GetInstance()->GetTexSize("aButton.png") };
-	const Vector2 aButtonPosition = { 1024.0f,530.0f };
-	
-	const Vector2 bButtonSize = { TextureManager::GetInstance()->GetTexSize("bButton.png") };
-	const Vector2 bButtonPosition = {1152.0f,530.0f};
-	
-	aButtonSprite_->Initialize("aButton.png",aButtonPosition);
-	bButtonSprite_->Initialize("bButton.png",bButtonPosition);
-
 	const Vector2 kUiSize = { 128.0f,128.0f };
 
-	aButtonSprite_->SetSize(Vector2(kUiSize));
-	bButtonSprite_->SetSize(Vector2(kUiSize));
-
-	clickSprite_->Initialize("click.png",clickButtonPosition);
+	aButtonSprite_->Initialize("aButton.png",aButtonPosition);
+	aButtonSprite_->SetSize(Vector2(128.0f, 128.0f));
 	backGroundSprite_->Initialize("WhiteTex",backGroundPosition);
 	
 	//シェーダー読み込み
@@ -112,9 +100,7 @@ void TitleScene::Update()
 	camera_->Update();
 
 	titleSprite_->matUpdate();
-	clickSprite_->matUpdate();
 	aButtonSprite_->matUpdate();
-	bButtonSprite_->matUpdate();
 	backGroundSprite_->matUpdate();
 	
 	titleSphere_->Update(camera_.get());
@@ -281,9 +267,14 @@ void TitleScene::Draw()
 	backGroundSprite_->Draw("WhiteTex");
 	titleSprite_->Draw("titleFont.png");
 
-	clickSprite_->Draw("click.png");
-	aButtonSprite_->Draw("aButton.png");
-	bButtonSprite_->Draw("bButton.png");
+	if(isChangeScene_ == true)
+	{
+		aButtonSprite_->Draw("aPushed.png");
+	}
+	else
+	{
+		aButtonSprite_->Draw("aButton.png");
+	}
 	
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();
@@ -312,10 +303,8 @@ void TitleScene::SceneAnimation()
 
 	//画像を動かす処理
 	titleSprite_->MovePos(animationMoveVec2);
-	clickSprite_->MovePos(animationMoveVec2);
 	aButtonSprite_->MovePos(animationMoveVec2);
-	bButtonSprite_->MovePos(animationMoveVec2);
-
+	
 	//オブジェクトを動かす処理
 	titleSphere_->MovePos(Vector3(animationMoveVec2.x, -animationMoveVec2.y, 0.0f));
 }

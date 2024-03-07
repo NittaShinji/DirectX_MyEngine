@@ -138,8 +138,7 @@ void ClearScene::Draw()
 	}
 	
 	clearSprite_->Draw("gameClear.png");
-	//GameTimer::GetInstance()->ResultDraw();
-
+	
 	//描画終了
 	directXBasic_->AfterDraw();
 }

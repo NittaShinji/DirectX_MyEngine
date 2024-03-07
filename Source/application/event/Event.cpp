@@ -14,6 +14,8 @@ void Event::StaticInitialize(KeyInput* keys, GamePad* gamePad, GameSpeed* gameSp
 void Event::Initialzie(float startPos,float endPos)
 {
 	Reset();
+	isStart_ = false;
+	isFinish_ = false;
 	startPos_ = startPos;
 	finishPos_= endPos;
 	buttonAnimeTime_ = defaultAnimeTime;
