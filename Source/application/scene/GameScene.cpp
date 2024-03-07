@@ -75,7 +75,6 @@ void GameScene::Initialize()
 	//モデル読み込み
 	Model::Load("Cube");
 	Model::Load("wall");
-	Model::Load("Plane");
 	Model::Load("GoalWall");
 	Model::Load("StageBlock");
 
