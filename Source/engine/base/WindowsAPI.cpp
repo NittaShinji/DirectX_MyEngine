@@ -42,7 +42,7 @@ void WindowsAPI::Initialize()
 
 	w_.cbSize = sizeof(WNDCLASSEX);
 	w_.lpfnWndProc = (WNDPROC)WindowProc; // ウィンドウプロシージャを設定
-	w_.lpszClassName = L"DirectXGame"; // ウィンドウクラス名
+	w_.lpszClassName = L"Chameleon Ball"; // ウィンドウクラス名
 	w_.hInstance = GetModuleHandle(nullptr); // ウィンドウハンドル
 	w_.hCursor = LoadCursor(NULL, IDC_ARROW); // カーソル指定
 
@@ -55,7 +55,7 @@ void WindowsAPI::Initialize()
 
 	// ウィンドウオブジェクトの生成
 	hwnd_ = CreateWindow(w_.lpszClassName, // クラス名
-		L"DirectXGame", // タイトルバーの文字
+		L"Chameleon Ball", // タイトルバーの文字
 		WS_OVERLAPPEDWINDOW, // 標準的なウィンドウスタイル
 		CW_USEDEFAULT, // 表示X座標(OSに任せる)
 		CW_USEDEFAULT, // 表示Y座標(OSに任せる)
