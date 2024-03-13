@@ -41,9 +41,9 @@ void TitleScene::Initialize()
 	Object3d::SetLightGroup(lightGroup_);
 
 	//3Dオブジェクト
-	const std::string sphere = "sphere";
+	const std::string sphere = "Sphere";
 	Model::Load(sphere);
-	titleSphere_ = Object3d::Create("sphere");
+	titleSphere_ = Object3d::Create("Sphere");
 	spherPos_ = kSpherInitPos_;
 	titleSphere_->SetTransform(spherPos_);
 	titleSphere_->SetScale(kSpherInitScale_);

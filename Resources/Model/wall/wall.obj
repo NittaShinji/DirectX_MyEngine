@@ -1,6 +1,6 @@
 # Blender 3.3.1
 # www.blender.org
-mtllib wall.mtl
+mtllib Wall.mtl
 o Cube
 v 1.000000 4.000000 -4.000000
 v 1.000000 -4.000000 -4.000000

@@ -74,12 +74,12 @@ void GameScene::Initialize()
 
 	//モデル読み込み
 	Model::Load("Cube");
-	Model::Load("wall");
+	Model::Load("Wall");
 	Model::Load("GoalWall");
 	Model::Load("StageBlock");
 
 	//3Dオブジェクトの生成
-	player_ = Player::Create("sphere");
+	player_ = Player::Create("Sphere");
 	player_->SetGamePad(gamePad_.get());
 	mirrorPlayer_ = MirrorPlayer::Create(player_.get());
 
