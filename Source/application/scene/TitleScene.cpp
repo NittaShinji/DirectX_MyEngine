@@ -53,22 +53,19 @@ void TitleScene::Initialize()
 	aButtonSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_ = std::make_unique<Sprite>();
 	
+	//画像のロード
 	TextureManager::GetInstance()->LoadTexture("titleFont.png");
 	TextureManager::GetInstance()->LoadTexture("aButton.png");
-	TextureManager::GetInstance()->LoadTexture("aPushed.png");
-
 	TextureManager::GetInstance()->LoadTexture("bButton.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
 	
-	Vector2 backGroundPosition = { 0.0f,0.0f };
-	
+	const Vector2 backGroundPosition = { 0.0f,0.0f };
 	const Vector2 titlePosition = { 400.0f,33.0f };
-	titleSprite_->Initialize("titleFont.png",titlePosition);
-
-	const Vector2 aButtonPosition = {576.0f,530.0f};
-	
+	const Vector2 aButtonPosition = { 576.0f,530.0f };
 	const Vector2 kUiSize = { 128.0f,128.0f };
 
+	titleSprite_->Initialize("titleFont.png",titlePosition);
+	
 	aButtonSprite_->Initialize("aButton.png",aButtonPosition);
 	aButtonSprite_->SetSize(Vector2(128.0f, 128.0f));
 	backGroundSprite_->Initialize("WhiteTex",backGroundPosition);
@@ -227,6 +224,13 @@ void TitleScene::Update()
 
 	if(isChangeScene_ == true)
 	{
+		Vector4 aButtonChangeColor = aButtonSprite_->GetColor();
+		const float changeColorSpeed = 0.02f;
+		
+		aButtonChangeColor.x -= changeColorSpeed;
+		aButtonChangeColor.y -= changeColorSpeed;
+		aButtonChangeColor.z -= changeColorSpeed;
+		aButtonSprite_->SetColor(aButtonChangeColor);
 		SceneAnimation();
 
 		if(isFinishAnimetion == true)
@@ -266,15 +270,7 @@ void TitleScene::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	backGroundSprite_->Draw("WhiteTex");
 	titleSprite_->Draw("titleFont.png");
-
-	if(isChangeScene_ == true)
-	{
-		aButtonSprite_->Draw("aPushed.png");
-	}
-	else
-	{
-		aButtonSprite_->Draw("aButton.png");
-	}
+	aButtonSprite_->Draw("aButton.png");
 	
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();

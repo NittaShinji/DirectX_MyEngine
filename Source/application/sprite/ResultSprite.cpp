@@ -39,6 +39,7 @@ void ResultSprite::Update()
 
 void ResultSprite::Draw()
 {
+	SpriteCommon::GetInstance()->BeforeDraw();
 	backGroundSprite_->Draw("gray");
 }
 

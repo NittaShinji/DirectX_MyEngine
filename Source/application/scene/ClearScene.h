@@ -58,5 +58,8 @@ private:
 
 	//ボタンが押されたかどうか
 	bool isPushedAbutton_;
+
+	//色が戻ったかどうか
+	bool isBackColor_;
 };
 
