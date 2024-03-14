@@ -83,8 +83,6 @@ void ResultSprite::ComeOutOffScreen()
 	{
 		Reset();
 	}
-
-	
 }
 
 void ResultSprite::ComeInScreen()
@@ -136,5 +134,8 @@ void ResultSprite::Reset()
 	resultInEasing_.startPos = -backGorundY;
 	resultInEasing_.endDistance = backGorundY + (WindowsAPI::kWindow_height_ / 2 - backGorundY / 2);
 	resultOutEasing_.endDistance = -(backGorundY + (WindowsAPI::kWindow_height_ / 2 - backGorundY / 2));
+
+	const Vector4 aButtonDefaultColor = { 1.0f,1.0f,1.0f,0.8f };
+	aButtonSprite_->SetColor(aButtonDefaultColor);
 }
 
