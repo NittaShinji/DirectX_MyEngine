@@ -25,6 +25,11 @@ void ResultSprite::Initialize()
 	resultInEasing_.endDistance = backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2);
 	resultOutEasing_.endDistance = -(backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2));
 
+	aButtonSprite_ = std::make_unique<Sprite>();
+	aButtonSprite_->Initialize("aButton.png", Vector2(576.0f, -backGorundHeight));
+	aButtonSprite_->SetColor(Vector4(1.0f,1.0f,1.0f,0.8f));
+
+
 	isFinishOutEasing_ = true;
 	isFinishInEasing_ = false;
 
@@ -35,12 +40,14 @@ void ResultSprite::Initialize()
 void ResultSprite::Update()
 {
 	backGroundSprite_->matUpdate();
+	aButtonSprite_->matUpdate();
 }
 
 void ResultSprite::Draw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	backGroundSprite_->Draw("gray");
+	aButtonSprite_->Draw("aButton.png");
 }
 
 void ResultSprite::ComeOutOffScreen()
@@ -54,6 +61,17 @@ void ResultSprite::ComeOutOffScreen()
 			backGroundPosition_.y = PlayEaseOutQuint(resultOutEasing_);
 			backGroundSprite_->SetPosition(backGroundPosition_);
 			backGroundSprite_->matUpdate();
+
+			Vector2 aButtonPosition_ = aButtonSprite_->GetPosition();
+			aButtonPosition_.y = backGroundPosition_.y;
+			Vector4 aButtonChangeColor = aButtonSprite_->GetColor();
+			const float changeColorSpeed = 0.025f;
+			aButtonChangeColor.x -= changeColorSpeed;
+			aButtonChangeColor.y -= changeColorSpeed;
+			aButtonChangeColor.z -= changeColorSpeed;
+			aButtonSprite_->SetColor(aButtonChangeColor);
+			aButtonSprite_->SetPosition(Vector2(aButtonSprite_->GetPosition().x, aButtonPosition_.y + 256));
+			aButtonSprite_->matUpdate();
 		}
 		else
 		{
@@ -65,6 +83,8 @@ void ResultSprite::ComeOutOffScreen()
 	{
 		Reset();
 	}
+
+	
 }
 
 void ResultSprite::ComeInScreen()
@@ -92,6 +112,11 @@ void ResultSprite::ComeInScreen()
 
 	backGroundSprite_->SetPosition(backGroundPosition_);
 	backGroundSprite_->matUpdate();
+
+	Vector2 aButtonPosition_ = aButtonSprite_->GetPosition();
+	aButtonPosition_.y = backGroundPosition_.y;
+	aButtonSprite_->SetPosition(Vector2(aButtonSprite_->GetPosition().x, aButtonPosition_.y + 256));
+	aButtonSprite_->matUpdate();
 }
 
 void ResultSprite::Reset()

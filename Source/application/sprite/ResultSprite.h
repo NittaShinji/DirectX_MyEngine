@@ -43,8 +43,10 @@ private: //メンバ変数
 	bool isFinishInEasing_ = false;
 
 
-	///背景スプライト
+	//背景スプライト
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
+	//Aボタンスプライト
+	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
 
 public: //アクセッサ
 
