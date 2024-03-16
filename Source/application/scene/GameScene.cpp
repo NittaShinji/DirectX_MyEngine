@@ -40,16 +40,9 @@ void GameScene::StaticInitialize()
 
 void GameScene::Initialize()
 {
-	//3Dオブジェクトにライトをセット
-	lightGroup_ = LightGroup::Create();
-	Object3d::SetLightGroup(lightGroup_);
-	const int32_t firstLight = 0;
-	lightGroup_->SetDirLightActive(firstLight, true);
-
 	//サウンド
 	SoundManager::GetInstance()->Initialize();
 	SoundManager::GetInstance()->LoadSoundWave("gamescene.wav");
-
 	gameSound_ = std::make_unique<Sound>();
 	gameSound_->Initialize("gamescene.wav");
 	gameSound_->PlaySoundWave(true);
@@ -72,6 +65,19 @@ void GameScene::Initialize()
 	resultSprite_ = std::make_unique<ResultSprite>();
 	resultSprite_->Initialize();
 
+	//ライトの初期化処理
+	//3Dオブジェクトにライトをセット
+	lightGroup_ = LightGroup::Create();
+	Object3d::SetLightGroup(lightGroup_);
+	//ライトを有効化し、光線方向の初期値設定
+	const int32_t firstLight = 0;
+	lightGroup_->SetDirLightActive(firstLight, true);
+	lightGroup_->SetAmbientColor(Vector3(ambientLightColor_));
+	lightGroup_->SetDirLightDir(0, Vector3({ lightDir_.x, lightDir_.y, lightDir_.z }), 0.0f);
+	lightGroup_->SetDirLightColor(0, Vector3(lightColor_));
+	//設定したライト情報を更新
+	lightGroup_->Update();
+
 	//モデル読み込み
 	Model::Load("Cube");
 	Model::Load("Wall");
@@ -86,20 +92,20 @@ void GameScene::Initialize()
 	stage_ = std::make_unique<Stage>();
 	stage_->Initialize(player_.get());
 
-	//------------カメラ----------
+	//カメラ
 	gameCamera_ = std::make_unique<GameCamera>();
 	gameCamera_->Initialize();
-
-	//2Dパーティクル
-	ParticleManager::GetInstance()->Initialize();
-	//3Dパーティクル
-	ObjParticleManager::GetInstance()->Initialize();
 
 	//ゲームスピード
 	gameSpeed_ = std::make_unique<GameSpeed>();
 	gameSpeed_->Initialize();
 	player_->SetGameSpeed(gameSpeed_.get());
 	gameCamera_->SetGameSpeed(gameSpeed_.get());
+
+	//2Dパーティクル
+	ParticleManager::GetInstance()->Initialize();
+	//3Dパーティクル
+	ObjParticleManager::GetInstance()->Initialize();
 
 	//パーティクルにプレイヤー、ゲームスピード情報をセット
 	ParticleManager::GetInstance()->SetEmitterPlayer(player_.get());
@@ -144,6 +150,11 @@ void GameScene::Update()
 	{
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::STOP);
 	}
+
+	//imguiからのライトパラメータを反映
+	lightGroup_->SetDirLightDir(0, Vector3({ lightDir_.x + imGuiDir_[0], lightDir_.y + imGuiDir_[1], lightDir_.z + imGuiDir_[2] }), 0.0f);
+	lightGroup_->Update();
+
 #endif
 
 	if(stage_->GetStageNum() == Stage::tutorialStage)
@@ -187,25 +198,6 @@ void GameScene::Update()
 
 	//スプライト
 	gameSprite_->Update();
-
-	//光線方向初期値
-	const Vector3 kLightDir = { 1,-1,-10 };
-	const float kLightDirUp = 0.0f;
-	const Vector3 kColor = { 1, 1, 1 };
-
-	//ライトの設定
-	lightGroup_->SetAmbientColor(kColor);
-	lightGroup_->SetDirLightDir(0, kLightDir, kLightDirUp);
-	const Vector3 whitelightColor = { 1.0f,1.0f,1.0f };
-	lightGroup_->SetDirLightColor(0, whitelightColor);
-	{
-		//imguiからのライトパラメータを反映
-		lightGroup_->SetAmbientColor(Vector3(ambientLightColor_));
-		lightGroup_->SetDirLightDir(0, Vector3({ lightDir_.x + imGuiDir_[0], lightDir_.y + imGuiDir_[1], lightDir_.z + imGuiDir_[2] }), 0.0f);
-		lightGroup_->SetDirLightColor(0, Vector3(lightColor_));
-	}
-	//ライトの更新
-	lightGroup_->Update();
 
 	//カメラの更新
 	gameCamera_->Update(player_->GetIsMoving(), player_->GetTransform(), player_->GetInitPos(), player_->GetIsDead(),
