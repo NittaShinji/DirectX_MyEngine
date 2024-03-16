@@ -251,21 +251,8 @@ void Player::Update(Camera* camera)
 			}
 		}
 
-		//加速を座標に反映
-		//速度に加速度を加算
-
-		//bool isKeepRunnig = false;
-		//if(isFinish_ == true && isRightAxcell_ == false)
-		//{
-		//	isKeepRunnig = true;
-		//}
-
+		//停止状態以外の場合はその場で走り続けるように
 		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP) {}
-		//その場で走り続ける
-		/*else if(isKeepRunnig == true)
-		{
-			transform_= transform_;
-		}*/
 		else
 		{
 			transform_.x += totalAxcell_.x;
@@ -280,41 +267,6 @@ void Player::Update(Camera* camera)
 		//球コライダーを取得
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 		assert(sphereCollider);
-
-		//クエリ―コールバッククラス
-		class PlayerQueryCallback : public QueryCallback
-		{
-		public:
-			PlayerQueryCallback(Sphere* sphere) : sphere(sphere) {};
-
-			//衝突時コールバック関数
-			bool OnQueryHit(const QueryHit& info)
-			{
-				//ワールドの上方向
-				const Vector3 up = { 0,1,0 };
-				//排斥方向
-				Vector3 rejectDir = Vector3Normalize(info.reject);
-				//上方向と排斥方向の角度差のコサイン値
-				float cos = Vector3Dot(rejectDir, up).x;
-
-				//地面判定しきい値角度
-				const float threshold = cosf(ToRadian(60.0f));
-				//角度差によって天井または地面判定される場合を除いて
-				if(-threshold < cos && cos < threshold)
-				{
-					//球を排斥(押し出す)
-					sphere->center += info.reject;
-					move += info.reject;
-				}
-
-				return true;
-			}
-
-			//クエリ―に使用する球
-			Sphere* sphere = nullptr;
-			//排斥による移動量(累積値)
-			Vector3 move = {};
-		};
 
 		//クエリーコールバックの関数オブジェクト
 		PlayerQueryCallback callback(sphereCollider);
