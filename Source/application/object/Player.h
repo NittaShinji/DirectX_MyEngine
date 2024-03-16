@@ -8,6 +8,7 @@
 #include "SoundManager.h"
 #include "Easing.h"
 #include "GameSpeed.h"
+#include "QueryCallback.h"
 
 //クエリ―コールバッククラス
 class PlayerQueryCallback : public QueryCallback
