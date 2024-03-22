@@ -1,6 +1,7 @@
 #pragma once
 #include "Sound.h"
-#include<map>
+#include <map>
+#include <unordered_map>
 
 /// <summary>
 /// サウンドマネージャー
@@ -8,10 +9,9 @@
 /// </summary>
 namespace NsEngine
 {
-	class SoundManager final
+	class SoundManager 
 	{
 	private:
-
 		//エイリアステンプレート
 		template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 
@@ -26,15 +26,6 @@ namespace NsEngine
 		SoundManager(const SoundManager& soundManager) = delete;
 		//代入演算子の無効
 		SoundManager& operator=(const SoundManager& soundManager) = delete;
-
-	public:
-
-		// 再生データ
-		struct Voice
-		{
-			std::string fileName;
-			IXAudio2SourceVoice* sourceVoice = nullptr;
-		};
 
 	public:
 
@@ -54,6 +45,12 @@ namespace NsEngine
 		/// <param name="filename">WAVファイル名</param>
 		void LoadSoundWave(const std::string& fileName);
 
+		//再生データを登録
+		void RegisterVoice(Sound::Voice* voice);
+
+		//音声データを全てストップ
+		void StopAllSound();
+
 		//特定の音声データを解放
 		void UnloadParticularSound(const std::string& fileName);
 
@@ -72,9 +69,18 @@ namespace NsEngine
 
 		//サウンド
 		//再生中のサウンドデータコンテナ
-		std::map<char, Voice> voices_;
+		std::vector<Sound::Voice*> voices_;
+
+		std::unordered_map<std::string, std::unique_ptr<Sound>> soundsMap_;
 
 	public: //アクセッサ
+
+		/// <summary>
+		/// サウンドインスタンスを取得
+		/// </summary>
+		/// <param name="fileName"></param>
+		/// <returns></returns>
+		std::unique_ptr<Sound> GetSound(std::string fileName);
 
 		/// <summary>
 		/// サウンドデータを取得

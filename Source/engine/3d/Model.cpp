@@ -263,8 +263,6 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 		D3D12_CPU_PAGE_PROPERTY_WRITE_BACK;
 	textureHeapProp.MemoryPoolPreference = D3D12_MEMORY_POOL_L0;
 
-	//CD3DX12_HEAP_PROPERTIES textureHeapProp = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
-
 	//リソース設定
 	D3D12_RESOURCE_DESC textureResourceDesc{};
 	textureResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
@@ -282,7 +280,6 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 		&textureResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		//IID_PPV_ARGS(&textureBuffers_[0]));
 		IID_PPV_ARGS(&model.infomation_.textureBuffers[sTextureIndex_]));
 
 	textureHeapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
@@ -337,9 +334,6 @@ void Model::LoadTexture(const std::string& directoryPath, const std::string& fil
 
 	//ハンドルの指す位置にシェーダーリソースビュー作成
 	directXBasic_->GetDevice()->CreateShaderResourceView(model.infomation_.textureBuffers[sTextureIndex_].Get(), &srvDesc, sSrvHandle_);
-
-	//画像番号を進める
-	//sTextureIndex_++;
 }
 
 //検索キー(パス)から値を検索

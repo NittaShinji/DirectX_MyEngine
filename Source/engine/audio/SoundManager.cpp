@@ -105,6 +105,20 @@ void SoundManager::LoadSoundWave(const std::string& fileName)
 	soundDatas_.insert(std::make_pair(fileName, soundData));
 }
 
+void SoundManager::RegisterVoice(Sound::Voice* voice)
+{
+	voices_.push_back(voice);
+}
+
+void SoundManager::StopAllSound()
+{
+	for(int i = 0; i < voices_.size(); i++)
+	{
+		voices_[i]->sourceVoice->Stop();
+	}
+	voices_.resize(0);
+}
+
 void SoundManager::UnloadParticularSound(const std::string& fileName)
 {
 	std::map<std::string, Sound::SoundData>::iterator it = soundDatas_.find(fileName);
@@ -116,6 +130,14 @@ void SoundManager::UnloadParticularSound(const std::string& fileName)
 	soundData->pBuffer = { 0 };
 	soundData->bufferSize = 0;
 	soundData->wfex = {};
+}
+
+std::unique_ptr<Sound> SoundManager::GetSound(std::string fileName)
+{
+	std::unique_ptr<Sound> sound = std::make_unique<Sound>();
+	sound->Initialize(fileName);
+
+	return sound;
 }
 
 //キーに対応したサウンドデータを返す

@@ -3,6 +3,7 @@
 #include "StageSelect.h"
 #include "ClearScene.h"
 #include "GameTimer.h"
+#include "ResourceLoader.h"
 
 #include "Vector4.h"
 #include <wrl.h>
@@ -30,6 +31,8 @@ void MyGame::Initialize()
 	StageSelectScene::StaticInitialize();
 	ClearScene::StaticInitialize();
 	GameTimer::GetInstance()->StaticInitialize();
+	SoundManager::GetInstance()->Initialize();
+	ResourceLoader::Load();
 }
 
 void MyGame::Update()
@@ -53,6 +56,8 @@ void MyGame::Draw()
 
 void MyGame::Finalize()
 {
+	SoundManager::GetInstance()->Finalize();
+
 	//ゲーム全体の終了処理
 	imGuiManager_->Finalize();
 

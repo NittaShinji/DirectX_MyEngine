@@ -77,7 +77,7 @@ public: //メンバ関数
 	void PlaySoundWave(bool isLoop);
 
 	//音声停止
-	void StopSound(const std::string& fileName);
+	void StopSound();
 
 	//音声一時停止
 	void PauseSound(const std::string& fileName);
@@ -88,13 +88,22 @@ public: //メンバ関数
 	//音量調節
 	void SetVolume(const std::string& fileName, float volume);
 
+	//削除
+	void Delete();
+
 	//鳴らしたかどうかを取得
 	bool GetIsSounded() { return isSounded_; }
+
+	//サウンドデータを取得
+	SoundData* GetSoundData() { return &soundData_; };
 
 private:
 
 	//サウンドデータ
 	SoundData soundData_;
+
+	//再生データ
+	Voice voice_;
 
 	//音を鳴らしたかどうか
 	bool isSounded_;

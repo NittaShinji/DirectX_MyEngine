@@ -64,7 +64,7 @@ void StageSelectScene::Initialize()
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
 	//サウンド
-	SoundManager::GetInstance()->Initialize();
+	//SoundManager::GetInstance()->Initialize();
 	SoundManager::GetInstance()->LoadSoundWave("title.wav");
 	SoundManager::GetInstance()->LoadSoundWave("touch.wav");
 	bgmSound_ = std::make_unique<Sound>();
@@ -118,7 +118,7 @@ void StageSelectScene::Update()
 		changeSceneTimer_--;
 		if(changeSceneTimer_ <= 0)
 		{
-			SoundManager::GetInstance()->Finalize();
+			//SoundManager::GetInstance()->Finalize();
 			SceneManager::GetInstance()->ChangeScene("GAME");
 		}
 	}

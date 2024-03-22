@@ -360,6 +360,9 @@
     <ClCompile Include="Source\engine\2d\Billboard.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
     </ClCompile>
+    <ClCompile Include="Source\application\game\ResourceLoader.cpp">
+      <Filter>ソース ファイル\application\game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -601,6 +604,9 @@
     </ClInclude>
     <ClInclude Include="Source\engine\2d\Billboard.h">
       <Filter>ヘッダー ファイル\engine\2d</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\game\ResourceLoader.h">
+      <Filter>ヘッダー ファイル\application\game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

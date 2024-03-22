@@ -49,8 +49,6 @@ void ClearScene::Initialize()
 	gamePad_->Initialzie(Player1);
 
 	//サウンドの初期化
-	SoundManager::GetInstance()->Initialize();
-	SoundManager::GetInstance()->LoadSoundWave("clear.wav");
 	checkSound_ = std::make_unique<Sound>();
 	checkSound_->Initialize("clear.wav");
 	checkSound_->PlaySoundWave(false);
@@ -147,7 +145,7 @@ void ClearScene::Update()
 		}
 		if(isBackColor_ == true && aButtonChangeColor.x > 1.0f)
 		{
-			SoundManager::GetInstance()->Finalize();
+			SoundManager::GetInstance()->StopAllSound();
 			SceneManager::GetInstance()->ChangeScene("TITLE");
 		}	
 	}

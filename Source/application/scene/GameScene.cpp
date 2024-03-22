@@ -41,8 +41,6 @@ void GameScene::StaticInitialize()
 void GameScene::Initialize()
 {
 	//サウンド
-	SoundManager::GetInstance()->Initialize();
-	SoundManager::GetInstance()->LoadSoundWave("gamescene.wav");
 	gameSound_ = std::make_unique<Sound>();
 	gameSound_->Initialize("gamescene.wav");
 	gameSound_->PlaySoundWave(true);
@@ -267,7 +265,9 @@ void GameScene::Update()
 					ParticleManager::GetInstance()->AllRemove();
 					ObjParticleManager::GetInstance()->AllRemove();
 
-					SoundManager::GetInstance()->Finalize();
+					//SoundManager::GetInstance()->Finalize();
+					//gameSound_->StopSound();
+					SoundManager::GetInstance()->StopAllSound();
 					SceneManager::GetInstance()->ChangeScene("CLEAR");
 				}	
 			}
@@ -304,8 +304,7 @@ void GameScene::Update()
 		GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(), stage_->GetIsPlayerReachedStageEdge());
 		ParticleManager::GetInstance()->AllRemove();
 		ObjParticleManager::GetInstance()->AllRemove();
-
-		SoundManager::GetInstance()->Finalize();
+		SoundManager::GetInstance()->StopAllSound();
 		SceneManager::GetInstance()->ChangeScene("CLEAR");
 	}
 #endif

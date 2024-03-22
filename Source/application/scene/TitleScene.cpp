@@ -4,6 +4,7 @@
 #include "Vector2.h"
 #include "Easing.h"
 #include "ObjectColor.h"
+#include "GameSoundManager.h"
 
 using namespace NsEngine;
 
@@ -74,9 +75,6 @@ void TitleScene::Initialize()
 	SpriteCommon::GetInstance()->ShaderLoad();
 	SpriteCommon::GetInstance()->SemiTransparent();
 	//サウンド
-	SoundManager::GetInstance()->Initialize();
-	SoundManager::GetInstance()->LoadSoundWave("title.wav");
-	SoundManager::GetInstance()->LoadSoundWave("touch.wav");
 	titleSound_ = std::make_unique<Sound>();
 	touchSound_ = std::make_unique<Sound>();
 	titleSound_->Initialize("title.wav");
@@ -218,6 +216,7 @@ void TitleScene::Update()
 
 	if(gamePad_->HasPushedButton(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
+		/*std::unique_ptr<Sound> touchSound_ = GameSoundManager::GetInstance()->GetSound("touch.wav");*/
 		touchSound_->PlaySoundWave(false);
 		isChangeScene_ = true;
 	}
@@ -254,7 +253,7 @@ void TitleScene::Update()
 			{
 				if(changeWhiteTimer_ <= 0)
 				{
-					SoundManager::GetInstance()->Finalize();
+					SoundManager::GetInstance()->StopAllSound();
 					SceneManager::GetInstance()->ChangeScene("GAME");
 				}
 			}

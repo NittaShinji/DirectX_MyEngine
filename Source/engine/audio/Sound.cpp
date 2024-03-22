@@ -12,17 +12,21 @@ Sound::~Sound() {}
 void Sound::Initialize(const std::string& fileName)
 {
 	soundData_ = SoundManager::GetInstance()->GetSoundData(fileName);
+
+	HRESULT result;
+
+	//波形フォーマットを元にSourceVoiceの生成
+	voice_.sourceVoice = nullptr;
+	result = SoundManager::GetInstance()->GetXAudio2()->CreateSourceVoice(&voice_.sourceVoice, &soundData_.wfex);
+	assert(SUCCEEDED(result));
+
+	SoundManager::GetInstance()->RegisterVoice(&voice_);
 	isSounded_ = false;
 }
 
 void Sound::PlaySoundWave(bool isLoop)
 {
 	HRESULT result;
-
-	//波形フォーマットを元にSourceVoiceの生成
-	IXAudio2SourceVoice* pSourceVoice = nullptr;
-	result = SoundManager::GetInstance()->GetXAudio2()->CreateSourceVoice(&pSourceVoice, &soundData_.wfex);
-	assert(SUCCEEDED(result));
 
 	//再生する波形データの設定
 	XAUDIO2_BUFFER buf{};
@@ -37,9 +41,20 @@ void Sound::PlaySoundWave(bool isLoop)
 	}
 
 	//波形データの再生
-	result = pSourceVoice->SubmitSourceBuffer(&buf);
-	result = pSourceVoice->Start();
-
+	result = voice_.sourceVoice->SubmitSourceBuffer(&buf);
+	result = voice_.sourceVoice->Start();
+	
 	//鳴ったことを記録する
 	isSounded_ = true;
+}
+
+void Sound::StopSound()
+{
+	voice_.sourceVoice->Stop();
+}
+
+void Sound::Delete()
+{
+	voice_.sourceVoice->DestroyVoice();
+	voice_.sourceVoice = nullptr;
 }

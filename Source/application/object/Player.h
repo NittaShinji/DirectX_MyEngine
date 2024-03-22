@@ -54,7 +54,7 @@ public:
 
 	//インスタンスを生成
 	static std::unique_ptr<Player> Create(const std::string& path);
-
+	
 public:
 
 	//初期化

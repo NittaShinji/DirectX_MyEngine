@@ -27,11 +27,6 @@ std::unique_ptr<Player> Player::Create(const std::string& path)
 
 void Player::Initialize()
 {
-	//プレイヤー周りのサウンドを初期化
-	SoundManager::GetInstance()->LoadSoundWave("jump.wav");
-	SoundManager::GetInstance()->LoadSoundWave("doubleJump.wav");
-	SoundManager::GetInstance()->LoadSoundWave("playerDead.wav");
-
 	//サウンドのインスタンス生成
 	jumpSound_ = std::make_unique<Sound>();
 	doubleJumpSound_ = std::make_unique<Sound>();
