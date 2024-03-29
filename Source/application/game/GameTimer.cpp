@@ -30,10 +30,6 @@ void GameTimer::LoadSprite()
 	//一度だけ画像を読み込む
 	if(isLoadSprite_ == false)
 	{
-		//時計のテクスチャ読み込み
-		//TextureManager::GetInstance()->LoadTexture("stopWatch.png");
-		//数字のテクスチャ読み込み
-		//TextureManager::GetInstance()->LoadTexture("numbers.png");
 		//黒いドットの点画像を作成
 		const int DotSize = 6;
 		const Vector4 BlackColor = Vector4(0.0f, 0.0f, 0.0f, 1.0f);

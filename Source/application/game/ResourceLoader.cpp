@@ -22,18 +22,23 @@ void ResourceLoader::SoundLoad()
 
 void ResourceLoader::ImageLoad()
 {
-	//タイトルシーン
+	//<タイトルシーン>
+	//白色のテクスチャ―を生成
+	const int32_t backGroundWidth = 1280;
+	const int32_t backGroundHeight = 720;
+	const Vector4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	//画像読み込み
+	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, whiteColor, "WhiteTex");
 	TextureManager::GetInstance()->LoadTexture("titleFont.png");
 	TextureManager::GetInstance()->LoadTexture("aButton.png");
 	TextureManager::GetInstance()->LoadTexture("bButton.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
-	//ゲームシーン
-	//読み込み処理
+	//<ゲームシーン>
+	//黒色のテクスチャ―を生成
 	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;
 	const Vector4 blackColor = { 0.0f, 0.0f, 0.0f, 1.0f };
-	//黒色のテクスチャ―を生成
-	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, kHalfWindowHeight, blackColor, "BlackBackGroundHalfTex");
 	//画像読み込み
+	TextureManager::GetInstance()->TexMapping(WindowsAPI::kWindow_width_, kHalfWindowHeight, blackColor, "BlackBackGroundHalfTex");
 	TextureManager::GetInstance()->LoadTexture("jump.png");
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
 	TextureManager::GetInstance()->LoadTexture("cloud.png");
@@ -41,14 +46,12 @@ void ResourceLoader::ImageLoad()
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
 	TextureManager::GetInstance()->LoadTexture("nowLoading.png");
-
 	//時計のテクスチャ読み込み
 	TextureManager::GetInstance()->LoadTexture("stopWatch.png");
 	//数字のテクスチャ読み込み
 	TextureManager::GetInstance()->LoadTexture("numbers.png");
 
-	//クリアシーン
+	//<クリアシーン>
 	TextureManager::GetInstance()->LoadTexture("check.png");
-	TextureManager::GetInstance()->LoadTexture("aButton.png");
 	TextureManager::GetInstance()->LoadTexture("gameClear.png");
 }

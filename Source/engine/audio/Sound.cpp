@@ -53,7 +53,6 @@ void Sound::PlaySoundWave(bool isLoop)
 		result = pSourceVoice->Start();
 	}
 
-
 	//鳴ったことを記録する
 	isSounded_ = true;
 }

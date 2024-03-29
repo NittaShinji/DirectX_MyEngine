@@ -22,13 +22,7 @@ void TitleScene::StaticInitialize()
 	Mesh::StaticInitialize(directXBasic_);
 	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
 	Camera::StaticInitialize(directXBasic_);
-
-	const int32_t backGroundWidth = 1280;
-	const int32_t backGroundHeight = 720;
-
-	const Vector4 whiteColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	TextureManager::GetInstance()->Initialize();
-	TextureManager::GetInstance()->TexMapping(backGroundWidth, backGroundHeight, whiteColor, "WhiteTex");
 }
 
 void TitleScene::Initialize()
@@ -54,11 +48,6 @@ void TitleScene::Initialize()
 	backGroundSprite_ = std::make_unique<Sprite>();
 	
 	//画像のロード
-	/*TextureManager::GetInstance()->LoadTexture("titleFont.png");
-	TextureManager::GetInstance()->LoadTexture("aButton.png");
-	TextureManager::GetInstance()->LoadTexture("bButton.png");
-	TextureManager::GetInstance()->LoadTexture("click.png");
-	*/
 	const Vector2 backGroundPosition = { 0.0f,0.0f };
 	const Vector2 titlePosition = { 400.0f,33.0f };
 	const Vector2 aButtonPosition = { 576.0f,530.0f };

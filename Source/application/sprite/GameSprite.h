@@ -8,9 +8,6 @@ class GameSprite
 {
 public:
 
-	//読み込み処理
-	void Load();
-
 	//初期化
 	void Initialize();
 
