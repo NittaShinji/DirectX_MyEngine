@@ -130,6 +130,8 @@ void GameScene::Update()
 	//ゲームスピードの更新
 	gameSpeed_->Update();
 
+	SoundManager::GetInstance()->Update();
+
 #ifdef _DEBUG
 	//ゲームスピードの切り替え
 	if(keys_->PushedKeyMoment(DIK_N))

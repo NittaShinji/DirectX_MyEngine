@@ -199,7 +199,6 @@ void Player::Update(Camera* camera)
 				if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 				{
 					jumpSound_->PlaySoundWave(false);
-
 					isSecondJumpMoment_ = true;
 					isTouchUnderObject_ = false;
 					isJumpRotate_ = true;
@@ -224,7 +223,7 @@ void Player::Update(Camera* camera)
 		//ジャンプ操作
 		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount_ > 0)
 		{
-			jumpSound_->PlaySoundWave(false);
+ 			jumpSound_->PlaySoundWave(false);
 			isDentedAnime_ = true;
 		}
 		else if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) && jumpCount_ > 0)

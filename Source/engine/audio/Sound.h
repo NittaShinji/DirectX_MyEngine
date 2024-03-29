@@ -54,6 +54,7 @@ public:
 	{
 		std::string fileName;
 		IXAudio2SourceVoice* sourceVoice = nullptr;
+		bool isLoop;
 	};
 
 public: //メンバ関数

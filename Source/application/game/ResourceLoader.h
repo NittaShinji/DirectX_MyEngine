@@ -6,8 +6,14 @@
 class ResourceLoader
 {
 public:
-
-	//読み込み
+	
+	//一度だけ起動時に一度だけ読み込み
 	static void Load();
+
+	//音データ読み込み
+	static void SoundLoad();
+
+	//画像データ読み込み
+	static void ImageLoad();
 };
 

@@ -12,16 +12,9 @@ Sound::~Sound() {}
 void Sound::Initialize(const std::string& fileName)
 {
 	soundData_ = SoundManager::GetInstance()->GetSoundData(fileName);
-
-	HRESULT result;
-
-	//波形フォーマットを元にSourceVoiceの生成
-	voice_.sourceVoice = nullptr;
-	result = SoundManager::GetInstance()->GetXAudio2()->CreateSourceVoice(&voice_.sourceVoice, &soundData_.wfex);
-	assert(SUCCEEDED(result));
-
-	SoundManager::GetInstance()->RegisterVoice(&voice_);
+	
 	isSounded_ = false;
+	voice_.isLoop = false;
 }
 
 void Sound::PlaySoundWave(bool isLoop)
@@ -37,13 +30,30 @@ void Sound::PlaySoundWave(bool isLoop)
 	//ループ処理
 	if(isLoop)
 	{
+		voice_.sourceVoice = nullptr;
+		result = SoundManager::GetInstance()->GetXAudio2()->CreateSourceVoice(&voice_.sourceVoice, &soundData_.wfex);
+		assert(SUCCEEDED(result));
+
+		voice_.isLoop = true;
 		buf.LoopCount = XAUDIO2_LOOP_INFINITE;
+		//波形データの再生
+		result = voice_.sourceVoice->SubmitSourceBuffer(&buf);
+		result = voice_.sourceVoice->Start();
+
+		SoundManager::GetInstance()->RegisterVoice(&voice_);
+	}
+	else
+	{
+		//波形フォーマットを元にSourceVoiceの生成
+		IXAudio2SourceVoice* pSourceVoice = nullptr;
+		result = SoundManager::GetInstance()->GetXAudio2()->CreateSourceVoice(&pSourceVoice, &soundData_.wfex);
+		assert(SUCCEEDED(result));
+
+		result = pSourceVoice->SubmitSourceBuffer(&buf);
+		result = pSourceVoice->Start();
 	}
 
-	//波形データの再生
-	result = voice_.sourceVoice->SubmitSourceBuffer(&buf);
-	result = voice_.sourceVoice->Start();
-	
+
 	//鳴ったことを記録する
 	isSounded_ = true;
 }

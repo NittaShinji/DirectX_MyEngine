@@ -39,6 +39,9 @@ namespace NsEngine
 		//初期化
 		void Initialize();
 
+		//更新
+		void Update();
+
 		/// <sumary>
 		/// WAV音声読み込み
 		/// </sumary>
@@ -70,7 +73,10 @@ namespace NsEngine
 		//サウンド
 		//再生中のサウンドデータコンテナ
 		std::vector<Sound::Voice*> voices_;
+		std::vector<XAUDIO2_VOICE_STATE> beforeState_;
 
+		/*std::vector<IXAudio2SourceVoice*> playingVoices;
+		std::vector<IXAudio2SourceVoice*> finishedVoices;*/
 		std::unordered_map<std::string, std::unique_ptr<Sound>> soundsMap_;
 
 	public: //アクセッサ

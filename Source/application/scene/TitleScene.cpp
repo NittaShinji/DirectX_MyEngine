@@ -54,11 +54,11 @@ void TitleScene::Initialize()
 	backGroundSprite_ = std::make_unique<Sprite>();
 	
 	//画像のロード
-	TextureManager::GetInstance()->LoadTexture("titleFont.png");
+	/*TextureManager::GetInstance()->LoadTexture("titleFont.png");
 	TextureManager::GetInstance()->LoadTexture("aButton.png");
 	TextureManager::GetInstance()->LoadTexture("bButton.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
-	
+	*/
 	const Vector2 backGroundPosition = { 0.0f,0.0f };
 	const Vector2 titlePosition = { 400.0f,33.0f };
 	const Vector2 aButtonPosition = { 576.0f,530.0f };

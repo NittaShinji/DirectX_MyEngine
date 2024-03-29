@@ -11,10 +11,7 @@ void ResultSprite::StaticInitialize()
 	TextureManager::GetInstance()->TexMapping(backGorundWidth, backGorundHeight, grayColor, "gray");
 }
 
-void ResultSprite::Load()
-{
-
-}
+void ResultSprite::Load(){}
 
 void ResultSprite::Initialize()
 {

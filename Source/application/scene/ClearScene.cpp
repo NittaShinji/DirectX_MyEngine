@@ -20,9 +20,9 @@ void ClearScene::Initialize()
 	clearSprite_ = std::make_unique<Sprite>();
 
 	//画像のロード
-	TextureManager::GetInstance()->LoadTexture("check.png");
-	TextureManager::GetInstance()->LoadTexture("aButton.png");
-	TextureManager::GetInstance()->LoadTexture("gameClear.png");
+	//TextureManager::GetInstance()->LoadTexture("check.png");
+	//TextureManager::GetInstance()->LoadTexture("aButton.png");
+	//TextureManager::GetInstance()->LoadTexture("gameClear.png");
 
 	//各画像の初期化
 	Vector2 titlePosition = { 0.0f,0.0f };;
