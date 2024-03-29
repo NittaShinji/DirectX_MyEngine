@@ -42,7 +42,6 @@ private: //メンバ変数
 	bool isFinishOutEasing_ = false;
 	bool isFinishInEasing_ = false;
 
-
 	//背景スプライト
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
 	//Aボタンスプライト

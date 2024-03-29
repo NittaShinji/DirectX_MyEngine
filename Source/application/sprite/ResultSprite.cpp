@@ -18,20 +18,20 @@ void ResultSprite::Load()
 
 void ResultSprite::Initialize()
 {
+	//画像情報を初期化
 	const int32_t backGorundHeight = 400;
 	backGroundSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_->Initialize("gray", Vector2(40.0f, -backGorundHeight));
-	resultInEasing_.startPos = -backGorundHeight;
-	resultInEasing_.endDistance = backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2);
-	resultOutEasing_.endDistance = -(backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2));
-
 	aButtonSprite_ = std::make_unique<Sprite>();
 	aButtonSprite_->Initialize("aButton.png", Vector2(576.0f, -backGorundHeight));
 	aButtonSprite_->SetColor(Vector4(1.0f,1.0f,1.0f,0.8f));
 
-
+	//メンバ変数を初期化
 	isFinishOutEasing_ = true;
 	isFinishInEasing_ = false;
+	resultInEasing_.startPos = -backGorundHeight;
+	resultInEasing_.endDistance = backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2);
+	resultOutEasing_.endDistance = -(backGorundHeight + (WindowsAPI::kWindow_height_ / 2 - backGorundHeight / 2));
 
 	//ゲームタイマー
 	GameTimer::GetInstance()->InGameInitialize();
@@ -119,23 +119,27 @@ void ResultSprite::ComeInScreen()
 
 void ResultSprite::Reset()
 {
-	const float backGorundX = 40.0f;
-	const float backGorundY = 400.0f;
-
-	backGroundSprite_->SetPosition(Vector2(backGorundX, -backGorundY));
+	//画像情報を初期時にリセット
+	//透明背景画像
+	const float kBackGorundX = 40.0f;
+	const float kBackGorundY = 400.0f;
+	backGroundSprite_->SetPosition(Vector2(kBackGorundX, -kBackGorundY));
 	backGroundSprite_->matUpdate();
-
-	isFinishOutEasing_ = true;
-	isFinishInEasing_ = false;
-
-	resultOutEasing_.time = 0.0f;
-	resultInEasing_.time = 0.0f;
-
-	resultInEasing_.startPos = -backGorundY;
-	resultInEasing_.endDistance = backGorundY + (WindowsAPI::kWindow_height_ / 2 - backGorundY / 2);
-	resultOutEasing_.endDistance = -(backGorundY + (WindowsAPI::kWindow_height_ / 2 - backGorundY / 2));
-
+	//Aボタン画像
+	const float kaBuutonX = 576.0f;
+	const float kaButtonY = 400.0f;
+	aButtonSprite_->SetPosition(Vector2(kaBuutonX, -kaButtonY));
+	aButtonSprite_->matUpdate();
 	const Vector4 aButtonDefaultColor = { 1.0f,1.0f,1.0f,0.8f };
 	aButtonSprite_->SetColor(aButtonDefaultColor);
+
+	//イージングなどのメンバー変数を初期化
+	isFinishOutEasing_ = true;
+	isFinishInEasing_ = false;
+	resultOutEasing_.time = 0.0f;
+	resultInEasing_.time = 0.0f;
+	resultInEasing_.startPos = -kBackGorundY;
+	resultInEasing_.endDistance = kBackGorundY + (WindowsAPI::kWindow_height_ / 2 - kBackGorundY / 2);
+	resultOutEasing_.endDistance = -(kBackGorundY + (WindowsAPI::kWindow_height_ / 2 - kBackGorundY / 2));
 }
 
