@@ -2,15 +2,15 @@
 #include "Sprite.h"
 #include "Easing.h"
 
+/// <summary>
+/// 結果画面に表示する画像をまとめて描画するクラス
+/// </summary>
 class ResultSprite
 {
 public:
 
 	//静的初期化
 	static void StaticInitialize();
-
-	//読み込み処理
-	void Load();
 
 	//初期化
 	void Initialize();
@@ -46,6 +46,10 @@ private: //メンバ変数
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
 	//Aボタンスプライト
 	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
+	//ステージスプライト
+	std::unique_ptr<Sprite> stageSprite_ = nullptr;
+	//ネクストスプライト
+	std::unique_ptr<Sprite> nextSprite_ = nullptr;
 
 public: //アクセッサ
 

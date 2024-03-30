@@ -11,8 +11,6 @@ void ResultSprite::StaticInitialize()
 	TextureManager::GetInstance()->TexMapping(backGorundWidth, backGorundHeight, grayColor, "gray");
 }
 
-void ResultSprite::Load(){}
-
 void ResultSprite::Initialize()
 {
 	//画像情報を初期化
@@ -22,6 +20,10 @@ void ResultSprite::Initialize()
 	aButtonSprite_ = std::make_unique<Sprite>();
 	aButtonSprite_->Initialize("aButton.png", Vector2(576.0f, -backGorundHeight));
 	aButtonSprite_->SetColor(Vector4(1.0f,1.0f,1.0f,0.8f));
+	stageSprite_ = std::make_unique<Sprite>();
+	stageSprite_->Initialize("stage.png", Vector2(700.0f, -backGorundHeight));
+	nextSprite_ = std::make_unique<Sprite>();
+	nextSprite_->Initialize("next.png", Vector2(270.0f, -backGorundHeight));
 
 	//メンバ変数を初期化
 	isFinishOutEasing_ = true;
@@ -38,6 +40,8 @@ void ResultSprite::Update()
 {
 	backGroundSprite_->matUpdate();
 	aButtonSprite_->matUpdate();
+	stageSprite_->matUpdate();
+	nextSprite_->matUpdate();
 }
 
 void ResultSprite::Draw()
@@ -45,6 +49,8 @@ void ResultSprite::Draw()
 	SpriteCommon::GetInstance()->BeforeDraw();
 	backGroundSprite_->Draw("gray");
 	aButtonSprite_->Draw("aButton.png");
+	stageSprite_->Draw("stage.png");
+	nextSprite_->Draw("next.png");
 }
 
 void ResultSprite::ComeOutOffScreen()
@@ -59,16 +65,25 @@ void ResultSprite::ComeOutOffScreen()
 			backGroundSprite_->SetPosition(backGroundPosition_);
 			backGroundSprite_->matUpdate();
 
-			Vector2 aButtonPosition_ = aButtonSprite_->GetPosition();
-			aButtonPosition_.y = backGroundPosition_.y;
+			//Aボタンを背景イージングに追従するよう動かす
+			float aButtonPositionY;
+			aButtonPositionY = backGroundPosition_.y;
 			Vector4 aButtonChangeColor = aButtonSprite_->GetColor();
 			const float changeColorSpeed = 0.025f;
 			aButtonChangeColor.x -= changeColorSpeed;
 			aButtonChangeColor.y -= changeColorSpeed;
 			aButtonChangeColor.z -= changeColorSpeed;
 			aButtonSprite_->SetColor(aButtonChangeColor);
-			aButtonSprite_->SetPosition(Vector2(aButtonSprite_->GetPosition().x, aButtonPosition_.y + 256));
+			aButtonSprite_->SetPosition(Vector2(aButtonSprite_->GetPosition().x, aButtonPositionY + 256));
 			aButtonSprite_->matUpdate();
+
+			//表示文字画像を背景イージングに追従するよう動かす
+			float stringSpritePositionY;
+			stringSpritePositionY = backGroundPosition_.y;
+			nextSprite_->SetPosition(Vector2(nextSprite_->GetPosition().x, stringSpritePositionY + 131));
+			nextSprite_->matUpdate();
+			stageSprite_->SetPosition(Vector2(stageSprite_->GetPosition().x, stringSpritePositionY + 131));
+			stageSprite_->matUpdate();
 		}
 		else
 		{
@@ -84,14 +99,15 @@ void ResultSprite::ComeOutOffScreen()
 
 void ResultSprite::ComeInScreen()
 {
-	Vector2 backGroundPosition_ = backGroundSprite_->GetPosition();
+	Vector2 backGroundPosition = backGroundSprite_->GetPosition();
 
 	if(isFinishInEasing_ == false)
 	{
+		//画面中央に半透明なグレーの背景画像をイージングで動かす
 		resultInEasing_.time++;
 		if(resultInEasing_.time > 0 && resultInEasing_.time <= resultInEasing_.totalTime)
 		{
-			backGroundPosition_.y = PlayEaseOutQuint(resultInEasing_);
+			backGroundPosition.y = PlayEaseOutQuint(resultInEasing_);
 		}
 		else
 		{
@@ -102,16 +118,26 @@ void ResultSprite::ComeInScreen()
 	else
 	{
 		//画面外に出るイージングの開始位置を設定
-		resultOutEasing_.startPos = backGroundPosition_.y;
+		resultOutEasing_.startPos = backGroundPosition.y;
 	}
 
-	backGroundSprite_->SetPosition(backGroundPosition_);
+	//背景画像を更新
+	backGroundSprite_->SetPosition(backGroundPosition);
 	backGroundSprite_->matUpdate();
 
-	Vector2 aButtonPosition_ = aButtonSprite_->GetPosition();
-	aButtonPosition_.y = backGroundPosition_.y;
-	aButtonSprite_->SetPosition(Vector2(aButtonSprite_->GetPosition().x, aButtonPosition_.y + 256));
+	//Aボタンを背景イージングに追従するよう動かす
+	float aButtonPositionY;
+	aButtonPositionY = backGroundPosition.y;
+	aButtonSprite_->SetPosition(Vector2(aButtonSprite_->GetPosition().x, aButtonPositionY + 256));
 	aButtonSprite_->matUpdate();
+
+	//表示文字画像を背景イージングに追従するよう動かす
+	float stringSpritePositionY;
+	stringSpritePositionY = backGroundPosition.y;
+	nextSprite_->SetPosition(Vector2(nextSprite_->GetPosition().x, stringSpritePositionY + 131));
+	nextSprite_->matUpdate();
+	stageSprite_->SetPosition(Vector2(stageSprite_->GetPosition().x, stringSpritePositionY + 131));
+	stageSprite_->matUpdate();
 }
 
 void ResultSprite::Reset()
@@ -129,7 +155,17 @@ void ResultSprite::Reset()
 	aButtonSprite_->matUpdate();
 	const Vector4 aButtonDefaultColor = { 1.0f,1.0f,1.0f,0.8f };
 	aButtonSprite_->SetColor(aButtonDefaultColor);
-
+	//NEXT文字画像
+	const float kNextBuutonX = 270.0f;
+	const float kNextButtonY = 400.0f;
+	nextSprite_->SetPosition(Vector2(kNextBuutonX, -kNextButtonY));
+	nextSprite_->matUpdate();
+	////STAGE文字画像
+	const float kStageBuutonX = 700.0f;
+	const float kStageButtonY = 400.0f;
+	stageSprite_->SetPosition(Vector2(kStageBuutonX, -kStageButtonY));
+	stageSprite_->matUpdate();
+	
 	//イージングなどのメンバー変数を初期化
 	isFinishOutEasing_ = true;
 	isFinishInEasing_ = false;
