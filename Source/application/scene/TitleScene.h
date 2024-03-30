@@ -40,7 +40,8 @@ private:
 	std::unique_ptr<Sprite> titleSprite_ = nullptr;
 	std::unique_ptr<Sprite> aButtonSprite_ = nullptr;
 	std::unique_ptr<Sprite> backGroundSprite_ = nullptr;
-	
+	std::unique_ptr<Sprite> nowLoadingSprite_ = nullptr;
+
 	std::unique_ptr<Object3d> titleSphere_ = nullptr;
 	std::unique_ptr<Camera> camera_ = nullptr;
 

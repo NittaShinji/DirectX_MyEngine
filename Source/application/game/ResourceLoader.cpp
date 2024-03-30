@@ -42,10 +42,11 @@ void ResourceLoader::ImageLoad()
 	TextureManager::GetInstance()->LoadTexture("jump.png");
 	TextureManager::GetInstance()->LoadTexture("arrow.png");
 	TextureManager::GetInstance()->LoadTexture("cloud.png");
-	TextureManager::GetInstance()->LoadTexture("effect2.png");
 	TextureManager::GetInstance()->LoadTexture("jumpEffect6.png");
 	TextureManager::GetInstance()->LoadTexture("backGround.png");
 	TextureManager::GetInstance()->LoadTexture("nowLoading.png");
+	TextureManager::GetInstance()->LoadTexture("next.png");
+	TextureManager::GetInstance()->LoadTexture("stage.png");
 	//時計のテクスチャ読み込み
 	TextureManager::GetInstance()->LoadTexture("stopWatch.png");
 	//数字のテクスチャ読み込み

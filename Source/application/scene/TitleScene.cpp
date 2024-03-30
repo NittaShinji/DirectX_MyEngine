@@ -46,6 +46,7 @@ void TitleScene::Initialize()
 	titleSprite_ = std::make_unique<Sprite>();
 	aButtonSprite_ = std::make_unique<Sprite>();
 	backGroundSprite_ = std::make_unique<Sprite>();
+	nowLoadingSprite_ = std::make_unique<Sprite>();
 	
 	//画像のロード
 	const Vector2 backGroundPosition = { 0.0f,0.0f };
@@ -54,10 +55,10 @@ void TitleScene::Initialize()
 	const Vector2 kUiSize = { 128.0f,128.0f };
 
 	titleSprite_->Initialize("titleFont.png",titlePosition);
-	
 	aButtonSprite_->Initialize("aButton.png",aButtonPosition);
 	aButtonSprite_->SetSize(Vector2(128.0f, 128.0f));
 	backGroundSprite_->Initialize("WhiteTex",backGroundPosition);
+	nowLoadingSprite_->Initialize("nowLoading.png",backGroundPosition);
 	
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -85,6 +86,7 @@ void TitleScene::Update()
 	titleSprite_->matUpdate();
 	aButtonSprite_->matUpdate();
 	backGroundSprite_->matUpdate();
+	nowLoadingSprite_->matUpdate();
 	
 	titleSphere_->Update(camera_.get());
 
@@ -239,11 +241,8 @@ void TitleScene::Update()
 
 			if(changeWhiteTimer_ <= 0 && backGroundChangEasing_.time >= backGroundChangEasing_.totalTime)
 			{
-				if(changeWhiteTimer_ <= 0)
-				{
-					SoundManager::GetInstance()->StopAllSound();
-					SceneManager::GetInstance()->ChangeScene("GAME");
-				}
+				SoundManager::GetInstance()->StopAllSound();
+				SceneManager::GetInstance()->ChangeScene("GAME");
 			}
 		}
 	}
@@ -262,6 +261,12 @@ void TitleScene::Draw()
 	Object3d::BeforeDraw();
 	titleSphere_->BeforeDraw();
 	titleSphere_->Draw();
+
+	if (backGroundChangEasing_.time >= backGroundChangEasing_.totalTime)
+	{
+		SpriteCommon::GetInstance()->BeforeDraw();
+		nowLoadingSprite_->Draw();
+	}
 	
 	//描画終了
 	directXBasic_->AfterDraw();
