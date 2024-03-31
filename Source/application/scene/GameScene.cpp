@@ -264,9 +264,6 @@ void GameScene::Update()
 				{
 					ParticleManager::GetInstance()->AllRemove();
 					ObjParticleManager::GetInstance()->AllRemove();
-
-					//SoundManager::GetInstance()->Finalize();
-					//gameSound_->StopSound();
 					SoundManager::GetInstance()->StopAllSound();
 					SceneManager::GetInstance()->ChangeScene("CLEAR");
 				}	

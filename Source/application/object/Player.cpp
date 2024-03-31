@@ -416,35 +416,38 @@ void Player::Update(Camera* camera)
 		//色変え処理
 		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_B) || keys_->PushedKeyMoment(DIK_RETURN))
 		{
-			isStartChangeColorAnime_ = true;
+			if (isFinish_ == false)
+			{
+				isStartChangeColorAnime_ = true;
 
-			//属性の変更
-			if(attributeColor_ == Attribute::pink)
-			{
-				attributeColor_ = Attribute::yellow;
-			}
-			else if(attributeColor_ == Attribute::yellow)
-			{
-				attributeColor_ = Attribute::pink;
-			}
-			else
-			{
-				attributeColor_ = Attribute::black;
-			}
+				//属性の変更
+				if (attributeColor_ == Attribute::pink)
+				{
+					attributeColor_ = Attribute::yellow;
+				}
+				else if (attributeColor_ == Attribute::yellow)
+				{
+					attributeColor_ = Attribute::pink;
+				}
+				else
+				{
+					attributeColor_ = Attribute::black;
+				}
 
-			colorFlag_ = true;
+				colorFlag_ = true;
 
-			if(attributeColor_ == Attribute::pink)
-			{
-				SetColor(kTitlePinkOBJColor);
-			}
-			else if(attributeColor_ == Attribute::yellow)
-			{
-				SetColor(kYellowOBJColor);
-			}
-			else
-			{
-				SetColor(kBlackOBJColor);
+				if (attributeColor_ == Attribute::pink)
+				{
+					SetColor(kTitlePinkOBJColor);
+				}
+				else if (attributeColor_ == Attribute::yellow)
+				{
+					SetColor(kYellowOBJColor);
+				}
+				else
+				{
+					SetColor(kBlackOBJColor);
+				}
 			}
 		}
 
@@ -721,7 +724,7 @@ void Player::AccelerateChangeColor()
 		//色を変える
 		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_B) || keys_->PushedKeyMoment(DIK_RETURN))
 		{
-			if(attributeColor_ == yellow)
+			if(attributeColor_ == yellow && isFinish_ == false)
 			{
 				//加速していなかったら加速フラグを立てる
 				if(isRightAxcell_ == false)
@@ -740,7 +743,7 @@ void Player::AccelerateChangeColor()
 			if(attributeColor_ == pink)
 			{
 				//加速していなかったら加速フラグを立てる
-				if(isRightAxcell_ == false)
+				if(isRightAxcell_ == false && isFinish_ == false)
 				{
 					isRightAxcell_ = true;
 					axcellTimer_ = kAxcellTime_;

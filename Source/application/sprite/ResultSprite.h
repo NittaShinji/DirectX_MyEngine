@@ -39,7 +39,7 @@ private: //メンバ変数
 	EasingInfo resultOutEasing_ = { 0.0f, 0.0f, 0.0f, kEasingTime_ };
 	EasingInfo resultInEasing_ = { 0.0f, 0.0f, 0.0f, kEasingTime_ };
 
-	bool isFinishOutEasing_ = false;
+	bool isFinishOutEasing_ = true;
 	bool isFinishInEasing_ = false;
 
 	//背景スプライト
