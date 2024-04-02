@@ -81,7 +81,7 @@ void Event::TransmissiveBillboard()
 	}
 }
 
-void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera)
+void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera, int32_t canJumpCount)
 {
 	buttonInfo_ = buttonInfo;
 	keyboardInfo_ = keyboardInfo;
@@ -110,12 +110,31 @@ void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t but
 		if (isFinish_ == false)
 		{
 			isStart_ = true;
-			gameSpeed_->SetSpeedMode(speedMode);
+
+			//ジャンプボタンがトリガーの場合、
+			//ジャンプできる状態であれば、モードを設定にする
+			if (buttonInfo == XINPUT_GAMEPAD_A || keyboardInfo == DIK_SPACE)
+			{
+				if (canJumpCount > 0)
+				{
+					gameSpeed_->SetSpeedMode(speedMode);
+				}
+			}
+			else
+			{
+				gameSpeed_->SetSpeedMode(speedMode);
+			}
 		}
 	}
 	else
 	{
-		isStart_ = false;
+		//範囲外にでた場合、
+		//スピードを普通の状態に戻し、イベントを終了
+		if (isStart_ == true)
+		{
+			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+			isStart_ = false;
+		}
 	}
 
 	//イベント中に

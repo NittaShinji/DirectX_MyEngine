@@ -21,7 +21,7 @@ public:
 	//初期化
 	void Initialzie(float startPos, float endPos);
 	//更新
-	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera);
+	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera,int32_t canJumpCount);
 	//描画
 	void Draw();
 
@@ -89,6 +89,5 @@ private:
 	bool isCompletedAlready_;
 	//画像が透明になったかどうか「
 	bool isClearSprite_;
-
 };
 

@@ -19,14 +19,14 @@ void TutorialEvent::Initialzie(Player* player)
 
 	//ジャンプイベント設定
 	const float kStartJumpEventPos_ = 75;
-	const float kEndJumpEventPos_ = 110;
+	const float kEndJumpEventPos_ = 100;
 	jumpEvent_ = std::make_unique<Event>();
 	jumpEvent_->Initialzie(kStartJumpEventPos_, kEndJumpEventPos_);
 	jumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//二回ジャンプイベント設定
 	const float kStartDoubleJumpEventPos_ = 185;
-	const float kEndDoubleJumpEventPos_ = 320;
+	const float kEndDoubleJumpEventPos_ = 210;
 	doubleJumpEvent_ = std::make_unique<Event>();
 	doubleJumpEvent_->Initialzie(kStartDoubleJumpEventPos_, kEndDoubleJumpEventPos_);
 	doubleJumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -40,7 +40,7 @@ void TutorialEvent::Initialzie(Player* player)
 
 	//長押しジャンプイベント設定
 	const float kStartHighAfterJumpEventPos_ = 350;
-	const float kEndHighJumpAfterEventPos_ = 390;
+	const float kEndHighJumpAfterEventPos_ = 380;
 	heighJumpAfterEvent_ = std::make_unique<Event>();
 	heighJumpAfterEvent_->Initialzie(kStartHighAfterJumpEventPos_, kEndHighJumpAfterEventPos_);
 	heighJumpAfterEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
@@ -69,40 +69,41 @@ void TutorialEvent::Update(Camera* camera)
 {
 	Vector3 playerPos = player_->GetTransform();
 	float playerPosZ = playerPos.z;
+	int32_t playerJumpCount = player_->GetJumpCount();
 
 	if (player_->GetIsDead() == false)
 	{
 		//各イベントの更新
-		startEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		startEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
 		startEvent_->TransmissiveBillboard();
 
-		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
 		jumpEvent_->BillboardSetPlayerPos(playerPos, camera);
 		jumpEvent_->TransmissiveBillboard();
 
-		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE,camera);
+		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE,camera, playerJumpCount);
 		doubleJumpEvent_->BillboardSetPlayerPos(playerPos, camera);
 		doubleJumpEvent_->TransmissiveBillboard();
 
-		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
 		heighJumpBeforeEvent_->BillboardSetPlayerPos(playerPos, camera);
 		heighJumpBeforeEvent_->TransmissiveBillboard();
 
-		//二段ジャンプの二回目にイベントの際に、
+		//二段ジャンプの二回目のイベントの際に、
 		// すでに前のイベントゾーンで二回飛ばれていたらスキップする
 		if (player_->GetJumpCount() == 0 && heighJumpAfterEvent_->GetStartPos() < playerPos.z)
 		{
 			heighJumpAfterEvent_->SetIsFinish(true);
 		}
-		heighJumpAfterEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera);
+		heighJumpAfterEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
 		heighJumpAfterEvent_->BillboardSetPlayerPos(playerPos, camera);
 		heighJumpAfterEvent_->TransmissiveBillboard();
 
-		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera);
+		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera, playerJumpCount);
 		changeColorEvent_->BillboardSetPlayerPos(playerPos, camera);
 		changeColorEvent_->TransmissiveBillboard();
 
-		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera);
+		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera, playerJumpCount);
 	}
 }
 
