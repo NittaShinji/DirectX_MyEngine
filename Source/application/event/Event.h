@@ -21,7 +21,7 @@ public:
 	//初期化
 	void Initialzie(float startPos, float endPos);
 	//更新
-	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera, int32_t canJumpCount);
+	void Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera);
 	//描画
 	void Draw();
 
@@ -47,11 +47,18 @@ public:
 	//透過する
 	void TransmissiveBillboard();
 
+	void SetIsFinish(bool isFinish) { isFinish_ = isFinish; }
+	const float GetStartPos() { return startPos_; }
+
 private:
 
 	static KeyInput* keys_;
 	static GamePad* gamePad_;
 	static GameSpeed* gameSpeed_;
+
+	//トリガーとなる入力情報
+	int16_t buttonInfo_;
+	BYTE keyboardInfo_;
 
 	//イベントが開始しているかどうか
 	bool isStart_;
@@ -80,6 +87,8 @@ private:
 
 	//すでに終了しているか
 	bool isCompletedAlready_;
+	//画像が透明になったかどうか「
+	bool isClearSprite_;
 
 };
 

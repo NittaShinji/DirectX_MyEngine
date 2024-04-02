@@ -19,6 +19,8 @@ public:
 	void Update(Camera* camera);
 	//描画
 	void Draw();
+	//リセット
+	void Reset();
 	
 private: //メンバ変数
 

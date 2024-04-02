@@ -164,7 +164,6 @@ void GameScene::Update()
 	if(player_->GetIsDead() == true || keys_->HasPushedKey(DIK_R))
 	{
 		GameTimer::GetInstance()->SetIsTImed(false);
-		//ParticleManager::GetInstance()->ParticleRemove();
 		gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 
 		//死亡時パーティクルが消えてリセット可能かどうか
@@ -176,6 +175,10 @@ void GameScene::Update()
 			ParticleManager::GetInstance()->ParticleRemove();
 			ObjParticleManager::GetInstance()->ProcessPlayerDead(gameCamera_.get());
 
+			if (stage_->GetStageNum() == 0)
+			{
+				tutorialEvent_->Reset();
+			}
 			stage_->Reset();
 			gameCamera_->Initialize();
  			player_->Reset(gameCamera_.get());
@@ -188,7 +191,6 @@ void GameScene::Update()
 
 	//次のステージの端に来たらタイマーをスタートさせる
 	//プレイヤーがステージの端にいるかどうかの状態をboolなどで判断
-	//isWithStageEdgeの
 	if(player_->GetIsMoving() == true && player_->GetIsFinish() == false && player_->GetIsWithStageEdge() == true)
 	{
 		GameTimer::GetInstance()->SetIsTImed(true);
