@@ -29,11 +29,9 @@ void Player::Initialize()
 {
 	//サウンドのインスタンス生成
 	jumpSound_ = std::make_unique<Sound>();
-	doubleJumpSound_ = std::make_unique<Sound>();
 	deadSound_ = std::make_unique<Sound>();
 	//サウンドの初期化
 	jumpSound_->Initialize("jump.wav");
-	doubleJumpSound_->Initialize("doubleJump.wav");
 	deadSound_->Initialize("playerDead.wav");
 
 	//プレイヤーオブジェクトの初期化
@@ -198,7 +196,10 @@ void Player::Update(Camera* camera)
 			{
 				if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 				{
-					jumpSound_->PlaySoundWave(false);
+					if (isDead_ == false)
+					{
+						jumpSound_->PlaySoundWave(false);
+					}
 					isSecondJumpMoment_ = true;
 					isTouchUnderObject_ = false;
 					isJumpRotate_ = true;
@@ -209,7 +210,10 @@ void Player::Update(Camera* camera)
 				}
 				if(keys_->PushedKeyMoment(DIK_SPACE))
 				{
-					jumpSound_->PlaySoundWave(false);
+					if (isDead_ == false)
+					{
+						jumpSound_->PlaySoundWave(false);
+					}
 					isSecondJumpMoment_ = true;
 					isTouchUnderObject_ = false;
 					isJumpRotate_ = true;
@@ -223,12 +227,18 @@ void Player::Update(Camera* camera)
 		//ジャンプ操作
 		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount_ > 0)
 		{
- 			jumpSound_->PlaySoundWave(false);
+			if (isDead_ == false)
+			{
+				jumpSound_->PlaySoundWave(false);
+			}
 			isDentedAnime_ = true;
 		}
 		else if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) && jumpCount_ > 0)
 		{
-			jumpSound_->PlaySoundWave(false);
+			if (isDead_ == false)
+			{
+				jumpSound_->PlaySoundWave(false);
+			}
 			isDentedAnime_ = true;
 		}
 
@@ -411,6 +421,11 @@ void Player::Update(Camera* camera)
 		{
 			isDead_ = true;
 			isLanded_ = true;
+			//死亡時に一度だけ鳴らす
+			if (deadSound_->GetIsSounded() == false)
+			{
+				deadSound_->PlaySoundWave(false);
+			}
 		}
 
 		//色変え処理
@@ -801,7 +816,6 @@ void Player::Draw()
 void Player::Reset(Camera* camera)
 {
 	jumpSound_->Initialize("jump.wav");
-	doubleJumpSound_->Initialize("doubleJump.wav");
 	deadSound_->Initialize("playerDead.wav");
 
 	transform_ = kPlayerInitPos_;

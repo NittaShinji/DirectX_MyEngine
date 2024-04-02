@@ -15,7 +15,6 @@ void ResourceLoader::SoundLoad()
 	SoundManager::GetInstance()->LoadSoundWave("touch.wav");
 	SoundManager::GetInstance()->LoadSoundWave("gamescene.wav");
 	SoundManager::GetInstance()->LoadSoundWave("jump.wav");
-	SoundManager::GetInstance()->LoadSoundWave("doubleJump.wav");
 	SoundManager::GetInstance()->LoadSoundWave("playerDead.wav");
 	SoundManager::GetInstance()->LoadSoundWave("clear.wav");
 }
