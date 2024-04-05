@@ -90,31 +90,20 @@ void Player::Initialize()
 
 void Player::Update(Camera* camera)
 {
-	gameCamera_ = camera;
-
+	//瞬間のフラグをOFFにする
+	isSecondJumpMoment_ = false;
 	//着地フラグをオフに
 	isLanded_ = false;
 
 	//ゲームが始まっていないときに始める処理
 	if(isDead_ == false && isFinish_ == false)
 	{
-		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
-		{
-			isMoving_ = true;
-		}
-
-		if(keys_->PushedKeyMoment(DIK_SPACE))
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
 		{
 			isMoving_ = true;
 		}
 	}
-
-	//瞬間のフラグをOFFにする
-	if(isSecondJumpMoment_ == true)
-	{
-		isSecondJumpMoment_ = false;
-	}
-
+	
 	//ゲーム中プレイヤーが死んでいないとき
 	if(isMoving_ == true)
 	{
@@ -192,21 +181,7 @@ void Player::Update(Camera* camera)
 			//二段ジャンプ時
 			if(jumpCount_ > 0 && jumpCount_ < kMaxJumpNum_)
 			{
-				if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
-				{
-					if (isDead_ == false)
-					{
-						doubleSound_->PlaySoundWave(false);
-					}
-					isSecondJumpMoment_ = true;
-					isTouchUnderObject_ = false;
-					isJumpRotate_ = true;
-					onGround_ = false;
-					const float jumpVYFist = 0.4f;
-					fallVec_ = { 0,jumpVYFist,0 };
-					jumpCount_--;
-				}
-				if(keys_->PushedKeyMoment(DIK_SPACE))
+				if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
 				{
 					if (isDead_ == false)
 					{
@@ -223,23 +198,19 @@ void Player::Update(Camera* camera)
 			}
 		}
 		//ジャンプ操作
-		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount_ > 0)
+		else if(jumpCount_ > 0)
 		{
-			if (isDead_ == false )
+			if (keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 			{
-				jumpSound_->PlaySoundWave(false);
+				if (isDead_ == false)
+				{
+					jumpSound_->PlaySoundWave(false);
+				}
+				isDentedAnime_ = true;
 			}
-			isDentedAnime_ = true;
+			
 		}
-		else if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) && jumpCount_ > 0)
-		{
-			if (isDead_ == false)
-			{
-				jumpSound_->PlaySoundWave(false);
-			}
-			isDentedAnime_ = true;
-		}
-
+		
 		if(isStartedJumpAnimation_ == true)
 		{
 			if(jumpAnimationTimer_ > 0)
@@ -314,7 +285,6 @@ void Player::Update(Camera* camera)
 		const Vector3 downDir = { 0.0f,-1.0f,0.0f };
 		ray.dir = downDir;
 		RaycastHit raycastHit;
-
 		const float colliderTwoTimesSize = sphereCollider->GetRadius() * 2.0f;
 
 		//接地状態
@@ -333,21 +303,9 @@ void Player::Update(Camera* camera)
 			const float adsDistance = 0.2f;
 			
 			//接地を維持
-			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, colliderTwoTimesSize + adsDistance))
-			{
-				onGround_ = true;
-				isLanded_ = false;
-				transform_.y -= (raycastHit.distance - colliderTwoTimesSize);
-				Object3d::SetTransform(transform_);
-			}
-			else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, colliderTwoTimesSize + adsDistance))
-			{
-				onGround_ = true;
-				isLanded_ = false;
-				transform_.y -= (raycastHit.distance - colliderTwoTimesSize);
-				Object3d::SetTransform(transform_);
-			}
-			else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_BLACK, &raycastHit, colliderTwoTimesSize + adsDistance))
+			if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, colliderTwoTimesSize + adsDistance) ||
+				CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, colliderTwoTimesSize + adsDistance) ||
+				CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_BLACK, &raycastHit, colliderTwoTimesSize + adsDistance))
 			{
 				onGround_ = true;
 				isLanded_ = false;
@@ -366,13 +324,15 @@ void Player::Update(Camera* camera)
 		{
 			AccelerateChangeColor();
 			
-			if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, colliderTwoTimesSize))
+			if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, colliderTwoTimesSize) ||
+				CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, colliderTwoTimesSize) ||
+				CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_BLACK, &raycastHit, colliderTwoTimesSize))
 			{
 				//着地
 				isTouchUnderObject_ = false;
 				onGround_ = true;
 				isLanded_ = true;
-				if(isDuringAnimation_ == false)
+				if (isDuringAnimation_ == false)
 				{
 					isStartedLandAnime_ = true;
 				}
@@ -381,37 +341,6 @@ void Player::Update(Camera* camera)
 				//行列の更新など
 				Object3d::SetTransform(transform_);
 			}
-			else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, colliderTwoTimesSize))
-			{
-				//着地
-				isTouchUnderObject_ = false;
-				onGround_ = true;
-				isLanded_ = true;
-				if(isDuringAnimation_ == false)
-				{
-					isStartedLandAnime_ = true;
-				}
-				transform_.y -= (raycastHit.distance - colliderTwoTimesSize);
-				jumpCount_ = kMaxJumpNum_;
-				//行列の更新など
-				Object3d::SetTransform(transform_);
-			}
-			else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_BLACK, &raycastHit, colliderTwoTimesSize))
-			{
-				//着地
-				isTouchUnderObject_ = false;
-				onGround_ = true;
-				isLanded_ = true;
-				if(isDuringAnimation_ == false)
-				{
-					isStartedLandAnime_ = true;
-				}
-				transform_.y -= (raycastHit.distance - colliderTwoTimesSize);
-				jumpCount_ = kMaxJumpNum_;
-				//行列の更新など
-				Object3d::SetTransform(transform_);
-			}
-
 		}
 
 		//落下処理
@@ -432,58 +361,29 @@ void Player::Update(Camera* camera)
 			if (isFinish_ == false)
 			{
 				isStartChangeColorAnime_ = true;
+				Object3d::SetColorFlag(true);
 
 				//属性の変更
 				if (attributeColor_ == Attribute::pink)
 				{
 					attributeColor_ = Attribute::yellow;
+					SetColor(kYellowOBJColor);
 				}
 				else if (attributeColor_ == Attribute::yellow)
 				{
 					attributeColor_ = Attribute::pink;
+					SetColor(kTitlePinkOBJColor);
 				}
 				else
 				{
 					attributeColor_ = Attribute::black;
-				}
-
-				colorFlag_ = true;
-
-				if (attributeColor_ == Attribute::pink)
-				{
-					SetColor(kTitlePinkOBJColor);
-				}
-				else if (attributeColor_ == Attribute::yellow)
-				{
-					SetColor(kYellowOBJColor);
-				}
-				else
-				{
 					SetColor(kBlackOBJColor);
 				}
 			}
 		}
 
-		Object3d::SetColorFlag(colorFlag_);
 
-		if(isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
-		{
-			Animation(isStartChangeColorAnime_, kChangeColorScaleSpeed_, kChangeColorScale_);
-			if(isDuringAnimation_ == false)
-			{
-				isReturnedSizeAnime_ = true;
-				returnScaleSpeed_ = kDefaultReturnScaleSpeed_;
-				isStartChangeColorAnime_ = false;
-			}
-		}
-		else
-		{
-			if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
-			{
-				scale_ = kDefaultScale_;
-			}
-		}
-
+		//ロングジャンプの処理
 		if(keys_->PushedKeyMoment(DIK_SPACE) == true || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 		{
 			isSmallJump_ = true;
@@ -524,6 +424,25 @@ void Player::Update(Camera* camera)
 			}
 		}
 
+		//色変更アニメーション
+		if(isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
+		{
+			Animation(isStartChangeColorAnime_, kChangeColorScaleSpeed_, kChangeColorScale_);
+			if(isDuringAnimation_ == false)
+			{
+				isReturnedSizeAnime_ = true;
+				returnScaleSpeed_ = kDefaultReturnScaleSpeed_;
+				isStartChangeColorAnime_ = false;
+			}
+		}
+		else
+		{
+			if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
+			{
+				scale_ = kDefaultScale_;
+			}
+		}
+
 		//着地時にへこむアニメーション
 		if(isDead_ == false)
 		{
@@ -534,16 +453,10 @@ void Player::Update(Camera* camera)
 				{
 					if(jumpCount_ > 0)
 					{
-						isExpandedAnime_ = true;
-						isDentedAnime_ = false;
-						onGround_ = false;
-						isLanded_ = false;
-
+						InitInfoInAnime();
 						jumpTotalValue_ = 0.0f;
 						isSmallJump_ = true;
 						isLongJump_ = false;
-						LongJump();
-						jumpCount_--;
 						isDuringAnimation_ = false;
 						isStartedLandAnime_ = false;
 					}
@@ -573,12 +486,7 @@ void Player::Update(Camera* camera)
 				{
 					if(jumpCount_ > 0)
 					{
-						isExpandedAnime_ = true;
-						isDentedAnime_ = false;
-						onGround_ = false;
-						isLanded_ = false;
-						LongJump();
-						jumpCount_--;
+						InitInfoInAnime();
 						isDuringAnimation_ = false;
 						isStartedLandAnime_ = false;
 					}
@@ -603,13 +511,8 @@ void Player::Update(Camera* camera)
 				{
 					if(jumpCount_ > 0)
 					{
-						isExpandedAnime_ = true;
-						isDentedAnime_ = false;
-						onGround_ = false;
-						isLanded_ = false;
 						isRising_ = true;
-						LongJump();
-						jumpCount_--;
+						InitInfoInAnime();
 					}
 				}
 			}
@@ -634,6 +537,7 @@ void Player::Update(Camera* camera)
 		}
 	}
 
+	//死ぬ前の位置を保存しておく
 	if(isDead_ == false && isSetDeadPos_ == false)
 	{
 		deadPos_ = transform_;
@@ -1002,6 +906,16 @@ void Player::LongJump()
 			}
 		}
 	}
+}
+
+void Player::InitInfoInAnime()
+{
+	isExpandedAnime_ = true;
+	isDentedAnime_ = false;
+	onGround_ = false;
+	isLanded_ = false;
+	LongJump();
+	jumpCount_--;
 }
 
 bool Player::ResetValue(float& value, const float defaultValue, const float changeValue)
