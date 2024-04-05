@@ -44,10 +44,8 @@ void ClearScene::Initialize()
 	gamePad_->Initialzie(Player1);
 
 	//サウンドの初期化
-	checkSound_ = std::make_unique<Sound>();
-	checkSound_->Initialize("clear.wav");
-	checkSound_->PlaySoundWave(false);
-	
+	checkSound_ = SoundManager::GetInstance()->GetSound("clearBGM.wav");
+
 	//アンカーポイントの設定
 	const Vector2 checkAnchorPoint = { 0.5f,0.5f };
 	check_->SetAnchorPoint(checkAnchorPoint);

@@ -294,6 +294,7 @@ private:
 
 	//サウンド
 	std::unique_ptr<Sound> jumpSound_ = nullptr;
+	std::unique_ptr<Sound> doubleSound_ = nullptr;
 	std::unique_ptr<Sound> deadSound_ = nullptr;
 
 public: //アクセッサ

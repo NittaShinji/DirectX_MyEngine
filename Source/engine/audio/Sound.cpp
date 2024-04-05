@@ -20,14 +20,14 @@ void Sound::PlaySoundWave(bool isLoop)
 {
 	HRESULT result;
 
-	//再生する波形データの設定
+	////再生する波形データの設定
 	XAUDIO2_BUFFER buf{};
 	buf.pAudioData = soundData_.pBuffer.data();
 	buf.AudioBytes = soundData_.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
 
 	//ループ処理
-	if(isLoop)
+	if (isLoop)
 	{
 		voice_.sourceVoice = nullptr;
 		result = SoundManager::GetInstance()->GetXAudio2()->CreateSourceVoice(&voice_.sourceVoice, &soundData_.wfex);
@@ -39,17 +39,25 @@ void Sound::PlaySoundWave(bool isLoop)
 		result = voice_.sourceVoice->SubmitSourceBuffer(&buf);
 		result = voice_.sourceVoice->Start();
 
-		SoundManager::GetInstance()->RegisterVoice(&voice_);
+		//サウンドマネージャーにソースボイスを登録
+		SoundManager::GetInstance()->RegisterBGMVoice(&voice_);
 	}
 	else
 	{
 		//波形フォーマットを元にSourceVoiceの生成
-		IXAudio2SourceVoice* pSourceVoice = nullptr;
-		result = SoundManager::GetInstance()->GetXAudio2()->CreateSourceVoice(&pSourceVoice, &soundData_.wfex);
+		voice_.sourceVoice = nullptr;
+		result = SoundManager::GetInstance()->GetXAudio2()->CreateSourceVoice(&voice_.sourceVoice, &soundData_.wfex);
 		assert(SUCCEEDED(result));
 
-		result = pSourceVoice->SubmitSourceBuffer(&buf);
-		result = pSourceVoice->Start();
+		// 再生が完了したかどうかを記録する
+		isSounded_ = true;
+
+		//波形データの再生
+		result = voice_.sourceVoice->SubmitSourceBuffer(&buf);
+		result = voice_.sourceVoice->Start();
+
+		//サウンドマネージャーにソースボイスを登録
+		SoundManager::GetInstance()->RegisterSEVoice(&voice_);
 	}
 
 	//鳴ったことを記録する
@@ -58,11 +66,18 @@ void Sound::PlaySoundWave(bool isLoop)
 
 void Sound::StopSound()
 {
-	voice_.sourceVoice->Stop();
+	if (voice_.sourceVoice)
+	{
+		voice_.sourceVoice->Stop();
+	}
 }
 
 void Sound::Delete()
 {
-	voice_.sourceVoice->DestroyVoice();
-	voice_.sourceVoice = nullptr;
+	if (voice_.sourceVoice)
+	{
+		voice_.sourceVoice->Stop();
+		voice_.sourceVoice->DestroyVoice();
+		voice_.sourceVoice = nullptr;
+	}
 }

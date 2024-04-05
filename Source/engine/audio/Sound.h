@@ -93,7 +93,8 @@ public: //メンバ関数
 	void Delete();
 
 	//鳴らしたかどうかを取得
-	bool GetIsSounded() { return isSounded_; }
+	const bool GetIsSounded() { return isSounded_; }
+	void SetIsSounded(bool isSounded) { isSounded_ = isSounded; }
 
 	//サウンドデータを取得
 	SoundData* GetSoundData() { return &soundData_; };

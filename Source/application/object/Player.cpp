@@ -27,12 +27,10 @@ std::unique_ptr<Player> Player::Create(const std::string& path)
 
 void Player::Initialize()
 {
-	//サウンドのインスタンス生成
-	jumpSound_ = std::make_unique<Sound>();
-	deadSound_ = std::make_unique<Sound>();
-	//サウンドの初期化
-	jumpSound_->Initialize("jump.wav");
-	deadSound_->Initialize("playerDead.wav");
+	//サウンドのインスタンスを取得
+	jumpSound_ = SoundManager::GetInstance()->GetSound("jumpSE.wav");
+	doubleSound_ = SoundManager::GetInstance()->GetSound("jumpSE.wav");
+	deadSound_ = SoundManager::GetInstance()->GetSound("playerDeadSE.wav");
 
 	//プレイヤーオブジェクトの初期化
 	Object3d::Initialize();
@@ -198,7 +196,7 @@ void Player::Update(Camera* camera)
 				{
 					if (isDead_ == false)
 					{
-						jumpSound_->PlaySoundWave(false);
+						doubleSound_->PlaySoundWave(false);
 					}
 					isSecondJumpMoment_ = true;
 					isTouchUnderObject_ = false;
@@ -212,7 +210,7 @@ void Player::Update(Camera* camera)
 				{
 					if (isDead_ == false)
 					{
-						jumpSound_->PlaySoundWave(false);
+						doubleSound_->PlaySoundWave(false);
 					}
 					isSecondJumpMoment_ = true;
 					isTouchUnderObject_ = false;
@@ -227,7 +225,7 @@ void Player::Update(Camera* camera)
 		//ジャンプ操作
 		else if(keys_->PushedKeyMoment(DIK_SPACE) && jumpCount_ > 0)
 		{
-			if (isDead_ == false)
+			if (isDead_ == false )
 			{
 				jumpSound_->PlaySoundWave(false);
 			}
@@ -815,8 +813,9 @@ void Player::Draw()
 
 void Player::Reset(Camera* camera)
 {
-	jumpSound_->Initialize("jump.wav");
-	deadSound_->Initialize("playerDead.wav");
+	jumpSound_->Initialize("jumpSE.wav");
+	doubleSound_->Initialize("jumpSE.wav");
+	deadSound_->Initialize("playerDeadSE.wav");
 
 	transform_ = kPlayerInitPos_;
 	rotation_ = kDefaultRotate_;

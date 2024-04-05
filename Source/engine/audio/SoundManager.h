@@ -39,14 +39,25 @@ namespace NsEngine
 		//初期化
 		void Initialize();
 
+		//更新
+		void Update();
+
 		/// <sumary>
 		/// WAV音声読み込み
 		/// </sumary>
 		/// <param name="filename">WAVファイル名</param>
 		void LoadSoundWave(const std::string& fileName);
 
+		void RegisterSound(std::string fileName);
+
 		//再生データを登録
-		void RegisterVoice(Sound::Voice* voice);
+		void RegisterSEVoice(Sound::Voice* voice);
+		void RegisterBGMVoice(Sound::Voice* voice);
+
+		void StopSEVoice();
+		void StopBGMVoice();
+
+		void StopVoice(Sound::Voice* voice);
 
 		//音声データを全てストップ
 		void StopAllSound();
@@ -67,9 +78,14 @@ namespace NsEngine
 		//サウンドデータコンテナ
 		std::map<std::string, Sound::SoundData> soundDatas_;
 
-		//サウンド
-		//再生中のサウンドデータコンテナ
-		std::vector<Sound::Voice*> voices_;
+		//BGMサウンド
+		std::vector<Sound*> soundsSE_;
+		//SEサウンド
+		std::vector<Sound*> soundsBGM_;
+
+		//ソースボイス
+		std::vector<Sound::Voice*> voicesSE_;
+		std::vector<Sound::Voice*> voicesBGM_;
 
 	public: //アクセッサ
 

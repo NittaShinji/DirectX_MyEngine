@@ -11,12 +11,12 @@ void ResourceLoader::Load()
 
 void ResourceLoader::SoundLoad()
 {
-	SoundManager::GetInstance()->LoadSoundWave("title.wav");
-	SoundManager::GetInstance()->LoadSoundWave("touch.wav");
-	SoundManager::GetInstance()->LoadSoundWave("gamescene.wav");
-	SoundManager::GetInstance()->LoadSoundWave("jump.wav");
-	SoundManager::GetInstance()->LoadSoundWave("playerDead.wav");
-	SoundManager::GetInstance()->LoadSoundWave("clear.wav");
+	SoundManager::GetInstance()->LoadSoundWave("titleBGM.wav");
+	SoundManager::GetInstance()->LoadSoundWave("gamesceneBGM.wav");
+	SoundManager::GetInstance()->LoadSoundWave("clearBGM.wav");
+	SoundManager::GetInstance()->LoadSoundWave("touchSE.wav");
+	SoundManager::GetInstance()->LoadSoundWave("jumpSE.wav");
+	SoundManager::GetInstance()->LoadSoundWave("playerDeadSE.wav");
 }
 
 void ResourceLoader::ImageLoad()

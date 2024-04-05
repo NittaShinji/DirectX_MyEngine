@@ -41,8 +41,7 @@ void GameScene::StaticInitialize()
 void GameScene::Initialize()
 {
 	//サウンド
-	gameSound_ = std::make_unique<Sound>();
-	gameSound_->Initialize("gamescene.wav");
+	gameSound_ = SoundManager::GetInstance()->GetSound("gamesceneBGM.wav");
 	gameSound_->PlaySoundWave(true);
 
 	//ゲームパッド
@@ -222,6 +221,8 @@ void GameScene::Update()
 	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(),stage_->GetIsPlayerReachedStageEdge());
 
 	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY());
+
+	SoundManager::GetInstance()->Update();
 
 #ifdef _DEBUG
 

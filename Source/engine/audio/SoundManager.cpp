@@ -16,6 +16,35 @@ void SoundManager::Initialize()
 	assert(SUCCEEDED(result));
 }
 
+void NsEngine::SoundManager::Update()
+{
+	//再生が終了した効果音を削除
+	if (voicesSE_.size() != 0)
+	{
+		for (auto it = voicesSE_.begin(); it != voicesSE_.end(); )
+		{
+			Sound::Voice* voice = *it;
+			XAUDIO2_VOICE_STATE state;
+			voice->sourceVoice->GetState(&state);
+
+			if (state.BuffersQueued == 0)
+			{
+				// 再生が終了したら停止してから解放
+				voice->sourceVoice->Stop();
+				
+				// ベクターから削除
+				it = voicesSE_.erase(it);
+				// イテレーターを進めずに次の要素に対してチェックを行う
+			}
+			else
+			{
+				// 再生が終了していない場合は次の要素に進む
+				++it;
+			}
+		}
+	}
+}
+
 void SoundManager::LoadSoundWave(const std::string& fileName)
 {
 	//重複読み込みチェック
@@ -103,20 +132,80 @@ void SoundManager::LoadSoundWave(const std::string& fileName)
 
 	//サウンドデータを連想配列(map)に格納
 	soundDatas_.insert(std::make_pair(fileName, soundData));
+
+	//インスタンスを生成する
+	RegisterSound(fileName);
 }
 
-void SoundManager::RegisterVoice(Sound::Voice* voice)
+void NsEngine::SoundManager::StopSEVoice()
 {
-	voices_.push_back(voice);
+	for (auto voice : voicesSE_)
+	{
+		StopVoice(voice);
+	}
+	voicesSE_.clear();
+}
+void NsEngine::SoundManager::StopBGMVoice()
+{
+	for (auto voice : voicesBGM_)
+	{
+		StopVoice(voice);
+	}
+	voicesBGM_.clear();
+}
+
+void SoundManager::RegisterSound(std::string fileName)
+{
+	std::unique_ptr<Sound> sound = nullptr;
+	sound = std::make_unique<Sound>();
+	sound->Initialize(fileName);
+
+	std::string strSE = "SE";
+	size_t foundSE = fileName.find(strSE);
+	if (foundSE != std::string::npos) {
+		soundsSE_.push_back(std::move(sound.get()));
+		return;
+	}
+
+	std::string strBGM = "BGM";
+	size_t foundBGM = fileName.find(strBGM);
+	if (foundBGM != std::string::npos) {
+		soundsBGM_.push_back(std::move(sound.get()));
+		return;
+	}
+}
+
+void NsEngine::SoundManager::RegisterSEVoice(Sound::Voice* voice)
+{
+	voicesSE_.push_back(voice);
+}
+
+void NsEngine::SoundManager::RegisterBGMVoice(Sound::Voice* voice)
+{
+	voicesBGM_.push_back(voice);
 }
 
 void SoundManager::StopAllSound()
 {
-	for (int i = 0; i < voices_.size(); i++)
+	//全てのサウンドを停止
+  	for (auto voice : voicesSE_)
 	{
-		voices_[i]->sourceVoice->Stop();
+		StopVoice(voice);
 	}
-	voices_.resize(0);
+	for (auto voice : voicesBGM_)
+	{
+		StopVoice(voice);
+	}
+
+	voicesSE_.clear();
+	voicesBGM_.clear();
+}
+
+void SoundManager::StopVoice(Sound::Voice* voice) {
+
+	if (voice && voice->sourceVoice) {
+		voice->sourceVoice->Stop();
+	}
 }
 
 void SoundManager::UnloadParticularSound(const std::string& fileName)
