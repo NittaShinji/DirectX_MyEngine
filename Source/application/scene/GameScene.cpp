@@ -180,7 +180,7 @@ void GameScene::Update()
 			}
 			stage_->Reset();
 			gameCamera_->Initialize();
- 			player_->Reset(gameCamera_.get());
+ 			player_->Reset();
 			resultSprite_->Reset();
 			GameTimer::GetInstance()->Reset();
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);

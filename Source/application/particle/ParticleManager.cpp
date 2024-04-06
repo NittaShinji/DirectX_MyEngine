@@ -114,7 +114,7 @@ void ParticleManager::Preparation(GameSpeed* gameSpeed,Player* player)
 				if(player->GetIsMoving() == true && player->GetIsDead() == false)
 				{
 					bool isTouchObject = player->GetIsTouchObject();
-
+					//プレイヤーが同じ色のオブジェクトに触れた場合に煙を出す
 					if(player->GetIsLanded() == true || isTouchObject == true)
 					{
 						hitParticle_->Preparation(player->GetTransform(), player->GetIsDead());

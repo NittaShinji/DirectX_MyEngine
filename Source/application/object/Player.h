@@ -76,7 +76,7 @@ public:
 	void Draw();
 
 	//リセット
-	void Reset(Camera* camera);
+	void Reset();
 
 	//Imgui更新
 	void ImGuiUpdate();
@@ -90,14 +90,11 @@ public:
 	//アニメーション
 	void Animation(const bool isStartedAnime, const float animationSpeed, const Vector3& goalScale);
 
-	//回転をリセットする
-	void ResetRotation();
-
 	//ロングジャンプ
 	void LongJump();
 
-	//アニメーションの際に初期化するフラグ
-	void InitInfoInAnime();
+	//ジャンプアニメーションした際の共通処理をまとめたもの
+	void UpdatePlayerAnimation();
 
 	//数値を規定の数値に戻す関数
 	bool ResetValue(float& value, const float defaultValue, const float changeValue);
@@ -169,9 +166,6 @@ private:
 	//ジャンプカウント
 	int32_t jumpCount_;
 	
-	//空中にいるかどうか
-	bool isFlying_;
-
 	//ジャンプ量
 	float jumpTotalValue_;
 	
@@ -251,18 +245,12 @@ private:
 	//オブジェクトに触れたかどうか
 	bool isTouchObject_;
 
-	//ぶつかってストップしているか
-	bool isStoped_;
-
-	bool isStartedJumpAnimation_;
-	
-	int32_t jumpAnimationTimer_ = kJumpAnimationTime_;
-	
 	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
 	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 45.0f };
 	EasingInfo axcellEasing_ = { 0.5f, 0.0f, 0.0f, 20.0f };
 	EasingInfo stopSpeedEasing_ = { kMoveAxcellZ_,-kMoveAxcellZ_,0.0f,60.0f };
 	
+	//アニメーションフラグ
 	bool isStartedLandAnime_ = false;
 	bool isReturnedSizeAnime_ = false;
 	bool isJumpMomentAnime_ = false;
@@ -271,20 +259,14 @@ private:
 
 	//ジャンプの準備ができているかどうか
 	bool isReadyToJump_;
-
-	bool isScaleChanged_ = false;
+	//アニメーション中かどうか
 	bool isDuringAnimation_ = false;
-	bool isResettingRotation_ = false;
-
+	//接地中に開店するかどうか
 	bool isGroundRotate_ = false;
-	bool isReset_ = false;
+	//死亡時に死んだ場所を保存したかどうか
 	bool isSetDeadPos_ = false;
-
-	float frameNum_;
-
-	bool isRising_ = false;
+	//二回目のジャンプをした瞬間かどうか
 	bool isSecondJumpMoment_ = false;
-	bool isHit_ = false;
 
 	//ステージの端にいるかどうか
 	bool isWithStageEdge_ = true;
@@ -303,35 +285,35 @@ private:
 public: //アクセッサ
 
 	//動いているどうかを取得する
-	bool GetIsMoving() { return isMoving_; }
+	bool GetIsMoving() const { return isMoving_; }
 	//ゴールしたかどうかを取得する
-	bool GetIsFinish() { return isFinish_; }
+	bool GetIsFinish() const { return isFinish_; }
 	//死んでいるかどうかを取得する
-	bool GetIsDead() { return isDead_; }
+	bool GetIsDead() const { return isDead_; }
 	//着地したかどうかを取得する
-	bool GetIsLanded() { return isLanded_; }
+	bool GetIsLanded() const { return isLanded_; }
 	//地面にいるかどうかを取得する
-	bool GetOnGround() { return onGround_; }
+	bool GetOnGround() const { return onGround_; }
 	//プレイヤーの色を取得する
-	Attribute GetAttributeColor() { return attributeColor_; }
+	Attribute GetAttributeColor() const { return attributeColor_; }
 	//加速しているかどうかを取得する
-	bool GetRightAxcell() { return isRightAxcell_; }
+	bool GetRightAxcell() const { return isRightAxcell_; }
 	//プレイヤーの初期座標を取得する
-	Vector3 GetInitPos() { return kPlayerInitPos_; }
+	Vector3 GetInitPos() const { return kPlayerInitPos_; }
 	//死んだ位置を取得する
-	Vector3 GetDeadPos() { return deadPos_; }
+	Vector3 GetDeadPos() const { return deadPos_; }
 	//二回目のジャンプ時かどうかを取得する
-	bool GetIsSecondJumpMoment() { return isSecondJumpMoment_; }
+	bool GetIsSecondJumpMoment() const { return isSecondJumpMoment_; }
 	//下からオブジェクトに触れたかどうかを取得する
-	bool GetIsTouchObject() { return isTouchObject_; }
+	bool GetIsTouchObject() const { return isTouchObject_; }
 	//プレイヤーの衝突可能範囲
-	float GetCollisionArea() { return kCollisionArea_; }
+	float GetCollisionArea() const { return kCollisionArea_; }
 	//ジャンプカウントを取得
-	int32_t GetJumpCount() { return jumpCount_; }
+	int32_t GetJumpCount() const { return jumpCount_; }
 	//最大ジャンプ数を取得
-	int32_t GetKMaxJumpNum() { return kMaxJumpNum_; }
+	int32_t GetKMaxJumpNum() const { return kMaxJumpNum_; }
 	//ステージの端にいるかどうか
-	bool GetIsWithStageEdge() { return isWithStageEdge_; }
+	bool GetIsWithStageEdge() const { return isWithStageEdge_; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
@@ -345,9 +327,7 @@ public: //アクセッサ
 	void SetIsTouchObject(bool isTouchObject) { isTouchObject_ = isTouchObject; }
 	//加速しているかどうかをセットする
 	void SetIsRightAxcell(bool isRightAxcell) { isRightAxcell_ = isRightAxcell; }
-
 	//ステージの端にいるかどうか
 	void SetIsWithStageEdge(bool isWithStageEdge) { isWithStageEdge_ = isWithStageEdge; }
-
 };
 

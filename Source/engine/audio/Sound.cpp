@@ -12,6 +12,11 @@ Sound::~Sound() {}
 void Sound::Initialize(const std::string& fileName)
 {
 	soundData_ = SoundManager::GetInstance()->GetSoundData(fileName);
+	Reset();
+}
+
+void Sound::Reset()
+{
 	isSounded_ = false;
 	voice_.isLoop = false;
 }

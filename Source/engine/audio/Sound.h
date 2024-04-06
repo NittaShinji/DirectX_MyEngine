@@ -92,6 +92,9 @@ public: //メンバ関数
 	//削除
 	void Delete();
 
+	//リセット
+	void Reset();
+
 	//鳴らしたかどうかを取得
 	const bool GetIsSounded() { return isSounded_; }
 	void SetIsSounded(bool isSounded) { isSounded_ = isSounded; }

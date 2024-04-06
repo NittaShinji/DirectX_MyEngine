@@ -34,14 +34,7 @@ void Player::Initialize()
 
 	//プレイヤーオブジェクトの初期化
 	Object3d::Initialize();
-	transform_ = kPlayerInitPos_;
-	rotation_ = kDefaultRotate_;
-	scale_ = kDefaultScale_;
-	deadPos_ = transform_;
-	SetTransform(transform_);
-	SetRotation(rotation_);
-	SetScale(scale_);
-
+	
 	//コライダーの追加
 	const float radius = 1.0f;
 	const Vector3 kDefaultColliderPos_ = { 0.0f,0.0f,0.0f };
@@ -54,42 +47,14 @@ void Player::Initialize()
 	playerCollider_->SetAttribute(COLLISION_ATTR_ALLIES);
 
 	//メンバ変数の初期化
-	jumpCount_ = kMaxJumpNum_;
-	isFlying_ = 0;
-	isFinish_ = false;
-	isMoving_ = false;
-	isChangeColor = false;
-	isJumpRotate_ = false;
-	onGround_ = true;
-	isLanded_ = false;
-	isDead_ = false;
-	isHit_ = false;
-	isLongJump_ = false;
-	isJumped_ = false;
-
-	isStartedJumpAnimation_ = false;
-	isStartedLandAnime_ = false;
-	isReturnedSizeAnime_ = false;
-	isDuringAnimation_ = false;
-	isRightAxcell_ = false;
-	isWithStageEdge_ = true;
-
-	returnScaleSpeed_ = kDefaultReturnScaleSpeed_;
-
-	fallVec_ = { 0.0f,0.0f,0.0f };
-	rightAxcellVec_ = { 0.0f,0.0f,0.0f };
-	totalAxcell_ = { 0.0f,0.0f,0.0f };
-	rightAxcellVec_ = Vector3Zero();
-
-	//プレイヤーの色の初期化
-	attributeColor_ = Attribute::pink;
 	colorFlag_ = true;
-	Object3d::SetColorFlag(true);
-	SetColor(kTitlePinkOBJColor);
+	Reset();
 }
 
 void Player::Update(Camera* camera)
 {
+	camera_ = camera;
+
 	//瞬間のフラグをOFFにする
 	isSecondJumpMoment_ = false;
 	//着地フラグをオフに
@@ -116,10 +81,6 @@ void Player::Update(Camera* camera)
 			{
 				totalAxcell_.z += PlayEaseOutQuint(stopSpeedEasing_);
 			}
-			else
-			{
-				isReset_ = true;
-			}
 		}
 		else
 		{
@@ -132,8 +93,7 @@ void Player::Update(Camera* camera)
 		if(!onGround_)
 		{
 			isGroundRotate_ = false;
-			frameNum_ += freamIncreaseValue_;
-
+			
 			if(isJumped_ == false)
 			{
 				const float slow = 10;
@@ -208,20 +168,6 @@ void Player::Update(Camera* camera)
 				}
 				isDentedAnime_ = true;
 			}
-			
-		}
-		
-		if(isStartedJumpAnimation_ == true)
-		{
-			if(jumpAnimationTimer_ > 0)
-			{
-				jumpAnimationTimer_--;
-			}
-			else
-			{
-				jumpAnimationTimer_ = kJumpAnimationTime_;
-				isStartedJumpAnimation_ = false;
-			}
 		}
 
 		//停止状態以外の場合はその場で走り続けるように
@@ -258,20 +204,11 @@ void Player::Update(Camera* camera)
 			CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_BLACK);
 		}
 
+		//押し出し時
 		if(onGround_ == false)
 		{
 			transform_.y += callback.move.y;
 			transform_.z += callback.move.z;
-
-			//押し出し時
-			if(callback.move.z < 0)
-			{
-				isStoped_ = true;
-			}
-			else
-			{
-				isStoped_ = false;
-			}
 		}
 
 		//コライダー更新
@@ -453,10 +390,10 @@ void Player::Update(Camera* camera)
 				{
 					if(jumpCount_ > 0)
 					{
-						InitInfoInAnime();
 						jumpTotalValue_ = 0.0f;
 						isSmallJump_ = true;
 						isLongJump_ = false;
+						UpdatePlayerAnimation();
 						isDuringAnimation_ = false;
 						isStartedLandAnime_ = false;
 					}
@@ -486,7 +423,7 @@ void Player::Update(Camera* camera)
 				{
 					if(jumpCount_ > 0)
 					{
-						InitInfoInAnime();
+						UpdatePlayerAnimation();
 						isDuringAnimation_ = false;
 						isStartedLandAnime_ = false;
 					}
@@ -511,8 +448,7 @@ void Player::Update(Camera* camera)
 				{
 					if(jumpCount_ > 0)
 					{
-						isRising_ = true;
-						InitInfoInAnime();
+						UpdatePlayerAnimation();
 					}
 				}
 			}
@@ -715,11 +651,11 @@ void Player::Draw()
 	}
 }
 
-void Player::Reset(Camera* camera)
+void Player::Reset()
 {
-	jumpSound_->Initialize("jumpSE.wav");
-	doubleSound_->Initialize("jumpSE.wav");
-	deadSound_->Initialize("playerDeadSE.wav");
+	jumpSound_->Reset();
+	doubleSound_->Reset();
+	deadSound_->Reset();
 
 	transform_ = kPlayerInitPos_;
 	rotation_ = kDefaultRotate_;
@@ -728,7 +664,6 @@ void Player::Reset(Camera* camera)
 	jumpTotalValue_ = 0.0f;
 	onGround_ = true;
 	isJumpRotate_ = false;
-	isFlying_ = 0;
 	isFinish_ = false;
 	isMoving_ = false;
 	isDead_ = false;
@@ -736,25 +671,29 @@ void Player::Reset(Camera* camera)
 	isChangeColor = false;
 	isStartedLandAnime_ = false;
 	isReturnedSizeAnime_ = false;
-	isStartedJumpAnimation_ = false;
 	isDentedAnime_ = false;
 	isRightAxcell_ = false;
 	isWithStageEdge_ = true;
 	axcellEasing_.time = 0;
-	rightAxcellVec_ = Vector3Zero();
 	isJumpRotate_ = false;
 	isGroundRotate_ = false;
-	isResettingRotation_ = false;
 	isSetDeadPos_ = false;
 	rotateXTimer_ = kRotateXTime_;
 	rotateYTimer_ = kRotateYTime_;
+
+	isLongJump_ = false;
+	isJumped_ = false;
+	isDuringAnimation_ = false;
+	returnScaleSpeed_ = kDefaultReturnScaleSpeed_;
+	fallVec_ = Vector3Zero();
+	rightAxcellVec_ = Vector3Zero();
+	totalAxcell_ = Vector3Zero();
 
 	attributeColor_ = Attribute::pink;
 	SetColor(kTitlePinkOBJColor);
 	Object3d::SetTransform(transform_);
 	Object3d::SetRotation(rotation_);
 	Object3d::SetScale(scale_);
-	Object3d::Update(camera);
 }
 
 void Player::ImGuiUpdate()
@@ -854,15 +793,6 @@ void Player::Animation(const bool isStartedAnime, const float animationSpeed, co
 	}
 }
 
-void Player::ResetRotation()
-{
-	//ジャンプなどによって、回転が元に戻っていなければ元の角度に戻す
-	if(isResettingRotation_ == true)
-	{
-		ResetVector3Value(rotation_, kResetRotation_, kRotaionSpeed_, isResettingRotation_);
-	}
-}
-
 void Player::LongJump()
 {
 	//押した時間によって飛距離が変わるように
@@ -908,7 +838,7 @@ void Player::LongJump()
 	}
 }
 
-void Player::InitInfoInAnime()
+void Player::UpdatePlayerAnimation()
 {
 	isExpandedAnime_ = true;
 	isDentedAnime_ = false;
