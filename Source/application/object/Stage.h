@@ -74,6 +74,7 @@ public:
 	bool GetIsAllowedToCountStageNum() { return isAllowedToCountStageNum_; }
 	float GetStageEdge() { return stageEdge_; }
 	bool GetIsPlayerReachedStageEdge() { return isPlayerReachedStageEdge_; }
+	int32_t GetKClearStageNum() const { return kClearStageNum_; }
 
 	//セッター
 	void SetIsAllowedToCountStageNum(bool isAllowed) { isAllowedToCountStageNum_ = isAllowed; }
@@ -81,7 +82,7 @@ public:
 private:
 
 	const std::string kDefaultStageName_ = "stage";
-	const int32_t kEndStageNum_ = 1;
+	const int32_t kClearStageNum_ = 2;
 
 private:
 

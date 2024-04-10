@@ -30,7 +30,7 @@ std::unique_ptr<ResultRoopStage> ResultRoopStage::Create(const std::string& file
 
 void ResultRoopStage::Initialize()
 {
-	isRoop_ = false;
+	Reset();
 }
 
 void ResultRoopStage::Update(Camera* camera, Vector3 playerPos, float roopArea)
@@ -61,6 +61,7 @@ void ResultRoopStage::Draw()
 void ResultRoopStage::Reset()
 {
 	isRoop_ = false;
+	isFinishedRoopObjects_ = false;
 	roopCount_ = 0;
 	transform_.z = initTransFormZ_;
 	Object3d::SetTransform(transform_);

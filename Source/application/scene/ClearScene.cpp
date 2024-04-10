@@ -45,6 +45,7 @@ void ClearScene::Initialize()
 
 	//サウンドの初期化
 	checkSound_ = SoundManager::GetInstance()->GetSound("clearBGM.wav");
+	checkSound_->PlaySoundWave(false);
 
 	//アンカーポイントの設定
 	const Vector2 checkAnchorPoint = { 0.5f,0.5f };

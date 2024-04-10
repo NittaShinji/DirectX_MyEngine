@@ -267,6 +267,7 @@ void GameScene::Update()
 				{
 					ParticleManager::GetInstance()->AllRemove();
 					ObjParticleManager::GetInstance()->AllRemove();
+					ResultRoopStage::SetIsFinishedRoopObjects(false);
 					SoundManager::GetInstance()->StopAllSound();
 					SceneManager::GetInstance()->ChangeScene("CLEAR");
 				}	
@@ -291,6 +292,21 @@ void GameScene::Update()
 	{
 		resultSprite_->ComeOutOffScreen();
 		stage_->SetIsAllowedToCountStageNum(true);
+
+		if (stage_->GetStageNum() == stage_->GetKClearStageNum())
+		{
+			if (resultSprite_->GetIsFinishInEasing() == true)
+			{
+				if (GameTimer::GetInstance()->GetIsFinishedToTime() == true)
+				{
+					ParticleManager::GetInstance()->AllRemove();
+					ObjParticleManager::GetInstance()->AllRemove();
+					SoundManager::GetInstance()->StopAllSound();
+					ResultRoopStage::SetIsFinishedRoopObjects(false);
+					SceneManager::GetInstance()->ChangeScene("CLEAR");
+				}
+			}
+		}
 	}
 
 	resultSprite_->Update();
