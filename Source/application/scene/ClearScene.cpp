@@ -144,7 +144,7 @@ void ClearScene::Update()
 		}	
 	}
 	
-	GameTimer::GetInstance()->ResultUpdate(true, WindowsAPI::kWindow_height_ / 2);
+	//GameTimer::GetInstance()->ResultUpdate(true, WindowsAPI::kWindow_height_ / 2);
 }
 
 void ClearScene::Draw()

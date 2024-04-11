@@ -42,7 +42,7 @@ public:
 	void ResultNumberUpdate();
 
 	//リザルト画面での更新
-	void ResultUpdate(bool isFinishedAnimation, float easingMoveY);
+	void ResultUpdate(bool isFinishedAnimation, float easingMoveY,int32_t stageNum,int32_t endStageNum);
 
 	//ImGuiの更新
 	void InGameUpdate(bool isStart, bool isFinish, bool isReachedStageEdge);

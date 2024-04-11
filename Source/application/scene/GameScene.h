@@ -73,6 +73,11 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	/// <summary>
+	/// クリア時に一度だけ行う処理
+	/// </summary>
+	void ClearOnceUpdate();
+
 private:
 
 	static DirectXBasic* directXBasic_;

@@ -206,7 +206,7 @@ void GameTimer::InGameUpdate(bool isStart, bool isFinish,bool isReachedStageEdge
 	}
 }
 
-void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY)
+void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY, int32_t stageNum, int32_t endStageNum)
 {
 	keepSeconds_ = gameSeconds_;
 	keepMinutes_ = gameMinutes_;
@@ -228,7 +228,23 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY)
 	//結果画面のイージングが終了したら数字を更新
 	if(isFinishedAnimation == true)
 	{
-		ResultNumberUpdate();
+		if (isFinishedToTime_ == false)
+		{
+			ResultNumberUpdate();
+		}
+	}
+	else if (stageNum == endStageNum)
+	{
+		//--4桁目(千の位を表示)
+		resultDisPlaytime[0] = (keepMinutes_ % 100) / 10;
+		//--3桁目(百の位を表示)
+		resultDisPlaytime[1] = (keepMinutes_ % 10) / 1;
+		//
+		resultDisPlaytime[2] = (keepSeconds_ % 100) / 10;
+		//--2桁目(十の位を表示)
+		resultDisPlaytime[3] = (keepSeconds_ % 10) / 1;
+		//--1桁目(1の位を表示)
+		isFinishedToTime_ = true;
 	}
 
 	//描画する数字をセット

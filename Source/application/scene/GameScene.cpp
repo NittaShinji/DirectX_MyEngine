@@ -220,7 +220,7 @@ void GameScene::Update()
 	//ゲームタイマーの更新
 	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(),stage_->GetIsPlayerReachedStageEdge());
 
-	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY());
+	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY(),stage_->GetStageNum(),stage_->GetKClearStageNum());
 
 	SoundManager::GetInstance()->Update();
 
@@ -259,19 +259,10 @@ void GameScene::Update()
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
 		resultSprite_->ComeInScreen();
 
+		//ステージをすべてクリアしていたらクリアシーンに遷移
 		if(stage_->GetIsClearedAllStage() == true)
 		{
-			if(resultSprite_->GetIsFinishInEasing() == true)
-			{
-				if(GameTimer::GetInstance()->GetIsFinishedToTime() == true)
-				{
-					ParticleManager::GetInstance()->AllRemove();
-					ObjParticleManager::GetInstance()->AllRemove();
-					ResultRoopStage::SetIsFinishedRoopObjects(false);
-					SoundManager::GetInstance()->StopAllSound();
-					SceneManager::GetInstance()->ChangeScene("CLEAR");
-				}	
-			}
+			ClearOnceUpdate();
 		}
 		else
 		{
@@ -290,22 +281,14 @@ void GameScene::Update()
 	}
 	else
 	{
+		//クリア状態でなければ場外にスコアシートは出しておく
 		resultSprite_->ComeOutOffScreen();
 		stage_->SetIsAllowedToCountStageNum(true);
 
+		//もしクリアしていたらクリアシーンに遷移
 		if (stage_->GetStageNum() == stage_->GetKClearStageNum())
 		{
-			if (resultSprite_->GetIsFinishInEasing() == true)
-			{
-				if (GameTimer::GetInstance()->GetIsFinishedToTime() == true)
-				{
-					ParticleManager::GetInstance()->AllRemove();
-					ObjParticleManager::GetInstance()->AllRemove();
-					SoundManager::GetInstance()->StopAllSound();
-					ResultRoopStage::SetIsFinishedRoopObjects(false);
-					SceneManager::GetInstance()->ChangeScene("CLEAR");
-				}
-			}
+			ClearOnceUpdate();
 		}
 	}
 
@@ -393,4 +376,19 @@ void GameScene::Draw()
 
 	//描画終了
 	directXBasic_->AfterDraw();
+}
+
+void GameScene::ClearOnceUpdate()
+{
+	if (resultSprite_->GetIsFinishInEasing() == true)
+	{
+		if (GameTimer::GetInstance()->GetIsFinishedToTime() == true)
+		{
+			ParticleManager::GetInstance()->AllRemove();
+			ObjParticleManager::GetInstance()->AllRemove();
+			ResultRoopStage::SetIsFinishedRoopObjects(false);
+			SoundManager::GetInstance()->StopAllSound();
+			SceneManager::GetInstance()->ChangeScene("CLEAR");
+		}
+	}
 }
