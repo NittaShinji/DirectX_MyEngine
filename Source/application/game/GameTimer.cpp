@@ -233,6 +233,7 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY, int32_
 			ResultNumberUpdate();
 		}
 	}
+	//最終ステージであればドラムロールしないで直接タイムを出す
 	else if (stageNum == endStageNum)
 	{
 		//--4桁目(千の位を表示)

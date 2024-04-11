@@ -257,6 +257,7 @@ void GameScene::Update()
 		GameTimer::GetInstance()->SetIsTImed(false);
 		//ゴールスロー演出を辞める
 		stage_->GetGoal()->SetIsStartGoalStagin(false);
+		//スコアボードを画面内に入れる
 		resultSprite_->ComeInScreen();
 
 		//ステージをすべてクリアしていたらクリアシーンに遷移
@@ -270,6 +271,7 @@ void GameScene::Update()
 			stage_->NextStageUpdate();
 			stage_->SetIsAllowedToCountStageNum(false);
 
+			//Aボタンが押されたら次のステージを生成
 			if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
 			{
 				player_->SetIsFinish(false);
@@ -281,7 +283,7 @@ void GameScene::Update()
 	}
 	else
 	{
-		//クリア状態でなければ場外にスコアシートは出しておく
+		//クリア状態でなければ場外にスコアボードは画面外出しておく
 		resultSprite_->ComeOutOffScreen();
 		stage_->SetIsAllowedToCountStageNum(true);
 
