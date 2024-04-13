@@ -68,12 +68,6 @@ void TitleScene::Initialize()
 	touchSound_ = SoundManager::GetInstance()->GetSound("touchSE.wav");
 	titleSound_->PlaySoundWave(true);
 
-	//titleSound_ = std::make_unique<Sound>();
-	//touchSound_ = std::make_unique<Sound>();
-	//titleSound_->Initialize("title.wav");
-	//touchSound_->Initialize("touch.wav");
-	//titleSound_->PlaySoundWave(true);
-
 	//カメラ
 	camera_ = std::make_unique<Camera>();
 	camera_->Initialize();
@@ -250,23 +244,9 @@ void TitleScene::Update()
 
 			if(changeWhiteTimer_ <= 0 && backGroundChangEasing_.time >= backGroundChangEasing_.totalTime)
 			{
-				//// すべてのサウンドを停止する
-				//for (auto voice : SoundManager::GetInstance()->GetVoices()) {
-				//	SoundManager::GetInstance()->StopSound(voice);
-				//}
-
-				//// 再生が完了しているかどうかを確認する
-				//if (touchSound_->GetIsSounded()) {
-				//	// 再生が完了している場合はインスタンスを削除する
-				//	touchSound_->Delete();
-				//}
-				//else {
-				//	// 再生が完了していない場合は、再生完了後にインスタンスを削除するようにフラグを設定する
-				//	touchSound_->SetIsSounded(true);
-				//	SceneManager::GetInstance()->ChangeScene("GAME");
-				//}
-
+				//すべてのサウンドを停止する
 				SoundManager::GetInstance()->StopAllSound();
+				//ゲームシーンに移動
 				SceneManager::GetInstance()->ChangeScene("GAME");
 			}
 		}

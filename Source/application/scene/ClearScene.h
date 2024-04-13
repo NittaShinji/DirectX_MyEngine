@@ -31,7 +31,6 @@ private:
 	std::unique_ptr<Sprite> check_ = nullptr;
 	std::unique_ptr<Sprite> aButton_ = nullptr;
 	std::unique_ptr<Sprite> aButtonPushed_ = nullptr;
-
 	std::unique_ptr<Sprite> clearSprite_ = nullptr;
 
 	static DirectXBasic* directXBasic_;
@@ -55,6 +54,8 @@ private:
 
 	//サウンド
 	std::unique_ptr<Sound> checkSound_ = nullptr;
+	std::unique_ptr<Sound> touchSound_ = nullptr;
+
 
 	//ボタンが押されたかどうか
 	bool isPushedAbutton_;

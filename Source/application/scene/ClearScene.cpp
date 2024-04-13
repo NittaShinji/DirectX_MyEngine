@@ -21,7 +21,7 @@ void ClearScene::Initialize()
 
 	//各画像の初期化
 	Vector2 titlePosition = { 0.0f,0.0f };;
-	end_->Initialize("WhiteTex",titlePosition);
+	end_->Initialize("WhiteTex", titlePosition);
 
 	const Vector2 kInitCheckPos = { 656,0.0f };
 	checkPosition_.x = kInitCheckPos.x;
@@ -29,9 +29,9 @@ void ClearScene::Initialize()
 
 	const Vector2 aButtonSize = { 128.0f,128.0f };
 	const Vector2 aButtonPosition = { 576.0f,565.0f };
-	aButton_->Initialize("aButton.png",aButtonPosition);
+	aButton_->Initialize("aButton.png", aButtonPosition);
 	aButton_->SetSize(Vector2(aButtonSize));
-	
+
 	const Vector2 kClearSpritePosition = { 320.0f,320.0f };
 	clearSprite_->Initialize("gameClear.png", kClearSpritePosition);
 
@@ -46,6 +46,7 @@ void ClearScene::Initialize()
 	//サウンドの初期化
 	checkSound_ = SoundManager::GetInstance()->GetSound("clearBGM.wav");
 	checkSound_->PlaySoundWave(false);
+	touchSound_ = SoundManager::GetInstance()->GetSound("touchSE.wav");
 
 	//アンカーポイントの設定
 	const Vector2 checkAnchorPoint = { 0.5f,0.5f };
@@ -70,7 +71,7 @@ void ClearScene::Update()
 	//移動処理
 	const float moveResultPosY = WindowsAPI::kWindow_height_ / 3 - 50;
 
-	if(checkPosition_.y <= moveResultPosY)
+	if (checkPosition_.y <= moveResultPosY)
 	{
 		const float kMoveSpeed = 0.6f;
 		move_.y += kMoveSpeed;
@@ -79,18 +80,18 @@ void ClearScene::Update()
 
 	//回転処理
 	const float kOneRotationAngle = 360.0f;
-	if(rotate_ <= ToRadian(kOneRotationAngle) && isRotateSprite_ == false)
+	if (rotate_ <= ToRadian(kOneRotationAngle) && isRotateSprite_ == false)
 	{
 		float angle = ToRadian(kOneRotationAngle);
 		rotate_ -= PlayEaseInCubic(0.0f, angle, rotateTimer_, kRotateTime_);
 	}
 
 	//チェック画像の回転処理
-	if(rotateTimer_ >= 0)
+	if (rotateTimer_ >= 0)
 	{
 		rotateTimer_--;
 	}
-	else if(rotateTimer_ < 0)
+	else if (rotateTimer_ < 0)
 	{
 		rotateTimer_ = kRotateTime_;
 		isRotateSprite_ = true;
@@ -100,31 +101,38 @@ void ClearScene::Update()
 	check_->matUpdate();
 
 	//ゲームパッドが繋がっているかどうか
-	if(gamePad_->IsConnected(Player1)) {}
+	if (gamePad_->IsConnected(Player1)) {}
 
-	if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
+	if (gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
 	{
-		if(isBackColor_ == false)
+		//一度だけ鳴らす
+		if (touchSound_->GetIsSounded() == false)
 		{
+			touchSound_->PlaySoundWave(false);
+		}
+		//ボタンの色が戻っていなければ
+		if (isBackColor_ == false)
+		{
+			//押されたフラグをオンにする
 			isPushedAbutton_ = true;
 		}
 	}
 
 	//ボタンを押した際に色が変わるように
-	if(isPushedAbutton_ == true || isBackColor_ == true)
+	if (isPushedAbutton_ == true || isBackColor_ == true)
 	{
 		const float changeColorSpeed = 0.02f;
 		const float changeSceneColor = 0.7f;
 		Vector4 aButtonChangeColor = aButton_->GetColor();
 
 		//色を変更
-		if(isPushedAbutton_ == true)
+		if (isPushedAbutton_ == true)
 		{
 			aButtonChangeColor.x -= changeColorSpeed;
 			aButtonChangeColor.y -= changeColorSpeed;
 			aButtonChangeColor.z -= changeColorSpeed;
 		}
-		else if(isBackColor_ == true)
+		else if (isBackColor_ == true)
 		{
 			aButtonChangeColor.x += changeColorSpeed;
 			aButtonChangeColor.y += changeColorSpeed;
@@ -133,16 +141,16 @@ void ClearScene::Update()
 		aButton_->SetColor(aButtonChangeColor);
 
 		//切り替え、終了処理
-		if(isBackColor_ == false && aButtonChangeColor.x < changeSceneColor)
+		if (isBackColor_ == false && aButtonChangeColor.x < changeSceneColor)
 		{
 			isBackColor_ = true;
 			isPushedAbutton_ = false;
 		}
-		if(isBackColor_ == true && aButtonChangeColor.x > 1.0f)
+		if (isBackColor_ == true && aButtonChangeColor.x > 1.0f)
 		{
 			SoundManager::GetInstance()->StopAllSound();
 			SceneManager::GetInstance()->ChangeScene("TITLE");
-		}	
+		}
 	}
 }
 
@@ -157,7 +165,7 @@ void ClearScene::Draw()
 	check_->Draw("check.png");
 	aButton_->Draw("aButton.png");
 	clearSprite_->Draw("gameClear.png");
-	
+
 	//描画終了
 	directXBasic_->AfterDraw();
 }
