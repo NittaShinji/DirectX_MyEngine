@@ -11,32 +11,18 @@ int GameTimer::resultMinutes_;
 //ハイスコア
 int GameTimer::highScoreTime_;
 
-bool GameTimer::isLoadSprite_ = false;
-
 std::unique_ptr<Sprite> GameTimer::inGameNum[kTimerDigits_];
 std::unique_ptr<Sprite> GameTimer::resultNum[kTimerDigits_];
 std::unique_ptr<Sprite> GameTimer::inGameBlackDot_;
 std::unique_ptr<Sprite> GameTimer::resultBlackDot_;
-
+std::unique_ptr<Sprite> GameTimer::inGameGrayDot_;
+std::unique_ptr<Sprite> GameTimer::resultGrayDot_;
 std::unique_ptr<Sprite> GameTimer::stopWatch_;
 
 //ゲーム中に表示する時間(4桁)
 int GameTimer::inGameDisPlayTime_[kTimerDigits_];
 //クリア画面で表示する時間(6桁)
 int GameTimer::resultDisPlaytime[kTimerDigits_];
-
-void GameTimer::LoadSprite()
-{
-	//一度だけ画像を読み込む
-	if(isLoadSprite_ == false)
-	{
-		//黒いドットの点画像を作成
-		const int DotSize = 6;
-		const Vector4 BlackColor = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
-		TextureManager::GetInstance()->TexMapping(DotSize, DotSize, BlackColor, "BLACKDot");
-		isLoadSprite_ = true;
-	}
-}
 
 void GameTimer::StaticInitialize()
 {
@@ -48,6 +34,8 @@ void GameTimer::StaticInitialize()
 
 	inGameBlackDot_ = std::make_unique<Sprite>();
 	resultBlackDot_ = std::make_unique<Sprite>();
+	inGameGrayDot_ = std::make_unique<Sprite>();
+	resultGrayDot_ = std::make_unique<Sprite>();
 
 	stopWatch_ = std::make_unique<Sprite>();
 
@@ -66,15 +54,13 @@ void GameTimer::InGameInitialize()
 	gameSeconds_ = 0;
 	gameMinutes_ = 0;
 
-	LoadSprite();
-
 	//10枚分のサイズ
 	Vector2 texNumTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
 	//数字一つ当たりのサイズ
 	Vector2 texNumSize = texNumTotalSize;
 	texNumSize.x = texNumSize.x / totalNumber;
 	const int half = 2;
-	const Vector4 color = { 1.0f,1.0f,1.0,0.75f };
+	const Vector4 watchColor = { 1.0f,1.0f,1.0,0.95f };
 
 	Vector2 texStopWatchSize = TextureManager::GetInstance()->GetTexSize("stopWatch.png");
 
@@ -103,16 +89,20 @@ void GameTimer::InGameInitialize()
 	//ドット画像の初期化
 	float decimalX = inGameNum[2]->GetPosition().x;
 	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x / half + 6, texNumSize.y + texNumSize.y - 15);
+	const int8_t blackDotShift = 1;
 	
-	inGameBlackDot_->Initialize("BLACKDot", decimalPointPos);
-	inGameBlackDot_->SetPosition(decimalPointPos);
+	//黒ドットの下に1ドット分大きい白ドットを置くので、プラス1座標をずらす確保
+	inGameBlackDot_->Initialize("BlackDot", Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
+	inGameBlackDot_->SetPosition(Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
+	inGameGrayDot_->Initialize("GrayDot", decimalPointPos);
+	inGameGrayDot_->SetPosition(decimalPointPos);
 
 	//時計画像の初期化
 	float stopWatchX = inGameNum[0]->GetPosition().x - texNumSize.y;
 	stopWatch_->Initialize("stopWatch.png", Vector2(stopWatchX, texNumSize.y));
 	//64 x 64の正方形サイズに変更
 	stopWatch_->SetSize(Vector2(texNumSize.y, texNumSize.y));
-	stopWatch_->SetColor(color);
+	stopWatch_->SetColor(watchColor);
 
 	gameSeconds_ = 0;
 	isTimed_ = false;
@@ -157,9 +147,12 @@ void GameTimer::ResultInitialize(float imagePosY)
 	const float dotHeight = resultNum[0]->GetPosition().y + texNumSize.y - 15;
 	//小数点の位置を設定
 	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x - 7, dotHeight);
+	const int8_t blackDotShift = 1;
 
-	resultBlackDot_->Initialize("BLACKDot", decimalPointPos);
-	resultBlackDot_->SetPosition(decimalPointPos);
+	resultBlackDot_->Initialize("BlackDot", Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
+	resultBlackDot_->SetPosition(Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
+	resultGrayDot_->Initialize("GrayDot", decimalPointPos);
+	resultGrayDot_->SetPosition(decimalPointPos);
 
 	//描画する数字を0で初期化
 	for(size_t i = 0; i < kTimerDigits_; i++)
@@ -184,6 +177,7 @@ void GameTimer::InGameUpdate(bool isStart, bool isFinish,bool isReachedStageEdge
 	}
 
 	inGameBlackDot_->matUpdate();
+	inGameGrayDot_->matUpdate();
 	stopWatch_->matUpdate();
 
 	//プレイヤーが動き始めたら
@@ -224,6 +218,8 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY, int32_
 
 	resultBlackDot_->SetPosition(Vector2(resultBlackDot_->GetPosition().x, dotHeight));
 	resultBlackDot_->matUpdate();
+	resultGrayDot_->SetPosition(Vector2(resultGrayDot_->GetPosition().x, dotHeight));
+	resultGrayDot_->matUpdate();
 
 	//結果画面のイージングが終了したら数字を更新
 	if(isFinishedAnimation == true)
@@ -295,7 +291,8 @@ void GameTimer::InGameDraw()
 		inGameNum[i]->Draw("numbers.png");
 	}
 
-	inGameBlackDot_->Draw("BLACKDot");
+	inGameGrayDot_->Draw("GrayDot");
+	inGameBlackDot_->Draw("BlackDot");
 }
 void GameTimer::ResultDraw()
 {
@@ -306,7 +303,8 @@ void GameTimer::ResultDraw()
 		resultNum[i]->Draw("numbers.png");
 	}
 
-	resultBlackDot_->Draw("BLACKDot");
+	resultGrayDot_->Draw("GrayDot");
+	resultBlackDot_->Draw("BlackDot");
 }
 
 void GameTimer::InGameNumberUpdate(bool isFinish)

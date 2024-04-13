@@ -50,6 +50,12 @@ void ResourceLoader::ImageLoad()
 	TextureManager::GetInstance()->LoadTexture("stopWatch.png");
 	//数字のテクスチャ読み込み
 	TextureManager::GetInstance()->LoadTexture("numbers.png");
+	//小数点用のテクスチャ
+	const int blackDotSize = 6;
+	const int grayDotSize = 8;
+	const Vector4 grayColor = { 0.45f, 0.45f, 0.45f, 1.0f };
+	TextureManager::GetInstance()->TexMapping(blackDotSize, blackDotSize, blackColor, "BlackDot");
+	TextureManager::GetInstance()->TexMapping(grayDotSize, grayDotSize, grayColor, "GrayDot");
 
 	//<クリアシーン>
 	TextureManager::GetInstance()->LoadTexture("check.png");

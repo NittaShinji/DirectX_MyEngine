@@ -55,9 +55,6 @@ public:
 	//結果画面での描画
 	void ResultDraw();
 
-	//スプライト読み込み
-	void LoadSprite();
-
 	//数字をセット
 	void SetNumber(int number,Sprite* sprite);
 
@@ -103,9 +100,6 @@ private:
 	//ハイスコア
 	static int highScoreTime_;
 
-	//画像読み込みフラグ
-	static bool isLoadSprite_;
-
 	//リザルト初期化フラグ
 	bool isStartedResultAnimation_;
 
@@ -126,6 +120,9 @@ private:
 	//小数点画像
 	static std::unique_ptr<Sprite> inGameBlackDot_;
 	static std::unique_ptr<Sprite> resultBlackDot_;
+	static std::unique_ptr<Sprite> inGameGrayDot_;
+	static std::unique_ptr<Sprite> resultGrayDot_;
+
 	//時計画像
 	static std::unique_ptr<Sprite> stopWatch_;
 
