@@ -62,6 +62,7 @@ void ClearScene::Initialize()
 
 void ClearScene::Update()
 {
+	//画像の行列更新
 	end_->matUpdate();
 	aButton_->matUpdate();
 	clearSprite_->matUpdate();
@@ -143,8 +144,6 @@ void ClearScene::Update()
 			SceneManager::GetInstance()->ChangeScene("TITLE");
 		}	
 	}
-	
-	//GameTimer::GetInstance()->ResultUpdate(true, WindowsAPI::kWindow_height_ / 2);
 }
 
 void ClearScene::Draw()

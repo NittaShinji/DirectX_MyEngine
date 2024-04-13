@@ -120,11 +120,13 @@ private:
 	//数え終わったかどうか
 	bool isFinishedToTime_;
 
+	//時間計算用の数字画像
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
+	//小数点画像
 	static std::unique_ptr<Sprite> inGameBlackDot_;
 	static std::unique_ptr<Sprite> resultBlackDot_;
-
+	//時計画像
 	static std::unique_ptr<Sprite> stopWatch_;
 
 	//ゲーム中に表示する時間(4桁)

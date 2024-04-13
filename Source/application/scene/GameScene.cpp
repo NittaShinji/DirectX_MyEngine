@@ -294,6 +294,7 @@ void GameScene::Update()
 		}
 	}
 
+	//リザルト画面の更新
 	resultSprite_->Update();
 
 #ifdef _DEBUG
@@ -357,14 +358,15 @@ void GameScene::Draw()
 
 	gameSprite_->UIDraw();
 
+	//チュートリアルステージであれば
 	if(stage_->GetStageNum() == Stage::tutorialStage)
 	{
 		tutorialEvent_->Draw();
 	}
 
-	if(player_->GetIsFinish() == true){}
-	else
+	if (player_->GetIsFinish() == false)
 	{
+		//左上のカウントを描画する
 		GameTimer::GetInstance()->InGameDraw();
 	}
 

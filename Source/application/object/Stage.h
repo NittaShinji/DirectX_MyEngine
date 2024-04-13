@@ -81,7 +81,9 @@ public:
 
 private:
 
+	//ステージ読み込みファイル用の文字列
 	const std::string kDefaultStageName_ = "stage";
+	//ステージ数がこの数に達した際にクリア画面に遷移する数(全ステージ数)
 	const int32_t kClearStageNum_ = 2;
 
 private:

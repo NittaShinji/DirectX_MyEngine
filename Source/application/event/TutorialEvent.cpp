@@ -14,7 +14,6 @@ void TutorialEvent::Initialzie(Player* player)
 	const float kEndEventPos_ = 20;
 	startEvent_ = std::make_unique<Event>();
 	startEvent_->Initialzie(kStartEventPos_, kEndEventPos_);
-	startEvent_->SetIsAnimate(true);
 	startEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//ジャンプイベント設定

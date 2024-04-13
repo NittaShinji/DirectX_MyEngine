@@ -19,7 +19,7 @@ std::unique_ptr<StageBlock> StageBlock::Create(const std::string& fileName, cons
 	instance->Object3d::Initialize();
 	instance->SetModel(fileName);
 	instance->AddCollider(instance->GetModel());
-	//属性を設定
+	//当たり判定用の属性を設定
 	instance->collider_->SetAttribute(coliderAttribute);
 	return instance;
 }

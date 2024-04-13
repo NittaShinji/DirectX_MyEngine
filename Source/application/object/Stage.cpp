@@ -31,6 +31,7 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
  	blurbackGround_->Update(camera);
 	normalbackGround_->Update(camera);
 
+	//ステージオブジェクトを更新
  	for(auto& stageBlock : stageBlocks_)
 	{
 		float distance = std::fabs(stageBlock->GetTransform().z - player->GetTransform().z);
@@ -54,6 +55,7 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 		stageBlock->Update(camera);
 	}
 
+	//壁を更新
 	for(size_t i = 0; i < walls_.size(); i++)
 	{
 		float distance = std::fabs(walls_[i]->GetTransform().z - player->GetTransform().z);
@@ -90,6 +92,7 @@ void Stage::Update(Camera* camera, Player* player, GameSpeed* gameSpeed)
 		mirrorRoopObject->Update(camera);
 	}
 
+	//ゴールを更新
 	float distance = std::fabs(goal_->GetTransform().z - player->GetTransform().z);
 	if(distance < player_->GetCollisionArea())
 	{
@@ -472,7 +475,6 @@ void Stage::Reset()
 	//ループ反射オブジェクトをクリア
 	mirrorRoopObjects_.clear();
 
-	//新ステージを読み込む場合
 	//リセット時の読み込みの際に位置だけずらしたいので一回だけ読み込む
 	if(canResetLoadedStage_ == true)
 	{
@@ -498,7 +500,7 @@ void Stage::Reset()
 
 		ResetLoad();
 	}
-	//新たにステージを変えない場合
+	//新ステージをずらし終えた場合
 	else 
 	{
 		//壁とループオブジェクトを再配置する

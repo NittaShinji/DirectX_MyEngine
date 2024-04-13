@@ -128,7 +128,9 @@ private: //定数
 	//初期カウンター数
 	const int32_t kInitCount_ = 0;
 
+	//通常スケール値
 	const Vector3 kDefaultScale_ = { 1.0f,1.0f,1.0f };
+	//通常回転値
 	const Vector3 kDefaultRotate_ = { 0.0f,0.0f,0.0f };
 
 	//アニメーション用スケール定数
@@ -152,7 +154,9 @@ private: //定数
 	//加速判定最大時間
 	const float maxExtensionTime_ = 10.0f;
 
+	//元のスケールに戻る際の通常スピード
 	const float kDefaultReturnScaleSpeed_ = 0.075f;
+	//元のスケールに戻る際のアニメーション中のスピード
 	const float kAnimataionReturnScaleSpeed_ = 0.15f;
 
 	//プレイヤーの衝突範囲(加速判定などもあるので球コライダーの半径より大きめに)

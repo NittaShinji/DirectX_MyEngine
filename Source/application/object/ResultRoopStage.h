@@ -64,6 +64,7 @@ private:
 	//全体のループフラグ
 	static bool isFinishedRoopObjects_;
 	
+	//初期位置
 	float initTransFormZ_;
 
 	//どのステージに所属しているか

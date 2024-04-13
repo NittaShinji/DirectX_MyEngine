@@ -19,13 +19,9 @@ std::unique_ptr<MirrorOBJ> MirrorOBJ::Create(Object3d* object)
 	return instance;
 }
 
-MirrorOBJ::MirrorOBJ()
-{
-}
+MirrorOBJ::MirrorOBJ(){}
 
-MirrorOBJ::~MirrorOBJ()
-{
-}
+MirrorOBJ::~MirrorOBJ(){}
 
 void MirrorOBJ::Initialize()
 {

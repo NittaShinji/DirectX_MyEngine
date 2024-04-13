@@ -10,7 +10,6 @@ public:
 	//インスタンスを生成
 	static std::unique_ptr<MirrorPlayer> Create(Player* player);
 
-
 public: //メンバ関数
 
 	//コンストラクタ
