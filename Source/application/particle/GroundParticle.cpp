@@ -47,7 +47,6 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 			const float md_velZ = -0.68f;
 			setVel_.z = md_velZ + imGuiVel_[2];
 
-			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 			const float md_acc = 0.0f;
 			acc.x = imGuiAcc_[0];
 			acc.y = md_acc + imGuiAcc_[1];
@@ -62,7 +61,6 @@ void GroundParticle::Preparation(Vector3 playerPos, Attribute playerColor, bool 
 			const float md_velZ = -0.68f;
 			setVel_.z = md_velZ + imGuiVel_[2];
 
-			//重力に見立ててYのみ{-0.001f,0}でランダムに分布
 			const float md_acc = -0.017f;
 			acc.x = imGuiAcc_[0];
 			acc.y = md_acc + imGuiAcc_[1];
@@ -323,38 +321,38 @@ void GroundParticle::Update(Camera* camera)
 			it->frame += freamIncreaseValue_ * gameSpeed_->GetSpeedNum();
 
 			//色
-			if(it->color.x <= it->endColor.x)
+			if(it->color.x <= endColor_.x)
 			{
 				it->color.x += it->colorSpeed.x * gameSpeed_->GetSpeedNum();
 			}
-			else if(it->color.x > it->endColor.x)
+			else if(it->color.x > endColor_.x)
 			{
 				it->color.x -= it->colorSpeed.x * gameSpeed_->GetSpeedNum();
 			}
 
-			if(it->color.y <= it->endColor.y)
+			if(it->color.y <= endColor_.y)
 			{
 				it->color.y += it->colorSpeed.y * gameSpeed_->GetSpeedNum();
 			}
-			else if(it->color.y > it->endColor.y)
+			else if(it->color.y > endColor_.y)
 			{
 				it->color.y -= it->colorSpeed.y * gameSpeed_->GetSpeedNum();
 			}
 
-			if(it->color.z <= it->endColor.z)
+			if(it->color.z <= endColor_.z)
 			{
 				it->color.z += it->colorSpeed.z * gameSpeed_->GetSpeedNum();
 			}
-			else if(it->color.z > it->endColor.z)
+			else if(it->color.z > endColor_.z)
 			{
 				it->color.z -= it->colorSpeed.z * gameSpeed_->GetSpeedNum();
 			}
 
-			if(it->color.w <= it->endColor.w)
+			if(it->color.w <= endColor_.w)
 			{
 				it->color.w += it->colorSpeed.w * gameSpeed_->GetSpeedNum();
 			}
-			else if(it->color.w > it->endColor.w)
+			else if(it->color.w > endColor_.w)
 			{
 				it->color.w -= it->colorSpeed.w * gameSpeed_->GetSpeedNum();
 			}
