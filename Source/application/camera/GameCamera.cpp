@@ -21,6 +21,7 @@ void GameCamera::Initialize()
 	isNotBackAnimation_ = false;
 	isSlowDown_ = false;
 	isStartGoalEasing_ = false;
+	isStartBackAnimation_ = false;
 
 	//プレイヤーが衝突時に停止する座標を設定
 	goalEyePos_.x = { initCameraEye.x + initEyeDistance_.x };
@@ -34,7 +35,7 @@ void GameCamera::Initialize()
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
-	Vector3 playerDeadPos, bool rightAxcell)
+	Vector3 playerDeadPos, bool rightAxcell, Vector3 playerTotalAxcel)
 {
 	cameraSpeed_ = gameSpeed_->GetSpeedNum();
 	cameraSpeedY_ = gameSpeed_->GetSpeedNum();
@@ -63,16 +64,37 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 		eye_.x += moveEyeVec_.x * cameraSpeed_;
 		target_.x += moveTargetVec_.x * cameraSpeed_;
 
-		//プレイヤーが加速していないとき
-		if(rightAxcell == false)
+		//プレイヤーが加速した場合、カメラのアニメーションスタート
+		if (rightAxcell == true)
 		{
-			//カメラが遅れているアニメーション中の場合
-			if(isNotBackAnimation_ == true)
+			isStartBackAnimation_ = true;
+		}
+
+		//アニメーション処理
+		if (isStartBackAnimation_ == true)
+		{
+			if (isNotBackAnimation_ == false)
+			{
+				isSlowDown_ = true;
+			}
+			else
 			{
 				//カメラとプレイヤーの距離が所定の距離より離れている時
-				if(moveEyeVec_.z >= initEyeDistance_.z)
+				if (moveEyeVec_.z >= initEyeDistance_.z)
 				{
-					axcellRate_ += axcellRateMoveValue_;
+					if (backmoveEasing_.endDistance == 0.0f)
+					{
+						backmoveEasing_.startPos = axcellRate_;
+						//プレイヤーより少し早めのスピードになるようにイージングの終点スピードを調整
+						const float axcelBackRate = 0.65f;
+						backmoveEasing_.endDistance = playerTotalAxcel.z * axcelBackRate;
+					}
+					
+					backmoveEasing_.time++;
+					if (backmoveEasing_.time > kInitTime_ && backmoveEasing_.time <= backmoveEasing_.totalTime)
+					{
+						axcellRate_ = PlayEaseOutSine(backmoveEasing_);
+					}
 				}
 				//カメラとプレイヤーの距離が所定の距離以下になった場合
 				else
@@ -80,15 +102,10 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 					isNotBackAnimation_ = false;
 					//カメラの加速割合を戻す
 					axcellRate_ = kAxcellNormalRate_;
+					backmoveEasing_.time = static_cast<float>(kInitTime_);
+					backmoveEasing_.endDistance = 0.0f;
+					isStartBackAnimation_ = false;
 				}
-			}
-		}
-		//プレイヤーが加速しているとき
-		else
-		{
-			if(isNotBackAnimation_ == false)
-			{
-				isSlowDown_ = true;
 			}
 		}
 

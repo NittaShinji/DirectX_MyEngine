@@ -200,7 +200,7 @@ void GameScene::Update()
 
 	//カメラの更新
 	gameCamera_->Update(player_->GetIsMoving(), player_->GetTransform(), player_->GetInitPos(), player_->GetIsDead(),
-		player_->GetDeadPos(), player_->GetRightAxcell());
+		player_->GetDeadPos(), player_->GetRightAxcell(),player_->GetTotalAxcell());
 
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());

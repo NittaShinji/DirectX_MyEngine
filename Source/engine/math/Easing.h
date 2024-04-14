@@ -54,4 +54,9 @@ float EaseOutBouce(float x);
 //指定の範囲でイーズアウトバウンスを行う
 float PlayEaseOutBouce(float startPos, float endDistance, float time, float totalTime);
 
+//イーズインアウトシャイン
+float EaseInOutSine(float x);
+//指定の範囲でイーズインアウトシャインを行う
+float PlayEaseInOutSine(EasingInfo easingInfo);
+
 

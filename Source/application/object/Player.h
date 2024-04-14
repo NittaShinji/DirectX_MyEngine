@@ -251,7 +251,7 @@ private:
 
 	EasingInfo jumpEasing_ = { 0.0f, 0.0f, 0.0f, 60.0f };
 	EasingInfo LandEasing_ = { 0.0f, 0.0f, 0.0f, 45.0f };
-	EasingInfo axcellEasing_ = { 0.5f, 0.0f, 0.0f, 20.0f };
+	EasingInfo axcellEasing_ = { 0.5f, 0.0f, 0.0f, 25.0f };
 	EasingInfo stopSpeedEasing_ = { kMoveAxcellZ_,-kMoveAxcellZ_,0.0f,60.0f };
 	
 	//アニメーションフラグ
@@ -318,6 +318,8 @@ public: //アクセッサ
 	int32_t GetKMaxJumpNum() const { return kMaxJumpNum_; }
 	//ステージの端にいるかどうか
 	bool GetIsWithStageEdge() const { return isWithStageEdge_; }
+	//合計加速度を取得
+	Vector3 GetTotalAxcell() const { return totalAxcell_; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }

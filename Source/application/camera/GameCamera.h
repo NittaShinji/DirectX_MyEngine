@@ -14,13 +14,11 @@ public:
 	void Initialize() override;
 
 	void Update(bool isPlayerMoving,Vector3 playerPos, Vector3 playerInitPos,bool isDead, 
-		Vector3 playerDeadPos,bool rightAxcell);
+		Vector3 playerDeadPos,bool rightAxcell,Vector3 playerTotalAxcel);
 
 	void Reset();
 
 	void ImGuiUpdate();
-
-	void GoalAnimation();
 
 	bool GetIsFinishAnimation() { return isFinishAnimetion_; }
 
@@ -32,8 +30,8 @@ private:
 	const Vector3 initCameraTarget = { 0,5,5 };
 	const Vector3 initCameraUp = { 0,1,0 };
 
-	Vector3 initEyeDistance_ = { 0.0f,1.0f,12.0f };
-	const Vector3 initTargetDistance_ = { 0.0f,1.0f,12.0f };
+	Vector3 initEyeDistance_ = { 0.0f,1.0f,7.0f };
+	const Vector3 initTargetDistance_ = { 0.0f,1.0f,7.0f };
 
 	//Y軸用の加速割合
 	float EyeYAxelRate_ = 2.20f;
@@ -84,6 +82,7 @@ private:
 	
 	bool isNotBackAnimation_;
 	bool isSlowDown_;
+	bool isStartBackAnimation_;
 	
 	const float axcellRateMoveValue_ = 0.0015f;
 	const float decelerationMoveValue_ = 0.01f;
@@ -96,8 +95,9 @@ private:
 	EasingInfo goalEyeXEasing_ = { 0.0f, goalEyeXMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
 	EasingInfo goalEyeYEasing_ = { 0.0f, goalEyeYMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
 	EasingInfo goalEyeZEasing_ = { 0.0f, goalEyeZMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
+	EasingInfo backmoveEasing_ = { 0.0f, 0.0f, sceneAnimeTimer_, 25};
 
-	EasingInfo slowDownEasing_ = { 1.0f, -0.2f, 0.0f, 15.0f };
+	EasingInfo slowDownEasing_ = { 1.0f, -0.4f, 0.0f, 15.0f };
 	GameSpeed* gameSpeed_ = nullptr;
 };
 

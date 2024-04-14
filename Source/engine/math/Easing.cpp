@@ -2,6 +2,8 @@
 #include "MathUtillity.h"
 #include <cmath>
 
+using namespace MathUtillty;
+
 float PlayEaseInCubic(EasingInfo easingInfo)
 {
 	float x = easingInfo.time / easingInfo.totalTime;
@@ -98,6 +100,20 @@ float PlayEaseOutBouce(float startPos, float endDistance, float time, float tota
 	float x = time / totalTime;
 	float v = static_cast<float>(EaseOutBouce(x));
 	float ret = endDistance * v + startPos;
+
+	return ret;
+}
+
+float EaseInOutSine(float x)
+{
+	return -(cos(PI * x) - 1) / 2;
+}
+
+float PlayEaseInOutSine(EasingInfo easingInfo)
+{
+	float x = easingInfo.time / easingInfo.totalTime;
+	float v = EaseInOutSine(x);
+	float ret = easingInfo.endDistance * v + easingInfo.startPos;
 
 	return ret;
 }
