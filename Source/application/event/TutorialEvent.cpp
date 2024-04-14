@@ -62,14 +62,6 @@ void TutorialEvent::Initialzie(Player* player)
 	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, 850.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
 	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, 910.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
 	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, 970.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
-
-	/*const float kStartJumptoChangeEventPos_ = 680;
-	const float kEndJumptoChangeEventPos_ = 1000;
-	jumptoChangeEvent_ = std::make_unique<Event>();
-	jumptoChangeEvent_->Initialzie(kStartJumptoChangeEventPos_, kEndJumptoChangeEventPos_);
-	changeInAirEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 680.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
-	changeInAirEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 680.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));*/
-
 }
 
 void TutorialEvent::Update(Camera* camera)

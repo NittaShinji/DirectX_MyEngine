@@ -51,6 +51,13 @@ void Event::Reset()
 	}
 }
 
+void Event::Finish()
+{
+	isPushedButton_ = true;
+	isFinish_ = true;
+	gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+}
+
 void Event::BillboardSetPlayerPos(const Vector3& playerPos, Camera* camera)
 {
 	//ビルボード更新
@@ -140,13 +147,29 @@ void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t but
 	//イベント中に
 	if (isStart_ == true)
 	{
-		//対象のボタンが押されたらイベント終了
-		if (gamePad_->PushedButtonMoment(buttonInfo) || keys_->PushedKeyMoment(keyboardInfo))
+		if(buttonInfo == XINPUT_GAMEPAD_B)
 		{
-			isPushedButton_ = true;
-			isFinish_ = true;
-			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+			if (gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_RIGHT_SHOULDER))
+			{
+				Finish();
+			}
+			else
+			{
+				if (gamePad_->PushedButtonMoment(buttonInfo) || keys_->PushedKeyMoment(keyboardInfo))
+				{
+					Finish();
+				}
+			}
 		}
+		else
+		{
+			//対象のボタンが押されたらイベント終了
+			if (gamePad_->PushedButtonMoment(buttonInfo) || keys_->PushedKeyMoment(keyboardInfo))
+			{
+				Finish();
+			}
+		}
+		
 	}
 }
 

@@ -36,6 +36,8 @@ public:
 	void AddBillboard(const std::string& fileName, const Billboard::BillboardType& billBoardtype, const Vector3& position,float scale,const Vector4& color);
 	//リセット
 	void Reset();
+	//イベント終了
+	void Finish();
 
 	//アニメーションをするかどうかをセット
 	void SetIsAnimate(bool isAnimate) { isAnimate_ = isAnimate; }
