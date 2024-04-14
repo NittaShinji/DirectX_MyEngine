@@ -52,7 +52,12 @@ private:
 	const float kSceneAnimeTime_ = 60.0f;
 	//アニメーション時間の変化量
 	float sceneAnimeTimer_ = 0.0f;
+	//遅れて戻る際のアニメーション時間
+	const float kBackAnimationTime_ = 25.0f;
+	//遅れる際のアニメーション時間
+	const float kSlowAnimationTime_ = 15.0f;
 
+	//シーンアニメーションタイマー初期値
 	const float kInitSceneAnimeTime_ = 0.0f;
 
 	//シーンアニメーション用変化量
@@ -83,6 +88,7 @@ private:
 	bool isNotBackAnimation_;
 	bool isSlowDown_;
 	bool isStartBackAnimation_;
+	bool isSlowBack_;
 	
 	const float axcellRateMoveValue_ = 0.0015f;
 	const float decelerationMoveValue_ = 0.01f;
@@ -92,12 +98,11 @@ private:
 	const float goalEyeYMoveValue_ = 0.0f;
 	const float goalEyeZMoveValue_ = 0.0f;
 
-	EasingInfo goalEyeXEasing_ = { 0.0f, goalEyeXMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
-	EasingInfo goalEyeYEasing_ = { 0.0f, goalEyeYMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
-	EasingInfo goalEyeZEasing_ = { 0.0f, goalEyeZMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_ };
-	EasingInfo backmoveEasing_ = { 0.0f, 0.0f, sceneAnimeTimer_, 25};
-
+	EasingInfo goalEyeXEasing_ = { 0.0f, goalEyeXMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_};
+	EasingInfo goalEyeYEasing_ = { 0.0f, goalEyeYMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_};
+	EasingInfo goalEyeZEasing_ = { 0.0f, goalEyeZMoveValue_, sceneAnimeTimer_, kSceneAnimeTime_};
+	EasingInfo backmoveEasing_ = { 0.0f, 0.0f, sceneAnimeTimer_, kBackAnimationTime_};
+	EasingInfo backSlowMoveEasing_ = { 0.0f, 0.0f, sceneAnimeTimer_, kBackAnimationTime_ };
 	EasingInfo slowDownEasing_ = { 1.0f, -0.4f, 0.0f, 15.0f };
 	GameSpeed* gameSpeed_ = nullptr;
 };
-

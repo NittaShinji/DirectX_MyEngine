@@ -31,7 +31,6 @@ void GameCamera::Initialize()
 	goalEyeTarget_.x = { initCameraTarget.x + initTargetDistance_.x };
 	goalEyeTarget_.y = { initCameraTarget.y + initTargetDistance_.y };
 	goalEyeTarget_.z = { initCameraTarget.z + initTargetDistance_.z };
-
 }
 
 void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerInitPos, bool isDead,
@@ -86,7 +85,7 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 					{
 						backmoveEasing_.startPos = axcellRate_;
 						//プレイヤーより少し早めのスピードになるようにイージングの終点スピードを調整
-						const float axcelBackRate = 0.65f;
+						const float axcelBackRate = 0.625f;
 						backmoveEasing_.endDistance = playerTotalAxcel.z * axcelBackRate;
 					}
 					
@@ -95,15 +94,31 @@ void GameCamera::Update(bool isPlayerMoving, Vector3 playerPos, Vector3 playerIn
 					{
 						axcellRate_ = PlayEaseOutSine(backmoveEasing_);
 					}
+
+					if (backmoveEasing_.time > backmoveEasing_.totalTime && backSlowMoveEasing_.endDistance == 0.0f)
+					{
+						isSlowBack_ = true;
+						backSlowMoveEasing_.startPos = axcellRate_;
+						backSlowMoveEasing_.endDistance = -axcellRate_ + kAxcellNormalRate_;
+					}
+
+					if (isSlowBack_ == true)
+					{
+						backSlowMoveEasing_.time++;
+						axcellRate_ = PlayEaseOutSine(backSlowMoveEasing_);
+					}
 				}
 				//カメラとプレイヤーの距離が所定の距離以下になった場合
 				else
 				{
+					isSlowBack_ = false;
 					isNotBackAnimation_ = false;
 					//カメラの加速割合を戻す
 					axcellRate_ = kAxcellNormalRate_;
 					backmoveEasing_.time = static_cast<float>(kInitTime_);
 					backmoveEasing_.endDistance = 0.0f;
+					backSlowMoveEasing_.time = static_cast<float>(kInitTime_);
+					backSlowMoveEasing_.endDistance = 0.0f;
 					isStartBackAnimation_ = false;
 				}
 			}

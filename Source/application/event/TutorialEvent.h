@@ -41,5 +41,10 @@ private: //メンバ変数
 	std::unique_ptr<Event> changeColorEvent_ = nullptr;
 	//空中での色変えイベント
 	std::unique_ptr<Event> changeInAirEvent_ = nullptr;
+	//色変えするためのジャンプイベント
+	std::unique_ptr<Event> jumptoChangeEvent_ = nullptr;
+	//ジャンプ後の色変えイベント
+	std::unique_ptr<Event> ChangeColorEvent_ = nullptr;
+
 };
 
