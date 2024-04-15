@@ -227,3 +227,33 @@ bool GamePad::CompareButton(int16_t button)
 	return isEnabledButton_;
 }
 
+bool GamePad::HasPushedMomentLT()
+{
+	bool result = false;
+
+	if (state_.Gamepad.bLeftTrigger == kMaxTriggerNum_)
+	{
+		if (!(oldState_.Gamepad.bLeftTrigger == kMaxTriggerNum_))
+		{
+			result = true;
+		}
+	}
+
+	return result;
+}
+
+bool GamePad::HasPushedMomentRT()
+{
+	bool result = false;
+
+	if (state_.Gamepad.bRightTrigger == kMaxTriggerNum_)
+	{
+		if (!(oldState_.Gamepad.bRightTrigger == kMaxTriggerNum_))
+		{
+			result = true;
+		}
+	}
+
+	return result;
+}
+

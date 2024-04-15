@@ -50,8 +50,14 @@ public:
 	bool ReleaseButtonMoment(int16_t button);
 	//引数に渡されたビット番号とボタンのビット番号を比較し、同じならボタンフラグをONにする
 	bool CompareButton(int16_t bottun);
+	//トリガーを押した瞬間かどうか
+	bool HasPushedMomentLT();
+	bool HasPushedMomentRT();
 
 private:
+
+	//トリガーのMax値
+	const unsigned char kMaxTriggerNum_ = 255;
 
 	//コントローラの番号
 	UINT padNum_;
