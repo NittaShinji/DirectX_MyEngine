@@ -47,12 +47,25 @@ void TutorialEvent::Initialzie(Player* player)
 	//色変えイベント設定
 	const float kStartChangeColorEventPos_ = 590;
 	const float kEndChangeColorEventPos_ = 610;
-	changeColorEvent_ = std::make_unique<Event>();
-	changeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
-	changeColorEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	firstChangeColorEvent_ = std::make_unique<Event>();
+	firstChangeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
+	firstChangeColorEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//空中での色変えイベント設定
-	const float kStartChangeAirEventPos_ = 610;
+	//Aボタン
+	const float kStartJumptoChangeEventPos_ = 690;
+	const float kEndJumptoChangeEventPos_ = 700;
+	jumptoChangeEvent_ = std::make_unique<Event>();
+	jumptoChangeEvent_->Initialzie(kStartJumptoChangeEventPos_, kEndJumptoChangeEventPos_);
+	jumptoChangeEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 680.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	//Bボタン
+	const float kStartChangetoColorEventPos_ = 700;
+	const float kEndChangetoColorEventPos_ = 710;
+	changeColorEvent_ = std::make_unique<Event>();
+	changeColorEvent_->Initialzie(kStartChangetoColorEventPos_, kEndChangetoColorEventPos_);
+	changeColorEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 800.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	//色切り替えビルボード
+	const float kStartChangeAirEventPos_ = 710;
 	const float kEndChangeAirEventPos_ = 1000;
 	const Vector2 kChangeColorSpriteSize = { 64.0f,64.0f };
 	changeInAirEvent_ = std::make_unique<Event>();
@@ -98,10 +111,21 @@ void TutorialEvent::Update(Camera* camera)
 		heighJumpAfterEvent_->BillboardSetPlayerPos(playerPos, camera);
 		heighJumpAfterEvent_->TransmissiveBillboard();
 
+		//色変えイベント
+		firstChangeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera, playerJumpCount);
+		firstChangeColorEvent_->BillboardSetPlayerPos(playerPos, camera);
+		firstChangeColorEvent_->TransmissiveBillboard();
+
+		//色変えジャンプイベント
+		//Aボタン
+		jumptoChangeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
+		jumptoChangeEvent_->BillboardSetPlayerPos(playerPos, camera);
+		jumptoChangeEvent_->TransmissiveBillboard();
+		//Bボタン
 		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera, playerJumpCount);
 		changeColorEvent_->BillboardSetPlayerPos(playerPos, camera);
 		changeColorEvent_->TransmissiveBillboard();
-
+		//残りの色変えゾーンにビルボードを表示
 		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera, playerJumpCount);
 	}
 }
@@ -115,8 +139,10 @@ void TutorialEvent::Draw()
 		doubleJumpEvent_->Draw();
 		heighJumpBeforeEvent_->Draw();
 		heighJumpAfterEvent_->Draw();
-		changeColorEvent_->Draw();
+		firstChangeColorEvent_->Draw();
 		changeInAirEvent_->Draw();
+		jumptoChangeEvent_->Draw();
+		changeColorEvent_->Draw();
 	}
 }
 
@@ -127,6 +153,8 @@ void TutorialEvent::Reset()
 	doubleJumpEvent_->Reset();
 	heighJumpBeforeEvent_->Reset();
 	heighJumpAfterEvent_->Reset();
-	changeColorEvent_->Reset();
+	firstChangeColorEvent_->Reset();
 	changeInAirEvent_->Reset();
+	jumptoChangeEvent_->Reset();
+	changeColorEvent_->Reset();
 }
