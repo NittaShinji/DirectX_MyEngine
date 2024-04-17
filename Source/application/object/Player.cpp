@@ -293,7 +293,7 @@ void Player::Update(Camera* camera)
 		}
 
 		//色変え処理
-		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_B) || keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->HasPushedMomentRT())
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_B) || keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedRightTriggerMoment())
 		{
 			if (isFinish_ == false)
 			{
@@ -575,7 +575,7 @@ void Player::AccelerateChangeColor()
 	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 3.0f))
 	{
 		//色を変える
-		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_B) || keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->HasPushedMomentRT())
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_B) || keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedRightTriggerMoment())
 		{
 			if(attributeColor_ == yellow && isFinish_ == false)
 			{
@@ -591,7 +591,7 @@ void Player::AccelerateChangeColor()
 	else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 3.0f))
 	{
 		//色を変える
-		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_B) || keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->HasPushedMomentRT())
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_B) || keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedRightTriggerMoment())
 		{
 			if(attributeColor_ == pink)
 			{

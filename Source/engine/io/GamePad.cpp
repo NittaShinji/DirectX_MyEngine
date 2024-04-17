@@ -227,7 +227,7 @@ bool GamePad::CompareButton(int16_t button)
 	return isEnabledButton_;
 }
 
-bool GamePad::HasPushedMomentLT()
+bool GamePad::PushedLeftTriggerMoment()
 {
 	bool result = false;
 
@@ -242,7 +242,7 @@ bool GamePad::HasPushedMomentLT()
 	return result;
 }
 
-bool GamePad::HasPushedMomentRT()
+bool GamePad::PushedRightTriggerMoment()
 {
 	bool result = false;
 

@@ -175,7 +175,7 @@ void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t but
 	{
 		if(buttonInfo == XINPUT_GAMEPAD_B)
 		{
-			if (gamePad_->HasPushedMomentRT())
+			if (gamePad_->PushedRightTriggerMoment())
 			{
 				Finish();
 			}

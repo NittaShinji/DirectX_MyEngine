@@ -51,8 +51,8 @@ public:
 	//引数に渡されたビット番号とボタンのビット番号を比較し、同じならボタンフラグをONにする
 	bool CompareButton(int16_t bottun);
 	//トリガーを押した瞬間かどうか
-	bool HasPushedMomentLT();
-	bool HasPushedMomentRT();
+	bool PushedLeftTriggerMoment();		//左
+	bool PushedRightTriggerMoment();	//右
 
 private:
 
