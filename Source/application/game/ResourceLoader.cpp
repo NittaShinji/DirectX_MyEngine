@@ -32,6 +32,7 @@ void ResourceLoader::ImageLoad()
 	TextureManager::GetInstance()->LoadTexture("aButton.png");
 	TextureManager::GetInstance()->LoadTexture("bButton.png");
 	TextureManager::GetInstance()->LoadTexture("click.png");
+	TextureManager::GetInstance()->LoadTexture("xboxRt.png");
 	//<ゲームシーン>
 	//黒色のテクスチャ―を生成
 	const int32_t kHalfWindowHeight = WindowsAPI::kWindow_height_ / 2;

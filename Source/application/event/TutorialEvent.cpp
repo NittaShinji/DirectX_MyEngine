@@ -49,7 +49,7 @@ void TutorialEvent::Initialzie(Player* player)
 	const float kEndChangeColorEventPos_ = 610;
 	firstChangeColorEvent_ = std::make_unique<Event>();
 	firstChangeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
-	firstChangeColorEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	firstChangeColorEvent_->AddBillboard("xboxRt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//空中での色変えイベント設定
 	//Aボタン
@@ -63,7 +63,9 @@ void TutorialEvent::Initialzie(Player* player)
 	const float kEndChangetoColorEventPos_ = 710;
 	changeColorEvent_ = std::make_unique<Event>();
 	changeColorEvent_->Initialzie(kStartChangetoColorEventPos_, kEndChangetoColorEventPos_);
-	changeColorEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 800.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	//changeColorEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(-2.0f, 3.0f, 768.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeColorEvent_->AddBillboard("xboxRt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 700.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+
 	//色切り替えビルボード
 	const float kStartChangeAirEventPos_ = 710;
 	const float kEndChangeAirEventPos_ = 1000;
