@@ -39,6 +39,14 @@ public:
 	//イベント終了
 	void Finish();
 
+	//画像行列更新
+	void SpriteMatUpdate();
+	//ビルボード行列更新
+	void BillboardMatUpdate(Camera* camera);
+
+	//ビルボード表示
+	void UpdateToDisplayBillboard(float playerPosZ, Camera* camera);
+
 	//アニメーションをするかどうかをセット
 	void SetIsAnimate(bool isAnimate) { isAnimate_ = isAnimate; }
 	//アニメーション時間をセット
@@ -89,7 +97,9 @@ private:
 
 	//すでに終了しているか
 	bool isCompletedAlready_;
-	//画像が透明になったかどうか「
+	//画像が透明になったかどうか
 	bool isClearSprite_;
+	//ビルボードだけを表示するかどうか
+	bool isDisplayBillboard_;
 };
 

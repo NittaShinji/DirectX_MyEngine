@@ -44,6 +44,7 @@ void Event::Reset()
 	isClearSprite_ = false;
 	buttonTimer_ = buttonAnimeTime_;
 	isCompletedAlready_ = false;
+	isDisplayBillboard_ = false;
 	
 	for (auto& billBoard : eventBillboard_)
 	{
@@ -56,6 +57,45 @@ void Event::Finish()
 	isPushedButton_ = true;
 	isFinish_ = true;
 	gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
+}
+
+void Event::SpriteMatUpdate()
+{
+	//画像更新
+	if (eventButtonSprites_.empty() == false)
+	{
+		for (auto& sprite : eventButtonSprites_)
+		{
+			sprite->matUpdate();
+		}
+	}
+}
+
+void Event::BillboardMatUpdate(Camera* camera)
+{
+	//ビルボード更新
+	if (eventBillboard_.empty() == false)
+	{
+		for (auto& billBoard : eventBillboard_)
+		{
+			billBoard->Update(camera);
+		}
+	}
+}
+
+void Event::UpdateToDisplayBillboard(float playerPosZ,Camera* camera)
+{
+	//表示したい範囲内にプレイヤーが入ったらビルボードを表示
+	if (playerPosZ >= startPos_ && playerPosZ <= finishPos_)
+	{
+		isDisplayBillboard_ = true;
+		BillboardMatUpdate(camera);
+	}
+	else
+	{
+		//範囲外に出たらイベント終了
+		isDisplayBillboard_ = false;
+	}
 }
 
 void Event::BillboardSetPlayerPos(const Vector3& playerPos, Camera* camera)
@@ -93,22 +133,8 @@ void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t but
 	buttonInfo_ = buttonInfo;
 	keyboardInfo_ = keyboardInfo;
 
-	//画像更新
-	if (eventButtonSprites_.empty() == false)
-	{
-		for (auto& sprite : eventButtonSprites_)
-		{
-			sprite->matUpdate();
-		}
-	}
-	//ビルボード更新
-	if (eventBillboard_.empty() == false)
-	{
-		for (auto& billBoard : eventBillboard_)
-		{
-			billBoard->Update(camera);
-		}
-	}
+	SpriteMatUpdate();
+	BillboardMatUpdate(camera);
 
 	//イベントが終了している状態で
 	//イベントの範囲にプレイヤーが入ったらイベントを開始
@@ -191,7 +217,7 @@ void Event::AnimationUpdate()
 
 void Event::Draw()
 {
-	if (isStart_ == true)
+	if (isStart_ == true || isDisplayBillboard_ == true)
 	{
 		if (eventButtonSprites_.empty() == false)
 		{

@@ -14,60 +14,59 @@ void TutorialEvent::Initialzie(Player* player)
 	const float kEndEventPos_ = 20;
 	startEvent_ = std::make_unique<Event>();
 	startEvent_->Initialzie(kStartEventPos_, kEndEventPos_);
-	startEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	startEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 0.9f));
 
 	//ジャンプイベント設定
 	const float kStartJumpEventPos_ = 75;
 	const float kEndJumpEventPos_ = 100;
 	jumpEvent_ = std::make_unique<Event>();
 	jumpEvent_->Initialzie(kStartJumpEventPos_, kEndJumpEventPos_);
-	jumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	jumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 0.9f));
 
 	//二回ジャンプイベント設定
 	const float kStartDoubleJumpEventPos_ = 185;
 	const float kEndDoubleJumpEventPos_ = 210;
 	doubleJumpEvent_ = std::make_unique<Event>();
 	doubleJumpEvent_->Initialzie(kStartDoubleJumpEventPos_, kEndDoubleJumpEventPos_);
-	doubleJumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	doubleJumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 
 	//長押しジャンプイベント設定
 	const float kStartHighBeforeJumpEventPos_ = 315;
 	const float kEndHighJumpBeforeEventPos_ = 350;
 	heighJumpBeforeEvent_ = std::make_unique<Event>();
 	heighJumpBeforeEvent_->Initialzie(kStartHighBeforeJumpEventPos_, kEndHighJumpBeforeEventPos_);
-	heighJumpBeforeEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	heighJumpBeforeEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 
 	//長押しジャンプイベント設定
 	const float kStartHighAfterJumpEventPos_ = 350;
 	const float kEndHighJumpAfterEventPos_ = 380;
 	heighJumpAfterEvent_ = std::make_unique<Event>();
 	heighJumpAfterEvent_->Initialzie(kStartHighAfterJumpEventPos_, kEndHighJumpAfterEventPos_);
-	heighJumpAfterEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	heighJumpAfterEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 
 	//色変えイベント設定
 	const float kStartChangeColorEventPos_ = 590;
 	const float kEndChangeColorEventPos_ = 610;
 	firstChangeColorEvent_ = std::make_unique<Event>();
 	firstChangeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
-	firstChangeColorEvent_->AddBillboard("xboxRt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.0f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	firstChangeColorEvent_->AddBillboard("xboxRt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//空中での色変えイベント設定
 	//Aボタン
 	const float kStartJumptoChangeEventPos_ = 690;
-	const float kEndJumptoChangeEventPos_ = 700;
+	const float kEndJumptoChangeEventPos_ = 710;
 	jumptoChangeEvent_ = std::make_unique<Event>();
 	jumptoChangeEvent_->Initialzie(kStartJumptoChangeEventPos_, kEndJumptoChangeEventPos_);
-	jumptoChangeEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 680.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	jumptoChangeEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 680.0f), 2.8f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 	//Bボタン
-	const float kStartChangetoColorEventPos_ = 700;
-	const float kEndChangetoColorEventPos_ = 710;
+	const float kStartChangetoColorEventPos_ = 710;
+	const float kEndChangetoColorEventPos_ = 790;
 	changeColorEvent_ = std::make_unique<Event>();
 	changeColorEvent_->Initialzie(kStartChangetoColorEventPos_, kEndChangetoColorEventPos_);
-	//changeColorEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(-2.0f, 3.0f, 768.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
-	changeColorEvent_->AddBillboard("xboxRt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 700.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
+	changeColorEvent_->AddBillboard("xboxRt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 700.0f), 2.8f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 
 	//色切り替えビルボード
-	const float kStartChangeAirEventPos_ = 710;
+	const float kStartChangeAirEventPos_ = 600;
 	const float kEndChangeAirEventPos_ = 1000;
 	const Vector2 kChangeColorSpriteSize = { 64.0f,64.0f };
 	changeInAirEvent_ = std::make_unique<Event>();
@@ -128,7 +127,7 @@ void TutorialEvent::Update(Camera* camera)
 		changeColorEvent_->BillboardSetPlayerPos(playerPos, camera);
 		changeColorEvent_->TransmissiveBillboard();
 		//残りの色変えゾーンにビルボードを表示
-		changeInAirEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, 0, 0, camera, playerJumpCount);
+		changeInAirEvent_->UpdateToDisplayBillboard(playerPosZ, camera);
 	}
 }
 
