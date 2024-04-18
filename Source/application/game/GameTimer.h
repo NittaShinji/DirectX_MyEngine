@@ -37,14 +37,27 @@ public:
 	void ResultInitialize(float imagePosY);
 	//クリア画面の初期化
 	void ClearInitialize();
+	//ハイスコアの初期化
+	static void HighScoreInitialize();
+
+	//ハイスコアの準備
+	void ReadyHighScore(int32_t stageNum, int32_t endStageNum);
 
 	//ゲーム中の数字を更新
 	void InGameNumberUpdate(bool isFinish);
 	//リザルト画面の数字を更新
 	void ResultNumberUpdate();
-
 	//リザルト画面での更新
 	void ResultUpdate(bool isFinishedAnimation, float easingMoveY,int32_t stageNum,int32_t endStageNum);
+
+	//トータルタイム更新
+	void CalculateTotalTime();
+	//ハイスコア更新
+	void CalculateHighTime(int32_t stageNum, int32_t endStageNum);
+
+
+	//ハイスコア画像更新
+	void HighScoreSpriteUpdate();
 
 	//ImGuiの更新
 	void InGameUpdate(bool isStart, bool isFinish, bool isReachedStageEdge);
@@ -60,18 +73,22 @@ public:
 	void ResultDraw();
 	//クリア画面での描画
 	void ClearDraw();
+	//ハイスコアを描画
+	void HighScoreDraw();
 
 	//数字をセット
-	void SetNumber(int number,Sprite* sprite);
+	static void SetNumber(int number,Sprite* sprite);
 
-	//合計時間にステージの時間を加算
-	void AddStageTime();
+	//次のステージ用に準備をする
+	void ReadytoNextStageTime(int32_t stageNum, int32_t endStageNum);
 
 	//トータルステージタイムを更新
 	void TotalNumberUpdate();
 
 	//クリア画面更新
 	void ClearUpdate(bool isFinishedAnimation);
+
+	static void AddClearNum() { clearNum_ += 1; }
 
 private:
 
@@ -97,6 +114,8 @@ private:
 
 	static const int kTimerDigits_ = 4;
 
+	static int32_t clearNum_;
+
 	//ゲーム中に表示する分
 	static int gameMinutes_;
 	//クリア画面で表示する分
@@ -112,8 +131,6 @@ private:
 
 	//1フレームの時間を計算するタイマー
 	static int timer_;
-	//ハイスコア
-	static int highScoreTime_;
 
 	//トータル秒
 	int32_t totalSeconds_;
@@ -123,7 +140,14 @@ private:
 	int32_t totalCountSeconds_;
 	//トータルカウント用分
 	int32_t totalCountMinutes_;
-
+	//ハイスコアタイム用秒
+	int32_t highSeconds_[2];
+	//ハイスコアタイム用分
+	int32_t highMinutes_[2];
+	//トータルハイスコアタイム用秒
+	int32_t totalHeighSeconds_;
+	//トータルハイスコアタイム用分
+	int32_t totalHeighMinutes_;
 
 	//リザルト初期化フラグ
 	bool isStartedResultAnimation_;
@@ -143,11 +167,15 @@ private:
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
 	static std::unique_ptr<Sprite> totalNum[resultDigits];
+	static std::unique_ptr<Sprite> highScoreNum_[resultDigits];
 	//小数点画像
 	static std::unique_ptr<Sprite> inGameBlackDot_;
-	static std::unique_ptr<Sprite> resultBlackDot_;
 	static std::unique_ptr<Sprite> inGameGrayDot_;
+	static std::unique_ptr<Sprite> resultBlackDot_;
 	static std::unique_ptr<Sprite> resultGrayDot_;
+	static std::unique_ptr<Sprite> highScoreBlackDot_;
+	static std::unique_ptr<Sprite> highScoreGrayDot_;
+
 
 	//時計画像
 	static std::unique_ptr<Sprite> stopWatch_;
@@ -158,7 +186,11 @@ private:
 	static int resultDisPlaytime[resultDigits];
 	//クリア画面で表示する時間(6桁)
 	static int totalDisPlaytime[resultDigits];
+	//ハイスコア
+	static int highScorePlaytime[resultDigits];
 
+	//最大ステージ数
+	int32_t endStageNum_;
 
 public: //アクセッサ
 

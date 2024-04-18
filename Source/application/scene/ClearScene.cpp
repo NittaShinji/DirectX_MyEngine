@@ -57,8 +57,9 @@ void ClearScene::Initialize()
 	check_->SetAnchorPoint(checkAnchorPoint);
 
 	//ゲームタイマーを初期化
-	//GameTimer::GetInstance()->ResultInitialize(WindowsAPI::kWindow_height_ / 2);
 	GameTimer::GetInstance()->ClearInitialize();
+	//トータルスコアを記録
+	GameTimer::GetInstance()->CalculateTotalTime();
 
 	//変数
 	move_ = { 0.0f,0.0f };
@@ -158,6 +159,7 @@ void ClearScene::Update()
 		{
 			//ゲームタイマーを初期化
 			GameTimer::GetInstance()->TotalTimeReset();
+			GameTimer::GetInstance()->AddClearNum();
 			//サウンドを停止
 			SoundManager::GetInstance()->StopAllSound();
 			//タイトルへ

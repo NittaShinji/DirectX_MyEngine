@@ -30,9 +30,9 @@ void MyGame::Initialize()
 	GameScene::StaticInitialize();
 	StageSelectScene::StaticInitialize();
 	ClearScene::StaticInitialize();
-	GameTimer::GetInstance()->StaticInitialize();
 	SoundManager::GetInstance()->Initialize();
 	ResourceLoader::Load();
+	GameTimer::GetInstance()->StaticInitialize();
 }
 
 void MyGame::Update()

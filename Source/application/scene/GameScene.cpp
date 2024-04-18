@@ -113,6 +113,7 @@ void GameScene::Initialize()
 	//ゲームタイマー
 	GameTimer::GetInstance()->InGameInitialize();
 	GameTimer::GetInstance()->ResultInitialize(resultSprite_->GetBackGroundSpritePosY());
+
 	//チュートリアルイベント
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
 	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
@@ -219,7 +220,7 @@ void GameScene::Update()
 
 	//ゲームタイマーの更新
 	GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(),stage_->GetIsPlayerReachedStageEdge());
-
+	GameTimer::GetInstance()->HighScoreSpriteUpdate();
 	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY(),stage_->GetStageNum(),stage_->GetKClearStageNum());
 
 	SoundManager::GetInstance()->Update();
@@ -270,6 +271,7 @@ void GameScene::Update()
 			//一度だけステージ数を増やす
 			stage_->NextStageUpdate();
 			stage_->SetIsAllowedToCountStageNum(false);
+			GameTimer::GetInstance()->CalculateHighTime(stage_->GetStageNum(), stage_->GetKClearStageNum());
 
 			//Aボタンが押されたら次のステージを生成
 			if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
@@ -277,7 +279,7 @@ void GameScene::Update()
 				player_->SetIsFinish(false);
 				resultSprite_->SetIsFinishOutEasing(false);
 				stage_->NextStageLoad();
-				GameTimer::GetInstance()->AddStageTime();
+				GameTimer::GetInstance()->ReadytoNextStageTime(stage_->GetStageNum(), stage_->GetKClearStageNum());
 				GameTimer::GetInstance()->Reset();
 			}
 		}
@@ -304,7 +306,7 @@ void GameScene::Update()
 	if(keys_->PushedKeyMoment(DIK_H))
 	{
 		player_->SetIsFinish(true);
-		GameTimer::GetInstance()->AddStageTime();
+		GameTimer::GetInstance()->ReadytoNextStageTime(stage_->GetStageNum(), stage_->GetKClearStageNum());
 		GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(), stage_->GetIsPlayerReachedStageEdge());
 		ParticleManager::GetInstance()->AllRemove();
 		ObjParticleManager::GetInstance()->AllRemove();
@@ -370,6 +372,7 @@ void GameScene::Draw()
 	{
 		//左上のカウントを描画する
 		GameTimer::GetInstance()->InGameDraw();
+		GameTimer::GetInstance()->HighScoreDraw();
 	}
 
 	resultSprite_->Draw();
@@ -390,7 +393,7 @@ void GameScene::ClearOnceUpdate()
 	{
 		if (GameTimer::GetInstance()->GetIsFinishedToTime() == true)
 		{
-			GameTimer::GetInstance()->AddStageTime();
+			GameTimer::GetInstance()->ReadytoNextStageTime(stage_->GetStageNum(), stage_->GetKClearStageNum());
 			ParticleManager::GetInstance()->AllRemove();
 			ObjParticleManager::GetInstance()->AllRemove();
 			ResultRoopStage::SetIsFinishedRoopObjects(false);

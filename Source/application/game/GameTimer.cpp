@@ -8,16 +8,18 @@ int GameTimer::gameMinutes_;
 //クリア画面で表示する時間(6桁)
 int GameTimer::timer_ = 0;
 int GameTimer::resultMinutes_;
-//ハイスコア
-int GameTimer::highScoreTime_;
+int32_t GameTimer::clearNum_ = 0;
 
 std::unique_ptr<Sprite> GameTimer::inGameNum[kTimerDigits_];
 std::unique_ptr<Sprite> GameTimer::resultNum[kTimerDigits_];
 std::unique_ptr<Sprite> GameTimer::totalNum[kTimerDigits_];
+std::unique_ptr<Sprite> GameTimer::highScoreNum_[kTimerDigits_];
 std::unique_ptr<Sprite> GameTimer::inGameBlackDot_;
 std::unique_ptr<Sprite> GameTimer::resultBlackDot_;
 std::unique_ptr<Sprite> GameTimer::inGameGrayDot_;
 std::unique_ptr<Sprite> GameTimer::resultGrayDot_;
+std::unique_ptr<Sprite> GameTimer::highScoreBlackDot_;
+std::unique_ptr<Sprite> GameTimer::highScoreGrayDot_;
 std::unique_ptr<Sprite> GameTimer::stopWatch_;
 
 //ゲーム中に表示する時間(4桁)
@@ -26,19 +28,30 @@ int GameTimer::inGameDisPlayTime_[kTimerDigits_];
 int GameTimer::resultDisPlaytime[kTimerDigits_];
 //クリア画面で表示する時間(6桁)
 int GameTimer::totalDisPlaytime[kTimerDigits_];
-
+//ゲーム内に表示するハイスコアの時間(6桁)
+int GameTimer::highScorePlaytime[kTimerDigits_];
 
 void GameTimer::StaticInitialize()
 {
 	//メンバ変数初期化
 	gameMinutes_ = 0;
 	resultMinutes_ = 0;
-	highScoreTime_ = 0;
+	totalHeighMinutes_ = 99;
+	totalHeighSeconds_ = 99;
+
+	const int32_t maxStageNum = 2;
+	for (int32_t i = 0; i < maxStageNum; i++)
+	{
+		highMinutes_[i] = 99;
+		highSeconds_[i] = 99;
+	}
 	
 	inGameBlackDot_ = std::make_unique<Sprite>();
 	resultBlackDot_ = std::make_unique<Sprite>();
+	highScoreBlackDot_ = std::make_unique<Sprite>();
 	inGameGrayDot_ = std::make_unique<Sprite>();
 	resultGrayDot_ = std::make_unique<Sprite>();
+	highScoreGrayDot_ = std::make_unique<Sprite>();
 
 	stopWatch_ = std::make_unique<Sprite>();
 
@@ -54,6 +67,13 @@ void GameTimer::StaticInitialize()
 	{
 		totalNum[i] = std::make_unique<Sprite>();
 	}
+	for(int i = 0; i < kTimerDigits_; i++)
+	{
+		highScoreNum_[i] = std::make_unique<Sprite>();
+	}
+
+	HighScoreInitialize();
+
 }
 
 void GameTimer::InGameInitialize()
@@ -241,6 +261,86 @@ void GameTimer::ClearInitialize()
 	isFinishedToTime_ = false;
 }
 
+void GameTimer::HighScoreInitialize()
+{
+	//10枚分のサイズ
+	Vector2 texNumTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
+	//数字一つ当たりのサイズ
+	Vector2 texNumSize = texNumTotalSize;
+	texNumSize.x = texNumSize.x / totalNumber;
+	const int half = 2;
+
+	//数字の初期化
+	for (int i = 0; i < kTimerDigits_; i++)
+	{
+		if (i < kTimerDigits_ / half)
+		{
+			// 整数の初期化
+			highScoreNum_[i]->Initialize("numbers.png", Vector2((i * texNumSize.x) + texNumSize.y, texNumSize.y * 2));
+		}
+		else
+		{
+			// 小数点の初期化
+			highScoreNum_[i]->Initialize("numbers.png", Vector2((i * texNumSize.x + texNumSize.x / half) + texNumSize.y, texNumSize.y * 2));
+		}
+	}
+
+	//1～9までの画像を切り抜いてセット
+	for (int i = 0; i < kTimerDigits_; i++)
+	{
+		highScoreNum_[i]->SetTextureClipSize(texNumSize);
+		highScoreNum_[i]->SetSize(texNumSize);
+	}
+
+	//ドット画像の初期化
+	float decimalX = highScoreNum_[2]->GetPosition().x;
+	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x / half + 6, (texNumSize.y * 3) - 15);
+	const int8_t blackDotShift = 1;
+
+	//黒ドットの下に1ドット分大きい白ドットを置くので、プラス1座標をずらす確保
+	highScoreBlackDot_->Initialize("BlackDot", Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
+	highScoreBlackDot_->SetPosition(Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
+	highScoreGrayDot_->Initialize("GrayDot", decimalPointPos);
+	highScoreGrayDot_->SetPosition(decimalPointPos);
+}
+
+void GameTimer::ReadyHighScore(int32_t stageNum, int32_t endStageNum)
+{
+	if (stageNum < endStageNum)
+	{
+		if (clearNum_ == 0)
+		{
+			//--4桁目(千の位を表示)
+			highScorePlaytime[0] = 0;
+			//--3桁目(百の位を表示)
+			highScorePlaytime[1] = 0;
+
+			highScorePlaytime[2] = 0;
+			//--2桁目(十の位を表示)
+			highScorePlaytime[3] = 0;
+			//--1桁目(1の位を表示)
+		}
+		else {
+			//--4桁目(千の位を表示)
+			highScorePlaytime[0] = (highMinutes_[stageNum] % 100) / 10;
+			//--3桁目(百の位を表示)
+			highScorePlaytime[1] = (highMinutes_[stageNum] % 10) / 1;
+
+			highScorePlaytime[2] = (highSeconds_[stageNum] % 100) / 10;
+			//--2桁目(十の位を表示)
+			highScorePlaytime[3] = (highSeconds_[stageNum] % 10) / 1;
+			//--1桁目(1の位を表示)
+
+		}
+
+		//数字をセット
+		for (size_t i = 0; i < kTimerDigits_; i++)
+		{
+			SetNumber(highScorePlaytime[i], highScoreNum_[i].get());
+		}
+	}
+}
+
 void GameTimer::InGameUpdate(bool isStart, bool isFinish,bool isReachedStageEdge)
 {
 	//画像を更新
@@ -324,6 +424,47 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY, int32_
 	}
 }
 
+void GameTimer::HighScoreSpriteUpdate()
+{
+	//画像を更新
+	for (int i = 0; i < kTimerDigits_; i++)
+	{
+		highScoreNum_[i]->matUpdate();
+	}
+
+	highScoreBlackDot_->matUpdate();
+	highScoreGrayDot_->matUpdate();
+}
+
+void GameTimer::CalculateTotalTime()
+{
+	//ハイスコアのタイムより短ければ更新する
+	if (totalHeighSeconds_ >= totalMinutes_)
+	{
+		if (totalHeighMinutes_ >= totalSeconds_)
+		{
+			totalHeighMinutes_ = totalMinutes_;
+			totalHeighSeconds_ = totalSeconds_;
+		}
+	}
+}
+
+void GameTimer::CalculateHighTime(int32_t stageNum, int32_t endStageNum)
+{
+	//ハイスコアかどうかを計算
+	if (stageNum <= endStageNum)
+	{
+		if (highMinutes_[stageNum - 1] >= keepMinutes_)
+		{
+			if (highSeconds_[stageNum - 1] >= keepSeconds_)
+			{
+				highMinutes_[stageNum - 1] = keepMinutes_;
+				highSeconds_[stageNum - 1] = keepSeconds_;
+			}
+		}
+	}
+}
+
 void GameTimer::Reset()
 {
 	resultTimerIncreaseNum_ = kInitTimerIncreaseNum;
@@ -373,7 +514,19 @@ void GameTimer::TotalTimeReset()
 	isTimed_ = true;
 	isFinishedToTime_ = false;
 
-	//描画する数字を0で初期化(同じ桁なので同じfor分で回す)
+	//現在のステージ数が0になるので、0用のハイスコアに切り替え
+	//--4桁目(千の位を表示)
+	highScorePlaytime[0] = (highMinutes_[0] % 100) / 10;
+	//--3桁目(百の位を表示)
+	highScorePlaytime[1] = (highMinutes_[0] % 10) / 1;
+
+	highScorePlaytime[2] = (highSeconds_[0] % 100) / 10;
+	//--2桁目(十の位を表示)
+	highScorePlaytime[3] = (highSeconds_[0] % 10) / 1;
+	//--1桁目(1の位を表示)
+
+
+	//描画する数字を初期化(同じ桁なので同じfor分で回す)
 	for (size_t i = 0; i < kTimerDigits_; i++)
 	{
 		//数字の桁を0で初期化
@@ -385,6 +538,9 @@ void GameTimer::TotalTimeReset()
 
 		totalDisPlaytime[i] = { 0 };
 		SetNumber(totalDisPlaytime[i], totalNum[i].get());
+
+		//ハイスコアをステージ0のものに
+		SetNumber(highScorePlaytime[i], highScoreNum_[i].get());
 	}
 }
 
@@ -427,6 +583,19 @@ void GameTimer::ClearDraw()
 	stopWatch_->Draw("stopWatch.png");
 	resultGrayDot_->Draw("GrayDot");
 	resultBlackDot_->Draw("BlackDot");
+}
+
+void GameTimer::HighScoreDraw()
+{
+	SpriteCommon::GetInstance()->BeforeDraw();
+	//リザルト画面の数字・ドットを描画
+	for (int i = 0; i < kTimerDigits_; i++)
+	{
+		highScoreNum_[i]->Draw("numbers.png");
+	}
+
+	highScoreGrayDot_->Draw("GrayDot");
+	highScoreBlackDot_->Draw("BlackDot");
 }
 
 void GameTimer::InGameNumberUpdate(bool isFinish)
@@ -564,11 +733,13 @@ void GameTimer::SetNumber(int number, Sprite* sprite)
 	}
 }
 
-void GameTimer::AddStageTime()
+void GameTimer::ReadytoNextStageTime(int32_t stageNum, int32_t endStageNum)
 {
 	//ステージの時間を加算
 	totalSeconds_ += keepSeconds_;
 	totalMinutes_ += keepMinutes_;
+
+	ReadyHighScore(stageNum, endStageNum);
 }
 
 void GameTimer::ClearUpdate(bool isFinishedAnimation)
@@ -583,7 +754,7 @@ void GameTimer::ClearUpdate(bool isFinishedAnimation)
 	resultBlackDot_->matUpdate();
 	resultGrayDot_->matUpdate();
 
-	//結果画面のイージングが終了したら数字を更新
+	//結果画面のアニメーションが終了したら数字を更新
 	if (isFinishedAnimation == true)
 	{
 		TotalNumberUpdate();
