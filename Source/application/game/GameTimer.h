@@ -163,6 +163,11 @@ private:
 	//数え終わったかどうか
 	bool isFinishedToTime_;
 
+	//色を変えるかどうか
+	bool canChangeColor_;
+	const int32_t kChangeTime_ = 60;
+	int32_t changeTime_ = 0;
+
 	//時間計算用の数字画像
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
@@ -176,7 +181,8 @@ private:
 	static std::unique_ptr<Sprite> highScoreBlackDot_;
 	static std::unique_ptr<Sprite> highScoreGrayDot_;
 
-
+	//王冠画像
+	static std::unique_ptr<Sprite> crownSprite_;
 	//時計画像
 	static std::unique_ptr<Sprite> stopWatch_;
 

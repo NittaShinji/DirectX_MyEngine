@@ -21,6 +21,7 @@ std::unique_ptr<Sprite> GameTimer::resultGrayDot_;
 std::unique_ptr<Sprite> GameTimer::highScoreBlackDot_;
 std::unique_ptr<Sprite> GameTimer::highScoreGrayDot_;
 std::unique_ptr<Sprite> GameTimer::stopWatch_;
+std::unique_ptr<Sprite> GameTimer::crownSprite_;
 
 //ゲーム中に表示する時間(4桁)
 int GameTimer::inGameDisPlayTime_[kTimerDigits_];
@@ -53,6 +54,7 @@ void GameTimer::StaticInitialize()
 	resultGrayDot_ = std::make_unique<Sprite>();
 	highScoreGrayDot_ = std::make_unique<Sprite>();
 
+	crownSprite_ = std::make_unique<Sprite>();
 	stopWatch_ = std::make_unique<Sprite>();
 
 	for(int i = 0; i < kTimerDigits_; i++)
@@ -80,6 +82,8 @@ void GameTimer::InGameInitialize()
 {
 	gameSeconds_ = 0;
 	gameMinutes_ = 0;
+	canChangeColor_ = false;
+	changeTime_ = 0;
 
 	//10枚分のサイズ
 	Vector2 texNumTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
@@ -87,7 +91,7 @@ void GameTimer::InGameInitialize()
 	Vector2 texNumSize = texNumTotalSize;
 	texNumSize.x = texNumSize.x / totalNumber;
 	const int half = 2;
-	const Vector4 watchColor = { 1.0f,1.0f,1.0,0.95f };
+	const Vector4 watchColor = { 1.0f,1.0f,1.0,1.0f };
 
 	Vector2 texStopWatchSize = TextureManager::GetInstance()->GetTexSize("stopWatch.png");
 
@@ -104,13 +108,16 @@ void GameTimer::InGameInitialize()
 			// 小数点の初期化
 			inGameNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x + texNumSize.x / half) + texNumSize.y, texNumSize.y));
 		}
-
+		
 		//数字の桁を0で初期化
 		inGameDisPlayTime_[i] = { 0 };
 		SetNumber(inGameDisPlayTime_[i], inGameNum[i].get());
 		//数字のサイズを指定
 		inGameNum[i]->SetTextureClipSize(texNumSize);
 		inGameNum[i]->SetSize(texNumSize);
+
+		Vector4 defaultColor = { 1.0f,1.0f,1.0f,1.0f };
+		totalNum[i]->SetColor(defaultColor);
 	}
 
 	//ドット画像の初期化
@@ -233,7 +240,7 @@ void GameTimer::ClearInitialize()
 	float decimalX = totalNum[decimalBeforeNumber]->GetPosition().x;
 	const float dotHeight = totalNum[0]->GetPosition().y + texNumSize.y - 15;
 	//小数点の位置を設定
-	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x - 7, dotHeight);
+	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x - 10, dotHeight);
 	const int8_t blackDotShift = 1;
 
 	resultBlackDot_->Initialize("BlackDot", Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
@@ -302,6 +309,12 @@ void GameTimer::HighScoreInitialize()
 	highScoreBlackDot_->SetPosition(Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
 	highScoreGrayDot_->Initialize("GrayDot", decimalPointPos);
 	highScoreGrayDot_->SetPosition(decimalPointPos);
+
+	//時計画像の初期化
+	float crownX = inGameNum[0]->GetPosition().x ;
+	crownSprite_->Initialize("crown.png", Vector2(crownX, texNumSize.y * 2));
+	//64 x 64の正方形サイズに変更
+	crownSprite_->SetSize(Vector2(texNumSize.y, texNumSize.y));
 }
 
 void GameTimer::ReadyHighScore(int32_t stageNum, int32_t endStageNum)
@@ -389,7 +402,8 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY, int32_
 	Vector2 texNumSize = texNumTotalSize;
 	const float dotHeight = resultNum[0]->GetPosition().y + texNumSize.y - 15;
 
-	resultBlackDot_->SetPosition(Vector2(resultBlackDot_->GetPosition().x, dotHeight));
+	const int8_t blackDotShift = 1;
+	resultBlackDot_->SetPosition(Vector2(resultBlackDot_->GetPosition().x + blackDotShift, dotHeight + blackDotShift));
 	resultBlackDot_->matUpdate();
 	resultGrayDot_->SetPosition(Vector2(resultGrayDot_->GetPosition().x, dotHeight));
 	resultGrayDot_->matUpdate();
@@ -432,6 +446,7 @@ void GameTimer::HighScoreSpriteUpdate()
 		highScoreNum_[i]->matUpdate();
 	}
 
+	crownSprite_->matUpdate();
 	highScoreBlackDot_->matUpdate();
 	highScoreGrayDot_->matUpdate();
 }
@@ -445,6 +460,7 @@ void GameTimer::CalculateTotalTime()
 		{
 			totalHeighMinutes_ = totalMinutes_;
 			totalHeighSeconds_ = totalSeconds_;
+			canChangeColor_ = true;
 		}
 	}
 }
@@ -594,6 +610,7 @@ void GameTimer::HighScoreDraw()
 		highScoreNum_[i]->Draw("numbers.png");
 	}
 
+	crownSprite_->Draw("crown.png");
 	highScoreGrayDot_->Draw("GrayDot");
 	highScoreBlackDot_->Draw("BlackDot");
 }
@@ -744,6 +761,28 @@ void GameTimer::ReadytoNextStageTime(int32_t stageNum, int32_t endStageNum)
 
 void GameTimer::ClearUpdate(bool isFinishedAnimation)
 {
+	if (canChangeColor_ == true)
+	{
+		changeTime_++;
+		if (changeTime_ <= kChangeTime_ / 2)
+		{
+			Vector4 newRecordColor = { 0.957f,0.898f,0.067f,1.0f };
+			for (int i = 0; i < kTimerDigits_; i++)
+			{
+				totalNum[i]->SetColor(newRecordColor);
+			}
+		}
+		else
+		{
+			changeTime_ = 0;
+			Vector4 defaultColor = { 1.0f,1.0f,1.0f,1.0f };
+			for (int i = 0; i < kTimerDigits_; i++)
+			{
+				totalNum[i]->SetColor(defaultColor);
+			}
+		}
+	}
+
 	//画像の更新
 	for (int i = 0; i < kTimerDigits_; i++)
 	{

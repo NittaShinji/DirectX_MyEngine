@@ -49,6 +49,8 @@ void ResourceLoader::ImageLoad()
 	TextureManager::GetInstance()->LoadTexture("stage.png");
 	//時計のテクスチャ読み込み
 	TextureManager::GetInstance()->LoadTexture("stopWatch.png");
+	//王冠のテクスチャ読み込み
+	TextureManager::GetInstance()->LoadTexture("crown.png");
 	//数字のテクスチャ読み込み
 	TextureManager::GetInstance()->LoadTexture("numbers.png");
 	TextureManager::GetInstance()->LoadTexture("checkBox.png");
