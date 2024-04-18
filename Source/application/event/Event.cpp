@@ -175,16 +175,9 @@ void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t but
 	{
 		if(buttonInfo == XINPUT_GAMEPAD_B)
 		{
-			if (gamePad_->PushedLeftTriggerMoment())
+			if (gamePad_->PushedLeftTriggerMoment() || keys_->PushedKeyMoment(keyboardInfo))
 			{
 				Finish();
-			}
-			else
-			{
-				if (gamePad_->PushedButtonMoment(buttonInfo) || keys_->PushedKeyMoment(keyboardInfo))
-				{
-					Finish();
-				}
 			}
 		}
 		else

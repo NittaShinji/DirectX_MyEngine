@@ -402,10 +402,9 @@ void GameTimer::ResultUpdate(bool isFinishedAnimation, float easingMoveY, int32_
 	Vector2 texNumSize = texNumTotalSize;
 	const float dotHeight = resultNum[0]->GetPosition().y + texNumSize.y - 15;
 
-	const int8_t blackDotShift = 1;
-	resultBlackDot_->SetPosition(Vector2(resultBlackDot_->GetPosition().x + blackDotShift, dotHeight + blackDotShift));
+	resultBlackDot_->SetPosition(Vector2(resultBlackDot_->GetPosition().x , dotHeight));
 	resultBlackDot_->matUpdate();
-	resultGrayDot_->SetPosition(Vector2(resultGrayDot_->GetPosition().x, dotHeight));
+	resultGrayDot_->SetPosition(Vector2(resultGrayDot_->GetPosition().x, dotHeight - 1));
 	resultGrayDot_->matUpdate();
 
 	//結果画面のイージングが終了したら数字を更新
@@ -769,7 +768,7 @@ void GameTimer::ClearUpdate(bool isFinishedAnimation)
 			Vector4 newRecordColor = { 0.957f,0.898f,0.067f,1.0f };
 			for (int i = 0; i < kTimerDigits_; i++)
 			{
-				totalNum[i]->SetColor(newRecordColor);
+				//totalNum[i]->SetColor(newRecordColor);
 			}
 		}
 		else
@@ -778,7 +777,7 @@ void GameTimer::ClearUpdate(bool isFinishedAnimation)
 			Vector4 defaultColor = { 1.0f,1.0f,1.0f,1.0f };
 			for (int i = 0; i < kTimerDigits_; i++)
 			{
-				totalNum[i]->SetColor(defaultColor);
+				//totalNum[i]->SetColor(defaultColor);
 			}
 		}
 	}
