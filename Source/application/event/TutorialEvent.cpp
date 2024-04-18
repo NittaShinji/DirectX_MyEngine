@@ -31,7 +31,7 @@ void TutorialEvent::Initialzie(Player* player)
 	doubleJumpEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 
 	//長押しジャンプイベント設定
-	const float kStartHighBeforeJumpEventPos_ = 315;
+	const float kStartHighBeforeJumpEventPos_ = 305;
 	const float kEndHighJumpBeforeEventPos_ = 350;
 	heighJumpBeforeEvent_ = std::make_unique<Event>();
 	heighJumpBeforeEvent_->Initialzie(kStartHighBeforeJumpEventPos_, kEndHighJumpBeforeEventPos_);
@@ -49,7 +49,7 @@ void TutorialEvent::Initialzie(Player* player)
 	const float kEndChangeColorEventPos_ = 610;
 	firstChangeColorEvent_ = std::make_unique<Event>();
 	firstChangeColorEvent_->Initialzie(kStartChangeColorEventPos_, kEndChangeColorEventPos_);
-	firstChangeColorEvent_->AddBillboard("xboxRt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+	firstChangeColorEvent_->AddBillboard("xboxLt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	//空中での色変えイベント設定
 	//Aボタン
@@ -63,7 +63,7 @@ void TutorialEvent::Initialzie(Player* player)
 	const float kEndChangetoColorEventPos_ = 790;
 	changeColorEvent_ = std::make_unique<Event>();
 	changeColorEvent_->Initialzie(kStartChangetoColorEventPos_, kEndChangetoColorEventPos_);
-	changeColorEvent_->AddBillboard("xboxRt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 700.0f), 2.8f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
+	changeColorEvent_->AddBillboard("xboxLt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 700.0f), 2.8f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 
 	//色切り替えビルボード
 	const float kStartChangeAirEventPos_ = 600;

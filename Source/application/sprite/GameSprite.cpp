@@ -18,7 +18,7 @@ void GameSprite::Initialize()
 	//bボタン画像
 	bButtonSprite_ = std::make_unique<Sprite>();
 	const Vector2 bButtonPosition = { 1216,648 };
-	bButtonSprite_->Initialize("xboxRt.png", bButtonPosition);
+	bButtonSprite_->Initialize("xboxLt.png", bButtonPosition);
 	bButtonSprite_->SetSize(Vector2(kUiSize_));
 	//ジャンプ画像
 	jumpSprite_ = std::make_unique<Sprite>();
@@ -67,7 +67,7 @@ void GameSprite::UIDraw()
 {
 	SpriteCommon::GetInstance()->BeforeDraw();
 	aButtonSprite_->Draw("aButton.png");
-	bButtonSprite_->Draw("xboxRt.png");
+	bButtonSprite_->Draw("xboxLt.png");
 	jumpSprite_->Draw("jump.png");
 	arrowSprite_->Draw("arrow.png");
 }
