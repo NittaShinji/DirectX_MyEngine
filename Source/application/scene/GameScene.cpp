@@ -277,6 +277,7 @@ void GameScene::Update()
 				player_->SetIsFinish(false);
 				resultSprite_->SetIsFinishOutEasing(false);
 				stage_->NextStageLoad();
+				GameTimer::GetInstance()->AddStageTime();
 				GameTimer::GetInstance()->Reset();
 			}
 		}
@@ -303,6 +304,7 @@ void GameScene::Update()
 	if(keys_->PushedKeyMoment(DIK_H))
 	{
 		player_->SetIsFinish(true);
+		GameTimer::GetInstance()->AddStageTime();
 		GameTimer::GetInstance()->InGameUpdate(player_->GetIsMoving(), player_->GetIsFinish(), stage_->GetIsPlayerReachedStageEdge());
 		ParticleManager::GetInstance()->AllRemove();
 		ObjParticleManager::GetInstance()->AllRemove();
@@ -388,6 +390,7 @@ void GameScene::ClearOnceUpdate()
 	{
 		if (GameTimer::GetInstance()->GetIsFinishedToTime() == true)
 		{
+			GameTimer::GetInstance()->AddStageTime();
 			ParticleManager::GetInstance()->AllRemove();
 			ObjParticleManager::GetInstance()->AllRemove();
 			ResultRoopStage::SetIsFinishedRoopObjects(false);

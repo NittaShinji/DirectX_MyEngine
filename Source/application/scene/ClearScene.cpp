@@ -18,22 +18,26 @@ void ClearScene::Initialize()
 	check_ = std::make_unique<Sprite>();
 	aButton_ = std::make_unique<Sprite>();
 	clearSprite_ = std::make_unique<Sprite>();
+	checkBoxSprite_ = std::make_unique<Sprite>();
 
 	//各画像の初期化
 	Vector2 titlePosition = { 0.0f,0.0f };;
 	end_->Initialize("WhiteTex", titlePosition);
 
-	const Vector2 kInitCheckPos = { 656,0.0f };
-	checkPosition_.x = kInitCheckPos.x;
-	check_->Initialize("check.png", kInitCheckPos);
-
 	const Vector2 aButtonSize = { 128.0f,128.0f };
-	const Vector2 aButtonPosition = { 576.0f,565.0f };
+	const Vector2 aButtonPosition = { 576.0f,514.0f };
 	aButton_->Initialize("aButton.png", aButtonPosition);
 	aButton_->SetSize(Vector2(aButtonSize));
 
-	const Vector2 kClearSpritePosition = { 320.0f,320.0f };
+	const Vector2 kClearSpritePosition = { 320.0f,102.0f };
 	clearSprite_->Initialize("gameClear.png", kClearSpritePosition);
+
+	const Vector2 kCheckBoxPosition = { 458.0f,407.0f };
+	checkBoxSprite_->Initialize("checkBox.png", kCheckBoxPosition);
+
+	const Vector2 kInitCheckPos = { 505.0f,0.0f };
+	checkPosition_.x = kInitCheckPos.x;
+	check_->Initialize("check.png", kInitCheckPos);
 
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
@@ -53,7 +57,8 @@ void ClearScene::Initialize()
 	check_->SetAnchorPoint(checkAnchorPoint);
 
 	//ゲームタイマーを初期化
-	GameTimer::GetInstance()->ResultInitialize(WindowsAPI::kWindow_height_ / 2);
+	//GameTimer::GetInstance()->ResultInitialize(WindowsAPI::kWindow_height_ / 2);
+	GameTimer::GetInstance()->ClearInitialize();
 
 	//変数
 	move_ = { 0.0f,0.0f };
@@ -67,9 +72,10 @@ void ClearScene::Update()
 	end_->matUpdate();
 	aButton_->matUpdate();
 	clearSprite_->matUpdate();
+	checkBoxSprite_->matUpdate();
 
 	//移動処理
-	const float moveResultPosY = WindowsAPI::kWindow_height_ / 3 - 50;
+	const float moveResultPosY = 380;
 
 	if (checkPosition_.y <= moveResultPosY)
 	{
@@ -99,6 +105,8 @@ void ClearScene::Update()
 	check_->SetPosition(checkPosition_);
 	check_->SetRotation(rotate_);
 	check_->matUpdate();
+
+	GameTimer::GetInstance()->ClearUpdate(isRotateSprite_);
 
 	//ゲームパッドが繋がっているかどうか
 	if (gamePad_->IsConnected(Player1)) {}
@@ -148,7 +156,11 @@ void ClearScene::Update()
 		}
 		if (isBackColor_ == true && aButtonChangeColor.x > 1.0f)
 		{
+			//ゲームタイマーを初期化
+			GameTimer::GetInstance()->TotalTimeReset();
+			//サウンドを停止
 			SoundManager::GetInstance()->StopAllSound();
+			//タイトルへ
 			SceneManager::GetInstance()->ChangeScene("TITLE");
 		}
 	}
@@ -162,9 +174,11 @@ void ClearScene::Draw()
 	//スプライトの描画
 	SpriteCommon::GetInstance()->BeforeDraw();
 	end_->Draw("WhiteTex");
+	checkBoxSprite_->Draw("checkBox.png");
 	check_->Draw("check.png");
 	aButton_->Draw("aButton.png");
 	clearSprite_->Draw("gameClear.png");
+	GameTimer::GetInstance()->ClearDraw();
 
 	//描画終了
 	directXBasic_->AfterDraw();

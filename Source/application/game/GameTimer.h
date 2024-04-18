@@ -35,6 +35,8 @@ public:
 	void InGameInitialize();
 	//リザルト画面の初期化
 	void ResultInitialize(float imagePosY);
+	//クリア画面の初期化
+	void ClearInitialize();
 
 	//ゲーム中の数字を更新
 	void InGameNumberUpdate(bool isFinish);
@@ -49,14 +51,27 @@ public:
 
 	//リセット
 	void Reset();
+	//トータルタイムリセット
+	void TotalTimeReset();
 
 	//ゲーム中の描画
 	void InGameDraw();
 	//結果画面での描画
 	void ResultDraw();
+	//クリア画面での描画
+	void ClearDraw();
 
 	//数字をセット
 	void SetNumber(int number,Sprite* sprite);
+
+	//合計時間にステージの時間を加算
+	void AddStageTime();
+
+	//トータルステージタイムを更新
+	void TotalNumberUpdate();
+
+	//クリア画面更新
+	void ClearUpdate(bool isFinishedAnimation);
 
 private:
 
@@ -100,6 +115,16 @@ private:
 	//ハイスコア
 	static int highScoreTime_;
 
+	//トータル秒
+	int32_t totalSeconds_;
+	//トータル分
+	int32_t totalMinutes_;
+	//トータルカウント用秒
+	int32_t totalCountSeconds_;
+	//トータルカウント用分
+	int32_t totalCountMinutes_;
+
+
 	//リザルト初期化フラグ
 	bool isStartedResultAnimation_;
 
@@ -117,6 +142,7 @@ private:
 	//時間計算用の数字画像
 	static std::unique_ptr<Sprite> inGameNum[inGameDigits];
 	static std::unique_ptr<Sprite> resultNum[resultDigits];
+	static std::unique_ptr<Sprite> totalNum[resultDigits];
 	//小数点画像
 	static std::unique_ptr<Sprite> inGameBlackDot_;
 	static std::unique_ptr<Sprite> resultBlackDot_;
@@ -128,8 +154,11 @@ private:
 
 	//ゲーム中に表示する時間(4桁)
 	static int inGameDisPlayTime_[inGameDigits];
-	//クリア画面で表示する時間(6桁)
+	//結果用に表示する時間(6桁)
 	static int resultDisPlaytime[resultDigits];
+	//クリア画面で表示する時間(6桁)
+	static int totalDisPlaytime[resultDigits];
+
 
 public: //アクセッサ
 

@@ -51,6 +51,7 @@ void ResourceLoader::ImageLoad()
 	TextureManager::GetInstance()->LoadTexture("stopWatch.png");
 	//数字のテクスチャ読み込み
 	TextureManager::GetInstance()->LoadTexture("numbers.png");
+	TextureManager::GetInstance()->LoadTexture("checkBox.png");
 	//小数点用のテクスチャ
 	const int blackDotSize = 6;
 	const int grayDotSize = 8;

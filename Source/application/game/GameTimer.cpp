@@ -13,6 +13,7 @@ int GameTimer::highScoreTime_;
 
 std::unique_ptr<Sprite> GameTimer::inGameNum[kTimerDigits_];
 std::unique_ptr<Sprite> GameTimer::resultNum[kTimerDigits_];
+std::unique_ptr<Sprite> GameTimer::totalNum[kTimerDigits_];
 std::unique_ptr<Sprite> GameTimer::inGameBlackDot_;
 std::unique_ptr<Sprite> GameTimer::resultBlackDot_;
 std::unique_ptr<Sprite> GameTimer::inGameGrayDot_;
@@ -21,17 +22,19 @@ std::unique_ptr<Sprite> GameTimer::stopWatch_;
 
 //ゲーム中に表示する時間(4桁)
 int GameTimer::inGameDisPlayTime_[kTimerDigits_];
-//クリア画面で表示する時間(6桁)
+//結果画面で表示する時間(6桁)
 int GameTimer::resultDisPlaytime[kTimerDigits_];
+//クリア画面で表示する時間(6桁)
+int GameTimer::totalDisPlaytime[kTimerDigits_];
+
 
 void GameTimer::StaticInitialize()
 {
 	//メンバ変数初期化
 	gameMinutes_ = 0;
 	resultMinutes_ = 0;
-
 	highScoreTime_ = 0;
-
+	
 	inGameBlackDot_ = std::make_unique<Sprite>();
 	resultBlackDot_ = std::make_unique<Sprite>();
 	inGameGrayDot_ = std::make_unique<Sprite>();
@@ -46,6 +49,10 @@ void GameTimer::StaticInitialize()
 	for(int i = 0; i < kTimerDigits_; i++)
 	{
 		resultNum[i] = std::make_unique<Sprite>();
+	}
+	for(int i = 0; i < kTimerDigits_; i++)
+	{
+		totalNum[i] = std::make_unique<Sprite>();
 	}
 }
 
@@ -168,6 +175,72 @@ void GameTimer::ResultInitialize(float imagePosY)
 	isFinishedToTime_ = false;
 }
 
+void GameTimer::ClearInitialize()
+{
+	keepSeconds_ = 0;
+	keepMinutes_ = 0;
+	resultMinutes_ = 0;
+	resultSeconds_ = 0;
+
+	Vector2 texNumTotalSize = TextureManager::GetInstance()->GetTexSize("numbers.png");
+	Vector2 texNumSize = texNumTotalSize;
+	const int half = 2;
+	texNumSize.x = texNumSize.x / totalNumber;
+	const int decimalBeforeNumber = 3;
+
+	for (int i = 0; i < kTimerDigits_; i++)
+	{
+		//数字全体の半分の位置で小数点で分割
+		if (i < kTimerDigits_ / half)
+		{
+			// 数字の初期化
+			totalNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x) + WindowsAPI::kWindow_width_ / 2 - (texNumSize.x * 2) + 50, 405));
+		}
+		else
+		{
+			// 数字の初期化
+			totalNum[i]->Initialize("numbers.png", Vector2((i * texNumSize.x + texNumSize.x / half) + WindowsAPI::kWindow_width_ / 2 - (texNumSize.x * 2) + 50, 405));
+		}
+	}
+
+	//1～9までの画像を切り抜いてセット
+	for (int i = 0; i < kTimerDigits_; i++)
+	{
+		totalNum[i]->SetTextureClipSize(texNumSize);
+		totalNum[i]->SetSize(texNumSize);
+	}
+
+	float decimalX = totalNum[decimalBeforeNumber]->GetPosition().x;
+	const float dotHeight = totalNum[0]->GetPosition().y + texNumSize.y - 15;
+	//小数点の位置を設定
+	Vector2 decimalPointPos = Vector2(decimalX - texNumSize.x - 7, dotHeight);
+	const int8_t blackDotShift = 1;
+
+	resultBlackDot_->Initialize("BlackDot", Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
+	resultBlackDot_->SetPosition(Vector2(decimalPointPos.x + blackDotShift, decimalPointPos.y + blackDotShift));
+	resultGrayDot_->Initialize("GrayDot", decimalPointPos);
+	resultGrayDot_->SetPosition(decimalPointPos);
+
+	//描画する数字を0で初期化
+	for (size_t i = 0; i < kTimerDigits_; i++)
+	{
+		totalDisPlaytime[i] = { 0 };
+		SetNumber(totalDisPlaytime[i], totalNum[i].get());
+	}
+
+	//時計画像の初期化
+	const Vector2 stopWatchPos = { totalNum[0]->GetPosition().x - texNumSize.y - 12, 407 };
+	stopWatch_->Initialize("stopWatch.png", Vector2(stopWatchPos));
+	//64 x 64の正方形サイズに変更
+	stopWatch_->SetSize(Vector2(texNumSize.y, texNumSize.y));
+
+	//増加量を初期値にリセット
+	resultTimerIncreaseNum_ = kInitTimerIncreaseNum;
+
+	//数え終わったかどうかを初期化
+	isFinishedToTime_ = false;
+}
+
 void GameTimer::InGameUpdate(bool isStart, bool isFinish,bool isReachedStageEdge)
 {
 	//画像を更新
@@ -263,10 +336,8 @@ void GameTimer::Reset()
 	//結果用に表示するタイマー
 	resultMinutes_ = 0;
 	resultSeconds_ = 0;
-
 	isTimed_ = true;
 	isFinishedToTime_ = false;
-
 	
 	//描画する数字を0で初期化(同じ桁なので同じfor分で回す)
 	for(size_t i = 0; i < kTimerDigits_; i++)
@@ -277,6 +348,43 @@ void GameTimer::Reset()
 
 		resultDisPlaytime[i] = { 0 };
 		SetNumber(resultDisPlaytime[i], resultNum[i].get());
+	}
+}
+
+//ステージ1～2までの合計タイムも消す
+void GameTimer::TotalTimeReset()
+{
+	totalSeconds_ = 0;
+	totalMinutes_ = 0;
+
+	resultTimerIncreaseNum_ = kInitTimerIncreaseNum;
+	//ゲーム中にリザルトに受け渡す用のタイマー
+	keepSeconds_ = 0;
+	keepMinutes_ = 0;
+	//ゲーム中に表示するタイマー
+	gameSeconds_ = 0;
+	gameMinutes_ = 0;
+	//結果用に表示するタイマー
+	resultMinutes_ = 0;
+	resultSeconds_ = 0;
+	//クリア画面に表示するタイマー
+	totalCountSeconds_ = 0;
+	totalCountMinutes_ = 0;
+	isTimed_ = true;
+	isFinishedToTime_ = false;
+
+	//描画する数字を0で初期化(同じ桁なので同じfor分で回す)
+	for (size_t i = 0; i < kTimerDigits_; i++)
+	{
+		//数字の桁を0で初期化
+		inGameDisPlayTime_[i] = { 0 };
+		SetNumber(inGameDisPlayTime_[i], inGameNum[i].get());
+
+		resultDisPlaytime[i] = { 0 };
+		SetNumber(resultDisPlaytime[i], resultNum[i].get());
+
+		totalDisPlaytime[i] = { 0 };
+		SetNumber(totalDisPlaytime[i], totalNum[i].get());
 	}
 }
 
@@ -303,6 +411,20 @@ void GameTimer::ResultDraw()
 		resultNum[i]->Draw("numbers.png");
 	}
 
+	resultGrayDot_->Draw("GrayDot");
+	resultBlackDot_->Draw("BlackDot");
+}
+
+void GameTimer::ClearDraw()
+{
+	SpriteCommon::GetInstance()->BeforeDraw();
+	//リザルト画面の数字・ドットを描画
+	for (int i = 0; i < kTimerDigits_; i++)
+	{
+		totalNum[i]->Draw("numbers.png");
+	}
+
+	stopWatch_->Draw("stopWatch.png");
 	resultGrayDot_->Draw("GrayDot");
 	resultBlackDot_->Draw("BlackDot");
 }
@@ -379,7 +501,7 @@ void GameTimer::ResultNumberUpdate()
 	resultDisPlaytime[0] = (resultMinutes_ % 100) / 10;
 	//--3桁目(百の位を表示)
 	resultDisPlaytime[1] = (resultMinutes_ % 10) / 1;
-	//
+	
 	resultDisPlaytime[2] = (resultSeconds_ % 100) / 10;
 	//--2桁目(十の位を表示)
 	resultDisPlaytime[3] = (resultSeconds_ % 10) / 1;
@@ -439,5 +561,90 @@ void GameTimer::SetNumber(int number, Sprite* sprite)
 	else if(number == 9)
 	{
 		sprite->SetTextureLeftTop(texSize * 9);
+	}
+}
+
+void GameTimer::AddStageTime()
+{
+	//ステージの時間を加算
+	totalSeconds_ += keepSeconds_;
+	totalMinutes_ += keepMinutes_;
+}
+
+void GameTimer::ClearUpdate(bool isFinishedAnimation)
+{
+	//画像の更新
+	for (int i = 0; i < kTimerDigits_; i++)
+	{
+		totalNum[i]->matUpdate();
+	}
+
+	stopWatch_->matUpdate();
+	resultBlackDot_->matUpdate();
+	resultGrayDot_->matUpdate();
+
+	//結果画面のイージングが終了したら数字を更新
+	if (isFinishedAnimation == true)
+	{
+		TotalNumberUpdate();
+	}
+	
+	//描画する数字をセット
+	for (size_t i = 0; i < kTimerDigits_; i++)
+	{
+		SetNumber(resultDisPlaytime[i], resultNum[i].get());
+	}
+}
+
+void GameTimer::TotalNumberUpdate()
+{
+	//クリア画面の数字を更新
+	if (totalCountMinutes_ < totalMinutes_)
+	{
+		totalCountSeconds_ += resultTimerIncreaseNum_;
+		if (totalCountSeconds_ >= kOneSeconds_)
+		{
+			totalCountSeconds_ = 0;
+			totalCountMinutes_++;
+
+			const int32_t maxIncreaseNum = 60;
+
+			if (resultTimerIncreaseNum_ < maxIncreaseNum)
+			{
+				resultTimerIncreaseNum_ = std::abs(int32_t(resultTimerIncreaseNum_ * resultTimerIncreaseRate_));
+			}
+			else
+			{
+				resultTimerIncreaseNum_ = maxIncreaseNum;
+			}
+		}
+	}
+
+	if (totalCountMinutes_ == totalMinutes_)
+	{
+		if (totalCountSeconds_ < totalSeconds_)
+		{
+			totalCountSeconds_ += resultTimerIncreaseNum_;
+		}
+		else
+		{
+			isFinishedToTime_ = true;
+		}
+	}
+
+	//--4桁目(千の位を表示)
+	totalDisPlaytime[0] = (totalCountMinutes_ % 100) / 10;
+	//--3桁目(百の位を表示)
+	totalDisPlaytime[1] = (totalCountMinutes_ % 10) / 1;
+
+	totalDisPlaytime[2] = (totalCountSeconds_ % 100) / 10;
+	//--2桁目(十の位を表示)
+	totalDisPlaytime[3] = (totalCountSeconds_ % 10) / 1;
+	//--1桁目(1の位を表示)
+
+	//数字をセット
+	for (size_t i = 0; i < kTimerDigits_; i++)
+	{
+		SetNumber(totalDisPlaytime[i], totalNum[i].get());
 	}
 }

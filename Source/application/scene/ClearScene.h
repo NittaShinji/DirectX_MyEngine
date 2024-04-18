@@ -32,6 +32,7 @@ private:
 	std::unique_ptr<Sprite> aButton_ = nullptr;
 	std::unique_ptr<Sprite> aButtonPushed_ = nullptr;
 	std::unique_ptr<Sprite> clearSprite_ = nullptr;
+	std::unique_ptr<Sprite> checkBoxSprite_ = nullptr;
 
 	static DirectXBasic* directXBasic_;
 	static ImGuiManager* imGuiManager_;
