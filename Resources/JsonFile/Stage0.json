@@ -66,7 +66,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -89,7 +89,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -112,7 +112,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Pink"
+            "attribute": "Yellow"
         },
         {
             "type": "MESH",
@@ -572,7 +572,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -595,7 +595,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -687,7 +687,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Black"
         },
         {
             "type": "MESH",

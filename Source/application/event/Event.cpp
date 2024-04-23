@@ -1,4 +1,5 @@
 #include "Event.h"
+#include "Player.h"
 
 KeyInput* Event::keys_ = nullptr;
 GamePad* Event::gamePad_ = nullptr;
@@ -127,10 +128,11 @@ void Event::TransmissiveBillboard()
 	}
 }
 
-void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera, int32_t canJumpCount)
+void Event::Update(Player* player, GameSpeed::SpeedMode speedMode, int16_t buttonInfo, BYTE keyboardInfo, Camera* camera, int32_t canJumpCount)
 {
 	buttonInfo_ = buttonInfo;
 	keyboardInfo_ = keyboardInfo;
+	float playerPosZ = player->GetTransform().z;
 
 	SpriteMatUpdate();
 	BillboardMatUpdate(camera);
@@ -147,14 +149,20 @@ void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t but
 			//ジャンプできる状態であれば、モードを設定にする
 			if (buttonInfo == XINPUT_GAMEPAD_A || keyboardInfo == DIK_SPACE)
 			{
-				if (canJumpCount > 0)
+				if (player->GetCanInputJump() == true)
 				{
-					gameSpeed_->SetSpeedMode(speedMode);
+					if (canJumpCount > 0)
+					{
+						gameSpeed_->SetSpeedMode(speedMode);
+					}
 				}
 			}
 			else
 			{
-				gameSpeed_->SetSpeedMode(speedMode);
+				if (player->GetCanInputColor() == true)
+				{
+					gameSpeed_->SetSpeedMode(speedMode);
+				}
 			}
 		}
 	}
@@ -174,20 +182,25 @@ void Event::Update(float playerPosZ, GameSpeed::SpeedMode speedMode, int16_t but
 	{
 		if(buttonInfo == XINPUT_GAMEPAD_B)
 		{
-			if (gamePad_->PushedLeftTriggerMoment() || keys_->PushedKeyMoment(keyboardInfo))
+			if (player->GetCanInputColor() == true)
 			{
-				Finish();
+				if (gamePad_->PushedLeftTriggerMoment() || keys_->PushedKeyMoment(keyboardInfo))
+				{
+					Finish();
+				}
 			}
 		}
 		else
 		{
-			//対象のボタンが押されたらイベント終了
-			if (gamePad_->PushedButtonMoment(buttonInfo) || keys_->PushedKeyMoment(keyboardInfo))
+			if (player->GetCanInputJump() == true)
 			{
-				Finish();
+				//対象のボタンが押されたらイベント終了
+				if (gamePad_->PushedButtonMoment(buttonInfo) || keys_->PushedKeyMoment(keyboardInfo))
+				{
+					Finish();
+				}
 			}
 		}
-		
 	}
 }
 

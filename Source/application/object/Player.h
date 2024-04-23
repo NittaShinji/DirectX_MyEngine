@@ -286,6 +286,9 @@ private:
 	//加速判定猶予用の時間
 	bool isDuringAxcellExtensionTime_;
 	float axcellExtensionTime_ = 0.0f;
+
+	//加速できるかどうか
+	bool canAxcel_ = false;
 	
 	GameSpeed* gameSpeed_ = nullptr;
 
@@ -332,6 +335,8 @@ public: //アクセッサ
 	bool GetCanInputJump() const { return canInputJump_; }
 	//色変え入力を受け付けるかどうかを取得
 	bool GetCanInputColor() const { return canInputColor_; }
+	//加速できるかどうかを取得
+	bool GetCanAxcell() const { return canAxcel_; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
@@ -353,7 +358,7 @@ public: //アクセッサ
 	void SetCanInputJump(bool canInputJump) { canInputJump_ = canInputJump; }
 	//色変え入力を受け付けるかどうかをセットする
 	void SetCanInputColor(bool canInputColor) { canInputColor_ = canInputColor; }
-
-
+	//死んだかどうかをセットする
+	void SetIsDead(bool isDead) { isDead_ = isDead; }
 };
 

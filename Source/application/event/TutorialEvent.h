@@ -69,6 +69,9 @@ private: //メンバ変数
 	std::unique_ptr<Event> jumptoChangeEvent_ = nullptr;
 	//ジャンプ後の色変えイベント
 	std::unique_ptr<Event> changeColorEvent_ = nullptr;
+	//加速イベント
+	std::unique_ptr<Event> axcellEvent_ = nullptr;
+
 	//現在どこまでステージをクリアしたかを保存
 	EventSavePoint eventSavePoint_;
 };

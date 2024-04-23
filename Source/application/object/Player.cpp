@@ -13,7 +13,7 @@ std::unique_ptr<Player> Player::Create(const std::string& path)
 {
 	//3Dオブジェクトのインスタンスを生成
 	std::unique_ptr<Player> instance = std::make_unique<Player>();
-	if(instance == nullptr)
+	if (instance == nullptr)
 	{
 		return nullptr;
 	}
@@ -34,7 +34,7 @@ void Player::Initialize()
 
 	//プレイヤーオブジェクトの初期化
 	Object3d::Initialize();
-	
+
 	//コライダーの追加
 	const float radius = 1.0f;
 	const Vector3 kDefaultColliderPos_ = { 0.0f,0.0f,0.0f };
@@ -61,23 +61,23 @@ void Player::Update(Camera* camera)
 	isLanded_ = false;
 
 	//ゲームが始まっていないときに始める処理
-	if(isDead_ == false && isFinish_ == false && canInputJump_ == true)
+	if (isDead_ == false && isFinish_ == false && canInputJump_ == true)
 	{
-		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE) )
+		if (gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
 		{
 			isMoving_ = true;
 		}
 	}
-	
+
 	//ゲーム中プレイヤーが死んでいないとき
-	if(isMoving_ == true)
+	if (isMoving_ == true)
 	{
 		//合計加速度をリセット
 		totalAxcell_ = { 0.0f,0.0f,0.0f };
-		if(isDead_ == true)
+		if (isDead_ == true)
 		{
 			stopSpeedEasing_.time--;
-			if(stopSpeedEasing_.time >= 0)
+			if (stopSpeedEasing_.time >= 0)
 			{
 				totalAxcell_.z += PlayEaseOutQuint(stopSpeedEasing_);
 			}
@@ -90,33 +90,32 @@ void Player::Update(Camera* camera)
 		Accelerate();
 
 		//落下処理
-		if(!onGround_)
+		if (!onGround_)
 		{
 			isGroundRotate_ = false;
-			
-			if(isJumped_ == false)
+
+			if (isJumped_ == false)
 			{
 				const float slow = 10;
 				//長押しの場合滑空するように
-				if(keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
+				if (keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
 				{
-					if (canInputJump_ == true)
-					{
-						//下向き加速度　
-						const float fallAcc = -0.015f;
-						const float fallVYMin = -0.5f;
 
-						if (gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
-						{
-							//加速
-							fallVec_.y = max(fallVec_.y + (fallAcc / slow), fallVYMin);
-						}
-						else
-						{
-							//加速
-							fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
-						}
+					//下向き加速度　
+					const float fallAcc = -0.015f;
+					const float fallVYMin = -0.5f;
+
+					if (gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
+					{
+						//加速
+						fallVec_.y = max(fallVec_.y + (fallAcc / slow), fallVYMin);
 					}
+					else
+					{
+						//加速
+						fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+					}
+
 				}
 				else
 				{
@@ -124,12 +123,12 @@ void Player::Update(Camera* camera)
 					const float fallAcc = -0.021f;
 					const float fallVYMin = -0.75f;
 
-					if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
+					if (gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
 					{
 						//加速
 						fallVec_.y = max(fallVec_.y + (fallAcc / slow), fallVYMin);
 					}
-					else if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP){}
+					else if (gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP) {}
 					else
 					{
 						//加速
@@ -142,11 +141,11 @@ void Player::Update(Camera* camera)
 			totalAxcell_ += fallVec_;
 
 			//二段ジャンプ時
-			if(jumpCount_ > 0 && jumpCount_ < kMaxJumpNum_)
+			if (jumpCount_ > 0 && jumpCount_ < kMaxJumpNum_)
 			{
-				if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE) && canInputJump_ == true)
+				if (gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE) && canInputJump_ == true)
 				{
-					if (isDead_ == false )
+					if (isDead_ == false)
 					{
 						doubleSound_->PlaySoundWave(false);
 					}
@@ -161,11 +160,11 @@ void Player::Update(Camera* camera)
 			}
 		}
 		//ジャンプ操作
-		else if(jumpCount_ > 0)
+		else if (jumpCount_ > 0)
 		{
 			if (keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) && canInputJump_ == true)
 			{
-				if (isDead_ == false )
+				if (isDead_ == false)
 				{
 					jumpSound_->PlaySoundWave(false);
 				}
@@ -174,7 +173,7 @@ void Player::Update(Camera* camera)
 		}
 
 		//停止状態以外の場合はその場で走り続けるように
-		if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP) {}
+		if (gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::STOP) {}
 		else
 		{
 			transform_.x += totalAxcell_.x;
@@ -194,11 +193,11 @@ void Player::Update(Camera* camera)
 		PlayerQueryCallback callback(sphereCollider);
 
 		//球と地形の交差を全検索
-		if(attributeColor_ == pink)
+		if (attributeColor_ == pink)
 		{
 			CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_PINK);
 		}
-		else if(attributeColor_ == yellow)
+		else if (attributeColor_ == yellow)
 		{
 			CollisionManager::GetInstance()->QuerySphere(*sphereCollider, &callback, COLLISION_ATTR_YELLOW);
 		}
@@ -208,7 +207,7 @@ void Player::Update(Camera* camera)
 		}
 
 		//押し出し時
-		if(onGround_ == false)
+		if (onGround_ == false)
 		{
 			transform_.y += callback.move.y;
 			transform_.z += callback.move.z;
@@ -228,11 +227,11 @@ void Player::Update(Camera* camera)
 		const float colliderTwoTimesSize = sphereCollider->GetRadius() * 2.0f;
 
 		//接地状態
-		if(onGround_)
+		if (onGround_)
 		{
 			isGroundRotate_ = true;
 			isJumped_ = true;
-			if(isDuringAnimation_ == false)
+			if (isDuringAnimation_ == false)
 			{
 				jumpTotalValue_ = 0.0f;
 			}
@@ -241,7 +240,7 @@ void Player::Update(Camera* camera)
 
 			//スムーズに坂を下る為の吸着距離
 			const float adsDistance = 0.2f;
-			
+
 			//接地を維持
 			if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, colliderTwoTimesSize + adsDistance) ||
 				CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, colliderTwoTimesSize + adsDistance) ||
@@ -260,10 +259,10 @@ void Player::Update(Camera* camera)
 			}
 		}
 		//落下状態
-		else if(fallVec_.y <= 0.0f)
+		else if (fallVec_.y <= 0.0f)
 		{
 			AccelerateChangeColor();
-			
+
 			if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, colliderTwoTimesSize) ||
 				CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, colliderTwoTimesSize) ||
 				CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_BLACK, &raycastHit, colliderTwoTimesSize))
@@ -284,7 +283,7 @@ void Player::Update(Camera* camera)
 		}
 
 		//落下処理
-		if(transform_.y <= deadLine_)
+		if (transform_.y <= deadLine_)
 		{
 			isDead_ = true;
 			isLanded_ = true;
@@ -296,7 +295,7 @@ void Player::Update(Camera* camera)
 		}
 
 		//色変え処理
-		if(keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
+		if (keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
 		{
 			if (isFinish_ == false && canInputColor_ == true)
 			{
@@ -324,54 +323,54 @@ void Player::Update(Camera* camera)
 
 
 		//ロングジャンプの処理
-		if(keys_->PushedKeyMoment(DIK_SPACE) == true || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
+		if (keys_->PushedKeyMoment(DIK_SPACE) == true || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 		{
 			if (canInputJump_ == true)
 			{
 				isSmallJump_ = true;
 			}
 		}
-		else if(keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
+		else if (keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
 		{
-			if(isJumped_ == true && canInputJump_ == true)
+			if (isJumped_ == true && canInputJump_ == true)
 			{
-				if(jumpTotalValue_ < kInitJumpValue_ && jumpTotalValue_ < kMaxJumpValue_)
+				if (jumpTotalValue_ < kInitJumpValue_ && jumpTotalValue_ < kMaxJumpValue_)
 				{
 					isSmallJump_ = true;
 				}
-				if(jumpTotalValue_ >= kInitJumpValue_ && jumpTotalValue_ < kMaxJumpValue_)
+				if (jumpTotalValue_ >= kInitJumpValue_ && jumpTotalValue_ < kMaxJumpValue_)
 				{
 					isSmallJump_ = false;
 					isLongJump_ = true;
 				}
 
-				if(jumpTotalValue_ >= kMaxJumpValue_)
+				if (jumpTotalValue_ >= kMaxJumpValue_)
 				{
 					isJumped_ = false;
 				}
 
 			}
 		}
-		else if(keys_->ReleasedKeyMoment(DIK_SPACE) || gamePad_->ReleaseButtonMoment(XINPUT_GAMEPAD_A))
+		else if (keys_->ReleasedKeyMoment(DIK_SPACE) || gamePad_->ReleaseButtonMoment(XINPUT_GAMEPAD_A))
 		{
-			if(onGround_ == false && isSmallJump_ == false && canInputJump_ == true)
+			if (onGround_ == false && isSmallJump_ == false && canInputJump_ == true)
 			{
 				isJumped_ = false;
 			}
 		}
 		else
 		{
-			if(onGround_ == false && isSmallJump_ == false)
+			if (onGround_ == false && isSmallJump_ == false)
 			{
 				isJumped_ = false;
 			}
 		}
 
 		//色変更アニメーション
-		if(isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
+		if (isStartChangeColorAnime_ == true && isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
 		{
 			Animation(isStartChangeColorAnime_, kChangeColorScaleSpeed_, kChangeColorScale_);
-			if(isDuringAnimation_ == false)
+			if (isDuringAnimation_ == false)
 			{
 				isReturnedSizeAnime_ = true;
 				returnScaleSpeed_ = kDefaultReturnScaleSpeed_;
@@ -380,21 +379,21 @@ void Player::Update(Camera* camera)
 		}
 		else
 		{
-			if(isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
+			if (isStartedLandAnime_ == false && isReturnedSizeAnime_ == false && isDentedAnime_ == false && isExpandedAnime_ == false)
 			{
 				scale_ = kDefaultScale_;
 			}
 		}
 
 		//着地時にへこむアニメーション
-		if(isDead_ == false)
+		if (isDead_ == false)
 		{
-			if(isStartedLandAnime_ == true)
+			if (isStartedLandAnime_ == true)
 			{
 				//押した瞬間
-				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
+				if (keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 				{
-					if(jumpCount_ > 0 && canInputJump_ == true)
+					if (jumpCount_ > 0 && canInputJump_ == true)
 					{
 						jumpTotalValue_ = 0.0f;
 						isSmallJump_ = true;
@@ -408,12 +407,12 @@ void Player::Update(Camera* camera)
 				{
 					Animation(isStartedLandAnime_, kLandScaleSpeed_, kMaxLandMomentScale_);
 					//アニメーションが終了し、
-					if(isDuringAnimation_ == false)
+					if (isDuringAnimation_ == false)
 					{
 						isStartedLandAnime_ = false;
 
 						//拡大しない場合
-						if(isExpandedAnime_ == false)
+						if (isExpandedAnime_ == false)
 						{
 							//元のデフォルトサイズに戻す
 							isReturnedSizeAnime_ = true;
@@ -422,12 +421,12 @@ void Player::Update(Camera* camera)
 				}
 			}
 			//元のサイズに戻るアニメーション
-			else if(isReturnedSizeAnime_ == true)
+			else if (isReturnedSizeAnime_ == true)
 			{
 				//押した瞬間
-				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) )
+				if (keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 				{
-					if(jumpCount_ > 0 && canInputJump_ == true)
+					if (jumpCount_ > 0 && canInputJump_ == true)
 					{
 						UpdatePlayerAnimation();
 						isDuringAnimation_ = false;
@@ -439,7 +438,7 @@ void Player::Update(Camera* camera)
 				{
 					LongJump();
 					Animation(isReturnedSizeAnime_, returnScaleSpeed_, kMoveScale_);
-					if(isDuringAnimation_ == false)
+					if (isDuringAnimation_ == false)
 					{
 						isReturnedSizeAnime_ = false;
 						returnScaleSpeed_ = kAnimataionReturnScaleSpeed_;
@@ -447,23 +446,23 @@ void Player::Update(Camera* camera)
 				}
 			}
 			//ジャンプ時にへこむアニメーション
-			else if(isDentedAnime_ == true)
+			else if (isDentedAnime_ == true)
 			{
 				Animation(isDentedAnime_, kDentSpeed_, kDentedScale_);
-				if(isDuringAnimation_ == false)
+				if (isDuringAnimation_ == false)
 				{
-					if(jumpCount_ > 0)
+					if (jumpCount_ > 0)
 					{
 						UpdatePlayerAnimation();
 					}
 				}
 			}
 			//ジャンプ後に伸びるアニメーション
-			else if(isExpandedAnime_ == true)
+			else if (isExpandedAnime_ == true)
 			{
 				LongJump();
 				Animation(isExpandedAnime_, kEpandSpeed_, kExpandScale_);
-				if(isDuringAnimation_ == false)
+				if (isDuringAnimation_ == false)
 				{
 					isExpandedAnime_ = false;
 					isReturnedSizeAnime_ = true;
@@ -472,7 +471,7 @@ void Player::Update(Camera* camera)
 			}
 
 			//二段ジャンプ時の回転処理
-			if(isDuringAnimation_ == false)
+			if (isDuringAnimation_ == false)
 			{
 				JumpRotation();
 			}
@@ -480,7 +479,7 @@ void Player::Update(Camera* camera)
 	}
 
 	//死ぬ前の位置を保存しておく
-	if(isDead_ == false && isSetDeadPos_ == false)
+	if (isDead_ == false && isSetDeadPos_ == false)
 	{
 		deadPos_ = transform_;
 	}
@@ -493,20 +492,20 @@ void Player::Update(Camera* camera)
 
 void Player::OnCollision(const CollisionInfo& info)
 {
-	if(info.object->GetAttributeColor() == Attribute::Goal)
+	if (info.object->GetAttributeColor() == Attribute::Goal)
 	{
 		isRightAxcell_ = true;
 		isFinish_ = true;
 		isDead_ = false;
 	}
 	//色が違う場合、死亡判定にする
-	else if(info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
+	else if (info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
 	{
 		std::string modelName = info.object->GetModel()->GetName();
 
-		if(modelName == "wall" && info.object->GetAttributeColor() != Goal)
+		if (modelName == "wall" && info.object->GetAttributeColor() != Goal)
 		{
-			if(isRightAxcell_ == true) {}
+			if (isRightAxcell_ == true) {}
 			else
 			{
 				UpdateWhenDead();
@@ -514,22 +513,22 @@ void Player::OnCollision(const CollisionInfo& info)
 		}
 		else
 		{
-			if(deadSound_->GetIsSounded() == false)
+			if (deadSound_->GetIsSounded() == false)
 			{
 				deadSound_->PlaySoundWave(false);
 			}
-			
+
 			UpdateWhenDead();
 		}
 	}
 	//下からプレイヤーと同じ色のオブジェクトと当たった場合
-	else if(info.object->GetAttributeColor() == attributeColor_)
+	else if (info.object->GetAttributeColor() == attributeColor_)
 	{
-		if(onGround_ == false && isDuringAnimation_ == false && isExpandedAnime_ == false && isDentedAnime_ == false)
+		if (onGround_ == false && isDuringAnimation_ == false && isExpandedAnime_ == false && isDentedAnime_ == false)
 		{
 			isTouchObject_ = true;
 		}
-		if(isExpandedAnime_ == true)
+		if (isExpandedAnime_ == true)
 		{
 			isTouchObject_ = true;
 		}
@@ -538,29 +537,13 @@ void Player::OnCollision(const CollisionInfo& info)
 		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
 
 		Vector3 objectPosition = info.object->GetTransform();
-		if(transform_.y + sphereCollider->GetRadius() <= objectPosition.y && isTouchUnderObject_ == false)
+		if (transform_.y + sphereCollider->GetRadius() <= objectPosition.y && isTouchUnderObject_ == false)
 		{
 			isTouchUnderObject_ = true;
 			transform_ -= totalAxcell_;
 
 			//加速
 			fallVec_.y = 0.0f;
-		}
-	}
-
-	//色が本体の色と違っていれば死亡判定にする
-	if (attributeColor_ == pink)
-	{
-		if (color_ != kTitlePinkOBJColor)
-		{
-			UpdateWhenDead();
-		}
-	}
-	else if (attributeColor_ == yellow)
-	{
-		if (color_ != kYellowOBJColor)
-		{
-			UpdateWhenDead();
 		}
 	}
 }
@@ -582,49 +565,91 @@ void Player::AccelerateChangeColor()
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
-	if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 3.0f))
+	if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 4.4f))
 	{
 		//色を変える
-		if(keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
+		if (keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
 		{
-			if(attributeColor_ == yellow && isFinish_ == false && canInputColor_ == true)
+			if (attributeColor_ == yellow && isFinish_ == false && canInputColor_ == true)
 			{
 				//加速していなかったら加速フラグを立てる
-				if(isRightAxcell_ == false)
+				if (isRightAxcell_ == false)
 				{
 					isRightAxcell_ = true;
 					axcellTimer_ = kAxcellTime_;
 				}
 			}
 		}
+
+		if (attributeColor_ == yellow && isRightAxcell_ == false && isFinish_ == false)
+		{
+			canAxcel_ = true;
+			//Vector3 axcelColor = { 0.737f,0.886f,0.91f };
+			//Vector3 axcelColor = { 0.0f,0.682f,0.937f };
+			Vector3 axcelColor = { 0.498f,0.839f,0.969f };
+
+
+			SetColor(axcelColor);
+		}
+		else
+		{
+			SetColor(kTitlePinkOBJColor);
+		}
 	}
-	else if(CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 3.0f))
+	else if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 4.4f))
 	{
 		//色を変える
-		if(keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
+		if (keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
 		{
-			if(attributeColor_ == pink)
+			if (attributeColor_ == pink)
 			{
 				//加速していなかったら加速フラグを立てる
-				if(isRightAxcell_ == false && isFinish_ == false && canInputColor_ == true)
+				if (isRightAxcell_ == false && isFinish_ == false && canInputColor_ == true)
 				{
 					isRightAxcell_ = true;
 					axcellTimer_ = kAxcellTime_;
 				}
 			}
+		}
+
+		if (attributeColor_ == pink && isRightAxcell_ == false && isFinish_ == false)
+		{
+			canAxcel_ = true;
+			//Vector3 axcelColor = { 0.0f,0.682f,0.937f };
+			Vector3 axcelColor = { 0.498f,0.839f,0.969f };
+
+			//Vector3 axcelColor = { 0.737f,0.886f,0.91f };
+
+			SetColor(axcelColor);
+		}
+		else
+		{
+			SetColor(kYellowOBJColor);
+		}
+	}
+	else
+	{
+		canAxcel_ = false;
+		if (attributeColor_ == pink && isRightAxcell_ == false && isFinish_ == false)
+		{
+			SetColor(kTitlePinkOBJColor);
+		}
+		else if (attributeColor_ == yellow && isRightAxcell_ == false && isFinish_ == false)
+		{
+			SetColor(kYellowOBJColor);
 		}
 	}
 }
 
 void Player::Accelerate()
 {
-	if(isRightAxcell_ == true)
+	if (isRightAxcell_ == true)
 	{
 		//加速後の猶予時間中でない場合スピードを足す
-		if(isDuringAxcellExtensionTime_ == false)
+		if (isDuringAxcellExtensionTime_ == false)
 		{
 			axcellEasing_.time++;
-			if(axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
+			if (axcellEasing_.time > 0 && axcellEasing_.time <= axcellEasing_.totalTime)
 			{
 				rightAxcellVec_.z = PlayEaseOutQuint(axcellEasing_);
 			}
@@ -638,11 +663,11 @@ void Player::Accelerate()
 	}
 
 	//加速後の猶予時間中
-	if(isDuringAxcellExtensionTime_ == true)
+	if (isDuringAxcellExtensionTime_ == true)
 	{
 		//当たり判定用に
 		axcellExtensionTime_++;
-		if(axcellExtensionTime_ >= maxExtensionTime_)
+		if (axcellExtensionTime_ >= maxExtensionTime_)
 		{
 			isRightAxcell_ = false;
 			axcellExtensionTime_ = 0;
@@ -655,7 +680,7 @@ void Player::Accelerate()
 
 void Player::Draw()
 {
-	if(isDead_ == false)
+	if (isDead_ == false)
 	{
 		Object3d::Draw();
 	}
@@ -692,6 +717,7 @@ void Player::Reset()
 	rotateYTimer_ = kRotateYTime_;
 	canInputColor_ = true;
 	canInputJump_ = true;
+	canAxcel_ = false;
 
 	isLongJump_ = false;
 	isJumped_ = false;
@@ -741,14 +767,14 @@ void Player::ImGuiUpdate()
 void Player::JumpRotation()
 {
 	//1回転する
-	if(isJumpRotate_ == true)
+	if (isJumpRotate_ == true)
 	{
-		if(scale_.x == kDefaultScale_.x && scale_.y == kDefaultScale_.y && scale_.z == kDefaultScale_.z)
+		if (scale_.x == kDefaultScale_.x && scale_.y == kDefaultScale_.y && scale_.z == kDefaultScale_.z)
 		{
 			float angle = ToRadian(kOneCircleRotate_);
 			rotation_.x -= PlayEaseInCubic(0.0f, angle, rotateXTimer_, kRotateXTime_);
 
-			if(rotateXTimer_ >= 0)
+			if (rotateXTimer_ >= 0)
 			{
 				rotateXTimer_--;
 			}
@@ -767,19 +793,19 @@ void Player::JumpRotation()
 
 void Player::GroundRotation()
 {
-	if(isGroundRotate_ == false)
+	if (isGroundRotate_ == false)
 	{
 		rotateYTimer_ = kRotateYTime_;
 	}
 
 	//1回転させる
-	if(rotateYTimer_ >= 0)
+	if (rotateYTimer_ >= 0)
 	{
 		rotateYTimer_--;
 
 		float angle = ToRadian(kOneCircleRotate_);
 
-		if(rotation_.y < angle)
+		if (rotation_.y < angle)
 		{
 			const float rotateYVec = 0.10f;
 			rotation_.y -= rotateYVec;
@@ -797,7 +823,7 @@ void Player::GroundRotation()
 
 void Player::Animation(const bool isStartedAnime, const float animationSpeed, const Vector3& goalScale)
 {
-	if(isStartedAnime == true)
+	if (isStartedAnime == true)
 	{
 		//アニメーション中フラグをONにする
 		isDuringAnimation_ = true;
@@ -808,11 +834,11 @@ void Player::Animation(const bool isStartedAnime, const float animationSpeed, co
 void Player::LongJump()
 {
 	//押した時間によって飛距離が変わるように
-	if(isSmallJump_ == true)
+	if (isSmallJump_ == true)
 	{
-		if(isJumped_ == true)
+		if (isJumped_ == true)
 		{
-			if(jumpTotalValue_ < kMaxJumpValue_)
+			if (jumpTotalValue_ < kMaxJumpValue_)
 			{
 				//加速
 				jumpTotalValue_ = min(jumpTotalValue_ + kInitJumpValue_, kMaxJumpValue_);
@@ -825,25 +851,28 @@ void Player::LongJump()
 		}
 		isSmallJump_ = false;
 	}
-	else if(keys_->HasPushedKey(DIK_SPACE) || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A) && canInputJump_ == true)
+	else if (keys_->HasPushedKey(DIK_SPACE) || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
 	{
-		if(isLongJump_ == true)
+		if (canInputJump_ == true)
 		{
-			if(isJumped_ == true)
+			if (isLongJump_ == true)
 			{
-				const float jumpIncrease = 0.015f;
+				if (isJumped_ == true)
+				{
+					const float jumpIncrease = 0.015f;
 
-				if(jumpTotalValue_ < kMaxJumpValue_)
-				{
-					//加速
-					jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
-					fallVec_.y = jumpTotalValue_;
-				}
-				else
-				{
-					jumpTotalValue_ = kMaxJumpValue_;
-					isJumped_ = false;
-					isLongJump_ = false;
+					if (jumpTotalValue_ < kMaxJumpValue_)
+					{
+						//加速
+						jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
+						fallVec_.y = jumpTotalValue_;
+					}
+					else
+					{
+						jumpTotalValue_ = kMaxJumpValue_;
+						isJumped_ = false;
+						isLongJump_ = false;
+					}
 				}
 			}
 		}
@@ -864,18 +893,18 @@ bool Player::ResetValue(float& value, const float defaultValue, const float chan
 {
 	bool result = false;
 
-	if(value < defaultValue)
+	if (value < defaultValue)
 	{
 		value += changeValue;
-		if(value >= defaultValue)
+		if (value >= defaultValue)
 		{
 			result = true;
 		}
 	}
-	else if(value > defaultValue)
+	else if (value > defaultValue)
 	{
 		value -= changeValue;
-		if(value <= defaultValue)
+		if (value <= defaultValue)
 		{
 			result = true;
 		}
@@ -890,7 +919,7 @@ bool Player::ResetValue(float& value, const float defaultValue, const float chan
 
 void Player::ResetVector3Value(Vector3& value, const Vector3 defaultValue, const float changeValue, bool& isStartToReset)
 {
-	bool isResetedX= false;
+	bool isResetedX = false;
 	isResetedX = ResetValue(value.x, defaultValue.x, changeValue);
 
 	bool isResetedY = false;
@@ -900,7 +929,7 @@ void Player::ResetVector3Value(Vector3& value, const Vector3 defaultValue, const
 	isResetedZ = ResetValue(value.z, defaultValue.z, changeValue);
 
 	//もし全て戻っていたらフラグをオフにする
-	if(isResetedX == true && isResetedY == true && isResetedZ == true)
+	if (isResetedX == true && isResetedY == true && isResetedZ == true)
 	{
 		isStartToReset = false;
 	}
