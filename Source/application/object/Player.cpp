@@ -61,9 +61,9 @@ void Player::Update(Camera* camera)
 	isLanded_ = false;
 
 	//ゲームが始まっていないときに始める処理
-	if(isDead_ == false && isFinish_ == false)
+	if(isDead_ == false && isFinish_ == false && canInputJump_ == true)
 	{
-		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
+		if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE) )
 		{
 			isMoving_ = true;
 		}
@@ -100,19 +100,22 @@ void Player::Update(Camera* camera)
 				//長押しの場合滑空するように
 				if(keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
 				{
-					//下向き加速度　
-					const float fallAcc = -0.015f;
-					const float fallVYMin = -0.5f;
-					
-					if(gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
+					if (canInputJump_ == true)
 					{
-						//加速
-						fallVec_.y = max(fallVec_.y + (fallAcc / slow) , fallVYMin);
-					}
-					else
-					{
-						//加速
-						fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+						//下向き加速度　
+						const float fallAcc = -0.015f;
+						const float fallVYMin = -0.5f;
+
+						if (gameSpeed_->GetSpeedMode() == GameSpeed::SpeedMode::SLOW)
+						{
+							//加速
+							fallVec_.y = max(fallVec_.y + (fallAcc / slow), fallVYMin);
+						}
+						else
+						{
+							//加速
+							fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
+						}
 					}
 				}
 				else
@@ -141,9 +144,9 @@ void Player::Update(Camera* camera)
 			//二段ジャンプ時
 			if(jumpCount_ > 0 && jumpCount_ < kMaxJumpNum_)
 			{
-				if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
+				if(gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE) && canInputJump_ == true)
 				{
-					if (isDead_ == false)
+					if (isDead_ == false )
 					{
 						doubleSound_->PlaySoundWave(false);
 					}
@@ -160,9 +163,9 @@ void Player::Update(Camera* camera)
 		//ジャンプ操作
 		else if(jumpCount_ > 0)
 		{
-			if (keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
+			if (keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) && canInputJump_ == true)
 			{
-				if (isDead_ == false)
+				if (isDead_ == false )
 				{
 					jumpSound_->PlaySoundWave(false);
 				}
@@ -295,7 +298,7 @@ void Player::Update(Camera* camera)
 		//色変え処理
 		if(keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
 		{
-			if (isFinish_ == false)
+			if (isFinish_ == false && canInputColor_ == true)
 			{
 				isStartChangeColorAnime_ = true;
 				Object3d::SetColorFlag(true);
@@ -323,11 +326,14 @@ void Player::Update(Camera* camera)
 		//ロングジャンプの処理
 		if(keys_->PushedKeyMoment(DIK_SPACE) == true || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 		{
-			isSmallJump_ = true;
+			if (canInputJump_ == true)
+			{
+				isSmallJump_ = true;
+			}
 		}
 		else if(keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
 		{
-			if(isJumped_ == true)
+			if(isJumped_ == true && canInputJump_ == true)
 			{
 				if(jumpTotalValue_ < kInitJumpValue_ && jumpTotalValue_ < kMaxJumpValue_)
 				{
@@ -348,7 +354,7 @@ void Player::Update(Camera* camera)
 		}
 		else if(keys_->ReleasedKeyMoment(DIK_SPACE) || gamePad_->ReleaseButtonMoment(XINPUT_GAMEPAD_A))
 		{
-			if(onGround_ == false && isSmallJump_ == false)
+			if(onGround_ == false && isSmallJump_ == false && canInputJump_ == true)
 			{
 				isJumped_ = false;
 			}
@@ -388,7 +394,7 @@ void Player::Update(Camera* camera)
 				//押した瞬間
 				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
 				{
-					if(jumpCount_ > 0)
+					if(jumpCount_ > 0 && canInputJump_ == true)
 					{
 						jumpTotalValue_ = 0.0f;
 						isSmallJump_ = true;
@@ -419,9 +425,9 @@ void Player::Update(Camera* camera)
 			else if(isReturnedSizeAnime_ == true)
 			{
 				//押した瞬間
-				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
+				if(keys_->PushedKeyMoment(DIK_SPACE) || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A) )
 				{
-					if(jumpCount_ > 0)
+					if(jumpCount_ > 0 && canInputJump_ == true)
 					{
 						UpdatePlayerAnimation();
 						isDuringAnimation_ = false;
@@ -581,7 +587,7 @@ void Player::AccelerateChangeColor()
 		//色を変える
 		if(keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
 		{
-			if(attributeColor_ == yellow && isFinish_ == false)
+			if(attributeColor_ == yellow && isFinish_ == false && canInputColor_ == true)
 			{
 				//加速していなかったら加速フラグを立てる
 				if(isRightAxcell_ == false)
@@ -600,7 +606,7 @@ void Player::AccelerateChangeColor()
 			if(attributeColor_ == pink)
 			{
 				//加速していなかったら加速フラグを立てる
-				if(isRightAxcell_ == false && isFinish_ == false)
+				if(isRightAxcell_ == false && isFinish_ == false && canInputColor_ == true)
 				{
 					isRightAxcell_ = true;
 					axcellTimer_ = kAxcellTime_;
@@ -684,6 +690,8 @@ void Player::Reset()
 	isSetDeadPos_ = false;
 	rotateXTimer_ = kRotateXTime_;
 	rotateYTimer_ = kRotateYTime_;
+	canInputColor_ = true;
+	canInputJump_ = true;
 
 	isLongJump_ = false;
 	isJumped_ = false;
@@ -817,7 +825,7 @@ void Player::LongJump()
 		}
 		isSmallJump_ = false;
 	}
-	else if(keys_->HasPushedKey(DIK_SPACE) || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
+	else if(keys_->HasPushedKey(DIK_SPACE) || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A) && canInputJump_ == true)
 	{
 		if(isLongJump_ == true)
 		{

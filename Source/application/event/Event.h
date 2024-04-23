@@ -57,7 +57,9 @@ public:
 	//透過する
 	void TransmissiveBillboard();
 
+	bool GetIsFinish() {return isFinish_; }
 	void SetIsFinish(bool isFinish) { isFinish_ = isFinish; }
+
 	const float GetStartPosZ() { return startPos_; }
 	const float GetFinishPosZ() { return finishPos_; }
 

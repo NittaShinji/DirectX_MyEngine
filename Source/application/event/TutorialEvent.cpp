@@ -125,10 +125,41 @@ void TutorialEvent::Update()
 		jumptoChangeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera_, playerJumpCount);
 		jumptoChangeEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		jumptoChangeEvent_->TransmissiveBillboard();
+		
 		//Bボタン
 		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera_, playerJumpCount);
 		changeColorEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		changeColorEvent_->TransmissiveBillboard();
+		
+		//ジャンプして色変えの際は使わないボタンは押さないように
+		const float jumptoChangeEventStartPosZ = jumptoChangeEvent_->GetStartPosZ() - 30.0f;
+		if (playerPosZ >= jumptoChangeEventStartPosZ && playerPosZ <= jumptoChangeEvent_->GetFinishPosZ())
+		{
+			if(jumptoChangeEvent_->GetIsFinish() == false)
+			{
+				player_->SetCanInputColor(false);
+				player_->SetCanInputJump(true);
+			}
+		}
+		else if (playerPosZ >= changeColorEvent_->GetStartPosZ() && playerPosZ <= changeColorEvent_->GetFinishPosZ())
+		{
+			if (changeColorEvent_->GetIsFinish() == false)
+			{
+				player_->SetCanInputJump(false);
+				player_->SetCanInputColor(true);
+			}
+			else
+			{
+				player_->SetCanInputColor(true);
+				player_->SetCanInputJump(true);
+			}
+		}
+		else
+		{
+			player_->SetCanInputColor(true);
+			player_->SetCanInputJump(true);
+		}
+
 		//残りの色変えゾーンにビルボードを表示
 		changeInAirEvent_->UpdateToDisplayBillboard(playerPosZ, camera_);
 

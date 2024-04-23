@@ -240,6 +240,11 @@ private:
 	//スケールアニメーションフラグ
 	bool isStartChangeColorAnime_ = false;
 
+	//ジャンプ入力を受け付けるか
+	bool canInputJump_ = true;
+	//色変え入力を受け付けるか
+	bool canInputColor_ = true;
+
 	//着地フラグ
 	bool isLanded_;
 
@@ -323,6 +328,10 @@ public: //アクセッサ
 	bool GetIsWithStageEdge() const { return isWithStageEdge_; }
 	//合計加速度を取得
 	Vector3 GetTotalAxcell() const { return totalAxcell_; }
+	//ジャンプ入力を受け付けるかどうかを取得
+	bool GetCanInputJump() const { return canInputJump_; }
+	//色変え入力を受け付けるかどうかを取得
+	bool GetCanInputColor() const { return canInputColor_; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }
@@ -340,5 +349,11 @@ public: //アクセッサ
 	void SetIsWithStageEdge(bool isWithStageEdge) { isWithStageEdge_ = isWithStageEdge; }
 	//プレイヤーの色をセット
 	void SetAttributeColor(Attribute AttributeColor) { attributeColor_ = AttributeColor; }
+	//ジャンプ入力を受け付けるかどうかをセットする
+	void SetCanInputJump(bool canInputJump) { canInputJump_ = canInputJump; }
+	//色変え入力を受け付けるかどうかをセットする
+	void SetCanInputColor(bool canInputColor) { canInputColor_ = canInputColor; }
+
+
 };
 
