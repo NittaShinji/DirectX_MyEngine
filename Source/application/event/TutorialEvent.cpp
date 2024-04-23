@@ -77,9 +77,7 @@ void TutorialEvent::Initialzie(Player* player, Camera* camera)
 	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 710.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
 	changeInAirEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 3.0f, 800.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 	changeInAirEvent_->AddBillboard("aButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 10.0f, 815.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
-	//changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, 850.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
-	//changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, 970.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
-
+	
 	//加速イベント
 	const float kStartAxcellEventPos_ = 850;
 	const float kEndAxcellEventPos_ = 1000;

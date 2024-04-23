@@ -584,11 +584,7 @@ void Player::AccelerateChangeColor()
 		if (attributeColor_ == yellow && isRightAxcell_ == false && isFinish_ == false)
 		{
 			canAxcel_ = true;
-			//Vector3 axcelColor = { 0.737f,0.886f,0.91f };
-			//Vector3 axcelColor = { 0.0f,0.682f,0.937f };
 			Vector3 axcelColor = { 0.498f,0.839f,0.969f };
-
-
 			SetColor(axcelColor);
 		}
 		else
@@ -615,11 +611,7 @@ void Player::AccelerateChangeColor()
 		if (attributeColor_ == pink && isRightAxcell_ == false && isFinish_ == false)
 		{
 			canAxcel_ = true;
-			//Vector3 axcelColor = { 0.0f,0.682f,0.937f };
 			Vector3 axcelColor = { 0.498f,0.839f,0.969f };
-
-			//Vector3 axcelColor = { 0.737f,0.886f,0.91f };
-
 			SetColor(axcelColor);
 		}
 		else
