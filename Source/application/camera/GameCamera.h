@@ -24,6 +24,8 @@ public:
 
 	void SetGameSpeed(GameSpeed* gameSpeed) { gameSpeed_ = gameSpeed; }
 
+	const Vector3 GetInitEye() { return initCameraEye; }
+
 private:
 
 	const Vector3 initCameraEye = { 30,7.5,-20 };

@@ -23,6 +23,7 @@ using namespace NsEngine;
 DirectXBasic* GameScene::directXBasic_ = nullptr;
 ImGuiManager* GameScene::imGuiManager_ = nullptr;
 KeyInput* GameScene::keys_ = nullptr;
+bool GameScene::isClearGame_ = false;
 
 GameScene::GameScene() {}
 GameScene::~GameScene() {}
@@ -117,7 +118,10 @@ void GameScene::Initialize()
 	//チュートリアルイベント
 	tutorialEvent_ = std::make_unique<TutorialEvent>();
 	Event::StaticInitialize(keys_, gamePad_.get(), gameSpeed_.get());
-	tutorialEvent_->Initialzie(player_.get());
+	if (isClearGame_ == false)
+	{
+		tutorialEvent_->Initialzie(player_.get(), gameCamera_.get());
+	}
 }
 
 void GameScene::Update()
@@ -155,9 +159,9 @@ void GameScene::Update()
 
 #endif
 
-	if(stage_->GetStageNum() == Stage::tutorialStage)
+	if(stage_->GetStageNum() == Stage::tutorialStage && isClearGame_ == false)
 	{
-		tutorialEvent_->Update(gameCamera_.get());
+		tutorialEvent_->Update();
 	}
 	
 	//プレイヤーが死んだ際の処理
@@ -175,15 +179,18 @@ void GameScene::Update()
 			ParticleManager::GetInstance()->ParticleRemove();
 			ObjParticleManager::GetInstance()->ProcessPlayerDead(gameCamera_.get());
 
-			if (stage_->GetStageNum() == 0)
-			{
-				tutorialEvent_->Reset();
-			}
 			stage_->Reset();
 			gameCamera_->Initialize();
  			player_->Reset();
 			resultSprite_->Reset();
-			GameTimer::GetInstance()->Reset();
+			if (stage_->GetStageNum() == 0 && isClearGame_ == false)
+			{
+				tutorialEvent_->ResetEventforSavePoint();
+			}
+			else
+			{
+				GameTimer::GetInstance()->Reset();
+			}
 			gameSpeed_->SetSpeedMode(GameSpeed::SpeedMode::NORMAL);
 			gameSprite_->ResetSceneAnimation();
 		}
@@ -363,7 +370,7 @@ void GameScene::Draw()
 	gameSprite_->UIDraw();
 
 	//チュートリアルステージであれば
-	if(stage_->GetStageNum() == Stage::tutorialStage)
+	if(stage_->GetStageNum() == Stage::tutorialStage && isClearGame_ == false)
 	{
 		tutorialEvent_->Draw();
 	}
@@ -393,6 +400,7 @@ void GameScene::ClearOnceUpdate()
 	{
 		if (GameTimer::GetInstance()->GetIsFinishedToTime() == true)
 		{
+			isClearGame_ = true;
 			GameTimer::GetInstance()->ReadytoNextStageTime(stage_->GetStageNum(), stage_->GetKClearStageNum());
 			ParticleManager::GetInstance()->AllRemove();
 			ObjParticleManager::GetInstance()->AllRemove();

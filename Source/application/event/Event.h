@@ -58,7 +58,8 @@ public:
 	void TransmissiveBillboard();
 
 	void SetIsFinish(bool isFinish) { isFinish_ = isFinish; }
-	const float GetStartPos() { return startPos_; }
+	const float GetStartPosZ() { return startPos_; }
+	const float GetFinishPosZ() { return finishPos_; }
 
 private:
 
@@ -95,8 +96,6 @@ private:
 	//アニメーション用の時間
 	int32_t buttonAnimeTime_;
 
-	//すでに終了しているか
-	bool isCompletedAlready_;
 	//画像が透明になったかどうか
 	bool isClearSprite_;
 	//ビルボードだけを表示するかどうか

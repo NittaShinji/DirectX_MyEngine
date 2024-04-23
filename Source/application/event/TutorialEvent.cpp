@@ -1,10 +1,13 @@
 #include "TutorialEvent.h"
 #include "GameSpeed.h"
 #include "Player.h"
+#include "ObjectAttribute.h"
+#include "ObjectColor.h"
 
-void TutorialEvent::Initialzie(Player* player)
+void TutorialEvent::Initialzie(Player* player, Camera* camera)
 {
 	player_ = player;
+	camera_ = camera;
 
 	const Vector2 kUiSize = { 168.0f,108.0f };
 	const Vector2 kUiPosition = { 596.0f,570.0f };
@@ -78,7 +81,7 @@ void TutorialEvent::Initialzie(Player* player)
 	changeInAirEvent_->AddBillboard("arrow.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, 970.0f), 3.0f, Vector4(1.0f, 1.0f, 1.0f, 0.65f));
 }
 
-void TutorialEvent::Update(Camera* camera)
+void TutorialEvent::Update()
 {
 	Vector3 playerPos = player_->GetTransform();
 	float playerPosZ = playerPos.z;
@@ -87,47 +90,70 @@ void TutorialEvent::Update(Camera* camera)
 	if (player_->GetIsDead() == false)
 	{
 		//各イベントの更新
-		startEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
+		startEvent_->Update(playerPosZ, GameSpeed::SpeedMode::NORMAL, XINPUT_GAMEPAD_A, DIK_SPACE, camera_, playerJumpCount);
 		startEvent_->TransmissiveBillboard();
 
-		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
-		jumpEvent_->BillboardSetPlayerPos(playerPos, camera);
+		jumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera_, playerJumpCount);
+		jumpEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		jumpEvent_->TransmissiveBillboard();
 
-		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE,camera, playerJumpCount);
-		doubleJumpEvent_->BillboardSetPlayerPos(playerPos, camera);
+		doubleJumpEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE,camera_, playerJumpCount);
+		doubleJumpEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		doubleJumpEvent_->TransmissiveBillboard();
 
-		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
-		heighJumpBeforeEvent_->BillboardSetPlayerPos(playerPos, camera);
+		heighJumpBeforeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera_, playerJumpCount);
+		heighJumpBeforeEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		heighJumpBeforeEvent_->TransmissiveBillboard();
 
 		//二段ジャンプの二回目のイベントの際に、
 		// すでに前のイベントゾーンで二回飛ばれていたらスキップする
-		if (player_->GetJumpCount() == 0 && heighJumpAfterEvent_->GetStartPos() < playerPos.z)
+		if (player_->GetJumpCount() == 0 && heighJumpAfterEvent_->GetStartPosZ() < playerPos.z)
 		{
 			heighJumpAfterEvent_->SetIsFinish(true);
 		}
-		heighJumpAfterEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
-		heighJumpAfterEvent_->BillboardSetPlayerPos(playerPos, camera);
+		heighJumpAfterEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera_, playerJumpCount);
+		heighJumpAfterEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		heighJumpAfterEvent_->TransmissiveBillboard();
 
 		//色変えイベント
-		firstChangeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera, playerJumpCount);
-		firstChangeColorEvent_->BillboardSetPlayerPos(playerPos, camera);
+		firstChangeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera_, playerJumpCount);
+		firstChangeColorEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		firstChangeColorEvent_->TransmissiveBillboard();
 
 		//色変えジャンプイベント
 		//Aボタン
-		jumptoChangeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera, playerJumpCount);
-		jumptoChangeEvent_->BillboardSetPlayerPos(playerPos, camera);
+		jumptoChangeEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_A, DIK_SPACE, camera_, playerJumpCount);
+		jumptoChangeEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		jumptoChangeEvent_->TransmissiveBillboard();
 		//Bボタン
-		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera, playerJumpCount);
-		changeColorEvent_->BillboardSetPlayerPos(playerPos, camera);
+		changeColorEvent_->Update(playerPosZ, GameSpeed::SpeedMode::SLOW, XINPUT_GAMEPAD_B, DIK_RETURN, camera_, playerJumpCount);
+		changeColorEvent_->BillboardSetPlayerPos(playerPos, camera_);
 		changeColorEvent_->TransmissiveBillboard();
 		//残りの色変えゾーンにビルボードを表示
-		changeInAirEvent_->UpdateToDisplayBillboard(playerPosZ, camera);
+		changeInAirEvent_->UpdateToDisplayBillboard(playerPosZ, camera_);
+
+		//セーブポイントを更新
+		const float longJumpResetStartPosZ = firstChangeColorEvent_->GetStartPosZ() - 65.0f;
+		//ジャンプイベント
+		if (playerPos.z >= startEvent_->GetStartPosZ() && playerPos.z < heighJumpBeforeEvent_->GetStartPosZ())
+		{
+			eventSavePoint_ = EventSavePoint::First;
+		}
+		//ロングジャンプイベント
+		else if (playerPos.z >= heighJumpBeforeEvent_->GetStartPosZ() && playerPos.z < longJumpResetStartPosZ)
+		{
+			eventSavePoint_ = EventSavePoint::LongJump;
+		}
+		//色変えイベント
+		else if (playerPos.z >= firstChangeColorEvent_->GetStartPosZ() && playerPos.z < jumptoChangeEvent_->GetStartPosZ())
+		{
+			eventSavePoint_ = EventSavePoint::ColorChange;
+		}
+		//色変えジャンプイベント
+		else if (playerPos.z >= jumptoChangeEvent_->GetStartPosZ())
+		{
+			eventSavePoint_ = EventSavePoint::JumpColorChange;
+		}
 	}
 }
 
@@ -147,7 +173,7 @@ void TutorialEvent::Draw()
 	}
 }
 
-void TutorialEvent::Reset()
+void TutorialEvent::AllEventReset()
 {
 	startEvent_->Reset();
 	jumpEvent_->Reset();
@@ -158,4 +184,80 @@ void TutorialEvent::Reset()
 	changeInAirEvent_->Reset();
 	jumptoChangeEvent_->Reset();
 	changeColorEvent_->Reset();
+}
+
+void TutorialEvent::ResetEventforSavePoint()
+{
+	if (eventSavePoint_ == EventSavePoint::First)
+	{
+		startEvent_->Reset();
+		jumpEvent_->Reset();
+		CalcSavePoint(startEvent_.get());
+	}
+	else if (eventSavePoint_ == EventSavePoint::LongJump)
+	{
+		startEvent_->Reset();
+		jumpEvent_->Reset();
+		doubleJumpEvent_->Reset();
+		heighJumpBeforeEvent_->Reset();
+		heighJumpAfterEvent_->Reset();
+		CalcSavePoint(heighJumpBeforeEvent_.get());
+	}
+	else if (eventSavePoint_ == EventSavePoint::ColorChange)
+	{
+		startEvent_->Reset();
+		jumpEvent_->Reset();
+		doubleJumpEvent_->Reset();
+		heighJumpBeforeEvent_->Reset();
+		heighJumpAfterEvent_->Reset();
+		firstChangeColorEvent_->Reset();
+		CalcSavePoint(firstChangeColorEvent_.get());
+	}
+	else if (eventSavePoint_ == EventSavePoint::JumpColorChange)
+	{
+		AllEventReset();
+		CalcSavePoint(jumptoChangeEvent_.get());
+	}
+	else if (eventSavePoint_ == EventSavePoint::Finish){}
+	else 
+	{
+		AllEventReset();
+	}
+}
+
+void TutorialEvent::CalcSavePoint(Event* event)
+{
+	Vector3 playerPos = player_->GetTransform();
+	if (eventSavePoint_ == EventSavePoint::ColorChange)
+	{
+		const float startPosY = 7.5f;
+		const float startPosZ = event->GetStartPosZ() - 65.0f;
+
+		playerPos.y = startPosY;
+		playerPos.z = startPosZ;
+	}
+	else if (eventSavePoint_ == EventSavePoint::JumpColorChange)
+	{
+		const float startPosY = 0.0f;
+		const float startPosZ = event->GetStartPosZ() - 10.0f;
+
+		playerPos.y = startPosY;
+		playerPos.z = startPosZ;
+		player_->SetAttributeColor(yellow);
+		player_->SetColor(kYellowOBJColor);
+	}
+	else
+	{
+		playerPos.z = event->GetStartPosZ();
+	}
+	//初期位置からのイベント開始位置を計算
+	float distance = playerPos.z - player_->GetInitPos().z;
+	//プレイヤーとカメラをイベント終了位置まで動かす
+	player_->SetTransform(playerPos);
+	Vector3 cameraEye = camera_->GetEye();
+	cameraEye.z = camera_->GetEye().z + distance;
+	Vector3 cameraTarget = camera_->GetTarget();
+	cameraTarget.z = camera_->GetTarget().z + distance;
+	camera_->SetEye(cameraEye);
+	camera_->SetTarget(cameraTarget);
 }

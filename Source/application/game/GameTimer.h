@@ -64,6 +64,10 @@ public:
 
 	//リセット
 	void Reset();
+
+	//チュートリアルリセット
+	void TutorialReset();
+
 	//トータルタイムリセット
 	void TotalTimeReset();
 
@@ -151,6 +155,11 @@ private:
 
 	//リザルト初期化フラグ
 	bool isStartedResultAnimation_;
+
+	//チュートリアルで死んだとき用の秒
+	int32_t saveTutorialSeconds_;
+	//チュートリアルで死んだとき用の分
+	int32_t saveTutorialMinutes_;
 
 	//時間を計るかどうか
 	bool isTimed_;

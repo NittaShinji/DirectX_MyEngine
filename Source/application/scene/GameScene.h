@@ -154,5 +154,8 @@ private:
 
 	//リザルト画像
 	std::unique_ptr<ResultSprite> resultSprite_ = nullptr;
+
+	//ゲームをクリアしたかどうか
+	static bool isClearGame_;
 };
 

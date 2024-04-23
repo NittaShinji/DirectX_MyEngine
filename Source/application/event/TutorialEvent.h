@@ -11,20 +11,44 @@ class Player;
 /// </summary>
 class TutorialEvent
 {
+
+public: 
+
+	enum class EventSavePoint
+	{
+		First,
+		LongJump,
+		ColorChange,
+		JumpColorChange,
+		Finish,
+	};
+
 public:
 
 	//初期化
-	void Initialzie(Player* player);
+	void Initialzie(Player* player, Camera* camera);
 	//更新
-	void Update(Camera* camera);
+	void Update();
 	//描画
 	void Draw();
-	//リセット
-	void Reset();
+	//全てのイベントをリセット
+	void AllEventReset();
+	//セーブポイントに沿ったイベントをリセット
+	void ResetEventforSavePoint();
+
+	void CalcSavePoint(Event* event);
+
+	void SetEventSavePoint(EventSavePoint eventSavePoint) { eventSavePoint_ = eventSavePoint; }
+
+public:
+
+	//中間地点の数
+	static const int32_t kMaxIntermediateEventNum = 3;
 	
 private: //メンバ変数
 
 	Player* player_ = nullptr;
+	Camera* camera_ = nullptr;
 
 	//スタートイベント
 	std::unique_ptr<Event> startEvent_ = nullptr;
@@ -45,6 +69,7 @@ private: //メンバ変数
 	std::unique_ptr<Event> jumptoChangeEvent_ = nullptr;
 	//ジャンプ後の色変えイベント
 	std::unique_ptr<Event> changeColorEvent_ = nullptr;
-
+	//現在どこまでステージをクリアしたかを保存
+	EventSavePoint eventSavePoint_;
 };
 

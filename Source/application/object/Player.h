@@ -100,6 +100,9 @@ public:
 	bool ResetValue(float& value, const float defaultValue, const float changeValue);
 	void ResetVector3Value(Vector3& value, const Vector3 defaultValue, const float changeValue, bool& isStartToReset);
 
+	//死んだときの処理
+	void UpdateWhenDead();
+
 private: //定数
 
 	//最大ジャンプ回数
@@ -335,5 +338,7 @@ public: //アクセッサ
 	void SetIsRightAxcell(bool isRightAxcell) { isRightAxcell_ = isRightAxcell; }
 	//ステージの端にいるかどうか
 	void SetIsWithStageEdge(bool isWithStageEdge) { isWithStageEdge_ = isWithStageEdge; }
+	//プレイヤーの色をセット
+	void SetAttributeColor(Attribute AttributeColor) { attributeColor_ = AttributeColor; }
 };
 

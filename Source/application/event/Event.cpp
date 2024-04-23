@@ -43,7 +43,6 @@ void Event::Reset()
 	isPushedButton_ = false;
 	isClearSprite_ = false;
 	buttonTimer_ = buttonAnimeTime_;
-	isCompletedAlready_ = false;
 	isDisplayBillboard_ = false;
 	
 	for (auto& billBoard : eventBillboard_)

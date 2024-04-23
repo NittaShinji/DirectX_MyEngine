@@ -59,8 +59,11 @@ public:
 	const Matrix4& GetMatView() const { return matView_; }
 	const Matrix4& GetMatProjection() const { return matProjection_; }
 	const Vector3& GetEye() const { return eye_; }
+	const Vector3& GetTarget() const { return target_; }
 	const Matrix4& GetMatBillboard() const { return matBillboard; }
 	const Matrix4& GetMatBillboardY() const { return matBillboardY; }
 
+	//セッター
+	void SetEye(Vector3 eye) { eye_ = eye; };
+	void SetTarget(Vector3 target) { target_ = target; };
 };
-

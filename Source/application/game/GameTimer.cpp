@@ -378,11 +378,11 @@ void GameTimer::InGameUpdate(bool isStart, bool isFinish,bool isReachedStageEdge
 	else
 	{
 		gameSeconds_ = 0;
-		for(size_t i = 0; i < kTimerDigits_; i++)
+		/*for(size_t i = 0; i < kTimerDigits_; i++)
 		{
 			inGameDisPlayTime_[i] = { 0 };
 			SetNumber(inGameDisPlayTime_[i], inGameNum[i].get());
-		}
+		}*/
 	}
 }
 
@@ -505,6 +505,11 @@ void GameTimer::Reset()
 		resultDisPlaytime[i] = { 0 };
 		SetNumber(resultDisPlaytime[i], resultNum[i].get());
 	}
+}
+
+void GameTimer::TutorialReset()
+{
+	
 }
 
 //ステージ1～2までの合計タイムも消す

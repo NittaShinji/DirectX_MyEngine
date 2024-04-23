@@ -503,29 +503,17 @@ void Player::OnCollision(const CollisionInfo& info)
 			if(isRightAxcell_ == true) {}
 			else
 			{
-				isLanded_ = false;
-				isDead_ = true;
-				if(isSetDeadPos_ == false)
-				{
-					deadPos_ = transform_;
-					isSetDeadPos_ = true;
-				}
+				UpdateWhenDead();
 			}
 		}
 		else
 		{
-			isLanded_ = false;
-			isDead_ = true;
 			if(deadSound_->GetIsSounded() == false)
 			{
 				deadSound_->PlaySoundWave(false);
 			}
 			
-			if(isSetDeadPos_ == false)
-			{
-				deadPos_ = transform_;
-				isSetDeadPos_ = true;
-			}
+			UpdateWhenDead();
 		}
 	}
 	//下からプレイヤーと同じ色のオブジェクトと当たった場合
@@ -551,6 +539,22 @@ void Player::OnCollision(const CollisionInfo& info)
 
 			//加速
 			fallVec_.y = 0.0f;
+		}
+	}
+
+	//色が本体の色と違っていれば死亡判定にする
+	if (attributeColor_ == pink)
+	{
+		if (color_ != kTitlePinkOBJColor)
+		{
+			UpdateWhenDead();
+		}
+	}
+	else if (attributeColor_ == yellow)
+	{
+		if (color_ != kYellowOBJColor)
+		{
+			UpdateWhenDead();
 		}
 	}
 }
@@ -891,5 +895,16 @@ void Player::ResetVector3Value(Vector3& value, const Vector3 defaultValue, const
 	if(isResetedX == true && isResetedY == true && isResetedZ == true)
 	{
 		isStartToReset = false;
+	}
+}
+
+void Player::UpdateWhenDead()
+{
+	isLanded_ = false;
+	isDead_ = true;
+	if (isSetDeadPos_ == false)
+	{
+		deadPos_ = transform_;
+		isSetDeadPos_ = true;
 	}
 }
