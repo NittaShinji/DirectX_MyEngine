@@ -363,6 +363,9 @@
     <ClCompile Include="Source\application\game\ResourceLoader.cpp">
       <Filter>ソース ファイル\application\game</Filter>
     </ClCompile>
+    <ClCompile Include="Source\application\Effect\AccelEffect.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -607,6 +610,9 @@
     </ClInclude>
     <ClInclude Include="Source\application\game\ResourceLoader.h">
       <Filter>ヘッダー ファイル\application\game</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\application\Effect\AccelEffect.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

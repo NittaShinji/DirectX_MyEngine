@@ -28,6 +28,7 @@
 #include "GameSprite.h"
 #include "ResultSprite.h"
 #include "Billboard.h"
+#include "AccelEffect.h"
 
 namespace NsEngine
 {
@@ -154,6 +155,9 @@ private:
 
 	//リザルト画像
 	std::unique_ptr<ResultSprite> resultSprite_ = nullptr;
+
+	//加速演出
+	std::unique_ptr<AccelEffect> accelEffect_ = nullptr;
 
 	//ゲームをクリアしたかどうか
 	static bool isClearGame_;

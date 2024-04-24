@@ -164,6 +164,9 @@ private: //定数
 
 	//プレイヤーの衝突範囲(加速判定などもあるので球コライダーの半径より大きめに)
 	const float kCollisionArea_ = 30.0f;
+
+	//加速距離
+	const float kAccelDistance_ = 4.9f;
 	
 private:
 
@@ -288,8 +291,13 @@ private:
 	float axcellExtensionTime_ = 0.0f;
 
 	//加速できるかどうか
-	bool canAxcel_ = false;
-	
+	bool canAccel_ = false;
+	//加速できる色か
+	bool isAccelColor_;
+
+	//プレイヤーと床までの距離
+	float distanceFloor = 0.0f;
+
 	GameSpeed* gameSpeed_ = nullptr;
 
 	//サウンド
@@ -336,7 +344,13 @@ public: //アクセッサ
 	//色変え入力を受け付けるかどうかを取得
 	bool GetCanInputColor() const { return canInputColor_; }
 	//加速できるかどうかを取得
-	bool GetCanAxcell() const { return canAxcel_; }
+	bool GetCanAccel() const { return canAccel_; }
+	//加速できるかどうかを取得
+	bool GetIsAccelColor() const { return isAccelColor_; }
+	//地面までの距離を取得
+	float GetDistanceFloor() const { return distanceFloor; }
+	//加速までの距離を取得
+	float GetAccelDistance() const { return kAccelDistance_; }
 
 	//動いているかどうかをセットする
 	void SetIsMoving(bool isMoving) { isMoving_ = isMoving; }

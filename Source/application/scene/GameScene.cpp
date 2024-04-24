@@ -122,6 +122,9 @@ void GameScene::Initialize()
 	{
 		tutorialEvent_->Initialzie(player_.get(), gameCamera_.get());
 	}
+
+	accelEffect_ = std::make_unique<AccelEffect>();
+	accelEffect_->Initialize(player_.get(), "circle.png", Billboard::BillboardType::Yaxis);
 }
 
 void GameScene::Update()
@@ -213,6 +216,7 @@ void GameScene::Update()
 	//カメラの切り替え
 	player_->Update(gameCamera_.get());
 	mirrorPlayer_->Update(gameCamera_.get());
+	accelEffect_->Update(gameCamera_.get());
 
 	//背景オブジェクトの更新
 	stage_->Update(gameCamera_.get(), player_.get(), gameSpeed_.get());
@@ -350,6 +354,8 @@ void GameScene::Draw()
 
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
+
+	accelEffect_->Draw();
 
 	//3Dオブジェクト描画
 	Object3d::BeforeDraw();

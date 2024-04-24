@@ -182,7 +182,7 @@ void TutorialEvent::Update()
 			if (axcellEvent_->GetIsFinish() == false)
 			{
 				//加速ができる状態の時に時しかボタンを押せないように
-				if (player_->GetCanAxcell() == false) 
+				if (player_->GetCanAccel() == false) 
 				{
 					player_->SetCanInputJump(false);
 					player_->SetCanInputColor(false);
@@ -314,7 +314,18 @@ void TutorialEvent::ResetEventforSavePoint()
 void TutorialEvent::CalcSavePoint(Event* event)
 {
 	Vector3 playerPos = player_->GetTransform();
-	if (eventSavePoint_ == EventSavePoint::ColorChange)
+
+	if (eventSavePoint_ == EventSavePoint::First)
+	{
+		const float startPosZ = 2.0f;
+		playerPos.z = startPosZ;
+	}
+	else if (eventSavePoint_ == EventSavePoint::LongJump)
+	{
+		const float startPosZ = event->GetStartPosZ() + 10.0f;
+		playerPos.z = startPosZ;
+	}
+	else if (eventSavePoint_ == EventSavePoint::ColorChange)
 	{
 		const float startPosY = 7.5f;
 		const float startPosZ = event->GetStartPosZ() - 80.0f;

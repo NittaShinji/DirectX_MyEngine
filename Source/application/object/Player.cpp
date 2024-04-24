@@ -229,6 +229,7 @@ void Player::Update(Camera* camera)
 		//接地状態
 		if (onGround_)
 		{
+			distanceFloor = 0.0f;
 			isGroundRotate_ = true;
 			isJumped_ = true;
 			if (isDuringAnimation_ == false)
@@ -565,6 +566,27 @@ void Player::AccelerateChangeColor()
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
+	if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 10.0f))
+	{
+		if (attributeColor_ == yellow && isFinish_ == false && canInputColor_ == true)
+		{
+			isAccelColor_ = true;
+			distanceFloor = std::abs(raycastHit.distance);
+		}
+	}
+	else if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 10.0f))
+	{
+		if (attributeColor_ == pink && isFinish_ == false && canInputColor_ == true)
+		{
+			isAccelColor_ = true;
+			distanceFloor = std::abs(raycastHit.distance);
+		}
+	}
+	else
+	{
+		isAccelColor_ = false;
+	}
+
 	if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 4.4f))
 	{
 		//色を変える
@@ -583,8 +605,8 @@ void Player::AccelerateChangeColor()
 
 		if (attributeColor_ == yellow && isRightAxcell_ == false && isFinish_ == false)
 		{
-			canAxcel_ = true;
-			Vector3 axcelColor = { 0.498f,0.839f,0.969f };
+			canAccel_ = true;
+			Vector3 axcelColor = { 0.8f,0.8f,0.8f };
 			SetColor(axcelColor);
 		}
 		else
@@ -610,8 +632,8 @@ void Player::AccelerateChangeColor()
 
 		if (attributeColor_ == pink && isRightAxcell_ == false && isFinish_ == false)
 		{
-			canAxcel_ = true;
-			Vector3 axcelColor = { 0.498f,0.839f,0.969f };
+			canAccel_ = true;
+			Vector3 axcelColor = { 0.8f,0.8f,0.8f };
 			SetColor(axcelColor);
 		}
 		else
@@ -621,7 +643,7 @@ void Player::AccelerateChangeColor()
 	}
 	else
 	{
-		canAxcel_ = false;
+		canAccel_ = false;
 		if (attributeColor_ == pink && isRightAxcell_ == false && isFinish_ == false)
 		{
 			SetColor(kTitlePinkOBJColor);
@@ -709,7 +731,8 @@ void Player::Reset()
 	rotateYTimer_ = kRotateYTime_;
 	canInputColor_ = true;
 	canInputJump_ = true;
-	canAxcel_ = false;
+	canAccel_ = false;
+	isAccelColor_ = false;
 
 	isLongJump_ = false;
 	isJumped_ = false;
@@ -750,6 +773,7 @@ void Player::ImGuiUpdate()
 	ImGui::SliderFloat("PlayerRotationX", &rotation_.x, kImGuiRotateRate.x, kImGuiRotateRate.y);
 	ImGui::SliderFloat("PlayerRotationY", &rotation_.y, kImGuiRotateRate.x, kImGuiRotateRate.y);
 	ImGui::SliderFloat("PlayerRotationZ", &rotation_.z, kImGuiRotateRate.x, kImGuiRotateRate.y);
+	ImGui::SliderFloat("isAccelColor_", &distanceFloor, kImGuiPosRate.x, kImGuiPosRate.y);
 
 	Object3d::SetScale(scale_);
 

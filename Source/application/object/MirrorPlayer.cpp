@@ -43,18 +43,8 @@ void MirrorPlayer::Update(Camera* camera)
 	transform_.y = -transform_.y - kMirrorDistance_;
 
 	//プレイヤーの色に応じて、色を変更
-	if(player_->GetAttributeColor() == Attribute::pink)
-	{
-		SetColor(kTitlePinkOBJColor);
-	}
-	else if(player_->GetAttributeColor() == Attribute::yellow)
-	{
-		SetColor(kYellowOBJColor);
-	}
-	else
-	{
-		SetColor(kBlackOBJColor);
-	}
+	Vector3 color = player_->GetColor();
+	SetColor(color);
 
 	//行列の更新
 	Object3d::SetTransform(transform_);

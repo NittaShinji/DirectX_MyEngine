@@ -228,6 +228,9 @@ public: //アクセッサ
 	Vector3 GetTransform() { return transform_; }
 	//初期位置を取得
 	Vector3 GetInitPos() { return initPos_; }
+	//色を取得
+	Vector3 GetColor() { return color_; }
+
 
 	//平行移動をセット
 	void SetTransform(const Vector3& pos) { transform_ = pos; };

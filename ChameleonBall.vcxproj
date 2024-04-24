@@ -62,7 +62,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;$(ProjectDir)\Source\application\effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -85,7 +85,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\particle;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\postEffect;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;$(ProjectDir)\Source\application\Effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -100,6 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\application\Effect\AccelEffect.cpp" />
     <ClCompile Include="Source\application\game\ResourceLoader.cpp" />
     <ClCompile Include="Source\engine\2d\Billboard.cpp" />
     <ClCompile Include="Source\application\debugText\ImGuiManager.cpp" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Source\application\object\StageBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\application\Effect\AccelEffect.h" />
     <ClInclude Include="Source\application\game\ResourceLoader.h" />
     <ClInclude Include="Source\engine\2d\Billboard.h" />
     <ClInclude Include="Source\application\debugText\ImGuiManager.h" />
