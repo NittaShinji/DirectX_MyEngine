@@ -262,6 +262,7 @@ void Player::Update(Camera* camera)
 		//落下状態
 		else if (fallVec_.y <= 0.0f)
 		{
+			CheckPlayerCanAccelColor();
 			AccelerateChangeColor();
 
 			if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, colliderTwoTimesSize) ||
@@ -281,6 +282,10 @@ void Player::Update(Camera* camera)
 				//行列の更新など
 				Object3d::SetTransform(transform_);
 			}
+		}
+		else
+		{
+			CheckPlayerCanAccelColor();
 		}
 
 		//落下処理
@@ -566,27 +571,6 @@ void Player::AccelerateChangeColor()
 	ray.dir = { 0,-1,0 };
 	RaycastHit raycastHit;
 
-	if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 10.0f))
-	{
-		if (attributeColor_ == yellow && isFinish_ == false && canInputColor_ == true)
-		{
-			isAccelColor_ = true;
-			distanceFloor = std::abs(raycastHit.distance);
-		}
-	}
-	else if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 10.0f))
-	{
-		if (attributeColor_ == pink && isFinish_ == false && canInputColor_ == true)
-		{
-			isAccelColor_ = true;
-			distanceFloor = std::abs(raycastHit.distance);
-		}
-	}
-	else
-	{
-		isAccelColor_ = false;
-	}
-
 	if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 4.4f))
 	{
 		//色を変える
@@ -733,7 +717,6 @@ void Player::Reset()
 	canInputJump_ = true;
 	canAccel_ = false;
 	isAccelColor_ = false;
-
 	isLongJump_ = false;
 	isJumped_ = false;
 	isDuringAnimation_ = false;
@@ -959,5 +942,53 @@ void Player::UpdateWhenDead()
 	{
 		deadPos_ = transform_;
 		isSetDeadPos_ = true;
+	}
+}
+
+void Player::CheckPlayerCanAccelColor()
+{
+	if (isFinish_ == false)
+	{
+		//球コライダーを取得
+		SphereCollider* sphereCollider = static_cast<SphereCollider*>(playerCollider_.get());
+		assert(sphereCollider);
+
+		//球の上端から球の下端までのレイキャスト用レイを準備
+		Ray ray;
+		ray.start = sphereCollider->center;
+		//下方向への方向を球1個分ずらす
+		ray.start.y -= sphereCollider->GetRadius();
+		ray.dir = { 0,-1,0 };
+		RaycastHit raycastHit;
+
+		//プレイヤーが加速できる色かを調べる
+		if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 10.0f))
+		{
+			if (attributeColor_ == yellow)
+			{
+				isAccelColor_ = true;
+				distanceFloor = std::abs(raycastHit.distance);
+			}
+			else if (attributeColor_ == pink)
+			{
+				isAccelColor_ = false;
+			}
+		}
+		else if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 10.0f))
+		{
+			if (attributeColor_ == pink)
+			{
+				isAccelColor_ = true;
+				distanceFloor = std::abs(raycastHit.distance);
+			}
+			else if (attributeColor_ == yellow)
+			{
+				isAccelColor_ = false;
+			}
+		}
+		else
+		{
+			isAccelColor_ = false;
+		}
 	}
 }

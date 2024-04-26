@@ -103,6 +103,9 @@ public:
 	//死んだときの処理
 	void UpdateWhenDead();
 
+	//加速できる色かチェックする
+	void CheckPlayerCanAccelColor();
+
 private: //定数
 
 	//最大ジャンプ回数
