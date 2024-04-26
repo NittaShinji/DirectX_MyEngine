@@ -23,16 +23,6 @@ void AccelEffect::Update(Camera* camera)
 	Vector3 pos = player_->GetTransform();
 	axcellBillboard_->SetPos(pos);
 
-	/*if (player_->GetCanAccel() == true)
-	{
-		color_.w += 0.05f;
-	}
-	else
-	{
-		color_.w = 0.0f;
-	}*/
-
-
 	if (player_->GetIsAccelColor())
 	{
 		color_.w += 0.05f;

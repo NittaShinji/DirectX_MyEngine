@@ -83,7 +83,7 @@ void TutorialEvent::Initialzie(Player* player, Camera* camera)
 	const float kEndAxcellEventPos_ = 1000;
 	axcellEvent_ = std::make_unique<Event>();
 	axcellEvent_->Initialzie(kStartAxcellEventPos_, kEndAxcellEventPos_);
-	axcellEvent_->AddBillboard("bButton.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
+	axcellEvent_->AddBillboard("xboxLt.png", Billboard::BillboardType::Yaxis, Vector3(0.0f, 5.0f, player->GetTransform().z), 2.5f, Vector4(1.0f, 1.0f, 1.0f, 0.925f));
 }
 
 void TutorialEvent::Update()

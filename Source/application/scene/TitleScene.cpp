@@ -202,7 +202,7 @@ void TitleScene::Update()
 	//ゲームパッドが繋がっているかどうか
 	if(gamePad_->IsConnected(Player1)) {}
 
-	if(gamePad_->HasPushedButton(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_RETURN))
+	if(gamePad_->HasPushedButton(XINPUT_GAMEPAD_A) || keys_->PushedKeyMoment(DIK_SPACE))
 	{
 		//一度だけ鳴らす
 		if (touchSound_->GetIsSounded() == false)
