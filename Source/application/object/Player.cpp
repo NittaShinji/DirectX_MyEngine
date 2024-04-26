@@ -100,7 +100,6 @@ void Player::Update(Camera* camera)
 				//長押しの場合滑空するように
 				if (keys_->HasPushedKey(DIK_SPACE) == true || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
 				{
-
 					//下向き加速度　
 					const float fallAcc = -0.015f;
 					const float fallVYMin = -0.5f;
@@ -115,7 +114,6 @@ void Player::Update(Camera* camera)
 						//加速
 						fallVec_.y = max(fallVec_.y + fallAcc, fallVYMin);
 					}
-
 				}
 				else
 				{
@@ -319,14 +317,8 @@ void Player::Update(Camera* camera)
 					attributeColor_ = Attribute::pink;
 					SetColor(kTitlePinkOBJColor);
 				}
-				else
-				{
-					attributeColor_ = Attribute::black;
-					SetColor(kBlackOBJColor);
-				}
 			}
 		}
-
 
 		//ロングジャンプの処理
 		if (keys_->PushedKeyMoment(DIK_SPACE) == true || gamePad_->PushedButtonMoment(XINPUT_GAMEPAD_A))
@@ -573,37 +565,38 @@ void Player::AccelerateChangeColor()
 
 	if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 4.4f))
 	{
-		//色を変える
-		if (keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
+		if (attributeColor_ == yellow)
 		{
-			if (attributeColor_ == yellow && isFinish_ == false && canInputColor_ == true)
+			//ボタンで加速する処理
+			if (keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
 			{
-				//加速していなかったら加速フラグを立てる
-				if (isRightAxcell_ == false)
+				if (isFinish_ == false && canInputColor_ == true)
 				{
-					isRightAxcell_ = true;
-					axcellTimer_ = kAxcellTime_;
+					//加速していなかったら加速フラグを立てる
+					if (isRightAxcell_ == false)
+					{
+						isRightAxcell_ = true;
+						axcellTimer_ = kAxcellTime_;
+					}
 				}
 			}
-		}
-
-		if (attributeColor_ == yellow && isRightAxcell_ == false && isFinish_ == false)
-		{
-			canAccel_ = true;
-			Vector3 axcelColor = { 0.8f,0.8f,0.8f };
-			SetColor(axcelColor);
-		}
-		else
-		{
-			SetColor(kTitlePinkOBJColor);
+			//加速できる状態で加速できることを示す色に変更する
+			if (isRightAxcell_ == false)
+			{
+				ChangeColorWhiteforAccel();
+			}
+			else
+			{
+				SetColor(kTitlePinkOBJColor);
+			}
 		}
 	}
 	else if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 4.4f))
 	{
-		//色を変える
-		if (keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
+		if (attributeColor_ == pink)
 		{
-			if (attributeColor_ == pink)
+			//ボタンで加速する処理
+			if (keys_->PushedKeyMoment(DIK_RETURN) || gamePad_->PushedLeftTriggerMoment())
 			{
 				//加速していなかったら加速フラグを立てる
 				if (isRightAxcell_ == false && isFinish_ == false && canInputColor_ == true)
@@ -612,29 +605,31 @@ void Player::AccelerateChangeColor()
 					axcellTimer_ = kAxcellTime_;
 				}
 			}
-		}
-
-		if (attributeColor_ == pink && isRightAxcell_ == false && isFinish_ == false)
-		{
-			canAccel_ = true;
-			Vector3 axcelColor = { 0.8f,0.8f,0.8f };
-			SetColor(axcelColor);
-		}
-		else
-		{
-			SetColor(kYellowOBJColor);
+			//色を変える
+			if (isRightAxcell_ == false)
+			{
+				ChangeColorWhiteforAccel();
+			}
+			else
+			{
+				SetColor(kYellowOBJColor);
+			}
 		}
 	}
 	else
 	{
+		//加速できない状態の時
 		canAccel_ = false;
-		if (attributeColor_ == pink && isRightAxcell_ == false && isFinish_ == false)
+		if (isRightAxcell_ == false && isFinish_ == false)
 		{
-			SetColor(kTitlePinkOBJColor);
-		}
-		else if (attributeColor_ == yellow && isRightAxcell_ == false && isFinish_ == false)
-		{
-			SetColor(kYellowOBJColor);
+			if (attributeColor_ == pink)
+			{
+				SetColor(kTitlePinkOBJColor);
+			}
+			else if (attributeColor_ == yellow)
+			{
+				SetColor(kYellowOBJColor);
+			}
 		}
 	}
 }
@@ -852,27 +847,21 @@ void Player::LongJump()
 	}
 	else if (keys_->HasPushedKey(DIK_SPACE) || gamePad_->HasPushedButton(XINPUT_GAMEPAD_A))
 	{
-		if (canInputJump_ == true)
+		if (canInputJump_ == true && isLongJump_ == true && isJumped_ == true)
 		{
-			if (isLongJump_ == true)
-			{
-				if (isJumped_ == true)
-				{
-					const float jumpIncrease = 0.015f;
+			const float jumpIncrease = 0.015f;
 
-					if (jumpTotalValue_ < kMaxJumpValue_)
-					{
-						//加速
-						jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
-						fallVec_.y = jumpTotalValue_;
-					}
-					else
-					{
-						jumpTotalValue_ = kMaxJumpValue_;
-						isJumped_ = false;
-						isLongJump_ = false;
-					}
-				}
+			if (jumpTotalValue_ < kMaxJumpValue_)
+			{
+				//加速
+				jumpTotalValue_ = min(jumpTotalValue_ + jumpIncrease, kMaxJumpValue_);
+				fallVec_.y = jumpTotalValue_;
+			}
+			else
+			{
+				jumpTotalValue_ = kMaxJumpValue_;
+				isJumped_ = false;
+				isLongJump_ = false;
 			}
 		}
 	}
@@ -990,5 +979,15 @@ void Player::CheckPlayerCanAccelColor()
 		{
 			isAccelColor_ = false;
 		}
+	}
+}
+
+void Player::ChangeColorWhiteforAccel()
+{
+	if (isRightAxcell_ == false)
+	{
+		canAccel_ = true;
+		Vector3 axcelColor = { 0.8f,0.8f,0.8f };
+		SetColor(axcelColor);
 	}
 }

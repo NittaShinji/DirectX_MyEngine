@@ -106,6 +106,9 @@ public:
 	//加速できる色かチェックする
 	void CheckPlayerCanAccelColor();
 
+	//加速できる状態で加速できることを示す白色に変更する
+	void ChangeColorWhiteforAccel();
+
 private: //定数
 
 	//最大ジャンプ回数
