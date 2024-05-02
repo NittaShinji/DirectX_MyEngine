@@ -950,8 +950,11 @@ void Player::CheckPlayerCanAccelColor()
 		ray.dir = { 0,-1,0 };
 		RaycastHit raycastHit;
 
+		//加速演出を出す高さのライン
+		const float accelEffectLine = 12.5f;
+
 		//プレイヤーが加速できる色かを調べる
-		if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * 10.0f))
+		if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_PINK, &raycastHit, sphereCollider->GetRadius() * accelEffectLine))
 		{
 			if (attributeColor_ == yellow)
 			{
@@ -963,7 +966,7 @@ void Player::CheckPlayerCanAccelColor()
 				isAccelColor_ = false;
 			}
 		}
-		else if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * 10.0f))
+		else if (CollisionManager::GetInstance()->Raycast(ray, COLLISION_ATTR_YELLOW, &raycastHit, sphereCollider->GetRadius() * accelEffectLine))
 		{
 			if (attributeColor_ == pink)
 			{

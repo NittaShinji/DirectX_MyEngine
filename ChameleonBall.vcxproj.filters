@@ -363,7 +363,7 @@
     <ClCompile Include="Source\application\game\ResourceLoader.cpp">
       <Filter>ソース ファイル\application\game</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\Effect\AccelEffect.cpp">
+    <ClCompile Include="Source\application\effect\AccelEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -611,7 +611,7 @@
     <ClInclude Include="Source\application\game\ResourceLoader.h">
       <Filter>ヘッダー ファイル\application\game</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\Effect\AccelEffect.h">
+    <ClInclude Include="Source\application\effect\AccelEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

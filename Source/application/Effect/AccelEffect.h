@@ -20,6 +20,7 @@ private:
 
 	const float kMaxScale_ = 10.0f;
 	const float kMinScale_ = 1.0f;
+	const float kMaxAlpha_ = 0.9f;
 	const Vector4 kDefaultColor_ = {1.0f,1.0f,1.0f,1.0f};
 
 private:

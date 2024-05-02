@@ -710,7 +710,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Pink"
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -765,7 +765,7 @@
                 "translation": [
                     -327.47100830078125,
                     0.0,
-                    7.0
+                    11.5
                 ],
                 "rotation": [
                     0.0,
@@ -779,7 +779,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -788,7 +788,7 @@
                 "translation": [
                     -347.47100830078125,
                     0.0,
-                    7.0
+                    11.5
                 ],
                 "rotation": [
                     0.0,
@@ -802,7 +802,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -811,7 +811,7 @@
                 "translation": [
                     -407.385986328125,
                     0.0,
-                    7.0
+                    11.5
                 ],
                 "rotation": [
                     0.0,
@@ -825,7 +825,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -834,7 +834,7 @@
                 "translation": [
                     -387.385986328125,
                     0.0,
-                    7.0
+                    11.5
                 ],
                 "rotation": [
                     0.0,
@@ -848,7 +848,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -871,7 +871,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -894,7 +894,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Black"
         },
         {
             "type": "MESH",
@@ -1032,7 +1032,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1055,7 +1055,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1078,7 +1078,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1101,7 +1101,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1124,7 +1124,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1262,7 +1262,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1285,7 +1285,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1308,7 +1308,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1331,7 +1331,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1354,7 +1354,7 @@
                 ]
             },
             "file_name": "StageBlock",
-            "attribute": "Yellow"
+            "attribute": "Pink"
         },
         {
             "type": "MESH",
@@ -1427,52 +1427,6 @@
         },
         {
             "type": "MESH",
-            "name": "立方体.045",
-            "transform": {
-                "translation": [
-                    -1005.790283203125,
-                    6.671278640624223e-08,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "StageBlock",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
-            "name": "立方体.046",
-            "transform": {
-                "translation": [
-                    -985.790283203125,
-                    6.671278640624223e-08,
-                    4.0
-                ],
-                "rotation": [
-                    0.0,
-                    -0.0,
-                    0.0
-                ],
-                "scaling": [
-                    1.0,
-                    1.0,
-                    1.0
-                ]
-            },
-            "file_name": "StageBlock",
-            "attribute": "Pink"
-        },
-        {
-            "type": "MESH",
             "name": "立方体.047",
             "transform": {
                 "translation": [
@@ -1522,7 +1476,7 @@
             "name": "立方体.050",
             "transform": {
                 "translation": [
-                    -1014.2001953125,
+                    -1024.2001953125,
                     6.671278640624223e-08,
                     -2.0
                 ],
@@ -1532,7 +1486,7 @@
                     0.0
                 ],
                 "scaling": [
-                    1.0,
+                    0.5,
                     1.0,
                     1.0
                 ]

@@ -100,7 +100,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\application\Effect\AccelEffect.cpp" />
+    <ClCompile Include="Source\application\effect\AccelEffect.cpp" />
     <ClCompile Include="Source\application\game\ResourceLoader.cpp" />
     <ClCompile Include="Source\engine\2d\Billboard.cpp" />
     <ClCompile Include="Source\application\debugText\ImGuiManager.cpp" />
@@ -174,7 +174,7 @@
     <ClCompile Include="Source\application\object\StageBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\application\Effect\AccelEffect.h" />
+    <ClInclude Include="Source\application\effect\AccelEffect.h" />
     <ClInclude Include="Source\application\game\ResourceLoader.h" />
     <ClInclude Include="Source\engine\2d\Billboard.h" />
     <ClInclude Include="Source\application\debugText\ImGuiManager.h" />
