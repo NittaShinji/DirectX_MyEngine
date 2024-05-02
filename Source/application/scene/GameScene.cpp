@@ -263,7 +263,7 @@ void GameScene::Update()
 	collisionManager_->CheckAllCollisions();
 
 	//ゴールに触れたら
-	if(player_->GetIsFinish() == true)
+	if(player_->GetIsFinish() == true && player_->GetIsDead() == false)
 	{
 		player_->SetIsWithStageEdge(false);
 		GameTimer::GetInstance()->SetIsTImed(false);

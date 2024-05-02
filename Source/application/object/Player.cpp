@@ -289,7 +289,10 @@ void Player::Update(Camera* camera)
 		//落下処理
 		if (transform_.y <= deadLine_)
 		{
-			isDead_ = true;
+			if (isFinish_ == false)
+			{
+				isDead_ = true;
+			}
 			isLanded_ = true;
 			//死亡時に一度だけ鳴らす
 			if (deadSound_->GetIsSounded() == false)
@@ -495,6 +498,11 @@ void Player::OnCollision(const CollisionInfo& info)
 		isRightAxcell_ = true;
 		isFinish_ = true;
 		isDead_ = false;
+		if (attributeColor_ == Attribute::yellow)
+		{
+			attributeColor_ = Attribute::pink;
+			SetColor(kTitlePinkOBJColor);
+		}
 	}
 	//色が違う場合、死亡判定にする
 	else if (info.object->GetAttributeColor() != attributeColor_ && isMoving_ == true)
@@ -926,11 +934,14 @@ void Player::ResetVector3Value(Vector3& value, const Vector3 defaultValue, const
 void Player::UpdateWhenDead()
 {
 	isLanded_ = false;
-	isDead_ = true;
-	if (isSetDeadPos_ == false)
+	if (isFinish_ == false)
 	{
-		deadPos_ = transform_;
-		isSetDeadPos_ = true;
+		isDead_ = true;
+		if (isSetDeadPos_ == false)
+		{
+			deadPos_ = transform_;
+			isSetDeadPos_ = true;
+		}
 	}
 }
 

@@ -1381,6 +1381,29 @@
         },
         {
             "type": "MESH",
+            "name": "立方体.142",
+            "transform": {
+                "translation": [
+                    -995.8892211914062,
+                    6.671278640624223e-08,
+                    -2.0
+                ],
+                "rotation": [
+                    0.0,
+                    -0.0,
+                    0.0
+                ],
+                "scaling": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            "file_name": "StageBlock",
+            "attribute": "Yellow"
+        },
+        {
+            "type": "MESH",
             "name": "立方体.043",
             "transform": {
                 "translation": [
