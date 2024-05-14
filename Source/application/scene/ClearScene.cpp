@@ -25,7 +25,7 @@ void ClearScene::Initialize()
 	end_->Initialize("WhiteTex", titlePosition);
 
 	const Vector2 aButtonSize = { 128.0f,128.0f };
-	const Vector2 aButtonPosition = { 576.0f,514.0f };
+	const Vector2 aButtonPosition = { 576.0f,530.0f };
 	aButton_->Initialize("aButton.png", aButtonPosition);
 	aButton_->SetSize(Vector2(aButtonSize));
 
