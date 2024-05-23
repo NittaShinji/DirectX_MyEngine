@@ -11,7 +11,7 @@ AccelEffect::~AccelEffect()
 void AccelEffect::Initialize(Player* player, const std::string& fileName, const Billboard::BillboardType& billBoardtype)
 {
 	player_ = player;
-	color_ = {1.0f,1.0f,1.0f,1.0f};
+	color_ = kDefaultColor_;
 	scale_ = kMaxScale_;
 	axcellBillboard_ = Billboard::Create(fileName, billBoardtype);
 	axcellBillboard_->SetPos(player_->GetTransform());
@@ -59,11 +59,13 @@ void AccelEffect::Update(Camera* camera)
 		}
 	}
 
+	//更新
 	axcellBillboard_->Update(camera);
 }
 
 void AccelEffect::Draw()
 {
+	//ビルボード描画
 	axcellBillboard_->PreDraw();
 	axcellBillboard_->Draw();
 }
