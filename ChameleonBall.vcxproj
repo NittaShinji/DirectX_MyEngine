@@ -62,7 +62,7 @@
       <ConformanceMode>true</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;$(ProjectDir)\Source\application\effects;$(ProjectDir)\Source\application\effects\postEffect;$(ProjectDir)\Source\application\effects\particle;$(ProjectDir)\Source\application\effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\object\player;$(ProjectDir)\Source\application\object\stageObject;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;$(ProjectDir)\Source\application\effects;$(ProjectDir)\Source\application\effects\postEffect;$(ProjectDir)\Source\application\effects\particle;$(ProjectDir)\Source\application\effects\particle\3Dparticle;$(ProjectDir)\Source\application\effects\particle\2Dparticle;$(ProjectDir)\Source\application\effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -85,7 +85,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <TreatWarningAsError>true</TreatWarningAsError>
-      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;$(ProjectDir)\Source\application\effects;$(ProjectDir)\Source\application\effects\postEffect;$(ProjectDir)\Source\application\effects\particle;$(ProjectDir)\Source\application\Effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\Source\engine\2d;$(ProjectDir)\Source\engine\3d;$(ProjectDir)\Source\engine\audio;$(ProjectDir)\Source\engine\base;$(ProjectDir)\Source\engine\camera;$(ProjectDir)\Source\engine\collision;$(ProjectDir)\Source\engine\debugText;$(ProjectDir)\Source\engine\io;$(ProjectDir)\Source\engine\light;$(ProjectDir)\Source\engine\loader;$(ProjectDir)\Source\engine\scene;$(ProjectDir)\Source\engine\math;$(ProjectDir)\External;$(ProjectDir)\Source\application;$(ProjectDir)\Source\application\scene;$(ProjectDir)\Source\application\object;$(ProjectDir)\Source\application\object\player;$(ProjectDir)\Source\application\object\stageObject;$(ProjectDir)\Source\application\camera;$(ProjectDir)\Source\application\debugText;$(ProjectDir)\Source\application\game;$(ProjectDir)\Source\application\event;$(ProjectDir)\Source\application\sprite;$(ProjectDir)\Source\application\effects;$(ProjectDir)\Source\application\effects\postEffect;$(ProjectDir)\Source\application\effects\particle;$(ProjectDir)\Source\application\effects\particle\3Dparticle;$(ProjectDir)\Source\application\effects\particle\2Dparticle;$(ProjectDir)\Source\application\Effect;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
@@ -104,30 +104,30 @@
     <ClCompile Include="Source\application\game\ResourceLoader.cpp" />
     <ClCompile Include="Source\engine\2d\Billboard.cpp" />
     <ClCompile Include="Source\application\debugText\ImGuiManager.cpp" />
-    <ClCompile Include="Source\application\object\MirrorOBJ.cpp" />
+    <ClCompile Include="Source\application\object\stageObject\MirrorOBJ.cpp" />
     <ClCompile Include="Source\application\sprite\ResultSprite.cpp" />
-    <ClCompile Include="Source\application\object\ResultRoopStage.cpp" />
+    <ClCompile Include="Source\application\object\stageObject\ResultRoopStage.cpp" />
     <ClCompile Include="Source\application\sprite\GameSprite.cpp" />
     <ClCompile Include="Source\application\event\Event.cpp" />
-    <ClCompile Include="Source\application\object\GoalOBJ.cpp" />
+    <ClCompile Include="Source\application\object\stageObject\GoalOBJ.cpp" />
     <ClCompile Include="Source\application\game\GameTimer.cpp" />
-    <ClCompile Include="Source\application\object\MirrorPlayer.cpp" />
-    <ClCompile Include="Source\application\effects\particle\HitParticle2D.cpp" />
-    <ClCompile Include="Source\application\effects\particle\BreakParticle.cpp" />
-    <ClCompile Include="Source\application\effects\particle\SecondJump2DParticle.cpp" />
+    <ClCompile Include="Source\application\object\player\MirrorPlayer.cpp" />
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\HitParticle2D.cpp" />
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\BreakParticle.cpp" />
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\SecondJump2DParticle.cpp" />
     <ClCompile Include="Source\application\game\GameSpeed.cpp" />
     <ClCompile Include="Source\engine\2d\TextureConverter.cpp" />
-    <ClCompile Include="Source\application\effects\particle\DeadParticle.cpp" />
-    <ClCompile Include="Source\application\effects\particle\LandParticle.cpp" />
-    <ClCompile Include="Source\application\effects\particle\BlockParticle.cpp" />
-    <ClCompile Include="Source\application\effects\particle\ObjParticleEmitter.cpp" />
-    <ClCompile Include="Source\application\effects\particle\ObjParticleManager.cpp" />
-    <ClCompile Include="Source\application\effects\particle\ParticleEmitter..cpp" />
-    <ClCompile Include="Source\application\effects\particle\GroundParticle.cpp" />
-    <ClCompile Include="Source\application\object\HitWall.cpp" />
-    <ClCompile Include="Source\application\object\BackGround.cpp" />
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\DeadParticle.cpp" />
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\LandParticle.cpp" />
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\BlockParticle.cpp" />
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\ObjParticleEmitter.cpp" />
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\ObjParticleManager.cpp" />
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\ParticleEmitter..cpp" />
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\GroundParticle.cpp" />
+    <ClCompile Include="Source\application\object\stageObject\HitWall.cpp" />
+    <ClCompile Include="Source\application\object\stageObject\BackGround.cpp" />
     <ClCompile Include="Source\application\scene\ClearScene.cpp" />
-    <ClCompile Include="Source\application\effects\particle\ParticleManager.cpp" />
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\ParticleManager.cpp" />
     <ClCompile Include="Source\application\scene\StageSelect.cpp" />
     <ClCompile Include="Source\engine\math\Easing.cpp" />
     <ClCompile Include="Source\engine\math\Matrix4.cpp" />
@@ -157,7 +157,7 @@
     <ClCompile Include="Source\engine\base\WindowsAPI.cpp" />
     <ClCompile Include="Source\engine\math\MathUtillity.cpp" />
     <ClCompile Include="Source\engine\io\GamePad.cpp" />
-    <ClCompile Include="Source\application\object\Player.cpp" />
+    <ClCompile Include="Source\application\object\player\Player.cpp" />
     <ClCompile Include="Source\application\camera\GameCamera.cpp" />
     <ClCompile Include="Source\engine\3d\Mesh.cpp" />
     <ClCompile Include="Source\engine\collision\MeshCollider.cpp" />
@@ -167,45 +167,45 @@
     <ClCompile Include="Source\application\scene\TitleScene.cpp" />
     <ClCompile Include="Source\engine\scene\SceneManager.cpp" />
     <ClCompile Include="Source\engine\scene\SceneFactory.cpp" />
-    <ClCompile Include="Source\application\object\Stage.cpp" />
+    <ClCompile Include="Source\application\object\stageObject\Stage.cpp" />
     <ClCompile Include="Source\engine\2d\TextureManager.cpp" />
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
     <ClCompile Include="Source\application\event\TutorialEvent.cpp" />
-    <ClCompile Include="Source\application\object\StageBlock.cpp" />
+    <ClCompile Include="Source\application\object\stageObject\StageBlock.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\application\effects\AccelEffect.h" />
     <ClInclude Include="Source\application\game\ResourceLoader.h" />
     <ClInclude Include="Source\engine\2d\Billboard.h" />
     <ClInclude Include="Source\application\debugText\ImGuiManager.h" />
-    <ClInclude Include="Source\application\object\MirrorOBJ.h" />
+    <ClInclude Include="Source\application\object\stageObject\MirrorOBJ.h" />
     <ClInclude Include="Source\application\sprite\ResultSprite.h" />
-    <ClInclude Include="Source\application\object\ResultRoopStage.h" />
+    <ClInclude Include="Source\application\object\stageObject\ResultRoopStage.h" />
     <ClInclude Include="Source\application\sprite\GameSprite.h" />
     <ClInclude Include="Source\application\event\Event.h" />
-    <ClInclude Include="Source\application\object\MirrorPlayer.h" />
-    <ClInclude Include="Source\application\object\GoalOBJ.h" />
+    <ClInclude Include="Source\application\object\player\MirrorPlayer.h" />
+    <ClInclude Include="Source\application\object\stageObject\GoalOBJ.h" />
     <ClInclude Include="Source\application\game\GameTimer.h" />
     <ClInclude Include="Source\application\object\ObjectColor.h" />
-    <ClInclude Include="Source\application\effects\particle\HitParticle2D.h" />
-    <ClInclude Include="Source\application\effects\particle\BreakParticle.h" />
-    <ClInclude Include="Source\application\effects\particle\SecondJump2DParticle.h" />
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\HitParticle2D.h" />
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\BreakParticle.h" />
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\SecondJump2DParticle.h" />
     <ClInclude Include="Source\application\game\GameSpeed.h" />
     <ClInclude Include="Source\engine\2d\TextureConverter.h" />
     <ClInclude Include="Source\engine\collision\QueryCallback.h" />
-    <ClInclude Include="Source\application\effects\particle\DeadParticle.h" />
-    <ClInclude Include="Source\application\effects\particle\LandParticle.h" />
-    <ClInclude Include="Source\application\effects\particle\BlockParticle.h" />
-    <ClInclude Include="Source\application\effects\particle\ObjParticleEmitter.h" />
-    <ClInclude Include="Source\application\effects\particle\ObjParticleManager.h" />
-    <ClInclude Include="Source\application\effects\particle\ParticleEmitter.h" />
-    <ClInclude Include="Source\application\effects\particle\GroundParticle.h" />
-    <ClInclude Include="Source\application\object\HitWall.h" />
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\DeadParticle.h" />
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\LandParticle.h" />
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\BlockParticle.h" />
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\ObjParticleEmitter.h" />
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\ObjParticleManager.h" />
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\ParticleEmitter.h" />
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\GroundParticle.h" />
+    <ClInclude Include="Source\application\object\stageObject\HitWall.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Source\application\object\BackGround.h" />
+    <ClInclude Include="Source\application\object\stageObject\BackGround.h" />
     <ClInclude Include="Source\application\scene\ClearScene.h" />
     <ClInclude Include="Source\application\object\ObjectAttribute.h" />
-    <ClInclude Include="Source\application\effects\particle\ParticleManager.h" />
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\ParticleManager.h" />
     <ClInclude Include="Source\application\scene\StageSelect.h" />
     <ClInclude Include="Source\engine\math\Easing.h" />
     <ClInclude Include="Source\engine\math\Matrix4.h" />
@@ -241,7 +241,7 @@
     <ClInclude Include="Source\engine\base\WindowsAPI.h" />
     <ClInclude Include="Source\engine\math\MathUtillity.h" />
     <ClInclude Include="Source\engine\io\GamePad.h" />
-    <ClInclude Include="Source\application\object\Player.h" />
+    <ClInclude Include="Source\application\object\player\Player.h" />
     <ClInclude Include="Source\application\camera\GameCamera.h" />
     <ClInclude Include="Source\engine\3d\Mesh.h" />
     <ClInclude Include="Source\engine\collision\MeshCollider.h" />
@@ -251,11 +251,11 @@
     <ClInclude Include="Source\application\scene\TitleScene.h" />
     <ClInclude Include="Source\engine\scene\SceneManager.h" />
     <ClInclude Include="Source\engine\scene\SceneFactory.h" />
-    <ClInclude Include="Source\application\object\Stage.h" />
+    <ClInclude Include="Source\application\object\stageObject\Stage.h" />
     <ClInclude Include="Source\engine\2d\TextureManager.h" />
     <ClInclude Include="Source\engine\audio\SoundManager.h" />
     <ClInclude Include="Source\application\event\TutorialEvent.h" />
-    <ClInclude Include="Source\application\object\StageBlock.h" />
+    <ClInclude Include="Source\application\object\stageObject\StageBlock.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
