@@ -171,7 +171,6 @@
     <ClCompile Include="Source\engine\2d\TextureManager.cpp" />
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
     <ClCompile Include="Source\application\event\TutorialEvent.cpp" />
-    <ClCompile Include="Source\application\object\StageBlock.cpp" />
     <ClCompile Include="Trail.cpp" />
     <ClCompile Include="TrailRenderer.cpp" />
     <ClCompile Include="Source\application\object\stageObject\StageBlock.cpp" />
@@ -258,7 +257,6 @@
     <ClInclude Include="Source\engine\2d\TextureManager.h" />
     <ClInclude Include="Source\engine\audio\SoundManager.h" />
     <ClInclude Include="Source\application\event\TutorialEvent.h" />
-    <ClInclude Include="Source\application\object\StageBlock.h" />
     <ClInclude Include="Trail.h" />
     <ClInclude Include="TrailRenderer.h" />
     <ClInclude Include="Source\application\object\stageObject\StageBlock.h" />
