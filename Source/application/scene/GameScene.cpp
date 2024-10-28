@@ -123,6 +123,7 @@ void GameScene::Initialize()
 		tutorialEvent_->Initialzie(player_.get(), gameCamera_.get());
 	}
 
+	//加速タイミングがわかる白い円の演出
 	accelEffect_ = std::make_unique<AccelEffect>();
 	accelEffect_->Initialize(player_.get(), "circle.png", Billboard::BillboardType::Yaxis);
 }
@@ -162,6 +163,7 @@ void GameScene::Update()
 
 #endif
 
+	//チュートリアルイベントの更新
 	if(stage_->GetStageNum() == Stage::tutorialStage && isClearGame_ == false)
 	{
 		tutorialEvent_->Update();
@@ -234,6 +236,7 @@ void GameScene::Update()
 	GameTimer::GetInstance()->HighScoreSpriteUpdate();
 	GameTimer::GetInstance()->ResultUpdate(resultSprite_->GetIsFinishInEasing(), resultSprite_->GetBackGroundSpritePosY(),stage_->GetStageNum(),stage_->GetKClearStageNum());
 
+	//サウンド更新
 	SoundManager::GetInstance()->Update();
 
 #ifdef _DEBUG
@@ -355,6 +358,7 @@ void GameScene::Draw()
 	//深度値クリア
 	directXBasic_->ClearDepthBuffer();
 
+	//加速タイミングがわかる白い円の演出
 	accelEffect_->Draw();
 
 	//3Dオブジェクト描画
@@ -402,6 +406,7 @@ void GameScene::Draw()
 
 void GameScene::ClearOnceUpdate()
 {
+	//クリア時に絵やタイマーの演出が終わった際に、クリア画面に行く処理
 	if (resultSprite_->GetIsFinishInEasing() == true)
 	{
 		if (GameTimer::GetInstance()->GetIsFinishedToTime() == true)

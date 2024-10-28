@@ -97,9 +97,6 @@
     <Filter Include="ソース ファイル\application\object">
       <UniqueIdentifier>{53493948-894a-4315-a3e6-d89a7da47a91}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\application\particle">
-      <UniqueIdentifier>{38efeb82-2c41-412a-bd43-7ecb74020315}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\application">
       <UniqueIdentifier>{9f38b880-1998-4459-9265-0d079e608bb2}</UniqueIdentifier>
     </Filter>
@@ -111,12 +108,6 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\application\camera">
       <UniqueIdentifier>{73a18352-eec5-4aaf-ab9b-75ac6697d364}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\application\postEffect">
-      <UniqueIdentifier>{303b80e0-8b7c-433e-a048-4c9fcd9f2010}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\application\particle">
-      <UniqueIdentifier>{19fc2173-1364-4484-a04d-8bd3707dfd53}</UniqueIdentifier>
     </Filter>
     <Filter Include="リソース ファイル\Shaders">
       <UniqueIdentifier>{ae37a6d1-e1db-40fb-a852-fee2fd14a170}</UniqueIdentifier>
@@ -147,6 +138,36 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\application\debugText">
       <UniqueIdentifier>{b57c3464-f3b3-4bd4-99ef-13ff67068078}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\effects">
+      <UniqueIdentifier>{4ad08f30-5f67-452b-af48-05b4af3f44a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\effects\particle">
+      <UniqueIdentifier>{38efeb82-2c41-412a-bd43-7ecb74020315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\effects\postEffect">
+      <UniqueIdentifier>{44c882b3-beeb-4af3-a18d-b1d00d6f3418}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\effects">
+      <UniqueIdentifier>{82f7cece-e82f-403d-9280-f8e637194f64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\effects\postEffect">
+      <UniqueIdentifier>{303b80e0-8b7c-433e-a048-4c9fcd9f2010}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\application\effects\particle">
+      <UniqueIdentifier>{19fc2173-1364-4484-a04d-8bd3707dfd53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\object\stageObject">
+      <UniqueIdentifier>{4630281a-99f9-4649-bc87-33b48dd93ab7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\object\player">
+      <UniqueIdentifier>{afd52029-0ad8-48ea-ae11-60795a58aa61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\effects\particle\2Dparticle">
+      <UniqueIdentifier>{1e5a7722-cdf2-436c-b96b-628ea9adc427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\application\effects\particle\3Dparticle">
+      <UniqueIdentifier>{bf4adc29-bd09-4aa5-a3d8-0b5641b846f7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -195,9 +216,6 @@
     <ClCompile Include="Source\engine\light\LightGroup.cpp">
       <Filter>ソース ファイル\engine\light</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\postEffect\PostEffect.cpp">
-      <Filter>ソース ファイル\engine\2d</Filter>
-    </ClCompile>
     <ClCompile Include="Source\engine\math\MathUtillity.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
@@ -231,14 +249,8 @@
     <ClCompile Include="Source\application\scene\GameScene.cpp">
       <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\object\Stage.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
-    </ClCompile>
     <ClCompile Include="Source\application\scene\ClearScene.cpp">
       <Filter>ソース ファイル\application\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\particle\ParticleManager.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\scene\SceneManager.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
@@ -248,9 +260,6 @@
     </ClCompile>
     <ClCompile Include="Source\application\scene\TitleScene.cpp">
       <Filter>ソース ファイル\application\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\object\Player.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\math\Vector3.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
@@ -276,38 +285,11 @@
     <ClCompile Include="Source\engine\math\Easing.cpp">
       <Filter>ソース ファイル\engine\math</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\particle\GroundParticle.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\object\HitWall.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
-    </ClCompile>
     <ClCompile Include="Source\application\scene\StageSelect.cpp">
       <Filter>ソース ファイル\application\scene</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\particle\ParticleEmitter..cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\particle\ObjParticleManager.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\particle\ObjParticleEmitter.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\particle\BlockParticle.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\particle\LandParticle.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\particle\DeadParticle.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
-    </ClCompile>
     <ClCompile Include="Source\application\event\TutorialEvent.cpp">
       <Filter>ソース ファイル\application\event</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\particle\BreakParticle.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
     <ClCompile Include="Source\application\event\Event.cpp">
       <Filter>ソース ファイル\application\event</Filter>
@@ -321,26 +303,8 @@
     <ClCompile Include="Source\application\sprite\GameSprite.cpp">
       <Filter>ソース ファイル\application\sprite</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\particle\HitParticle2D.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\object\GoalOBJ.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\object\MirrorOBJ.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\object\MirrorPlayer.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\object\ResultRoopStage.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
-    </ClCompile>
     <ClCompile Include="Source\application\sprite\ResultSprite.cpp">
       <Filter>ソース ファイル\application\sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\particle\SecondJump2DParticle.cpp">
-      <Filter>ソース ファイル\application\particle</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\2d\TextureConverter.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
@@ -348,14 +312,8 @@
     <ClCompile Include="Source\application\debugText\ImGuiManager.cpp">
       <Filter>ソース ファイル\application\debugText</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\object\BackGround.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
-    </ClCompile>
     <ClCompile Include="Source\engine\scene\SceneFactory.cpp">
       <Filter>ソース ファイル\engine\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\application\object\StageBlock.cpp">
-      <Filter>ソース ファイル\application\object</Filter>
     </ClCompile>
     <ClCompile Include="Source\engine\2d\Billboard.cpp">
       <Filter>ソース ファイル\engine\2d</Filter>
@@ -363,8 +321,71 @@
     <ClCompile Include="Source\application\game\ResourceLoader.cpp">
       <Filter>ソース ファイル\application\game</Filter>
     </ClCompile>
-    <ClCompile Include="Source\application\effect\AccelEffect.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="Source\application\effects\AccelEffect.cpp">
+      <Filter>ソース ファイル\application\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\postEffect\PostEffect.cpp">
+      <Filter>ソース ファイル\application\effects\postEffect</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\player\Player.cpp">
+      <Filter>ソース ファイル\application\object\player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\player\MirrorPlayer.cpp">
+      <Filter>ソース ファイル\application\object\player</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\stageObject\BackGround.cpp">
+      <Filter>ソース ファイル\application\object\stageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\stageObject\GoalOBJ.cpp">
+      <Filter>ソース ファイル\application\object\stageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\stageObject\HitWall.cpp">
+      <Filter>ソース ファイル\application\object\stageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\stageObject\MirrorOBJ.cpp">
+      <Filter>ソース ファイル\application\object\stageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\stageObject\ResultRoopStage.cpp">
+      <Filter>ソース ファイル\application\object\stageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\stageObject\Stage.cpp">
+      <Filter>ソース ファイル\application\object\stageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\object\stageObject\StageBlock.cpp">
+      <Filter>ソース ファイル\application\object\stageObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\BlockParticle.cpp">
+      <Filter>ソース ファイル\application\effects\particle\3Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\BreakParticle.cpp">
+      <Filter>ソース ファイル\application\effects\particle\3Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\DeadParticle.cpp">
+      <Filter>ソース ファイル\application\effects\particle\3Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\GroundParticle.cpp">
+      <Filter>ソース ファイル\application\effects\particle\2Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\HitParticle2D.cpp">
+      <Filter>ソース ファイル\application\effects\particle\2Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\LandParticle.cpp">
+      <Filter>ソース ファイル\application\effects\particle\3Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\ObjParticleEmitter.cpp">
+      <Filter>ソース ファイル\application\effects\particle\3Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\3Dparticle\ObjParticleManager.cpp">
+      <Filter>ソース ファイル\application\effects\particle\3Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\ParticleEmitter..cpp">
+      <Filter>ソース ファイル\application\effects\particle\2Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\ParticleManager.cpp">
+      <Filter>ソース ファイル\application\effects\particle\2Dparticle</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\application\effects\particle\2Dparticle\SecondJump2DParticle.cpp">
+      <Filter>ソース ファイル\application\effects\particle\2Dparticle</Filter>
     </ClCompile>
     <ClCompile Include="Trail.cpp">
       <Filter>ソース ファイル</Filter>
@@ -470,7 +491,7 @@
     <ClInclude Include="Source\application\camera\GameCamera.h">
       <Filter>ヘッダー ファイル\application\camera</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\Player.h">
+    <ClInclude Include="Source\application\object\player\Player.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\scene\BaseScene.h">
@@ -479,20 +500,20 @@
     <ClInclude Include="Source\application\scene\ClearScene.h">
       <Filter>ヘッダー ファイル\application\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\Stage.h">
+    <ClInclude Include="Source\application\object\stageObject\Stage.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\object\ObjectAttribute.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\postEffect\PostEffect.h">
-      <Filter>ヘッダー ファイル\application\postEffect</Filter>
+    <ClInclude Include="Source\application\effects\postEffect\PostEffect.h">
+      <Filter>ヘッダー ファイル\application\effects\postEffect</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\scene\TitleScene.h">
       <Filter>ヘッダー ファイル\application\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\ParticleManager.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\ParticleManager.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\math\Vector3.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>
@@ -512,7 +533,7 @@
     <ClInclude Include="Source\engine\math\Vector4.h">
       <Filter>ヘッダー ファイル\engine\math</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\BackGround.h">
+    <ClInclude Include="Source\application\object\stageObject\BackGround.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\math\Easing.h">
@@ -521,41 +542,41 @@
     <ClInclude Include="resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\GroundParticle.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\GroundParticle.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\HitWall.h">
+    <ClInclude Include="Source\application\object\stageObject\HitWall.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\scene\StageSelect.h">
       <Filter>ヘッダー ファイル\application\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\ParticleEmitter.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\ParticleEmitter.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\audio\SoundManager.h">
       <Filter>ヘッダー ファイル\engine\audio</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\BlockParticle.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\BlockParticle.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\ObjParticleManager.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\ObjParticleManager.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\ObjParticleEmitter.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\ObjParticleEmitter.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\LandParticle.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\LandParticle.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\DeadParticle.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\DeadParticle.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\collision\QueryCallback.h">
       <Filter>ヘッダー ファイル\engine\collision</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\BreakParticle.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\3Dparticle\BreakParticle.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\event\Event.h">
       <Filter>ヘッダー ファイル\application\event</Filter>
@@ -569,29 +590,29 @@
     <ClInclude Include="Source\application\sprite\GameSprite.h">
       <Filter>ヘッダー ファイル\application\sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\GoalOBJ.h">
+    <ClInclude Include="Source\application\object\stageObject\GoalOBJ.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\HitParticle2D.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\HitParticle2D.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\MirrorOBJ.h">
+    <ClInclude Include="Source\application\object\stageObject\MirrorOBJ.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\MirrorPlayer.h">
+    <ClInclude Include="Source\application\object\player\MirrorPlayer.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\object\ObjectColor.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\ResultRoopStage.h">
+    <ClInclude Include="Source\application\object\stageObject\ResultRoopStage.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\application\sprite\ResultSprite.h">
       <Filter>ヘッダー ファイル\application\sprite</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\particle\SecondJump2DParticle.h">
-      <Filter>ヘッダー ファイル\application\particle</Filter>
+    <ClInclude Include="Source\application\effects\particle\2Dparticle\SecondJump2DParticle.h">
+      <Filter>ヘッダー ファイル\application\effects\particle</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\2d\TextureConverter.h">
       <Filter>ヘッダー ファイル\engine\2d</Filter>
@@ -608,7 +629,7 @@
     <ClInclude Include="Source\engine\scene\SceneFactory.h">
       <Filter>ヘッダー ファイル\engine\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\object\StageBlock.h">
+    <ClInclude Include="Source\application\object\stageObject\StageBlock.h">
       <Filter>ヘッダー ファイル\application\object</Filter>
     </ClInclude>
     <ClInclude Include="Source\engine\2d\Billboard.h">
@@ -617,8 +638,8 @@
     <ClInclude Include="Source\application\game\ResourceLoader.h">
       <Filter>ヘッダー ファイル\application\game</Filter>
     </ClInclude>
-    <ClInclude Include="Source\application\effect\AccelEffect.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="Source\application\effects\AccelEffect.h">
+      <Filter>ヘッダー ファイル\application\effects</Filter>
     </ClInclude>
     <ClInclude Include="Trail.h">
       <Filter>ヘッダー ファイル</Filter>
