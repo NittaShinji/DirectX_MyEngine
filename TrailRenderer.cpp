@@ -1,17 +1,6 @@
-#include "ParticleEmitter.h"
-#include "ImGuiManager.h"
+#include "TrailRenderer.h"
 #include "TextureManager.h"
-
-#include <d3dcompiler.h>
-#include <string.h>
 #include <cassert>
-#pragma warning(push)
-#pragma warning(disable:4061)
-#pragma warning(disable:4820)
-#include <DirectXTex.h>
-#pragma warning(pop)
-
-#pragma comment(lib, "d3dcompiler.lib")
 
 using namespace DirectX;
 using namespace Microsoft::WRL;
@@ -22,31 +11,31 @@ using namespace NsEngine;
 /// </summary>
 
 //SRV用のデスクリプタヒープ
-ComPtr<ID3D12DescriptorHeap> ParticleEmitter::descHeap_;
+ComPtr<ID3D12DescriptorHeap> TrailRenderer::descHeap_;
 //デスクリプタヒープハンドル
-D3D12_CPU_DESCRIPTOR_HANDLE ParticleEmitter::sSrvHandle_;
+D3D12_CPU_DESCRIPTOR_HANDLE TrailRenderer::sSrvHandle_;
 // デスクリプタサイズ
-UINT ParticleEmitter::descriptorHandleIncrementSize_;
+UINT TrailRenderer::descriptorHandleIncrementSize_;
 
 //テクスチャ番号
-uint32_t ParticleEmitter::sTextureIndex_;
+uint32_t TrailRenderer::sTextureIndex_;
 
 // シェーダリソースビューのハンドル(CPU)
-D3D12_CPU_DESCRIPTOR_HANDLE ParticleEmitter::cpuDescHandleSRV_;
+D3D12_CPU_DESCRIPTOR_HANDLE TrailRenderer::cpuDescHandleSRV_;
 // シェーダリソースビューのハンドル(GPU)
-D3D12_GPU_DESCRIPTOR_HANDLE ParticleEmitter::gpuDescHandleSRV_;
+D3D12_GPU_DESCRIPTOR_HANDLE TrailRenderer::gpuDescHandleSRV_;
 
-ComPtr<ID3D12PipelineState> ParticleEmitter::pipelineState_;
+ComPtr<ID3D12PipelineState> TrailRenderer::pipelineState_;
 
-ID3D12GraphicsCommandList* ParticleEmitter::cmdList_;
+ID3D12GraphicsCommandList* TrailRenderer::cmdList_;
 
-ID3D12Device* ParticleEmitter::device_ = nullptr;
+ID3D12Device* TrailRenderer::device_ = nullptr;
 
-ComPtr<ID3D12RootSignature> ParticleEmitter::rootSignature_;
+ComPtr<ID3D12RootSignature> TrailRenderer::rootSignature_;
 
 //定数バッファの生成
 template <typename Type1>
-ComPtr<ID3D12Resource> ParticleEmitter::CrateConstBuff(Type1* device)
+ComPtr<ID3D12Resource> TrailRenderer::CrateConstBuff(Type1* device)
 {
 	//ヒープ設定
 	D3D12_HEAP_PROPERTIES cbHeapProp{};				//GPUへの転送用
@@ -75,35 +64,67 @@ ComPtr<ID3D12Resource> ParticleEmitter::CrateConstBuff(Type1* device)
 	return constBuff_;
 }
 
-void ParticleEmitter::Initialize(ID3D12Device* device)
+void TrailRenderer::CreateVertBuff()
+{
+	HRESULT result;
+	result = S_FALSE;
+
+	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * kVertexCount);
+
+	// ヒーププロパティ
+	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
+	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
+
+	// リソース設定
+	D3D12_RESOURCE_DESC resDesc{};
+
+	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
+	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
+	resDesc.Height = 1;
+	resDesc.DepthOrArraySize = 1;
+	resDesc.MipLevels = 1;
+	resDesc.SampleDesc.Count = 1;
+	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
+
+	// 頂点バッファの生成
+	result = device_->CreateCommittedResource(
+		&heapProp, // ヒープ設定
+		D3D12_HEAP_FLAG_NONE,
+		&resDesc, // リソース設定
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(&vertBuff_));
+	assert(SUCCEEDED(result));
+
+	// 頂点バッファビューの作成
+	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
+	//頂点バッファのサイズ
+	vbView_.SizeInBytes = sizeVB;
+	//頂点一つ分のサイズ
+	vbView_.StrideInBytes = sizeof(vertices_[0]);
+}
+
+
+void TrailRenderer::Initialize(ID3D12Device* device)
 {
 	device_ = device;
 
 	InitializeGraphicsPipeline();
 
 	CreateVertBuff();
-
-	isMaxParticle_ = false;
-	rotation_ = 0.0f;
 }
 
-void ParticleEmitter::ParticleRemove()
-{
-	//パーティクルを全削除
-	particles_.clear();
-}
-
-void ParticleEmitter::Update(Camera* camera)
+void TrailRenderer::Update(Camera* camera)
 {
 	HRESULT result;
 
 	//寿命が尽きたパーティクルを全削除
-	particles_.remove_if(
-		[](Particle& x)
-		{
-			return x.frame >= x.num_frame;
-		}
-	);
+	//trailes_.remove_if(
+	//	[](Trail& x)
+	//{
+	//	return x.frame >= x.num_frame;
+	//}
+	//);
 
 	//ビュー変換行列
 	matView_ = camera->GetMatView();
@@ -118,108 +139,6 @@ void ParticleEmitter::Update(Camera* camera)
 	Vertex* vertMap = nullptr;
 	result = vertBuff_->Map(0, nullptr, (void**)&vertMap);
 
-	nowParticleCount_ = 0;
-
-	if(SUCCEEDED(result))
-	{
-		for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
-		{
-			if(nowParticleCount_ + generationNum_ >= kVertexCount || nowParticleCount_ >= kVertexCount)
-			{
-				isMaxParticle_ = true;
-				break;
-			}
-			else
-			{
-				isMaxParticle_ = false;
-				nowParticleCount_++;
-			}
-			
-			//速度に加速度を加算
-			it->velocity = (it->velocity + it->accel) * gameSpeed_->GetSpeedNum();
-
-			//速度による移動
-			it->position = it->position + it->velocity;
-
-			//ゲームスピードに応じてフレームを加算する
-			it->frame += freamIncreaseValue_ * gameSpeed_->GetSpeedNum();
-
-			//進行度を0～1の範囲に換算
-			float f = (float)it->frame / it->num_frame;
-
-			//スケールの線形補間
-			it->scale = (it->e_scale - it->s_scale) * f;
-			it->scale += it->s_scale;
-
-			//回転
-			it->rotation += it->rotationSpeed;
-
-			//座標
-			vertMap->pos.x = it->position.x;
-			vertMap->pos.y = it->position.y;
-			vertMap->pos.z = it->position.z;
-
-			//スケール
-			vertMap->scale = it->scale;
-
-			//色
-			if(it->color.x <= it->endColor.x)
-			{
-				it->color.x += it->colorSpeed.x * gameSpeed_->GetSpeedNum();
-			}
-			else if(it->color.x > it->endColor.x)
-			{
-				it->color.x -= it->colorSpeed.x * gameSpeed_->GetSpeedNum();
-			}
-			else {}
-
-			if(it->color.y <= it->endColor.y)
-			{
-				it->color.y += it->colorSpeed.y * gameSpeed_->GetSpeedNum();
-			}
-			else if(it->color.y > it->endColor.y)
-			{
-				it->color.y -= it->colorSpeed.y * gameSpeed_->GetSpeedNum();
-			}
-			else {}
-
-			if(it->color.z <= it->endColor.z)
-			{
-				it->color.z += it->colorSpeed.z * gameSpeed_->GetSpeedNum();
-			}
-			else if(it->color.z > it->endColor.z)
-			{
-				it->color.z -= it->colorSpeed.z * gameSpeed_->GetSpeedNum();
-			}
-			else {}
-
-			if(it->color.w <= it->endColor.w)
-			{
-				it->color.w += it->colorSpeed.w * gameSpeed_->GetSpeedNum();
-			}
-			else if(it->color.w > it->endColor.w)
-			{
-				it->color.w -= it->colorSpeed.w * gameSpeed_->GetSpeedNum();
-			}
-			else {}
-
-			vertMap->color.x = it->color.x;
-			vertMap->color.y = it->color.y;
-			vertMap->color.z = it->color.z;
-			vertMap->color.w = it->color.w;
-
-			vertMap->rotate = it->rotation;
-
-			//次の頂点へ
-			vertMap++;
-		}
-
-		vertBuff_->Unmap(0, nullptr);
-	}
-
-	Matrix4 matRot = MatrixIdentity();
-	matRot *= MatrixRotateZ(rotation_);
-	
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff_->Map(0, nullptr, (void**)&constMap);
@@ -228,7 +147,7 @@ void ParticleEmitter::Update(Camera* camera)
 	constBuff_->Unmap(0, nullptr);
 }
 
-void ParticleEmitter::Draw()
+void TrailRenderer::Draw()
 {
 	// nullptrチェック
 	assert(cmdList_);
@@ -236,10 +155,10 @@ void ParticleEmitter::Draw()
 	cmdList_->IASetVertexBuffers(0, 1, &vbView_);
 
 	uint32_t textureIndex;
-	textureIndex = TextureManager::GetInstance()->GetTextureMap().at(particleFileName_);
+	textureIndex = TextureManager::GetInstance()->GetTextureMap().at(trailFileName_);
 
 	//SRVヒープの設定コマンド
-	ID3D12DescriptorHeap* ppHeaps[] = { TextureManager::GetInstance()->GetSRVHeap()};
+	ID3D12DescriptorHeap* ppHeaps[] = { TextureManager::GetInstance()->GetSRVHeap() };
 
 	cmdList_->SetDescriptorHeaps(1, ppHeaps);
 
@@ -253,7 +172,7 @@ void ParticleEmitter::Draw()
 	UINT incrementSize = device_->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
 	//取得したサイズを使用してハンドルを進める
-	for(uint32_t i = 0; i < textureIndex; i++)
+	for (uint32_t i = 0; i < textureIndex; i++)
 	{
 		srvGpuHandle.ptr += incrementSize;
 	}
@@ -262,63 +181,10 @@ void ParticleEmitter::Draw()
 	cmdList_->SetGraphicsRootDescriptorTable(1, srvGpuHandle);
 
 	// 描画コマンド
-	cmdList_->DrawInstanced((UINT)std::distance(particles_.begin(), particles_.end()), 1, 0, 0);
+	cmdList_->DrawInstanced((UINT)std::distance(trailes_.begin(), trailes_.end()), 1, 0, 0);
 }
 
-std::unique_ptr<ParticleEmitter> ParticleEmitter::Create()
-{
-	// 3Dオブジェクトのインスタンスを生成
-	std::unique_ptr<ParticleEmitter> instance = nullptr;
-	instance = std::make_unique<ParticleEmitter>();
-
-	if(instance == nullptr)
-	{
-		return nullptr;
-	}
-
-	return instance;
-}
-
-void ParticleEmitter::Add(float life, Vector3 position, Vector3 velocity, Vector3 accel, Vector4 startColor,Vector4 endColor,Vector4 colorSpeed, float start_scale, float end_scale, float rotation, float rotationSpeed)
-{
-	int32_t isParticleNum = 0;
-	for(std::forward_list<Particle>::iterator it = particles_.begin(); it != particles_.end(); it++)
-	{
-		if(isParticleNum + generationNum_ >= kVertexCount || isParticleNum >= kVertexCount)
-		{
-			isMaxParticle_ = true;
-			break;
-		}
-		else
-		{
-			isMaxParticle_ = false;
-		}
-		isParticleNum++;
-	}
-
-	if(isMaxParticle_ == false)
-	{
-		//リストに要素を追加
-		particles_.emplace_front();
-		//追加した要素の参照
-		Particle& p = particles_.front();
-		//値のセット
-		p.position = position;
-		p.velocity = velocity;
-		p.accel = accel;
-		p.num_frame = life;
-		p.scale = start_scale;
-		p.s_scale = start_scale;
-		p.e_scale = end_scale;
-		p.colorSpeed = colorSpeed;
- 		p.color = startColor;
-		p.endColor = endColor;
-		p.rotation = rotation;
-		p.rotationSpeed = rotationSpeed;
-	}
-}
-
-void  ParticleEmitter::InitializeGraphicsPipeline()
+void TrailRenderer::InitializeGraphicsPipeline()
 {
 	//定数バッファの生成
 	constBuff_ = CrateConstBuff<ID3D12Device>(device_);
@@ -329,20 +195,20 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 	assert(SUCCEEDED(result));
 
 	ComPtr<ID3DBlob> vsBlob; // 頂点シェーダオブジェクト
-	ComPtr<ID3D10Blob> gsBlob;	//ジオメトリシェーダーオブジェクト
+	//ComPtr<ID3D10Blob> gsBlob;	//ジオメトリシェーダーオブジェクト
 	ComPtr<ID3DBlob> psBlob;	// ピクセルシェーダオブジェクト
 	ComPtr<ID3DBlob> errorBlob; // エラーオブジェクト
 
 	// 頂点シェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticleVS.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/TrailVS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "vs_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&vsBlob, &errorBlob);
-	if(FAILED(result))
+	if (FAILED(result))
 	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
@@ -357,41 +223,41 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 		exit(1);
 	}
 
-	// ジオメトリシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticleGS.hlsl",	// シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&gsBlob, &errorBlob);
-	if(FAILED(result))
-	{
-		// errorBlobからエラー内容をstring型にコピー
-		std::string errstr;
-		errstr.resize(errorBlob->GetBufferSize());
+	//// ジオメトリシェーダの読み込みとコンパイル
+	//result = D3DCompileFromFile(
+	//	L"Resources/Shaders/ParticleGS.hlsl",	// シェーダファイル名
+	//	nullptr,
+	//	D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+	//	"main", "gs_5_0",	// エントリーポイント名、シェーダーモデル指定
+	//	D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+	//	0,
+	//	&gsBlob, &errorBlob);
+	//if (FAILED(result))
+	//{
+	//	// errorBlobからエラー内容をstring型にコピー
+	//	std::string errstr;
+	//	errstr.resize(errorBlob->GetBufferSize());
 
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			errstr.begin());
-		errstr += "\n";
-		// エラー内容を出力ウィンドウに表示
-		OutputDebugStringA(errstr.c_str());
-		exit(1);
-	}
+	//	std::copy_n((char*)errorBlob->GetBufferPointer(),
+	//		errorBlob->GetBufferSize(),
+	//		errstr.begin());
+	//	errstr += "\n";
+	//	// エラー内容を出力ウィンドウに表示
+	//	OutputDebugStringA(errstr.c_str());
+	//	exit(1);
+	//}
 
 
 	// ピクセルシェーダの読み込みとコンパイル
 	result = D3DCompileFromFile(
-		L"Resources/Shaders/ParticlePS.hlsl",	// シェーダファイル名
+		L"Resources/Shaders/TrailPS.hlsl",	// シェーダファイル名
 		nullptr,
 		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
 		"main", "ps_5_0",	// エントリーポイント名、シェーダーモデル指定
 		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
 		0,
 		&psBlob, &errorBlob);
-	if(FAILED(result))
+	if (FAILED(result))
 	{
 		// errorBlobからエラー内容をstring型にコピー
 		std::string errstr;
@@ -440,8 +306,8 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 	// グラフィックスパイプラインの流れを設定
 	pipelineDesc_.VS.pShaderBytecode = vsBlob->GetBufferPointer();
 	pipelineDesc_.VS.BytecodeLength = vsBlob->GetBufferSize();
-	pipelineDesc_.GS.pShaderBytecode = gsBlob->GetBufferPointer();
-	pipelineDesc_.GS.BytecodeLength = gsBlob->GetBufferSize();
+	/*pipelineDesc_.GS.pShaderBytecode = gsBlob->GetBufferPointer();
+	pipelineDesc_.GS.BytecodeLength = gsBlob->GetBufferSize();*/
 	pipelineDesc_.PS.pShaderBytecode = psBlob->GetBufferPointer();
 	pipelineDesc_.PS.BytecodeLength = psBlob->GetBufferSize();
 
@@ -475,7 +341,7 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 
 #pragma region ブレンド設定
 	// ブレンドステート
-	for(UINT i = 0; i < kRenderTexNum; i++)
+	for (UINT i = 0; i < kRenderTexNum; i++)
 	{
 		//レンダーターゲットのブレンド設定
 		D3D12_RENDER_TARGET_BLEND_DESC& blenddesc = pipelineDesc_.BlendState.RenderTarget[i];
@@ -551,63 +417,5 @@ void  ParticleEmitter::InitializeGraphicsPipeline()
 	result = device_->CreateGraphicsPipelineState(&pipelineDesc_, IID_PPV_ARGS(&pipelineState_));
 	assert(SUCCEEDED(result));
 
-}
 
-void ParticleEmitter::PreDraw(ID3D12GraphicsCommandList* cmdList)
-{
-	// コマンドリストをセット
-	ParticleEmitter::cmdList_ = cmdList;
-
-	//パイプラインのセット
-	cmdList_->SetPipelineState(pipelineState_.Get());
-	//ルートシグネチャのセット
-	cmdList_->SetGraphicsRootSignature(rootSignature_.Get());
-	//プリミティブトポロジーのセット
-	cmdList_->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
-}
-
-void ParticleEmitter::PostDraw()
-{
-	// コマンドリストを解除
-	ParticleEmitter::cmdList_ = nullptr;
-}
-
-void ParticleEmitter::CreateVertBuff()
-{
-	HRESULT result;
-	result = S_FALSE;
-
-	UINT sizeVB = static_cast<UINT>(sizeof(vertices_[0]) * kVertexCount);
-
-	// ヒーププロパティ
-	D3D12_HEAP_PROPERTIES heapProp{}; // ヒープ設定
-	heapProp.Type = D3D12_HEAP_TYPE_UPLOAD; // GPUへの転送用
-
-	// リソース設定
-	D3D12_RESOURCE_DESC resDesc{};
-
-	resDesc.Dimension = D3D12_RESOURCE_DIMENSION_BUFFER;
-	resDesc.Width = sizeVB; // 頂点データ全体のサイズ
-	resDesc.Height = 1;
-	resDesc.DepthOrArraySize = 1;
-	resDesc.MipLevels = 1;
-	resDesc.SampleDesc.Count = 1;
-	resDesc.Layout = D3D12_TEXTURE_LAYOUT_ROW_MAJOR;
-
-	// 頂点バッファの生成
-	result = device_->CreateCommittedResource(
-		&heapProp, // ヒープ設定
-		D3D12_HEAP_FLAG_NONE,
-		&resDesc, // リソース設定
-		D3D12_RESOURCE_STATE_GENERIC_READ,
-		nullptr,
-		IID_PPV_ARGS(&vertBuff_));
-	assert(SUCCEEDED(result));
-
-	// 頂点バッファビューの作成
-	vbView_.BufferLocation = vertBuff_->GetGPUVirtualAddress();
-	//頂点バッファのサイズ
-	vbView_.SizeInBytes = sizeVB;
-	//頂点一つ分のサイズ
-	vbView_.StrideInBytes = sizeof(vertices_[0]);
 }

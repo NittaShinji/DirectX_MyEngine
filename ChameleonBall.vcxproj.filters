@@ -366,6 +366,12 @@
     <ClCompile Include="Source\application\effect\AccelEffect.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Trail.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="TrailRenderer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\engine\2d\Sprite.h">
@@ -614,6 +620,12 @@
     <ClInclude Include="Source\application\effect\AccelEffect.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Trail.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="TrailRenderer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shaders\Basic.hlsli">
@@ -633,6 +645,7 @@
       <Filter>リソース ファイル\Shaders</Filter>
     </None>
     <None Include="Resources\Shaders\BillBoard.hlsli" />
+    <None Include="Resources\Shaders\TrailHF.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BasicPS.hlsl">
@@ -674,6 +687,8 @@
     <FxCompile Include="Resources\Shaders\BillBoardGS.hlsl" />
     <FxCompile Include="Resources\Shaders\BillBoardPS.hlsl" />
     <FxCompile Include="Resources\Shaders\BillBoardVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\TrailVS.hlsl" />
+    <FxCompile Include="Resources\Shaders\TrailPS.hlsl" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="ChameleonBall.rc">

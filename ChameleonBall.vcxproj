@@ -172,6 +172,8 @@
     <ClCompile Include="Source\engine\audio\SoundManager.cpp" />
     <ClCompile Include="Source\application\event\TutorialEvent.cpp" />
     <ClCompile Include="Source\application\object\StageBlock.cpp" />
+    <ClCompile Include="Trail.cpp" />
+    <ClCompile Include="TrailRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\application\effect\AccelEffect.h" />
@@ -256,6 +258,8 @@
     <ClInclude Include="Source\engine\audio\SoundManager.h" />
     <ClInclude Include="Source\application\event\TutorialEvent.h" />
     <ClInclude Include="Source\application\object\StageBlock.h" />
+    <ClInclude Include="Trail.h" />
+    <ClInclude Include="TrailRenderer.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />
@@ -265,6 +269,7 @@
     <None Include="Resources\Shaders\Particle.hlsli" />
     <None Include="Resources\Shaders\PostEffect.hlsli" />
     <None Include="Resources\Shaders\Sprite.hlsli" />
+    <None Include="Resources\Shaders\TrailHF.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\Shaders\BillBoardGS.hlsl">
@@ -352,6 +357,14 @@
     <FxCompile Include="Resources\Shaders\SpriteVS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\TrailPS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+    </FxCompile>
+    <FxCompile Include="Resources\Shaders\TrailVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
