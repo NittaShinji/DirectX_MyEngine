@@ -26,7 +26,10 @@ void TestScene::StaticInitialize()
 
 void TestScene::Initialize()
 {
-	
+	//シェーダー読み込み
+	SpriteCommon::GetInstance()->ShaderLoad();
+	//ブレンドモード(半透明)ここでグラフィックスパイプラインを生成している
+	SpriteCommon::GetInstance()->SemiTransparent();
 }
 
 void TestScene::Update()
@@ -39,8 +42,10 @@ void TestScene::Draw()
 	//描画開始
 	directXBasic_->BeforeDraw();
 
+	// spriteCommmonでパイプラインを生成していないので通らない
 	SpriteCommon::GetInstance()->BeforeDraw();
 	
+	// 上のObject3dの静的初期化でパイプラインを生成しているので通る
 	Object3d::BeforeDraw();
 
 	//描画終了

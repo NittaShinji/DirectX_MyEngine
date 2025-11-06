@@ -1,5 +1,6 @@
 #include "MyGame.h"
 #include "SceneFactory.h"
+#include "TestScene.h"
 #include "StageSelect.h"
 #include "ClearScene.h"
 #include "GameTimer.h"
@@ -24,8 +25,9 @@ void MyGame::Initialize()
 	sceneFactory_ = std::make_unique<SceneFactory>();
 	SceneManager::GetInstance()->SetSceneFactory(std::move(sceneFactory_));
 	//シーンマネージャに最初のシーンをセット
-	SceneManager::GetInstance()->ChangeScene("TITLE");
+	SceneManager::GetInstance()->ChangeScene("TEST");
 	//一度のみ初期化
+	TestScene::StaticInitialize();
 	TitleScene::StaticInitialize();
 	GameScene::StaticInitialize();
 	StageSelectScene::StaticInitialize();

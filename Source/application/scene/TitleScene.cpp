@@ -15,14 +15,14 @@ void TitleScene::StaticInitialize()
 	directXBasic_ = BaseScene::directXBasic_;
 	imGuiManager_ = BaseScene::imGuiManager_;
 
-	TextureManager::StaticInitialize(directXBasic_->GetDevice().Get());
-	Sprite::StaticInitialize();
-	Model::StaticInitialize(directXBasic_);
-	Object3d::StaticInitialize(directXBasic_);
-	Mesh::StaticInitialize(directXBasic_);
-	LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
-	Camera::StaticInitialize(directXBasic_);
-	TextureManager::GetInstance()->Initialize();
+	//TextureManager::StaticInitialize(directXBasic_->GetDevice().Get());
+	//Sprite::StaticInitialize();
+	//Model::StaticInitialize(directXBasic_);
+	//Object3d::StaticInitialize(directXBasic_);
+	//Mesh::StaticInitialize(directXBasic_);
+	//LightGroup::StaticInitialize(directXBasic_->GetDevice().Get());
+	//Camera::StaticInitialize(directXBasic_);
+	//TextureManager::GetInstance()->Initialize();
 }
 
 void TitleScene::Initialize()
