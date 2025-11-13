@@ -30,5 +30,7 @@ private:
 	static DirectXBasic* directXBasic_;
 	static KeyInput* keys_;
 	static ImGuiManager* imGuiManager_;
+
+	std::unique_ptr<Sprite> crownSprite = nullptr;
 };
 

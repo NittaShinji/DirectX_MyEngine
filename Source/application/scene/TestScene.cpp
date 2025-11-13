@@ -26,6 +26,9 @@ void TestScene::StaticInitialize()
 
 void TestScene::Initialize()
 {
+	crownSprite = std::make_unique<Sprite>();
+	crownSprite->Initialize("crown.png",Vector2(0,0));
+
 	//シェーダー読み込み
 	SpriteCommon::GetInstance()->ShaderLoad();
 	//ブレンドモード(半透明)ここでグラフィックスパイプラインを生成している
@@ -34,16 +37,19 @@ void TestScene::Initialize()
 
 void TestScene::Update()
 {
-	
+	crownSprite->matUpdate();
 }
 
 void TestScene::Draw()
 {
 	//描画開始
 	directXBasic_->BeforeDraw();
+	
 
 	// spriteCommmonでパイプラインを生成していないので通らない
 	SpriteCommon::GetInstance()->BeforeDraw();
+
+	crownSprite->Draw("crown.png");
 	
 	// 上のObject3dの静的初期化でパイプラインを生成しているので通る
 	Object3d::BeforeDraw();
