@@ -31,6 +31,13 @@ private:
 	static KeyInput* keys_;
 	static ImGuiManager* imGuiManager_;
 
+	//ライト
+	LightGroup* lightGroup_ = nullptr;
+
+	std::unique_ptr<Camera> camera_ = nullptr;
 	std::unique_ptr<Sprite> crownSprite = nullptr;
+	std::unique_ptr<Object3d> testObj = nullptr;
+
+	Vector3 objPos_;
 };
 
